@@ -58,10 +58,4 @@ class AnswerReminderOccurrenceTest extends TestCase
 
         $this->assertDatabaseHas('reminder_occurrences', ['id' => $occurrence->id, 'answer' => 'remembered']);
     }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.contacts.reminderOccurrences.answer.update', app(AnswerReminderOccurrence::class)->mirrors());
-    }
 }

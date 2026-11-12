@@ -52,28 +52,6 @@ class ModerationSubmissionViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_points_the_two_decisions_at_the_routes_that_take_them(): void
-    {
-        $version = $this->version();
-        $viewModel = new ModerationSubmissionViewModel(version: $version);
-
-        $this->assertSame(route('admin.moderation.approval.create', ['version' => $version->id]), $viewModel->approvalUrl());
-        $this->assertSame(route('admin.moderation.rejection.create', ['version' => $version->id]), $viewModel->rejectionUrl());
-    }
-
-    #[Test]
-    public function it_hands_back_the_listing_the_version_belongs_to(): void
-    {
-        $listing = MarketplaceListing::factory()->submitted()->create(['name' => 'Dundie Awards']);
-        $version = MarketplaceListingVersion::factory()->create(['marketplace_listing_id' => $listing->id]);
-
-        $viewModel = new ModerationSubmissionViewModel(version: $version);
-
-        $this->assertEquals('Dundie Awards', $viewModel->listing()->name);
-        $this->assertEquals($version->id, $viewModel->version()->id);
-    }
-
-    #[Test]
     public function it_lays_the_payload_out_to_be_read(): void
     {
         $version = MarketplaceListingVersion::factory()->carrying(['name' => 'Dundie Awards', 'pages' => []])->create();

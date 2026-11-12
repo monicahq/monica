@@ -30,10 +30,4 @@ class SetTemplatePositionTest extends TestCase
         $this->assertSame(1, $second->refresh()->position);
         $this->assertSame(2, $first->refresh()->position);
     }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.templates.position.update', app(SetTemplatePosition::class)->mirrors());
-    }
 }

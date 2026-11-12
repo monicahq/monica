@@ -483,28 +483,6 @@ class SetFieldValuesTest extends TestCase
     }
 
     #[Test]
-    public function it_keeps_a_field_unfilled_when_a_label_arrives_with_no_value(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $contact = $this->contactOf($user);
-        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
-        $mobile = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id]);
-        $field = $this->fieldOn($contact, ['type' => FieldTypeEnum::Phone, 'value_list_id' => $list->id]);
-
-        new SetFieldValues(
-            user: $user,
-            record: $contact,
-            section: $this->sectionOf($field),
-            values: [$field->id => ''],
-            labels: [$field->id => (string) $mobile->id],
-        )->execute();
-
-        $this->assertDatabaseMissing('field_values', ['field_id' => $field->id]);
-    }
-
-    #[Test]
     public function it_takes_a_required_email_with_no_label_at_all(): void
     {
         Queue::fake();
@@ -2032,7 +2010,6 @@ class SetFieldValuesTest extends TestCase
         return $field;
     }
 
-    /** @return list<string|null> */
     #[Test]
     public function it_replaces_the_deadlines_ahead_when_somebody_corrects_the_date(): void
     {
@@ -2169,6 +2146,7 @@ class SetFieldValuesTest extends TestCase
             ->count());
     }
 
+    /** @return list<string|null> */
     private function descriptionsIn(Contact $contact, Field $repeater, Field $child): array
     {
         return FieldValueRow::query()

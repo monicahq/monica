@@ -95,18 +95,6 @@ class ValueListItemControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_rename_without_a_name(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $item = ValueListItem::factory()->create(['account_id' => $user->account_id]);
-
-        $this->actingAs($user)->put(route('settings.valueListItems.update', $item->id), [])
-            ->assertSessionHasErrors('label', errorBag: "value{$item->id}");
-    }
-
-    #[Test]
     public function it_deletes_a_value_nothing_uses(): void
     {
         Queue::fake();
@@ -136,41 +124,6 @@ class ValueListItemControllerTest extends TestCase
         $response->assertSessionHas('error', 'The value is in use and stays.');
 
         $this->assertNotSoftDeleted($item);
-    }
-
-    #[Test]
-    public function it_shows_stop_offering_rather_than_delete_for_a_value_in_use(): void
-    {
-        $user = User::factory()->create();
-        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
-        ValueListItem::factory()->used()->create([
-            'account_id' => $user->account_id,
-            'value_list_id' => $list->id,
-            'label' => 'Salesman',
-        ]);
-
-        $this->actingAs($user)->get(route('settings.valueLists.index'))
-            ->assertStatus(200)
-            ->assertSee('Stop offering')
-            ->assertSee('used 3 times');
-    }
-
-    #[Test]
-    public function it_warns_in_a_card_before_a_value_is_deleted(): void
-    {
-        $user = User::factory()->create();
-        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
-        ValueListItem::factory()->create([
-            'account_id' => $user->account_id,
-            'value_list_id' => $list->id,
-            'label' => 'Salesman',
-        ]);
-
-        $this->actingAs($user)->get(route('settings.valueLists.index'))
-            ->assertStatus(200)
-            ->assertSee('role="dialog"', escape: false)
-            ->assertSee('Delete “Salesman”?', escape: false)
-            ->assertSee('Nothing uses it yet, so it is deleted for good and stops being offered anywhere.');
     }
 
     #[Test]

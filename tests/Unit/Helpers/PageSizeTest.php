@@ -84,18 +84,6 @@ class PageSizeTest extends TestCase
     }
 
     #[Test]
-    public function it_pages_a_query_at_the_size_asked(): void
-    {
-        Account::factory()->count(30)->create();
-
-        $page = PageSize::paginate(Account::query()->orderBy('id'), 10);
-
-        $this->assertCount(10, $page);
-        $this->assertSame(30, $page->total());
-        $this->assertSame(3, $page->lastPage());
-    }
-
-    #[Test]
     public function it_holds_everything_on_one_page_for_all(): void
     {
         Account::factory()->count(30)->create();
@@ -125,18 +113,6 @@ class PageSizeTest extends TestCase
 
         $this->assertSame(3, $page->currentPage());
         $this->assertCount(10, $page);
-    }
-
-    #[Test]
-    public function it_keeps_the_query_string_in_its_links(): void
-    {
-        Account::factory()->count(30)->create();
-        $this->app['request']->merge(['query' => 'dwight', 'size' => '10']);
-
-        $page = PageSize::paginate(Account::query()->orderBy('id'), 10);
-
-        $this->assertStringContainsString('query=dwight', (string) $page->nextPageUrl());
-        $this->assertStringContainsString('size=10', (string) $page->nextPageUrl());
     }
 
     /**

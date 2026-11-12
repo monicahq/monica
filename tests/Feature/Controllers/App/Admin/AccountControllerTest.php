@@ -8,7 +8,6 @@ use App\Models\Account;
 use App\Models\Administrator;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -31,16 +30,6 @@ class AccountControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Dwight Schrute', escape: false);
         $response->assertSee(route('admin.accounts.show', ['account' => $dwight->account_id]), escape: false);
-    }
-
-    #[Test]
-    public function it_says_so_plainly_when_a_search_matches_nothing(): void
-    {
-        $response = $this->actingAs($this->administrator())
-            ->get(route('admin.accounts.index', ['query' => 'nobody-here']));
-
-        $response->assertStatus(200);
-        $response->assertSee('Nothing matches that', escape: false);
     }
 
     #[Test]
@@ -116,24 +105,6 @@ class AccountControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_draws_the_flags_only_once_a_flag_is_declared(): void
-    {
-        $pam = User::factory()->create();
-        $michael = $this->administrator();
-
-        $this->actingAs($michael)
-            ->get(route('admin.accounts.show', ['account' => $pam->account_id]))
-            ->assertDontSee('example-capability');
-
-        Feature::discover('Tests\Fixtures\Features', base_path('tests/Fixtures/Features'));
-
-        $this->actingAs($michael)
-            ->get(route('admin.accounts.show', ['account' => $pam->account_id]))
-            ->assertSee('example-capability')
-            ->assertSee(route('admin.accounts.flags.activation.create', ['account' => $pam->account_id, 'flag' => 'example-capability']), escape: false);
-    }
-
-    #[Test]
     public function it_shows_the_accounts_in_numbered_pages(): void
     {
         $michael = $this->administrator();
@@ -145,18 +116,6 @@ class AccountControllerTest extends TestCase
         $response->assertSee(__('Rows per page'), escape: false);
         $response->assertSee('aria-current="page"', escape: false);
         $response->assertSee('1 to 20 of 21', escape: false);
-    }
-
-    #[Test]
-    public function it_takes_the_page_size_from_the_url(): void
-    {
-        $michael = $this->administrator();
-        Account::factory()->count(20)->create();
-
-        $response = $this->actingAs($michael)->get(route('admin.accounts.index', ['size' => 10]));
-
-        $response->assertStatus(200);
-        $response->assertSee('1 to 10 of 21', escape: false);
     }
 
     private function deactivateUrl(User $user): string

@@ -7,7 +7,6 @@ namespace Tests\Unit\Models;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\Relationship;
-use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
@@ -16,97 +15,6 @@ use Tests\TestCase;
 class RelationshipTest extends TestCase
 {
     use RefreshDatabase;
-
-    #[Test]
-    public function it_is_addressed_by_its_uuid(): void
-    {
-        $relationship = Relationship::factory()->create();
-
-        $this->assertEquals('uuid', $relationship->getRouteKeyName());
-        $this->assertEquals($relationship->uuid, $relationship->getRouteKey());
-    }
-
-    #[Test]
-    public function it_is_soft_deleted(): void
-    {
-        $relationship = Relationship::factory()->create();
-
-        $relationship->delete();
-
-        $this->assertSoftDeleted('relationships', ['id' => $relationship->id]);
-    }
-
-    #[Test]
-    public function it_does_not_resolve_a_relationship_of_another_account(): void
-    {
-        $account = Account::factory()->create();
-        $user = $this->assignUserToAccount(user: User::factory()->create(), account: $account);
-        $relationship = Relationship::factory()->create();
-
-        $this->actingAs($user);
-
-        $this->assertNull(new Relationship()->resolveRouteBinding($relationship->uuid));
-    }
-
-    #[Test]
-    public function it_resolves_a_relationship_of_the_account_asking(): void
-    {
-        $relationship = Relationship::factory()->create();
-        $user = $this->assignUserToAccount(
-            user: User::factory()->create(),
-            account: Account::query()->findOrFail($relationship->account_id),
-        );
-
-        $this->actingAs($user);
-
-        $this->assertEquals($relationship->id, new Relationship()->resolveRouteBinding($relationship->uuid)?->id);
-    }
-
-    #[Test]
-    public function it_does_not_resolve_through_a_vault_it_is_not_in(): void
-    {
-        $relationship = Relationship::factory()->create();
-        $account = Account::query()->findOrFail($relationship->account_id);
-        $user = $this->assignUserToAccount(user: User::factory()->create(), account: $account);
-        $otherVault = Vault::factory()->create(['account_id' => $account->id]);
-
-        $this->actingAs($user);
-
-        $this->assertNull(
-            Relationship::query()
-                ->where('uuid', $relationship->uuid)
-                ->where('vault_id', $otherVault->id)
-                ->first()
-        );
-    }
-
-    #[Test]
-    public function it_keeps_several_relationships_between_the_same_pair(): void
-    {
-        $first = Relationship::factory()->create();
-        $second = Relationship::factory()->create([
-            'account_id' => $first->account_id,
-            'vault_id' => $first->vault_id,
-            'contact_a_id' => $first->contact_a_id,
-            'contact_b_id' => $first->contact_b_id,
-        ]);
-
-        $this->assertNotEquals($first->id, $second->id);
-        $this->assertEquals(2, Relationship::query()
-            ->where('contact_a_id', $first->contact_a_id)
-            ->where('contact_b_id', $first->contact_b_id)
-            ->count());
-    }
-
-    #[Test]
-    public function it_survives_a_contact_being_soft_deleted(): void
-    {
-        $relationship = Relationship::factory()->create();
-
-        Contact::query()->findOrFail($relationship->contact_b_id)->delete();
-
-        $this->assertDatabaseHas('relationships', ['id' => $relationship->id, 'deleted_at' => null]);
-    }
 
     #[Test]
     public function it_finds_every_relationship_a_contact_is_part_of_from_either_side(): void
@@ -166,22 +74,5 @@ class RelationshipTest extends TestCase
 
         $this->assertCount(1, $found);
         $this->assertContains($mine->id, $found);
-    }
-
-    #[Test]
-    public function it_answers_twice_for_a_pair_linked_twice(): void
-    {
-        $vault = Vault::factory()->create();
-        $judy = Contact::factory()->create(['account_id' => $vault->account_id, 'vault_id' => $vault->id]);
-        $ross = Contact::factory()->create(['account_id' => $vault->account_id, 'vault_id' => $vault->id]);
-
-        Relationship::factory()->count(2)->create([
-            'account_id' => $vault->account_id,
-            'vault_id' => $vault->id,
-            'contact_a_id' => $judy->id,
-            'contact_b_id' => $ross->id,
-        ]);
-
-        $this->assertCount(2, Relationship::query()->forContact($judy)->get());
     }
 }

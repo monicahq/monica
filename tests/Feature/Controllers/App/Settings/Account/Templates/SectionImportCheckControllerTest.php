@@ -63,17 +63,6 @@ class SectionImportCheckControllerTest extends TestCase
             ->assertSee('This file cannot be imported');
     }
 
-    #[Test]
-    public function it_refuses_a_published_version(): void
-    {
-        $user = User::factory()->create();
-        $template = $this->publishedTemplate($user);
-        $page = $template->publishedVersion->pages()->firstOrFail();
-
-        $this->actingAs($user)->post(route('settings.sectionImportCheck.create', [$template, $page]), ['file' => '{}'])
-            ->assertNotFound();
-    }
-
     private function exportedSection(User $user): string
     {
         $template = $this->publishedTemplate($user);

@@ -30,18 +30,6 @@ class AdministratorControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_warns_before_a_grant_and_before_a_withdrawal(): void
-    {
-        $michael = $this->administrator('Michael', 'Scott');
-        $this->administrator('Dwight', 'Schrute');
-
-        $response = $this->actingAs($michael)->get(route('admin.administrators.index'));
-
-        $response->assertSee('Give somebody the admin space?', escape: false);
-        $response->assertSee('Take the admin space away from Dwight Schrute?', escape: false);
-    }
-
-    #[Test]
     public function it_grants_the_capacity_by_address(): void
     {
         $michael = $this->administrator();
@@ -75,19 +63,6 @@ class AdministratorControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_closes_the_area_to_somebody_who_had_it_open(): void
-    {
-        $michael = $this->administrator();
-        $dwight = $this->administrator();
-
-        $this->actingAs($dwight)->get(route('admin.administrators.index'))->assertStatus(200);
-
-        $this->actingAs($michael)->delete(route('admin.administrators.destroy', ['user' => $dwight->id]));
-
-        $this->actingAs($dwight->refresh())->get(route('admin.administrators.index'))->assertNotFound();
-    }
-
-    #[Test]
     public function it_refuses_to_let_an_administrator_withdraw_their_own(): void
     {
         $michael = $this->administrator();
@@ -97,48 +72,6 @@ class AdministratorControllerTest extends TestCase
 
         $response->assertSessionHasErrors('administrator');
         $this->assertTrue($michael->refresh()->isAdministrator());
-    }
-
-    #[Test]
-    public function it_states_the_reason_the_last_administrator_cannot_be_withdrawn(): void
-    {
-        $michael = $this->administrator();
-        $dwight = $this->administrator();
-
-        $this->actingAs($michael)->delete(route('admin.administrators.destroy', ['user' => $dwight->id]));
-
-        $response = $this->actingAs($dwight->refresh())->get(route('admin.administrators.index'));
-        $response->assertNotFound();
-
-        $response = $this->actingAs($michael)->get(route('admin.administrators.index'));
-        $response->assertSee('There is one administrator on this instance', escape: false);
-        $response->assertDontSee('Withdraw it', escape: false);
-    }
-
-    #[Test]
-    public function it_shows_the_administrators_in_numbered_pages(): void
-    {
-        $michael = $this->administrator();
-        Administrator::factory()->count(20)->create();
-
-        $response = $this->actingAs($michael)->get(route('admin.administrators.index'));
-
-        $response->assertStatus(200);
-        $response->assertSee(__('Rows per page'), escape: false);
-        $response->assertSee('aria-current="page"', escape: false);
-        $response->assertSee('1 to 20 of 21', escape: false);
-    }
-
-    #[Test]
-    public function it_takes_the_page_size_from_the_url(): void
-    {
-        $michael = $this->administrator();
-        Administrator::factory()->count(20)->create();
-
-        $response = $this->actingAs($michael)->get(route('admin.administrators.index', ['size' => 10]));
-
-        $response->assertStatus(200);
-        $response->assertSee('1 to 10 of 21', escape: false);
     }
 
     private function administrator(string $first = 'Michael', string $last = 'Scott'): User

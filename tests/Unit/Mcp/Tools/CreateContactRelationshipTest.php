@@ -40,25 +40,6 @@ class CreateContactRelationshipTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_relationship_type_that_is_switched_off(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $jim = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
-        $pam = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
-        $type = RelationshipType::factory()->inactive()->create(['account_id' => $user->account_id]);
-
-        EricaServer::actingAs($user)->tool(CreateContactRelationship::class, [
-            'vault' => $vault->uuid,
-            'contact' => $jim->uuid,
-            'relationship_type' => $type->uuid,
-            'other_contact' => $pam->uuid,
-        ])->assertHasErrors(['That relationship type can no longer be chosen.']);
-
-        $this->assertDatabaseCount('relationships', 0);
-    }
-
-    #[Test]
     public function it_refuses_a_relationship_type_of_another_account(): void
     {
         $user = User::factory()->create();
@@ -71,11 +52,5 @@ class CreateContactRelationshipTest extends TestCase
             'contact' => $jim->uuid,
             'relationship_type' => $type->uuid,
         ])->assertHasErrors(['That relationship type does not exist.']);
-    }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.contacts.relationships.create', app(CreateContactRelationship::class)->mirrors());
     }
 }

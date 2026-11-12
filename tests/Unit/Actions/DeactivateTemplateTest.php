@@ -7,7 +7,6 @@ namespace Tests\Unit\Actions;
 use App\Actions\DeactivateTemplate;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
-use App\Models\StructureVersion;
 use App\Models\Template;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -36,20 +35,6 @@ class DeactivateTemplateTest extends TestCase
             return $job->action === UserActionEnum::TemplateDeactivated
                 && $job->parameters === ['name' => 'Contact'];
         });
-    }
-
-    #[Test]
-    public function it_leaves_the_records_already_on_it_alone(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = StructureVersion::factory()->published()->used(31)->create(['structure_id' => $template->structure->id]);
-
-        new DeactivateTemplate(user: $user, template: $template)->execute();
-
-        $this->assertEquals(31, $version->fresh()->record_count);
     }
 
     #[Test]

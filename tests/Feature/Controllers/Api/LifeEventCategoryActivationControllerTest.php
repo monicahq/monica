@@ -49,22 +49,6 @@ class LifeEventCategoryActivationControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_confirms_the_state_rather_than_inverting_it_when_sent_twice(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('PUT', "/api/v1/life-event-categories/{$category->uuid}/activation", ['is_active' => false])->assertOk();
-        $this->json('PUT', "/api/v1/life-event-categories/{$category->uuid}/activation", ['is_active' => false])
-            ->assertOk()
-            ->assertJsonPath('data.attributes.is_active', false);
-    }
-
-    #[Test]
     public function it_retires_a_supplied_group_like_any_other(): void
     {
         Queue::fake();

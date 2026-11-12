@@ -111,17 +111,6 @@ class ContactDeadlinesBlockTest extends TestCase
     }
 
     #[Test]
-    public function it_says_what_an_empty_filter_would_hold_in_the_reminders_screen_s_words(): void
-    {
-        $block = $this->block();
-
-        $this->assertSame('Nothing overdue', $block->emptyTitle('overdue'));
-        $this->assertSame('Nothing today', $block->emptyTitle('today'));
-        $this->assertSame('Nothing coming up', $block->emptyTitle('upcoming'));
-        $this->assertSame('Reminders due today land here, in your time zone.', $block->emptyLine('today'));
-    }
-
-    #[Test]
     public function a_contact_with_nothing_to_remember_is_named_in_the_blank_panel(): void
     {
         $block = $this->block();

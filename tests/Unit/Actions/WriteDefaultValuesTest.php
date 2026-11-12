@@ -107,24 +107,6 @@ class WriteDefaultValuesTest extends TestCase
         $this->assertSame(0, new WriteDefaultValues(user: $user, record: $contact)->execute());
     }
 
-    #[Test]
-    public function it_is_what_gives_a_new_contact_its_defaults(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $contact = $this->contactOf($user);
-        $field = $this->fieldOn($contact, ['key' => 'city', 'default_value' => 'Scranton']);
-
-        $written = new WriteDefaultValues(user: $user, record: $contact)->execute();
-
-        $this->assertSame(1, $written);
-        $this->assertEquals(
-            'Scranton',
-            FieldValue::query()->where('field_id', $field->id)->firstOrFail()->value_string,
-        );
-    }
-
     private function contactOf(User $user): Contact
     {
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);

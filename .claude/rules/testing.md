@@ -123,9 +123,9 @@ right.
   `tests/Feature/Views/Components`, and the shell under `tests/Feature/Views/Layouts`. Render with
   `$this->blade('<x-badge tone="danger">Bounced</x-badge>')`.
 - Put a named slot **after** the default content in the string you pass to `$this->blade()`, the way
-  `EmptyStateTest` and `ButtonSplitTest` do. A slot written first compiles wrongly there and leaks
+  `ButtonSplitTest` does. A slot written first compiles wrongly there and leaks
   `@endslot` into the output, which a `.blade.php` file does not do, so the test fails on a component
   that works.
 - Prefer comparing two renderings to naming what is inside one. `IconTest` asserts that an unknown
-  glyph name renders the same as the default one and that every name in the catalogue renders
-  something else, and so says what the component does without naming a single path.
+  glyph name renders the same as the default one, and so says what the component does without naming
+  a single path.

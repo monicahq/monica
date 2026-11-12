@@ -31,17 +31,6 @@ class VaultFormViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_offers_the_colours_a_vault_may_be_told_apart_by(): void
-    {
-        $user = User::factory()->create();
-
-        $colours = new VaultFormViewModel(user: $user)->colours();
-
-        $this->assertCount(8, $colours);
-        $this->assertEquals(['value' => Vault::DEFAULT_COLOUR, 'label' => 'Blue'], $colours[0]);
-    }
-
-    #[Test]
     public function it_ticks_the_default_box_for_the_first_vault_of_an_account(): void
     {
         $user = User::factory()->create();

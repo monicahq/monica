@@ -11,14 +11,6 @@ use Tests\TestCase;
 class NameOrderEnumTest extends TestCase
 {
     #[Test]
-    public function it_names_every_order(): void
-    {
-        foreach (NameOrderEnum::cases() as $order) {
-            $this->assertNotEmpty($order->label());
-        }
-    }
-
-    #[Test]
     public function it_writes_a_name_given_name_first(): void
     {
         $this->assertEquals('Michael Scott', NameOrderEnum::GivenFirst->format('Michael', 'Scott'));

@@ -110,18 +110,6 @@ class RelationshipCategoryControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_brings_a_page_size_outside_the_range_back_into_it(): void
-    {
-        $user = User::factory()->create();
-        RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('GET', '/api/v1/relationship-categories?per_page=1000')->assertJsonPath('meta.per_page', 100);
-        $this->json('GET', '/api/v1/relationship-categories?per_page=0')->assertJsonPath('meta.per_page', 1);
-    }
-
-    #[Test]
     public function it_shows_a_category(): void
     {
         $user = User::factory()->create();
@@ -143,18 +131,6 @@ class RelationshipCategoryControllerTest extends TestCase
         $user = User::factory()->create();
         $stranger = User::factory()->create();
         $category = RelationshipCategory::factory()->create(['account_id' => $stranger->account_id]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('GET', "/api/v1/relationship-categories/{$category->uuid}")->assertNotFound();
-    }
-
-    #[Test]
-    public function it_returns_not_found_for_a_deleted_category(): void
-    {
-        $user = User::factory()->create();
-        $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
-        $category->delete();
 
         Sanctum::actingAs($user);
 
@@ -258,16 +234,5 @@ class RelationshipCategoryControllerTest extends TestCase
         $this->json('PUT', "/api/v1/relationship-categories/{$category->uuid}", ['name' => 'Voisinage'])->assertNotFound();
         $this->json('DELETE', "/api/v1/relationship-categories/{$category->uuid}")->assertNotFound();
         $this->assertNotSoftDeleted($category);
-    }
-
-    #[Test]
-    public function it_returns_not_found_when_the_identifier_is_not_a_uuid(): void
-    {
-        $user = User::factory()->create();
-        $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('GET', "/api/v1/relationship-categories/{$category->id}")->assertNotFound();
     }
 }

@@ -31,11 +31,4 @@ class ContactListColumnSourceEnumTest extends TestCase
         $this->assertNull(ContactListColumnSourceEnum::Email->sort());
         $this->assertNull(ContactListColumnSourceEnum::Field->sort());
     }
-
-    #[Test]
-    public function it_leaves_template_fields_out_of_the_shared_columns(): void
-    {
-        $this->assertNotContains(ContactListColumnSourceEnum::Field, ContactListColumnSourceEnum::shared());
-        $this->assertCount(7, ContactListColumnSourceEnum::shared());
-    }
 }

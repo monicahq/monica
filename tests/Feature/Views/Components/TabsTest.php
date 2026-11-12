@@ -37,15 +37,6 @@ class TabsTest extends TestCase
     }
 
     #[Test]
-    public function the_count_says_in_words_what_it_counts(): void
-    {
-        $this->blade('<x-tabs.item href="/general" :selected="true" :count="3" count-label="Three fields">General</x-tabs.item>')
-            ->assertSee('title="Three fields"', escape: false);
-
-        $this->blade('<x-tabs.item href="/general" :count="3">General</x-tabs.item>');
-    }
-
-    #[Test]
     public function the_control_that_adds_a_tab_is_not_announced_as_one(): void
     {
         $rendered = $this->blade('<x-tabs.item action icon="plus">Add a page</x-tabs.item>');

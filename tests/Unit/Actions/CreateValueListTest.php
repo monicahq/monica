@@ -69,22 +69,6 @@ class CreateValueListTest extends TestCase
     }
 
     #[Test]
-    public function it_can_be_closed_to_choices_of_the_users_own(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-
-        $list = new CreateValueList(
-            user: $user,
-            name: 'Dundie awards',
-            allowsUserValues: false,
-        )->execute();
-
-        $this->assertFalse($list->allows_user_values);
-    }
-
-    #[Test]
     public function it_strips_the_markup_out_of_what_it_is_given(): void
     {
         Queue::fake();

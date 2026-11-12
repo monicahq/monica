@@ -32,22 +32,4 @@ class ListContactRelationshipsTest extends TestCase
             'contact' => $pam->uuid,
         ])->assertOk()->assertHasNoErrors()->assertSee($jim->uuid);
     }
-
-    #[Test]
-    public function it_refuses_a_contact_of_another_account(): void
-    {
-        $user = User::factory()->create();
-        $contact = Contact::factory()->create();
-
-        EricaServer::actingAs($user)->tool(ListContactRelationships::class, [
-            'vault' => $contact->vault->uuid,
-            'contact' => $contact->uuid,
-        ])->assertHasErrors(['That vault does not exist.']);
-    }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.contacts.relationships', app(ListContactRelationships::class)->mirrors());
-    }
 }

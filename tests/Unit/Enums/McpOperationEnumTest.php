@@ -11,16 +11,6 @@ use Tests\TestCase;
 class McpOperationEnumTest extends TestCase
 {
     #[Test]
-    public function it_names_every_operation(): void
-    {
-        foreach (McpOperationEnum::cases() as $operation) {
-            $this->assertNotEmpty($operation->label());
-        }
-
-        $this->assertSame(['read', 'create', 'update', 'delete'], array_column(McpOperationEnum::cases(), 'value'));
-    }
-
-    #[Test]
     public function it_reads_the_operation_from_the_method_of_the_mirrored_route(): void
     {
         $this->assertSame(McpOperationEnum::Read, McpOperationEnum::fromHttpMethod('GET|HEAD'));

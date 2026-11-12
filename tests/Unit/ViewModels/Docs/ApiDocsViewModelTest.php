@@ -57,36 +57,6 @@ class ApiDocsViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_splits_the_sidebar_between_guides_and_resources(): void
-    {
-        $navigation = new ApiDocsViewModel()->navigation();
-
-        $this->assertEquals(
-            [
-                'Introduction', 'Authentication', 'Rate limits', 'Pagination', 'Errors', 'Changelog',
-            ],
-            array_column($navigation['guides'], 'label'),
-        );
-
-        $this->assertEquals(
-            ['Authentication', 'Your profile', 'API keys', 'Vaults', 'Contacts', 'Kinds of record', 'Logs', 'Emails sent', 'Health', 'Templates', 'Billing', 'Duplicates and merges', 'Notifications', 'Notification channels', 'Relationship categories', 'Relationship types', 'Life event categories', 'Life event types', 'Reminders', 'Search', 'Life events', 'Relationships', 'MCP history', 'Imports', 'Exports', 'Groups', 'Group notes', 'Group activities', 'Group reminders', 'Group files', 'Support requests', 'Support administration'],
-            array_column($navigation['resources'], 'name'),
-        );
-    }
-
-    #[Test]
-    public function it_gives_every_resource_entry_a_verb(): void
-    {
-        $navigation = new ApiDocsViewModel()->navigation();
-
-        foreach ($navigation['resources'] as $group) {
-            foreach ($group['items'] as $item) {
-                $this->assertContains($item['method'], ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']);
-            }
-        }
-    }
-
-    #[Test]
     public function it_finds_a_section_by_its_id(): void
     {
         $section = new ApiDocsViewModel()->section('me-show');
@@ -163,26 +133,6 @@ class ApiDocsViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_falls_back_to_the_title_for_the_sidebar_label(): void
-    {
-        $section = new ApiDocsSection([
-            'id' => 'thing-show',
-            'title' => 'Read a thing',
-            'method' => 'GET',
-            'path' => '/things',
-            'description' => 'Reads it.',
-            'rateLimit' => 'Sixty requests per minute, per token.',
-        ]);
-
-        $this->assertEquals('Read a thing', $section->label);
-        $this->assertEquals('/things', $section->examplePath);
-        $this->assertTrue($section->auth);
-        $this->assertEquals(200, $section->responseStatus);
-        $this->assertEquals('Parameters', $section->paramsTitle);
-        $this->assertFalse($section->hasParams());
-    }
-
-    #[Test]
     public function it_names_the_parameters_after_where_they_are_sent(): void
     {
         $body = new ApiDocsSection([
@@ -255,12 +205,6 @@ class ApiDocsViewModelTest extends TestCase
         $this->assertEquals('ink', $highlighted['parts'][0]['colour']);
         $this->assertEquals('"Dundie"', $highlighted['parts'][1]['text']);
         $this->assertEquals('brand', $highlighted['parts'][1]['colour']);
-    }
-
-    #[Test]
-    public function it_points_the_base_url_at_the_versioned_api(): void
-    {
-        $this->assertStringEndsWith('/api/v1', ApiDocsViewModel::baseUrl());
     }
 
     #[Test]

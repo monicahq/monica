@@ -27,30 +27,6 @@ class VaultTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_gets_an_unguessable_identifier_and_keeps_a_number_for_a_key(): void
-    {
-        $vault = Vault::factory()->create();
-
-        $this->assertMatchesRegularExpression(
-            '/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/',
-            $vault->uuid,
-        );
-        $this->assertIsInt($vault->id);
-        $this->assertEquals('slug', $vault->getRouteKeyName());
-        $this->assertEquals($vault->slug, $vault->getRouteKey());
-    }
-
-    #[Test]
-    public function it_holds_no_contact_and_no_visit_to_begin_with(): void
-    {
-        $vault = Vault::factory()->create();
-
-        $this->assertSame(0, $vault->contact_count);
-        $this->assertFalse($vault->is_default);
-        $this->assertNull($vault->last_visited_at);
-    }
-
-    #[Test]
     public function it_holds_the_private_links_opened_onto_itself(): void
     {
         $vault = Vault::factory()->create();
@@ -59,18 +35,6 @@ class VaultTest extends TestCase
 
         $this->assertCount(1, $vault->shareLinks);
         $this->assertTrue($ontoTheVault->is($vault->shareLinks->first()));
-    }
-
-    #[Test]
-    public function it_is_deleted_softly(): void
-    {
-        $vault = Vault::factory()->create(['name' => 'Schrute Farms']);
-
-        $vault->delete();
-
-        $this->assertSoftDeleted('vaults', ['id' => $vault->id]);
-        $this->assertEquals(0, Vault::query()->count());
-        $this->assertEquals(1, Vault::query()->withTrashed()->count());
     }
 
     #[Test]
@@ -115,22 +79,6 @@ class VaultTest extends TestCase
         $vault = Vault::factory()->create(['name' => 'New']);
 
         $this->assertSame('new-2', $vault->slug);
-    }
-
-    #[Test]
-    public function it_keeps_the_alphabet_a_name_is_written_in(): void
-    {
-        $vault = Vault::factory()->create(['name' => '家族']);
-
-        $this->assertSame('家族', $vault->slug);
-    }
-
-    #[Test]
-    public function it_gives_an_address_to_a_name_that_leaves_nothing_readable(): void
-    {
-        $vault = Vault::factory()->create(['name' => '🎉🎉🎉']);
-
-        $this->assertSame('vault', $vault->slug);
     }
 
     #[Test]

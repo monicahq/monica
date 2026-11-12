@@ -10,8 +10,10 @@ use App\Models\Group;
 use App\Models\GroupMember;
 use App\Models\User;
 use App\Models\Vault;
+use Closure;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Pennant\Feature;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\Exception\NotFound;
@@ -128,27 +130,6 @@ class AddressBookBackendTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_to_make_an_address_book(): void
-    {
-        $user = User::factory()->create();
-
-        $this->expectException(Forbidden::class);
-
-        new AddressBookBackend($user)->createAddressBook('principals/'.$user->email, 'new', []);
-    }
-
-    #[Test]
-    public function it_refuses_to_delete_an_address_book(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $this->expectException(Forbidden::class);
-
-        new AddressBookBackend($user)->deleteAddressBook($vault->id);
-    }
-
-    #[Test]
     public function it_writes_nothing_a_device_asks_of_an_address_book(): void
     {
         $user = User::factory()->create();
@@ -159,21 +140,6 @@ class AddressBookBackendTest extends TestCase
 
         $this->assertFalse($propPatch->commit());
         $this->assertEquals('Scranton', $vault->refresh()->name);
-    }
-
-    #[Test]
-    public function it_tells_what_changed_in_the_shape_the_standard_asks_for(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id]);
-
-        $changes = new AddressBookBackend($user)->getChangesForAddressBook($vault->id, '', 1);
-
-        $this->assertArrayHasKey('syncToken', $changes);
-        $this->assertArrayHasKey('added', $changes);
-        $this->assertArrayHasKey('modified', $changes);
-        $this->assertArrayHasKey('deleted', $changes);
     }
 
     #[Test]
@@ -251,5 +217,26 @@ class AddressBookBackendTest extends TestCase
         $this->assertSame([], $backend->getCards($vault->id));
         $this->assertFalse($backend->getCard($vault->id, $group->uuid.'.vcf'));
         $this->assertSame([], $backend->getChangesForAddressBook($vault->id, '', 1)['added']);
+    }
+
+    #[Test]
+    #[DataProvider('writes')]
+    public function it_refuses_to_make_or_delete_an_address_book(Closure $write): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $this->expectException(Forbidden::class);
+
+        $write(new AddressBookBackend($user), $user, $vault);
+    }
+
+    /** @return array<string, array{Closure}> */
+    public static function writes(): array
+    {
+        return [
+            'make an address book' => [fn (AddressBookBackend $backend, User $user, Vault $vault) => $backend->createAddressBook("principals/{$user->email}", 'new', [])],
+            'delete an address book' => [fn (AddressBookBackend $backend, User $user, Vault $vault) => $backend->deleteAddressBook($vault->id)],
+        ];
     }
 }

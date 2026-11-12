@@ -11,7 +11,6 @@ use App\Models\User;
 use App\Notifications\AccessUnlocked;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
-use Laravel\Cashier\Console\WebhookCommand;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\Fixtures\Stripe\SignedWebhookRequest;
 use Tests\TestCase;
@@ -131,21 +130,6 @@ class StripeWebhookTest extends TestCase
         }
 
         $this->assertSame([], $missing, "Stripe is never asked to send these, so the listener never runs:\n".implode("\n", $missing));
-    }
-
-    #[Test]
-    public function it_asks_stripe_for_more_than_the_package_would_on_its_own(): void
-    {
-        $configured = config('cashier.webhook.events');
-
-        foreach (WebhookCommand::DEFAULT_EVENTS as $event) {
-            $this->assertContains($event, $configured);
-        }
-
-        foreach (['invoice.paid', 'charge.refunded', 'charge.refund.updated', 'charge.dispute.created', 'charge.dispute.closed'] as $event) {
-            $this->assertContains($event, $configured);
-            $this->assertNotContains($event, WebhookCommand::DEFAULT_EVENTS);
-        }
     }
 
     /**

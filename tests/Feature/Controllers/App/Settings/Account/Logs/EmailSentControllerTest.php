@@ -8,6 +8,7 @@ use App\Models\Account;
 use App\Models\EmailSent;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -40,49 +41,6 @@ class EmailSentControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_shows_a_blank_state_when_nothing_was_ever_sent(): void
-    {
-        $user = User::factory()->create();
-
-        $response = $this->actingAs($user)->get(route('settings.emailsSent.index'));
-
-        $response->assertStatus(200);
-        $response->assertSee('No email has been sent yet', escape: false);
-        $response->assertSee('with whether they arrived', escape: false);
-    }
-
-    #[Test]
-    public function it_offers_to_load_more_when_a_page_is_not_enough(): void
-    {
-        $user = User::factory()->create();
-        EmailSent::factory()->count(11)->create([
-            'account_id' => $user->account_id,
-            'user_id' => $user->id,
-        ]);
-
-        $response = $this->actingAs($user)->get(route('settings.emailsSent.index'));
-
-        $response->assertStatus(200);
-        $response->assertSee('Load more', escape: false);
-        $response->assertSee('id="pagination"', escape: false);
-    }
-
-    #[Test]
-    public function it_stops_offering_to_load_more_on_the_last_page(): void
-    {
-        $user = User::factory()->create();
-        EmailSent::factory()->count(10)->create([
-            'account_id' => $user->account_id,
-            'user_id' => $user->id,
-        ]);
-
-        $response = $this->actingAs($user)->get(route('settings.emailsSent.index'));
-
-        $response->assertStatus(200);
-        $response->assertDontSee('Load more', escape: false);
-    }
-
-    #[Test]
     public function it_badges_an_email_that_is_still_on_its_way(): void
     {
         $user = User::factory()->create();
@@ -100,10 +58,11 @@ class EmailSentControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_badges_an_email_that_arrived(): void
+    #[DataProvider('deliveryOutcomes')]
+    public function it_badges_an_email_by_what_the_provider_reported(string $state, string $badge): void
     {
         $user = User::factory()->create();
-        EmailSent::factory()->delivered()->create([
+        EmailSent::factory()->{$state}()->create([
             'account_id' => $user->account_id,
             'user_id' => $user->id,
         ]);
@@ -111,71 +70,17 @@ class EmailSentControllerTest extends TestCase
         $response = $this->actingAs($user)->get(route('settings.emailsSent.index'));
 
         $response->assertStatus(200);
-        $response->assertSee('Delivered', escape: false);
+        $response->assertSee($badge, escape: false);
         $response->assertDontSee('On its way', escape: false);
     }
 
-    #[Test]
-    public function it_badges_an_email_that_came_back(): void
+    /** @return array<string, array{string, string}> */
+    public static function deliveryOutcomes(): array
     {
-        $user = User::factory()->create();
-        EmailSent::factory()->bounced()->create([
-            'account_id' => $user->account_id,
-            'user_id' => $user->id,
-        ]);
-
-        $response = $this->actingAs($user)->get(route('settings.emailsSent.index'));
-
-        $response->assertStatus(200);
-        $response->assertSee('Bounced', escape: false);
-        $response->assertDontSee('On its way', escape: false);
-    }
-
-    #[Test]
-    public function it_badges_an_email_that_came_back_after_it_was_reported_delivered(): void
-    {
-        $user = User::factory()->create();
-        EmailSent::factory()->delivered()->bounced()->create([
-            'account_id' => $user->account_id,
-            'user_id' => $user->id,
-        ]);
-
-        $response = $this->actingAs($user)->get(route('settings.emailsSent.index'));
-
-        $response->assertStatus(200);
-        $response->assertSee('Bounced', escape: false);
-        $response->assertDontSee('Delivered', escape: false);
-    }
-
-    #[Test]
-    public function it_badges_an_email_the_recipient_marked_as_spam(): void
-    {
-        $user = User::factory()->create();
-        EmailSent::factory()->complained()->create([
-            'account_id' => $user->account_id,
-            'user_id' => $user->id,
-        ]);
-
-        $response = $this->actingAs($user)->get(route('settings.emailsSent.index'));
-
-        $response->assertStatus(200);
-        $response->assertSee('Marked as spam', escape: false);
-        $response->assertDontSee('On its way', escape: false);
-    }
-
-    #[Test]
-    public function it_badges_a_complaint_over_a_bounce_and_a_delivery(): void
-    {
-        $user = User::factory()->create();
-        EmailSent::factory()->delivered()->bounced()->complained()->create([
-            'account_id' => $user->account_id,
-            'user_id' => $user->id,
-        ]);
-
-        $response = $this->actingAs($user)->get(route('settings.emailsSent.index'));
-
-        $response->assertStatus(200);
-        $response->assertSee('Marked as spam', escape: false);
-        $response->assertDontSee('>Bounced<', escape: false);
+        return [
+            'delivered' => ['delivered', 'Delivered'],
+            'bounced' => ['bounced', 'Bounced'],
+            'complained' => ['complained', 'Marked as spam'],
+        ];
     }
 }

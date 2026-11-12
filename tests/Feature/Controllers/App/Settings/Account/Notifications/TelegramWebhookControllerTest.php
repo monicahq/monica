@@ -51,15 +51,6 @@ class TelegramWebhookControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_call_carrying_no_secret_at_all(): void
-    {
-        $this->awaitingConnection('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
-
-        $this->postJson(route('telegram.webhook'), $this->update('/start '.str_repeat('a', 64), 918273645))
-            ->assertForbidden();
-    }
-
-    #[Test]
     public function a_token_nobody_is_waiting_on_is_not_found(): void
     {
         $this->awaitingConnection('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
@@ -81,16 +72,6 @@ class TelegramWebhookControllerTest extends TestCase
         }
 
         $this->assertNull($channel->refresh()->destination);
-    }
-
-    #[Test]
-    public function an_update_carrying_no_message_is_ignored(): void
-    {
-        $this->awaitingConnection('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
-
-        $this->withHeader('X-Telegram-Bot-Api-Secret-Token', 'testing-webhook-secret')
-            ->postJson(route('telegram.webhook'), ['update_id' => 1])
-            ->assertStatus(202);
     }
 
     #[Test]

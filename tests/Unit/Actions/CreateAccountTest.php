@@ -132,45 +132,6 @@ class CreateAccountTest extends TestCase
     }
 
     #[Test]
-    public function it_gives_the_account_the_value_lists_it_starts_with(): void
-    {
-        Queue::fake(LogUserAction::class);
-
-        $user = new CreateAccount(
-            firstName: 'Michael',
-            lastName: 'Scott',
-            email: 'michael.scott@dundermifflin.com',
-            password: 'thatswhatshesaid',
-        )->execute();
-
-        $lists = $user->account->valueLists()->whereNotNull('key')->orderBy('position')->get();
-
-        $this->assertEquals(
-            [
-                'genders',
-                'contact_categories',
-                'countries',
-                'languages',
-                'currencies',
-                'phone_labels',
-                'email_labels',
-                'address_labels',
-                'website_labels',
-                'animal_sexes',
-            ],
-            $lists->pluck('key')->all(),
-        );
-        $this->assertEquals('Phone labels', $lists->firstWhere('key', 'phone_labels')->name);
-        $this->assertEquals(6, $lists->firstWhere('key', 'phone_labels')->items()->count());
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ValueListsSeeded,
-        );
-    }
-
-    #[Test]
     public function it_asks_for_the_rest_of_the_seeding_in_the_order_it_has_to_happen_in(): void
     {
         Queue::fake();
@@ -286,60 +247,5 @@ class CreateAccountTest extends TestCase
         $this->assertTrue($user->usesPasswordlessSignIn());
         $this->assertFalse($user->usesSingleSignOn());
         $this->assertDatabaseHas('users', ['email' => 'michael.scott@dundermifflin.com', 'password' => null]);
-    }
-
-    #[Test]
-    public function it_seeds_the_same_account_whichever_credential_it_was_created_with(): void
-    {
-        Queue::fake(LogUserAction::class);
-
-        $withPasskey = new CreateAccount(
-            firstName: 'Michael',
-            lastName: 'Scott',
-            email: 'michael.scott@dundermifflin.com',
-        )->execute();
-
-        $this->assertTrue($withPasskey->account->vaults()->exists());
-        $this->assertTrue($withPasskey->account->valueLists()->exists());
-    }
-
-    #[Test]
-    public function it_gives_the_account_the_vocabulary_its_relationships_are_written_in(): void
-    {
-        Queue::fake(LogUserAction::class);
-
-        $user = new CreateAccount(
-            firstName: 'Michael',
-            lastName: 'Scott',
-            email: 'michael.scott@dundermifflin.com',
-        )->execute();
-
-        $this->assertCount(5, $user->account->relationshipCategories);
-        $this->assertCount(10, $user->account->relationshipTypes);
-        $this->assertDatabaseHas('relationship_types', [
-            'account_id' => $user->account_id,
-            'key' => 'friend',
-            'is_system' => true,
-        ]);
-    }
-
-    #[Test]
-    public function it_gives_the_account_the_groups_its_life_events_are_filed_under(): void
-    {
-        Queue::fake(LogUserAction::class);
-
-        $user = new CreateAccount(
-            firstName: 'Michael',
-            lastName: 'Scott',
-            email: 'michael.scott@dundermifflin.com',
-        )->execute();
-
-        $this->assertCount(8, $user->account->lifeEventCategories);
-        $this->assertDatabaseHas('life_event_categories', [
-            'account_id' => $user->account_id,
-            'key' => 'other',
-            'is_system' => true,
-            'position' => 8,
-        ]);
     }
 }

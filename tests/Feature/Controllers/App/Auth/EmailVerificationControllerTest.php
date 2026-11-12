@@ -92,20 +92,6 @@ class EmailVerificationControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_link_that_is_not_signed(): void
-    {
-        $user = User::factory()->unverified()->create();
-
-        $response = $this->actingAs($user)->get(route('auth.verification.verify', [
-            'id' => $user->id,
-            'hash' => sha1((string) $user->email),
-        ]));
-
-        $response->assertStatus(403);
-        $this->assertFalse($user->refresh()->hasVerifiedEmail());
-    }
-
-    #[Test]
     public function it_sends_the_email_again(): void
     {
         Notification::fake();

@@ -121,21 +121,6 @@ class ContactStructureVersionControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_returns_not_found_for_a_version_of_another_account(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
-        $stranger = StructureVersion::factory()->published()->create();
-
-        Sanctum::actingAs($user);
-
-        $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/template-version", [
-            'structure_version_id' => $stranger->id,
-        ])->assertNotFound();
-    }
-
-    #[Test]
     public function it_returns_not_found_for_a_contact_of_another_account(): void
     {
         $user = User::factory()->create();

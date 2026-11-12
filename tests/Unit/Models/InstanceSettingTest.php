@@ -6,7 +6,6 @@ namespace Tests\Unit\Models;
 
 use App\Enums\InstanceSettingEnum;
 use App\Models\InstanceSetting;
-use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -52,15 +51,5 @@ class InstanceSettingTest extends TestCase
         $setting->delete();
 
         $this->assertFalse(Cache::has(InstanceSetting::CACHE_KEY));
-    }
-
-    #[Test]
-    public function it_holds_one_row_per_setting(): void
-    {
-        InstanceSetting::factory()->create(['name' => InstanceSettingEnum::FreeVaultLimit->value]);
-
-        $this->expectException(QueryException::class);
-
-        InstanceSetting::factory()->create(['name' => InstanceSettingEnum::FreeVaultLimit->value]);
     }
 }

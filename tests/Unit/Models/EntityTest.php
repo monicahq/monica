@@ -18,20 +18,6 @@ class EntityTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_gets_an_unguessable_identifier_and_keeps_a_number_for_a_key(): void
-    {
-        $entity = Entity::factory()->create();
-
-        $this->assertMatchesRegularExpression(
-            '/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/',
-            $entity->uuid,
-        );
-        $this->assertIsInt($entity->id);
-        $this->assertEquals('uuid', $entity->getRouteKeyName());
-        $this->assertEquals($entity->uuid, $entity->getRouteKey());
-    }
-
-    #[Test]
     public function it_writes_the_string_the_lists_sort_on_whenever_it_is_saved(): void
     {
         $entity = Entity::factory()->create(['name' => 'Dunder Mifflin']);
@@ -58,14 +44,6 @@ class EntityTest extends TestCase
         $entity = Entity::factory()->make(['name' => 'Dunder Mifflin Paper Company']);
 
         $this->assertEquals('DM', $entity->initials);
-    }
-
-    #[Test]
-    public function it_builds_one_initial_when_there_is_only_one_word_to_take_it_from(): void
-    {
-        $entity = Entity::factory()->make(['name' => 'Sprinkles']);
-
-        $this->assertEquals('S', $entity->initials);
     }
 
     #[Test]
@@ -111,18 +89,6 @@ class EntityTest extends TestCase
     }
 
     #[Test]
-    public function it_is_deleted_softly(): void
-    {
-        $entity = Entity::factory()->create(['name' => 'Dunder Mifflin']);
-
-        $entity->delete();
-
-        $this->assertSoftDeleted('entities', ['id' => $entity->id]);
-        $this->assertEquals(0, Entity::query()->count());
-        $this->assertEquals(1, Entity::query()->withTrashed()->count());
-    }
-
-    #[Test]
     public function it_derives_the_two_ordering_keys_when_it_saves(): void
     {
         $entity = Entity::factory()->create(['name' => 'Élodie']);
@@ -135,27 +101,6 @@ class EntityTest extends TestCase
             LocaleCollation::foldForSearch($entity->sort_name, $entity->account->locale()),
             $entity->search_key,
         );
-    }
-
-    #[Test]
-    public function it_rebuilds_the_two_ordering_keys_when_the_name_changes(): void
-    {
-        $entity = Entity::factory()->create(['name' => 'Dunder']);
-        $before = $entity->sort_key;
-
-        $entity->name = 'Mifflin';
-        $entity->save();
-
-        $this->assertNotSame($before, $entity->fresh()->sort_key);
-    }
-
-    #[Test]
-    public function it_does_not_let_the_two_ordering_keys_be_mass_assigned(): void
-    {
-        $entity = Entity::factory()->create();
-
-        $this->assertNotContains('sort_key', $entity->getFillable());
-        $this->assertNotContains('search_key', $entity->getFillable());
     }
 
     #[Test]

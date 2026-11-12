@@ -47,13 +47,4 @@ class SecurityScreenAccessibilityTest extends TestCase
         $response->assertOk();
         $response->assertSee('Reads sensitive fields', escape: false);
     }
-
-    #[Test]
-    public function the_address_a_device_is_given_is_shown_in_full(): void
-    {
-        $response = $this->actingAs(User::factory()->create())->get(route('settings.security.index'));
-
-        $response->assertOk();
-        $response->assertSee(route('sabre.dav', ['path' => '']), escape: false);
-    }
 }

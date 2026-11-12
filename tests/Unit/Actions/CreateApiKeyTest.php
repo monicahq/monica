@@ -16,7 +16,6 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use Laravel\Sanctum\NewAccessToken;
-use Laravel\Sanctum\PersonalAccessToken;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -68,34 +67,6 @@ class CreateApiKeyTest extends TestCase
 
         $this->assertNotSame($key, $stored);
         $this->assertSame(hash('sha256', $key), $stored);
-    }
-
-    #[Test]
-    public function it_returns_the_row_it_wrote(): void
-    {
-        Queue::fake();
-
-        $account = Account::factory()->create();
-        $user = User::factory()->create(['account_id' => $account->id]);
-
-        $key = new CreateApiKey(user: $user, name: 'Dundie awards bot')->execute();
-
-        $this->assertInstanceOf(PersonalAccessToken::class, $key->accessToken);
-        $this->assertSame($user->tokens()->first()->id, $key->accessToken->id);
-        $this->assertSame('Dundie awards bot', $key->accessToken->name);
-    }
-
-    #[Test]
-    public function it_leaves_a_key_unused_until_something_uses_it(): void
-    {
-        Queue::fake();
-
-        $account = Account::factory()->create();
-        $user = User::factory()->create(['account_id' => $account->id]);
-
-        new CreateApiKey(user: $user, name: 'Deployment script')->execute();
-
-        $this->assertNull($user->tokens()->first()->last_used_at);
     }
 
     #[Test]

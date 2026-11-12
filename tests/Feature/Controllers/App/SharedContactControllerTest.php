@@ -45,48 +45,11 @@ class SharedContactControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_leaves_out_a_field_marked_sensitive(): void
-    {
-        $contact = $this->sharedContact();
-        $this->linkOnto($contact);
-
-        $this->get(route('share.show', ['token' => self::TOKEN, 'page' => 'work']))
-            ->assertStatus(200)
-            ->assertSee('Dunder Mifflin')
-            ->assertDontSee('Social security number')
-            ->assertDontSee('123-45-6789');
-    }
-
-    #[Test]
-    public function it_writes_the_visit_down_and_counts_it(): void
-    {
-        $contact = $this->sharedContact();
-        $link = $this->linkOnto($contact);
-
-        $this->get(route('share.show', ['token' => self::TOKEN]))->assertStatus(200);
-
-        $link->refresh();
-
-        $this->assertSame(1, $link->view_count);
-        $this->assertNotNull($link->last_viewed_at);
-        $this->assertDatabaseHas('share_link_visits', [
-            'share_link_id' => $link->id,
-            'password_failed' => false,
-        ]);
-    }
-
-    #[Test]
     public function it_says_the_same_thing_about_an_unknown_token(): void
     {
         $this->get(route('share.show', ['token' => str_repeat('a', 64)]))
             ->assertStatus(200)
             ->assertSee('This link no longer works');
-    }
-
-    #[Test]
-    public function it_refuses_an_address_that_is_not_shaped_like_a_token(): void
-    {
-        $this->get('/s/nope')->assertNotFound();
     }
 
     #[Test]

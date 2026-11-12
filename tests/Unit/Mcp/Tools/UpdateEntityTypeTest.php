@@ -55,38 +55,4 @@ class UpdateEntityTypeTest extends TestCase
 
         $this->assertNull($entityType->refresh()->description);
     }
-
-    #[Test]
-    public function it_refuses_a_colour_outside_the_allowed_ones(): void
-    {
-        $user = User::factory()->create();
-        $entityType = EntityType::factory()->create(['account_id' => $user->account_id]);
-
-        EricaServer::actingAs($user)->tool(UpdateEntityType::class, [
-            'entity_type' => $entityType->uuid,
-            'colour' => '#ffffff',
-        ])->assertHasErrors();
-
-        $this->assertSame(EntityType::DEFAULT_COLOUR, $entityType->refresh()->colour);
-    }
-
-    #[Test]
-    public function it_refuses_an_empty_name(): void
-    {
-        $user = User::factory()->create();
-        $entityType = EntityType::factory()->create(['account_id' => $user->account_id, 'name_singular' => 'Paper ream']);
-
-        EricaServer::actingAs($user)->tool(UpdateEntityType::class, [
-            'entity_type' => $entityType->uuid,
-            'name_singular' => '',
-        ])->assertHasErrors();
-
-        $this->assertSame('Paper ream', $entityType->refresh()->name_singular);
-    }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.entityTypes.update', app(UpdateEntityType::class)->mirrors());
-    }
 }

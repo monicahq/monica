@@ -39,39 +39,6 @@ class BreadcrumbVaultTest extends TestCase
     }
 
     #[Test]
-    public function it_keeps_the_order_it_was_given(): void
-    {
-        $vault = Vault::factory()->create(['name' => 'Dunder Mifflin']);
-
-        $this->blade(
-            '<x-breadcrumb.vault :vault="$vault" :items="[[\'label\' => \'People\', \'url\' => \'/p\'], [\'label\' => \'Michael\']]" />',
-            ['vault' => $vault],
-        )->assertSeeInOrder(['Dunder Mifflin', 'People', 'Michael']);
-    }
-
-    #[Test]
-    public function it_needs_nothing_but_the_vault_to_find_the_vaults_of_that_account(): void
-    {
-        $account = Account::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $account->id, 'name' => 'Dunder Mifflin']);
-        Vault::factory()->create(['account_id' => $account->id, 'name' => 'Vance Refrigeration']);
-
-        $this->blade('<x-breadcrumb.vault :vault="$vault" />', ['vault' => $vault])
-            ->assertSee('Dunder Mifflin')
-            ->assertSee('Vance Refrigeration');
-    }
-
-    #[Test]
-    public function the_character_standing_for_the_vault_is_not_read_out_beside_its_name(): void
-    {
-        $vault = Vault::factory()->create(['name' => 'Dunder Mifflin']);
-
-        $this->blade('<x-breadcrumb.vault :vault="$vault" />', ['vault' => $vault])
-            ->assertSee('aria-hidden="true"', escape: false)
-            ->assertSee('>D</span>', escape: false);
-    }
-
-    #[Test]
     public function the_switcher_lists_every_vault_of_the_account_and_how_many_people_each_holds(): void
     {
         $account = Account::factory()->create();

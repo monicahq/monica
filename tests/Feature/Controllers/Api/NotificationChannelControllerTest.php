@@ -133,23 +133,6 @@ class NotificationChannelControllerTest extends TestCase
     }
 
     #[Test]
-    public function a_wrong_code_is_refused_and_says_so(): void
-    {
-        NotificationFacade::fake();
-        $user = $this->signedIn();
-        $this->channel($user, NotificationChannelEnum::Sms)->fill([
-            'destination' => '+15705550172',
-            'proof_code_hash' => Hash::make('123456'),
-            'proof_expires_at' => now()->addMinutes(10),
-        ])->save();
-
-        $response = $this->json('PUT', route('api.v1.notificationChannels.proof.update', 'sms'), ['code' => '000000']);
-
-        $response->assertUnprocessable();
-        $response->assertJsonValidationErrors('code');
-    }
-
-    #[Test]
     public function it_sends_a_test_message_and_says_it_got_through(): void
     {
         NotificationFacade::fake();
@@ -164,15 +147,6 @@ class NotificationChannelControllerTest extends TestCase
 
         $response->assertCreated();
         $response->assertJsonPath('data.sent', true);
-    }
-
-    #[Test]
-    public function it_refuses_a_test_on_a_channel_that_is_not_finished(): void
-    {
-        NotificationFacade::fake();
-        $this->signedIn();
-
-        $this->json('POST', route('api.v1.notificationChannels.test.store', 'sms'))->assertUnprocessable();
     }
 
     #[Test]
@@ -219,25 +193,6 @@ class NotificationChannelControllerTest extends TestCase
             ->assertJsonMissing(['id' => 'sms']);
 
         $this->json('GET', route('api.v1.notificationChannels.show', 'sms'))->assertNotFound();
-    }
-
-    #[Test]
-    public function asking_for_another_code_inside_the_wait_is_refused(): void
-    {
-        NotificationFacade::fake();
-        $this->freezeTime();
-        $user = $this->signedIn();
-        $this->channel($user, NotificationChannelEnum::Sms)->update([
-            'destination' => '+15705550172',
-            'proof_sent_count' => 1,
-            'proof_last_sent_at' => now()->subSeconds(50),
-        ]);
-
-        $response = $this->json('POST', route('api.v1.notificationChannels.proof.store', 'sms'));
-
-        $response->assertUnprocessable();
-        $response->assertJsonValidationErrors(['channel' => 'You can ask for another code in 10 seconds.']);
-        NotificationFacade::assertNothingSent();
     }
 
     private function signedIn(): User

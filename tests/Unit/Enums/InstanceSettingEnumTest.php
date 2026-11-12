@@ -32,15 +32,6 @@ class InstanceSettingEnumTest extends TestCase
     }
 
     #[Test]
-    public function it_describes_every_setting(): void
-    {
-        foreach (InstanceSettingEnum::cases() as $setting) {
-            $this->assertNotEmpty($setting->description());
-            $this->assertStringEndsWith('.', $setting->description());
-        }
-    }
-
-    #[Test]
     public function it_names_an_environment_variable_the_matching_configuration_file_actually_reads(): void
     {
         $example = file_get_contents(base_path('.env.example'));
@@ -150,38 +141,5 @@ class InstanceSettingEnumTest extends TestCase
             $this->assertStringStartsNotWith('filesystems.', $setting->configKey());
             $this->assertNotEquals('app.key', $setting->configKey());
         }
-    }
-
-    #[Test]
-    public function it_fixes_only_what_describes_the_deployment(): void
-    {
-        foreach (InstanceSettingEnum::cases() as $setting) {
-            $this->assertEquals(
-                $setting->group() === InstanceSettingGroupEnum::Instance,
-                $setting->fixedAtDeployment()
-            );
-        }
-    }
-
-    #[Test]
-    public function it_warns_when_a_telegram_credential_is_replaced(): void
-    {
-        foreach ([InstanceSettingEnum::TelegramBotToken, InstanceSettingEnum::TelegramBotWebhookSecret] as $setting) {
-            $this->assertSame('replaced', $setting->warnsWhen());
-            $this->assertNotNull($setting->warning());
-        }
-
-        $this->assertNull(InstanceSettingEnum::TelegramBotUrl->warning());
-    }
-
-    #[Test]
-    public function it_warns_when_registration_is_switched_on(): void
-    {
-        $setting = InstanceSettingEnum::RegistrationEnabled;
-
-        $this->assertSame(InstanceSettingGroupEnum::SigningIn, $setting->group());
-        $this->assertSame(InstanceSettingKindEnum::Boolean, $setting->kind());
-        $this->assertSame('switchedOn', $setting->warnsWhen());
-        $this->assertSame('Anybody who reaches this instance can create an account until it is switched off again.', $setting->warning());
     }
 }

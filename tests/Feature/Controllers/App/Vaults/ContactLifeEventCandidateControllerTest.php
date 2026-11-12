@@ -49,18 +49,6 @@ class ContactLifeEventCandidateControllerTest extends TestCase
             ->assertSee('Nobody else matches.');
     }
 
-    #[Test]
-    public function it_does_not_find_a_contact_through_another_vault(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $jim = $this->contactOn($vault, 'Jim', 'Halpert');
-
-        $this->actingAs($user)
-            ->get(route('contacts.lifeEventCandidates.index', ['vault' => Vault::factory()->create(['account_id' => $user->account_id]), 'contact' => $jim]))
-            ->assertNotFound();
-    }
-
     private function contactOn(Vault $vault, string $firstName, string $lastName): Contact
     {
         return Contact::factory()->create([

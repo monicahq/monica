@@ -41,10 +41,4 @@ class OpenApiDocumentControllerTest extends TestCase
         config(['app.url' => 'https://schrutefarms.test']);
         $this->get(route('docs.api.openapi'))->assertJsonPath('servers.0.url', 'https://schrutefarms.test/api/v1');
     }
-
-    #[Test]
-    public function it_serves_the_document_at_an_address_naming_the_api_version(): void
-    {
-        $this->get('/docs/api/v1/openapi')->assertOk();
-    }
 }

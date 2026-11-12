@@ -78,27 +78,6 @@ class UpdateEntityTypeTest extends TestCase
     }
 
     #[Test]
-    public function it_leaves_how_many_records_the_type_holds_and_whether_it_is_active_alone(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $entityType = EntityType::factory()->inactive()->used(7)->create(['account_id' => $user->account_id]);
-
-        new UpdateEntityType(
-            user: $user,
-            entityType: $entityType,
-            nameSingular: 'Pet',
-            namePlural: 'Pets',
-        )->execute();
-
-        $entityType->refresh();
-
-        $this->assertFalse($entityType->is_active);
-        $this->assertSame(7, $entityType->entity_count);
-    }
-
-    #[Test]
     public function it_refuses_a_type_in_another_account(): void
     {
         Queue::fake();

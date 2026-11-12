@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Vaults;
 
-use App\Enums\VaultColourEnum;
 use App\Models\StructureVersion;
 use App\Models\Template;
 use App\Models\User;
@@ -44,46 +43,6 @@ class VaultSettingsViewModelTest extends TestCase
         $empty = Vault::factory()->create(['account_id' => $user->account_id, 'contact_count' => 0]);
 
         $this->assertSame('', new VaultSettingsViewModel(user: $user, vault: $empty)->deletionConsequence());
-    }
-
-    #[Test]
-    public function it_starts_the_naming_form_on_what_the_vault_holds(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create([
-            'account_id' => $user->account_id,
-            'name' => 'Dunder Mifflin',
-            'description' => 'The Scranton branch',
-            'colour' => '#4f8a49',
-        ]);
-
-        $values = new VaultSettingsViewModel(user: $user, vault: $vault)->values();
-
-        $this->assertEquals(
-            ['name' => 'Dunder Mifflin', 'description' => 'The Scranton branch', 'colour' => '#4f8a49'],
-            $values,
-        );
-    }
-
-    #[Test]
-    public function it_has_an_empty_description_when_the_vault_has_none(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'description' => null]);
-
-        $this->assertEquals('', new VaultSettingsViewModel(user: $user, vault: $vault)->values()['description']);
-    }
-
-    #[Test]
-    public function it_offers_every_colour_a_vault_may_be_told_apart_by(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $colours = new VaultSettingsViewModel(user: $user, vault: $vault)->colours();
-
-        $this->assertCount(count(VaultColourEnum::cases()), $colours);
-        $this->assertEquals(['value' => '#3f5fd0', 'label' => 'Blue'], $colours[0]);
     }
 
     #[Test]

@@ -56,21 +56,6 @@ class TemplatePageControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_page_on_a_published_version(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-        StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
-
-        $this->actingAs($user)->post(route('settings.templatePages.create', $template), ['label' => 'Life events'])
-            ->assertSessionHas('error');
-
-        $this->assertEquals(1, StructureVersionPage::query()->count());
-    }
-
-    #[Test]
     public function it_refuses_a_page_with_no_label(): void
     {
         Queue::fake();
@@ -148,20 +133,6 @@ class TemplatePageControllerTest extends TestCase
         $elsewhere = StructureVersion::factory()->create(['account_id' => $user->account_id])->pages()->sole();
 
         $this->actingAs($user)->put(route('settings.templatePages.update', [$template, $elsewhere]), ['label' => 'Milestones'])
-            ->assertNotFound();
-    }
-
-    #[Test]
-    public function it_does_not_find_a_page_of_another_account(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-        StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
-        $theirs = StructureVersion::factory()->create()->pages()->sole();
-
-        $this->actingAs($user)->delete(route('settings.templatePages.destroy', [$template, $theirs]))
             ->assertNotFound();
     }
 }

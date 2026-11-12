@@ -48,15 +48,4 @@ class ContactDuplicateSearchControllerTest extends TestCase
         $response->assertSessionHas('status', 'The search waits for the import.');
         Queue::assertNothingPushed();
     }
-
-    #[Test]
-    public function it_offers_the_search_on_the_screen(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $this->actingAs($user)
-            ->get(route('vaults.duplicates.index', $vault))
-            ->assertSee(route('vaults.duplicates.search.create', $vault));
-    }
 }

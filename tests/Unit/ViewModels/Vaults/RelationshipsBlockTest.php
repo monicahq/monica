@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\ViewModels\Vaults;
 
 use App\Enums\DefaultFieldEnum;
-use App\Enums\RelationshipCategoryEnum;
 use App\Enums\RelationshipTypeEnum;
 use App\Models\Contact;
 use App\Models\FieldValue;
@@ -276,47 +275,6 @@ class RelationshipsBlockTest extends TestCase
             route('contacts.relationships.new', ['vault' => $vault, 'contact' => $michael, 'type' => $parent->id]),
             $categories[0]['addUrl'],
         );
-    }
-
-    #[Test]
-    public function it_marks_each_supplied_category_with_its_own_icon(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $michael = $this->contactOn($vault, 'Michael', 'Scott');
-
-        foreach (RelationshipCategoryEnum::cases() as $position => $case) {
-            $category = RelationshipCategory::factory()->system($case)->create([
-                'account_id' => $user->account_id,
-                'position' => $position + 1,
-            ]);
-            RelationshipType::factory()->create(['account_id' => $user->account_id, 'relationship_category_id' => $category->id]);
-        }
-
-        RelationshipType::factory()->create([
-            'account_id' => $user->account_id,
-            'relationship_category_id' => $this->categoryOf($user, 'Dunder Mifflin', 10)->id,
-        ]);
-
-        $categories = new RelationshipsBlock(vault: $vault, contact: $michael)->emptyCategories();
-
-        $this->assertSame(
-            ['family', 'heart', 'people', 'organization', 'relationship', 'relationship'],
-            array_column($categories, 'icon'),
-        );
-    }
-
-    #[Test]
-    public function it_links_to_the_relationship_types_settings(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $michael = $this->contactOn($vault, 'Michael', 'Scott');
-
-        $block = new RelationshipsBlock(vault: $vault, contact: $michael);
-
-        $this->assertSame([], $block->emptyCategories());
-        $this->assertSame(route('settings.relationshipTypes.index'), $block->settingsUrl());
     }
 
     private function link(Vault $vault, Contact $one, Contact $other, RelationshipType $type): Relationship

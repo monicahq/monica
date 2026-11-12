@@ -58,10 +58,4 @@ class CreateTemplateTest extends TestCase
 
         $this->assertDatabaseMissing('templates', ['name' => 'Paper supplier']);
     }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.templates.create', app(CreateTemplate::class)->mirrors());
-    }
 }

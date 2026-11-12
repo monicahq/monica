@@ -32,18 +32,6 @@ class RemoveOrphanedInstanceSettingTest extends TestCase
         )->execute();
 
         $this->assertModelMissing($row);
-    }
-
-    #[Test]
-    public function it_records_the_removal(): void
-    {
-        Queue::fake();
-        InstanceSetting::factory()->create(['name' => 'a_setting_that_was_dropped']);
-
-        new RemoveOrphanedInstanceSetting(
-            administrator: User::factory()->create(),
-            name: 'a_setting_that_was_dropped',
-        )->execute();
 
         Queue::assertPushedOn('low', LogAdministratorAction::class, function (LogAdministratorAction $job): bool {
             return $job->action === AdministratorActionEnum::InstanceSettingReverted

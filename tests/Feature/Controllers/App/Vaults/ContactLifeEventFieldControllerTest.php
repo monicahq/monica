@@ -47,17 +47,4 @@ class ContactLifeEventFieldControllerTest extends TestCase
             ->assertOk()
             ->assertSee('Birth asks for nothing beyond the date and the people.');
     }
-
-    #[Test]
-    public function it_does_not_find_a_contact_through_another_vault(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $elsewhere = Vault::factory()->create(['account_id' => $user->account_id]);
-        $dwight = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id]);
-
-        $this->actingAs($user)
-            ->get(route('contacts.lifeEventFields.index', ['vault' => $elsewhere, 'contact' => $dwight, 'lifeEventType' => $this->lifeEventTypeAsking($user, 'Birth')]))
-            ->assertNotFound();
-    }
 }

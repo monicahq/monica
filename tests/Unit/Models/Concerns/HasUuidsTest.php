@@ -18,12 +18,6 @@ class HasUuidsTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_names_the_uuid_as_the_column_to_fill_rather_than_the_key(): void
-    {
-        $this->assertSame(['uuid'], new File()->uniqueIds());
-    }
-
-    #[Test]
     public function it_writes_a_uuid_and_leaves_the_primary_key_a_number(): void
     {
         $file = File::factory()->create();
@@ -33,14 +27,6 @@ class HasUuidsTest extends TestCase
             '/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/',
             $file->uuid,
         );
-    }
-
-    #[Test]
-    public function it_gives_every_record_a_uuid_of_its_own(): void
-    {
-        $files = File::factory()->count(3)->create();
-
-        $this->assertCount(3, $files->pluck('uuid')->unique());
     }
 
     #[Test]

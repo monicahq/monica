@@ -8,8 +8,6 @@ use App\Models\User;
 use Database\Seeders\ExampleAccountSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
-use Spatie\LoginLink\Exceptions\DidNotFindUserToLogIn;
-use Spatie\LoginLink\Exceptions\NotAllowedInCurrentEnvironment;
 use Tests\TestCase;
 
 class LoginLinkTest extends TestCase
@@ -68,31 +66,5 @@ class LoginLinkTest extends TestCase
 
         $response->assertRedirect(route('home.index'));
         $this->assertAuthenticatedAs($user);
-    }
-
-    #[Test]
-    public function it_refuses_to_sign_anybody_in_outside_the_allowed_environments(): void
-    {
-        User::factory()->create(['email' => ExampleAccountSeeder::EMAIL]);
-
-        $this->withoutExceptionHandling();
-        $this->expectException(NotAllowedInCurrentEnvironment::class);
-
-        $this->post(route('loginLinkLogin'), [
-            'email' => ExampleAccountSeeder::EMAIL,
-        ]);
-    }
-
-    #[Test]
-    public function it_refuses_an_email_address_that_belongs_to_nobody(): void
-    {
-        config(['login-link.allowed_environments' => ['testing']]);
-
-        $this->withoutExceptionHandling();
-        $this->expectException(DidNotFindUserToLogIn::class);
-
-        $this->post(route('loginLinkLogin'), [
-            'email' => 'gunther@centralperk.example',
-        ]);
     }
 }

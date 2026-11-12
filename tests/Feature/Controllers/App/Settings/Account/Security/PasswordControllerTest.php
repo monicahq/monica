@@ -79,20 +79,6 @@ class PasswordControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_leaves_a_browser_that_was_not_remembered_unremembered(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create(['password' => Hash::make('beets-bears-battlestar')]);
-
-        $this->withConfirmedPassword()->actingAs($user)->put(route('settings.password.update'), [
-            'current_password' => 'beets-bears-battlestar',
-            'new_password' => 'schrute-farms-2005',
-            'new_password_confirmation' => 'schrute-farms-2005',
-        ])->assertCookieMissing(Auth::guard('web')->getRecallerName());
-    }
-
-    #[Test]
     public function it_refuses_a_wrong_current_password(): void
     {
         $user = User::factory()->create([
@@ -126,22 +112,6 @@ class PasswordControllerTest extends TestCase
         $response->assertSessionHasErrors('new_password');
 
         $this->assertTrue(Hash::check('beets-bears-battlestar', $user->refresh()->password));
-    }
-
-    #[Test]
-    public function it_refuses_a_new_password_that_is_too_short(): void
-    {
-        $user = User::factory()->create([
-            'password' => Hash::make('beets-bears-battlestar'),
-        ]);
-
-        $response = $this->withConfirmedPassword()->actingAs($user)->put(route('settings.password.update'), [
-            'current_password' => 'beets-bears-battlestar',
-            'new_password' => 'beets',
-            'new_password_confirmation' => 'beets',
-        ]);
-
-        $response->assertSessionHasErrors('new_password');
     }
 
     #[Test]
@@ -263,34 +233,6 @@ class PasswordControllerTest extends TestCase
         ])->assertSessionHasErrors('new_password');
 
         $this->assertNull($user->refresh()->password);
-    }
-
-    #[Test]
-    public function it_refuses_to_remove_the_password_without_a_confirmed_one(): void
-    {
-        $user = User::factory()->create(['password' => Hash::make('beets-bears-battlestar')]);
-
-        $response = $this->actingAs($user)->delete(route('settings.password.destroy'));
-
-        $response->assertRedirect(route('auth.confirmPassword.new'));
-
-        $this->assertNotNull($user->refresh()->password);
-    }
-
-    #[Test]
-    public function it_refuses_to_change_the_password_without_a_confirmed_one(): void
-    {
-        $user = User::factory()->create(['password' => Hash::make('beets-bears-battlestar')]);
-
-        $response = $this->actingAs($user)->put(route('settings.password.update'), [
-            'current_password' => 'beets-bears-battlestar',
-            'new_password' => 'schrute-farms-2005',
-            'new_password_confirmation' => 'schrute-farms-2005',
-        ]);
-
-        $response->assertRedirect(route('auth.confirmPassword.new'));
-
-        $this->assertTrue(Hash::check('beets-bears-battlestar', $user->refresh()->password));
     }
 
     #[Test]

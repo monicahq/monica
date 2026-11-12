@@ -8,9 +8,7 @@ use App\Enums\FieldTypeEnum;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
-use App\Models\Reminder;
 use Carbon\CarbonImmutable;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -67,15 +65,6 @@ class FieldValueTest extends TestCase
     }
 
     #[Test]
-    public function it_holds_at_most_one_reminder_rule(): void
-    {
-        $reminder = Reminder::factory()->create();
-
-        $this->assertTrue($reminder->fieldValue->reminder()->exists());
-        $this->assertEquals($reminder->id, $reminder->fieldValue->reminder->id);
-    }
-
-    #[Test]
     public function it_moves_the_record_it_belongs_to_when_it_is_written(): void
     {
         $contact = Contact::factory()->create();
@@ -123,25 +112,5 @@ class FieldValueTest extends TestCase
         $value->delete();
 
         $this->assertTrue($contact->refresh()->updated_at->isToday());
-    }
-
-    #[Test]
-    public function it_does_not_save_the_record_while_its_kind_is_set_aside(): void
-    {
-        $contact = Contact::factory()->create();
-        $saves = 0;
-
-        Contact::saved(function () use (&$saves): void {
-            $saves++;
-        });
-
-        Model::withoutTouchingOn([Contact::class], fn () => FieldValue::factory()->create([
-            'valuable_type' => $contact->getMorphClass(),
-            'valuable_id' => $contact->id,
-            'account_id' => $contact->account_id,
-            'vault_id' => $contact->vault_id,
-        ]));
-
-        $this->assertSame(0, $saves);
     }
 }

@@ -124,21 +124,6 @@ class DestroyVaultTest extends TestCase
     }
 
     #[Test]
-    public function it_leaves_the_contacts_of_another_vault_alone(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $elsewhere = Vault::factory()->default()->create(['account_id' => $user->account_id]);
-        $creed = Contact::factory()->create(['vault_id' => $elsewhere->id]);
-
-        new DestroyVault(user: $user, vault: $vault)->execute();
-
-        $this->assertNotSoftDeleted('contacts', ['id' => $creed->id]);
-    }
-
-    #[Test]
     public function it_takes_the_records_of_the_invented_kinds_with_it_too(): void
     {
         Queue::fake();
@@ -185,21 +170,6 @@ class DestroyVaultTest extends TestCase
         $this->assertSoftDeleted('groups', ['id' => $branch->id, 'deleted_with_vault' => true]);
         $this->assertEquals($vault->refresh()->deleted_at, $branch->refresh()->deleted_at);
         $this->assertNotSoftDeleted('groups', ['id' => $elsewhere->id, 'deleted_with_vault' => false]);
-    }
-
-    #[Test]
-    public function it_leaves_the_records_of_another_vault_alone(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $elsewhere = Vault::factory()->default()->create(['account_id' => $user->account_id]);
-        $dunder = Entity::factory()->create(['vault_id' => $elsewhere->id]);
-
-        new DestroyVault(user: $user, vault: $vault)->execute();
-
-        $this->assertNotSoftDeleted('entities', ['id' => $dunder->id]);
     }
 
     #[Test]

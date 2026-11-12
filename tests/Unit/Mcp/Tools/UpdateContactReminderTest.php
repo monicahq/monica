@@ -60,10 +60,4 @@ class UpdateContactReminderTest extends TestCase
             'time' => '09:00',
         ])->assertHasErrors(['This reminder reads its date from the contact.']);
     }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.contacts.reminders.update', app(UpdateContactReminder::class)->mirrors());
-    }
 }

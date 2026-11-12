@@ -33,6 +33,8 @@ class WithdrawLifetimeAccessTest extends TestCase
 
         $this->assertFalse($account->hasFullAccess());
         $this->assertNull($account->access_granted_at);
+
+        Queue::assertPushedOn('low', LogAdministratorAction::class);
     }
 
     #[Test]
@@ -80,33 +82,5 @@ class WithdrawLifetimeAccessTest extends TestCase
         new WithdrawLifetimeAccess(account: $michael->account, administrator: $michael)->execute();
 
         $this->assertTrue($subscription->fresh()->valid());
-    }
-
-    #[Test]
-    public function it_leaves_the_order_that_was_placed_on_the_record(): void
-    {
-        Queue::fake();
-
-        $michael = User::factory()->create();
-        $account = Account::factory()->create();
-        $order = StripeOrder::factory()->settled()->create(['account_id' => $account->id]);
-
-        new WithdrawLifetimeAccess(account: $account, administrator: $michael)->execute();
-
-        $this->assertModelExists($order);
-        $this->assertSame(1, StripeOrder::query()->count());
-    }
-
-    #[Test]
-    public function it_writes_the_withdrawal_down(): void
-    {
-        Queue::fake();
-
-        $michael = User::factory()->create();
-        $account = Account::factory()->create(['access_granted_at' => now()]);
-
-        new WithdrawLifetimeAccess(account: $account, administrator: $michael)->execute();
-
-        Queue::assertPushedOn('low', LogAdministratorAction::class);
     }
 }

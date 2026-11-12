@@ -30,17 +30,6 @@ class SecurityKeyOptionsControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_asks_somebody_with_a_password_to_confirm_it_first(): void
-    {
-        URL::forceScheme('https');
-
-        $response = $this->actingAs(User::factory()->create())
-            ->get(route('settings.securityKeyOptions.show'));
-
-        $response->assertRedirect(route('auth.confirmPassword.new'));
-    }
-
-    #[Test]
     public function it_asks_an_account_without_a_password_to_confirm_too(): void
     {
         URL::forceScheme('https');

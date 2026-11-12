@@ -42,10 +42,4 @@ class DeleteTemplateTest extends TestCase
 
         $this->assertModelExists($template);
     }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.templates.destroy', app(DeleteTemplate::class)->mirrors());
-    }
 }

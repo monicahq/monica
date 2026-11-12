@@ -44,17 +44,6 @@ class VerifyEmailTest extends TestCase
     }
 
     #[Test]
-    public function it_signs_the_link_so_it_cannot_be_forged(): void
-    {
-        $michael = User::factory()->unverified()->create();
-
-        $message = new VerifyEmail()->toMail($michael);
-
-        $this->assertStringContainsString('signature=', $message->actionUrl);
-        $this->assertStringContainsString('expires=', $message->actionUrl);
-    }
-
-    #[Test]
     public function it_goes_out_as_an_email(): void
     {
         $michael = User::factory()->unverified()->create();

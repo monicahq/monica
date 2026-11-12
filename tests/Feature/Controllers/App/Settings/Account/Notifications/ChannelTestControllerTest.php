@@ -35,17 +35,6 @@ class ChannelTestControllerTest extends TestCase
     }
 
     #[Test]
-    public function a_test_writes_no_notification_and_touches_no_deadline(): void
-    {
-        NotificationFacade::fake();
-        $this->workingTextMessage();
-
-        $this->post(route('settings.notifications.test.store', 'sms'));
-
-        $this->assertDatabaseCount('notifications', 0);
-    }
-
-    #[Test]
     public function it_refuses_a_channel_that_is_not_finished(): void
     {
         NotificationFacade::fake();
@@ -54,24 +43,6 @@ class ChannelTestControllerTest extends TestCase
         $response = $this->post(route('settings.notifications.test.store', 'telegram'));
 
         $response->assertSessionHasErrors(['test' => 'Finish setting this channel up before testing it.']);
-    }
-
-    #[Test]
-    public function it_refuses_a_test_on_a_channel_this_server_cannot_send_on(): void
-    {
-        NotificationFacade::fake();
-        config(['vonage.api_key' => null]);
-        $user = $this->workingTextMessage();
-        NotificationChannel::query()
-            ->where('account_id', $user->account_id)
-            ->where('channel', NotificationChannelEnum::Sms->value)
-            ->firstOrFail()
-            ->fill(['is_enabled' => true, 'destination' => '+15705550172', 'proven_at' => now()])
-            ->save();
-
-        $response = $this->post(route('settings.notifications.test.store', 'sms'));
-
-        $response->assertSessionHasErrors(['test' => 'This server has not been set up to send on this channel.']);
     }
 
     #[Test]

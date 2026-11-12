@@ -33,18 +33,6 @@ class RevertInstanceSettingTest extends TestCase
         )->execute();
 
         $this->assertModelMissing($row);
-    }
-
-    #[Test]
-    public function it_records_the_reversion(): void
-    {
-        Queue::fake();
-        InstanceSetting::factory()->create(['name' => InstanceSettingEnum::FreeContactLimit->value]);
-
-        new RevertInstanceSetting(
-            administrator: User::factory()->create(),
-            setting: InstanceSettingEnum::FreeContactLimit,
-        )->execute();
 
         Queue::assertPushedOn('low', LogAdministratorAction::class, function (LogAdministratorAction $job): bool {
             return $job->action === AdministratorActionEnum::InstanceSettingReverted;

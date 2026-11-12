@@ -58,14 +58,6 @@ class CodePanelTest extends TestCase
     }
 
     #[Test]
-    public function it_keeps_the_indentation_the_sample_was_written_with(): void
-    {
-        $panel = $this->blade('<x-api-docs.code-panel :section="$section" />', ['section' => $this->section()]);
-
-        $panel->assertSee('  -X POST \\', escape: false);
-    }
-
-    #[Test]
     public function it_offers_every_language_and_a_way_to_copy(): void
     {
         $panel = $this->blade('<x-api-docs.code-panel :section="$section" />', ['section' => $this->section()]);

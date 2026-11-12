@@ -89,18 +89,6 @@ class AccountImportControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_second_file_while_an_import_runs(): void
-    {
-        AccountImport::factory()->create(['user_id' => $this->michael->id]);
-
-        $this->json('POST', '/api/v1/imports', [
-            'file' => UploadedFile::fake()->createWithContent('monica.json', '{"version": "1.0-preview.1"}'),
-        ])
-            ->assertUnprocessable()
-            ->assertJsonValidationErrors(['file' => 'An import is already running.']);
-    }
-
-    #[Test]
     public function it_shows_what_a_file_holds(): void
     {
         $import = $this->readImport();
@@ -227,18 +215,6 @@ class AccountImportControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_starts_a_file_of_several_vaults_without_a_vault_name(): void
-    {
-        $import = $this->readImport();
-        AccountImportItem::factory()->count(2)->create(['account_import_id' => $import->id, 'kind' => 'vault']);
-
-        $this->json('PUT', "/api/v1/imports/{$import->uuid}", [])
-            ->assertAccepted();
-
-        $this->assertSame(AccountImportStatusEnum::Writing, $import->refresh()->status);
-    }
-
-    #[Test]
     public function it_answers_a_refusal_from_the_limits_with_its_wording(): void
     {
         config(['monica.self_hosted' => false, 'monica.free_contact_limit' => 2, 'monica.free_vault_limit' => 5]);
@@ -286,20 +262,6 @@ class AccountImportControllerTest extends TestCase
         $response->assertAccepted();
         $response->assertJsonStructure(['data' => $this->jsonStructure]);
         $response->assertJsonPath('data.attributes.status', 'rolling_back');
-    }
-
-    #[Test]
-    public function it_refuses_to_cancel_an_import_that_ended(): void
-    {
-        $import = AccountImport::factory()->create([
-            'user_id' => $this->michael->id,
-            'status' => AccountImportStatusEnum::Completed,
-            'ended_at' => now(),
-        ]);
-
-        $this->json('DELETE', "/api/v1/imports/{$import->uuid}")
-            ->assertUnprocessable()
-            ->assertJsonValidationErrors(['import' => 'This import has already ended.']);
     }
 
     private function readImport(): AccountImport

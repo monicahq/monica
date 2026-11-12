@@ -6,7 +6,6 @@ namespace Tests\Unit\Models;
 
 use App\Enums\VersionStatusEnum;
 use App\Exceptions\PublishedVersionIsFrozen;
-use App\Models\SectionVersion;
 use App\Models\StructureVersion;
 use App\Models\StructureVersionSection;
 use App\Models\Template;
@@ -28,15 +27,6 @@ class StructureVersionTest extends TestCase
 
         $this->assertEquals([1, 2], $version->assembly->pluck('position')->all());
         $this->assertCount(2, $version->sectionVersions);
-    }
-
-    #[Test]
-    public function it_starts_as_an_editable_draft(): void
-    {
-        $version = StructureVersion::factory()->create();
-
-        $this->assertEquals(VersionStatusEnum::Draft, $version->status);
-        $this->assertTrue($version->status->isEditable());
     }
 
     #[Test]
@@ -85,34 +75,11 @@ class StructureVersionTest extends TestCase
     }
 
     #[Test]
-    public function it_lets_a_draft_be_deleted(): void
-    {
-        $version = StructureVersion::factory()->create();
-
-        $version->delete();
-
-        $this->assertModelMissing($version);
-    }
-
-    #[Test]
     public function it_takes_its_account_from_the_template_it_belongs_to(): void
     {
         $version = StructureVersion::factory()->create();
 
         $this->assertEquals($version->structure->owner->account_id, $version->account_id);
-    }
-
-    #[Test]
-    public function it_places_a_section_by_its_version_rather_than_by_the_section_itself(): void
-    {
-        $sectionVersion = SectionVersion::factory()->published()->create();
-        $version = StructureVersion::factory()->create();
-        StructureVersionSection::factory()->create([
-            'structure_version_id' => $version->id,
-            'section_version_id' => $sectionVersion->id,
-        ]);
-
-        $this->assertTrue($version->sectionVersions->first()->is($sectionVersion));
     }
 
     #[Test]

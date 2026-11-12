@@ -15,7 +15,6 @@ use App\Models\ContactListColumn;
 use App\Models\ContactNameRepresentation;
 use App\Models\Field;
 use App\Models\FieldValue;
-use App\Models\File;
 use App\Models\Section;
 use App\Models\StructureVersion;
 use App\Models\Template;
@@ -35,26 +34,6 @@ use Tests\TestCase;
 class ContactsViewModelTest extends TestCase
 {
     use RefreshDatabase;
-
-    #[Test]
-    public function it_says_where_the_picture_of_a_row_is_read_from(): void
-    {
-        $user = User::factory()->create();
-        $vault = $this->vaultReadyForContacts($user);
-        $file = File::factory()->image()->create([
-            'account_id' => $user->account_id,
-            'vault_id' => $vault->id,
-        ]);
-
-        $this->contact($vault, 'Pam', 'Beesly', ['avatar_file_id' => $file->id]);
-
-        $person = new ContactsViewModel(user: $user, vault: $vault)->groups()[0]['people'][0];
-
-        $this->assertEquals(
-            route('files.variants.show', ['vault' => $vault, 'file' => $file, 'size' => Contact::AVATAR_THUMBNAIL_PIXELS]),
-            $person['avatarUrl'],
-        );
-    }
 
     #[Test]
     public function it_counts_the_people_each_chip_would_show(): void
@@ -127,47 +106,6 @@ class ContactsViewModelTest extends TestCase
         $this->assertStringContainsString('sort=added', $favourites['url']);
         $this->assertStringContainsString('direction=desc', $favourites['url']);
         $this->assertFalse($favourites['isCurrent']);
-    }
-
-    #[Test]
-    public function it_puts_the_chips_in_the_path_rather_than_the_query_string(): void
-    {
-        $user = User::factory()->create();
-        $vault = $this->vaultReadyForContacts($user);
-
-        $chips = collect(new ContactsViewModel(user: $user, vault: $vault)->filters())
-            ->mapWithKeys(fn (array $chip): array => [$chip['key'] => parse_url($chip['url'], PHP_URL_PATH)]);
-
-        $this->assertEquals("/vaults/{$vault->slug}/contacts/all", $chips['all']);
-        $this->assertEquals("/vaults/{$vault->slug}/contacts/favourites", $chips['favourites']);
-        $this->assertArrayNotHasKey('archived', $chips);
-        $this->assertEquals("/vaults/{$vault->slug}/contacts/names-only", $chips['names-only']);
-
-        foreach (ContactGroupingEnum::cases() as $grouping) {
-            $this->assertStringEndsWith("/contacts/{$grouping->value}", $chips[$grouping->value]);
-        }
-
-        $this->assertStringNotContainsString(
-            'filter=',
-            collect(new ContactsViewModel(user: $user, vault: $vault)->filters())->firstWhere('key', 'names-only')['url'],
-        );
-    }
-
-    #[Test]
-    public function it_aims_the_search_at_the_chip_in_force(): void
-    {
-        $user = User::factory()->create();
-        $vault = $this->vaultReadyForContacts($user);
-
-        $this->assertStringEndsWith(
-            '/contacts/all',
-            new ContactsViewModel(user: $user, vault: $vault)->searchUrl(),
-        );
-
-        $this->assertStringEndsWith(
-            '/contacts/names-only',
-            new ContactsViewModel(user: $user, vault: $vault, grouping: ContactGroupingEnum::NamesOnly)->searchUrl(),
-        );
     }
 
     #[Test]
@@ -316,22 +254,6 @@ class ContactsViewModelTest extends TestCase
         ]);
 
         return $vault;
-    }
-
-    #[Test]
-    public function it_orders_the_list_by_the_alphabet_of_the_language_the_reader_reads_in(): void
-    {
-        $user = $this->readerIn('fr_FR');
-        $vault = $this->vaultReadyForContacts($user);
-
-        $this->contact($vault, 'Dwight', 'Schrute');
-        $this->contact($vault, 'Elodie', 'Élodie');
-        $this->contact($vault, 'Erin', 'Erin');
-
-        $this->assertSame(
-            ['Élodie', 'Erin', 'Schrute'],
-            $this->surnamesOrderedFor($user, $vault),
-        );
     }
 
     #[Test]

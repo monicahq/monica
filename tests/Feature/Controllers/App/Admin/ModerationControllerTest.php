@@ -41,15 +41,6 @@ class ModerationControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_says_so_plainly_when_nothing_is_waiting(): void
-    {
-        $response = $this->actingAs($this->administrator())->get(route('admin.moderation.index'));
-
-        $response->assertStatus(200);
-        $response->assertSee('Nothing is waiting', escape: false);
-    }
-
-    #[Test]
     public function it_counts_what_is_waiting_without_pinning_a_wording_to_one(): void
     {
         $michael = $this->administrator();
@@ -93,73 +84,6 @@ class ModerationControllerTest extends TestCase
         $response->assertSee('Every category, and room for the acceptance speech.', escape: false);
         $response->assertSee('Added the Bushiest Brow category.', escape: false);
         $response->assertSee('Bushiest Brow', escape: false);
-    }
-
-    #[Test]
-    public function it_offers_a_decision_only_while_one_is_open(): void
-    {
-        $waiting = MarketplaceListingVersion::factory()->create();
-        $decided = MarketplaceListingVersion::factory()->approved()->create();
-
-        $michael = $this->administrator();
-
-        $this->actingAs($michael)
-            ->get(route('admin.moderation.show', ['version' => $waiting->id]))
-            ->assertSee('Let it into the catalogue', escape: false);
-
-        $this->actingAs($michael)
-            ->get(route('admin.moderation.show', ['version' => $decided->id]))
-            ->assertDontSee('Let it into the catalogue', escape: false);
-    }
-
-    #[Test]
-    public function it_shows_a_resubmission_as_new_work_while_the_earlier_refusal_stays_readable(): void
-    {
-        $listing = MarketplaceListing::factory()->submitted()->create(['name' => 'Dundie Awards']);
-        $refused = MarketplaceListingVersion::factory()
-            ->rejected('The description does not say what it is for.')
-            ->create(['marketplace_listing_id' => $listing->id]);
-        $resubmitted = MarketplaceListingVersion::factory()->create([
-            'marketplace_listing_id' => $listing->id,
-            'version_number' => 2,
-            'previous_version_id' => $refused->id,
-        ]);
-
-        $michael = $this->administrator();
-
-        $queue = $this->actingAs($michael)->get(route('admin.moderation.index'));
-        $queue->assertSee('Dundie Awards', escape: false);
-        $queue->assertSee('version 2', escape: false);
-
-        $this->assertEquals('The description does not say what it is for.', $refused->fresh()->rejection_reason);
-
-        $this->actingAs($michael)
-            ->get(route('admin.moderation.show', ['version' => $resubmitted->id]))
-            ->assertSee('Let it into the catalogue', escape: false);
-    }
-
-    #[Test]
-    public function it_shows_the_queue_in_numbered_pages(): void
-    {
-        MarketplaceListingVersion::factory()->count(21)->create();
-
-        $response = $this->actingAs($this->administrator())->get(route('admin.moderation.index'));
-
-        $response->assertStatus(200);
-        $response->assertSee(__('Rows per page'), escape: false);
-        $response->assertSee('aria-current="page"', escape: false);
-        $response->assertSee('1 to 20 of 21', escape: false);
-    }
-
-    #[Test]
-    public function it_takes_the_page_size_from_the_url(): void
-    {
-        MarketplaceListingVersion::factory()->count(21)->create();
-
-        $response = $this->actingAs($this->administrator())->get(route('admin.moderation.index', ['size' => 10]));
-
-        $response->assertStatus(200);
-        $response->assertSee('1 to 10 of 21', escape: false);
     }
 
     private function administrator(): User

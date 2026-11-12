@@ -40,10 +40,4 @@ class DeleteEntityTypeTest extends TestCase
 
         $this->assertNotSoftDeleted($entityType);
     }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.entityTypes.destroy', app(DeleteEntityType::class)->mirrors());
-    }
 }

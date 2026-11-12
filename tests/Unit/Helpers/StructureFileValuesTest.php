@@ -200,15 +200,6 @@ class StructureFileValuesTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_reference_longer_than_what_can_be_stored(): void
-    {
-        $this->assertRefused(
-            'The file holds more than 4 characters at template.label_translation_key, which is more than can be stored.',
-            fn () => StructureFileValues::word(['label_translation_key' => 'Birthday'], 'label', 'label_translation_key', 'template', 4),
-        );
-    }
-
-    #[Test]
     public function it_refuses_a_block_that_names_no_word_at_all(): void
     {
         $this->assertRefused(

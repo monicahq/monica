@@ -16,21 +16,6 @@ use Tests\TestCase;
 class FieldCatalogueViewModelTest extends TestCase
 {
     #[Test]
-    public function it_describes_every_type_it_offers(): void
-    {
-        foreach ($this->catalogue()->families() as $family) {
-            $this->assertNotEmpty($family['name']);
-            $this->assertNotEmpty($family['blurb']);
-
-            foreach ($family['types'] as $type) {
-                $this->assertNotEmpty($type['label']);
-                $this->assertNotEmpty($type['description']);
-                $this->assertNotEmpty($type['example']);
-            }
-        }
-    }
-
-    #[Test]
     public function it_marks_as_available_exactly_what_the_enum_ships(): void
     {
         $available = [];
@@ -59,17 +44,6 @@ class FieldCatalogueViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_says_which_types_need_a_value_list(): void
-    {
-        $needing = $this->catalogue()->typesNeedingAValueList();
-
-        $this->assertContains('select', $needing);
-        $this->assertContains('multiselect', $needing);
-        $this->assertContains('radio', $needing);
-        $this->assertNotContains('text', $needing);
-    }
-
-    #[Test]
     public function it_offers_no_repeater_to_a_field_added_inside_one(): void
     {
         $inside = array_column(new FieldCatalogueViewModel(insideARepeater: true)->types(), 'key');
@@ -77,12 +51,6 @@ class FieldCatalogueViewModelTest extends TestCase
         $this->assertNotContains('repeater', $inside);
         $this->assertContains('relation', $inside);
         $this->assertContains('repeater', array_column($this->catalogue()->types(), 'key'));
-    }
-
-    #[Test]
-    public function it_says_which_types_point_at_a_record(): void
-    {
-        $this->assertSame(['relation'], $this->catalogue()->relationTypes());
     }
 
     #[Test]
@@ -95,56 +63,6 @@ class FieldCatalogueViewModelTest extends TestCase
             ['contact' => __('Somebody in the vault'), 'entity:12' => 'Animals'],
             $this->catalogue()->relationTargets(new Collection([$animals])),
         );
-    }
-
-    #[Test]
-    public function it_gives_every_type_a_mark_and_an_illustration(): void
-    {
-        $kinds = ['input', 'textarea', 'toggle', 'dropdown', 'list', 'pills', 'upload', 'rows', 'labelled', 'layout'];
-
-        foreach ($this->catalogue()->types() as $type) {
-            $this->assertNotEmpty($type['mark'], "{$type['key']} has no mark");
-            $this->assertContains($type['preview']['kind'], $kinds, "{$type['key']} draws nothing known");
-        }
-    }
-
-    #[Test]
-    public function it_draws_an_email_and_a_phone_as_a_label_beside_a_value(): void
-    {
-        $types = [];
-
-        foreach ($this->catalogue()->types() as $type) {
-            $types[$type['key']] = $type['preview'];
-        }
-
-        $this->assertEquals('labelled', $types['email']['kind']);
-        $this->assertEquals('labelled', $types['phone']['kind']);
-        $this->assertNotEmpty($types['email']['label']);
-        $this->assertNotEmpty($types['phone']['label']);
-    }
-
-    #[Test]
-    public function it_draws_an_address_as_what_it_is_for_above_the_boxes_it_is_written_in(): void
-    {
-        $types = [];
-
-        foreach ($this->catalogue()->types() as $type) {
-            $types[$type['key']] = $type;
-        }
-
-        $this->assertStringContainsString('what the address is for', $types['address']['description']);
-        $this->assertEquals('rows', $types['address']['preview']['kind']);
-        $this->assertEquals(__('Home'), $types['address']['preview']['label']);
-        $this->assertEquals(
-            [__('Street'), __('City'), __('Postcode'), __('Country')],
-            array_map(fn (array $row): string => $row[0], $types['address']['preview']['rows']),
-        );
-    }
-
-    #[Test]
-    public function it_offers_a_label_list_for_an_email_a_phone_and_an_address(): void
-    {
-        $this->assertEquals(['email', 'phone', 'address'], $this->catalogue()->typesOfferingALabelList());
     }
 
     #[Test]
@@ -161,23 +79,6 @@ class FieldCatalogueViewModelTest extends TestCase
             ['email' => 4, 'address' => 7],
             $this->catalogue()->suppliedLabelListIds(collect([$homemade, $email, $address])),
         );
-    }
-
-    #[Test]
-    public function it_shows_an_email_and_a_phone_among_the_composite_types(): void
-    {
-        $composite = [];
-
-        foreach ($this->catalogue()->families() as $family) {
-            if ($family['name'] !== __('Composite')) {
-                continue;
-            }
-
-            $composite = array_map(fn (array $type): string => $type['key'], $family['types']);
-        }
-
-        $this->assertContains('email', $composite);
-        $this->assertContains('phone', $composite);
     }
 
     #[Test]

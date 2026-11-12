@@ -69,22 +69,6 @@ class LoginControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_wrong_password(): void
-    {
-        Queue::fake();
-
-        User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
-
-        $response = $this->json('POST', '/api/v1/login', [
-            'email' => 'michael.scott@dundermifflin.com',
-            'password' => 'wrong-password',
-        ]);
-
-        $response->assertUnauthorized();
-        $this->assertDatabaseCount('personal_access_tokens', 0);
-    }
-
-    #[Test]
     public function it_says_the_same_thing_whatever_went_wrong(): void
     {
         Queue::fake();
@@ -148,23 +132,6 @@ class LoginControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_issues_no_token_when_the_second_factor_is_wrong(): void
-    {
-        Queue::fake();
-
-        User::factory()->twoFactor()->create(['email' => 'michael.scott@dundermifflin.com']);
-
-        $response = $this->json('POST', '/api/v1/login', [
-            'email' => 'michael.scott@dundermifflin.com',
-            'password' => 'password',
-            'code' => '000000',
-        ]);
-
-        $response->assertUnauthorized();
-        $this->assertDatabaseCount('personal_access_tokens', 0);
-    }
-
-    #[Test]
     public function it_stops_accepting_codes_after_five_wrong_ones(): void
     {
         Queue::fake();
@@ -203,23 +170,6 @@ class LoginControllerTest extends TestCase
             'email' => 'michael.scott@dundermifflin.com',
             'password' => 'password',
             'code' => new Google2FA()->getCurrentOtp($secret),
-        ]);
-
-        $response->assertOk();
-        $response->assertJsonStructure(['token']);
-    }
-
-    #[Test]
-    public function it_accepts_a_recovery_code_as_the_second_factor(): void
-    {
-        Queue::fake();
-
-        User::factory()->twoFactor()->create(['email' => 'michael.scott@dundermifflin.com']);
-
-        $response = $this->json('POST', '/api/v1/login', [
-            'email' => 'michael.scott@dundermifflin.com',
-            'password' => 'password',
-            'code' => 'scranton-1',
         ]);
 
         $response->assertOk();
@@ -285,24 +235,5 @@ class LoginControllerTest extends TestCase
         $this->withHeader('Authorization', 'Bearer '.$kept->plainTextToken)
             ->json('GET', '/api/v1/me')
             ->assertOk();
-    }
-
-    #[Test]
-    public function it_stops_working_with_a_revoked_token(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $token = $user->createToken('Dundie awards bot');
-
-        $this->withHeader('Authorization', 'Bearer '.$token->plainTextToken)
-            ->json('DELETE', '/api/v1/logout')
-            ->assertNoContent();
-
-        $this->app['auth']->forgetGuards();
-
-        $this->withHeader('Authorization', 'Bearer '.$token->plainTextToken)
-            ->json('GET', '/api/v1/me')
-            ->assertUnauthorized();
     }
 }

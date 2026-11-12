@@ -81,24 +81,15 @@ class DisconnectProviderFromUserTest extends TestCase
 
         $user = User::factory()->singleSignOn()->create();
 
-        $this->expectException(ValidationException::class);
-
-        new DisconnectProviderFromUser(user: $user, provider: SsoProviderEnum::Google)->execute();
-    }
-
-    #[Test]
-    public function it_keeps_the_provider_when_it_refuses(): void
-    {
-        Queue::fake();
-        Notification::fake();
-
-        $user = User::factory()->singleSignOn()->create();
+        $refused = false;
 
         try {
             new DisconnectProviderFromUser(user: $user, provider: SsoProviderEnum::Google)->execute();
         } catch (ValidationException) {
+            $refused = true;
         }
 
+        $this->assertTrue($refused);
         $this->assertDatabaseHas('provider_connections', ['user_id' => $user->id, 'provider' => 'google']);
         Notification::assertNothingSent();
     }

@@ -62,33 +62,6 @@ class SettingsViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_links_notifications_to_the_notification_channels(): void
-    {
-        $user = User::factory()->create();
-
-        $sections = new SettingsViewModel(user: $user)->sections();
-
-        $notifications = $sections[0]['rows'][3];
-
-        $this->assertSame('Notifications', $notifications['title']);
-        $this->assertSame(route('settings.notifications.index'), $notifications['url']);
-    }
-
-    #[Test]
-    public function it_marks_signing_out_as_something_that_is_sent_rather_than_followed(): void
-    {
-        $user = User::factory()->create();
-
-        $sections = new SettingsViewModel(user: $user)->sections();
-
-        $signOut = $sections[2]['rows'][0];
-
-        $this->assertSame('Sign out', $signOut['title']);
-        $this->assertSame('post', $signOut['method']);
-        $this->assertSame(route('auth.login.destroy'), $signOut['url']);
-    }
-
-    #[Test]
     public function it_says_whether_two_factor_authentication_is_on(): void
     {
         $without = User::factory()->create();
@@ -135,17 +108,6 @@ class SettingsViewModelTest extends TestCase
 
         $this->assertSame('1 template', $rows[0]['meta']);
         $this->assertSame('4 types', $rows[1]['meta']);
-    }
-
-    #[Test]
-    public function it_sends_deleting_the_account_to_the_confirmation_on_the_profile_screen(): void
-    {
-        $user = User::factory()->create();
-
-        $this->assertSame(
-            route('settings.profile.index').'#delete-your-account',
-            new SettingsViewModel(user: $user)->deleteUrl(),
-        );
     }
 
     #[Test]

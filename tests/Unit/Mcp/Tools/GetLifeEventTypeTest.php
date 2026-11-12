@@ -36,10 +36,4 @@ class GetLifeEventTypeTest extends TestCase
         EricaServer::actingAs($user)->tool(GetLifeEventType::class, ['life_event_type' => $type->uuid])
             ->assertHasErrors(['That life event type does not exist.']);
     }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.lifeEventTypes.show', app(GetLifeEventType::class)->mirrors());
-    }
 }

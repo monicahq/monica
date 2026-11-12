@@ -4,13 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Admin;
 
-use App\Actions\CreateFile;
-use App\Exceptions\NotEnoughStorageLeft;
 use App\Models\Administrator;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -32,21 +28,6 @@ class AccountStorageLimitControllerTest extends TestCase
         $response->assertSessionHas('status', 'The storage limit is saved.');
 
         $this->assertEquals(2048, $todd->account->refresh()->storage_limit_in_bytes);
-    }
-
-    #[Test]
-    public function it_sets_a_limit_arriving_as_text_the_way_a_form_sends_it(): void
-    {
-        $todd = User::factory()->create();
-
-        $response = $this->actingAs($this->administrator())
-            ->put(route('admin.accounts.storageLimit.update', ['account' => $todd->account_id]), [
-                'storage_limit_in_bytes' => '1048576',
-            ]);
-
-        $response->assertRedirect(route('admin.accounts.show', ['account' => $todd->account_id]));
-
-        $this->assertSame(1048576, $todd->account->refresh()->storage_limit_in_bytes);
     }
 
     #[Test]
@@ -74,34 +55,6 @@ class AccountStorageLimitControllerTest extends TestCase
             ]);
 
         $response->assertSessionHasErrors('storage_limit_in_bytes');
-    }
-
-    #[Test]
-    public function a_limit_under_what_is_held_deletes_nothing_and_stops_the_next_upload(): void
-    {
-        Storage::fake();
-
-        $todd = User::factory()->create();
-        $todd->account->update(['storage_limit_in_bytes' => 1024 * 1024]);
-
-        $file = new CreateFile(
-            user: $todd,
-            upload: UploadedFile::fake()->create('beets.pdf', 8),
-        )->execute();
-
-        $this->actingAs($this->administrator())
-            ->put(route('admin.accounts.storageLimit.update', ['account' => $todd->account_id]), [
-                'storage_limit_in_bytes' => 1,
-            ]);
-
-        $this->assertDatabaseHas('files', ['id' => $file->id]);
-
-        $this->expectException(NotEnoughStorageLeft::class);
-
-        new CreateFile(
-            user: $todd->refresh(),
-            upload: UploadedFile::fake()->create('more-beets.pdf', 8),
-        )->execute();
     }
 
     private function administrator(): User

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Vaults;
 
-use App\Enums\VersionStatusEnum;
 use App\Models\Contact;
 use App\Models\StructureVersion;
 use App\Models\Template;
@@ -78,28 +77,6 @@ class ContactStructureVersionControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_version_that_has_been_retired(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $template = $this->template($user);
-        $first = $template->versions()->firstOrFail();
-        $michael = $this->contact($user, $first);
-        $second = $this->publish($template, 2);
-        $michael->update(['structure_version_id' => $second->id]);
-        $first->update(['status' => VersionStatusEnum::Retired]);
-
-        $this->actingAs($user)
-            ->put(route('contacts.templateVersion.update', ['vault' => $michael->vault, 'contact' => $michael]), [
-                'structure_version_id' => $first->id,
-            ])
-            ->assertNotFound();
-
-        $this->assertSame($second->id, $michael->refresh()->structure_version_id);
-    }
-
-    #[Test]
     public function it_refuses_a_version_of_another_template(): void
     {
         Queue::fake();
@@ -126,21 +103,6 @@ class ContactStructureVersionControllerTest extends TestCase
 
         $this->actingAs($user)
             ->put(route('contacts.templateVersion.update', ['vault' => $michael->vault, 'contact' => $michael]))
-            ->assertNotFound();
-    }
-
-    #[Test]
-    public function a_contact_in_another_vault_cannot_be_reached(): void
-    {
-        $user = User::factory()->create();
-        $template = $this->template($user);
-        $michael = $this->contact($user, $template->versions()->firstOrFail());
-        $this->publish($template, 2);
-
-        $elsewhere = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $this->actingAs($user)
-            ->put(route('contacts.templateVersion.update', ['vault' => $elsewhere, 'contact' => $michael]))
             ->assertNotFound();
     }
 

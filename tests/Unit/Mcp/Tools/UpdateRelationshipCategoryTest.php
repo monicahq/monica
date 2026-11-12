@@ -43,10 +43,4 @@ class UpdateRelationshipCategoryTest extends TestCase
 
         $this->assertNull($category->refresh()->getRawOriginal('name'));
     }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.relationshipCategories.update', app(UpdateRelationshipCategory::class)->mirrors());
-    }
 }

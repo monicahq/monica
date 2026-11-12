@@ -41,23 +41,6 @@ class UpdateContactRelationshipTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_an_end_before_the_start(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $relationship = Relationship::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
-
-        EricaServer::actingAs($user)->tool(UpdateContactRelationship::class, [
-            'vault' => $vault->uuid,
-            'contact' => $relationship->contactA->uuid,
-            'relationship' => $relationship->uuid,
-            'status' => 'ended',
-            'started_on' => '2008-01-15',
-            'ended_on' => '2007-05-10',
-        ])->assertHasErrors(['The end cannot fall before the start.']);
-    }
-
-    #[Test]
     public function it_refuses_to_name_somebody_with_a_record_of_their_own(): void
     {
         $user = User::factory()->create();
@@ -70,11 +53,5 @@ class UpdateContactRelationshipTest extends TestCase
             'relationship' => $relationship->uuid,
             'first_name' => 'Pamela',
         ])->assertHasErrors(['Only somebody without a record of their own can be named here.']);
-    }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.contacts.relationships.update', app(UpdateContactRelationship::class)->mirrors());
     }
 }

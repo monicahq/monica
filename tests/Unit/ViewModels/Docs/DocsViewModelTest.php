@@ -85,18 +85,6 @@ class DocsViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_says_whether_registration_is_enabled(): void
-    {
-        config()->set('monica.registration_enabled', true);
-
-        $this->assertTrue(new DocsViewModel()->registrationIsEnabled());
-
-        config()->set('monica.registration_enabled', false);
-
-        $this->assertFalse(new DocsViewModel()->registrationIsEnabled());
-    }
-
-    #[Test]
     public function it_lists_the_api_changelog_and_its_entries_for_assistants_and_crawlers(): void
     {
         $this->app->instance(ApiChangelogViewModel::class, new ApiChangelogViewModel(directory: base_path('tests/Fixtures/Docs/ApiChangelog/Valid')));

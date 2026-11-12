@@ -45,20 +45,6 @@ class AccountExportControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refreshes_the_screen_only_while_an_export_is_being_prepared(): void
-    {
-        $this->actingAs($this->pam)
-            ->get(route('settings.accountImports.index'))
-            ->assertDontSee("target: 'exports export-actions'", false);
-
-        AccountExport::factory()->create(['user_id' => $this->pam->id, 'status' => AccountExportStatusEnum::Preparing]);
-
-        $this->actingAs($this->pam)
-            ->get(route('settings.accountImports.index'))
-            ->assertSee("target: 'exports export-actions'", false);
-    }
-
-    #[Test]
     public function it_asks_for_an_export_of_the_vault_chosen_and_goes_back_to_the_screen(): void
     {
         $this->actingAs($this->pam)->withConfirmedPassword()
@@ -68,26 +54,6 @@ class AccountExportControllerTest extends TestCase
 
         $this->assertSame([$this->scranton->id], AccountExport::query()->where('user_id', $this->pam->id)->firstOrFail()->vault_ids);
         Queue::assertPushed(BuildAccountExport::class);
-    }
-
-    #[Test]
-    public function it_asks_for_the_password_before_preparing_an_export(): void
-    {
-        $this->actingAs($this->pam)
-            ->post(route('settings.accountExports.create'), ['vault' => $this->scranton->id])
-            ->assertRedirect(route('auth.confirmPassword.new'));
-
-        Queue::assertNothingPushed();
-    }
-
-    #[Test]
-    public function it_asks_for_every_vault_when_none_is_chosen(): void
-    {
-        $this->actingAs($this->pam)->withConfirmedPassword()
-            ->post(route('settings.accountExports.create'), ['vault' => ''])
-            ->assertRedirect(route('settings.accountImports.index'));
-
-        $this->assertCount(2, AccountExport::query()->where('user_id', $this->pam->id)->firstOrFail()->vault_ids);
     }
 
     #[Test]

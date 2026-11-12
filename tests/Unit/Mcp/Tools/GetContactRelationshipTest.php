@@ -46,10 +46,4 @@ class GetContactRelationshipTest extends TestCase
             'relationship' => $relationship->uuid,
         ])->assertHasErrors(['That relationship does not exist.']);
     }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.contacts.relationships.show', app(GetContactRelationship::class)->mirrors());
-    }
 }

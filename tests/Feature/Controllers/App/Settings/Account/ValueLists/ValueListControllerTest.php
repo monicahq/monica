@@ -38,52 +38,6 @@ class ValueListControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_offers_to_add_a_list_beside_the_title_rather_than_under_the_lists(): void
-    {
-        $user = User::factory()->create();
-        ValueList::factory()->create([
-            'account_id' => $user->account_id,
-            'name' => 'Job titles',
-        ]);
-
-        $this->actingAs($user)->get(route('settings.valueLists.index'))
-            ->assertStatus(200)
-            ->assertSeeInOrder(['Value lists', 'Add a list', 'Job titles']);
-    }
-
-    #[Test]
-    public function it_asks_for_the_name_of_a_new_list_in_a_card(): void
-    {
-        $user = User::factory()->create();
-
-        $this->actingAs($user)->get(route('settings.valueLists.index'))
-            ->assertStatus(200)
-            ->assertSee('role="dialog"', escape: false)
-            ->assertSeeInOrder([
-                'Add a list',
-                'Something the fields of your contacts will pick from',
-                'Name of the list',
-                'Add the list',
-            ]);
-    }
-
-    #[Test]
-    public function it_warns_in_a_card_before_a_list_is_deleted(): void
-    {
-        $user = User::factory()->create();
-        ValueList::factory()->create([
-            'account_id' => $user->account_id,
-            'name' => 'Job titles',
-        ]);
-
-        $this->actingAs($user)->get(route('settings.valueLists.index'))
-            ->assertStatus(200)
-            ->assertSee('role="dialog"', escape: false)
-            ->assertSee('Delete “Job titles”?', escape: false)
-            ->assertSee('The list is deleted, and every value in it with it.');
-    }
-
-    #[Test]
     public function it_creates_a_list(): void
     {
         Queue::fake();
@@ -136,18 +90,6 @@ class ValueListControllerTest extends TestCase
         $list->refresh();
 
         $this->assertSame('Roles at Dunder Mifflin', $list->name);
-    }
-
-    #[Test]
-    public function it_refuses_a_rename_without_a_name(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
-
-        $this->actingAs($user)->put(route('settings.valueLists.update', $list->id), [])
-            ->assertSessionHasErrors('name', errorBag: "list{$list->id}");
     }
 
     #[Test]

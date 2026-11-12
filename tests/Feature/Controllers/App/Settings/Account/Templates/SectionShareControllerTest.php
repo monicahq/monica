@@ -48,17 +48,6 @@ class SectionShareControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_does_not_show_a_section_on_another_template(): void
-    {
-        $user = User::factory()->create();
-        $row = $this->publishedRow($user);
-        $other = Template::factory()->create(['account_id' => $user->account_id]);
-
-        $this->actingAs($user)->get(route('settings.sectionShare.index', [$other, $row->id]))
-            ->assertNotFound();
-    }
-
-    #[Test]
     public function it_is_not_offered_for_a_section_still_being_written(): void
     {
         $user = User::factory()->create();

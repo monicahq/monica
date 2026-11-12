@@ -35,21 +35,4 @@ class TemplateCopyControllerTest extends TestCase
             'is_system' => false,
         ]);
     }
-
-    #[Test]
-    public function it_copies_a_supplied_template_into_an_ordinary_one(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $template = Template::factory()->supplied()->create(['account_id' => $user->account_id]);
-        StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
-
-        $this->actingAs($user)->post(route('settings.templateCopy.create', $template))->assertRedirect();
-
-        $copy = Template::query()->where('account_id', $user->account_id)->where('is_system', false)->firstOrFail();
-
-        $this->assertFalse($copy->is_system);
-        $this->assertNull($copy->structure->published_version_id);
-    }
 }

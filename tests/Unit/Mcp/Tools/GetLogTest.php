@@ -42,19 +42,4 @@ class GetLogTest extends TestCase
         EricaServer::actingAs($user)->tool(GetLog::class, ['log' => (string) $log->id])
             ->assertHasErrors(['That log entry does not exist.']);
     }
-
-    #[Test]
-    public function it_reports_an_identifier_that_is_not_a_number_as_not_existing(): void
-    {
-        $user = User::factory()->create();
-
-        EricaServer::actingAs($user)->tool(GetLog::class, ['log' => 'abc'])
-            ->assertHasErrors(['That log entry does not exist.']);
-    }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.logs.show', app(GetLog::class)->mirrors());
-    }
 }

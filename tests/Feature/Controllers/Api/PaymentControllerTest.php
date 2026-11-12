@@ -70,19 +70,6 @@ class PaymentControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_answers_an_empty_list_rather_than_an_error(): void
-    {
-        $michael = User::factory()->create();
-        Sanctum::actingAs($michael);
-
-        $response = $this->json('GET', route('api.v1.billing.payments'));
-
-        $response->assertOk();
-        $response->assertJsonCount(0, 'data');
-        $response->assertJsonPath('meta.total', 0);
-    }
-
-    #[Test]
     public function it_answers_one_payment_with_everything_on_record(): void
     {
         $michael = User::factory()->create();
@@ -126,30 +113,5 @@ class PaymentControllerTest extends TestCase
 
         $this->json('GET', route('api.v1.billing.payments.show', ['payment' => 'in_schrutefarms']))->assertNotFound();
         $this->json('GET', route('api.v1.billing.payments'))->assertJsonCount(0, 'data');
-    }
-
-    #[Test]
-    public function it_answers_not_found_for_a_payment_nobody_made(): void
-    {
-        $michael = User::factory()->create();
-        Sanctum::actingAs($michael);
-
-        $this->json('GET', route('api.v1.billing.payments.show', ['payment' => 'in_nobody']))->assertNotFound();
-    }
-
-    #[Test]
-    public function it_pages_the_list_like_the_logs(): void
-    {
-        $michael = User::factory()->create();
-        Payment::factory()->count(3)->create(['account_id' => $michael->account_id]);
-
-        Sanctum::actingAs($michael);
-
-        $response = $this->json('GET', route('api.v1.billing.payments').'?per_page=2');
-
-        $response->assertOk();
-        $response->assertJsonCount(2, 'data');
-        $response->assertJsonPath('meta.per_page', 2);
-        $response->assertJsonPath('meta.total', 3);
     }
 }

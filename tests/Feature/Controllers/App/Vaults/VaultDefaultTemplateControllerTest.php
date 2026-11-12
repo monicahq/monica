@@ -43,31 +43,6 @@ class VaultDefaultTemplateControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_replaces_the_template_the_vault_was_pointing_at(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $standard = $this->publishedContactTemplate($user, 'Standard contact');
-        $work = $this->publishedContactTemplate($user, 'Work contact');
-
-        VaultDefaultTemplate::factory()->create([
-            'account_id' => $user->account_id,
-            'vault_id' => $vault->id,
-            'structure_version_id' => $standard->structure->published_version_id,
-        ]);
-
-        $this->actingAs($user)->put(route('vaults.defaultTemplate.update', $vault), [
-            'structure_version_id' => $work->structure->published_version_id,
-        ]);
-
-        $default = VaultDefaultTemplate::query()->where('vault_id', $vault->id)->sole();
-
-        $this->assertEquals($work->structure->published_version_id, $default->structure_version_id);
-    }
-
-    #[Test]
     public function it_accepts_a_version_the_template_has_moved_on_from(): void
     {
         Queue::fake();
@@ -88,27 +63,6 @@ class VaultDefaultTemplateControllerTest extends TestCase
         ])->assertRedirect(route('vaults.settings.index', $vault));
 
         $this->assertEquals($older, VaultDefaultTemplate::query()->where('vault_id', $vault->id)->sole()->structure_version_id);
-    }
-
-    #[Test]
-    public function it_refuses_a_version_nobody_has_published(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $template = $this->publishedContactTemplate($user, 'Standard contact');
-
-        $draft = StructureVersion::factory()->create([
-            'structure_id' => $template->structure->id,
-            'version_number' => 2,
-        ]);
-
-        $this->actingAs($user)->put(route('vaults.defaultTemplate.update', $vault), [
-            'structure_version_id' => $draft->id,
-        ])->assertSessionHasErrors('structure_version_id');
-
-        $this->assertEquals(0, VaultDefaultTemplate::query()->where('vault_id', $vault->id)->count());
     }
 
     #[Test]

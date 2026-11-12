@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\CreateNotificationPreference;
-use App\Enums\NotificationChannelEnum;
 use App\Enums\NotificationDeliveryModeEnum;
 use App\Models\Account;
 use App\Models\NotificationChannel;
@@ -37,23 +36,6 @@ class CreateNotificationPreferenceTest extends TestCase
     }
 
     #[Test]
-    public function it_gives_the_account_one_row_per_channel(): void
-    {
-        $account = Account::factory()->create();
-
-        new CreateNotificationPreference(account: $account)->execute();
-
-        foreach (NotificationChannelEnum::cases() as $channel) {
-            $this->assertDatabaseHas('notification_channels', [
-                'account_id' => $account->id,
-                'channel' => $channel->value,
-            ]);
-        }
-
-        $this->assertSame(4, NotificationChannel::query()->where('account_id', $account->id)->count());
-    }
-
-    #[Test]
     public function only_the_channels_asking_for_nothing_are_switched_on_to_start_with(): void
     {
         $account = Account::factory()->create();
@@ -66,6 +48,8 @@ class CreateNotificationPreferenceTest extends TestCase
         foreach (['telegram', 'sms'] as $channel) {
             $this->assertDatabaseHas('notification_channels', ['account_id' => $account->id, 'channel' => $channel, 'is_enabled' => false]);
         }
+
+        $this->assertSame(4, NotificationChannel::query()->where('account_id', $account->id)->count());
     }
 
     #[Test]

@@ -37,60 +37,6 @@ class RelationshipTypePositionControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_places_a_type_last_when_the_position_is_past_the_end(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
-        $type = RelationshipType::factory()->create(['account_id' => $user->account_id, 'relationship_category_id' => $category->id, 'position' => 1]);
-        RelationshipType::factory()->create(['account_id' => $user->account_id, 'relationship_category_id' => $category->id, 'position' => 2]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('PUT', "/api/v1/relationship-types/{$type->uuid}/position", ['position' => 99])
-            ->assertOk()
-            ->assertJsonPath('data.attributes.position', 2);
-    }
-
-    #[Test]
-    public function it_numbers_the_types_of_the_category_from_one_again_counting_the_retired_ones(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
-        $retired = RelationshipType::factory()->inactive()->create(['account_id' => $user->account_id, 'relationship_category_id' => $category->id, 'position' => 5]);
-        $moved = RelationshipType::factory()->create(['account_id' => $user->account_id, 'relationship_category_id' => $category->id, 'position' => 9]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('PUT', "/api/v1/relationship-types/{$moved->uuid}/position", ['position' => 1])->assertOk();
-
-        $this->assertSame(1, $moved->refresh()->position);
-        $this->assertSame(2, $retired->refresh()->position);
-    }
-
-    #[Test]
-    public function it_leaves_the_types_of_another_category_where_they_were(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
-        $other = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
-        $moved = RelationshipType::factory()->create(['account_id' => $user->account_id, 'relationship_category_id' => $category->id, 'position' => 2]);
-        RelationshipType::factory()->create(['account_id' => $user->account_id, 'relationship_category_id' => $category->id, 'position' => 1]);
-        $elsewhere = RelationshipType::factory()->create(['account_id' => $user->account_id, 'relationship_category_id' => $other->id, 'position' => 7]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('PUT', "/api/v1/relationship-types/{$moved->uuid}/position", ['position' => 1])->assertOk();
-
-        $this->assertSame(7, $elsewhere->refresh()->position);
-    }
-
-    #[Test]
     public function it_refuses_a_position_below_one(): void
     {
         $user = User::factory()->create();

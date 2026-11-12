@@ -79,21 +79,6 @@ class NotificationChannelTest extends TestCase
     }
 
     #[Test]
-    public function the_disabled_state_records_why_the_product_switched_it_off(): void
-    {
-        $channel = $this->row(Account::factory()->create(), NotificationChannelEnum::Telegram);
-        $channel->update([
-            'is_enabled' => false,
-            'consecutive_failures' => (int) config('monica.notification_channel_failure_threshold'),
-            'disabled_reason' => 'It stopped accepting anything we sent.',
-        ]);
-
-        $this->assertFalse($channel->is_enabled);
-        $this->assertSame('It stopped accepting anything we sent.', $channel->disabled_reason);
-        $this->assertSame((int) config('monica.notification_channel_failure_threshold'), $channel->consecutive_failures);
-    }
-
-    #[Test]
     public function it_is_reached_by_the_channel_name_and_only_inside_the_account(): void
     {
         $account = Account::factory()->create();

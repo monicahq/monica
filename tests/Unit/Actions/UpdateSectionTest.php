@@ -7,10 +7,7 @@ namespace Tests\Unit\Actions;
 use App\Actions\UpdateSection;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
-use App\Models\Field;
-use App\Models\FieldValue;
 use App\Models\Section;
-use App\Models\SectionVersion;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -99,51 +96,6 @@ class UpdateSectionTest extends TestCase
 
         $this->assertNull($section->icon);
         $this->assertNull($section->colour);
-    }
-
-    #[Test]
-    public function it_gives_the_section_no_new_version_when_the_mark_changes(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $section = Section::factory()->create(['account_id' => $user->account_id]);
-        SectionVersion::factory()->create(['section_id' => $section->id, 'account_id' => $user->account_id]);
-
-        $before = $section->versions()->count();
-
-        new UpdateSection(
-            user: $user,
-            section: $section,
-            name: $section->name,
-            icon: 'health',
-            colour: '#4f8a49',
-        )->execute();
-
-        $this->assertEquals($before, $section->fresh()->versions()->count());
-    }
-
-    #[Test]
-    public function it_leaves_every_value_written_against_the_section_alone_when_the_mark_changes(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $section = Section::factory()->create(['account_id' => $user->account_id]);
-        $version = SectionVersion::factory()->create(['section_id' => $section->id, 'account_id' => $user->account_id]);
-        $field = Field::factory()->create(['section_version_id' => $version->id, 'account_id' => $user->account_id]);
-        $value = FieldValue::factory()->create(['field_id' => $field->id, 'account_id' => $user->account_id]);
-
-        new UpdateSection(
-            user: $user,
-            section: $section,
-            name: $section->name,
-            icon: 'health',
-            colour: '#4f8a49',
-        )->execute();
-
-        $this->assertEquals($value->value, $value->fresh()->value);
-        $this->assertEquals($field->id, $value->fresh()->field_id);
     }
 
     #[Test]

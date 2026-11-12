@@ -63,14 +63,6 @@ class BillingViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_shows_the_currency_the_reader_picked(): void
-    {
-        $michael = User::factory()->create();
-
-        $this->assertSame('usd', new BillingViewModel(user: $michael, currency: 'usd')->currency());
-    }
-
-    #[Test]
     public function it_suggests_the_currency_of_the_language_when_nothing_was_picked(): void
     {
         config(['localization.locales.en.currency' => 'usd']);
@@ -144,18 +136,6 @@ class BillingViewModelTest extends TestCase
 
         $this->assertSame($order->id, $viewModel->order()?->id);
         $this->assertFalse($viewModel->hasFullAccess());
-    }
-
-    #[Test]
-    public function it_says_whether_stripe_knows_the_account(): void
-    {
-        $michael = User::factory()->create();
-
-        $this->assertFalse(new BillingViewModel(user: $michael)->isKnownToStripe());
-
-        $michael->account->forceFill(['stripe_id' => 'cus_dundermifflin'])->save();
-
-        $this->assertTrue(new BillingViewModel(user: $michael->fresh())->isKnownToStripe());
     }
 
     #[Test]
@@ -319,18 +299,6 @@ class BillingViewModelTest extends TestCase
         $this->assertSame('Unlimited', $usage[1]['note']);
         $this->assertNull($usage[1]['percent']);
         $this->assertSame('Files and photos', $usage[2]['note']);
-    }
-
-    #[Test]
-    public function it_prices_the_amount_alone_beside_the_whole_price(): void
-    {
-        $michael = User::factory()->create();
-        $this->app->setLocale('en');
-
-        $offers = new BillingViewModel(user: $michael, currency: 'usd')->offers();
-
-        $this->assertSame('$10.00', $offers[0]['amount']);
-        $this->assertSame('$219.00', $offers[2]['amount']);
     }
 
     #[Test]

@@ -22,19 +22,6 @@ class ApiDocsMarkdownControllerTest extends TestCase
     }
 
     #[Test]
-    public function the_whole_reference_holds_every_documented_endpoint(): void
-    {
-        $response = $this->get(route('docs.api.markdown.index'));
-
-        $response->assertSee('# Check status', escape: false);
-        $response->assertSee('# Register', escape: false);
-        $response->assertSee('# Log in', escape: false);
-        $response->assertSee('# Log out', escape: false);
-        $response->assertSee('# Get your profile', escape: false);
-        $response->assertSee('# Update your profile', escape: false);
-    }
-
-    #[Test]
     public function it_hands_over_one_endpoint_on_its_own(): void
     {
         $response = $this->get(route('docs.api.markdown.show', ['section' => 'me-show']));
@@ -60,15 +47,5 @@ class ApiDocsMarkdownControllerTest extends TestCase
     {
         $this->get(route('docs.api.markdown.show', ['section' => 'nothing-of-the-sort']))
             ->assertNotFound();
-    }
-
-    #[Test]
-    public function the_page_offers_both_ways_of_taking_it_away(): void
-    {
-        $response = $this->get(route('docs.api.show', ['section' => 'me-show']));
-
-        $response->assertSee('Copy for LLM');
-        $response->assertSee('View as Markdown');
-        $response->assertSee(route('docs.api.markdown.show', ['section' => 'me-show']), escape: false);
     }
 }

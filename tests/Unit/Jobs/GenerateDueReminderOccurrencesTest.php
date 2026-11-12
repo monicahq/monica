@@ -58,18 +58,6 @@ class GenerateDueReminderOccurrencesTest extends TestCase
         $this->assertDatabaseCount('reminder_occurrences', 0);
     }
 
-    #[Test]
-    public function it_writes_nothing_new_when_it_runs_again(): void
-    {
-        CarbonImmutable::setTestNow('2027-05-01 06:00:00');
-        $this->rule('1984-05-12');
-
-        new GenerateDueReminderOccurrences()->handle();
-        new GenerateDueReminderOccurrences()->handle();
-
-        $this->assertDatabaseCount('reminder_occurrences', 1);
-    }
-
     private function rule(string $date): Reminder
     {
         $value = FieldValue::factory()->recurringDate($date)->create();

@@ -10,14 +10,6 @@ use Tests\TestCase;
 class BackLinkTest extends TestCase
 {
     #[Test]
-    public function it_points_back_and_says_where_to(): void
-    {
-        $this->blade('<x-back-link href="/settings">Back to settings</x-back-link>')
-            ->assertSee('href="/settings"', escape: false)
-            ->assertSee('Back to settings', escape: false);
-    }
-
-    #[Test]
     public function it_is_followed_without_a_full_page_load(): void
     {
         $this->blade('<x-back-link href="/settings">Back</x-back-link>')

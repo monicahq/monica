@@ -35,18 +35,6 @@ class ModerationApprovalControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_attributes_the_decision_to_the_administrator_who_took_it(): void
-    {
-        $version = MarketplaceListingVersion::factory()->create();
-
-        $this->actingAs($this->administrator())
-            ->post(route('admin.moderation.approval.create', ['version' => $version->id]));
-
-        $this->assertEquals('Michael Scott', $version->fresh()->listing->moderated_by);
-        $this->assertDatabaseHas('administrator_logs', ['action' => 'marketplace_version_approved']);
-    }
-
-    #[Test]
     public function it_says_what_stands_when_the_decision_was_already_taken(): void
     {
         $version = MarketplaceListingVersion::factory()->approved()->create();

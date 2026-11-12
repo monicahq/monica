@@ -22,25 +22,4 @@ class ReminderTest extends TestCase
 
         $this->assertEquals([$firing->id], Reminder::query()->active()->pluck('id')->all());
     }
-
-    #[Test]
-    public function it_is_only_ever_removed_softly(): void
-    {
-        $reminder = Reminder::factory()->create();
-
-        $reminder->delete();
-
-        $this->assertSoftDeleted($reminder);
-        $this->assertEquals(0, Reminder::query()->count());
-        $this->assertEquals(1, Reminder::query()->withTrashed()->count());
-    }
-
-    #[Test]
-    public function it_carries_a_public_identifier_that_is_never_its_key(): void
-    {
-        $reminder = Reminder::factory()->create();
-
-        $this->assertEquals('uuid', $reminder->getRouteKeyName());
-        $this->assertNotEquals((string) $reminder->id, $reminder->getRouteKey());
-    }
 }

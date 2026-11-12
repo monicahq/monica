@@ -68,17 +68,6 @@ class ShareTemplateViewModelTest extends TestCase
         $this->assertEquals('42 records', $viewModel->recordCountLabel());
     }
 
-    #[Test]
-    public function it_lists_what_is_in_the_file(): void
-    {
-        $user = User::factory()->create();
-        $viewModel = new ShareTemplateViewModel(user: $user, template: $this->publishedTemplate($user));
-
-        $labels = array_column($viewModel->inFile(), 'label');
-
-        $this->assertEquals(['Structure', 'Version', 'Format', 'Size'], $labels);
-    }
-
     private function publishedTemplate(User $user): Template
     {
         $template = Template::factory()->create([

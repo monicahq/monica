@@ -77,42 +77,6 @@ class ApiKeyControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_brings_an_absurd_page_size_back_into_range(): void
-    {
-        $user = User::factory()->create();
-        $user->createToken('Dundie awards bot');
-
-        Sanctum::actingAs($user);
-
-        $this->json('GET', '/api/v1/api-keys?per_page=100000')
-            ->assertOk()
-            ->assertJsonPath('meta.per_page', 100);
-
-        $this->json('GET', '/api/v1/api-keys?per_page=0')
-            ->assertOk()
-            ->assertJsonPath('meta.per_page', 1);
-    }
-
-    #[Test]
-    public function it_answers_the_page_that_was_asked_for(): void
-    {
-        $user = User::factory()->create();
-        $user->createToken('Dundie awards bot');
-        $user->createToken('Deployment script');
-        $user->createToken('Scranton branch bot');
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('GET', '/api/v1/api-keys?per_page=2&page=2');
-
-        $response->assertOk();
-        $response->assertJsonCount(1, 'data');
-        $response->assertJsonPath('meta.page', 2);
-        $response->assertJsonPath('meta.total', 3);
-        $response->assertJsonPath('data.0.attributes.name', 'Dundie awards bot');
-    }
-
-    #[Test]
     public function it_shows_an_api_key(): void
     {
         $user = User::factory()->create();

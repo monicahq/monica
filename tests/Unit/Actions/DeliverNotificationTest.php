@@ -179,19 +179,6 @@ class DeliverNotificationTest extends TestCase
     }
 
     #[Test]
-    public function a_notification_that_failed_keeps_its_row_and_its_reason(): void
-    {
-        NotificationFacade::fake();
-        $notification = $this->notification()->email()->create();
-        ReminderOccurrence::query()->findOrFail($notification->notifiable_id)->reminder->delete();
-
-        new DeliverNotification(notification: $notification)->execute();
-
-        $this->assertDatabaseHas('notifications', ['id' => $notification->id]);
-        $this->assertNotNull($notification->refresh()->failure_reason);
-    }
-
-    #[Test]
     public function it_tells_nobody_twice_when_it_runs_twice(): void
     {
         NotificationFacade::fake();

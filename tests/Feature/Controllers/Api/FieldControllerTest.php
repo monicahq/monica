@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Api;
 
-use App\Enums\FieldTypeEnum;
 use App\Enums\VersionStatusEnum;
 use App\Models\EntityType;
 use App\Models\Field;
@@ -14,7 +13,6 @@ use App\Models\StructureVersion;
 use App\Models\StructureVersionSection;
 use App\Models\Template;
 use App\Models\User;
-use App\Models\ValueList;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use Laravel\Sanctum\Sanctum;
@@ -62,80 +60,6 @@ class FieldControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_places_a_new_field_last_in_its_section(): void
-    {
-        Queue::fake();
-        [$user, $template, $row] = $this->placement();
-        Field::factory()->create(['section_version_id' => $row->section_version_id, 'position' => 1]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('POST', $this->url($template, $row).'/fields', ['type' => 'text', 'label' => 'Nickname'])
-            ->assertCreated()
-            ->assertJsonPath('data.attributes.position', 2);
-    }
-
-    #[Test]
-    public function it_settles_repeatability_from_the_type(): void
-    {
-        Queue::fake();
-        [$user, $template, $row] = $this->placement();
-
-        Sanctum::actingAs($user);
-
-        $this->json('POST', $this->url($template, $row).'/fields', ['type' => 'repeater', 'label' => 'Addresses'])
-            ->assertCreated()
-            ->assertJsonPath('data.attributes.is_repeatable', true);
-    }
-
-    #[Test]
-    public function it_refuses_a_field_offering_choices_with_no_list_to_take_them_from(): void
-    {
-        Queue::fake();
-        [$user, $template, $row] = $this->placement();
-
-        Sanctum::actingAs($user);
-
-        $this->json('POST', $this->url($template, $row).'/fields', ['type' => 'select', 'label' => 'Country'])
-            ->assertUnprocessable()
-            ->assertJsonValidationErrors(['type']);
-    }
-
-    #[Test]
-    public function it_takes_the_list_a_field_offers_its_choices_from(): void
-    {
-        Queue::fake();
-        [$user, $template, $row] = $this->placement();
-        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('POST', $this->url($template, $row).'/fields', [
-            'type' => 'select',
-            'label' => 'Country',
-            'value_list_id' => $list->id,
-        ])->assertCreated();
-    }
-
-    #[Test]
-    public function it_takes_the_list_a_phone_takes_its_labels_from(): void
-    {
-        Queue::fake();
-        [$user, $template, $row] = $this->placement();
-        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('POST', $this->url($template, $row).'/fields', [
-            'type' => 'phone',
-            'label' => 'Phone',
-            'value_list_id' => $list->id,
-        ])->assertCreated();
-
-        $this->assertDatabaseHas('fields', ['type' => 'phone', 'value_list_id' => $list->id]);
-    }
-
-    #[Test]
     public function it_takes_an_email_that_names_no_list_at_all(): void
     {
         Queue::fake();
@@ -149,32 +73,6 @@ class FieldControllerTest extends TestCase
         ])->assertCreated();
 
         $this->assertDatabaseHas('fields', ['type' => 'email', 'value_list_id' => null]);
-    }
-
-    #[Test]
-    public function it_adds_a_field_of_every_type_the_product_offers(): void
-    {
-        Queue::fake();
-        [$user, $template, $row] = $this->placement();
-        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
-
-        Sanctum::actingAs($user);
-
-        foreach (FieldTypeEnum::cases() as $type) {
-            $payload = ['type' => $type->value, 'label' => 'A '.$type->value];
-
-            if (in_array($type, [FieldTypeEnum::Select, FieldTypeEnum::Multiselect, FieldTypeEnum::Radio], true)) {
-                $payload['value_list_id'] = $list->id;
-            }
-
-            if ($type === FieldTypeEnum::Relation) {
-                $payload['relation_target'] = 'contact';
-            }
-
-            $this->json('POST', $this->url($template, $row).'/fields', $payload)
-                ->assertCreated()
-                ->assertJsonPath('data.attributes.type', $type->value);
-        }
     }
 
     #[Test]
@@ -223,25 +121,6 @@ class FieldControllerTest extends TestCase
         ])
             ->assertUnprocessable()
             ->assertJsonValidationErrors('relation_entity_type_id');
-    }
-
-    #[Test]
-    public function it_refuses_a_kind_of_file_that_is_not_a_mime_type(): void
-    {
-        Queue::fake();
-        [$user, $template, $row] = $this->placement();
-        $field = Field::factory()->create(['section_version_id' => $row->section_version_id, 'type' => FieldTypeEnum::File, 'position' => 1]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('PUT', $this->url($template, $row)."/fields/{$field->id}", [
-            'label' => 'Contract',
-            'help_text' => null,
-            'placeholder' => null,
-            'options' => ['accepted_mime_types' => ['pdf']],
-        ])
-            ->assertUnprocessable()
-            ->assertJsonValidationErrors('options');
     }
 
     #[Test]

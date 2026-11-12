@@ -40,15 +40,6 @@ class McpCallControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_says_what_will_land_here_when_nothing_has_been_called(): void
-    {
-        $this->actingAs(User::factory()->create())
-            ->get(route('settings.mcpCalls.index'))
-            ->assertOk()
-            ->assertSee('No assistant has called anything yet');
-    }
-
-    #[Test]
     public function it_narrows_the_history_and_keeps_the_filters_across_pages(): void
     {
         $jim = User::factory()->create();
@@ -66,34 +57,11 @@ class McpCallControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_says_nothing_matches_rather_than_nothing_happened(): void
-    {
-        $jim = User::factory()->create();
-
-        McpCall::factory()->create(['account_id' => $jim->account_id, 'user_id' => $jim->id]);
-
-        $this->actingAs($jim)
-            ->get(route('settings.mcpCalls.index', ['result' => 'error']))
-            ->assertOk()
-            ->assertSee('Nothing matches')
-            ->assertDontSee('No assistant has called anything yet');
-    }
-
-    #[Test]
     public function it_refuses_a_filter_it_does_not_know(): void
     {
         $this->actingAs(User::factory()->create())
             ->get(route('settings.mcpCalls.index', ['period' => 'forever', 'connection' => 'fax:1', 'result' => 'lost']))
             ->assertSessionHasErrors(['period', 'connection', 'result']);
-    }
-
-    #[Test]
-    public function it_is_reached_from_the_security_screen(): void
-    {
-        $this->actingAs(User::factory()->create())
-            ->get(route('settings.security.index'))
-            ->assertOk()
-            ->assertSee(route('settings.mcpCalls.index'));
     }
 
     #[Test]

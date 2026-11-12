@@ -49,16 +49,6 @@ class FieldValueFormatterTest extends TestCase
     }
 
     #[Test]
-    public function it_reads_a_long_text_back(): void
-    {
-        $user = User::factory()->create();
-
-        $this->assertEquals('Sells paper.', new FieldValueFormatter($user)->format(
-            $this->value($user, FieldTypeEnum::Textarea, ['value_text' => 'Sells paper.']),
-        ));
-    }
-
-    #[Test]
     public function it_reads_nothing_out_of_a_field_holding_nothing(): void
     {
         $user = User::factory()->create();
@@ -373,25 +363,6 @@ class FieldValueFormatterTest extends TestCase
                 'value_json' => ['street' => 'Schrute Farms', 'city' => 'Honesdale'],
                 'value_list_item_id' => $custom->id,
                 'label_wording' => 'Beet farm',
-            ]),
-        ));
-    }
-
-    #[Test]
-    public function it_still_reads_an_address_label_nobody_offers_any_more(): void
-    {
-        $user = User::factory()->create();
-        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
-        $previous = ValueListItem::factory()->disabled()->create([
-            'account_id' => $user->account_id,
-            'value_list_id' => $list->id,
-            'label' => 'Previous',
-        ]);
-
-        $this->assertEquals('Stamford (Previous)', new FieldValueFormatter($user)->format(
-            $this->value($user, FieldTypeEnum::Address, [
-                'value_json' => ['city' => 'Stamford'],
-                'value_list_item_id' => $previous->id,
             ]),
         ));
     }

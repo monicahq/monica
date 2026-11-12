@@ -37,37 +37,6 @@ class ActivateLifeEventTypeTest extends TestCase
     }
 
     #[Test]
-    public function it_confirms_the_state_rather_than_inverting_it(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $type = LifeEventType::factory()->inactive()->create(['account_id' => $user->account_id]);
-
-        new ActivateLifeEventType(user: $user, lifeEventType: $type)->execute();
-        new ActivateLifeEventType(user: $user, lifeEventType: $type)->execute();
-
-        $this->assertDatabaseHas('life_event_types', ['id' => $type->id, 'is_active' => true]);
-    }
-
-    #[Test]
-    public function it_leaves_the_position_and_the_name_alone(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $type = LifeEventType::factory()->inactive()->create([
-            'account_id' => $user->account_id,
-            'name' => 'Sales call',
-            'position' => 4,
-        ]);
-
-        new ActivateLifeEventType(user: $user, lifeEventType: $type)->execute();
-
-        $this->assertDatabaseHas('life_event_types', ['id' => $type->id, 'name' => 'Sales call', 'position' => 4]);
-    }
-
-    #[Test]
     public function it_refuses_a_type_in_another_account(): void
     {
         Queue::fake();

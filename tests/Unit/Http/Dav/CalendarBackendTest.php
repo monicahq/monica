@@ -7,7 +7,9 @@ namespace Tests\Unit\Http\Dav;
 use App\Http\Dav\CalendarBackend;
 use App\Models\User;
 use App\Models\Vault;
+use Closure;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\Exception\NotFound;
@@ -53,60 +55,6 @@ class CalendarBackendTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_to_make_a_calendar(): void
-    {
-        $user = User::factory()->create();
-
-        $this->expectException(Forbidden::class);
-
-        new CalendarBackend($user)->createCalendar('principals/'.$user->email, 'invented', []);
-    }
-
-    #[Test]
-    public function it_refuses_to_delete_a_calendar(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $this->expectException(Forbidden::class);
-
-        new CalendarBackend($user)->deleteCalendar($vault->id.':dates');
-    }
-
-    #[Test]
-    public function it_refuses_to_write_an_entry(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $this->expectException(Forbidden::class);
-
-        new CalendarBackend($user)->createCalendarObject($vault->id.':dates', 'invented.ics', 'BEGIN:VCALENDAR');
-    }
-
-    #[Test]
-    public function it_refuses_to_change_an_entry(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $this->expectException(Forbidden::class);
-
-        new CalendarBackend($user)->updateCalendarObject($vault->id.':dates', 'invented.ics', 'BEGIN:VCALENDAR');
-    }
-
-    #[Test]
-    public function it_refuses_to_remove_an_entry(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $this->expectException(Forbidden::class);
-
-        new CalendarBackend($user)->deleteCalendarObject($vault->id.':dates', 'invented.ics');
-    }
-
-    #[Test]
     public function it_writes_nothing_a_device_asks_of_a_calendar(): void
     {
         $user = User::factory()->create();
@@ -126,5 +74,29 @@ class CalendarBackendTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
 
         $this->assertNull(new CalendarBackend($user)->getCalendarObject($vault->id.':dates', 'nothing.ics'));
+    }
+
+    #[Test]
+    #[DataProvider('writes')]
+    public function it_refuses_every_write_a_device_asks_of_a_calendar(Closure $write): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $this->expectException(Forbidden::class);
+
+        $write(new CalendarBackend($user), $user, "{$vault->id}:dates");
+    }
+
+    /** @return array<string, array{Closure}> */
+    public static function writes(): array
+    {
+        return [
+            'make a calendar' => [fn (CalendarBackend $backend, User $user, string $calendarId) => $backend->createCalendar("principals/{$user->email}", 'invented', [])],
+            'delete a calendar' => [fn (CalendarBackend $backend, User $user, string $calendarId) => $backend->deleteCalendar($calendarId)],
+            'write an entry' => [fn (CalendarBackend $backend, User $user, string $calendarId) => $backend->createCalendarObject($calendarId, 'invented.ics', 'BEGIN:VCALENDAR')],
+            'change an entry' => [fn (CalendarBackend $backend, User $user, string $calendarId) => $backend->updateCalendarObject($calendarId, 'invented.ics', 'BEGIN:VCALENDAR')],
+            'remove an entry' => [fn (CalendarBackend $backend, User $user, string $calendarId) => $backend->deleteCalendarObject($calendarId, 'invented.ics')],
+        ];
     }
 }

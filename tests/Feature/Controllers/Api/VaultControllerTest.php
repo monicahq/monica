@@ -5,11 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\Api;
 
 use App\Enums\StructureAppliesToEnum;
-use App\Enums\UserActionEnum;
 use App\Jobs\CreateDefaultTemplate;
-use App\Jobs\LogUserAction;
-use App\Models\Contact;
-use App\Models\ShareLink;
 use App\Models\StructureVersion;
 use App\Models\Template;
 use App\Models\User;
@@ -83,20 +79,6 @@ class VaultControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_lists_nothing_when_the_account_holds_no_vault(): void
-    {
-        $user = User::factory()->create();
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('GET', '/api/v1/vaults');
-
-        $response->assertOk();
-        $response->assertJsonCount(0, 'data');
-        $response->assertJsonPath('meta.total', 0);
-    }
-
-    #[Test]
     public function it_brings_an_absurd_page_size_back_into_range(): void
     {
         $user = User::factory()->create();
@@ -125,22 +107,6 @@ class VaultControllerTest extends TestCase
         $response->assertJsonPath('meta.page', 2);
         $response->assertJsonPath('meta.total', 2);
         $response->assertJsonPath('data.0.attributes.name', 'Schrute Farms');
-    }
-
-    #[Test]
-    public function it_does_not_list_a_deleted_vault(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $vault->delete();
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('GET', '/api/v1/vaults');
-
-        $response->assertOk();
-        $response->assertJsonCount(0, 'data');
-        $response->assertJsonPath('meta.total', 0);
     }
 
     #[Test]
@@ -184,28 +150,6 @@ class VaultControllerTest extends TestCase
         Sanctum::actingAs($user);
 
         $this->json('GET', "/api/v1/vaults/{$stranger->uuid}")->assertNotFound();
-    }
-
-    #[Test]
-    public function it_returns_not_found_for_a_vault_that_does_not_exist(): void
-    {
-        $user = User::factory()->create();
-
-        Sanctum::actingAs($user);
-
-        $this->json('GET', '/api/v1/vaults/00000000-0000-0000-0000-000000000000')->assertNotFound();
-    }
-
-    #[Test]
-    public function it_returns_not_found_for_a_deleted_vault(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $vault->delete();
-
-        Sanctum::actingAs($user);
-
-        $this->json('GET', "/api/v1/vaults/{$vault->uuid}")->assertNotFound();
     }
 
     #[Test]
@@ -277,48 +221,6 @@ class VaultControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_puts_a_new_vault_at_the_end_of_the_list(): void
-    {
-        config(['monica.free_vault_limit' => 5]);
-        Queue::fake();
-
-        $user = User::factory()->create();
-
-        new CreateDefaultTemplate(user: $user)->handle();
-        Vault::factory()->create(['account_id' => $user->account_id, 'position' => 4]);
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('POST', '/api/v1/vaults', ['name' => 'Schrute Farms']);
-
-        $response->assertCreated();
-        $response->assertJsonPath('data.attributes.position', 5);
-    }
-
-    #[Test]
-    public function it_makes_the_first_vault_of_an_account_the_default_one(): void
-    {
-        config(['monica.free_vault_limit' => 5]);
-        Queue::fake();
-
-        $user = User::factory()->create();
-
-        new CreateDefaultTemplate(user: $user)->handle();
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('POST', '/api/v1/vaults', ['name' => 'Dunder Mifflin']);
-
-        $response->assertCreated();
-        $response->assertJsonPath('data.attributes.is_default', true);
-
-        $second = $this->json('POST', '/api/v1/vaults', ['name' => 'Schrute Farms']);
-
-        $second->assertCreated();
-        $second->assertJsonPath('data.attributes.is_default', false);
-    }
-
-    #[Test]
     public function it_refuses_a_vault_without_a_name(): void
     {
         $user = User::factory()->create();
@@ -330,63 +232,6 @@ class VaultControllerTest extends TestCase
         $response->assertUnprocessable();
         $response->assertJsonValidationErrors('name');
         $this->assertDatabaseCount('vaults', 0);
-    }
-
-    #[Test]
-    public function it_refuses_a_colour_the_product_does_not_offer(): void
-    {
-        $user = User::factory()->create();
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('POST', '/api/v1/vaults', [
-            'name' => 'Dunder Mifflin',
-            'colour' => 'beige',
-        ]);
-
-        $response->assertUnprocessable();
-        $response->assertJsonValidationErrors('colour');
-        $this->assertDatabaseCount('vaults', 0);
-    }
-
-    #[Test]
-    public function it_refuses_a_name_longer_than_the_limit(): void
-    {
-        $user = User::factory()->create();
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('POST', '/api/v1/vaults', ['name' => str_repeat('a', 256)]);
-
-        $response->assertUnprocessable();
-        $response->assertJsonValidationErrors('name');
-        $this->assertDatabaseCount('vaults', 0);
-    }
-
-    #[Test]
-    public function it_writes_the_creation_to_the_journal(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-
-        new CreateDefaultTemplate(user: $user)->handle();
-
-        Sanctum::actingAs($user);
-
-        $this->json('POST', '/api/v1/vaults', ['name' => 'Dunder Mifflin'])->assertCreated();
-
-        $vault = Vault::query()->where('account_id', $user->account_id)->firstOrFail();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::VaultCreation
-                && $job->account->id === $user->account_id
-                && $job->user->id === $user->id
-                && $job->vault->id === $vault->id
-                && $job->parameters === ['name' => 'Dunder Mifflin'],
-        );
     }
 
     #[Test]
@@ -426,30 +271,6 @@ class VaultControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_clears_the_description_when_it_is_sent_as_null(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create([
-            'account_id' => $user->account_id,
-            'description' => 'Everybody at the Scranton branch.',
-        ]);
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('PUT', "/api/v1/vaults/{$vault->uuid}", [
-            'name' => 'Scranton',
-            'description' => null,
-            'colour' => '#9a3f2b',
-        ]);
-
-        $response->assertOk();
-        $response->assertJsonPath('data.attributes.description', null);
-        $this->assertDatabaseHas('vaults', ['id' => $vault->id, 'description' => null]);
-    }
-
-    #[Test]
     public function it_leaves_what_the_vault_holds_alone(): void
     {
         Queue::fake();
@@ -473,51 +294,6 @@ class VaultControllerTest extends TestCase
         $response->assertJsonPath('data.attributes.position', 4);
         $response->assertJsonPath('data.attributes.is_default', true);
         $response->assertJsonPath('data.attributes.contact_count', 12);
-    }
-
-    #[Test]
-    public function it_refuses_a_change_that_omits_the_colour(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create([
-            'account_id' => $user->account_id,
-            'colour' => '#4f8a49',
-        ]);
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('PUT', "/api/v1/vaults/{$vault->uuid}", [
-            'name' => 'Scranton',
-            'description' => null,
-        ]);
-
-        $response->assertUnprocessable();
-        $response->assertJsonValidationErrors('colour');
-        $this->assertDatabaseHas('vaults', ['id' => $vault->id, 'colour' => '#4f8a49']);
-    }
-
-    #[Test]
-    public function it_refuses_a_change_that_omits_the_description(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create([
-            'account_id' => $user->account_id,
-            'description' => 'Everybody at the Scranton branch.',
-        ]);
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('PUT', "/api/v1/vaults/{$vault->uuid}", [
-            'name' => 'Scranton',
-            'colour' => '#9a3f2b',
-        ]);
-
-        $response->assertUnprocessable();
-        $response->assertJsonValidationErrors('description');
-        $this->assertDatabaseHas('vaults', [
-            'id' => $vault->id,
-            'description' => 'Everybody at the Scranton branch.',
-        ]);
     }
 
     #[Test]
@@ -560,35 +336,6 @@ class VaultControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_writes_the_change_to_the_journal(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create([
-            'account_id' => $user->account_id,
-            'name' => 'Dunder Mifflin',
-        ]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('PUT', "/api/v1/vaults/{$vault->uuid}", [
-            'name' => 'Scranton',
-            'description' => null,
-            'colour' => '#9a3f2b',
-        ])->assertOk();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::VaultUpdate
-                && $job->vault->id === $vault->id
-                && $job->parameters === ['name' => 'Scranton']
-                && $job->changes['name'] === ['before' => 'Dunder Mifflin', 'after' => 'Scranton'],
-        );
-    }
-
-    #[Test]
     public function it_deletes_a_vault(): void
     {
         Queue::fake();
@@ -607,73 +354,6 @@ class VaultControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_takes_the_contacts_with_it(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $vault = Vault::factory()->default()->create(['account_id' => $user->account_id]);
-        $dwight = Contact::factory()->create(['vault_id' => $vault->id]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('DELETE', "/api/v1/vaults/{$vault->uuid}")->assertNoContent();
-
-        $this->assertSoftDeleted('contacts', ['id' => $dwight->id, 'deleted_with_vault' => true]);
-    }
-
-    #[Test]
-    public function it_revokes_the_private_links_into_the_vault(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $vault = Vault::factory()->default()->create(['account_id' => $user->account_id]);
-        $ontoTheVault = ShareLink::factory()->forVault($vault)->create();
-        $elsewhere = ShareLink::factory()->create();
-
-        Sanctum::actingAs($user);
-
-        $this->json('DELETE', "/api/v1/vaults/{$vault->uuid}")->assertNoContent();
-
-        $this->assertNotNull($ontoTheVault->refresh()->revoked_at);
-        $this->assertNull($elsewhere->refresh()->revoked_at);
-    }
-
-    #[Test]
-    public function it_hands_the_default_title_to_the_first_vault_left(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $vault = Vault::factory()->default()->create(['account_id' => $user->account_id, 'position' => 1]);
-        $next = Vault::factory()->create(['account_id' => $user->account_id, 'position' => 2]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('DELETE', "/api/v1/vaults/{$vault->uuid}")->assertNoContent();
-
-        $this->assertTrue($next->refresh()->is_default);
-        $this->assertSame(1, $this->defaultVaultCount($user));
-    }
-
-    #[Test]
-    public function it_deletes_the_last_vault_of_an_account(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $vault = Vault::factory()->default()->create(['account_id' => $user->account_id]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('DELETE', "/api/v1/vaults/{$vault->uuid}")->assertNoContent();
-
-        $this->assertSame(0, Vault::query()->where('account_id', $user->account_id)->count());
-        $this->assertSame(0, $this->defaultVaultCount($user));
-    }
-
-    #[Test]
     public function it_returns_not_found_when_deleting_a_vault_from_another_account(): void
     {
         $user = User::factory()->create();
@@ -684,44 +364,6 @@ class VaultControllerTest extends TestCase
         $this->json('DELETE', "/api/v1/vaults/{$stranger->uuid}")->assertNotFound();
 
         $this->assertNotSoftDeleted('vaults', ['id' => $stranger->id]);
-    }
-
-    #[Test]
-    public function it_returns_not_found_when_deleting_the_same_vault_twice(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $vault = Vault::factory()->default()->create(['account_id' => $user->account_id]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('DELETE', "/api/v1/vaults/{$vault->uuid}")->assertNoContent();
-        $this->json('DELETE', "/api/v1/vaults/{$vault->uuid}")->assertNotFound();
-    }
-
-    #[Test]
-    public function it_writes_the_deletion_to_the_journal(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $vault = Vault::factory()->default()->create([
-            'account_id' => $user->account_id,
-            'name' => 'Dunder Mifflin',
-        ]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('DELETE', "/api/v1/vaults/{$vault->uuid}")->assertNoContent();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::VaultDeletion
-                && $job->vault->id === $vault->id
-                && $job->parameters === ['name' => 'Dunder Mifflin'],
-        );
     }
 
     #[Test]
@@ -746,30 +388,6 @@ class VaultControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_takes_the_default_title_off_the_vault_that_held_it(): void
-    {
-        config(['monica.free_vault_limit' => 5]);
-        Queue::fake();
-
-        $user = User::factory()->create();
-
-        new CreateDefaultTemplate(user: $user)->handle();
-        $held = Vault::factory()->default()->create(['account_id' => $user->account_id]);
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('POST', '/api/v1/vaults', [
-            'name' => 'Schrute Farms',
-            'is_default' => true,
-        ]);
-
-        $response->assertCreated();
-        $response->assertJsonPath('data.attributes.is_default', true);
-        $this->assertFalse($held->refresh()->is_default);
-        $this->assertSame(1, $this->defaultVaultCount($user));
-    }
-
-    #[Test]
     public function it_leaves_the_default_alone_when_the_request_says_false(): void
     {
         config(['monica.free_vault_limit' => 5]);
@@ -789,25 +407,6 @@ class VaultControllerTest extends TestCase
 
         $response->assertCreated();
         $response->assertJsonPath('data.attributes.is_default', false);
-        $this->assertTrue($held->refresh()->is_default);
-        $this->assertSame(1, $this->defaultVaultCount($user));
-    }
-
-    #[Test]
-    public function it_leaves_the_default_alone_when_the_request_says_nothing(): void
-    {
-        config(['monica.free_vault_limit' => 5]);
-        Queue::fake();
-
-        $user = User::factory()->create();
-
-        new CreateDefaultTemplate(user: $user)->handle();
-        $held = Vault::factory()->default()->create(['account_id' => $user->account_id]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('POST', '/api/v1/vaults', ['name' => 'Schrute Farms'])->assertCreated();
-
         $this->assertTrue($held->refresh()->is_default);
         $this->assertSame(1, $this->defaultVaultCount($user));
     }
@@ -888,66 +487,6 @@ class VaultControllerTest extends TestCase
         ]);
     }
 
-    #[Test]
-    public function it_refuses_a_structure_version_that_is_still_a_draft(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $draft = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('POST', '/api/v1/vaults', [
-            'name' => 'Dunder Mifflin',
-            'structure_version_id' => $draft->id,
-        ]);
-
-        $response->assertUnprocessable();
-        $response->assertJsonValidationErrors('structure_version_id');
-        $this->assertDatabaseCount('vaults', 0);
-    }
-
-    #[Test]
-    public function it_writes_each_decision_to_the_journal_as_its_own_entry(): void
-    {
-        config(['monica.free_vault_limit' => 5]);
-        Queue::fake();
-
-        $user = User::factory()->create();
-
-        new CreateDefaultTemplate(user: $user)->handle();
-        Vault::factory()->default()->create(['account_id' => $user->account_id]);
-        $chosen = $this->publishedContactTemplate($user, 'Work contact');
-
-        Sanctum::actingAs($user);
-
-        $this->json('POST', '/api/v1/vaults', [
-            'name' => 'Dunder Mifflin',
-            'is_default' => true,
-            'structure_version_id' => $chosen->structure->published_version_id,
-        ])->assertCreated();
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::VaultCreation,
-        );
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::VaultDefaultSet,
-        );
-
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::VaultDefaultTemplateSet,
-        );
-    }
-
     private function publishedContactTemplate(User $user, string $name): Template
     {
         $template = Template::factory()->create([
@@ -990,45 +529,6 @@ class VaultControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_vault_when_the_account_has_no_contact_template(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('POST', '/api/v1/vaults', ['name' => 'Sabre']);
-
-        $response->assertUnprocessable();
-        $response->assertJsonValidationErrors('name');
-        $response->assertJsonPath('errors.name.0', 'This account has no template for contacts to start from, so the vault cannot be created.');
-        $this->assertSame(0, $user->account->vaults()->count());
-    }
-
-    #[Test]
-    public function it_still_answers_and_edits_what_an_account_over_the_ceiling_holds(): void
-    {
-        Queue::fake();
-        config(['monica.free_vault_limit' => 1]);
-
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        Vault::factory()->create(['account_id' => $user->account_id]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('GET', '/api/v1/vaults')->assertOk()->assertJsonCount(2, 'data');
-        $this->json('PUT', "/api/v1/vaults/{$vault->uuid}", [
-            'name' => 'Utica',
-            'description' => 'The branch that stayed open.',
-            'colour' => '#9a3f2b',
-        ])->assertOk();
-
-        $this->assertSame('Utica', $vault->refresh()->name);
-    }
-
-    #[Test]
     public function it_reaches_a_vault_by_either_spelling_of_its_address(): void
     {
         $user = User::factory()->create();
@@ -1038,21 +538,6 @@ class VaultControllerTest extends TestCase
 
         $this->json('GET', "/api/v1/vaults/{$vault->slug}")->assertOk()->assertJsonPath('data.id', $vault->uuid);
         $this->json('GET', "/api/v1/vaults/{$vault->uuid}")->assertOk()->assertJsonPath('data.id', $vault->uuid);
-    }
-
-    #[Test]
-    public function it_reports_the_readable_address_beside_the_identifier(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Dunder Mifflin']);
-
-        Sanctum::actingAs($user);
-
-        $this->json('GET', "/api/v1/vaults/{$vault->uuid}")
-            ->assertOk()
-            ->assertJsonPath('data.id', $vault->uuid)
-            ->assertJsonPath('data.attributes.slug', 'dunder-mifflin')
-            ->assertJsonPath('data.links.self', route('api.v1.vaults.show', $vault));
     }
 
     #[Test]

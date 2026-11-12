@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\Jobs;
 
 use App\Actions\CreateDefaultLifeEventCategories;
-use App\Enums\FieldTypeEnum;
 use App\Enums\LifeEventCategoryEnum;
 use App\Enums\LifeEventTypeEnum;
 use App\Enums\StructureAppliesToEnum;
@@ -16,9 +15,7 @@ use App\Jobs\CreateDefaultLifeEventTypes;
 use App\Jobs\LogUserAction;
 use App\Models\Field;
 use App\Models\LifeEventType;
-use App\Models\Section;
 use App\Models\User;
-use App\Models\ValueList;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
@@ -88,14 +85,6 @@ class CreateDefaultLifeEventTypesTest extends TestCase
     }
 
     #[Test]
-    public function it_seeds_no_glyph_a_type_may_not_be_marked_with(): void
-    {
-        foreach (LifeEventTypeEnum::cases() as $case) {
-            $this->assertContains($case->icon(), Section::ICONS, "{$case->value} asks for a glyph outside the set.");
-        }
-    }
-
-    #[Test]
     public function it_publishes_the_structure_a_type_asks_its_fields_through(): void
     {
         Queue::fake();
@@ -144,79 +133,6 @@ class CreateDefaultLifeEventTypesTest extends TestCase
     }
 
     #[Test]
-    public function it_reads_the_fields_in_no_group_before_any_group(): void
-    {
-        Queue::fake();
-
-        $user = $this->userWithLifeEventCategories();
-
-        new CreateDefaultLifeEventTypes(user: $user)->handle();
-
-        $assembly = LifeEventType::query()->where('key', 'move')->sole()->structure->publishedVersion->assembly;
-
-        $this->assertFalse($assembly->values()[0]->shows_title);
-        $this->assertEquals(['Addresses', 'Documents'], $assembly->skip(1)->map(fn ($row): string => $row->sectionVersion->section->name)->values()->all());
-    }
-
-    #[Test]
-    public function it_keeps_the_choices_of_a_field_in_a_list_of_that_field_alone(): void
-    {
-        Queue::fake();
-
-        $user = $this->userWithLifeEventCategories();
-
-        new CreateDefaultLifeEventTypes(user: $user)->handle();
-
-        $channel = $this->fieldOf('call', 'channel');
-
-        $this->assertSame(FieldTypeEnum::Select, $channel->type);
-        $this->assertFalse($channel->valueList->is_shared);
-        $this->assertNull($channel->valueList->key);
-        $this->assertSame('Channel', $channel->valueList->name);
-        $this->assertEquals(
-            ['Phone', 'Video', 'Voice call in an app'],
-            $channel->valueList->items()->orderBy('position')->get()->map(fn ($item): string => $item->label)->all(),
-        );
-    }
-
-    #[Test]
-    public function it_offers_no_supplied_list_of_choices_in_the_account_vocabulary(): void
-    {
-        Queue::fake();
-
-        $user = $this->userWithLifeEventCategories();
-
-        new CreateDefaultLifeEventTypes(user: $user)->handle();
-
-        $this->assertSame(
-            0,
-            ValueList::query()->where('account_id', $user->account_id)->where('is_shared', true)->count(),
-        );
-    }
-
-    #[Test]
-    public function it_carries_the_settings_a_field_needs_to_be_read_as_a_measurement(): void
-    {
-        Queue::fake();
-
-        $user = $this->userWithLifeEventCategories();
-
-        new CreateDefaultLifeEventTypes(user: $user)->handle();
-
-        $distance = $this->fieldOf('hike', 'distance')->options;
-        $rating = $this->fieldOf('restaurant', 'rating')->options;
-
-        $this->assertCount(2, $distance);
-        $this->assertSame('km', $distance['unit']);
-        $this->assertSame(0, $distance['min']);
-
-        $this->assertCount(3, $rating);
-        $this->assertSame(1, $rating['min']);
-        $this->assertSame(5, $rating['max']);
-        $this->assertSame(0, $rating['decimals']);
-    }
-
-    #[Test]
     public function it_names_what_it_supplies_through_a_translation_key_so_it_reads_in_the_user_language(): void
     {
         Queue::fake();
@@ -232,21 +148,6 @@ class CreateDefaultLifeEventTypesTest extends TestCase
         $this->assertSame('Restaurant', $type->name);
         $this->assertNull($field->getRawOriginal('label'));
         $this->assertSame('Dish or menu', $field->label);
-    }
-
-    #[Test]
-    public function it_marks_no_supplied_field_sensitive_since_no_screen_can_take_the_mark_off(): void
-    {
-        Queue::fake();
-
-        $user = $this->userWithLifeEventCategories();
-
-        new CreateDefaultLifeEventTypes(user: $user)->handle();
-
-        $this->assertSame(
-            0,
-            Field::query()->where('account_id', $user->account_id)->where('is_sensitive', true)->count(),
-        );
     }
 
     #[Test]

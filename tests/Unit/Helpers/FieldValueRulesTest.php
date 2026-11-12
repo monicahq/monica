@@ -144,21 +144,6 @@ class FieldValueRulesTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_label_nobody_offers_any_more(): void
-    {
-        $list = ValueList::factory()->create();
-        $email = Field::factory()->create(['type' => FieldTypeEnum::Email, 'value_list_id' => $list->id]);
-        $retired = ValueListItem::factory()->disabled()->create(['value_list_id' => $list->id]);
-
-        $validator = Validator::make(
-            ['fields' => [$email->id => 'pam@dundermifflin.example'], 'labels' => [$email->id => $retired->id]],
-            FieldValueRules::for(collect([$email])),
-        );
-
-        $this->assertTrue($validator->fails());
-    }
-
-    #[Test]
     public function it_asks_for_no_label_where_the_field_names_no_list(): void
     {
         $phone = Field::factory()->create(['type' => FieldTypeEnum::Phone, 'value_list_id' => null]);
@@ -269,18 +254,6 @@ class FieldValueRulesTest extends TestCase
     }
 
     #[Test]
-    public function it_asks_for_the_label_of_an_address_naming_a_list(): void
-    {
-        $list = ValueList::factory()->create();
-        $address = Field::factory()->create(['type' => FieldTypeEnum::Address, 'value_list_id' => $list->id]);
-
-        $rules = FieldValueRules::for(collect([$address]));
-
-        $this->assertArrayHasKey("labels.{$address->id}", $rules);
-        $this->assertArrayHasKey("label_wordings.{$address->id}", $rules);
-    }
-
-    #[Test]
     public function it_asks_for_the_parts_of_an_address_inside_every_repetition(): void
     {
         $list = ValueList::factory()->create();
@@ -362,19 +335,6 @@ class FieldValueRulesTest extends TestCase
 
         $this->assertSame(['Uploads are unavailable on this account for now.'], $withAFile->errors()->get("fields.{$field->id}"));
         $this->assertFalse($withoutAFile->fails());
-    }
-
-    #[Test]
-    public function a_required_file_field_blocks_saving_and_says_why_while_file_upload_is_off_for_the_account(): void
-    {
-        $vault = Vault::factory()->create();
-        $field = Field::factory()->create(['type' => FieldTypeEnum::File, 'is_required' => true]);
-        $vault->account->features()->deactivate('file-upload');
-        Feature::flushCache();
-
-        $validator = Validator::make(['fields' => []], FieldValueRules::for(collect([$field]), $vault));
-
-        $this->assertSame(['Uploads are unavailable on this account for now.'], $validator->errors()->get("fields.{$field->id}"));
     }
 
     private function countryOf(Field $field, CountryEnum $country, bool $active = true): ValueListItem

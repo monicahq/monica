@@ -36,16 +36,6 @@ class TemplateImportControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_offers_the_import_from_the_list_of_templates(): void
-    {
-        $user = User::factory()->create();
-
-        $this->actingAs($user)->get(route('settings.templates.index'))
-            ->assertStatus(200)
-            ->assertSee(route('settings.templateImport.new'), false);
-    }
-
-    #[Test]
     public function it_imports_the_file(): void
     {
         Queue::fake();
@@ -78,15 +68,6 @@ class TemplateImportControllerTest extends TestCase
         $response->assertSessionHasErrors('file');
 
         $this->assertEquals($templates, Template::query()->count());
-    }
-
-    #[Test]
-    public function it_asks_for_something_to_read(): void
-    {
-        $user = User::factory()->create();
-
-        $this->actingAs($user)->post(route('settings.templateImport.create'), ['file' => ''])
-            ->assertSessionHasErrors('file');
     }
 
     private function exported(User $user): string

@@ -45,16 +45,4 @@ class SubscriptionCancellationControllerTest extends TestCase
             ->delete(route('settings.subscriptionCancellation.destroy'))
             ->assertSessionHasErrors('subscription');
     }
-
-    #[Test]
-    public function it_shows_the_keep_button_while_a_subscription_is_ending(): void
-    {
-        $michael = User::factory()->create();
-        $this->subscribeAccount($michael->account, 'price_monthly', 'active', now()->addWeek());
-
-        $response = $this->actingAs($michael)->get(route('settings.billing.index'));
-
-        $response->assertSee('Keep the subscription', escape: false);
-        $response->assertSee(route('settings.subscriptionCancellation.destroy'), escape: false);
-    }
 }

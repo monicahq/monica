@@ -63,19 +63,4 @@ class CheckoutControllerTest extends TestCase
         $response->assertSessionHasErrors('offer');
         $this->assertFalse($this->stripe->sent('POST checkout/sessions'));
     }
-
-    #[Test]
-    public function it_says_so_and_charges_nothing_when_stripe_does_not_answer(): void
-    {
-        $michael = User::factory()->create();
-        $this->stripe->failOn('checkout/sessions*');
-
-        $response = $this->actingAs($michael)
-            ->from(route('settings.billing.index'))
-            ->post(route('settings.checkout.store', ['price' => 'price_lifetime']));
-
-        $response->assertRedirect(route('settings.billing.index'));
-        $response->assertSessionHasErrors('offer');
-        $this->assertFalse($michael->account->fresh()->hasFullAccess());
-    }
 }

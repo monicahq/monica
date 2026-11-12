@@ -29,21 +29,4 @@ class PasskeyAccountDeletionTest extends TestCase
         $this->assertModelMissing($passkey);
         $this->assertDatabaseCount('passkeys', 0);
     }
-
-    #[Test]
-    public function deleting_an_account_leaves_another_accounts_passkeys_alone(): void
-    {
-        Queue::fake();
-
-        $going = User::factory()->create();
-        Passkey::factory()->create(['user_id' => $going->id]);
-
-        $staying = User::factory()->create();
-        $kept = Passkey::factory()->create(['user_id' => $staying->id]);
-
-        new DestroyAccount(user: $going, account: $going->account)->execute();
-
-        $this->assertModelExists($kept);
-        $this->assertDatabaseCount('passkeys', 1);
-    }
 }

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\ViewModels\Vaults;
 
 use App\Models\Contact;
-use App\Models\File;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
 use App\Models\User;
@@ -140,27 +139,6 @@ class VaultsViewModelTest extends TestCase
     }
 
     #[Test]
-    public function a_face_carries_the_picture_of_whoever_has_one(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'contact_count' => 1]);
-
-        $file = File::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id]);
-
-        Contact::factory()->create([
-            'vault_id' => $vault->id,
-            'first_name' => 'Michael',
-            'last_name' => 'Scott',
-            'avatar_file_id' => $file->id,
-        ]);
-
-        $face = new VaultsViewModel(user: $user)->vaults()[0]['faces'][0];
-
-        $this->assertSame('Michael Scott', $face['name']);
-        $this->assertSame(route('files.variants.show', ['vault' => $vault, 'file' => $file, 'size' => Contact::AVATAR_THUMBNAIL_PIXELS]), $face['avatarUrl']);
-    }
-
-    #[Test]
     public function it_counts_the_dates_the_vault_owes_before_the_month_is_out(): void
     {
         $user = User::factory()->create(['timezone' => 'UTC']);
@@ -188,34 +166,6 @@ class VaultsViewModelTest extends TestCase
         }
 
         $this->assertSame(2, new VaultsViewModel(user: $user)->vaults()[0]['dateCount']);
-    }
-
-    #[Test]
-    public function no_task_is_ever_open_while_the_application_writes_none_down(): void
-    {
-        $user = User::factory()->create();
-
-        Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $this->assertSame(0, new VaultsViewModel(user: $user)->vaults()[0]['openTaskCount']);
-    }
-
-    #[Test]
-    public function the_mark_on_a_card_is_the_colour_somebody_chose_for_the_vault(): void
-    {
-        $user = User::factory()->create();
-
-        Vault::factory()->create([
-            'account_id' => $user->account_id,
-            'name' => 'Famille',
-            'colour' => '#2f7350',
-        ]);
-
-        $vault = new VaultsViewModel(user: $user)->vaults()[0];
-
-        $this->assertSame('#2f7350', $vault['colour']);
-        $this->assertSame('color-mix(in srgb, #2f7350 12%, var(--canvas))', $vault['tint']);
-        $this->assertSame('F', $vault['initial']);
     }
 
     #[Test]

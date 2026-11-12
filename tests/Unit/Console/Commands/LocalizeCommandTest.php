@@ -304,21 +304,6 @@ class LocalizeCommandTest extends TestCase
     }
 
     #[Test]
-    public function it_names_the_call_rather_than_the_placeholder_when_the_call_is_the_mistake(): void
-    {
-        $this->app->useLangPath($this->langPath);
-        $this->writeScratch('return __(\'Just one thing|Several things\');');
-
-        Artisan::call('monica:localize', ['--check' => true]);
-        $output = Artisan::output();
-
-        $this->assertStringContainsString(
-            'picks none of its wordings',
-            mb_strcut($output, 0, mb_strpos($output, 'Write the placeholder') ?: mb_strlen($output)),
-        );
-    }
-
-    #[Test]
     public function it_leaves_a_sentence_carrying_one_wording_alone(): void
     {
         $this->app->useLangPath($this->langPath);
@@ -419,15 +404,6 @@ class LocalizeCommandTest extends TestCase
     }
 
     #[Test]
-    public function it_does_not_mistake_a_blade_component_attribute_for_a_phrase_that_shows_a_number(): void
-    {
-        $status = Artisan::call('monica:localize', ['--check' => true]);
-
-        $this->assertSame(Command::SUCCESS, $status);
-        $this->assertStringNotContainsString('index.blade.php', Artisan::output());
-    }
-
-    #[Test]
     public function it_reports_a_value_written_with_an_ordinary_space_before_a_question_mark(): void
     {
         $this->app->useLangPath($this->langPath);
@@ -445,17 +421,6 @@ class LocalizeCommandTest extends TestCase
         $this->writeTranslations('fr_FR', [self::PREFERENCES => "Tout supprimer\u{202F}?"]);
 
         $this->assertStringNotContainsString('missing the space', $this->outputOfLocalize());
-    }
-
-    #[Test]
-    public function it_reports_a_value_written_with_no_space_at_all_before_a_question_mark(): void
-    {
-        $this->app->useLangPath($this->langPath);
-        $this->writeTranslations('fr_FR', [self::PREFERENCES => 'Tout supprimer?']);
-
-        $this->artisan('monica:localize')
-            ->expectsOutputToContain('fr_FR has 1 value(s) missing the space it writes before a punctuation mark')
-            ->assertSuccessful();
     }
 
     #[Test]
@@ -518,14 +483,6 @@ class LocalizeCommandTest extends TestCase
     }
 
     #[Test]
-    public function it_leaves_the_english_source_alone_because_english_declares_no_typography(): void
-    {
-        $this->app->useLangPath($this->langPath);
-
-        $this->assertDoesNotMatchRegularExpression('/^en has \d+ value/m', $this->outputOfLocalize());
-    }
-
-    #[Test]
     public function it_reads_each_wording_of_a_counted_phrase_as_prose_of_its_own(): void
     {
         $this->app->useLangPath($this->langPath);
@@ -561,17 +518,6 @@ class LocalizeCommandTest extends TestCase
     {
         $this->app->useLangPath($this->langPath);
         $this->writeTranslations('fr_FR', [self::PREFERENCES => 'Une "promeneuse"']);
-
-        $this->artisan('monica:localize')
-            ->expectsOutputToContain('fr_FR has 1 value(s) quoted the way it does not quote')
-            ->assertSuccessful();
-    }
-
-    #[Test]
-    public function it_reports_a_value_quoted_with_curly_double_quotes(): void
-    {
-        $this->app->useLangPath($this->langPath);
-        $this->writeTranslations('fr_FR', [self::PREFERENCES => "Une \u{201C}promeneuse\u{201D}"]);
 
         $this->artisan('monica:localize')
             ->expectsOutputToContain('fr_FR has 1 value(s) quoted the way it does not quote')

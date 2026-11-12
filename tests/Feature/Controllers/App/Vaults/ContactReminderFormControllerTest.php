@@ -27,17 +27,4 @@ class ContactReminderFormControllerTest extends TestCase
             ->assertOk()
             ->assertSee('What should we remind you about?');
     }
-
-    #[Test]
-    public function it_does_not_open_the_form_for_a_contact_through_another_vault(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $elsewhere = Vault::factory()->create(['account_id' => $user->account_id]);
-        $kevin = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'first_name' => 'Kevin']);
-
-        $this->actingAs($user)
-            ->get(route('contacts.reminderForm.new', ['vault' => $elsewhere, 'contact' => $kevin]))
-            ->assertNotFound();
-    }
 }

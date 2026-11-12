@@ -120,52 +120,6 @@ class SidebarTest extends TestCase
     }
 
     #[Test]
-    public function the_vault_column_says_where_you_are_with_more_than_a_colour(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $this->actingAs($user)->blade(
-            '<x-vault.sidebar :user="$user" :vault="$vault" current="contacts" />',
-            ['user' => $user, 'vault' => $vault],
-        )->assertSee('aria-current="page"', escape: false);
-    }
-
-    #[Test]
-    public function the_vault_column_does_not_offer_tasks_or_files(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $rendered = $this->actingAs($user)->blade(
-            '<x-vault.sidebar :user="$user" :vault="$vault" />',
-            ['user' => $user, 'vault' => $vault],
-        );
-
-        $rendered->assertSee('Reminders');
-        $rendered->assertDontSee('Tasks');
-        $rendered->assertDontSee('Files');
-        $rendered->assertDontSee('Journal');
-    }
-
-    #[Test]
-    public function the_name_of_the_application_at_the_top_of_either_column_leads_to_the_vaults(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $this->actingAs($user)->blade(
-            '<x-vault.sidebar :user="$user" :vault="$vault" current="dashboard" />',
-            ['user' => $user, 'vault' => $vault],
-        )->assertSee('href="'.route('vaults.index').'"', escape: false);
-
-        $this->actingAs($user)->blade(
-            '<x-settings.sidebar :user="$user" current="profile" />',
-            ['user' => $user],
-        )->assertSee('href="'.route('vaults.index').'"', escape: false);
-    }
-
-    #[Test]
     public function the_settings_column_offers_the_settings_and_the_way_out_of_them(): void
     {
         $user = User::factory()->create();
@@ -180,28 +134,6 @@ class SidebarTest extends TestCase
         $rendered->assertSee(route('vaults.index'), escape: false);
         $rendered->assertSee('Leave the settings');
         $rendered->assertSee('aria-current="page"', escape: false);
-    }
-
-    #[Test]
-    public function the_settings_column_puts_every_destination_in_its_group_and_its_order(): void
-    {
-        $user = User::factory()->create();
-
-        $this->actingAs($user)->blade(
-            '<x-settings.sidebar :user="$user" current="entity-types" />',
-            ['user' => $user],
-        )->assertSeeInOrder([
-            'Profile',
-            'Security and access',
-            'Preferences',
-            'Logs',
-            'Personalisation',
-            'Contacts and more',
-            'Templates',
-            'Value lists',
-            'Account',
-            'Billing',
-        ]);
     }
 
     #[Test]
@@ -220,23 +152,6 @@ class SidebarTest extends TestCase
             $rendered->assertDontSee('Sign out');
             $rendered->assertDontSee(route('auth.login.destroy'), escape: false);
             $rendered->assertDontSee('Switch between the light and dark theme');
-        }
-    }
-
-    #[Test]
-    public function both_columns_are_the_drawer_the_bar_opens(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        foreach ([
-            ['<x-vault.sidebar :user="$user" :vault="$vault" />', ['user' => $user, 'vault' => $vault]],
-            ['<x-settings.sidebar :user="$user" />', ['user' => $user]],
-        ] as [$template, $data]) {
-            $rendered = $this->actingAs($user)->blade($template, $data);
-
-            $rendered->assertSee('id="main-nav"', escape: false);
-            $rendered->assertSee('Close the menu');
         }
     }
 

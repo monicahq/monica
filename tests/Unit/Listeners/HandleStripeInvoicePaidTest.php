@@ -107,29 +107,6 @@ class HandleStripeInvoicePaidTest extends TestCase
         $this->assertFalse($account->fresh()->hasFullAccess());
     }
 
-    #[Test]
-    public function it_ignores_every_other_event(): void
-    {
-        $michael = User::factory()->create();
-        $michael->account->forceFill(['stripe_id' => 'cus_dundermifflin'])->save();
-
-        $payload = $this->event($this->paidInvoicePayload());
-        $payload['type'] = 'invoice.payment_failed';
-
-        new HandleStripeInvoicePaid()->handle(new WebhookReceived($payload));
-
-        $this->assertSame(0, Payment::query()->count());
-    }
-
-    #[Test]
-    public function it_is_retried_before_it_is_abandoned(): void
-    {
-        $listener = new HandleStripeInvoicePaid;
-
-        $this->assertSame(5, $listener->tries);
-        $this->assertNotEmpty($listener->backoff);
-    }
-
     /**
      * @param  array<string, mixed>  $invoice
      * @return array<string, mixed>

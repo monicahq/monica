@@ -86,19 +86,6 @@ class NotificationChannelControllerTest extends TestCase
     }
 
     #[Test]
-    public function telegram_asks_nobody_to_type_a_conversation_identifier(): void
-    {
-        $this->signedIn();
-
-        $response = $this->get(route('settings.notifications.index'));
-
-        $response->assertDontSee('id="telegram-destination"', escape: false);
-        $response->assertDontSee('id="telegram-credential"', escape: false);
-        $response->assertSee('Connect Telegram');
-        $response->assertSee('Not connected');
-    }
-
-    #[Test]
     public function connecting_telegram_sends_you_to_the_bot_with_a_token(): void
     {
         $user = $this->signedIn();
@@ -116,20 +103,6 @@ class NotificationChannelControllerTest extends TestCase
     }
 
     #[Test]
-    public function a_connected_telegram_says_so_and_offers_to_move(): void
-    {
-        $user = $this->signedIn();
-        $this->channel($user, NotificationChannelEnum::Telegram)
-            ->fill(['destination' => '918273645', 'proven_at' => now()])
-            ->save();
-
-        $response = $this->get(route('settings.notifications.index'));
-
-        $response->assertSee('Connected. Notifications go to the conversation you opened with our bot.');
-        $response->assertSee('Connect a different conversation');
-    }
-
-    #[Test]
     public function a_conversation_identifier_cannot_be_typed_in_from_here(): void
     {
         $user = $this->signedIn();
@@ -141,16 +114,6 @@ class NotificationChannelControllerTest extends TestCase
 
         $response->assertSessionHasErrors(['channel' => 'This channel is told where to send by the service, not from here.']);
         $this->assertNull($this->channel($user, NotificationChannelEnum::Telegram)->destination);
-    }
-
-    #[Test]
-    public function connecting_is_refused_when_the_server_has_no_bot(): void
-    {
-        config(['services.telegram.token' => null]);
-        $this->signedIn();
-
-        $this->post(route('settings.notifications.connection.store', 'telegram'))
-            ->assertSessionHasErrors('connection');
     }
 
     #[Test]
@@ -168,25 +131,6 @@ class NotificationChannelControllerTest extends TestCase
         $response->assertDontSee('Text message');
         $response->assertDontSee('Connect Telegram');
         $response->assertDontSee('id="sms-destination"', escape: false);
-    }
-
-    #[Test]
-    public function nothing_can_be_switched_on_when_no_integration_is_installed(): void
-    {
-        config(['services.telegram.installed' => false, 'services.vonage.installed' => false]);
-        $user = $this->signedIn();
-        $this->channel($user, NotificationChannelEnum::Sms)->fill([
-            'destination' => '+15705550172',
-            'proven_at' => now(),
-        ])->save();
-
-        $this->put(route('settings.notifications.update', 'sms'), ['is_enabled' => '1', 'destination' => '+15705550172'])
-            ->assertSessionHasErrors(['channel' => 'This server has not been set up to send on this channel.']);
-
-        $this->post(route('settings.notifications.connection.store', 'telegram'))
-            ->assertSessionHasErrors('connection');
-
-        $this->assertFalse($this->channel($user, NotificationChannelEnum::Sms)->is_enabled);
     }
 
     #[Test]

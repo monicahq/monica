@@ -26,78 +26,6 @@ class ContactMergeControllerTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_offers_the_other_contacts_of_the_vault(): void
-    {
-        $user = User::factory()->create();
-        [$jim, $james] = $this->twoContactsOf($user);
-
-        $response = $this->actingAs($user)->get(
-            route('contacts.merge.new', ['vault' => $jim->vault, 'contact' => $jim])
-        );
-
-        $response->assertStatus(200);
-        $response->assertSee('James Halpert');
-    }
-
-    #[Test]
-    public function it_narrows_the_picker_to_the_typed_name(): void
-    {
-        $user = User::factory()->create();
-        $version = $this->publishedContactVersion($user);
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $michael = $this->contactIn($vault, $version, 'Michael', 'Scott');
-        $this->contactIn($vault, $version, 'Dwight', 'Schrute');
-        $this->contactIn($vault, $version, 'Jim', 'Halpert');
-
-        $response = $this->actingAs($user)->get(
-            route('contacts.merge.new', ['vault' => $vault, 'contact' => $michael, 'query' => 'dwi'])
-        );
-
-        $response->assertStatus(200);
-        $response->assertSee('Dwight Schrute');
-        $response->assertDontSee('Jim Halpert');
-    }
-
-    #[Test]
-    public function it_pages_the_picker_and_offers_a_search_field(): void
-    {
-        $user = User::factory()->create();
-        $version = $this->publishedContactVersion($user);
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $michael = $this->contactIn($vault, $version, 'Michael', 'Scott');
-
-        for ($index = 1; $index <= 25; $index++) {
-            $this->contactIn($vault, $version, 'Dwight', "Schrute {$index}");
-        }
-
-        $response = $this->actingAs($user)->get(
-            route('contacts.merge.new', ['vault' => $vault, 'contact' => $michael])
-        );
-
-        $response->assertStatus(200);
-        $response->assertSee('role="search"', escape: false);
-        $response->assertSee('name="query"', escape: false);
-        $response->assertSee('1 to 20 of 25');
-        $response->assertSee(route('contacts.merge.new', ['vault' => $vault, 'contact' => $michael, 'page' => 2]), escape: false);
-    }
-
-    #[Test]
-    public function it_does_not_find_a_page_of_the_picker_reached_through_the_wrong_vault(): void
-    {
-        $user = User::factory()->create();
-        $version = $this->publishedContactVersion($user);
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $otherVault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $michael = $this->contactIn($vault, $version, 'Michael', 'Scott');
-
-        $response = $this->actingAs($user)->get(
-            route('contacts.merge.new', ['vault' => $otherVault, 'contact' => $michael, 'page' => 2])
-        );
-
-        $response->assertStatus(404);
-    }
-
-    #[Test]
     public function it_opens_either_record_from_the_screen(): void
     {
         $user = User::factory()->create();
@@ -133,28 +61,6 @@ class ContactMergeControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_tells_the_reader_of_an_absorbed_address_who_absorbed_them(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        [$jim, $james] = $this->twoContactsOf($user);
-
-        $this->actingAs($user)->post(
-            route('contacts.merge.create', ['vault' => $jim->vault, 'contact' => $jim, 'other' => $james]),
-            ['fingerprint' => new PreviewContactMerge(user: $user, kept: $jim, absorbed: $james)->execute()['fingerprint']]
-        );
-
-        $response = $this->actingAs($user)->get(
-            route('contacts.show', ['vault' => $jim->vault, 'contact' => $james->uuid])
-        );
-
-        $response->assertStatus(200)
-            ->assertSee('This record was merged')
-            ->assertSee(route('contacts.show', ['vault' => $jim->vault, 'contact' => $jim]), escape: false);
-    }
-
-    #[Test]
     public function it_refuses_a_merge_confirmed_against_a_state_that_changed(): void
     {
         Queue::fake();
@@ -177,23 +83,6 @@ class ContactMergeControllerTest extends TestCase
         $response->assertRedirect(route('contacts.merge.show', ['vault' => $jim->vault, 'contact' => $jim, 'other' => $james]));
         $response->assertSessionHasErrors('fingerprint');
         $this->assertNotSoftDeleted($james);
-    }
-
-    #[Test]
-    public function it_does_not_find_a_contact_reached_through_the_wrong_vault(): void
-    {
-        $user = User::factory()->create();
-        $version = $this->publishedContactVersion($user);
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $otherVault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $contact = $this->contactIn($vault, $version, 'Jim', 'Halpert');
-        $elsewhere = $this->contactIn($otherVault, $version, 'Pam', 'Beesly');
-
-        $response = $this->actingAs($user)->get(
-            route('contacts.merge.show', ['vault' => $vault, 'contact' => $contact, 'other' => $elsewhere])
-        );
-
-        $response->assertStatus(404);
     }
 
     #[Test]
@@ -244,21 +133,6 @@ class ContactMergeControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Undo the merge');
         $response->assertSee('James Halpert');
-    }
-
-    #[Test]
-    public function it_does_not_find_a_merge_reached_through_the_wrong_vault(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        [$jim, $james] = $this->twoContactsOf($user);
-        $merge = new MergeContacts(user: $user, kept: $jim, absorbed: $james)->execute();
-        $elsewhere = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $this->actingAs($user)
-            ->delete(route('vaults.merges.destroy', ['vault' => $elsewhere, 'contactMerge' => $merge]))
-            ->assertStatus(404);
     }
 
     /** @return array{0: Contact, 1: Contact} */

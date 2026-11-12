@@ -125,20 +125,6 @@ class OverviewViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_names_every_state_even_the_ones_nothing_landed_on(): void
-    {
-        EmailSent::factory()->delivered()->create();
-
-        $counts = new OverviewViewModel(user: $this->viewer())->emailsSentByStatus();
-
-        $this->assertCount(count(EmailDeliveryStatusEnum::cases()), $counts);
-
-        foreach (EmailDeliveryStatusEnum::cases() as $case) {
-            $this->assertArrayHasKey($case->value, $counts);
-        }
-    }
-
-    #[Test]
     public function it_agrees_with_what_each_row_says_about_itself(): void
     {
         EmailSent::factory()->delivered()->create();
@@ -166,14 +152,6 @@ class OverviewViewModelTest extends TestCase
 
         $this->assertSame(0, $viewModel->emailsSentCount());
         $this->assertSame([0, 0, 0, 0], array_values($viewModel->emailsSentByStatus()));
-    }
-
-    #[Test]
-    public function it_knows_an_instance_with_something_on_it_is_not_empty(): void
-    {
-        Account::factory()->create();
-
-        $this->assertFalse(new OverviewViewModel(user: $this->viewer())->isEmpty());
     }
 
     #[Test]

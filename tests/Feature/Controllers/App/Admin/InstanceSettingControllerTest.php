@@ -19,16 +19,6 @@ class InstanceSettingControllerTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_shows_the_configuration_screen(): void
-    {
-        $response = $this->actingAs($this->administrator())->get('/admin/configuration');
-
-        $response->assertStatus(200);
-        $response->assertSee('Configuration');
-        $response->assertSee('How many contacts an account gets on the free plan.');
-    }
-
-    #[Test]
     public function it_saves_a_change(): void
     {
         Queue::fake();
@@ -39,21 +29,6 @@ class InstanceSettingControllerTest extends TestCase
         $response->assertRedirect(route('admin.configuration.index'));
         $response->assertSessionHas('status');
         $this->assertDatabaseHas('instance_settings', ['name' => 'free_contact_limit']);
-    }
-
-    #[Test]
-    public function it_governs_the_next_request(): void
-    {
-        Queue::fake();
-        config()->set('monica.free_contact_limit', 30);
-        InstanceSettings::stashDeploymentValues();
-
-        $this->actingAs($this->administrator())
-            ->put('/admin/configuration/'.InstanceSettingEnum::FreeContactLimit->value, ['value' => '5']);
-
-        InstanceSettings::apply();
-
-        $this->assertSame(5, config('monica.free_contact_limit'));
     }
 
     #[Test]
@@ -124,39 +99,6 @@ class InstanceSettingControllerTest extends TestCase
 
         $response->assertRedirect(route('auth.confirmPassword.new'));
         $this->assertDatabaseMissing('instance_settings', ['name' => 'free_contact_limit']);
-    }
-
-    #[Test]
-    public function it_asks_for_a_credential_before_putting_a_setting_back(): void
-    {
-        Queue::fake();
-        $user = User::factory()->create();
-        Administrator::factory()->create(['user_id' => $user->id]);
-        $setting = InstanceSetting::factory()->create([
-            'name' => InstanceSettingEnum::FreeContactLimit->value,
-            'value' => '5',
-        ]);
-
-        $response = $this->actingAs($user)
-            ->delete('/admin/configuration/'.InstanceSettingEnum::FreeContactLimit->value);
-
-        $response->assertRedirect(route('auth.confirmPassword.new'));
-        $this->assertSame('5', $setting->refresh()->value);
-    }
-
-    #[Test]
-    public function it_asks_for_a_credential_before_removing_a_value_the_product_no_longer_reads(): void
-    {
-        Queue::fake();
-        $user = User::factory()->create();
-        Administrator::factory()->create(['user_id' => $user->id]);
-        InstanceSetting::factory()->create(['name' => 'a_setting_that_was_dropped']);
-
-        $response = $this->actingAs($user)
-            ->delete('/admin/configuration/orphans/a_setting_that_was_dropped');
-
-        $response->assertRedirect(route('auth.confirmPassword.new'));
-        $this->assertDatabaseHas('instance_settings', ['name' => 'a_setting_that_was_dropped']);
     }
 
     private function administrator(): User

@@ -158,19 +158,6 @@ class CreateDefaultValueListsTest extends TestCase
     }
 
     #[Test]
-    public function it_leaves_the_lists_of_other_accounts_alone(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $elsewhere = User::factory()->create();
-
-        new CreateDefaultValueLists(user: $user)->execute();
-
-        $this->assertEquals(0, ValueList::query()->where('account_id', $elsewhere->account_id)->count());
-    }
-
-    #[Test]
     public function it_writes_nothing_when_the_account_already_has_them(): void
     {
         Queue::fake();

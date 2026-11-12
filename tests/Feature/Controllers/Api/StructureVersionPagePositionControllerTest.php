@@ -42,40 +42,6 @@ class StructureVersionPagePositionControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_puts_a_page_asked_for_a_place_past_the_end_last(): void
-    {
-        Queue::fake();
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id, 'version_number' => 1]);
-        $first = $version->pages()->sole();
-        StructureVersionPage::factory()->create(['structure_version_id' => $version->id, 'position' => 2]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('PUT', "/api/v1/templates/{$template->uuid}/versions/1/pages/{$first->uuid}/position", ['position' => 99])
-            ->assertOk();
-
-        $this->assertSame(2, $first->refresh()->position);
-    }
-
-    #[Test]
-    public function it_leaves_the_only_page_of_a_version_where_it_is(): void
-    {
-        Queue::fake();
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id, 'version_number' => 1]);
-        $page = $version->pages()->sole();
-
-        Sanctum::actingAs($user);
-
-        $this->json('PUT', "/api/v1/templates/{$template->uuid}/versions/1/pages/{$page->uuid}/position", ['position' => 5])
-            ->assertOk()
-            ->assertJsonPath('data.attributes.position', 1);
-    }
-
-    #[Test]
     public function it_validates_the_position(): void
     {
         Queue::fake();

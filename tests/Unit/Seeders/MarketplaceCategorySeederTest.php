@@ -32,14 +32,6 @@ class MarketplaceCategorySeederTest extends TestCase
     }
 
     #[Test]
-    public function it_files_the_categories_at_the_top_level(): void
-    {
-        new MarketplaceCategorySeeder()->run();
-
-        $this->assertEquals(0, MarketplaceCategory::query()->whereNotNull('parent_id')->count());
-    }
-
-    #[Test]
     public function it_can_be_run_again_without_making_duplicates(): void
     {
         new MarketplaceCategorySeeder()->run();

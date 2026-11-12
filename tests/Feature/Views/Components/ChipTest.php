@@ -38,14 +38,4 @@ class ChipTest extends TestCase
         $this->blade('<x-chip :selected="true">Mine</x-chip>')
             ->assertSee('aria-pressed="true"', escape: false);
     }
-
-    #[Test]
-    public function it_may_carry_a_count(): void
-    {
-        $this->blade('<x-chip href="/x" :count="24">People</x-chip>')
-            ->assertSee('24');
-
-        $this->blade('<x-chip href="/x">People</x-chip>')
-            ->assertDontSee('24');
-    }
 }

@@ -86,21 +86,6 @@ class CreateDefaultRelationshipTypesTest extends TestCase
     }
 
     #[Test]
-    public function other_is_supplied_empty(): void
-    {
-        $user = $this->michael();
-
-        new CreateDefaultRelationshipTypes(user: $user)->execute();
-
-        $other = RelationshipCategory::query()
-            ->where('account_id', $user->account_id)
-            ->where('key', 'other')
-            ->firstOrFail();
-
-        $this->assertCount(0, $other->types);
-    }
-
-    #[Test]
     public function only_four_types_carry_a_protected_behaviour(): void
     {
         $user = $this->michael();

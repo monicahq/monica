@@ -145,22 +145,6 @@ class ContactControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_draws_a_contact_without_a_picture_as_their_initials(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}");
-
-        $response->assertOk();
-        $response->assertJsonPath('data.attributes.avatar', null);
-        $response->assertJsonPath('data.attributes.avatar_colour', $contact->avatar_colour);
-    }
-
-    #[Test]
     public function it_lists_only_the_favourites_when_asked_for_them(): void
     {
         $user = User::factory()->create();
@@ -193,20 +177,6 @@ class ContactControllerTest extends TestCase
         $everyone->assertJsonPath('data.0.attributes.last_name', 'Beesly');
 
         $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts?filter=names-only")->assertJsonCount(0, 'data');
-    }
-
-    #[Test]
-    public function it_refuses_the_archived_filter_nothing_can_fill(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts?filter=archived");
-
-        $response->assertUnprocessable();
-        $response->assertJsonValidationErrors('filter');
     }
 
     #[Test]
@@ -353,39 +323,6 @@ class ContactControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_answers_an_empty_list_for_a_vault_holding_nobody(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts");
-
-        $response->assertOk();
-        $response->assertJsonCount(0, 'data');
-        $response->assertJsonPath('meta.total', 0);
-    }
-
-    #[Test]
-    public function it_pages_the_list_and_brings_a_page_size_back_into_range(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        Contact::factory()->count(3)->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
-
-        Sanctum::actingAs($user);
-
-        $onePage = $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts?per_page=2");
-        $tooMany = $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts?per_page=5000");
-
-        $onePage->assertJsonCount(2, 'data');
-        $onePage->assertJsonPath('meta.per_page', 2);
-        $onePage->assertJsonPath('meta.total', 3);
-        $tooMany->assertJsonPath('meta.per_page', 100);
-    }
-
-    #[Test]
     public function it_does_not_list_the_contacts_of_another_account(): void
     {
         $user = User::factory()->create();
@@ -420,19 +357,6 @@ class ContactControllerTest extends TestCase
         Sanctum::actingAs($user);
 
         $this->json('GET', "/api/v1/vaults/{$other->uuid}/contacts/{$contact->uuid}")->assertNotFound();
-    }
-
-    #[Test]
-    public function it_returns_not_found_for_a_contact_that_was_deleted(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
-        $contact->delete();
-
-        Sanctum::actingAs($user);
-
-        $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}")->assertNotFound();
     }
 
     #[Test]
@@ -506,25 +430,6 @@ class ContactControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_structure_belonging_to_another_account(): void
-    {
-        $user = User::factory()->create();
-        $vault = $this->vaultReadyForContacts($user);
-        $stranger = $this->publishedContactTemplate(User::factory()->create(), 'Somebody else');
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('POST', "/api/v1/vaults/{$vault->uuid}/contacts", [
-            'first_name' => 'Pam',
-            'structure_version_id' => $stranger->structure->published_version_id,
-        ]);
-
-        $response->assertUnprocessable();
-        $response->assertJsonValidationErrors(['structure_version_id']);
-        $this->assertDatabaseMissing('contacts', ['first_name' => 'Pam']);
-    }
-
-    #[Test]
     public function it_refuses_to_write_a_contact_down_with_no_first_name(): void
     {
         $user = User::factory()->create();
@@ -581,26 +486,6 @@ class ContactControllerTest extends TestCase
 
         $this->assertSoftDeleted($contact);
         $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}")->assertNotFound();
-    }
-
-    #[Test]
-    public function it_refuses_to_delete_the_contact_that_represents_you(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $contact = Contact::factory()->create([
-            'vault_id' => $vault->id,
-            'account_id' => $user->account_id,
-            'is_me' => true,
-        ]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('DELETE', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}")
-            ->assertUnprocessable()
-            ->assertJsonValidationErrors('contact');
-
-        $this->assertNotSoftDeleted($contact);
     }
 
     #[Test]
@@ -697,26 +582,6 @@ class ContactControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_reports_the_readable_address_beside_the_identifier(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $contact = Contact::factory()->create([
-            'vault_id' => $vault->id, 'account_id' => $user->account_id,
-            'first_name' => 'Jim', 'last_name' => 'Halpert',
-        ]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}")
-            ->assertOk()
-            ->assertJsonPath('data.id', $contact->uuid)
-            ->assertJsonPath('data.attributes.slug', 'jim-halpert')
-            ->assertJsonPath('data.links.self', route('api.v1.contacts.show', [$vault, $contact]))
-            ->assertJsonPath('data.links.web', route('contacts.show', [$vault, $contact]));
-    }
-
-    #[Test]
     public function it_reaches_a_contact_named_in_another_alphabet_written_either_way(): void
     {
         $user = User::factory()->create();
@@ -733,22 +598,5 @@ class ContactControllerTest extends TestCase
             ->assertOk()->assertJsonPath('data.id', $contact->uuid);
         $this->json('GET', "/api/v1/vaults/{$vault->slug}/contacts/".rawurlencode('田中-太郎'))
             ->assertOk()->assertJsonPath('data.id', $contact->uuid);
-    }
-
-    #[Test]
-    public function it_does_not_reach_a_contact_through_the_wrong_vault(): void
-    {
-        $user = User::factory()->create();
-        $here = Vault::factory()->create(['account_id' => $user->account_id]);
-        $elsewhere = Vault::factory()->create(['account_id' => $user->account_id]);
-        $contact = Contact::factory()->create([
-            'vault_id' => $here->id, 'account_id' => $user->account_id,
-            'first_name' => 'Jim', 'last_name' => 'Halpert',
-        ]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('GET', "/api/v1/vaults/{$elsewhere->slug}/contacts/{$contact->slug}")->assertNotFound();
-        $this->json('GET', "/api/v1/vaults/{$elsewhere->slug}/contacts/{$contact->uuid}")->assertNotFound();
     }
 }

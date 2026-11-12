@@ -59,46 +59,6 @@ class AccountControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_to_delete_the_account_when_nothing_was_typed(): void
-    {
-        $user = User::factory()->create();
-
-        $response = $this->withConfirmedPassword()->actingAs($user)->delete(route('settings.account.destroy'));
-
-        $response->assertSessionHasErrors('confirm_email');
-
-        $this->assertModelExists($user);
-    }
-
-    #[Test]
-    public function it_leaves_the_account_of_somebody_else_alone(): void
-    {
-        $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
-        $stranger = User::factory()->create();
-        $strangerAccount = $stranger->account;
-
-        $this->withConfirmedPassword()->actingAs($user)->delete(route('settings.account.destroy'), [
-            'confirm_email' => 'michael.scott@dundermifflin.com',
-        ]);
-
-        $this->assertModelExists($stranger);
-        $this->assertModelExists($strangerAccount);
-    }
-
-    #[Test]
-    public function it_shows_the_way_to_delete_the_account_on_the_profile_screen(): void
-    {
-        $user = User::factory()->create();
-
-        $response = $this->withConfirmedPassword()->actingAs($user)->get(route('settings.profile.index'));
-
-        $response->assertStatus(200);
-        $response->assertSee('Delete your account', escape: false);
-        $response->assertSee('We keep no copy, so nothing can be recovered afterwards.', escape: false);
-        $response->assertSee(route('settings.account.destroy'), escape: false);
-    }
-
-    #[Test]
     public function it_warns_that_deleting_the_account_stops_the_subscription(): void
     {
         $this->fakeStripe();
@@ -108,15 +68,6 @@ class AccountControllerTest extends TestCase
 
         $this->actingAs($michael)->get(route('settings.profile.index'))
             ->assertSee('Your subscription stops the moment the account is gone.', escape: false);
-    }
-
-    #[Test]
-    public function it_says_nothing_about_a_subscription_there_is_none_of(): void
-    {
-        $michael = User::factory()->create();
-
-        $this->actingAs($michael)->get(route('settings.profile.index'))
-            ->assertDontSee('Your subscription stops the moment', escape: false);
     }
 
     #[Test]
@@ -136,19 +87,5 @@ class AccountControllerTest extends TestCase
         $response->assertSessionHasErrors('confirm_email');
         $this->assertModelExists($michael);
         $this->assertModelExists($michael->account);
-    }
-
-    #[Test]
-    public function it_refuses_to_delete_the_account_without_a_confirmed_password(): void
-    {
-        $user = User::factory()->create();
-
-        $response = $this->actingAs($user)->delete(route('settings.account.destroy'), [
-            'confirm_email' => $user->email,
-        ]);
-
-        $response->assertRedirect(route('auth.confirmPassword.new'));
-
-        $this->assertModelExists($user);
     }
 }

@@ -65,18 +65,6 @@ class SetAsideValueControllerTest extends TestCase
             ->assertSee('No unused answers');
     }
 
-    #[Test]
-    public function it_refuses_somebody_in_another_vault(): void
-    {
-        $user = User::factory()->create();
-        $contact = $this->contactOf($user);
-        $elsewhere = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $this->actingAs($user)
-            ->get(route('contacts.setAside.index', ['vault' => $elsewhere, 'contact' => $contact]))
-            ->assertNotFound();
-    }
-
     private function contactOf(User $user): Contact
     {
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);

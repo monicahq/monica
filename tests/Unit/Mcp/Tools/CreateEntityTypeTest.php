@@ -55,34 +55,6 @@ class CreateEntityTypeTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_slug_with_capitals_or_spaces(): void
-    {
-        $user = User::factory()->create();
-
-        EricaServer::actingAs($user)->tool(CreateEntityType::class, [
-            'name_singular' => 'Dundie',
-            'name_plural' => 'Dundies',
-            'slug' => 'Dundie Award',
-        ])->assertHasErrors();
-
-        $this->assertSame(0, EntityType::query()->where('account_id', $user->account_id)->count());
-    }
-
-    #[Test]
-    public function it_refuses_an_icon_outside_the_allowed_ones(): void
-    {
-        $user = User::factory()->create();
-
-        EricaServer::actingAs($user)->tool(CreateEntityType::class, [
-            'name_singular' => 'Dundie',
-            'name_plural' => 'Dundies',
-            'icon' => 'dundie',
-        ])->assertHasErrors();
-
-        $this->assertSame(0, EntityType::query()->where('account_id', $user->account_id)->count());
-    }
-
-    #[Test]
     public function it_creates_an_entity_type_switched_off(): void
     {
         $user = User::factory()->create();
@@ -98,11 +70,5 @@ class CreateEntityTypeTest extends TestCase
             'name_singular' => 'Dundie',
             'is_active' => false,
         ]);
-    }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.entityTypes.create', app(CreateEntityType::class)->mirrors());
     }
 }

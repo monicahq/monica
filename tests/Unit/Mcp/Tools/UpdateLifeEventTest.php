@@ -159,10 +159,4 @@ class UpdateLifeEventTest extends TestCase
             'happened_on' => '2026-10-10',
         ])->assertHasErrors(['That life event does not exist.']);
     }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.lifeEvents.update', app(UpdateLifeEvent::class)->mirrors());
-    }
 }

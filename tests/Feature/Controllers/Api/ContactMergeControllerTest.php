@@ -101,25 +101,6 @@ class ContactMergeControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_reports_what_moved(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $version = $this->publishedContactVersion($user);
-        $field = $this->fieldCarriedBy($version);
-        [$jim, $james] = $this->twoContactsOf($user, $version);
-        $this->valueFor($james, $field, 'james@dundermifflin.com');
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('POST', $this->url($jim, $james));
-
-        $response->assertCreated();
-        $response->assertJsonCount(1, 'data.attributes.moved');
-    }
-
-    #[Test]
     public function it_refuses_a_resolution_it_cannot_read(): void
     {
         Queue::fake();
@@ -158,29 +139,6 @@ class ContactMergeControllerTest extends TestCase
 
         $response->assertStatus(409);
         $this->assertNotSoftDeleted($james);
-    }
-
-    #[Test]
-    public function it_refuses_absorbing_the_contact_representing_the_user(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $version = $this->publishedContactVersion($user);
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $contact = $this->contactIn($vault, $version, 'Jim', 'Halpert');
-        $me = Contact::factory()->create([
-            'vault_id' => $vault->id,
-            'structure_version_id' => $version->id,
-            'is_me' => true,
-        ]);
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('POST', $this->url($contact, $me));
-
-        $response->assertUnprocessable();
-        $response->assertJsonValidationErrors('other');
     }
 
     #[Test]

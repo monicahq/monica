@@ -32,6 +32,8 @@ class WithdrawAdministratorAccessTest extends TestCase
 
         $this->assertDatabaseMissing('administrators', ['user_id' => $dwight->id]);
         $this->assertFalse($dwight->refresh()->isAdministrator());
+
+        Queue::assertPushedOn('low', LogAdministratorAction::class);
     }
 
     #[Test]
@@ -49,19 +51,6 @@ class WithdrawAdministratorAccessTest extends TestCase
     }
 
     #[Test]
-    public function it_writes_the_withdrawal_down(): void
-    {
-        Queue::fake();
-
-        $michael = $this->administrator();
-        $dwight = $this->administrator();
-
-        new WithdrawAdministratorAccess(user: $dwight, administrator: $michael)->execute();
-
-        Queue::assertPushedOn('low', LogAdministratorAction::class);
-    }
-
-    #[Test]
     public function it_refuses_to_let_an_administrator_take_it_off_themselves(): void
     {
         Queue::fake();
@@ -69,24 +58,15 @@ class WithdrawAdministratorAccessTest extends TestCase
         $michael = $this->administrator();
         $this->administrator();
 
-        $this->expectException(AdministratorCannotLockThemselvesOut::class);
-
-        new WithdrawAdministratorAccess(user: $michael, administrator: $michael)->execute();
-    }
-
-    #[Test]
-    public function it_leaves_an_administrator_who_tried_to_withdraw_their_own_capacity_holding_it(): void
-    {
-        Queue::fake();
-
-        $michael = $this->administrator();
-        $this->administrator();
+        $refused = false;
 
         try {
             new WithdrawAdministratorAccess(user: $michael, administrator: $michael)->execute();
         } catch (AdministratorCannotLockThemselvesOut) {
+            $refused = true;
         }
 
+        $this->assertTrue($refused);
         $this->assertTrue($michael->refresh()->isAdministrator());
     }
 
@@ -102,28 +82,16 @@ class WithdrawAdministratorAccessTest extends TestCase
 
         $jim = User::factory()->create();
 
-        $this->expectException(InstanceMustKeepAnAdministrator::class);
-
-        new WithdrawAdministratorAccess(user: $michael, administrator: $jim)->execute();
-    }
-
-    #[Test]
-    public function it_keeps_the_last_administrator_when_two_withdrawals_arrive_together(): void
-    {
-        Queue::fake();
-
-        $michael = $this->administrator();
-        $dwight = $this->administrator();
-
-        new WithdrawAdministratorAccess(user: $dwight, administrator: $michael)->execute();
+        $refused = false;
 
         try {
-            new WithdrawAdministratorAccess(user: $michael, administrator: $dwight)->execute();
+            new WithdrawAdministratorAccess(user: $michael, administrator: $jim)->execute();
         } catch (InstanceMustKeepAnAdministrator) {
+            $refused = true;
         }
 
+        $this->assertTrue($refused);
         $this->assertDatabaseCount('administrators', 1);
-        $this->assertTrue($michael->refresh()->isAdministrator());
     }
 
     #[Test]

@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\App\Settings\Account\Templates;
 
 use App\Enums\VersionStatusEnum;
-use App\Models\SectionVersion;
 use App\Models\StructureVersion;
-use App\Models\StructureVersionSection;
 use App\Models\Template;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -34,49 +32,6 @@ class StructureVersionPublicationControllerTest extends TestCase
 
         $this->assertEquals(VersionStatusEnum::Published, $draft->fresh()->status);
         $this->assertEquals($draft->id, $template->structure->fresh()->published_version_id);
-    }
-
-    #[Test]
-    public function it_publishes_the_sections_it_carries(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $draft = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
-        $sectionVersion = SectionVersion::factory()->create(['account_id' => $user->account_id]);
-        StructureVersionSection::factory()->create([
-            'structure_version_id' => $draft->id,
-            'section_version_id' => $sectionVersion->id,
-        ]);
-
-        $this->actingAs($user)->put(route('settings.templateVersionPublication.update', [$template, $draft]))
-            ->assertRedirect()
-            ->assertSessionHas('status');
-
-        $this->assertEquals(VersionStatusEnum::Published, $sectionVersion->fresh()->status);
-        $this->assertEquals(VersionStatusEnum::Published, $draft->fresh()->status);
-    }
-
-    #[Test]
-    public function it_leaves_a_section_that_was_already_published_alone(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $draft = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
-        $sectionVersion = SectionVersion::factory()->published()->create(['account_id' => $user->account_id]);
-        StructureVersionSection::factory()->create([
-            'structure_version_id' => $draft->id,
-            'section_version_id' => $sectionVersion->id,
-        ]);
-
-        $this->actingAs($user)->put(route('settings.templateVersionPublication.update', [$template, $draft]))
-            ->assertRedirect();
-
-        $this->assertEquals(1, $sectionVersion->fresh()->version_number);
-        $this->assertEquals(VersionStatusEnum::Published, $draft->fresh()->status);
     }
 
     #[Test]

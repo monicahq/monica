@@ -87,6 +87,7 @@ class CompleteChannelConnectionTest extends TestCase
     #[Test]
     public function a_token_nobody_is_waiting_on_changes_nothing(): void
     {
+        Queue::fake();
         $channel = $this->awaiting('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
 
         $this->assertNull(new CompleteChannelConnection(
@@ -95,6 +96,8 @@ class CompleteChannelConnectionTest extends TestCase
         )->execute());
 
         $this->assertNull($channel->refresh()->destination);
+
+        Queue::assertNotPushed(LogUserAction::class);
     }
 
     #[Test]
@@ -109,20 +112,6 @@ class CompleteChannelConnectionTest extends TestCase
         )->execute());
 
         $this->assertNull($channel->refresh()->destination);
-    }
-
-    #[Test]
-    public function it_logs_nothing_for_a_token_nobody_is_waiting_on(): void
-    {
-        Queue::fake();
-        $this->awaiting('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
-
-        new CompleteChannelConnection(
-            verificationToken: 'cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc',
-            destination: '918273645',
-        )->execute();
-
-        Queue::assertNotPushed(LogUserAction::class);
     }
 
     private function awaiting(string $token): NotificationChannel

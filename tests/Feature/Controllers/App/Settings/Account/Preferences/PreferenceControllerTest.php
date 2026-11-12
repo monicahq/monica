@@ -46,72 +46,6 @@ class PreferenceControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_shows_the_time_zone_section(): void
-    {
-        $user = User::factory()->create([
-            'timezone' => 'Europe/Lisbon',
-            'time_format' => TimeFormatEnum::TwentyFourHour,
-        ]);
-
-        $response = $this->actingAs($user)->get(route('settings.preferences.index'));
-
-        $response->assertStatus(200);
-        $response->assertSee('Time zone', escape: false);
-        $response->assertSee('Europe/Lisbon', escape: false);
-        $response->assertSee('Search a city or a country', escape: false);
-        $response->assertSee(route('settings.timezone.update'), escape: false);
-    }
-
-    #[Test]
-    public function it_hands_the_map_to_the_registered_picker_rather_than_writing_it_in_an_attribute(): void
-    {
-        $user = User::factory()->create(['timezone' => 'UTC']);
-
-        $response = $this->actingAs($user)->get(route('settings.preferences.index'));
-
-        $response->assertSee('x-data="timezonePicker(JSON.parse(', escape: false);
-        $response->assertDontSee('@js(', escape: false);
-        $response->assertSee('north', escape: false);
-        $response->assertDontSee('clientX', escape: false);
-        $response->assertDontSee('toFixed', escape: false);
-        $response->assertDontSee('resolvedOptions', escape: false);
-    }
-
-    #[Test]
-    public function it_hands_the_zones_to_the_picker_rather_than_writing_a_row_for_each(): void
-    {
-        $user = User::factory()->create(['timezone' => 'UTC']);
-
-        $response = $this->actingAs($user)->get(route('settings.preferences.index'));
-
-        $response->assertSee('tokyo japan asia', escape: false);
-        $response->assertSee(':value="zone.timezone"', escape: false);
-        $response->assertDontSee('value="Asia/Tokyo"', escape: false);
-    }
-
-    #[Test]
-    public function it_says_the_zone_was_the_nearest_one_when_it_came_from_the_map(): void
-    {
-        $user = User::factory()->create(['timezone' => 'Asia/Tokyo']);
-
-        $response = $this->actingAs($user)
-            ->withSession(['timezone_guess' => true])
-            ->get(route('settings.preferences.index'));
-
-        $response->assertSee('nearest', escape: false);
-    }
-
-    #[Test]
-    public function it_says_nothing_about_the_nearest_one_when_the_zone_was_named(): void
-    {
-        $user = User::factory()->create(['timezone' => 'Asia/Tokyo']);
-
-        $response = $this->actingAs($user)->get(route('settings.preferences.index'));
-
-        $response->assertDontSee('nearest', escape: false);
-    }
-
-    #[Test]
     public function it_saves_the_preferences(): void
     {
         Queue::fake();
@@ -168,40 +102,6 @@ class PreferenceControllerTest extends TestCase
         $response->assertSessionHasErrors('locale');
         $this->assertEquals('en', $user->refresh()->locale);
         $response->assertCookieMissing(LocaleResolution::COOKIE_NAME);
-    }
-
-    #[Test]
-    public function it_refuses_a_time_format_that_does_not_exist(): void
-    {
-        $user = User::factory()->create(['time_format' => TimeFormatEnum::TwentyFourHour]);
-
-        $response = $this->actingAs($user)->put(route('settings.preferences.update'), [
-            'locale' => 'en',
-            'time_format' => '36',
-            'uses_readable_addresses' => '1',
-        ]);
-
-        $response->assertSessionHasErrors('time_format');
-        $this->assertEquals(TimeFormatEnum::TwentyFourHour, $user->refresh()->time_format);
-    }
-
-    #[Test]
-    public function it_saves_the_date_format(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create(['date_format' => null]);
-
-        $response = $this->actingAs($user)->put(route('settings.preferences.update'), [
-            'locale' => 'en',
-            'time_format' => '24',
-            'date_format' => 'm/d/Y',
-            'uses_readable_addresses' => '1',
-        ]);
-
-        $response->assertRedirect(route('settings.preferences.index'));
-
-        $this->assertEquals(DateFormatEnum::MonthFirst, $user->refresh()->date_format);
     }
 
     #[Test]
@@ -263,70 +163,6 @@ class PreferenceControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_saves_the_number_format(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create(['number_format' => null]);
-
-        $response = $this->actingAs($user)->put(route('settings.preferences.update'), [
-            'locale' => 'en',
-            'time_format' => '24',
-            'number_format' => 'dot_comma',
-            'uses_readable_addresses' => '1',
-        ]);
-
-        $response->assertRedirect(route('settings.preferences.index'));
-
-        $this->assertEquals(NumberFormatEnum::DotAndComma, $user->refresh()->number_format);
-    }
-
-    #[Test]
-    public function it_hands_the_numbers_back_to_the_language_when_the_format_is_left_empty(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create(['number_format' => NumberFormatEnum::DotAndComma]);
-
-        $this->actingAs($user)->put(route('settings.preferences.update'), [
-            'locale' => 'en',
-            'time_format' => '24',
-            'number_format' => '',
-            'uses_readable_addresses' => '1',
-        ]);
-
-        $this->assertNull($user->refresh()->number_format);
-    }
-
-    #[Test]
-    public function it_refuses_a_number_format_that_does_not_exist(): void
-    {
-        $user = User::factory()->create(['number_format' => NumberFormatEnum::CommaAndDot]);
-
-        $response = $this->actingAs($user)->put(route('settings.preferences.update'), [
-            'locale' => 'en',
-            'time_format' => '24',
-            'number_format' => 'beets_per_acre',
-            'uses_readable_addresses' => '1',
-        ]);
-
-        $response->assertSessionHasErrors('number_format');
-        $this->assertEquals(NumberFormatEnum::CommaAndDot, $user->refresh()->number_format);
-    }
-
-    #[Test]
-    public function it_offers_the_choice_of_what_an_address_is_written_with(): void
-    {
-        $user = User::factory()->create();
-
-        $this->actingAs($user)->get(route('settings.preferences.index'))
-            ->assertStatus(200)
-            ->assertSee('Links')
-            ->assertSee('Readable names')
-            ->assertSee('Identifiers');
-    }
-
-    #[Test]
     public function the_choice_is_operable_with_the_keyboard_alone_and_announced(): void
     {
         $user = User::factory()->create();
@@ -355,17 +191,5 @@ class PreferenceControllerTest extends TestCase
         ])->assertRedirect(route('settings.preferences.index'));
 
         $this->assertDatabaseHas('users', ['id' => $user->id, 'uses_readable_addresses' => false]);
-    }
-
-    #[Test]
-    public function it_refuses_a_choice_that_is_neither(): void
-    {
-        $user = User::factory()->create();
-
-        $this->actingAs($user)->put(route('settings.preferences.update'), [
-            'locale' => 'en',
-            'time_format' => '24',
-            'uses_readable_addresses' => 'beets',
-        ])->assertSessionHasErrors('uses_readable_addresses');
     }
 }

@@ -8,6 +8,7 @@ use App\Actions\ResizeImage;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -58,32 +59,27 @@ class ResizeImageTest extends TestCase
         $this->assertEquals(96, $size[1]);
     }
 
+    /** @return array<string, array{0: int, 1: int}> */
+    public static function dimensionsThatAreNotPositive(): array
+    {
+        return [
+            'a width of zero' => [0, 96],
+            'a negative height' => [96, -10],
+        ];
+    }
+
     #[Test]
-    public function it_refuses_a_width_that_is_not_positive(): void
+    #[DataProvider('dimensionsThatAreNotPositive')]
+    public function it_refuses_a_dimension_that_is_not_positive(int $width, int $height): void
     {
         $this->expectException(InvalidArgumentException::class);
 
         new ResizeImage(
             file: UploadedFile::fake()->image('pam.jpg'),
-            width: 0,
-            height: 96,
+            width: $width,
+            height: $height,
             path: 'photos/1',
             name: 'art.webp',
-            disk: 'local',
-        )->execute();
-    }
-
-    #[Test]
-    public function it_refuses_a_height_that_is_not_positive(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        new ResizeImage(
-            file: UploadedFile::fake()->image('jim.jpg'),
-            width: 96,
-            height: -10,
-            path: 'photos/1',
-            name: 'prank.webp',
             disk: 'local',
         )->execute();
     }

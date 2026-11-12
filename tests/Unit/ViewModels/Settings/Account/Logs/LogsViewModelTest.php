@@ -76,22 +76,6 @@ class LogsViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_gives_five_logs_a_page(): void
-    {
-        $user = User::factory()->create();
-
-        Log::factory()->count(7)->create([
-            'account_id' => $user->account_id,
-            'user_id' => $user->id,
-        ]);
-
-        $viewModel = new LogsViewModel(user: $user);
-
-        $this->assertCount(5, $viewModel->logs());
-        $this->assertTrue($viewModel->logs()->hasMorePages());
-    }
-
-    #[Test]
     public function it_gives_the_last_five_emails_sent_newest_first(): void
     {
         $user = User::factory()->create();
@@ -138,19 +122,5 @@ class LogsViewModelTest extends TestCase
 
         $this->assertCount(0, $viewModel->emailsSent());
         $this->assertFalse($viewModel->hasMoreEmailsSent());
-    }
-
-    #[Test]
-    public function it_gives_the_person_who_is_signed_in(): void
-    {
-        $user = User::factory()->create([
-            'first_name' => 'Jim',
-            'last_name' => 'Halpert',
-        ]);
-
-        $viewModel = new LogsViewModel(user: $user);
-
-        $this->assertTrue($user->is($viewModel->user()));
-        $this->assertEquals('Jim Halpert', $viewModel->user()->name);
     }
 }

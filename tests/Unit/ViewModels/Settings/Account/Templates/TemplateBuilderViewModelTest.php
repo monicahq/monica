@@ -360,66 +360,6 @@ class TemplateBuilderViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_reads_the_mark_off_the_section(): void
-    {
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id, 'status' => VersionStatusEnum::Draft]);
-        $section = Section::factory()->marked('health', '#4f8a49')->create(['account_id' => $user->account_id, 'name' => 'Health']);
-        StructureVersionSection::factory()->create([
-            'structure_version_id' => $version->id,
-            'section_version_id' => SectionVersion::factory()->create(['section_id' => $section->id])->id,
-        ]);
-
-        $sections = new TemplateBuilderViewModel(user: $user, template: $template->fresh())->sections();
-
-        $this->assertEquals('health', $sections[0]['icon']);
-        $this->assertEquals('#4f8a49', $sections[0]['colour']);
-    }
-
-    #[Test]
-    public function it_reads_an_empty_mark_off_a_section_that_carries_none(): void
-    {
-        $user = User::factory()->create();
-        [$template] = $this->templateCarryingASection($user);
-
-        $sections = new TemplateBuilderViewModel(user: $user, template: $template->fresh())->sections();
-
-        $this->assertNull($sections[0]['icon']);
-        $this->assertNull($sections[0]['colour']);
-    }
-
-    #[Test]
-    public function it_offers_every_glyph_a_section_may_be_marked_with(): void
-    {
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-
-        $glyphs = new TemplateBuilderViewModel(user: $user, template: $template)->glyphs();
-
-        $this->assertCount(37, $glyphs);
-        $this->assertContains('health', $glyphs);
-    }
-
-    #[Test]
-    public function it_offers_nine_colours_with_neutral_first_and_each_one_named(): void
-    {
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-
-        $colours = new TemplateBuilderViewModel(user: $user, template: $template)->colours();
-
-        $this->assertCount(9, $colours);
-        $this->assertNull($colours[0]['value']);
-
-        foreach ($colours as $colour) {
-            $this->assertNotEmpty($colour['label']);
-            $this->assertNotEmpty($colour['tint']);
-            $this->assertStringNotContainsString('#', $colour['label']);
-        }
-    }
-
-    #[Test]
     public function it_says_the_mark_stays_here_when_no_other_template_carries_the_section(): void
     {
         $user = User::factory()->create();

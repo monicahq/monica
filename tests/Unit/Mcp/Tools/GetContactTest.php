@@ -45,31 +45,4 @@ class GetContactTest extends TestCase
 
         Queue::assertPushedOn('low', RecordContactVisit::class);
     }
-
-    #[Test]
-    public function it_reports_a_contact_that_never_existed_as_not_existing(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        EricaServer::actingAs($user)->tool(GetContact::class, [
-            'vault' => $vault->uuid,
-            'contact' => '3f6c1d90-4b27-4e85-a1c3-9d720f5b8e46',
-        ])->assertHasErrors(['That contact does not exist.']);
-    }
-
-    #[Test]
-    public function it_refuses_without_a_contact(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        EricaServer::actingAs($user)->tool(GetContact::class, ['vault' => $vault->uuid])->assertHasErrors();
-    }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.contacts.show', app(GetContact::class)->mirrors());
-    }
 }

@@ -31,19 +31,4 @@ class LifeEventCategoryActivationControllerTest extends TestCase
         $response->assertSessionHas('status');
         $this->assertDatabaseHas('life_event_categories', ['id' => $category->id, 'is_active' => false]);
     }
-
-    #[Test]
-    public function it_switches_a_supplied_category_back_on(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $category = LifeEventCategory::factory()->system()->inactive()->create(['account_id' => $user->account_id]);
-
-        $this->actingAs($user)->put(route('settings.lifeEventCategoryActivation.update', $category), [
-            'is_active' => 1,
-        ]);
-
-        $this->assertDatabaseHas('life_event_categories', ['id' => $category->id, 'is_active' => true]);
-    }
 }

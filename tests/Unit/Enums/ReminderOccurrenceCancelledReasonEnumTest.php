@@ -48,18 +48,4 @@ class ReminderOccurrenceCancelledReasonEnumTest extends TestCase
             ReminderOccurrenceCancelledReasonEnum::forInactiveReason(ReminderInactiveReasonEnum::FieldRemoved),
         );
     }
-
-    #[Test]
-    public function it_lists_its_values(): void
-    {
-        $this->assertEquals([
-            'rule_deleted',
-            'record_archived',
-            'record_deleted',
-            'field_removed',
-            'value_cleared',
-            'source_changed',
-            'rule_changed',
-        ], ReminderOccurrenceCancelledReasonEnum::values());
-    }
 }

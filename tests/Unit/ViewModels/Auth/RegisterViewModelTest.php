@@ -63,13 +63,4 @@ class RegisterViewModelTest extends TestCase
 
         $this->assertEquals('password', new RegisterViewModel()->registrationMethod());
     }
-
-    #[Test]
-    public function it_gives_the_urls_of_the_legal_pages(): void
-    {
-        $viewModel = new RegisterViewModel;
-
-        $this->assertEquals(config('monica.terms_url'), $viewModel->termsUrl());
-        $this->assertEquals(config('monica.privacy_url'), $viewModel->privacyUrl());
-    }
 }

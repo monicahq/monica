@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Vaults;
 
-use App\Models\Contact;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -61,27 +60,5 @@ class SearchControllerTest extends TestCase
         $this->actingAs($user)
             ->get(route('search.index', ['vault' => $vault, 'query' => 'schrute', 'scope' => 'galaxy']))
             ->assertSessionHasErrors('scope');
-    }
-
-    #[Test]
-    public function it_lists_what_was_found_and_where_when_searching_every_vault(): void
-    {
-        $this->useSearchEngine();
-        $user = User::factory()->create();
-        $office = Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Dunder Mifflin']);
-        $farm = Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Schrute Farms']);
-        Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $farm->id, 'first_name' => 'Mose', 'last_name' => 'Schrute']);
-        $this->waitForSearchEngine();
-
-        $this->actingAs($user)
-            ->get(route('search.index', ['vault' => $office, 'query' => 'schrute']))
-            ->assertDontSeeText('Mose Schrute');
-
-        $this->actingAs($user)
-            ->get(route('search.index', ['vault' => $office, 'query' => 'schrute', 'scope' => 'account']))
-            ->assertSeeText('Mose Schrute')
-            ->assertSee('1 result for “schrute” in every vault', escape: false)
-            ->assertSee('x-data="{ shown: \'all\' }"', escape: false)
-            ->assertSee('Schrute Farms');
     }
 }

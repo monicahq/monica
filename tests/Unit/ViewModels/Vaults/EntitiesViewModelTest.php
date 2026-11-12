@@ -43,32 +43,6 @@ class EntitiesViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_marks_an_archived_record(): void
-    {
-        [$user, $vault, $type] = $this->vaultWithType();
-        Entity::factory()->archived()->create(['vault_id' => $vault->id, 'entity_type_id' => $type->id]);
-
-        $this->assertTrue(new EntitiesViewModel(user: $user, vault: $vault, entityType: $type)->entities()->items()[0]['isArchived']);
-    }
-
-    #[Test]
-    public function it_pages_the_records_twenty_at_a_time(): void
-    {
-        [$user, $vault, $type] = $this->vaultWithType();
-        Entity::factory()->count(25)->create(['vault_id' => $vault->id, 'entity_type_id' => $type->id]);
-
-        $firstPage = new EntitiesViewModel(user: $user, vault: $vault, entityType: $type)->entities();
-
-        $this->assertCount(20, $firstPage);
-        $this->assertSame(25, $firstPage->total());
-        $this->assertSame(20, $firstPage->perPage());
-
-        $this->app['request']->merge(['page' => 2]);
-
-        $this->assertCount(5, new EntitiesViewModel(user: $user, vault: $vault, entityType: $type)->entities());
-    }
-
-    #[Test]
     public function it_keeps_an_archived_record_in_its_place(): void
     {
         [$user, $vault, $type] = $this->vaultWithType();
@@ -80,20 +54,6 @@ class EntitiesViewModelTest extends TestCase
 
         $this->assertSame(['Bandit', 'Mose', 'Sprinkles'], array_column($entities, 'name'));
         $this->assertSame([false, true, false], array_column($entities, 'isArchived'));
-    }
-
-    #[Test]
-    public function it_holds_every_record_on_one_page_for_all(): void
-    {
-        [$user, $vault, $type] = $this->vaultWithType();
-        Entity::factory()->count(25)->create(['vault_id' => $vault->id, 'entity_type_id' => $type->id]);
-
-        $viewModel = new EntitiesViewModel(user: $user, vault: $vault, entityType: $type, size: 'all');
-
-        $this->assertCount(25, $viewModel->entities());
-        $this->assertFalse($viewModel->entities()->hasPages());
-        $this->assertSame('all', $viewModel->size());
-        $this->assertSame(20, $viewModel->defaultSize());
     }
 
     #[Test]

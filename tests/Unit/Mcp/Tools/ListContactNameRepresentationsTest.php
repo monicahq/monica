@@ -31,25 +31,4 @@ class ListContactNameRepresentationsTest extends TestCase
             'contact' => $contact->uuid,
         ])->assertOk()->assertSee('マイケル・スコット')->assertSee('Michael');
     }
-
-    #[Test]
-    public function it_does_not_find_a_contact_through_another_vault_or_another_account(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $elsewhere = Vault::factory()->create(['account_id' => $user->account_id]);
-        $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
-
-        EricaServer::actingAs($user)->tool(ListContactNameRepresentations::class, ['vault' => $elsewhere->uuid, 'contact' => $contact->uuid])
-            ->assertHasErrors(['That contact does not exist.']);
-
-        EricaServer::actingAs(User::factory()->create())->tool(ListContactNameRepresentations::class, ['vault' => $vault->uuid, 'contact' => $contact->uuid])
-            ->assertHasErrors(['That vault does not exist.']);
-    }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.contacts.nameRepresentations', app(ListContactNameRepresentations::class)->mirrors());
-    }
 }

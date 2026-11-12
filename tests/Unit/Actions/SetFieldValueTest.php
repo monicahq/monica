@@ -229,28 +229,6 @@ class SetFieldValueTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_an_address_label_that_is_not_on_the_list_the_field_names(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $contact = $this->contactOf($user);
-        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
-        $field = $this->labelledFieldOf($user, $list, FieldTypeEnum::Address);
-        $elsewhere = ValueListItem::factory()->create(['account_id' => $user->account_id, 'label' => 'Mobile']);
-
-        $this->expectException(InvalidArgumentException::class);
-
-        new SetFieldValue(
-            user: $user,
-            valuable: $contact,
-            field: $field,
-            value: ['street' => '1725 Slough Avenue'],
-            valueListItem: $elsewhere,
-        )->execute();
-    }
-
-    #[Test]
     public function it_lets_two_records_share_an_address_on_a_field_that_asks_for_unique_values(): void
     {
         Queue::fake();

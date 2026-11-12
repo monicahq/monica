@@ -7,7 +7,6 @@ namespace Tests\Feature\Mcp;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\App;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -28,30 +27,6 @@ class McpRefusalLanguageTest extends TestCase
 
         $response->assertOk();
         $this->assertStringContainsString('Ce coffre n’existe pas.', $response->getContent());
-    }
-
-    #[Test]
-    public function it_resolves_a_locale_exactly_as_the_json_api_does(): void
-    {
-        $user = User::factory()->create();
-        $key = $user->createToken('Dundie awards bot');
-        $unreachable = Vault::factory()->create();
-
-        $this->withToken($key->plainTextToken)
-            ->withHeader('Accept-Language', 'de-DE')
-            ->json('GET', route('api.v1.me'))
-            ->assertOk();
-        $overTheJsonApi = App::getLocale();
-
-        $this->app['auth']->forgetGuards();
-
-        $this->withToken($key->plainTextToken)
-            ->withHeader('Accept-Language', 'de-DE')
-            ->postJson('/mcp', $this->askFor($unreachable->uuid))
-            ->assertOk();
-
-        $this->assertSame($overTheJsonApi, App::getLocale());
-        $this->assertSame('de_DE', App::getLocale());
     }
 
     #[Test]

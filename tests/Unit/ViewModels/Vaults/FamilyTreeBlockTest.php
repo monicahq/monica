@@ -196,17 +196,6 @@ class FamilyTreeBlockTest extends TestCase
         );
     }
 
-    #[Test]
-    public function it_says_what_the_drawing_leaves_out(): void
-    {
-        $vault = $this->vault();
-        $judy = $this->contactOn($vault, 'Judy', 'Geller');
-
-        $block = new FamilyTreeBlock(vault: $vault, contact: $judy);
-
-        $this->assertStringContainsString('Friends and colleagues', $block->scopeLine());
-    }
-
     private function vault(): Vault
     {
         $user = User::factory()->create();

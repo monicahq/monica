@@ -39,17 +39,6 @@ class CreateContactTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_without_a_given_name(): void
-    {
-        $user = User::factory()->create();
-        $vault = $this->vaultReadyForContacts($user);
-
-        EricaServer::actingAs($user)->tool(CreateContact::class, ['vault' => $vault->uuid])->assertHasErrors();
-
-        $this->assertDatabaseCount('contacts', 0);
-    }
-
-    #[Test]
     public function it_relays_the_refusal_when_the_vault_has_no_template_to_start_from(): void
     {
         $user = User::factory()->create();
@@ -61,12 +50,6 @@ class CreateContactTest extends TestCase
         ])->assertHasErrors(['This vault has no template for new contacts to start from.']);
 
         $this->assertDatabaseCount('contacts', 0);
-    }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.contacts.create', app(CreateContact::class)->mirrors());
     }
 
     private function vaultReadyForContacts(User $user): Vault

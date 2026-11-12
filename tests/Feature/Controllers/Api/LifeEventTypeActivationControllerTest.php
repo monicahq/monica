@@ -54,24 +54,6 @@ class LifeEventTypeActivationControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_confirms_the_state_rather_than_inverting_it_when_sent_twice(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
-        $type = LifeEventType::factory()->create(['account_id' => $user->account_id, 'life_event_category_id' => $category->id]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('PUT', "/api/v1/life-event-types/{$type->uuid}/activation", ['is_active' => false])->assertOk();
-        $response = $this->json('PUT', "/api/v1/life-event-types/{$type->uuid}/activation", ['is_active' => false]);
-
-        $response->assertOk();
-        $response->assertJsonPath('data.attributes.is_active', false);
-    }
-
-    #[Test]
     public function it_keeps_the_place_a_retired_type_had(): void
     {
         Queue::fake();

@@ -63,24 +63,6 @@ class LocaleCollationTest extends TestCase
     }
 
     #[Test]
-    public function it_folds_a_term_and_a_name_to_the_same_text_where_the_language_folds(): void
-    {
-        $this->assertSame(
-            LocaleCollation::foldForSearch('elodie', 'fr_FR'),
-            LocaleCollation::foldForSearch('Élodie', 'fr_FR'),
-        );
-    }
-
-    #[Test]
-    public function it_does_not_fold_a_term_and_a_name_together_where_the_language_keeps_them_apart(): void
-    {
-        $this->assertNotSame(
-            LocaleCollation::foldForSearch('nunez', 'es_ES'),
-            LocaleCollation::foldForSearch('Ñuñez', 'es_ES'),
-        );
-    }
-
-    #[Test]
     public function it_gives_the_turkish_dotted_capital_for_a_dotted_i(): void
     {
         $this->assertSame('İ', LocaleCollation::headingLetter('irmak', 'tr_TR'));
@@ -147,24 +129,6 @@ class LocaleCollationTest extends TestCase
     {
         $this->assertSame('elodie', LocaleCollation::foldForSearch('Élodie', 'zz_ZZ'));
         $this->assertSame('E', LocaleCollation::headingLetter('Élodie', 'zz_ZZ'));
-    }
-
-    #[Test]
-    public function it_orders_a_language_it_knows_nothing_about_the_same_way_every_time(): void
-    {
-        $first = LocaleCollation::sortKey('Élodie', 'zz_ZZ');
-        $second = LocaleCollation::sortKey('Élodie', 'zz_ZZ');
-
-        $this->assertSame($first, $second);
-    }
-
-    #[Test]
-    public function it_reuses_one_collator_for_a_language(): void
-    {
-        $this->assertSame(
-            LocaleCollation::getCollator('fr_FR'),
-            LocaleCollation::getCollator('fr_FR'),
-        );
     }
 
     #[Test]

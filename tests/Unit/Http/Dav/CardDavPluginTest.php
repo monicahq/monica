@@ -6,7 +6,6 @@ namespace Tests\Unit\Http\Dav;
 
 use PHPUnit\Framework\Attributes\Test;
 use Sabre\DAV\Exception\UnsupportedMediaType;
-use Sabre\VObject\ParseException;
 use Sabre\VObject\Reader;
 use Tests\Fixtures\Http\Dav\ExposedCardDavPlugin;
 use Tests\TestCase;
@@ -136,15 +135,6 @@ class CardDavPluginTest extends TestCase
 
         $this->assertCount(1, $card->select('X-MONICA-UNREADABLE-LINE'));
         $this->assertSame("this line has no colon\n and goes on", (string) $card->{'X-MONICA-UNREADABLE-LINE'});
-    }
-
-    #[Test]
-    public function it_relies_on_the_parser_naming_the_line_it_cannot_read(): void
-    {
-        $this->expectException(ParseException::class);
-        $this->expectExceptionMessageMatches('/Line starting at \d+/');
-
-        Reader::read("BEGIN:VCARD\r\nVERSION:4.0\r\nthis line has no colon\r\nEND:VCARD\r\n", Reader::OPTION_FORGIVING);
     }
 
     #[Test]

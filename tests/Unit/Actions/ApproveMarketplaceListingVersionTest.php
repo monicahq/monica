@@ -52,6 +52,8 @@ class ApproveMarketplaceListingVersionTest extends TestCase
         $this->assertEquals(MarketplaceVersionStatusEnum::Approved, $version->status);
         $this->assertNotNull($version->approved_at);
         $this->assertTrue($version->status->isInstallable());
+
+        Queue::assertPushedOn('low', LogAdministratorAction::class);
     }
 
     #[Test]
@@ -135,16 +137,6 @@ class ApproveMarketplaceListingVersionTest extends TestCase
         $this->expectException(ListingIsNotAwaitingModeration::class);
 
         new ApproveMarketplaceListingVersion(version: $version, administrator: $this->michael())->execute();
-    }
-
-    #[Test]
-    public function it_writes_the_decision_down_against_the_administrator(): void
-    {
-        $version = MarketplaceListingVersion::factory()->create();
-
-        new ApproveMarketplaceListingVersion(version: $version, administrator: $this->michael())->execute();
-
-        Queue::assertPushedOn('low', LogAdministratorAction::class);
     }
 
     #[Test]

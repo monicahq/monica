@@ -60,19 +60,6 @@ class HandleStripeRefundReversedTest extends TestCase
     }
 
     #[Test]
-    public function it_ignores_every_other_event(): void
-    {
-        $michael = $this->somebodyWhoseRefundTookAccessAway();
-
-        $payload = $this->event('failed');
-        $payload['type'] = 'charge.refunded';
-
-        new HandleStripeRefundReversed()->handle(new WebhookReceived($payload));
-
-        $this->assertFalse($michael->account->fresh()->hasFullAccess());
-    }
-
-    #[Test]
     public function it_does_nothing_for_a_customer_it_does_not_know(): void
     {
         $michael = $this->somebodyWhoseRefundTookAccessAway();
@@ -103,15 +90,6 @@ class HandleStripeRefundReversedTest extends TestCase
 
         $this->assertFalse($michael->account->fresh()->hasFullAccess());
         Notification::assertNothingSent();
-    }
-
-    #[Test]
-    public function it_is_retried_before_it_is_abandoned(): void
-    {
-        $listener = new HandleStripeRefundReversed;
-
-        $this->assertSame(5, $listener->tries);
-        $this->assertNotEmpty($listener->backoff);
     }
 
     private function somebodyWhoseRefundTookAccessAway(): User

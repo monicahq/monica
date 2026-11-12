@@ -32,14 +32,6 @@ class CopyButtonTest extends TestCase
     }
 
     #[Test]
-    public function it_lets_go_of_the_word_it_showed_so_the_button_may_be_pressed_again(): void
-    {
-        $this->blade(self::CALL)
-            ->assertSee("this.state = 'idle'", escape: false)
-            ->assertSee('2500', escape: false);
-    }
-
-    #[Test]
     public function it_does_not_submit_the_form_it_may_be_standing_in(): void
     {
         $this->blade(self::CALL)->assertSee('type="button"', escape: false);

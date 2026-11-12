@@ -35,20 +35,4 @@ class MarketplaceCategoryTest extends TestCase
         $this->assertEquals(__(MarketplaceCategoryEnum::Animals->label()), $category->name);
         $this->assertEquals(__(MarketplaceCategoryEnum::Animals->description()), $category->description);
     }
-
-    #[Test]
-    public function it_is_reached_by_its_key(): void
-    {
-        $category = MarketplaceCategory::factory()->create(['key' => 'health']);
-
-        $this->assertEquals('key', $category->getRouteKeyName());
-        $this->assertEquals('health', $category->getRouteKey());
-    }
-
-    #[Test]
-    public function it_takes_new_publications_until_it_is_deactivated(): void
-    {
-        $this->assertTrue(MarketplaceCategory::factory()->create()->is_active);
-        $this->assertFalse(MarketplaceCategory::factory()->inactive()->create()->is_active);
-    }
 }

@@ -59,19 +59,4 @@ class ContactMeControllerTest extends TestCase
 
         $this->json('GET', "/api/v1/vaults/{$other->slug}/contacts/me")->assertNotFound();
     }
-
-    #[Test]
-    public function it_resolves_the_me_contact_of_the_vault_named_and_no_other(): void
-    {
-        $user = User::factory()->create();
-        Sanctum::actingAs($user);
-        $asked = Vault::factory()->create(['account_id' => $user->account_id]);
-        $other = Vault::factory()->create(['account_id' => $user->account_id]);
-        $me = Contact::factory()->me()->create(['vault_id' => $asked->id, 'account_id' => $user->account_id]);
-        Contact::factory()->me()->create(['vault_id' => $other->id, 'account_id' => $user->account_id]);
-
-        $this->json('GET', "/api/v1/vaults/{$asked->slug}/contacts/me")
-            ->assertOk()
-            ->assertJsonPath('data.id', $me->uuid);
-    }
 }

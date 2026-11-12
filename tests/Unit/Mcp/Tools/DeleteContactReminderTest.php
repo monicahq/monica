@@ -50,10 +50,4 @@ class DeleteContactReminderTest extends TestCase
             'reminder' => '6f1c2d3e-4a5b-4c6d-8e7f-9a0b1c2d3e4f',
         ])->assertHasErrors(['That reminder does not exist.']);
     }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.contacts.reminders.destroy', app(DeleteContactReminder::class)->mirrors());
-    }
 }

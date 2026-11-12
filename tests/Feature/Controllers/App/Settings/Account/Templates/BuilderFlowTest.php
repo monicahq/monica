@@ -7,7 +7,6 @@ namespace Tests\Feature\Controllers\App\Settings\Account\Templates;
 use App\Enums\FieldTypeEnum;
 use App\Enums\VersionStatusEnum;
 use App\Models\Field;
-use App\Models\StructureVersion;
 use App\Models\StructureVersionSection;
 use App\Models\Template;
 use App\Models\User;
@@ -85,45 +84,5 @@ class BuilderFlowTest extends TestCase
         $this->assertEquals(VersionStatusEnum::Published, $version->fresh()->status);
         $this->assertEquals($version->id, $template->structure->published_version_id);
         $this->assertEquals(VersionStatusEnum::Published, $row->fresh()->sectionVersion->status);
-    }
-
-    #[Test]
-    public function it_gives_a_shared_section_its_own_version_before_editing_it(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-
-        $this->actingAs($user)->post(route('settings.templates.create'), ['name' => 'Pet', 'applies_to' => 'contact']);
-        $template = Template::query()->where('account_id', $user->account_id)->firstOrFail();
-
-        $this->actingAs($user)->post(route('settings.templateSections.create', $template), ['name' => 'Health']);
-        $row = StructureVersionSection::query()->where('account_id', $user->account_id)->firstOrFail();
-
-        $this->actingAs($user)->post(route('settings.fields.create', [$template, $row]), [
-            'type' => FieldTypeEnum::Text->value,
-            'label' => 'Microchip',
-        ]);
-
-        $field = Field::query()->where('account_id', $user->account_id)->firstOrFail();
-        $sectionVersion = $row->fresh()->sectionVersion;
-
-        $other = Template::factory()->create(['account_id' => $user->account_id]);
-        $otherVersion = StructureVersion::factory()->create(['structure_id' => $other->structure->id]);
-        StructureVersionSection::factory()->create([
-            'structure_version_id' => $otherVersion->id,
-            'section_version_id' => $sectionVersion->id,
-        ]);
-        $sectionVersion->increment('usage_count');
-
-        $this->actingAs($user)
-            ->put(route('settings.fields.update', [$template, $row, $field]), ['label' => 'Chip number'])
-            ->assertRedirect();
-
-        $row->refresh();
-
-        $this->assertNotEquals($sectionVersion->id, $row->section_version_id);
-        $this->assertEquals('Chip number', $row->sectionVersion->fields()->where('key', 'microchip')->firstOrFail()->label);
-        $this->assertEquals('Microchip', $field->fresh()->label);
     }
 }

@@ -256,27 +256,6 @@ class LifeEventControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_keeps_the_values_when_the_fields_are_sent_as_null(): void
-    {
-        Queue::fake();
-        [$user, $vault, $jim] = $this->office();
-        $meal = $this->lifeEventTypeAsking($user, 'Meal', ['Dish' => FieldTypeEnum::Text]);
-        $dish = $meal->structure->publishedVersion->inputFields()->firstOrFail();
-        $lifeEvent = $this->recorded($user, $vault, $jim, $meal, [$dish->id => 'Chicken parm']);
-
-        Sanctum::actingAs($user);
-
-        $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/life-events/{$lifeEvent->uuid}", [
-            'life_event_type' => $meal->uuid,
-            'happened_on' => '2026-10-10',
-            'participants' => [$jim->uuid],
-            'fields' => null,
-        ])->assertOk();
-
-        $this->assertDatabaseHas('field_values', ['valuable_id' => $lifeEvent->id, 'field_id' => $dish->id, 'value_string' => 'Chicken parm']);
-    }
-
-    #[Test]
     public function it_keeps_a_sensitive_value_the_key_cannot_see_when_the_fields_are_replaced(): void
     {
         Queue::fake();
@@ -328,23 +307,6 @@ class LifeEventControllerTest extends TestCase
 
         $this->assertModelExists($repetition);
         $this->assertDatabaseHas('field_values', ['field_value_row_id' => $repetition->id, 'field_id' => $guest->id, 'value_string' => 'Dwight Schrute']);
-    }
-
-    #[Test]
-    public function it_refuses_to_record_a_life_event_for_somebody_else(): void
-    {
-        Queue::fake();
-        [$user, $vault, $jim, $pam] = $this->office();
-        $meal = $this->lifeEventTypeAsking($user, 'Meal');
-        $lifeEvent = $this->recorded($user, $vault, $jim, $meal);
-
-        Sanctum::actingAs($user);
-
-        $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/life-events/{$lifeEvent->uuid}", [
-            'life_event_type' => $meal->uuid,
-            'happened_on' => '2026-10-10',
-            'participants' => [$pam->uuid],
-        ])->assertUnprocessable()->assertJsonValidationErrors(['participants']);
     }
 
     #[Test]

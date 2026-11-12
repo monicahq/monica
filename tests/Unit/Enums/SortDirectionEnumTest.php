@@ -11,14 +11,6 @@ use Tests\TestCase;
 class SortDirectionEnumTest extends TestCase
 {
     #[Test]
-    public function it_runs_one_way_or_the_other(): void
-    {
-        $this->assertEquals('asc', SortDirectionEnum::Ascending->value);
-        $this->assertEquals('desc', SortDirectionEnum::Descending->value);
-        $this->assertEquals(['asc', 'desc'], SortDirectionEnum::values());
-    }
-
-    #[Test]
     public function it_reads_a_direction_somebody_asked_for(): void
     {
         $this->assertEquals(SortDirectionEnum::Descending, SortDirectionEnum::fromValueOrAscending('desc'));

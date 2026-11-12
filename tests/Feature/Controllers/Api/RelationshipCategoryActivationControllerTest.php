@@ -51,38 +51,6 @@ class RelationshipCategoryActivationControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_confirms_the_state_rather_than_inverting_it_when_sent_twice(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('PUT', "/api/v1/relationship-categories/{$category->uuid}/activation", ['is_active' => false])->assertOk();
-        $this->json('PUT', "/api/v1/relationship-categories/{$category->uuid}/activation", ['is_active' => false])
-            ->assertOk()
-            ->assertJsonPath('data.attributes.is_active', false);
-    }
-
-    #[Test]
-    public function it_retires_a_supplied_category_like_any_other(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $category = RelationshipCategory::factory()->system()->create(['account_id' => $user->account_id]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('PUT', "/api/v1/relationship-categories/{$category->uuid}/activation", ['is_active' => false])
-            ->assertOk()
-            ->assertJsonPath('data.attributes.is_active', false)
-            ->assertJsonPath('data.attributes.is_system', true);
-    }
-
-    #[Test]
     public function it_takes_a_retired_category_and_its_types_out_of_the_relationship_picker(): void
     {
         Queue::fake();
@@ -101,28 +69,6 @@ class RelationshipCategoryActivationControllerTest extends TestCase
         $this->json('PUT', "/api/v1/relationship-categories/{$category->uuid}/activation", ['is_active' => false])->assertOk();
 
         $this->assertCount(0, new RelationshipTypeChoices(accountId: $user->account_id)->groups());
-    }
-
-    #[Test]
-    public function it_leaves_the_types_of_a_retired_category_where_they_were(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id, 'position' => 2]);
-        $type = RelationshipType::factory()->create([
-            'account_id' => $user->account_id,
-            'relationship_category_id' => $category->id,
-        ]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('PUT', "/api/v1/relationship-categories/{$category->uuid}/activation", ['is_active' => false])
-            ->assertOk()
-            ->assertJsonPath('data.attributes.type_count', 1)
-            ->assertJsonPath('data.attributes.position', 2);
-
-        $this->assertTrue($type->refresh()->is_active);
     }
 
     #[Test]

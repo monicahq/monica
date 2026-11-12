@@ -30,16 +30,6 @@ class CountedPhraseWordingsTest extends TestCase
     }
 
     #[Test]
-    public function polish_reads_a_third_wording_that_two_forms_could_never_reach(): void
-    {
-        $forms = CountedPhraseWordings::of(':count reminder|:count reminders', 'pl_PL');
-
-        $this->assertNotSame($forms['one'], $forms['few']);
-        $this->assertNotSame($forms['few'], $forms['many']);
-        $this->assertCount(3, array_unique($forms));
-    }
-
-    #[Test]
     public function it_leaves_the_number_for_whoever_says_the_phrase_to_fill_in(): void
     {
         foreach (CountedPhraseWordings::of(':count reminder|:count reminders', 'fr_FR') as $wording) {

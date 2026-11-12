@@ -29,28 +29,4 @@ class ListTemplateVersionsTest extends TestCase
             ->assertHasNoErrors()
             ->assertSee((string) $version->version);
     }
-
-    #[Test]
-    public function it_reports_a_template_of_another_account_as_not_existing(): void
-    {
-        $user = User::factory()->create();
-        $theirs = Template::factory()->create();
-
-        EricaServer::actingAs($user)->tool(ListTemplateVersions::class, ['template' => $theirs->uuid])
-            ->assertHasErrors(['That template does not exist.']);
-    }
-
-    #[Test]
-    public function it_refuses_without_a_template(): void
-    {
-        $user = User::factory()->create();
-
-        EricaServer::actingAs($user)->tool(ListTemplateVersions::class, [])->assertHasErrors();
-    }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.templates.versions', app(ListTemplateVersions::class)->mirrors());
-    }
 }

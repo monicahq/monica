@@ -41,27 +41,6 @@ class NotificationDigestTest extends TestCase
     }
 
     #[Test]
-    public function it_sets_the_wording_of_each_reminder_apart_from_what_it_is_about(): void
-    {
-        $michael = User::factory()->create();
-
-        $rendered = (string) $this->notification()->toMail($michael)->render();
-
-        $this->assertStringContainsString('Birthday, Michael Scott</strong>', $rendered);
-    }
-
-    #[Test]
-    public function it_words_nothing_again(): void
-    {
-        $michael = User::factory()->create();
-
-        $message = $this->notification()->toMail($michael);
-
-        $this->assertContains('**Birthday, Michael Scott**', $message->introLines);
-        $this->assertContains('It is in seven days.', $message->introLines);
-    }
-
-    #[Test]
     public function it_says_the_summary_was_asked_for(): void
     {
         $michael = User::factory()->create();

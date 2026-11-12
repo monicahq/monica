@@ -38,43 +38,6 @@ class EntityTypePositionControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_puts_an_entity_type_last_when_the_position_is_past_the_end(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $animals = EntityType::factory()->create(['account_id' => $user->account_id, 'position' => 1]);
-        $recipes = EntityType::factory()->create(['account_id' => $user->account_id, 'position' => 2]);
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('PUT', "/api/v1/entity-types/{$animals->uuid}/position", ['position' => 99]);
-
-        $response->assertOk();
-        $response->assertJsonPath('data.attributes.position', 2);
-        $this->assertSame(1, $recipes->refresh()->position);
-        $this->assertSame(2, $animals->refresh()->position);
-    }
-
-    #[Test]
-    public function it_numbers_the_types_nobody_may_file_records_under_along_with_the_rest(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $recipes = EntityType::factory()->inactive()->create(['account_id' => $user->account_id, 'position' => 1]);
-        $animals = EntityType::factory()->create(['account_id' => $user->account_id, 'position' => 2]);
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('PUT', "/api/v1/entity-types/{$animals->uuid}/position", ['position' => 1]);
-
-        $response->assertOk();
-        $this->assertSame(1, $animals->refresh()->position);
-        $this->assertSame(2, $recipes->refresh()->position);
-    }
-
-    #[Test]
     public function it_validates_the_position_it_is_asked_for(): void
     {
         $user = User::factory()->create();

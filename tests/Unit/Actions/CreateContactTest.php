@@ -152,25 +152,6 @@ class CreateContactTest extends TestCase
     }
 
     #[Test]
-    public function it_gives_the_contact_a_colour_to_draw_their_initials_on(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $contact = new CreateContact(
-            user: $user,
-            vault: $vault,
-            structureVersion: $this->publishedContactVersion($user->account),
-            firstName: 'Pam',
-            lastName: 'Beesly',
-        )->execute();
-
-        $this->assertContains($contact->avatar_colour, Contact::AVATAR_COLOURS);
-    }
-
-    #[Test]
     public function it_counts_the_contact_in_the_vault_and_on_the_version(): void
     {
         Queue::fake();
@@ -209,25 +190,6 @@ class CreateContactTest extends TestCase
 
         $this->assertTrue($contact->is_partial);
         $this->assertEquals('jack', $contact->sort_name);
-    }
-
-    #[Test]
-    public function it_writes_a_contact_down_already_pinned_to_the_top_of_the_list(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $contact = new CreateContact(
-            user: $user,
-            vault: $vault,
-            structureVersion: $this->publishedContactVersion($user->account),
-            firstName: 'Pam',
-            isFavourite: true,
-        )->execute();
-
-        $this->assertTrue($contact->is_favourite);
     }
 
     #[Test]

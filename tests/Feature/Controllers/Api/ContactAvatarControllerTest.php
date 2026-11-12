@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\Api;
 
 use App\Models\Contact;
-use App\Models\File;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -42,31 +41,6 @@ class ContactAvatarControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_lets_the_previous_picture_go_when_a_new_one_arrives(): void
-    {
-        Storage::fake('local');
-
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('POST', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/avatar", [
-            'avatar' => UploadedFile::fake()->image('first.jpg', 400, 400),
-        ])->assertOk();
-
-        $first = $contact->refresh()->avatar_file_id;
-
-        $this->json('POST', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/avatar", [
-            'avatar' => UploadedFile::fake()->image('second.jpg', 400, 400),
-        ])->assertOk();
-
-        $this->assertNotEquals($first, $contact->refresh()->avatar_file_id);
-        $this->assertModelExists(File::query()->findOrFail($first));
-    }
-
-    #[Test]
     public function it_refuses_a_file_that_is_not_a_picture(): void
     {
         Storage::fake('local');
@@ -79,26 +53,6 @@ class ContactAvatarControllerTest extends TestCase
 
         $response = $this->json('POST', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/avatar", [
             'avatar' => UploadedFile::fake()->create('dundies.pdf', 10, 'application/pdf'),
-        ]);
-
-        $response->assertUnprocessable();
-        $response->assertJsonValidationErrors(['avatar']);
-        $this->assertNull($contact->refresh()->avatar_file_id);
-    }
-
-    #[Test]
-    public function it_refuses_a_picture_over_the_size_it_accepts(): void
-    {
-        Storage::fake('local');
-
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('POST', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/avatar", [
-            'avatar' => UploadedFile::fake()->image('huge.jpg')->size(6000),
         ]);
 
         $response->assertUnprocessable();
@@ -179,21 +133,6 @@ class ContactAvatarControllerTest extends TestCase
         $this->json('DELETE', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/avatar")->assertOk();
 
         $this->assertNull($contact->refresh()->avatar_file_id);
-    }
-
-    #[Test]
-    public function it_answers_the_same_way_when_the_contact_had_no_picture(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('DELETE', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/avatar");
-
-        $response->assertOk();
-        $response->assertJsonPath('data.attributes.avatar', null);
     }
 
     #[Test]

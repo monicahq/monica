@@ -28,10 +28,4 @@ class SetTemplateActivationTest extends TestCase
         EricaServer::actingAs($user)->tool(SetTemplateActivation::class, ['template' => $template->uuid, 'is_active' => true])->assertOk();
         $this->assertTrue($template->refresh()->is_active);
     }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.templates.activation.update', app(SetTemplateActivation::class)->mirrors());
-    }
 }

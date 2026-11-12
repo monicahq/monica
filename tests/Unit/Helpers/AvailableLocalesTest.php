@@ -94,18 +94,6 @@ class AvailableLocalesTest extends TestCase
     }
 
     #[Test]
-    public function it_hands_every_language_with_what_is_known_about_it(): void
-    {
-        $this->writeLocaleFiles(['en', 'kl_GL']);
-
-        $locales = AvailableLocales::all();
-
-        $this->assertSame(['en', 'kl_GL'], array_keys($locales));
-        $this->assertSame('English', $locales['en']['label']);
-        $this->assertSame('kl_GL', $locales['kl_GL']['label']);
-    }
-
-    #[Test]
     public function every_language_the_instance_ships_is_described_in_the_configuration(): void
     {
         $described = (array) config('localization.locales');

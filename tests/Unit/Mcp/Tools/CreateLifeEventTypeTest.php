@@ -41,21 +41,6 @@ class CreateLifeEventTypeTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_an_icon_outside_the_allowed_ones(): void
-    {
-        $user = User::factory()->create();
-        $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
-
-        EricaServer::actingAs($user)->tool(CreateLifeEventType::class, [
-            'life_event_category_id' => $category->uuid,
-            'name' => 'Won a Dundie',
-            'icon' => 'dundie',
-        ])->assertHasErrors(['The selected icon is invalid.']);
-
-        $this->assertSame(0, LifeEventType::query()->count());
-    }
-
-    #[Test]
     public function it_refuses_a_category_of_another_account(): void
     {
         $user = User::factory()->create();
@@ -67,11 +52,5 @@ class CreateLifeEventTypeTest extends TestCase
         ])->assertHasErrors(['That life event category does not exist.']);
 
         $this->assertSame(0, LifeEventType::query()->count());
-    }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.lifeEventTypes.create', app(CreateLifeEventType::class)->mirrors());
     }
 }

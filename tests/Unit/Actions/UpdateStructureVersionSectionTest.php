@@ -59,24 +59,6 @@ class UpdateStructureVersionSectionTest extends TestCase
     }
 
     #[Test]
-    public function it_leaves_the_name_of_the_section_itself_alone(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $section = Section::factory()->create(['account_id' => $user->account_id, 'name' => 'Address']);
-        $sectionVersion = SectionVersion::factory()->published()->create(['section_id' => $section->id]);
-        $row = StructureVersionSection::factory()->create([
-            'account_id' => $user->account_id,
-            'section_version_id' => $sectionVersion->id,
-        ]);
-
-        new UpdateStructureVersionSection(user: $user, row: $row, titleOverride: 'Where they live')->execute();
-
-        $this->assertEquals('Address', $section->fresh()->name);
-    }
-
-    #[Test]
     public function it_puts_the_sections_own_name_back_when_the_override_is_taken_away(): void
     {
         Queue::fake();

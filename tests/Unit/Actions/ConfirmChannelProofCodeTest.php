@@ -48,6 +48,7 @@ class ConfirmChannelProofCodeTest extends TestCase
     #[Test]
     public function a_wrong_code_is_counted_and_refused(): void
     {
+        Queue::fake();
         [$user, $channel] = $this->awaitingCode();
 
         try {
@@ -61,6 +62,8 @@ class ConfirmChannelProofCodeTest extends TestCase
 
         $this->assertNull($channel->proven_at);
         $this->assertSame(1, $channel->proof_attempts);
+
+        Queue::assertNotPushed(LogUserAction::class);
     }
 
     #[Test]
@@ -120,21 +123,6 @@ class ConfirmChannelProofCodeTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new ConfirmChannelProofCode(user: $user, channel: $theirs, code: '123456')->execute();
-    }
-
-    #[Test]
-    public function it_logs_nothing_when_the_code_was_wrong(): void
-    {
-        Queue::fake();
-        [$user, $channel] = $this->awaitingCode();
-
-        try {
-            new ConfirmChannelProofCode(user: $user, channel: $channel, code: '000000')->execute();
-        } catch (ProofCodeIsNotValid) {
-            // the assertion below is the point
-        }
-
-        Queue::assertNotPushed(LogUserAction::class);
     }
 
     /** @return array{0: User, 1: NotificationChannel} */

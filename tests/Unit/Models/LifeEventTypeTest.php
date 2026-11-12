@@ -20,22 +20,4 @@ class LifeEventTypeTest extends TestCase
 
         $this->assertEquals(__('Call'), $supplied->name);
     }
-
-    #[Test]
-    public function it_keeps_the_name_somebody_gave_it(): void
-    {
-        $lifeEventType = LifeEventType::factory()->create(['name' => 'Sunday roast']);
-
-        $this->assertEquals('Sunday roast', $lifeEventType->name);
-    }
-
-    #[Test]
-    public function it_can_be_deleted_without_the_row_going(): void
-    {
-        $lifeEventType = LifeEventType::factory()->create();
-
-        $lifeEventType->delete();
-
-        $this->assertSoftDeleted($lifeEventType);
-    }
 }

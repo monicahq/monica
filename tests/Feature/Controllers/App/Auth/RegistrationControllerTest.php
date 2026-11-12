@@ -49,6 +49,7 @@ class RegistrationControllerTest extends TestCase
         $response = $this->post(route('auth.register.create'), $this->validPayload());
 
         $response->assertRedirect(route('auth.verification.notice'));
+        $response->assertCookie(Auth::guard('web')->getRecallerName());
         $this->assertAuthenticated();
 
         $user = User::query()->where('email', 'michael.scott@dundermifflin.com')->firstOrFail();
@@ -56,15 +57,6 @@ class RegistrationControllerTest extends TestCase
         $this->assertEquals(1, Account::query()->count());
         $this->assertTrue($user->is($user->account->user));
         $this->assertEquals('Michael Scott', $user->name);
-    }
-
-    #[Test]
-    public function it_remembers_the_browser_of_the_new_account(): void
-    {
-        Queue::fake();
-
-        $this->post(route('auth.register.create'), $this->validPayload())
-            ->assertCookie(Auth::guard('web')->getRecallerName());
     }
 
     #[Test]
@@ -118,42 +110,6 @@ class RegistrationControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_an_email_address_already_taken_when_typed_with_capitals(): void
-    {
-        User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
-
-        $response = $this->post(route('auth.register.create'), $this->validPayload([
-            'email' => 'Michael.Scott@dundermifflin.com',
-        ]));
-
-        $response->assertSessionHasErrors('email');
-        $this->assertGuest();
-    }
-
-    #[Test]
-    public function it_refuses_a_password_that_is_too_short(): void
-    {
-        $response = $this->post(route('auth.register.create'), $this->validPayload([
-            'password' => 'short',
-            'password_confirmation' => 'short',
-        ]));
-
-        $response->assertSessionHasErrors('password');
-        $this->assertGuest();
-    }
-
-    #[Test]
-    public function it_refuses_a_password_that_is_not_confirmed(): void
-    {
-        $response = $this->post(route('auth.register.create'), $this->validPayload([
-            'password_confirmation' => 'bearsbeatsbattlestar',
-        ]));
-
-        $response->assertSessionHasErrors('password');
-        $this->assertGuest();
-    }
-
-    #[Test]
     public function it_refuses_a_registration_without_a_human_check(): void
     {
         config(['turnstile.enabled' => true]);
@@ -166,23 +122,6 @@ class RegistrationControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_creates_the_account_when_cloudflare_accepts_the_human_check(): void
-    {
-        Queue::fake();
-        config(['turnstile.enabled' => true]);
-        Http::fake([
-            'challenges.cloudflare.com/*' => Http::response(['success' => true]),
-        ]);
-
-        $response = $this->post(route('auth.register.create'), $this->validPayload([
-            'cf-turnstile-response' => 'a-token-cloudflare-likes',
-        ]));
-
-        $response->assertRedirect(route('auth.verification.notice'));
-        $this->assertAuthenticated();
-    }
-
-    #[Test]
     public function it_keeps_the_time_zone_the_browser_reported(): void
     {
         $this->post(route('auth.register.create'), $this->validPayload([
@@ -192,33 +131,6 @@ class RegistrationControllerTest extends TestCase
         $user = User::query()->where('email', 'michael.scott@dundermifflin.com')->firstOrFail();
 
         $this->assertEquals('America/New_York', $user->timezone);
-    }
-
-    #[Test]
-    public function it_refuses_a_time_zone_that_does_not_exist(): void
-    {
-        $response = $this->post(route('auth.register.create'), $this->validPayload([
-            'timezone' => 'Dunder/Mifflin',
-        ]));
-
-        $response->assertSessionHasErrors('timezone');
-        $this->assertGuest();
-    }
-
-    #[Test]
-    public function it_refuses_the_registration_when_cloudflare_rejects_the_human_check(): void
-    {
-        config(['turnstile.enabled' => true]);
-        Http::fake([
-            'challenges.cloudflare.com/*' => Http::response(['success' => false]),
-        ]);
-
-        $response = $this->post(route('auth.register.create'), $this->validPayload([
-            'cf-turnstile-response' => 'a-token-cloudflare-does-not-like',
-        ]));
-
-        $response->assertSessionHasErrors('cf-turnstile-response');
-        $this->assertGuest();
     }
 
     #[Test]

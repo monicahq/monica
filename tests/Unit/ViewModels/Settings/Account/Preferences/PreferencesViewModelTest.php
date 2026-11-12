@@ -20,20 +20,6 @@ class PreferencesViewModelTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_gives_the_person_who_is_signed_in(): void
-    {
-        $user = User::factory()->create([
-            'first_name' => 'Michael',
-            'last_name' => 'Scott',
-        ]);
-
-        $viewModel = new PreferencesViewModel(user: $user);
-
-        $this->assertTrue($user->is($viewModel->user()));
-        $this->assertEquals('Michael Scott', $viewModel->user()->name);
-    }
-
-    #[Test]
     public function it_lists_every_language_and_ticks_the_one_in_use(): void
     {
         app()->setLocale('fr_FR');

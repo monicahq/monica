@@ -36,10 +36,4 @@ class ListLifeEventCategoryTypesTest extends TestCase
             array_column(array_column(json_decode((string) $response->content(), true), 'attributes'), 'name'),
         );
     }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.lifeEventCategories.types', app(ListLifeEventCategoryTypes::class)->mirrors());
-    }
 }

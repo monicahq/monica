@@ -49,10 +49,4 @@ class GetTemplateVersionTest extends TestCase
         EricaServer::actingAs($user)->tool(GetTemplateVersion::class, ['template' => $template->uuid, 'version' => 7])
             ->assertHasErrors(['That version does not exist.']);
     }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.templates.versions.show', app(GetTemplateVersion::class)->mirrors());
-    }
 }

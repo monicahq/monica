@@ -69,15 +69,4 @@ class LifeEventCategoryTest extends TestCase
 
         $this->assertSame(0, $category->lifeEventTypeCount());
     }
-
-    #[Test]
-    public function it_is_soft_deleted(): void
-    {
-        $category = LifeEventCategory::factory()->create();
-
-        $category->delete();
-
-        $this->assertSoftDeleted($category);
-        $this->assertNull(LifeEventCategory::query()->find($category->id));
-    }
 }

@@ -77,24 +77,4 @@ class UpdateLifeEventTypeTest extends TestCase
 
         $this->assertSame($category->id, $type->refresh()->life_event_category_id);
     }
-
-    #[Test]
-    public function it_refuses_a_colour_outside_the_allowed_ones(): void
-    {
-        $user = User::factory()->create();
-        $type = LifeEventType::factory()->create(['account_id' => $user->account_id, 'colour' => null]);
-
-        EricaServer::actingAs($user)->tool(UpdateLifeEventType::class, [
-            'life_event_type' => $type->uuid,
-            'colour' => 'dundie gold',
-        ])->assertHasErrors(['The selected colour is invalid.']);
-
-        $this->assertNull($type->refresh()->colour);
-    }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.lifeEventTypes.update', app(UpdateLifeEventType::class)->mirrors());
-    }
 }

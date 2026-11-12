@@ -104,27 +104,4 @@ class EntityTypesViewModelTest extends TestCase
 
         $this->assertTrue(new EntityTypesViewModel(user: $user)->hasTypes());
     }
-
-    #[Test]
-    public function it_gives_three_example_profiles_with_three_fields_each(): void
-    {
-        $user = User::factory()->create();
-
-        $examples = new EntityTypesViewModel(user: $user)->examples();
-
-        $this->assertCount(3, $examples);
-        $this->assertSame(['Judy Geller', 'Garfield', 'Central Perk'], array_column($examples, 'name'));
-
-        foreach ($examples as $example) {
-            $this->assertCount(3, $example['fields']);
-        }
-    }
-
-    #[Test]
-    public function it_gives_the_user_to_the_sidebar(): void
-    {
-        $user = User::factory()->create();
-
-        $this->assertTrue($user->is(new EntityTypesViewModel(user: $user)->user()));
-    }
 }

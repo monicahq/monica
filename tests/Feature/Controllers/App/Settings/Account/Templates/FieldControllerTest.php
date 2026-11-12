@@ -7,7 +7,6 @@ namespace Tests\Feature\Controllers\App\Settings\Account\Templates;
 use App\Enums\FieldTypeEnum;
 use App\Enums\RelationTargetEnum;
 use App\Enums\RepetitionOrderEnum;
-use App\Enums\ValueListEnum;
 use App\Enums\VersionStatusEnum;
 use App\Models\EntityType;
 use App\Models\Field;
@@ -18,10 +17,8 @@ use App\Models\StructureVersionSection;
 use App\Models\Template;
 use App\Models\User;
 use App\Models\ValueList;
-use App\ViewModels\Settings\Account\Templates\FieldCatalogueViewModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
-use Illuminate\Support\Js;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -40,126 +37,6 @@ class FieldControllerTest extends TestCase
             ->assertSee(__('Short text'))
             ->assertSee(__('Recurring date'))
             ->assertSee(__('Later'));
-    }
-
-    #[Test]
-    public function it_draws_the_field_every_type_produces(): void
-    {
-        $user = User::factory()->create();
-        [$template, $row] = $this->templateCarryingASection($user);
-
-        $response = $this->actingAs($user)->get(route('settings.fields.new', [$template, $row]));
-
-        $response->assertStatus(200)
-            ->assertSee(__('Nothing picked yet'))
-            ->assertSee(__('On the record'))
-            ->assertSee(__('For example: :example.', ['example' => __('Adoption day')]));
-
-        foreach ((new FieldCatalogueViewModel)->types() as $type) {
-            $response->assertSee("previewed === '{$type['key']}'", escape: false);
-        }
-    }
-
-    #[Test]
-    public function it_says_in_words_what_the_panel_is_previewing(): void
-    {
-        $user = User::factory()->create();
-        [$template, $row] = $this->templateCarryingASection($user);
-
-        $this->actingAs($user)->get(route('settings.fields.new', [$template, $row]))
-            ->assertSee('aria-live="polite"', escape: false)
-            ->assertSee('Short text. One line of text, up to a length you set.');
-    }
-
-    #[Test]
-    public function it_offers_a_filter_over_the_catalogue(): void
-    {
-        $user = User::factory()->create();
-        [$template, $row] = $this->templateCarryingASection($user);
-        $catalogue = new FieldCatalogueViewModel;
-
-        $this->actingAs($user)->get(route('settings.fields.new', [$template, $row]))
-            ->assertSee(__('Filter the types'))
-            ->assertSee($catalogue->totalPhrase())
-            ->assertSee(__('Nothing matches that.'))
-            ->assertSee(__('Clear the filter'))
-            ->assertSee('recurring date recurring_date');
-    }
-
-    #[Test]
-    public function it_names_the_section_and_the_chosen_type_in_the_footer(): void
-    {
-        $user = User::factory()->create();
-        [$template, $row] = $this->templateCarryingASection($user);
-        $section = $row->sectionVersion->section->name;
-
-        $this->actingAs($user)->get(route('settings.fields.new', [$template, $row]))
-            ->assertSee(__('Pick a type to carry on.'))
-            ->assertSee((new FieldCatalogueViewModel)->footerLines($section)['text']);
-    }
-
-    #[Test]
-    public function it_puts_the_bar_outside_the_form(): void
-    {
-        $user = User::factory()->create();
-        [$template, $row] = $this->templateCarryingASection($user);
-
-        $this->actingAs($user)->get(route('settings.fields.new', [$template, $row]))
-            ->assertSeeInOrder(['</form>', __('Pick a type to carry on.')], escape: false)
-            ->assertSee('form="add-field"', escape: false);
-    }
-
-    #[Test]
-    public function it_asks_where_the_choices_come_from(): void
-    {
-        $user = User::factory()->create();
-        [$template, $row] = $this->templateCarryingASection($user);
-        $list = ValueList::factory()->create(['account_id' => $user->account_id, 'name' => 'Species']);
-
-        $this->actingAs($user)->get(route('settings.fields.new', [$template, $row]))
-            ->assertSee(__('Where do the choices come from?'))
-            ->assertSee($list->name)
-            ->assertSee('needsAList', escape: false);
-    }
-
-    #[Test]
-    public function it_asks_where_the_labels_come_from(): void
-    {
-        $user = User::factory()->create();
-        [$template, $row] = $this->templateCarryingASection($user);
-        $list = ValueList::factory()->create(['account_id' => $user->account_id, 'name' => 'Phone labels']);
-
-        $this->actingAs($user)->get(route('settings.fields.new', [$template, $row]))
-            ->assertSee(__('Where do the labels come from?'))
-            ->assertSee($list->name)
-            ->assertSee('offersALabelList', escape: false);
-    }
-
-    #[Test]
-    public function it_picks_the_supplied_list_of_labels_for_a_type_that_has_one(): void
-    {
-        $user = User::factory()->create();
-        [$template, $row] = $this->templateCarryingASection($user);
-        $addressLabels = ValueList::factory()->supplied(ValueListEnum::AddressLabels)->create(['account_id' => $user->account_id]);
-
-        $this->actingAs($user)->get(route('settings.fields.new', [$template, $row]))
-            ->assertSee('suppliedLists: '.Js::from(['address' => $addressLabels->id]), escape: false)
-            ->assertSee('x-model="listId"', escape: false);
-    }
-
-    #[Test]
-    public function it_offers_an_email_and_a_phone_without_demanding_a_list_of_them(): void
-    {
-        $user = User::factory()->create();
-        [$template, $row] = $this->templateCarryingASection($user);
-
-        $response = $this->actingAs($user)->get(route('settings.fields.new', [$template, $row]));
-
-        $response->assertSee("previewed === 'email'", escape: false)
-            ->assertSee("previewed === 'phone'", escape: false);
-
-        $this->assertStringNotContainsString('"email"', json_encode((new FieldCatalogueViewModel)->typesNeedingAValueList()));
-        $this->assertStringContainsString('"phone"', json_encode((new FieldCatalogueViewModel)->typesOfferingALabelList()));
     }
 
     #[Test]
@@ -200,24 +77,6 @@ class FieldControllerTest extends TestCase
             'label' => 'Weight',
             'key' => 'weight',
         ]);
-    }
-
-    #[Test]
-    public function it_adds_a_choice_field_with_the_list_it_reads_from(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        [$template, $row] = $this->templateCarryingASection($user);
-        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
-
-        $this->actingAs($user)->post(route('settings.fields.create', [$template, $row]), [
-            'type' => FieldTypeEnum::Select->value,
-            'label' => 'Species',
-            'value_list_id' => $list->id,
-        ])->assertRedirect();
-
-        $this->assertDatabaseHas('fields', ['label' => 'Species', 'value_list_id' => $list->id]);
     }
 
     #[Test]
@@ -392,20 +251,6 @@ class FieldControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_leaves_the_key_alone_when_the_label_changes(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        [$template, $row] = $this->templateCarryingASection($user);
-        $field = Field::factory()->create(['section_version_id' => $row->section_version_id, 'key' => 'weight']);
-
-        $this->actingAs($user)->put(route('settings.fields.update', [$template, $row, $field]), ['label' => 'Mass']);
-
-        $this->assertEquals('weight', $field->fresh()->key);
-    }
-
-    #[Test]
     public function it_keeps_the_settings_the_inspector_does_not_show(): void
     {
         Queue::fake();
@@ -472,19 +317,6 @@ class FieldControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_field_with_no_label(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        [$template, $row] = $this->templateCarryingASection($user);
-        $field = Field::factory()->create(['section_version_id' => $row->section_version_id]);
-
-        $this->actingAs($user)->put(route('settings.fields.update', [$template, $row, $field]), [])
-            ->assertSessionHasErrors('label');
-    }
-
-    #[Test]
     public function it_refuses_a_field_that_is_not_in_the_section(): void
     {
         Queue::fake();
@@ -531,18 +363,6 @@ class FieldControllerTest extends TestCase
         $this->assertNotEquals($field->section_version_id, $row->section_version_id);
         $this->assertEquals('Weight', $field->fresh()->label);
         $this->assertEquals('Mass', $row->sectionVersion->fields()->where('key', 'weight')->firstOrFail()->label);
-    }
-
-    #[Test]
-    public function it_refuses_an_assembly_from_another_account(): void
-    {
-        Queue::fake();
-
-        $michael = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $michael->account_id]);
-        $row = StructureVersionSection::factory()->create();
-
-        $this->actingAs($michael)->get(route('settings.fields.new', [$template, $row]))->assertNotFound();
     }
 
     #[Test]

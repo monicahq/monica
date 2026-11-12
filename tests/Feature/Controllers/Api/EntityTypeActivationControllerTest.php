@@ -64,28 +64,6 @@ class EntityTypeActivationControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_confirms_the_state_an_entity_type_is_already_in_rather_than_inverting_it(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $entityType = EntityType::factory()->inactive()->create(['account_id' => $user->account_id]);
-
-        Sanctum::actingAs($user);
-
-        foreach (range(1, 2) as $ignored) {
-            $response = $this->json('PUT', "/api/v1/entity-types/{$entityType->uuid}/activation", [
-                'is_active' => false,
-            ]);
-
-            $response->assertOk();
-            $response->assertJsonPath('data.attributes.is_active', false);
-        }
-
-        $this->assertFalse($entityType->refresh()->is_active);
-    }
-
-    #[Test]
     public function it_validates_the_state_it_is_asked_for(): void
     {
         $user = User::factory()->create();

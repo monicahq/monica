@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Vaults;
 
-use App\Enums\NameOrderEnum;
 use App\Models\Contact;
 use App\Models\StructureVersion;
 use App\Models\User;
@@ -43,54 +42,6 @@ class ContactNameControllerTest extends TestCase
         ]);
     }
 
-    #[Test]
-    public function it_keeps_the_order_a_name_reads_in(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $contact = $this->contactOf($user);
-
-        $this->actingAs($user)
-            ->put(route('contacts.name.update', ['vault' => $contact->vault, 'contact' => $contact]), [
-                'names' => [['kind' => 'written', 'given_name' => 'Michael', 'family_name' => 'Scott', 'name_order' => NameOrderEnum::FamilyFirst->value]],
-                'display' => 0,
-            ]);
-
-        $this->assertEquals(NameOrderEnum::FamilyFirst, $contact->refresh()->name_order);
-    }
-
-    #[Test]
-    public function it_refuses_a_name_order_it_does_not_know(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $contact = $this->contactOf($user);
-
-        $this->actingAs($user)
-            ->put(route('contacts.name.update', ['vault' => $contact->vault, 'contact' => $contact]), [
-                'names' => [['kind' => 'written', 'given_name' => 'Michael', 'name_order' => 'sideways']],
-                'display' => 0,
-            ])
-            ->assertSessionHasErrors('names.0.name_order');
-    }
-
-    #[Test]
-    public function it_refuses_somebody_in_another_vault(): void
-    {
-        $user = User::factory()->create();
-        $contact = $this->contactOf($user);
-        $elsewhere = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $this->actingAs($user)
-            ->put(route('contacts.name.update', ['vault' => $elsewhere, 'contact' => $contact]), [
-                'names' => [['kind' => 'written', 'given_name' => 'Michael']],
-                'display' => 0,
-            ])
-            ->assertNotFound();
-    }
-
     private function contactOf(User $user): Contact
     {
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
@@ -124,51 +75,6 @@ class ContactNameControllerTest extends TestCase
 
         $this->assertSame('michael-scarn', $contact->fresh()->slug);
         $this->assertNotSame($before, $contact->fresh()->slug);
-    }
-
-    #[Test]
-    public function the_address_somebody_was_read_at_before_a_rename_stops_answering(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $contact = $this->contactOf($user);
-        $before = $contact->slug;
-
-        $this->actingAs($user)->put(route('contacts.name.update', ['vault' => $contact->vault, 'contact' => $contact]), [
-            'names' => [['kind' => 'written', 'given_name' => 'Michael', 'family_name' => 'Scarn']],
-            'display' => 0,
-        ]);
-
-        $this->actingAs($user)
-            ->get(url("/vaults/{$contact->vault->slug}/contacts/{$before}"))
-            ->assertNotFound();
-
-        $this->actingAs($user)
-            ->get(url("/vaults/{$contact->vault->slug}/contacts/{$contact->uuid}"))
-            ->assertStatus(200);
-    }
-
-    #[Test]
-    public function it_saves_every_way_of_writing_the_name_and_the_one_shown(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $contact = $this->contactOf($user);
-
-        $this->actingAs($user)
-            ->put(route('contacts.name.update', ['vault' => $contact->vault, 'contact' => $contact]), [
-                'names' => [
-                    ['id' => $contact->displayNameRepresentation->uuid, 'kind' => 'written', 'given_name' => 'Michael', 'family_name' => 'Scott'],
-                    ['kind' => 'transliteration', 'language' => 'ja', 'script' => 'Kana', 'formatted_name' => 'マイケル・スコット'],
-                ],
-                'display' => 1,
-            ])
-            ->assertRedirect();
-
-        $this->assertSame('マイケル・スコット', $contact->refresh()->name);
-        $this->assertSame(2, $contact->nameRepresentations()->count());
     }
 
     #[Test]

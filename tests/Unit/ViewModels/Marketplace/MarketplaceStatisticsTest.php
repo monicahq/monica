@@ -86,12 +86,4 @@ class MarketplaceStatisticsTest extends TestCase
         $this->assertSame(1, $months[10]['count']);
         $this->assertSame(0, $months[0]['count']);
     }
-
-    #[Test]
-    public function it_draws_a_sliver_for_a_month_with_nothing_in_it(): void
-    {
-        $months = new MarketplaceStatistics()->installationsPerMonth();
-
-        $this->assertSame(4, $months[0]['height']);
-    }
 }

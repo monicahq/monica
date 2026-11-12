@@ -95,21 +95,6 @@ class SlugBuilderTest extends TestCase
     }
 
     #[Test]
-    public function it_joins_the_words_with_whatever_it_is_told_to(): void
-    {
-        $slug = SlugBuilder::build(
-            wanted: null,
-            derivedFrom: 'Shoe size',
-            maxLength: 64,
-            whenEmpty: 'field',
-            isTaken: fn (string $slug): bool => false,
-            separator: '_',
-        );
-
-        $this->assertEquals('shoe_size', $slug);
-    }
-
-    #[Test]
     public function it_counts_up_with_the_separator_it_was_given(): void
     {
         $slug = SlugBuilder::build(
@@ -248,21 +233,6 @@ class SlugBuilderTest extends TestCase
 
         $this->assertEquals($english, $turkish);
         $this->assertEquals('istanbul', $english);
-    }
-
-    #[Test]
-    public function it_numbers_a_readable_slug_something_already_answers_to(): void
-    {
-        $taken = ['jim-halpert', 'jim-halpert-2'];
-
-        $slug = SlugBuilder::readable(
-            derivedFrom: 'Jim Halpert',
-            maxLength: 128,
-            whenEmpty: 'contact',
-            isTaken: fn (string $slug): bool => in_array($slug, $taken, true),
-        );
-
-        $this->assertEquals('jim-halpert-3', $slug);
     }
 
     #[Test]

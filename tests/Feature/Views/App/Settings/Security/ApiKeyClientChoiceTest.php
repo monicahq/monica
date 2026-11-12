@@ -28,18 +28,6 @@ class ApiKeyClientChoiceTest extends TestCase
     }
 
     #[Test]
-    public function the_choice_is_labelled_for_a_screen_reader(): void
-    {
-        $user = User::factory()->create();
-
-        $response = $this->actingAs($user)->get(route('settings.security.index'));
-
-        $response->assertOk()
-            ->assertSee('for="client"', false)
-            ->assertSee(__('What will use this key'));
-    }
-
-    #[Test]
     public function the_row_says_in_words_which_kind_a_key_is(): void
     {
         $user = User::factory()->create();

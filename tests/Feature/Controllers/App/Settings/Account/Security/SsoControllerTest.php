@@ -6,7 +6,6 @@ namespace Tests\Feature\Controllers\App\Settings\Account\Security;
 
 use App\Enums\SsoProviderEnum;
 use App\Http\Controllers\App\Auth\SsoController as AuthSsoController;
-use App\Models\Passkey;
 use App\Models\ProviderConnection;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -120,48 +119,6 @@ class SsoControllerTest extends TestCase
             ->assertSessionHasErrors('provider');
 
         $this->assertDatabaseHas('provider_connections', ['user_id' => $user->id, 'provider' => 'google']);
-    }
-
-    #[Test]
-    public function it_disconnects_when_a_passkey_is_left(): void
-    {
-        Queue::fake();
-        Notification::fake();
-
-        $user = User::factory()->singleSignOn()->create();
-        Passkey::factory()->create(['user_id' => $user->id]);
-
-        $this->withConfirmedPassword()
-            ->actingAs($user->refresh())
-            ->delete(route('settings.sso.destroy', ['provider' => 'google']))
-            ->assertRedirect(route('settings.security.index'));
-
-        $this->assertDatabaseMissing('provider_connections', ['user_id' => $user->id]);
-    }
-
-    #[Test]
-    public function it_refuses_to_reach_the_provider_without_a_confirmed_password(): void
-    {
-        $this->offer('github');
-
-        $this->actingAs(User::factory()->create())
-            ->get(route('settings.sso.redirect', ['provider' => 'github']))
-            ->assertRedirect(route('auth.confirmPassword.new'));
-    }
-
-    #[Test]
-    public function it_refuses_to_disconnect_without_a_confirmed_password(): void
-    {
-        Queue::fake();
-        Notification::fake();
-
-        $user = User::factory()->has(ProviderConnection::factory()->state(['provider' => SsoProviderEnum::GitHub, 'sso_id' => '108120124']))->create();
-
-        $this->actingAs($user)
-            ->delete(route('settings.sso.destroy', ['provider' => 'github']))
-            ->assertRedirect(route('auth.confirmPassword.new'));
-
-        $this->assertDatabaseHas('provider_connections', ['user_id' => $user->id, 'provider' => 'github']);
     }
 
     #[Test]

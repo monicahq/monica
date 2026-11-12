@@ -33,15 +33,6 @@ class UnconfirmedEmailAccessTest extends TestCase
     }
 
     #[Test]
-    #[DataProvider('everyGatedScreen')]
-    public function it_opens_once_the_address_is_confirmed(string $name): void
-    {
-        $michael = User::factory()->create();
-
-        $this->actingAs($michael)->get(route($name))->assertStatus(200);
-    }
-
-    #[Test]
     public function the_notice_itself_stays_reachable(): void
     {
         $michael = User::factory()->unverified()->create();

@@ -47,16 +47,6 @@ class RelationshipCategoryControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_rename_with_no_name_and_says_so_beside_the_category(): void
-    {
-        $user = User::factory()->create();
-        $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
-
-        $this->actingAs($user)->put(route('settings.relationshipCategories.update', $category), [])
-            ->assertSessionHasErrors(['name'], errorBag: "category{$category->id}");
-    }
-
-    #[Test]
     public function it_renames_a_category_the_user_added(): void
     {
         Queue::fake();

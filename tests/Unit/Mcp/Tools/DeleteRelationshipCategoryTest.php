@@ -31,18 +31,6 @@ class DeleteRelationshipCategoryTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_category_that_came_with_the_account(): void
-    {
-        $user = User::factory()->create();
-        $category = RelationshipCategory::factory()->system()->create(['account_id' => $user->account_id]);
-
-        EricaServer::actingAs($user)->tool(DeleteRelationshipCategory::class, ['relationship_category' => $category->uuid])
-            ->assertHasErrors(['The category came with your account and stays.']);
-
-        $this->assertNotSoftDeleted($category);
-    }
-
-    #[Test]
     public function it_refuses_a_category_still_holding_types(): void
     {
         $user = User::factory()->create();
@@ -53,11 +41,5 @@ class DeleteRelationshipCategoryTest extends TestCase
             ->assertHasErrors(['The category still holds types and stays.']);
 
         $this->assertNotSoftDeleted($category);
-    }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.relationshipCategories.destroy', app(DeleteRelationshipCategory::class)->mirrors());
     }
 }

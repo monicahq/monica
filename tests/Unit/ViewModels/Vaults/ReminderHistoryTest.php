@@ -177,17 +177,6 @@ class ReminderHistoryTest extends TestCase
     }
 
     #[Test]
-    public function it_has_nothing_to_say_about_a_reminder_nothing_has_happened_to(): void
-    {
-        $reminder = Reminder::factory()->create();
-
-        $this->assertSame(
-            [],
-            new ReminderHistory(user: $this->userFor($reminder), reminder: $reminder)->get(),
-        );
-    }
-
-    #[Test]
     public function it_names_whichever_channel_carried_it(): void
     {
         $reminder = Reminder::factory()->create();

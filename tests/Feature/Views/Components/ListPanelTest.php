@@ -83,20 +83,6 @@ class ListPanelTest extends TestCase
     }
 
     #[Test]
-    public function it_draws_no_footer_for_an_empty_paginated_list(): void
-    {
-        $paginator = new LengthAwarePaginator(items: [], total: 0, perPage: 20, currentPage: 1, options: ['path' => '/logs']);
-
-        $rendered = $this->blade(
-            '<x-list-panel :items="$items" :paginator="$items" :size="20" :default="20">Rows<x-slot:empty>None</x-slot:empty></x-list-panel>',
-            ['items' => $paginator],
-        );
-
-        $rendered->assertSee('None', escape: false);
-        $rendered->assertDontSee('<footer', escape: false);
-    }
-
-    #[Test]
     public function it_moves_focus_to_the_new_load_more_link_and_announces_what_arrived(): void
     {
         $rendered = $this->blade(

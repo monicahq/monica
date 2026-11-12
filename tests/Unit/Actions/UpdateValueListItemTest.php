@@ -74,26 +74,6 @@ class UpdateValueListItemTest extends TestCase
     }
 
     #[Test]
-    public function it_leaves_how_used_the_choice_is_and_whether_it_is_offered_alone(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $item = ValueListItem::factory()->disabled()->used(4)->create([
-            'account_id' => $user->account_id,
-            'position' => 3,
-        ]);
-
-        new UpdateValueListItem(user: $user, item: $item, label: 'Cell')->execute();
-
-        $item->refresh();
-
-        $this->assertFalse($item->is_active);
-        $this->assertSame(4, $item->usage_count);
-        $this->assertSame(3, $item->position);
-    }
-
-    #[Test]
     public function it_refuses_a_choice_in_another_account(): void
     {
         Queue::fake();

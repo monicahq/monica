@@ -165,23 +165,6 @@ class VCardMergerTest extends TestCase
     }
 
     #[Test]
-    public function it_writes_the_label_of_an_email_as_the_type_a_card_knows(): void
-    {
-        $user = User::factory()->create();
-        $version = Structure::withFields($user, [
-            ['type' => FieldTypeEnum::Email, 'label' => 'Email'],
-        ]);
-        $contact = $this->contact(['structure_version_id' => $version->id]);
-        $work = $this->labelOn($version, 0, 'work', 'Work');
-        $this->value($contact, $version, 0, ['value_string' => 'dwight@schrutefarms.example', 'value_list_item_id' => $work->id]);
-
-        $card = new VCardMerger()->merge($contact);
-
-        $this->assertStringContainsString('TYPE=work', $card);
-        $this->assertStringContainsString('dwight@schrutefarms.example', $card);
-    }
-
-    #[Test]
     public function it_writes_no_label_for_a_sensitive_field_because_it_writes_no_property_at_all(): void
     {
         $user = User::factory()->create();

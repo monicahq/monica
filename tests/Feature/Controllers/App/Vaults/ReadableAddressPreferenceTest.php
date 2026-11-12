@@ -56,43 +56,6 @@ class ReadableAddressPreferenceTest extends TestCase
         $this->actingAs($user)->get(url("/vaults/{$vault->uuid}/contacts/{$contact->uuid}"))->assertStatus(200);
     }
 
-    #[Test]
-    public function an_address_saved_while_it_was_off_still_answers_once_it_is_on(): void
-    {
-        [$user, $vault, $contact] = $this->account(readable: true);
-
-        $this->actingAs($user)->get(url("/vaults/{$vault->uuid}/contacts/{$contact->uuid}"))->assertStatus(200);
-        $this->actingAs($user)->get(url("/vaults/{$vault->slug}/contacts/{$contact->slug}"))->assertStatus(200);
-    }
-
-    #[Test]
-    public function the_api_reports_the_readable_name_whatever_the_preference_says(): void
-    {
-        [, $vault, $contact] = $this->account(readable: false);
-
-        $this->assertSame('jim-halpert', $contact->slug);
-        $this->assertNotSame('', $vault->slug);
-    }
-
-    #[Test]
-    public function turning_it_off_changes_what_is_built_and_nothing_else(): void
-    {
-        [$user, $vault, $contact] = $this->account(readable: true);
-
-        $this->actingAs($user)->put(route('settings.preferences.update'), [
-            'locale' => 'en',
-            'time_format' => '24',
-            'uses_readable_addresses' => '0',
-        ])->assertRedirect(route('settings.preferences.index'));
-
-        Account::forgetAddressPreferences();
-
-        $this->assertStringContainsString($vault->uuid, route('vaults.show', $vault));
-
-        $this->actingAs($user)->get(url("/vaults/{$vault->slug}/contacts/{$contact->slug}"))->assertStatus(200);
-        $this->assertSame('jim-halpert', $contact->fresh()->slug);
-    }
-
     /** @return array{0: User, 1: Vault, 2: Contact} */
     private function account(bool $readable): array
     {

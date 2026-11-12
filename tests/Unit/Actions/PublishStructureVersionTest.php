@@ -179,25 +179,6 @@ class PublishStructureVersionTest extends TestCase
     }
 
     #[Test]
-    public function it_publishes_a_structure_version_whose_sections_are_all_published(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
-        $sectionVersion = SectionVersion::factory()->published()->create(['account_id' => $user->account_id]);
-        StructureVersionSection::factory()->create([
-            'structure_version_id' => $version->id,
-            'section_version_id' => $sectionVersion->id,
-        ]);
-
-        new PublishStructureVersion(user: $user, structureVersion: $version)->execute();
-
-        $this->assertEquals(VersionStatusEnum::Published, $version->fresh()->status);
-    }
-
-    #[Test]
     public function it_refuses_while_one_of_several_pages_has_nothing_on_it(): void
     {
         Queue::fake();

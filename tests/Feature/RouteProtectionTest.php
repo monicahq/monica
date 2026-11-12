@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use App\Http\Middleware\EnsurePasswordIsConfirmedWhenThereIsOne;
 use App\Http\Middleware\EnsureUserIsAdministrator;
 use App\Models\Account;
 use App\Models\Concerns\ResolvesModelInAccount;
@@ -21,11 +22,13 @@ use App\Models\ValueListItem;
 use App\Models\Vault;
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Auth\Middleware\RedirectIfAuthenticated;
+use Illuminate\Auth\Middleware\RequirePassword;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Routing\Route as RoutingRoute;
 use Illuminate\Support\Facades\Route;
 use Laravel\Passkeys\Passkey as PackagePasskey;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -85,6 +88,48 @@ class RouteProtectionTest extends TestCase
         ValueList::class,
         ValueListItem::class,
     ];
+
+    /** @return array<string, array{string}> */
+    public static function routesAskingForThePassword(): array
+    {
+        return [
+            'settings.email.update' => ['settings.email.update'],
+            'settings.account.destroy' => ['settings.account.destroy'],
+            'settings.accountExports.create' => ['settings.accountExports.create'],
+            'settings.accountExportDownloads.show' => ['settings.accountExportDownloads.show'],
+            'settings.accountImports.create' => ['settings.accountImports.create'],
+            'settings.accountImports.show' => ['settings.accountImports.show'],
+            'settings.accountImports.update' => ['settings.accountImports.update'],
+            'settings.accountImports.destroy' => ['settings.accountImports.destroy'],
+            'settings.password.create' => ['settings.password.create'],
+            'settings.password.update' => ['settings.password.update'],
+            'settings.password.destroy' => ['settings.password.destroy'],
+            'settings.twoFactor.new' => ['settings.twoFactor.new'],
+            'settings.twoFactor.create' => ['settings.twoFactor.create'],
+            'settings.twoFactor.destroy' => ['settings.twoFactor.destroy'],
+            'settings.recoveryCodes.create' => ['settings.recoveryCodes.create'],
+            'settings.sso.redirect' => ['settings.sso.redirect'],
+            'settings.sso.destroy' => ['settings.sso.destroy'],
+            'settings.passkeys.update' => ['settings.passkeys.update'],
+            'passkey.registration-options' => ['passkey.registration-options'],
+            'passkey.store' => ['passkey.store'],
+            'passkey.destroy' => ['passkey.destroy'],
+            'settings.securityKeyOptions.show' => ['settings.securityKeyOptions.show'],
+            'settings.securityKeys.create' => ['settings.securityKeys.create'],
+            'settings.securityKeys.update' => ['settings.securityKeys.update'],
+            'settings.securityKeys.destroy' => ['settings.securityKeys.destroy'],
+            'settings.apiKeys.create' => ['settings.apiKeys.create'],
+            'settings.apiKeys.destroy' => ['settings.apiKeys.destroy'],
+            'settings.connectedAssistants.destroy' => ['settings.connectedAssistants.destroy'],
+            'admin.configuration.update' => ['admin.configuration.update'],
+            'admin.configuration.destroy' => ['admin.configuration.destroy'],
+            'admin.configuration.orphans.destroy' => ['admin.configuration.orphans.destroy'],
+            'admin.configuration.telegram.registration.create' => ['admin.configuration.telegram.registration.create'],
+            'admin.configuration.telegram.secret.create' => ['admin.configuration.telegram.secret.create'],
+            'admin.flags.activation.create' => ['admin.flags.activation.create'],
+            'admin.flags.activation.destroy' => ['admin.flags.activation.destroy'],
+        ];
+    }
 
     #[Test]
     public function every_route_of_the_application_asks_who_is_signed_in_unless_it_is_listed_as_public(): void
@@ -153,6 +198,19 @@ class RouteProtectionTest extends TestCase
                 );
             }
         }
+    }
+
+    #[Test]
+    #[DataProvider('routesAskingForThePassword')]
+    public function a_sensitive_route_asks_for_the_password_again(string $name): void
+    {
+        $middleware = collect(app('router')->gatherRouteMiddleware(Route::getRoutes()->getByName($name)));
+
+        $this->assertTrue(
+            $middleware->contains(fn (string $class): bool => str_starts_with($class, RequirePassword::class)
+                || $class === EnsurePasswordIsConfirmedWhenThereIsOne::class),
+            "The route `{$name}` no longer asks for the password again.",
+        );
     }
 
     #[Test]

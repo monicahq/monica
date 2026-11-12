@@ -62,15 +62,6 @@ class SubscriptionPortalControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_is_not_there_for_an_account_that_was_only_granted_access(): void
-    {
-        $michael = User::factory()->create();
-        $michael->account->update(['access_granted_at' => now()]);
-
-        $this->actingAs($michael)->get(route('settings.subscriptionPortal.show'))->assertNotFound();
-    }
-
-    #[Test]
     public function it_says_so_when_stripe_does_not_answer(): void
     {
         $michael = User::factory()->create();

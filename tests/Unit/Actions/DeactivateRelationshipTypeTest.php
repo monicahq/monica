@@ -42,22 +42,6 @@ class DeactivateRelationshipTypeTest extends TestCase
     }
 
     #[Test]
-    public function it_leaves_the_type_where_it_was_in_the_list(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $relationshipType = RelationshipType::factory()->create([
-            'account_id' => $user->account_id,
-            'position' => 4,
-        ]);
-
-        new DeactivateRelationshipType(user: $user, relationshipType: $relationshipType)->execute();
-
-        $this->assertSame(4, $relationshipType->refresh()->position);
-    }
-
-    #[Test]
     public function it_refuses_a_type_in_another_account(): void
     {
         Queue::fake();

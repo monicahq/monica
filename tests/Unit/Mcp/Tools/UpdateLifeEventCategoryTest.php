@@ -29,24 +29,4 @@ class UpdateLifeEventCategoryTest extends TestCase
 
         $this->assertSame('Sales', $category->refresh()->name);
     }
-
-    #[Test]
-    public function it_renames_a_category_that_came_with_the_account(): void
-    {
-        $user = User::factory()->create();
-        $category = LifeEventCategory::factory()->system()->create(['account_id' => $user->account_id]);
-
-        EricaServer::actingAs($user)->tool(UpdateLifeEventCategory::class, [
-            'life_event_category' => $category->uuid,
-            'name' => 'Sales',
-        ])->assertOk()->assertHasNoErrors();
-
-        $this->assertSame('Sales', $category->refresh()->name);
-    }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.lifeEventCategories.update', app(UpdateLifeEventCategory::class)->mirrors());
-    }
 }

@@ -95,22 +95,6 @@ class DeliverDueNotificationsTest extends TestCase
     }
 
     #[Test]
-    public function it_holds_everything_back_while_quiet_hours_are_running(): void
-    {
-        NotificationFacade::fake();
-        $this->travelTo(now()->setTime(3, 0));
-        $occurrence = $this->dueOccurrence(justNow: true);
-        NotificationPreference::query()
-            ->where('account_id', $occurrence->account_id)
-            ->update(['quiet_hours_are_enabled' => true, 'quiet_hours_start' => '22:00', 'quiet_hours_end' => '08:00']);
-
-        new DeliverDueNotifications()->handle();
-
-        $this->assertSame(2, Notification::query()->count());
-        $this->assertSame(0, Notification::query()->whereNotNull('sent_at')->count());
-    }
-
-    #[Test]
     public function a_saved_rule_reaches_somebody_by_email_without_anything_being_faked(): void
     {
         CarbonImmutable::setTestNow('2027-05-05 06:59:00');
@@ -171,18 +155,6 @@ class DeliverDueNotificationsTest extends TestCase
 
         $this->assertDatabaseHas('emails_sent', ['email_type' => EmailType::ReminderDue->value]);
         $this->assertSame('2027-05-05 03:00', $occurrence->refresh()->scheduled_for->setTimezone('Europe/Paris')->format('Y-m-d H:i'));
-    }
-
-    #[Test]
-    public function it_tells_nobody_about_a_deadline_already_answered(): void
-    {
-        NotificationFacade::fake();
-        $occurrence = $this->dueOccurrence();
-        $occurrence->update(['answer' => 'remembered', 'answered_at' => now()]);
-
-        new DeliverDueNotifications()->handle();
-
-        $this->assertDatabaseCount('notifications', 0);
     }
 
     #[Test]

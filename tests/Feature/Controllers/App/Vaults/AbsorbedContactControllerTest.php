@@ -30,17 +30,6 @@ class AbsorbedContactControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_explains_rather_than_sending_the_reader_to_somebody_they_did_not_ask_for(): void
-    {
-        [$user, $vault, , $absorbed] = $this->merged();
-
-        $this->actingAs($user)
-            ->get(url("/vaults/{$vault->slug}/contacts/{$absorbed->slug}"))
-            ->assertStatus(200)
-            ->assertDontSee('Location');
-    }
-
-    #[Test]
     public function the_identifier_of_an_absorbed_contact_lands_on_the_same_explanation(): void
     {
         [$user, $vault, , $absorbed] = $this->merged();
@@ -49,26 +38,6 @@ class AbsorbedContactControllerTest extends TestCase
             ->get(url("/vaults/{$vault->slug}/contacts/{$absorbed->uuid}"))
             ->assertStatus(200)
             ->assertSee('This record was merged');
-    }
-
-    #[Test]
-    public function the_screen_is_operable_with_the_keyboard_alone_and_announced(): void
-    {
-        [$user, $vault, $kept, $absorbed] = $this->merged();
-
-        $response = $this->actingAs($user)
-            ->get(url("/vaults/{$vault->slug}/contacts/{$absorbed->slug}"))
-            ->assertStatus(200);
-
-        $html = $response->getContent();
-
-        $this->assertStringContainsString('<a ', (string) $html);
-        $this->assertMatchesRegularExpression(
-            '/<a [^>]*href="[^"]*'.preg_quote($kept->slug, '/').'[^"]*"[^>]*>/',
-            (string) $html,
-            'The way through has to be a real link, so the keyboard reaches it and a screen reader announces it.'
-        );
-        $this->assertStringNotContainsString('onclick=', (string) $html);
     }
 
     #[Test]

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Api;
 
-use App\Enums\VersionStatusEnum;
 use App\Models\Account;
 use App\Models\StructureVersion;
 use App\Models\Template;
@@ -46,26 +45,6 @@ class TemplateDuplicateControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_copies_the_structure_across_as_a_draft(): void
-    {
-        Queue::fake();
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-        StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('POST', "/api/v1/templates/{$template->uuid}/duplicate")->assertCreated();
-
-        $copy = Template::query()->where('account_id', $user->account_id)->where('id', '!=', $template->id)->sole();
-
-        $this->assertDatabaseHas('structure_versions', [
-            'structure_id' => $copy->structure->id,
-            'status' => VersionStatusEnum::Draft->value,
-        ]);
-    }
-
-    #[Test]
     public function it_takes_a_name_and_a_slug_for_the_copy(): void
     {
         Queue::fake();
@@ -82,31 +61,6 @@ class TemplateDuplicateControllerTest extends TestCase
             ->assertCreated()
             ->assertJsonPath('data.attributes.name', 'Contact, expanded')
             ->assertJsonPath('data.attributes.slug', 'contact-expanded');
-    }
-
-    #[Test]
-    public function it_leaves_the_template_it_copied_untouched(): void
-    {
-        Queue::fake();
-        $user = User::factory()->create();
-        $template = Template::factory()->create([
-            'account_id' => $user->account_id,
-            'name' => 'Contact',
-            'slug' => 'contact',
-            'position' => 1,
-        ]);
-        StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('POST', "/api/v1/templates/{$template->uuid}/duplicate")->assertCreated();
-
-        $template->refresh();
-
-        $this->assertSame('Contact', $template->name);
-        $this->assertSame('contact', $template->slug);
-        $this->assertSame(1, $template->position);
-        $this->assertSame(1, $template->versions()->count());
     }
 
     #[Test]

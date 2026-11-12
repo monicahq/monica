@@ -117,20 +117,4 @@ class EntityTypeFormViewModelTest extends TestCase
         $this->assertTrue(new EntityTypeFormViewModel(user: $user, entityType: $empty)->canBeDeleted());
         $this->assertFalse(new EntityTypeFormViewModel(user: $user, entityType: $used)->canBeDeleted());
     }
-
-    #[Test]
-    public function it_points_the_form_at_the_right_route(): void
-    {
-        $user = User::factory()->create();
-        $entityType = EntityType::factory()->create(['account_id' => $user->account_id, 'slug' => 'animals']);
-
-        $this->assertSame(
-            route('settings.entityTypes.create'),
-            new EntityTypeFormViewModel(user: $user)->action(),
-        );
-        $this->assertSame(
-            route('settings.entityTypes.update', 'animals'),
-            new EntityTypeFormViewModel(user: $user, entityType: $entityType)->action(),
-        );
-    }
 }

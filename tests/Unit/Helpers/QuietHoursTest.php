@@ -36,14 +36,6 @@ class QuietHoursTest extends TestCase
     }
 
     #[Test]
-    public function it_lets_the_middle_of_the_day_through(): void
-    {
-        $preference = NotificationPreference::factory()->quietBetween('22:00', '08:00')->create();
-
-        $this->assertFalse(QuietHours::hold($preference, $this->at('2027-05-12 12:00')));
-    }
-
-    #[Test]
     public function it_releases_a_notification_due_at_three_in_the_morning_at_eight(): void
     {
         $preference = NotificationPreference::factory()->quietBetween('22:00', '08:00')->create();

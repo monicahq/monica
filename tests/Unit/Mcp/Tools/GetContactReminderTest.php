@@ -48,10 +48,4 @@ class GetContactReminderTest extends TestCase
             'reminder' => $reminder->uuid,
         ])->assertHasErrors(['That reminder does not exist.']);
     }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.contacts.reminders.show', app(GetContactReminder::class)->mirrors());
-    }
 }

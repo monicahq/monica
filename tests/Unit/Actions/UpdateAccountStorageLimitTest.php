@@ -29,6 +29,9 @@ class UpdateAccountStorageLimitTest extends TestCase
         new UpdateAccountStorageLimit(account: $account, administrator: $michael, limitInBytes: 2048)->execute();
 
         $this->assertEquals(2048, $account->refresh()->storage_limit_in_bytes);
+
+        Queue::assertPushedOn('low', LogAdministratorAction::class, fn (LogAdministratorAction $job): bool => $job->parameters['from'] === 1024
+            && $job->parameters['to'] === 2048);
     }
 
     #[Test]
@@ -62,32 +65,5 @@ class UpdateAccountStorageLimitTest extends TestCase
         $this->assertEquals(1024, $account->refresh()->storage_limit_in_bytes);
         $this->assertEquals(4096, $account->refresh()->storage_used_in_bytes);
         $this->assertDatabaseHas('files', ['id' => $file->id]);
-    }
-
-    #[Test]
-    public function it_writes_the_change_down_with_what_it_was_before(): void
-    {
-        Queue::fake();
-
-        $michael = User::factory()->create();
-        $account = Account::factory()->create(['storage_limit_in_bytes' => 1024]);
-
-        new UpdateAccountStorageLimit(account: $account, administrator: $michael, limitInBytes: 2048)->execute();
-
-        Queue::assertPushedOn('low', LogAdministratorAction::class);
-        Queue::assertPushed(LogAdministratorAction::class, fn (LogAdministratorAction $job): bool => $job->parameters['from'] === 1024
-            && $job->parameters['to'] === 2048);
-    }
-
-    #[Test]
-    public function it_lets_an_administrator_change_the_limit_on_their_own_account(): void
-    {
-        Queue::fake();
-
-        $michael = User::factory()->create();
-
-        new UpdateAccountStorageLimit(account: $michael->account, administrator: $michael, limitInBytes: 4096)->execute();
-
-        $this->assertEquals(4096, $michael->account->refresh()->storage_limit_in_bytes);
     }
 }

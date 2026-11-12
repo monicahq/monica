@@ -9,7 +9,6 @@ use App\Mcp\Tools\AddTemplateSection;
 use App\Models\Section;
 use App\Models\SectionVersion;
 use App\Models\StructureVersion;
-use App\Models\StructureVersionSection;
 use App\Models\Template;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -71,29 +70,5 @@ class AddTemplateSectionTest extends TestCase
         ])->assertOk()->assertHasNoErrors();
 
         $this->assertSame($sectionVersion->id, $version->assembly()->sole()->section_version_id);
-    }
-
-    #[Test]
-    public function it_refuses_a_section_already_in_the_version(): void
-    {
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
-        $section = Section::factory()->create(['account_id' => $user->account_id]);
-        $sectionVersion = SectionVersion::factory()->published()->create(['section_id' => $section->id]);
-        $section->update(['published_version_id' => $sectionVersion->id]);
-        StructureVersionSection::factory()->create(['structure_version_id' => $version->id, 'section_version_id' => $sectionVersion->id]);
-
-        EricaServer::actingAs($user)->tool(AddTemplateSection::class, [
-            'template' => $template->uuid,
-            'version' => 1,
-            'section_id' => $section->uuid,
-        ])->assertHasErrors(['This section is already on this structure version.']);
-    }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.templates.versions.sections.create', app(AddTemplateSection::class)->mirrors());
     }
 }

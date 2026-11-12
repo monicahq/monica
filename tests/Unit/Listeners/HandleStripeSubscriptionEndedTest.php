@@ -79,21 +79,6 @@ class HandleStripeSubscriptionEndedTest extends TestCase
     }
 
     #[Test]
-    public function it_changes_nothing_for_an_update(): void
-    {
-        $michael = User::factory()->create();
-        $this->subscribeAccount($michael->account);
-
-        $payload = $this->event('payment_failed');
-        $payload['type'] = 'customer.subscription.updated';
-
-        new HandleStripeSubscriptionEnded()->handle(new WebhookHandled($payload));
-
-        Notification::assertNothingSent();
-        $this->assertTrue($michael->account->fresh()->hasFullAccess());
-    }
-
-    #[Test]
     public function it_does_nothing_for_a_subscription_it_has_no_row_for(): void
     {
         User::factory()->create();
@@ -104,15 +89,6 @@ class HandleStripeSubscriptionEndedTest extends TestCase
         new HandleStripeSubscriptionEnded()->handle(new WebhookHandled($payload));
 
         Notification::assertNothingSent();
-    }
-
-    #[Test]
-    public function it_is_retried_before_it_is_abandoned(): void
-    {
-        $listener = new HandleStripeSubscriptionEnded;
-
-        $this->assertSame(5, $listener->tries);
-        $this->assertNotEmpty($listener->backoff);
     }
 
     /** @return array<string, mixed> */

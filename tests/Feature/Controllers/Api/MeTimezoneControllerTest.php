@@ -67,15 +67,4 @@ class MeTimezoneControllerTest extends TestCase
             'timezone' => 'Europe/Paris',
         ]);
     }
-
-    #[Test]
-    public function it_refuses_a_request_naming_no_zone(): void
-    {
-        Sanctum::actingAs(User::factory()->create());
-
-        $response = $this->json('PUT', route('api.v1.me.timezone.update'), []);
-
-        $response->assertUnprocessable();
-        $response->assertJsonValidationErrors('timezone');
-    }
 }

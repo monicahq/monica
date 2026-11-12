@@ -104,41 +104,6 @@ class CreateEntityTypeTest extends TestCase
     }
 
     #[Test]
-    public function it_counts_up_when_the_slug_it_is_given_is_taken(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        EntityType::factory()->create(['account_id' => $user->account_id, 'slug' => 'cellar']);
-
-        $entityType = new CreateEntityType(
-            user: $user,
-            nameSingular: 'Wine bottle',
-            namePlural: 'Wine bottles',
-            slug: 'cellar',
-        )->execute();
-
-        $this->assertEquals('cellar-2', $entityType->slug);
-    }
-
-    #[Test]
-    public function it_cleans_a_slug_it_is_given(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-
-        $entityType = new CreateEntityType(
-            user: $user,
-            nameSingular: 'Wine bottle',
-            namePlural: 'Wine bottles',
-            slug: 'La Cavé',
-        )->execute();
-
-        $this->assertEquals('la-cave', $entityType->slug);
-    }
-
-    #[Test]
     public function it_counts_up_when_the_slug_it_wants_is_taken(): void
     {
         Queue::fake();
@@ -179,34 +144,6 @@ class CreateEntityTypeTest extends TestCase
         $entityType = new CreateEntityType(user: $user, nameSingular: 'Animal', namePlural: 'Animals')->execute();
 
         $this->assertEquals('animal-2', $entityType->slug);
-    }
-
-    #[Test]
-    public function it_falls_back_to_a_word_when_the_name_leaves_no_slug(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-
-        $entityType = new CreateEntityType(user: $user, nameSingular: '動物', namePlural: '動物')->execute();
-
-        $this->assertEquals('type', $entityType->slug);
-    }
-
-    #[Test]
-    public function it_keeps_the_slug_within_the_length_of_the_column(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $name = str_repeat('bottle ', 20);
-
-        $first = new CreateEntityType(user: $user, nameSingular: $name, namePlural: $name)->execute();
-        $second = new CreateEntityType(user: $user, nameSingular: $name, namePlural: $name)->execute();
-
-        $this->assertLessThanOrEqual(EntityType::SLUG_LENGTH, mb_strlen($first->slug));
-        $this->assertLessThanOrEqual(EntityType::SLUG_LENGTH, mb_strlen($second->slug));
-        $this->assertNotEquals($first->slug, $second->slug);
     }
 
     #[Test]

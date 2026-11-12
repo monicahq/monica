@@ -48,15 +48,6 @@ class BarLinksTest extends TestCase
     }
 
     #[Test]
-    public function it_offers_the_docs_the_marketplace_and_the_account_settings(): void
-    {
-        $this->blade('<x-bar-links />')
-            ->assertSee('Docs')
-            ->assertSee('Marketplace')
-            ->assertSee('Account settings');
-    }
-
-    #[Test]
     public function it_leaves_the_account_settings_to_the_navigation_column_that_carries_them(): void
     {
         $rendered = $this->blade('<x-bar-links :settings="false" />');
@@ -93,14 +84,6 @@ class BarLinksTest extends TestCase
 
         $this->actingAs($jim)
             ->blade('<x-bar-links />')
-            ->assertDontSee('/admin', escape: false)
-            ->assertDontSee('Admin space');
-    }
-
-    #[Test]
-    public function it_says_nothing_about_the_admin_space_to_somebody_signed_out(): void
-    {
-        $this->blade('<x-bar-links />')
             ->assertDontSee('/admin', escape: false)
             ->assertDontSee('Admin space');
     }

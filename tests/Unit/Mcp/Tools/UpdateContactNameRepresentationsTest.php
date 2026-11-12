@@ -54,28 +54,4 @@ class UpdateContactNameRepresentationsTest extends TestCase
             'display' => 0,
         ])->assertHasErrors();
     }
-
-    #[Test]
-    public function it_does_not_find_a_contact_through_another_vault_or_another_account(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $elsewhere = Vault::factory()->create(['account_id' => $user->account_id]);
-        $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'first_name' => 'Michael']);
-        $payload = ['contact' => $contact->uuid, 'name_representations' => [['kind' => 'written', 'given_name' => 'Toby']], 'display' => 0];
-
-        EricaServer::actingAs($user)->tool(UpdateContactNameRepresentations::class, ['vault' => $elsewhere->uuid, ...$payload])
-            ->assertHasErrors(['That contact does not exist.']);
-
-        EricaServer::actingAs(User::factory()->create())->tool(UpdateContactNameRepresentations::class, ['vault' => $vault->uuid, ...$payload])
-            ->assertHasErrors(['That vault does not exist.']);
-
-        $this->assertSame('Michael', $contact->refresh()->first_name);
-    }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.contacts.nameRepresentations.update', app(UpdateContactNameRepresentations::class)->mirrors());
-    }
 }

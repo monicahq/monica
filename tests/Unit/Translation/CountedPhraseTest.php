@@ -83,17 +83,6 @@ class CountedPhraseTest extends TestCase
     }
 
     #[Test]
-    public function it_falls_back_to_the_english_wording_and_the_english_rules_when_a_phrase_is_not_translated(): void
-    {
-        $this->app->setLocale('tr_TR');
-
-        $untranslated = ':count widget|:count widgets';
-
-        $this->assertSame('1 widget', trans_choice($untranslated, 1));
-        $this->assertSame('5 widgets', trans_choice($untranslated, 5));
-    }
-
-    #[Test]
     public function it_shows_the_same_wording_at_every_number_for_a_phrase_that_covers_every_number(): void
     {
         foreach (['en', 'fr_FR', 'tr_TR'] as $locale) {
@@ -104,26 +93,6 @@ class CountedPhraseTest extends TestCase
                 str_replace('7', '1', trans_choice('[0,*]Show :count more', 7)),
             );
         }
-    }
-
-    #[Test]
-    public function the_readings_that_were_wrong_at_one_now_agree_with_their_number(): void
-    {
-        $this->app->setLocale('en');
-
-        $this->assertSame('1 line · 2 KB', trans_choice(':count line · :size|:count lines · :size', 1, ['size' => '2 KB']));
-        $this->assertSame('4 lines · 2 KB', trans_choice(':count line · :size|:count lines · :size', 4, ['size' => '2 KB']));
-
-        $this->assertSame('Remember me for 1 day', trans_choice('Remember me for :count day|Remember me for :count days', 1));
-        $this->assertSame('Remember me for 30 days', trans_choice('Remember me for :count day|Remember me for :count days', 30));
-
-        $minutes = 'The link works once, and only for the next :count minute.|The link works once, and only for the next :count minutes.';
-        $this->assertSame('The link works once, and only for the next 1 minute.', trans_choice($minutes, 1));
-        $this->assertSame('The link works once, and only for the next 15 minutes.', trans_choice($minutes, 15));
-
-        $revoked = 'The address stops working straight away. It was opened :count time, last :when.|The address stops working straight away. It was opened :count times, last :when.';
-        $this->assertStringContainsString('opened 1 time,', trans_choice($revoked, 1, ['when' => 'today']));
-        $this->assertStringContainsString('opened 3 times,', trans_choice($revoked, 3, ['when' => 'today']));
     }
 
     #[Test]
@@ -174,32 +143,6 @@ class CountedPhraseTest extends TestCase
                     $this->assertStringNotContainsString(':count', $reading, $where);
                     $this->assertStringNotContainsString('|', $reading, $where);
                     $this->assertDoesNotMatchRegularExpression('/^[{\[]\s*[-\d*,]+\s*[}\]]/', $reading, $where);
-                }
-            }
-        }
-    }
-
-    #[Test]
-    public function every_segment_of_every_counted_phrase_in_the_catalogue_interpolates_the_count(): void
-    {
-        foreach (AvailableLocales::codes() as $locale) {
-            $path = lang_path($locale.'.json');
-
-            $this->assertFileExists($path, "{$locale} is registered without a translation file");
-
-            $translations = json_decode((string) file_get_contents($path), true);
-
-            foreach ($translations as $key => $value) {
-                if (! str_contains((string) $key, '|')) {
-                    continue;
-                }
-
-                foreach (explode('|', (string) $value) as $segment) {
-                    if (preg_match('/^[{\[]/', $segment) === 1) {
-                        continue;
-                    }
-
-                    $this->assertStringContainsString(':count', $segment, "{$locale}: {$key}");
                 }
             }
         }

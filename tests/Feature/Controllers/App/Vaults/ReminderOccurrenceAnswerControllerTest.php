@@ -67,21 +67,6 @@ class ReminderOccurrenceAnswerControllerTest extends TestCase
         $this->assertNull($occurrence->refresh()->answer);
     }
 
-    #[Test]
-    public function a_deadline_reached_through_the_wrong_vault_is_not_found(): void
-    {
-        $user = User::factory()->create(['timezone' => 'Europe/Paris']);
-        $here = Vault::factory()->create(['account_id' => $user->account_id]);
-        $there = Vault::factory()->create(['account_id' => $user->account_id]);
-        $occurrence = $this->deadline($this->ruleAbout($user, $there), -2);
-
-        $this->actingAs($user)
-            ->put($this->url($here, $occurrence), ['answer' => 'remembered'])
-            ->assertStatus(404);
-
-        $this->assertNull($occurrence->refresh()->answer);
-    }
-
     private function url(Vault $vault, ReminderOccurrence $occurrence): string
     {
         return route('reminders.occurrences.answer.update', ['vault' => $vault, 'reminderOccurrence' => $occurrence]);

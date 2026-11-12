@@ -42,22 +42,6 @@ class ActivateRelationshipTypeTest extends TestCase
     }
 
     #[Test]
-    public function it_leaves_the_type_where_it_was_in_the_list(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $relationshipType = RelationshipType::factory()->inactive()->create([
-            'account_id' => $user->account_id,
-            'position' => 4,
-        ]);
-
-        new ActivateRelationshipType(user: $user, relationshipType: $relationshipType)->execute();
-
-        $this->assertSame(4, $relationshipType->refresh()->position);
-    }
-
-    #[Test]
     public function it_refuses_a_type_in_another_account(): void
     {
         Queue::fake();

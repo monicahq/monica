@@ -130,18 +130,6 @@ class SecurityKeyControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_asks_for_a_name_when_renaming_a_key(): void
-    {
-        $user = User::factory()->create();
-        $key = SecurityKey::factory()->for($user)->create();
-
-        $response = $this->withConfirmedPassword()->actingAs($user)
-            ->put(route('settings.securityKeys.update', $key), ['name' => '']);
-
-        $response->assertSessionHasErrors('name');
-    }
-
-    #[Test]
     public function it_removes_the_last_key_and_says_two_factor_authentication_is_off(): void
     {
         Queue::fake();

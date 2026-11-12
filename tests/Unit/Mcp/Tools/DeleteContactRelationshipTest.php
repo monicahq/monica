@@ -50,10 +50,4 @@ class DeleteContactRelationshipTest extends TestCase
             'relationship' => '6f1c2d3e-4a5b-4c6d-8e7f-9a0b1c2d3e4f',
         ])->assertHasErrors(['That relationship does not exist.']);
     }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.contacts.relationships.destroy', app(DeleteContactRelationship::class)->mirrors());
-    }
 }

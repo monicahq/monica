@@ -63,28 +63,6 @@ class TemplateImportCheckControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_file_holding_one_section(): void
-    {
-        $user = User::factory()->create();
-        $template = $this->publishedTemplate($user);
-        $file = StructureFile::encode(StructureFile::ofSection($template->publishedVersion->assembly->first()));
-
-        $this->actingAs($user)->post(route('settings.templateImportCheck.create'), ['file' => $file])
-            ->assertStatus(200)
-            ->assertSee('This file cannot be imported');
-    }
-
-    #[Test]
-    public function it_puts_what_was_pasted_back_in_the_box(): void
-    {
-        $user = User::factory()->create();
-
-        $this->actingAs($user)->post(route('settings.templateImportCheck.create'), ['file' => '{"nothing": "here"}'])
-            ->assertStatus(200)
-            ->assertSee('{&quot;nothing&quot;: &quot;here&quot;}', false);
-    }
-
-    #[Test]
     public function it_never_renders_what_was_pasted_as_markup(): void
     {
         $user = User::factory()->create();

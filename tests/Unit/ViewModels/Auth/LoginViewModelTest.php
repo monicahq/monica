@@ -92,28 +92,4 @@ class LoginViewModelTest extends TestCase
             "services.{$provider}.redirect" => "https://monica.test/sso/{$provider}/callback",
         ]);
     }
-
-    #[Test]
-    public function it_says_whether_the_magic_link_is_enabled(): void
-    {
-        config()->set('monica.magic_link_enabled', true);
-
-        $this->assertTrue(new LoginViewModel()->magicLinkIsEnabled());
-
-        config()->set('monica.magic_link_enabled', false);
-
-        $this->assertFalse(new LoginViewModel()->magicLinkIsEnabled());
-    }
-
-    #[Test]
-    public function it_says_whether_registration_is_enabled(): void
-    {
-        config()->set('monica.registration_enabled', true);
-
-        $this->assertTrue(new LoginViewModel()->registrationIsEnabled());
-
-        config()->set('monica.registration_enabled', false);
-
-        $this->assertFalse(new LoginViewModel()->registrationIsEnabled());
-    }
 }

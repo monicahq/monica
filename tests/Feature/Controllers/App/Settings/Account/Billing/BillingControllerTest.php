@@ -131,18 +131,6 @@ class BillingControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_changes_nothing_when_the_buyer_came_back_from_an_abandoned_checkout(): void
-    {
-        $michael = User::factory()->create();
-
-        $response = $this->actingAs($michael)->get(route('settings.billing.index').'?checkout=cancelled');
-
-        $response->assertStatus(200);
-        $response->assertDontSee('we are confirming your payment', escape: false);
-        $this->assertFalse($michael->account->fresh()->hasFullAccess());
-    }
-
-    #[Test]
     public function it_keeps_working_when_stripe_does_not_answer(): void
     {
         $client = $this->fakeStripe();

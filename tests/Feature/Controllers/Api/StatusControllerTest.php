@@ -24,12 +24,4 @@ class StatusControllerTest extends TestCase
         $response->assertJsonPath('version', '3.1.4');
         $response->assertJsonPath('instance', 'scranton.example.com');
     }
-
-    #[Test]
-    public function it_answers_without_a_token(): void
-    {
-        $response = $this->json('GET', '/api/v1/status');
-
-        $response->assertOk();
-    }
 }

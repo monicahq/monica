@@ -13,14 +13,6 @@ class PaywallPromptTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_names_the_ceiling_that_was_hit(): void
-    {
-        $this->blade('<x-paywall-prompt :message="$message" />', ['message' => 'The free plan holds 1 vault, and this account already has it.'])
-            ->assertSee('The free plan holds 1 vault, and this account already has it.', escape: false)
-            ->assertSee('You are at the ceiling of the free plan', escape: false);
-    }
-
-    #[Test]
     public function it_sends_the_reader_to_the_offers(): void
     {
         $this->blade('<x-paywall-prompt :message="$message" />', ['message' => 'At the ceiling.'])

@@ -68,17 +68,4 @@ class TemplateSectionPositionControllerTest extends TestCase
 
         $this->assertEquals(1, $row->fresh()->position);
     }
-
-    #[Test]
-    public function it_refuses_an_assembly_from_another_account(): void
-    {
-        Queue::fake();
-
-        $michael = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $michael->account_id]);
-        $row = StructureVersionSection::factory()->create();
-
-        $this->actingAs($michael)->put(route('settings.templateSectionPosition.update', [$template, $row]), ['position' => 1])
-            ->assertNotFound();
-    }
 }

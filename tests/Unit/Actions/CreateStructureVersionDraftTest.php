@@ -40,29 +40,12 @@ class CreateStructureVersionDraftTest extends TestCase
         $this->assertEquals(VersionStatusEnum::Draft, $draft->status);
         $this->assertEquals($published->id, $draft->previous_version_id);
         $this->assertEquals(0, $draft->record_count);
+        $this->assertEquals(VersionStatusEnum::Published, $published->refresh()->status);
 
         Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
             return $job->action === UserActionEnum::TemplateVersionDrafted
                 && $job->parameters === ['name' => 'Contact', 'version' => 2];
         });
-    }
-
-    #[Test]
-    public function it_leaves_the_published_version_exactly_as_it_was(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $published = StructureVersion::factory()->published()->used(214)->create(['structure_id' => $template->structure->id]);
-
-        new CreateStructureVersionDraft(user: $user, structureVersion: $published)->execute();
-
-        $published->refresh();
-
-        $this->assertEquals(VersionStatusEnum::Published, $published->status);
-        $this->assertEquals(214, $published->record_count);
-        $this->assertEquals($published->id, $template->structure->fresh()->published_version_id ?? $published->id);
     }
 
     #[Test]
@@ -192,21 +175,6 @@ class CreateStructureVersionDraftTest extends TestCase
         $this->assertTrue($first->is($second));
         $this->assertEquals(2, $template->versions()->count());
         $this->assertEquals(1, $template->versions()->where('status', VersionStatusEnum::Draft)->count());
-    }
-
-    #[Test]
-    public function it_does_not_record_a_second_drafting_when_a_draft_is_already_open(): void
-    {
-        Queue::fake();
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $published = StructureVersion::factory()->published()->create([
-            'structure_id' => $template->structure->id,
-            'version_number' => 1,
-        ]);
-
-        new CreateStructureVersionDraft(user: $user, structureVersion: $published)->execute();
-        new CreateStructureVersionDraft(user: $user, structureVersion: $published)->execute();
 
         Queue::assertPushed(LogUserAction::class, 1);
     }

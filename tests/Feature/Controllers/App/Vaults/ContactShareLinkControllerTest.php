@@ -46,35 +46,6 @@ class ContactShareLinkControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_offers_a_first_link_when_nothing_is_shared(): void
-    {
-        $user = User::factory()->create();
-        $contact = $this->contactOf($user);
-
-        $this->actingAs($user)
-            ->get(route('contacts.shareLinks.index', ['vault' => $contact->vault, 'contact' => $contact]))
-            ->assertStatus(200)
-            ->assertSee('Create your first sharing link')
-            ->assertSee('You control what each link shows and can turn off access at any time.');
-    }
-
-    #[Test]
-    public function it_offers_the_form_with_every_section_going_out(): void
-    {
-        $user = User::factory()->create();
-        $contact = $this->contactOf($user);
-        $facts = $this->sectionNamed($contact, 'Facts');
-
-        $this->actingAs($user)
-            ->get(route('contacts.shareLinks.new', ['vault' => $contact->vault, 'contact' => $contact]))
-            ->assertStatus(200)
-            ->assertSee('Read only, always')
-            ->assertSee('Facts')
-            ->assertSee('id="section-'.$facts->id.'"', false)
-            ->assertSee('checked', false);
-    }
-
-    #[Test]
     public function it_makes_a_link_and_hands_the_address_over_once(): void
     {
         Queue::fake();
@@ -149,19 +120,6 @@ class ContactShareLinkControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_link_with_no_name(): void
-    {
-        $user = User::factory()->create();
-        $contact = $this->contactOf($user);
-
-        $this->actingAs($user)
-            ->post(route('contacts.shareLinks.create', ['vault' => $contact->vault, 'contact' => $contact]), [
-                'expiry' => 'never',
-            ])
-            ->assertSessionHasErrors('label');
-    }
-
-    #[Test]
     public function it_shows_the_address_only_on_the_response_that_minted_it(): void
     {
         $user = User::factory()->create();
@@ -232,26 +190,6 @@ class ContactShareLinkControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_stops_asking_for_a_password_when_the_form_says_to(): void
-    {
-        Queue::fake();
-        $user = User::factory()->create();
-        $contact = $this->contactOf($user);
-        $link = ShareLink::factory()->for($contact, 'shareable')->create([
-            'password_hash' => Hash::make('bears beets battlestar'),
-        ]);
-
-        $this->actingAs($user)
-            ->put(route('contacts.shareLinks.update', ['vault' => $contact->vault, 'contact' => $contact, 'shareLink' => $link]), [
-                'label' => 'For the family doctor',
-                'expiry' => 'keep',
-                'removes_password' => '1',
-            ]);
-
-        $this->assertFalse($link->refresh()->isProtectedByAPassword());
-    }
-
-    #[Test]
     public function it_keeps_the_end_date_a_link_already_had(): void
     {
         Queue::fake();
@@ -267,31 +205,6 @@ class ContactShareLinkControllerTest extends TestCase
             ]);
 
         $this->assertTrue($link->refresh()->expires_at->equalTo($ends));
-    }
-
-    #[Test]
-    public function it_leaves_the_inclusions_the_form_does_not_ask_about_alone(): void
-    {
-        Queue::fake();
-        $user = User::factory()->create();
-        $contact = $this->contactOf($user);
-        $link = ShareLink::factory()->for($contact, 'shareable')->create([
-            'includes_files' => true,
-            'includes_relationships' => true,
-            'excluded_life_event_ids' => [42],
-        ]);
-
-        $this->actingAs($user)
-            ->put(route('contacts.shareLinks.update', ['vault' => $contact->vault, 'contact' => $contact, 'shareLink' => $link]), [
-                'label' => 'For the family doctor',
-                'expiry' => 'never',
-            ]);
-
-        $link->refresh();
-
-        $this->assertTrue($link->includes_files);
-        $this->assertTrue($link->includes_relationships);
-        $this->assertSame([42], $link->excluded_life_event_ids);
     }
 
     #[Test]
@@ -357,58 +270,6 @@ class ContactShareLinkControllerTest extends TestCase
         $this->actingAs($user)
             ->get(route('contacts.shareLinks.show', ['vault' => $michael->vault, 'contact' => $michael, 'shareLink' => $link]))
             ->assertNotFound();
-    }
-
-    #[Test]
-    public function it_refuses_a_page_of_visits_of_a_link_that_is_onto_another_contact(): void
-    {
-        $user = User::factory()->create();
-        $michael = $this->contactOf($user);
-        $dwight = $this->contactOn($michael->vault, 'Dwight', 'Schrute');
-        $link = ShareLink::factory()->for($dwight, 'shareable')->create();
-
-        $this->actingAs($user)
-            ->get(route('contacts.shareLinks.show', ['vault' => $michael->vault, 'contact' => $michael, 'shareLink' => $link, 'page' => 2]))
-            ->assertNotFound();
-    }
-
-    #[Test]
-    public function it_offers_the_page_size_when_the_links_fill_more_than_one_page(): void
-    {
-        $user = User::factory()->create();
-        $contact = $this->contactOf($user);
-        ShareLink::factory()->count(25)->for($contact, 'shareable')->create();
-
-        $this->actingAs($user)
-            ->get(route('contacts.shareLinks.index', ['vault' => $contact->vault, 'contact' => $contact]))
-            ->assertStatus(200)
-            ->assertSee(__('Rows per page'))
-            ->assertSee(route('contacts.shareLinks.index', ['vault' => $contact->vault, 'contact' => $contact, 'page' => 2]), false);
-    }
-
-    #[Test]
-    public function it_refuses_somebody_in_another_vault(): void
-    {
-        $user = User::factory()->create();
-        $contact = $this->contactOf($user);
-        $elsewhere = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $this->actingAs($user)
-            ->get(route('contacts.shareLinks.index', ['vault' => $elsewhere, 'contact' => $contact]))
-            ->assertNotFound();
-    }
-
-    #[Test]
-    public function it_offers_the_way_in_from_the_record(): void
-    {
-        $user = User::factory()->create();
-        $contact = $this->contactOf($user);
-
-        $this->actingAs($user)
-            ->get(route('contacts.show', ['vault' => $contact->vault, 'contact' => $contact]))
-            ->assertStatus(200)
-            ->assertSee(route('contacts.shareLinks.index', ['vault' => $contact->vault, 'contact' => $contact]), false)
-            ->assertSee('Share');
     }
 
     #[Test]

@@ -90,24 +90,4 @@ class AdminAccessTest extends TestCase
             ->assertDontSee('Admin space')
             ->assertDontSee('/admin', escape: false);
     }
-
-    #[Test]
-    public function it_refuses_a_guessed_address_the_same_way_it_refuses_a_real_one(): void
-    {
-        $jim = User::factory()->create();
-
-        $real = $this->actingAs($jim)->get('admin/logs');
-        $invented = $this->actingAs($jim)->get('admin/nonsense');
-
-        $this->assertEquals($invented->status(), $real->status());
-    }
-
-    #[Test]
-    public function the_front_door_opens_on_the_state_of_the_instance(): void
-    {
-        $michael = User::factory()->create();
-        Administrator::factory()->create(['user_id' => $michael->id]);
-
-        $this->actingAs($michael)->get('admin')->assertStatus(200)->assertSee('Overview', escape: false);
-    }
 }

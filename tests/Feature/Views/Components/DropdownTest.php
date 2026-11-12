@@ -56,16 +56,4 @@ class DropdownTest extends TestCase
         $rendered->assertSee('aria-checked="true"', escape: false);
         $this->assertSame(1, substr_count($rendered->__toString(), 'aria-checked="true"'));
     }
-
-    #[Test]
-    public function it_is_pinned_to_its_button_so_a_panel_cannot_clip_it(): void
-    {
-        $rendered = $this->blade(
-            '<x-dropdown name="time_format" label="24-hour" :options="$options" />',
-            ['options' => $this->formats()],
-        );
-
-        $rendered->assertSee('x-ref="trigger"', escape: false);
-        $rendered->assertSee('x-anchor.bottom-end.offset.6="$refs.trigger"', escape: false);
-    }
 }

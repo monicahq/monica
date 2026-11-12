@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions;
 
-use App\Actions\CreateLifeEventType;
-use App\Actions\CreateStructureVersionDraft;
 use App\Actions\DestroyStructureVersion;
 use App\Enums\UserActionEnum;
 use App\Exceptions\PublishedVersionIsFrozen;
 use App\Jobs\LogUserAction;
-use App\Models\LifeEventCategory;
 use App\Models\SectionVersion;
 use App\Models\StructureVersion;
 use App\Models\StructureVersionSection;
@@ -123,34 +120,5 @@ class DestroyStructureVersionTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new DestroyStructureVersion(user: $michael, structureVersion: $version)->execute();
-    }
-
-    #[Test]
-    public function it_throws_away_a_draft_of_a_life_event_type_structure(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $draft = $this->lifeEventTypeDraft($user);
-
-        new DestroyStructureVersion(user: $user, structureVersion: $draft)->execute();
-
-        $this->assertModelMissing($draft);
-        Queue::assertPushedOn(
-            queue: 'low',
-            job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::TemplateVersionDeletion && $job->parameters['name'] === 'Restaurant',
-        );
-    }
-
-    private function lifeEventTypeDraft(User $user): StructureVersion
-    {
-        $lifeEventType = new CreateLifeEventType(
-            user: $user,
-            lifeEventCategory: LifeEventCategory::factory()->create(['account_id' => $user->account_id]),
-            name: 'Restaurant',
-        )->execute();
-
-        return new CreateStructureVersionDraft(user: $user, structureVersion: $lifeEventType->structure->publishedVersion)->execute();
     }
 }

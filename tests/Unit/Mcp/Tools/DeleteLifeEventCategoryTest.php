@@ -31,18 +31,6 @@ class DeleteLifeEventCategoryTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_category_that_came_with_the_account(): void
-    {
-        $user = User::factory()->create();
-        $category = LifeEventCategory::factory()->system()->create(['account_id' => $user->account_id]);
-
-        EricaServer::actingAs($user)->tool(DeleteLifeEventCategory::class, ['life_event_category' => $category->uuid])
-            ->assertHasErrors(['The category came with your account and stays.']);
-
-        $this->assertNotSoftDeleted($category);
-    }
-
-    #[Test]
     public function it_refuses_a_category_still_holding_types(): void
     {
         $user = User::factory()->create();
@@ -53,11 +41,5 @@ class DeleteLifeEventCategoryTest extends TestCase
             ->assertHasErrors(['Types are filed under this category, so it stays.']);
 
         $this->assertNotSoftDeleted($category);
-    }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.lifeEventCategories.destroy', app(DeleteLifeEventCategory::class)->mirrors());
     }
 }

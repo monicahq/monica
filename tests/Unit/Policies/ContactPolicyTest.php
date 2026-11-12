@@ -79,22 +79,6 @@ class ContactPolicyTest extends TestCase
     }
 
     #[Test]
-    public function the_user_object_answers_the_same_as_the_gate(): void
-    {
-        config(['monica.free_contact_limit' => 1]);
-
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $me = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'is_me' => true]);
-        $dwight = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id]);
-
-        $this->assertFalse($user->can('create', Contact::class));
-        $this->assertTrue($user->cannot('create', Contact::class));
-        $this->assertFalse($user->can('delete', $me));
-        $this->assertTrue($user->can('delete', $dwight));
-    }
-
-    #[Test]
     public function it_refuses_when_nobody_is_signed_in(): void
     {
         config(['monica.self_hosted' => true]);

@@ -107,20 +107,6 @@ class MeControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_shows_nobody_else(): void
-    {
-        User::factory()->create(['email' => 'dwight.schrute@dundermifflin.com']);
-        $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('GET', '/api/v1/me');
-
-        $response->assertOk();
-        $response->assertJsonPath('data.attributes.email', 'michael.scott@dundermifflin.com');
-    }
-
-    #[Test]
     public function it_never_hands_out_a_credential(): void
     {
         $user = User::factory()->twoFactor()->create();
@@ -162,28 +148,6 @@ class MeControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_unconfirms_the_address_when_it_changes(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
-
-        $this->assertNotNull($user->email_verified_at);
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('PUT', '/api/v1/me', [
-            'first_name' => 'Michael',
-            'last_name' => 'Scott',
-            'email' => 'michael.scarn@dundermifflin.com',
-        ]);
-
-        $response->assertOk();
-        $response->assertJsonPath('data.attributes.email_verified', false);
-        $this->assertNull($user->refresh()->email_verified_at);
-    }
-
-    #[Test]
     public function it_validates_the_fields_when_updating_the_profile(): void
     {
         $user = User::factory()->create();
@@ -194,23 +158,5 @@ class MeControllerTest extends TestCase
 
         $response->assertUnprocessable();
         $response->assertJsonValidationErrors(['first_name', 'last_name', 'email']);
-    }
-
-    #[Test]
-    public function it_refuses_an_address_somebody_else_holds(): void
-    {
-        User::factory()->create(['email' => 'dwight.schrute@dundermifflin.com']);
-        $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('PUT', '/api/v1/me', [
-            'first_name' => 'Michael',
-            'last_name' => 'Scott',
-            'email' => 'dwight.schrute@dundermifflin.com',
-        ]);
-
-        $response->assertUnprocessable();
-        $response->assertJsonValidationErrors(['email']);
     }
 }

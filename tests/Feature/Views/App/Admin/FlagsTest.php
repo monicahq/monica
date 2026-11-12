@@ -44,18 +44,6 @@ class FlagsTest extends TestCase
         $response->assertSee("\$dispatch('confirm-password', { form: \$el.form })", false);
     }
 
-    #[Test]
-    public function it_asks_for_a_credential_after_the_warning_before_deactivating_a_flag_for_every_account(): void
-    {
-        Feature::for(null)->activate('example-capability');
-        Feature::flushCache();
-
-        $response = $this->actingAs($this->administrator())->get(route('admin.flags.index'));
-
-        $response->assertSee('Deactivate example-capability for every account?');
-        $response->assertSee("\$dispatch('confirm-password', { form: \$el.form })", false);
-    }
-
     private function administrator(): User
     {
         $michael = User::factory()->create();

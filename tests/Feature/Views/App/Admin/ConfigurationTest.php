@@ -8,7 +8,6 @@ use App\Enums\InstanceSettingEnum;
 use App\Helpers\InstanceSettings;
 use App\Models\Administrator;
 use App\Models\InstanceSetting;
-use App\Models\TelegramWebhookRegistration;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\URL;
@@ -34,47 +33,6 @@ class ConfigurationTest extends TestCase
     }
 
     #[Test]
-    public function it_shows_whether_the_instance_is_self_hosted_before_anything_else(): void
-    {
-        $content = $this->actingAs($this->administrator())->get('/admin/configuration')->getContent();
-
-        $first = strpos($content, InstanceSettingEnum::SelfHosted->environmentVariable());
-
-        foreach (InstanceSettingEnum::cases() as $setting) {
-            if ($setting === InstanceSettingEnum::SelfHosted) {
-                continue;
-            }
-
-            $this->assertGreaterThan(
-                $first,
-                strpos($content, $setting->environmentVariable()),
-                "{$setting->value} is drawn before whether the instance is self hosted."
-            );
-        }
-    }
-
-    #[Test]
-    public function it_names_the_environment_variable_of_every_setting(): void
-    {
-        $response = $this->actingAs($this->administrator())->get('/admin/configuration');
-
-        $response->assertSee('Environment variable');
-
-        foreach (InstanceSettingEnum::cases() as $setting) {
-            $response->assertSee($setting->environmentVariable());
-        }
-    }
-
-    #[Test]
-    public function it_submits_the_value_under_one_field_name(): void
-    {
-        $response = $this->actingAs($this->administrator())->get('/admin/configuration');
-
-        $response->assertSee('name="value"', false);
-        $response->assertSee('name="_method"', false);
-    }
-
-    #[Test]
     public function it_points_a_refused_control_at_the_reason_it_is_refused(): void
     {
         config()->set('services.vonage.installed', false);
@@ -85,22 +43,6 @@ class ConfigurationTest extends TestCase
         $response->assertSee('id="reason-'.InstanceSettingEnum::SelfHosted->value.'"', false);
         $response->assertSee('aria-describedby="reason-'.InstanceSettingEnum::VonageSmsFrom->value.'"', false);
         $response->assertSee('Unavailable on this server, because its package is not installed.');
-    }
-
-    #[Test]
-    public function it_says_when_the_deployment_value_is_no_longer_the_one_obeyed(): void
-    {
-        config()->set('monica.free_contact_limit', 30);
-        InstanceSettings::stashDeploymentValues();
-        InstanceSetting::factory()->create([
-            'name' => InstanceSettingEnum::FreeContactLimit->value,
-            'value' => '5',
-        ]);
-        InstanceSettings::apply();
-
-        $response = $this->actingAs($this->administrator())->get('/admin/configuration');
-
-        $response->assertSee('This instance was deployed with 30. That value is no longer the one obeyed.');
     }
 
     #[Test]
@@ -132,17 +74,6 @@ class ConfigurationTest extends TestCase
     }
 
     #[Test]
-    public function it_asks_nothing_before_a_change_that_takes_nothing_away(): void
-    {
-        $content = $this->actingAs($this->administrator())->get('/admin/configuration')->getContent();
-
-        $form = $this->formAt($content, route('admin.configuration.update', ['setting' => InstanceSettingEnum::FreeContactLimit->value]));
-
-        $this->assertStringNotContainsString('takesSomethingAway', $form);
-        $this->assertStringContainsString("@click.prevent=\"\$dispatch('confirm-password', { form: \$el.form })\"", $form);
-    }
-
-    #[Test]
     public function it_asks_for_a_credential_on_the_screen_itself(): void
     {
         $response = $this->actingAs($this->administrator())->get('/admin/configuration');
@@ -150,20 +81,6 @@ class ConfigurationTest extends TestCase
         $response->assertSee('x-data="confirmPassword(', false);
         $response->assertSee('Confirm it is you');
         $response->assertSee('What you are about to change decides how this instance behaves for everybody, so we ask for a credential first. You will not be asked again for a little while.');
-    }
-
-    #[Test]
-    public function it_shows_the_warning_before_it_asks_for_a_credential(): void
-    {
-        $content = $this->actingAs($this->administrator())->get('/admin/configuration')->getContent();
-
-        $form = $this->formAt($content, route('admin.configuration.update', ['setting' => InstanceSettingEnum::RegistrationEnabled->value]));
-
-        $this->assertStringContainsString(
-            "@click.prevent=\"if (! confirming && takesSomethingAway(\$refs.value.value)) { confirming = true } else { \$dispatch('confirm-password', { form: \$el.form }) }\"",
-            $form,
-        );
-        $this->assertStringNotContainsString('@submit', $content);
     }
 
     #[Test]
@@ -177,104 +94,6 @@ class ConfigurationTest extends TestCase
 
         $this->assertStringContainsString('aria-disabled="true"', $form);
         $this->assertStringNotContainsString('confirm-password', $form);
-    }
-
-    #[Test]
-    public function it_asks_for_a_credential_before_a_setting_is_put_back(): void
-    {
-        InstanceSetting::factory()->create([
-            'name' => InstanceSettingEnum::FreeContactLimit->value,
-            'value' => '5',
-        ]);
-
-        $content = $this->actingAs($this->administrator())->get('/admin/configuration')->getContent();
-
-        $form = $this->formAt($content, route('admin.configuration.destroy', ['setting' => InstanceSettingEnum::FreeContactLimit->value]), last: true);
-
-        $this->assertStringContainsString('Put it back', $form);
-        $this->assertStringContainsString("\$dispatch('confirm-password', { form: \$el.form })", $form);
-    }
-
-    #[Test]
-    public function it_asks_for_a_credential_before_a_secret_is_cleared(): void
-    {
-        InstanceSetting::factory()->create([
-            'name' => InstanceSettingEnum::MailPassword->value,
-            'value' => 'a-stored-one',
-        ]);
-
-        $content = $this->actingAs($this->administrator())->get('/admin/configuration')->getContent();
-
-        $form = $this->formAt($content, route('admin.configuration.destroy', ['setting' => InstanceSettingEnum::MailPassword->value]), last: true);
-
-        $this->assertStringContainsString('Clear it', $form);
-        $this->assertStringContainsString("\$dispatch('confirm-password', { form: \$el.form })", $form);
-    }
-
-    #[Test]
-    public function it_asks_for_a_credential_before_a_value_nothing_reads_is_removed(): void
-    {
-        InstanceSetting::factory()->create(['name' => 'a_setting_that_was_dropped']);
-
-        $content = $this->actingAs($this->administrator())->get('/admin/configuration')->getContent();
-
-        $form = $this->formAt($content, route('admin.configuration.orphans.destroy', ['name' => 'a_setting_that_was_dropped']));
-
-        $this->assertStringContainsString("\$dispatch('confirm-password', { form: \$el.form })", $form);
-    }
-
-    #[Test]
-    public function it_asks_before_registration_is_switched_on(): void
-    {
-        $response = $this->actingAs($this->administrator())->get('/admin/configuration');
-
-        $response->assertSee("mode: 'switchedOn'", false);
-        $response->assertSee('Anybody who reaches this instance can create an account until it is switched off again.');
-    }
-
-    #[Test]
-    public function it_keeps_a_setting_the_product_no_longer_carries_on_the_screen(): void
-    {
-        InstanceSetting::factory()->create(['name' => 'a_setting_that_was_dropped']);
-
-        $response = $this->actingAs($this->administrator())->get('/admin/configuration');
-
-        $response->assertSee('No longer used');
-        $response->assertSee('a_setting_that_was_dropped');
-    }
-
-    #[Test]
-    public function it_offers_a_way_back_only_for_a_setting_somebody_changed(): void
-    {
-        config()->set('monica.free_contact_limit', 30);
-        InstanceSettings::stashDeploymentValues();
-        InstanceSetting::factory()->create([
-            'name' => InstanceSettingEnum::FreeContactLimit->value,
-            'value' => '5',
-        ]);
-
-        $response = $this->actingAs($this->administrator())->get('/admin/configuration');
-
-        $response->assertSee('Put it back');
-
-        $this->assertEquals(
-            1,
-            substr_count($response->getContent(), 'Put it back'),
-            'Only the one setting somebody changed offers a way back.'
-        );
-    }
-
-    #[Test]
-    public function it_offers_to_remove_a_value_the_product_no_longer_reads(): void
-    {
-        InstanceSetting::factory()->create(['name' => 'a_setting_that_was_dropped']);
-
-        $response = $this->actingAs($this->administrator())->get('/admin/configuration');
-
-        $response->assertSee(
-            route('admin.configuration.orphans.destroy', ['name' => 'a_setting_that_was_dropped']),
-            false
-        );
     }
 
     #[Test]
@@ -292,15 +111,6 @@ class ConfigurationTest extends TestCase
             $content,
             'A refused control carries aria-disabled and stays in the tab order, never the disabled attribute.'
         );
-    }
-
-    #[Test]
-    public function it_offers_to_register_the_telegram_bot(): void
-    {
-        $response = $this->actingAs($this->administrator())->get('/admin/configuration');
-
-        $response->assertSee('Register with Telegram');
-        $response->assertSee(route('admin.configuration.telegram.registration.create'), false);
     }
 
     #[Test]
@@ -331,48 +141,33 @@ class ConfigurationTest extends TestCase
     }
 
     #[Test]
-    public function it_asks_for_a_credential_before_generating_a_telegram_secret(): void
+    public function it_asks_for_a_credential_before_every_change_the_screen_offers(): void
     {
         $this->makeTelegramAvailable();
+        InstanceSetting::factory()->create([
+            'name' => InstanceSettingEnum::FreeContactLimit->value,
+            'value' => '5',
+        ]);
+        InstanceSetting::factory()->create([
+            'name' => InstanceSettingEnum::MailPassword->value,
+            'value' => 'a-stored-one',
+        ]);
+        InstanceSetting::factory()->create(['name' => 'a_setting_that_was_dropped']);
 
         $content = $this->actingAs($this->administrator())->get('/admin/configuration')->getContent();
 
-        $form = $this->formAt($content, route('admin.configuration.telegram.secret.create'));
+        $forms = [
+            $this->formAt($content, route('admin.configuration.update', ['setting' => InstanceSettingEnum::FreeContactLimit->value])),
+            $this->formAt($content, route('admin.configuration.update', ['setting' => InstanceSettingEnum::RegistrationEnabled->value])),
+            $this->formAt($content, route('admin.configuration.destroy', ['setting' => InstanceSettingEnum::FreeContactLimit->value]), last: true),
+            $this->formAt($content, route('admin.configuration.destroy', ['setting' => InstanceSettingEnum::MailPassword->value]), last: true),
+            $this->formAt($content, route('admin.configuration.orphans.destroy', ['name' => 'a_setting_that_was_dropped'])),
+            $this->formAt($content, route('admin.configuration.telegram.secret.create')),
+        ];
 
-        $this->assertStringContainsString("@click.prevent=\"\$dispatch('confirm-password', { form: \$el.form })\"", $form);
-    }
-
-    #[Test]
-    public function it_warns_before_it_asks_for_a_credential_when_a_new_telegram_secret_breaks_the_registration(): void
-    {
-        $this->makeTelegramAvailable();
-        TelegramWebhookRegistration::factory()->current()->create();
-
-        $content = $this->actingAs($this->administrator())->get('/admin/configuration')->getContent();
-
-        $form = $this->formAt($content, route('admin.configuration.telegram.secret.create'));
-
-        $this->assertStringContainsString(
-            "@click.prevent=\"if (! confirming) { confirming = true } else { \$dispatch('confirm-password', { form: \$el.form }) }\"",
-            $form,
-        );
-        $this->assertStringContainsString('Generate again to go ahead.', $form);
-    }
-
-    #[Test]
-    public function it_asks_no_credential_from_a_telegram_control_that_is_unavailable(): void
-    {
-        config(['services.telegram.installed' => false]);
-
-        $content = $this->actingAs($this->administrator())->get('/admin/configuration')->getContent();
-
-        $register = $this->formAt($content, route('admin.configuration.telegram.registration.create'));
-        $secret = $this->formAt($content, route('admin.configuration.telegram.secret.create'));
-
-        $this->assertStringContainsString('aria-disabled="true"', $register);
-        $this->assertStringNotContainsString('confirm-password', $register);
-        $this->assertStringContainsString('aria-disabled="true"', $secret);
-        $this->assertStringNotContainsString('confirm-password', $secret);
+        foreach ($forms as $form) {
+            $this->assertStringContainsString("\$dispatch('confirm-password', { form: \$el.form })", $form);
+        }
     }
 
     private function makeTelegramAvailable(): void

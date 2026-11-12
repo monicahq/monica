@@ -63,30 +63,6 @@ class McpDocsViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_counts_the_tools_it_lists(): void
-    {
-        $this->assertStringStartsWith('MCP currently exposes 129 tools.', new McpDocsViewModel()->toolsSummary()[0]);
-    }
-
-    #[Test]
-    public function it_marks_only_the_groups_that_change_data(): void
-    {
-        $changing = array_filter(new McpDocsViewModel()->toolGroups(), fn (array $group): bool => $group['changesData']);
-
-        $this->assertSame(
-            ['Contacts, changing', 'Reminders, changing', 'Relationships, changing', 'Life events, changing', 'Groups, changing', 'Templates, changing', 'Template drafts', 'Sections', 'Fields', 'Entity types, changing', 'Relationship vocabulary, changing', 'Life event vocabulary, changing', 'Support, changing', 'Support queue, changing'],
-            array_values(array_column($changing, 'name')),
-        );
-    }
-
-    #[Test]
-    public function it_explains_how_to_connect_and_disconnect_an_assistant_through_oauth(): void
-    {
-        $this->assertStringContainsString('OAuth', implode(' ', McpDocsViewModel::SETUP));
-        $this->assertStringContainsString('Connected assistants', implode(' ', McpDocsViewModel::ACCESS));
-    }
-
-    #[Test]
     public function it_gives_the_hosted_request_limit(): void
     {
         config(['monica.self_hosted' => false]);

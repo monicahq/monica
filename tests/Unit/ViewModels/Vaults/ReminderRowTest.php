@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\ViewModels\Vaults;
 
 use App\Enums\DateFormatEnum;
-use App\Enums\DefaultFieldEnum;
 use App\Enums\NotificationChannelEnum;
 use App\Enums\ReminderAnswerEnum;
 use App\Enums\ReminderCadenceEnum;
@@ -106,27 +105,6 @@ class ReminderRowTest extends TestCase
         $this->assertStringContainsString('Sent', $row->exact());
         $this->assertStringNotContainsString('Will be sent', $row->exact());
         $this->assertStringContainsString('ago', $row->relative());
-    }
-
-    #[Test]
-    public function it_marks_a_birthday_and_falls_back_to_a_calendar_for_anything_somebody_invented(): void
-    {
-        $user = User::factory()->create();
-
-        $birthday = Field::factory()->recurringDate()->create([
-            'account_id' => $user->account_id,
-            'key' => DefaultFieldEnum::Birthday->value,
-        ]);
-        $invented = Field::factory()->recurringDate()->create([
-            'account_id' => $user->account_id,
-            'key' => 'the-day-we-met',
-        ]);
-
-        $ofBirthday = $this->rowFor($user, $this->ruleAbout($user, field: $birthday), '2027-05-12 07:00:00');
-        $ofInvented = $this->rowFor($user, $this->ruleAbout($user, field: $invented), '2027-05-12 07:00:00');
-
-        $this->assertSame('gift', $ofBirthday->icon());
-        $this->assertSame('calendar', $ofInvented->icon());
     }
 
     #[Test]

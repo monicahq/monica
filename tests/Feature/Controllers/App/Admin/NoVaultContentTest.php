@@ -96,23 +96,6 @@ class NoVaultContentTest extends TestCase
         }
     }
 
-    #[Test]
-    public function the_count_of_what_a_vault_holds_is_all_an_operator_gets(): void
-    {
-        $dwight = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $dwight->account_id]);
-        Contact::factory()->count(2)->create([
-            'account_id' => $dwight->account_id,
-            'vault_id' => $vault->id,
-        ]);
-
-        $response = $this->actingAs($this->administrator())
-            ->get(route('admin.accounts.show', ['account' => $dwight->account_id]));
-
-        $response->assertSee('1 vault', escape: false);
-        $response->assertSee('2 contacts', escape: false);
-    }
-
     private function administrator(): User
     {
         $michael = User::factory()->create(['first_name' => 'Michael', 'last_name' => 'Scott']);

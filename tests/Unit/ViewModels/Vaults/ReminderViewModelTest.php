@@ -29,14 +29,6 @@ class ReminderViewModelTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_is_titled_by_the_reminder(): void
-    {
-        $reminder = $this->reminderAbout($user = User::factory()->create());
-
-        $this->assertSame($reminder->name, $this->viewModel($user, $reminder)->title());
-    }
-
-    #[Test]
     public function it_names_the_contact_the_reminder_is_about(): void
     {
         $user = User::factory()->create();

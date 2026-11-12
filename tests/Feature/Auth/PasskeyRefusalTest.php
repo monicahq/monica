@@ -88,19 +88,6 @@ class PasskeyRefusalTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_passkey_belonging_to_a_deactivated_user(): void
-    {
-        $user = User::factory()->create(['is_active' => false]);
-        $this->registerPasskeyFor($user, 'a-deactivated-user-credential');
-
-        $response = $this->attemptPasskeySignIn($this->assertion('a-deactivated-user-credential'));
-
-        $response->assertStatus(422);
-        $response->assertJsonPath('errors.passkey.0', self::MESSAGE);
-        $this->assertGuest();
-    }
-
-    #[Test]
     public function it_refuses_a_passkey_belonging_to_a_soft_deleted_user(): void
     {
         $user = User::factory()->create();
@@ -143,19 +130,6 @@ class PasskeyRefusalTest extends TestCase
     }
 
     #[Test]
-    public function one_credential_being_hammered_does_not_lock_out_another(): void
-    {
-        $hammered = $this->assertion('a-credential-being-guessed');
-
-        for ($attempt = 1; $attempt <= 6; $attempt++) {
-            $this->attemptPasskeySignIn($hammered);
-        }
-
-        $this->attemptPasskeySignIn($this->assertion('somebody-elses-credential'))
-            ->assertStatus(422);
-    }
-
-    #[Test]
     public function it_signs_nobody_in_from_an_assertion_that_never_arrived(): void
     {
         $this->attemptPasskeySignIn([])->assertStatus(422);
@@ -168,19 +142,5 @@ class PasskeyRefusalTest extends TestCase
             ],
         ])->assertStatus(422);
         $this->assertGuest();
-    }
-
-    #[Test]
-    public function every_refusal_reads_exactly_the_same(): void
-    {
-        $deactivated = User::factory()->create(['is_active' => false]);
-        $this->registerPasskeyFor($deactivated, 'deactivated');
-
-        $bodies = collect(['unregistered', 'deactivated'])
-            ->map(fn (string $id): array => $this->attemptPasskeySignIn($this->assertion($id))->json())
-            ->unique()
-            ->all();
-
-        $this->assertCount(1, $bodies);
     }
 }

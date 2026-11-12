@@ -19,21 +19,6 @@ class VaultColourEnumTest extends TestCase
     ];
 
     #[Test]
-    public function it_names_every_colour(): void
-    {
-        foreach (VaultColourEnum::cases() as $colour) {
-            $this->assertNotEmpty($colour->label());
-        }
-    }
-
-    #[Test]
-    public function it_offers_eight_colours_beside_the_neutral_default(): void
-    {
-        $this->assertCount(8, VaultColourEnum::cases());
-        $this->assertNotEmpty(VaultColourEnum::neutralTint());
-    }
-
-    #[Test]
     public function it_draws_every_colour_at_or_above_the_contrast_a_mark_needs(): void
     {
         foreach (VaultColourEnum::cases() as $colour) {
@@ -57,17 +42,6 @@ class VaultColourEnumTest extends TestCase
     {
         $this->assertGreaterThanOrEqual(4.5, $this->contrast('#52525b', '#fafafa'));
         $this->assertGreaterThanOrEqual(4.5, $this->contrast('#d4d4d8', '#18181b'));
-    }
-
-    #[Test]
-    public function it_gives_every_colour_a_tint_naming_its_own_border(): void
-    {
-        foreach (VaultColourEnum::cases() as $colour) {
-            $this->assertStringContainsString('border-', $colour->tint());
-            $this->assertStringContainsString('dark:text-', $colour->tint());
-        }
-
-        $this->assertStringContainsString('border-', VaultColourEnum::neutralTint());
     }
 
     #[Test]

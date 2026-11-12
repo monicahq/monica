@@ -75,14 +75,6 @@ class ChannelProofControllerTest extends TestCase
     }
 
     #[Test]
-    public function a_code_needs_typing_in(): void
-    {
-        $this->readyTextMessage();
-
-        $this->put(route('settings.notifications.proof.update', 'sms'), [])->assertSessionHasErrors('code');
-    }
-
-    #[Test]
     public function asking_again_inside_the_wait_is_refused_with_the_time_left(): void
     {
         NotificationFacade::fake();

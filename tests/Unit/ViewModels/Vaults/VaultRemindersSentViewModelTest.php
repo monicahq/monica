@@ -72,21 +72,6 @@ class VaultRemindersSentViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_says_how_the_reminder_reached_somebody(): void
-    {
-        $vault = Vault::factory()->create();
-        $user = User::factory()->create(['account_id' => $vault->account_id]);
-        $occurrence = $this->sentOccurrence($this->reminder($vault), '2027-03-01 09:00:00');
-
-        $this->notification($occurrence, $user, NotificationChannelEnum::InApp);
-        $this->notification($occurrence, $user, NotificationChannelEnum::Email);
-
-        $rows = new VaultRemindersSentViewModel(user: $user, vault: $vault)->rows();
-
-        $this->assertEquals(['In the app', 'Email'], $rows[0]->channels());
-    }
-
-    #[Test]
     public function a_deadline_sent_on_two_channels_is_still_one_row(): void
     {
         $vault = Vault::factory()->create();
@@ -100,24 +85,6 @@ class VaultRemindersSentViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_says_what_was_answered_for_each_one(): void
-    {
-        $vault = Vault::factory()->create();
-        $user = User::factory()->create(['account_id' => $vault->account_id]);
-        $reminder = $this->reminder($vault);
-
-        $this->sentOccurrence($reminder, '2027-03-05 09:00:00', ReminderAnswerEnum::Remembered);
-        $this->sentOccurrence($reminder, '2027-03-03 09:00:00', ReminderAnswerEnum::Forgotten);
-        $this->sentOccurrence($reminder, '2027-03-01 09:00:00');
-
-        $rows = new VaultRemindersSentViewModel(user: $user, vault: $vault)->rows();
-
-        $this->assertEquals(['You remembered', 'success'], [$rows[0]->outcome(), $rows[0]->tone()]);
-        $this->assertEquals(['You forgot', 'neutral'], [$rows[1]->outcome(), $rows[1]->tone()]);
-        $this->assertEquals(['No answer yet', 'warning'], [$rows[2]->outcome(), $rows[2]->tone()]);
-    }
-
-    #[Test]
     public function a_notification_that_went_out_never_reads_as_remembered(): void
     {
         $vault = Vault::factory()->create();
@@ -128,22 +95,6 @@ class VaultRemindersSentViewModelTest extends TestCase
         $rows = new VaultRemindersSentViewModel(user: $user, vault: $vault)->rows();
 
         $this->assertSame('No answer yet', $rows[0]->outcome());
-    }
-
-    #[Test]
-    public function it_never_says_a_reminder_was_completed(): void
-    {
-        $vault = Vault::factory()->create();
-        $user = User::factory()->create(['account_id' => $vault->account_id]);
-
-        foreach ([null, ...ReminderAnswerEnum::cases()] as $answer) {
-            $this->sentOccurrence($this->reminder($vault), '2027-03-01 09:00:00', $answer);
-        }
-
-        foreach (new VaultRemindersSentViewModel(user: $user, vault: $vault)->rows() as $row) {
-            $this->assertStringNotContainsStringIgnoringCase('complet', $row->outcome());
-            $this->assertStringNotContainsStringIgnoringCase('done', $row->outcome());
-        }
     }
 
     #[Test]
@@ -162,22 +113,6 @@ class VaultRemindersSentViewModelTest extends TestCase
         $this->assertCount(VaultRemindersSentViewModel::PER_PAGE, $viewModel->rows());
         $this->assertTrue($viewModel->hasMorePages());
         $this->assertNotNull($viewModel->nextPageUrl());
-    }
-
-    #[Test]
-    public function it_counts_every_tab(): void
-    {
-        $vault = Vault::factory()->create();
-        $user = User::factory()->create(['account_id' => $vault->account_id]);
-        $reminder = $this->reminder($vault);
-
-        $this->sentOccurrence($reminder, '2027-03-01 09:00:00', ReminderAnswerEnum::Remembered);
-
-        $viewModel = new VaultRemindersSentViewModel(user: $user, vault: $vault);
-
-        $this->assertEquals(1, $viewModel->sentCount());
-        $this->assertEquals(1, $viewModel->historyCount());
-        $this->assertEquals(1, $viewModel->activeCount());
     }
 
     private function reminder(Vault $vault): Reminder

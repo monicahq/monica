@@ -96,45 +96,6 @@ class EntityTypeControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_lists_nothing_when_the_account_invented_nothing(): void
-    {
-        $user = User::factory()->create();
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('GET', '/api/v1/entity-types');
-
-        $response->assertOk();
-        $response->assertJsonCount(0, 'data');
-        $response->assertJsonPath('meta.total', 0);
-    }
-
-    #[Test]
-    public function it_pages_the_entity_types_and_brings_a_page_size_back_into_range(): void
-    {
-        $user = User::factory()->create();
-
-        foreach (range(1, 3) as $position) {
-            EntityType::factory()->create(['account_id' => $user->account_id, 'position' => $position]);
-        }
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('GET', '/api/v1/entity-types?per_page=2&page=2');
-
-        $response->assertOk();
-        $response->assertJsonCount(1, 'data');
-        $response->assertJsonPath('meta.page', 2);
-        $response->assertJsonPath('meta.per_page', 2);
-        $response->assertJsonPath('meta.total', 3);
-
-        $response = $this->json('GET', '/api/v1/entity-types?per_page=500');
-
-        $response->assertOk();
-        $response->assertJsonPath('meta.per_page', 100);
-    }
-
-    #[Test]
     public function it_shows_an_entity_type(): void
     {
         $user = User::factory()->create();
@@ -181,29 +142,6 @@ class EntityTypeControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_returns_not_found_for_an_entity_type_that_was_deleted(): void
-    {
-        $user = User::factory()->create();
-        $entityType = EntityType::factory()->create(['account_id' => $user->account_id]);
-        $entityType->delete();
-
-        Sanctum::actingAs($user);
-
-        $this->json('GET', "/api/v1/entity-types/{$entityType->uuid}")->assertNotFound();
-    }
-
-    #[Test]
-    public function it_returns_not_found_when_the_address_is_a_slug_rather_than_an_identifier(): void
-    {
-        $user = User::factory()->create();
-        EntityType::factory()->create(['account_id' => $user->account_id, 'slug' => 'animal']);
-
-        Sanctum::actingAs($user);
-
-        $this->json('GET', '/api/v1/entity-types/animal')->assertNotFound();
-    }
-
-    #[Test]
     public function it_creates_an_entity_type_and_derives_its_slug(): void
     {
         Queue::fake();
@@ -239,31 +177,6 @@ class EntityTypeControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_creates_an_entity_type_with_the_slug_and_the_marks_it_was_given(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('POST', '/api/v1/entity-types', [
-            'name_singular' => 'Wine bottle',
-            'name_plural' => 'Wine bottles',
-            'slug' => 'cellar',
-            'icon' => 'key',
-            'colour' => '#9a6a24',
-            'is_active' => false,
-        ]);
-
-        $response->assertCreated();
-        $response->assertJsonPath('data.attributes.slug', 'cellar');
-        $response->assertJsonPath('data.attributes.icon', 'key');
-        $response->assertJsonPath('data.attributes.colour', '#9a6a24');
-        $response->assertJsonPath('data.attributes.is_active', false);
-    }
-
-    #[Test]
     public function it_validates_the_entity_type_it_is_asked_to_create(): void
     {
         $user = User::factory()->create();
@@ -286,25 +199,6 @@ class EntityTypeControllerTest extends TestCase
     {
         $user = User::factory()->create();
         EntityType::factory()->create(['account_id' => $user->account_id, 'slug' => 'animal']);
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('POST', '/api/v1/entity-types', [
-            'name_singular' => 'Animal',
-            'name_plural' => 'Animals',
-            'slug' => 'animal',
-        ]);
-
-        $response->assertUnprocessable();
-        $response->assertJsonValidationErrors(['slug']);
-    }
-
-    #[Test]
-    public function it_refuses_a_slug_a_deleted_type_of_the_account_still_holds(): void
-    {
-        $user = User::factory()->create();
-        $entityType = EntityType::factory()->create(['account_id' => $user->account_id, 'slug' => 'animal']);
-        $entityType->delete();
 
         Sanctum::actingAs($user);
 

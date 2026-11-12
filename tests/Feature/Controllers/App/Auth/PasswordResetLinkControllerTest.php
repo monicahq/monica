@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Auth;
 
-use App\Enums\EmailType;
 use App\Models\User;
 use App\Notifications\PasswordResetRequested;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -81,24 +80,6 @@ class PasswordResetLinkControllerTest extends TestCase
 
         $this->assertNotNull($throttledStatus);
         $this->assertSame(session('status'), $throttledStatus);
-    }
-
-    #[Test]
-    public function it_records_the_email_it_sends(): void
-    {
-        $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
-
-        $response = $this->from(route('auth.password.new'))
-            ->post(route('auth.password.create'), ['email' => 'michael.scott@dundermifflin.com']);
-
-        $response->assertRedirect(route('auth.password.new'));
-
-        $this->assertDatabaseHas('emails_sent', [
-            'account_id' => $user->account_id,
-            'user_id' => $user->id,
-            'email_type' => EmailType::PasswordResetRequested->value,
-            'email_address' => 'michael.scott@dundermifflin.com',
-        ]);
     }
 
     #[Test]

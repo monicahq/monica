@@ -27,18 +27,6 @@ class SendEmailVerificationTest extends TestCase
 
         $this->assertInstanceOf(User::class, $result);
 
-        Notification::assertSentTo($user, VerifyEmail::class);
-    }
-
-    #[Test]
-    public function it_puts_the_email_on_the_queue_the_impatient_ones_go_on(): void
-    {
-        Notification::fake();
-
-        $user = User::factory()->unverified()->create();
-
-        new SendEmailVerification(user: $user)->execute();
-
         Notification::assertSentTo(
             $user,
             VerifyEmail::class,

@@ -8,9 +8,7 @@ use App\Actions\ActivateFlagForEveryAccount;
 use App\Actions\DeactivateFlagForEveryAccount;
 use App\Enums\AdministratorActionEnum;
 use App\Jobs\LogAdministratorAction;
-use App\Models\Contact;
 use App\Models\User;
-use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -69,29 +67,6 @@ class DeactivateFlagForEveryAccountTest extends TestCase
         $ryan = User::factory()->create();
 
         $this->assertFalse($ryan->account->features()->active('example-capability'));
-    }
-
-    #[Test]
-    public function it_keeps_what_was_created_while_the_flag_was_on(): void
-    {
-        Queue::fake();
-
-        $pam = User::factory()->create();
-        $contact = Contact::factory()->create([
-            'vault_id' => Vault::factory()->create(['account_id' => $pam->account_id])->id,
-        ]);
-
-        new ActivateFlagForEveryAccount(
-            flag: 'example-capability',
-        )->execute();
-        new DeactivateFlagForEveryAccount(
-            flag: 'example-capability',
-        )->execute();
-        new ActivateFlagForEveryAccount(
-            flag: 'example-capability',
-        )->execute();
-
-        $this->assertModelExists($contact);
     }
 
     #[Test]

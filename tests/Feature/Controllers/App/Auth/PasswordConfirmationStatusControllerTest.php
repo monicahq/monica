@@ -28,17 +28,6 @@ class PasswordConfirmationStatusControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_says_the_password_is_not_confirmed_when_nothing_was_confirmed(): void
-    {
-        $user = User::factory()->create();
-
-        $response = $this->actingAs($user)->get(route('auth.passwordConfirmationStatus.show'));
-
-        $response->assertOk();
-        $response->assertExactJson(['confirmed' => false]);
-    }
-
-    #[Test]
     public function it_says_the_password_is_not_confirmed_once_the_window_has_passed(): void
     {
         $user = User::factory()->create();

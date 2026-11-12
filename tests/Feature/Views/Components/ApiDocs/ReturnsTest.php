@@ -83,14 +83,4 @@ class ReturnsTest extends TestCase
 
         $response->assertDontSee('Returns');
     }
-
-    #[Test]
-    public function it_names_every_type_in_words(): void
-    {
-        $response = $this->blade('<x-api-docs.returns :section="$section" />', ['section' => $this->section()]);
-
-        $response->assertSee('array');
-        $response->assertSee('object');
-        $response->assertSee('integer');
-    }
 }

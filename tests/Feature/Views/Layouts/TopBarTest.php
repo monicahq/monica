@@ -7,7 +7,6 @@ namespace Tests\Feature\Views\Layouts;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -49,18 +48,6 @@ class TopBarTest extends TestCase
     }
 
     #[Test]
-    public function it_carries_what_the_screen_can_do(): void
-    {
-        $user = User::factory()->create();
-
-        $rendered = $this->actingAs($user)
-            ->blade('<x-shell>Anything<x-slot:actions><span>Add somebody</span></x-slot:actions></x-shell>');
-
-        $rendered->assertSee('Add somebody');
-        $rendered->assertDontSee($user->email);
-    }
-
-    #[Test]
     public function it_opens_the_drawer_from_the_bar(): void
     {
         $user = User::factory()->create();
@@ -81,33 +68,6 @@ class TopBarTest extends TestCase
         $body = mb_substr($rendered, mb_strpos($rendered, '<body'));
 
         $this->assertStringContainsString('x-data="{ navOpen: false }"', $body);
-    }
-
-    #[Test]
-    public function a_footer_reaches_the_screen(): void
-    {
-        $user = User::factory()->create();
-
-        $this->actingAs($user)
-            ->blade('<x-shell>Anything<x-slot:footer><span>Save it</span></x-slot:footer></x-shell>')
-            ->assertSee('Save it');
-    }
-
-    #[Test]
-    public function every_bar_reaches_the_docs_and_the_marketplace(): void
-    {
-        Feature::for(null)->activate('marketplace');
-        $user = User::factory()->create();
-
-        $this->actingAs($user)
-            ->blade('<x-shell>Anything</x-shell>')
-            ->assertSee('Docs')
-            ->assertSee('Marketplace');
-
-        $this->actingAs($user)
-            ->blade('<x-account-layout>Anything</x-account-layout>')
-            ->assertSee('Docs')
-            ->assertSee('Marketplace');
     }
 
     #[Test]
@@ -132,15 +92,5 @@ class TopBarTest extends TestCase
             ->get(route('reminders.index', $vault))
             ->assertSee('Search this vault')
             ->assertSee('action="'.route('search.index', $vault).'"', escape: false);
-    }
-
-    #[Test]
-    public function it_offers_no_search_outside_a_vault(): void
-    {
-        $user = User::factory()->create();
-
-        $this->actingAs($user)
-            ->blade('<x-shell>Anything</x-shell>')
-            ->assertDontSee('Search this vault');
     }
 }

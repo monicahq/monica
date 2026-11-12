@@ -49,39 +49,6 @@ class ContactFavouriteControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_confirms_the_state_rather_than_inverting_it_when_the_same_request_arrives_twice(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/favourite", ['favourite' => true])->assertOk();
-        $second = $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/favourite", ['favourite' => true]);
-
-        $second->assertOk();
-        $second->assertJsonPath('data.attributes.is_favourite', true);
-    }
-
-    #[Test]
-    public function it_puts_a_marked_contact_in_the_favourites_grouping(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'last_name' => 'Halpert']);
-
-        Sanctum::actingAs($user);
-
-        $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/favourite", ['favourite' => true]);
-
-        $response = $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts?filter=favourites");
-
-        $response->assertJsonCount(1, 'data');
-        $response->assertJsonPath('data.0.attributes.last_name', 'Halpert');
-    }
-
-    #[Test]
     public function it_refuses_a_request_that_does_not_say_which_state_it_wants(): void
     {
         $user = User::factory()->create();

@@ -186,15 +186,6 @@ class ReminderScheduleTest extends TestCase
     }
 
     #[Test]
-    public function it_converts_the_local_hour_of_the_rule_into_an_instant(): void
-    {
-        $reminder = $this->ruleOn('1984-05-12', ReminderCadenceEnum::Yearly);
-        $reminder->update(['time_of_day' => '09:00:00']);
-
-        $this->assertEquals(['2027-05-12 07:00'], $this->between($reminder, '2027-01-01', '2027-12-31'));
-    }
-
-    #[Test]
     public function it_reads_the_hour_in_the_zone_frozen_on_the_rule_and_not_the_reader_one(): void
     {
         $reminder = $this->ruleOn('1984-05-12', ReminderCadenceEnum::Yearly);

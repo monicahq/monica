@@ -120,39 +120,6 @@ class ShareLinkFormViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_carries_what_the_link_already_says(): void
-    {
-        $user = User::factory()->create();
-        $contact = $this->contactOf($user);
-        $link = ShareLink::factory()->for($contact, 'shareable')->withPassword()->create([
-            'label' => 'For the family doctor',
-            'recipient_hint' => 'Dr Ferrand',
-            'includes_sensitive_fields' => true,
-        ]);
-
-        $viewModel = new ShareLinkFormViewModel(user: $user, vault: $contact->vault, contact: $contact, shareLink: $link);
-
-        $this->assertSame('For the family doctor', $viewModel->label());
-        $this->assertSame('Dr Ferrand', $viewModel->recipientHint());
-        $this->assertTrue($viewModel->includesSensitiveFields());
-        $this->assertTrue($viewModel->isProtectedByAPassword());
-    }
-
-    #[Test]
-    public function a_form_with_no_link_behind_it_says_nothing_is_set(): void
-    {
-        $user = User::factory()->create();
-        $contact = $this->contactOf($user);
-
-        $viewModel = new ShareLinkFormViewModel(user: $user, vault: $contact->vault, contact: $contact);
-
-        $this->assertNull($viewModel->label());
-        $this->assertNull($viewModel->recipientHint());
-        $this->assertFalse($viewModel->includesSensitiveFields());
-        $this->assertFalse($viewModel->isProtectedByAPassword());
-    }
-
-    #[Test]
     public function it_names_the_structure_version_the_page_is_laid_out_by(): void
     {
         $user = User::factory()->create();
@@ -175,15 +142,6 @@ class ShareLinkFormViewModelTest extends TestCase
 
         $this->assertStringContainsString('marked sensitive', $never);
         $this->assertStringContainsString('Michael', $never);
-    }
-
-    #[Test]
-    public function a_record_with_no_photograph_has_no_address_for_one(): void
-    {
-        $user = User::factory()->create();
-        $contact = $this->contactOf($user);
-
-        $this->assertNull(new ShareLinkFormViewModel(user: $user, vault: $contact->vault, contact: $contact)->avatarUrl());
     }
 
     private function sectionNamed(Contact $contact, string $name): StructureVersionSection

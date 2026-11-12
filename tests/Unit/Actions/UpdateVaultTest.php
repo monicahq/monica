@@ -50,25 +50,6 @@ class UpdateVaultTest extends TestCase
     }
 
     #[Test]
-    public function it_leaves_the_place_in_the_list_and_the_default_alone(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $vault = Vault::factory()->default()->create([
-            'account_id' => $user->account_id,
-            'position' => 3,
-        ]);
-
-        new UpdateVault(user: $user, vault: $vault, name: 'Schrute Farms')->execute();
-
-        $vault->refresh();
-
-        $this->assertSame(3, $vault->position);
-        $this->assertTrue($vault->is_default);
-    }
-
-    #[Test]
     public function it_strips_the_markup_out_of_what_it_is_given(): void
     {
         Queue::fake();

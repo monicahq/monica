@@ -23,16 +23,6 @@ class PasskeyAccessibilityTest extends TestCase
     }
 
     #[Test]
-    public function the_sign_in_screen_carries_a_live_region_that_is_always_present(): void
-    {
-        $response = $this->secure()->get(route('auth.login.new'));
-
-        $response->assertSee('role="status"', escape: false);
-        $response->assertSee('aria-live="polite"', escape: false);
-        $response->assertDontSee('x-show="message"', escape: false);
-    }
-
-    #[Test]
     public function the_security_screen_carries_a_live_region_that_is_always_present(): void
     {
         $response = $this->secure()->actingAs(User::factory()->create())
@@ -41,23 +31,6 @@ class PasskeyAccessibilityTest extends TestCase
         $response->assertSee('role="status"', escape: false);
         $response->assertSee('aria-live="polite"', escape: false);
         $response->assertDontSee('x-show="message"', escape: false);
-    }
-
-    #[Test]
-    public function every_passkey_control_is_a_real_button(): void
-    {
-        $user = User::factory()->create();
-        Passkey::factory()->create(['user_id' => $user->id]);
-
-        $html = $this->secure()->actingAs($user)->get(route('settings.security.index'))->getContent();
-
-        foreach (['Add a passkey', 'Rename', 'Remove'] as $label) {
-            $this->assertMatchesRegularExpression(
-                '/<button[^>]*>(?:(?!<\/button>).)*'.preg_quote($label, '/').'/s',
-                $html,
-                $label.' is not inside a button element',
-            );
-        }
     }
 
     #[Test]

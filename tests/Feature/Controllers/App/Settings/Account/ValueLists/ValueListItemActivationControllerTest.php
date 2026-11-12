@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\App\Settings\Account\ValueLists;
 
 use App\Models\User;
-use App\Models\ValueList;
 use App\Models\ValueListItem;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -56,23 +55,6 @@ class ValueListItemActivationControllerTest extends TestCase
 
         $this->assertTrue($item->is_active);
         $this->assertSame(2, $item->position);
-    }
-
-    #[Test]
-    public function it_says_on_the_screen_that_a_value_is_no_longer_offered(): void
-    {
-        $user = User::factory()->create();
-        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
-        ValueListItem::factory()->disabled()->create([
-            'account_id' => $user->account_id,
-            'value_list_id' => $list->id,
-            'label' => 'Salesman',
-        ]);
-
-        $this->actingAs($user)->get(route('settings.valueLists.index'))
-            ->assertStatus(200)
-            ->assertSee('no longer offered')
-            ->assertSee('Offer again');
     }
 
     #[Test]

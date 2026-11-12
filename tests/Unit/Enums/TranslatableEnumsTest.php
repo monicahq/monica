@@ -45,6 +45,23 @@ class TranslatableEnumsTest extends TestCase
         }
     }
 
+    #[Test]
+    public function every_case_of_an_enum_with_a_label_names_itself(): void
+    {
+        foreach ($this->enums() as $enum) {
+            if (! new ReflectionEnum($enum)->hasMethod('label')) {
+                continue;
+            }
+
+            foreach ($enum::cases() as $case) {
+                $this->assertNotEmpty(
+                    $case->label(),
+                    "{$enum}::{$case->name} has no label to show.",
+                );
+            }
+        }
+    }
+
     /** @return list<class-string<\UnitEnum>> */
     private function enums(): array
     {

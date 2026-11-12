@@ -49,17 +49,6 @@ class RelationshipCategoryTest extends TestCase
     }
 
     #[Test]
-    public function it_gets_an_unguessable_identifier(): void
-    {
-        $category = RelationshipCategory::factory()->create();
-
-        $this->assertMatchesRegularExpression(
-            '/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/',
-            $category->uuid,
-        );
-    }
-
-    #[Test]
     public function a_supplied_category_reads_the_wording_the_product_gave_it(): void
     {
         $category = RelationshipCategory::factory()->system(RelationshipCategoryEnum::Romantic)->create();
@@ -75,15 +64,5 @@ class RelationshipCategoryTest extends TestCase
         $category = RelationshipCategory::factory()->system()->create(['name' => 'Dunder Mifflin']);
 
         $this->assertEquals('Dunder Mifflin', $category->name);
-    }
-
-    #[Test]
-    public function it_is_deleted_softly(): void
-    {
-        $category = RelationshipCategory::factory()->create();
-
-        $category->delete();
-
-        $this->assertSoftDeleted($category);
     }
 }

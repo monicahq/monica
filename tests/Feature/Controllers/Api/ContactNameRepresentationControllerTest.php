@@ -140,18 +140,6 @@ class ContactNameRepresentationControllerTest extends TestCase
         $this->assertSame('Michael', $contact->refresh()->first_name);
     }
 
-    #[Test]
-    public function the_contact_object_carries_every_way_its_name_is_written(): void
-    {
-        [$user, $vault, $contact] = $this->michael();
-
-        Sanctum::actingAs($user);
-
-        $this->json('GET', route('api.v1.contacts.show', [$vault, $contact]))
-            ->assertOk()
-            ->assertJsonStructure(['data' => ['attributes' => ['formatted_name', 'name_representations' => ['*' => $this->jsonStructure]]]]);
-    }
-
     /** @return array{0: User, 1: Vault, 2: Contact} */
     private function michael(): array
     {

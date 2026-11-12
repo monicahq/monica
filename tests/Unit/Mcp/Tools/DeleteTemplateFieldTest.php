@@ -49,12 +49,6 @@ class DeleteTemplateFieldTest extends TestCase
         ])->assertHasErrors(['That field does not exist.']);
     }
 
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.templates.versions.sections.fields.destroy', app(DeleteTemplateField::class)->mirrors());
-    }
-
     /** @return array{User, Template, StructureVersionSection} */
     private function placement(): array
     {

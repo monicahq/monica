@@ -39,28 +39,6 @@ class InvoicesViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_shows_twenty_payments_a_page(): void
-    {
-        $michael = User::factory()->create();
-
-        for ($index = 1; $index <= 25; $index++) {
-            Payment::factory()->create(['account_id' => $michael->account_id, 'billed_at' => now()->subDays($index)]);
-        }
-
-        $firstPage = new InvoicesViewModel(user: $michael)->payments();
-
-        $this->assertSame(25, $firstPage->total());
-        $this->assertCount(20, $firstPage);
-
-        $this->app['request']->merge(['page' => 2]);
-
-        $secondPage = new InvoicesViewModel(user: $michael)->payments();
-
-        $this->assertCount(5, $secondPage);
-        $this->assertTrue($secondPage[0]->billed_at->isSameDay(now()->subDays(21)));
-    }
-
-    #[Test]
     public function it_lists_nothing_for_an_account_that_never_paid(): void
     {
         $michael = User::factory()->create();

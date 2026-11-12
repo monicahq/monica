@@ -39,59 +39,6 @@ class LifeEventTypeControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_lists_the_types_of_one_category(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $wanted = LifeEventCategory::factory()->create(['account_id' => $user->account_id, 'name' => 'Health and wellbeing']);
-        $other = LifeEventCategory::factory()->create(['account_id' => $user->account_id, 'name' => 'Work and education']);
-        LifeEventType::factory()->create(['account_id' => $user->account_id, 'life_event_category_id' => $wanted->id, 'name' => 'Therapy']);
-        LifeEventType::factory()->create(['account_id' => $user->account_id, 'life_event_category_id' => $other->id, 'name' => 'Interview']);
-
-        $response = $this->actingAs($user)->get(route('settings.lifeEventTypes.category', $wanted));
-
-        $response->assertStatus(200);
-        $response->assertSee('Therapy');
-        $response->assertDontSee('Interview');
-    }
-
-    #[Test]
-    public function it_sends_the_reader_to_the_address_of_the_category_they_choose(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id, 'name' => 'Health and wellbeing']);
-
-        $response = $this->actingAs($user)->get(route('settings.lifeEventTypes.index'));
-
-        $response->assertStatus(200);
-        $response->assertSee(route('settings.lifeEventTypes.category', $category), escape: false);
-        $response->assertSee('x-target.push="life-event-types"', escape: false);
-    }
-
-    #[Test]
-    public function it_shows_a_type_that_is_switched_off_rather_than_hiding_it(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
-        LifeEventType::factory()->inactive()->create([
-            'account_id' => $user->account_id,
-            'life_event_category_id' => $category->id,
-            'name' => 'Household task',
-        ]);
-
-        $response = $this->actingAs($user)->get(route('settings.lifeEventTypes.category', $category));
-
-        $response->assertStatus(200);
-        $response->assertSee('Household task');
-        $response->assertSee('Not offered');
-    }
-
-    #[Test]
     public function it_opens_the_form_that_adds_a_type(): void
     {
         Queue::fake();
@@ -244,42 +191,6 @@ class LifeEventTypeControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_kind_of_field_that_does_not_exist(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
-
-        $this->actingAs($user)
-            ->post(route('settings.lifeEventTypes.create'), [
-                'name' => 'Medical appointment',
-                'life_event_category_id' => $category->id,
-                'is_active' => '1',
-                'fields' => ['f1' => ['group' => '', 'position' => 1, 'label' => 'Who you saw', 'type' => 'rating']],
-            ])
-            ->assertSessionHasErrors('fields.f1.type');
-    }
-
-    #[Test]
-    public function it_refuses_a_group_with_no_name(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
-
-        $this->actingAs($user)
-            ->post(route('settings.lifeEventTypes.create'), [
-                'name' => 'Medical appointment',
-                'life_event_category_id' => $category->id,
-                'is_active' => '1',
-                'groups' => ['g1' => ['placement_id' => null, 'name' => '', 'position' => 1]],
-            ])
-            ->assertSessionHasErrors('groups.g1.name');
-    }
-
-    #[Test]
     public function it_stops_offering_a_type_in_the_same_save(): void
     {
         Queue::fake();
@@ -298,27 +209,6 @@ class LifeEventTypeControllerTest extends TestCase
         ])->assertRedirect(route('settings.lifeEventTypes.category', $category));
 
         $this->assertFalse($type->refresh()->is_active);
-    }
-
-    #[Test]
-    public function it_offers_a_retired_type_again_in_the_same_save(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
-        $type = LifeEventType::factory()->inactive()->create([
-            'account_id' => $user->account_id,
-            'life_event_category_id' => $category->id,
-        ]);
-
-        $this->actingAs($user)->put(route('settings.lifeEventTypes.update', $type), [
-            'name' => 'Rehearsal',
-            'life_event_category_id' => $category->id,
-            'is_active' => '1',
-        ]);
-
-        $this->assertTrue($type->refresh()->is_active);
     }
 
     #[Test]

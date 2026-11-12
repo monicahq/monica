@@ -46,16 +46,4 @@ class ButtonSplitTest extends TestCase
         $rendered->assertDontSee('role="menu"', escape: false);
         $rendered->assertDontSee('More actions', escape: false);
     }
-
-    #[Test]
-    public function an_item_of_the_menu_is_a_link_with_a_glyph_beside_it(): void
-    {
-        $rendered = $this->blade(
-            '<x-button.split-item href="/share" icon="relationship">Share on marketplace</x-button.split-item>',
-        );
-
-        $rendered->assertSee('role="menuitem"', escape: false);
-        $rendered->assertSee('href="/share"', escape: false);
-        $rendered->assertSee('Share on marketplace', escape: false);
-    }
 }

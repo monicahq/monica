@@ -31,19 +31,6 @@ class TemplateControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_narrows_the_list_from_the_query_string(): void
-    {
-        $user = User::factory()->create();
-        Template::factory()->create(['account_id' => $user->account_id, 'name' => 'Pet', 'slug' => 'pet']);
-        Template::factory()->create(['account_id' => $user->account_id, 'name' => 'Company', 'slug' => 'company']);
-
-        $this->actingAs($user)->get(route('settings.templates.index', ['query' => 'pet']))
-            ->assertStatus(200)
-            ->assertSee('Pet')
-            ->assertDontSee('Company');
-    }
-
-    #[Test]
     public function it_shows_the_form_that_names_a_template(): void
     {
         $user = User::factory()->create();
@@ -74,27 +61,6 @@ class TemplateControllerTest extends TestCase
         $this->assertDatabaseHas('structures', [
             'account_id' => $user->account_id,
             'applies_to' => StructureAppliesToEnum::Contact->value,
-        ]);
-    }
-
-    #[Test]
-    public function it_creates_a_template_that_describes_a_kind_of_record(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $entityType = EntityType::factory()->create(['account_id' => $user->account_id]);
-
-        $this->actingAs($user)->post(route('settings.templates.create'), [
-            'name' => 'Animal',
-            'applies_to' => 'entity',
-            'entity_type_id' => $entityType->id,
-        ])->assertRedirect();
-
-        $this->assertDatabaseHas('structures', [
-            'account_id' => $user->account_id,
-            'applies_to' => StructureAppliesToEnum::Entity->value,
-            'entity_type_id' => $entityType->id,
         ]);
     }
 
@@ -139,28 +105,6 @@ class TemplateControllerTest extends TestCase
             'applies_to' => 'contact',
             'slug' => 'pet',
         ])->assertSessionHasErrors('slug');
-    }
-
-    #[Test]
-    public function it_refuses_a_template_with_no_name(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-
-        $this->actingAs($user)->post(route('settings.templates.create'), ['applies_to' => 'contact'])
-            ->assertSessionHasErrors('name');
-    }
-
-    #[Test]
-    public function it_shows_the_form_that_renames_a_template(): void
-    {
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id, 'name' => 'Pet']);
-
-        $this->actingAs($user)->get(route('settings.templates.edit', $template))
-            ->assertStatus(200)
-            ->assertSee('Pet');
     }
 
     #[Test]

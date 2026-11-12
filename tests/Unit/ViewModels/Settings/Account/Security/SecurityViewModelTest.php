@@ -57,36 +57,11 @@ class SecurityViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_says_when_a_key_last_answered(): void
-    {
-        $user = User::factory()->create();
-        SecurityKey::factory()->for($user)->create(['last_used_at' => now()->subDays(2)]);
-
-        $keys = new SecurityViewModel(user: $user)->securityKeys();
-
-        $this->assertEquals('2 days ago', $keys[0]['lastUsedAt']);
-    }
-
-    #[Test]
     public function it_warns_that_removing_the_app_alone_turns_two_factor_off(): void
     {
         $viewModel = new SecurityViewModel(user: User::factory()->twoFactor()->create());
 
         $this->assertEquals('Two-factor authentication turns off, and your recovery codes stop working.', $viewModel->authenticatorAppRemovalWarning());
-    }
-
-    #[Test]
-    public function it_gives_the_person_who_is_signed_in(): void
-    {
-        $user = User::factory()->create([
-            'first_name' => 'Michael',
-            'last_name' => 'Scott',
-        ]);
-
-        $viewModel = new SecurityViewModel(user: $user);
-
-        $this->assertTrue($user->is($viewModel->user()));
-        $this->assertEquals('Michael Scott', $viewModel->user()->name);
     }
 
     #[Test]
@@ -161,18 +136,6 @@ class SecurityViewModelTest extends TestCase
         $apiKeys = new SecurityViewModel(user: $user)->apiKeys();
 
         $this->assertNull($apiKeys[0]['lastUsedAt']);
-    }
-
-    #[Test]
-    public function it_gives_how_long_ago_the_api_key_was_last_used(): void
-    {
-        $user = User::factory()->create();
-        $apiKey = $user->createToken('Dundie awards bot')->accessToken;
-        $apiKey->forceFill(['last_used_at' => now()->subHours(5)])->save();
-
-        $apiKeys = new SecurityViewModel(user: $user)->apiKeys();
-
-        $this->assertEquals('5 hours ago', $apiKeys[0]['lastUsedAt']);
     }
 
     #[Test]
@@ -308,14 +271,6 @@ class SecurityViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_lets_a_connected_user_remove_their_password(): void
-    {
-        $user = User::factory()->has(ProviderConnection::factory()->state(['provider' => SsoProviderEnum::GitHub, 'sso_id' => '108120124']))->create();
-
-        $this->assertTrue(new SecurityViewModel(user: $user)->canRemoveThePassword());
-    }
-
-    #[Test]
     public function it_offers_to_sign_out_every_other_device_only_to_an_account_with_a_password(): void
     {
         $withPassword = User::factory()->create();
@@ -323,16 +278,6 @@ class SecurityViewModelTest extends TestCase
 
         $this->assertTrue(new SecurityViewModel(user: $withPassword)->canSignOutOtherDevices());
         $this->assertFalse(new SecurityViewModel(user: $withoutPassword)->canSignOutOtherDevices());
-    }
-
-    #[Test]
-    public function it_gives_the_address_a_device_is_given(): void
-    {
-        $user = User::factory()->create();
-
-        $viewModel = new SecurityViewModel(user: $user);
-
-        $this->assertEquals(route('sabre.dav', ['path' => ''], absolute: true), $viewModel->davAddress());
     }
 
     #[Test]

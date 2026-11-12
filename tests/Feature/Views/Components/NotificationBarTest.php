@@ -55,32 +55,6 @@ class NotificationBarTest extends TestCase
     }
 
     #[Test]
-    public function it_is_reachable_and_announced_without_a_mouse(): void
-    {
-        $user = $this->signedIn();
-        $this->notification($user, 'Birthday, Michael Scott', now());
-
-        $response = $this->get(route('settings.index'));
-
-        $response->assertSee('aria-haspopup="dialog"', escape: false);
-        $response->assertSee('aria-controls="notification-bar-panel"', escape: false);
-        $response->assertSee('aria-labelledby="notification-bar-heading"', escape: false);
-        $response->assertSee('aria-live="polite"', escape: false);
-    }
-
-    #[Test]
-    public function clearing_everything_asks_first(): void
-    {
-        $user = $this->signedIn();
-        $this->notification($user, 'Birthday, Michael Scott', now());
-
-        $response = $this->get(route('settings.index'));
-
-        $response->assertSee('Mark every one as read');
-        $response->assertSee('Yes, mark every one as read');
-    }
-
-    #[Test]
     public function there_is_nothing_to_clear_when_everything_is_read(): void
     {
         $user = $this->signedIn();

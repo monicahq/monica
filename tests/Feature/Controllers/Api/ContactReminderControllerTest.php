@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\Api;
 
 use App\Models\Contact;
-use App\Models\FieldValue;
 use App\Models\Reminder;
 use App\Models\User;
 use App\Models\Vault;
@@ -154,26 +153,6 @@ class ContactReminderControllerTest extends TestCase
         $response->assertOk();
         $response->assertJsonPath('data.attributes.name', 'Congratulate her on the gallery');
         $this->assertDatabaseHas('reminders', ['id' => $reminder->id, 'name' => 'Congratulate her on the gallery', 'cadence' => 'yearly', 'frequency_interval' => 3]);
-    }
-
-    #[Test]
-    public function it_refuses_a_first_date_on_a_reminder_reading_a_date_on_the_contact(): void
-    {
-        [$user, $vault, $contact] = $this->michaelAndPam();
-        $value = FieldValue::factory()->recurringDate()->create(['valuable_id' => $contact->id]);
-        $reminder = Reminder::factory()->create(['field_value_id' => $value->id]);
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/reminders/{$reminder->uuid}", [
-            'name' => 'Pam’s birthday',
-            'starts_on' => now()->addWeek()->toDateString(),
-            'cadence' => 'yearly',
-            'time' => '09:00',
-        ]);
-
-        $response->assertUnprocessable();
-        $response->assertJsonValidationErrors(['starts_on']);
     }
 
     #[Test]

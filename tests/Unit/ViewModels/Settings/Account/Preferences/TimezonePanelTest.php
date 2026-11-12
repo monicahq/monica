@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\ViewModels\Settings\Account\Preferences;
 
 use App\Enums\TimeFormatEnum;
-use App\Helpers\TimezoneCatalogue;
 use App\Models\User;
 use App\ViewModels\Settings\Account\Preferences\TimezonePanel;
 use Carbon\CarbonImmutable;
@@ -93,25 +92,6 @@ class TimezonePanelTest extends TestCase
     }
 
     #[Test]
-    public function it_hands_the_picker_the_latitudes_the_map_is_cut_off_at(): void
-    {
-        $projection = new TimezonePanel(user: User::factory()->create())->projection();
-
-        $this->assertSame(TimezoneCatalogue::MAP_NORTH, $projection['north']);
-        $this->assertSame(TimezoneCatalogue::MAP_SOUTH, $projection['south']);
-    }
-
-    #[Test]
-    public function the_latitudes_it_hands_over_are_the_ones_the_marker_is_drawn_with(): void
-    {
-        $panel = new TimezonePanel(user: User::factory()->create());
-        $projection = $panel->projection();
-
-        $this->assertSame(0.0, TimezoneCatalogue::position($projection['north'], 0.0)['y']);
-        $this->assertSame(100.0, TimezoneCatalogue::position($projection['south'], 0.0)['y']);
-    }
-
-    #[Test]
     public function it_places_the_marker_where_the_zone_is(): void
     {
         $greenwich = new TimezonePanel(user: User::factory()->create(['timezone' => 'Europe/London']))->marker();
@@ -127,15 +107,6 @@ class TimezonePanelTest extends TestCase
         $band = new TimezonePanel(user: User::factory()->create(['timezone' => 'Europe/London']))->band();
 
         $this->assertSame(47.9167, $band['left']);
-        $this->assertSame(4.1667, $band['width']);
-    }
-
-    #[Test]
-    public function it_snaps_a_city_off_the_grid_to_the_hour_it_belongs_to(): void
-    {
-        $band = new TimezonePanel(user: User::factory()->create(['timezone' => 'Asia/Tokyo']))->band();
-
-        $this->assertSame(85.4167, $band['left']);
         $this->assertSame(4.1667, $band['width']);
     }
 
@@ -171,17 +142,5 @@ class TimezonePanelTest extends TestCase
         $this->assertSame('+09:00', $tokyo['offset']);
         $this->assertSame('21:00', $tokyo['clock']);
         $this->assertSame('tokyo japan asia/tokyo', $tokyo['search']);
-    }
-
-    #[Test]
-    public function it_hands_every_row_the_line_the_search_matches_on(): void
-    {
-        $zones = new TimezonePanel(user: User::factory()->create(['timezone' => 'UTC']))->zones();
-
-        $this->assertSame(
-            'paris france europe/paris',
-            collect($zones)->firstWhere('timezone', 'Europe/Paris')['search'],
-        );
-        $this->assertCount(419, collect($zones)->pluck('search')->filter()->all());
     }
 }

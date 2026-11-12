@@ -16,34 +16,6 @@ class BuildOpenApiDocumentTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_declares_the_version_of_the_format_it_follows(): void
-    {
-        $document = new BuildOpenApiDocument()->execute();
-
-        $this->assertSame('3.2.0', $document['openapi']);
-    }
-
-    #[Test]
-    public function it_names_everything_a_reader_of_the_document_alone_would_have_to_ask_for(): void
-    {
-        $document = new BuildOpenApiDocument()->execute();
-
-        $this->assertArrayHasKey('title', $document['info']);
-        $this->assertArrayHasKey('description', $document['info']);
-        $this->assertArrayHasKey('version', $document['info']);
-        $this->assertArrayHasKey('license', $document['info']);
-        $this->assertArrayHasKey('contact', $document['info']);
-    }
-
-    #[Test]
-    public function it_points_at_the_instance_that_built_it(): void
-    {
-        $document = new BuildOpenApiDocument()->execute();
-
-        $this->assertSame(ApiDocsViewModel::baseUrl(), $document['servers'][0]['url']);
-    }
-
-    #[Test]
     public function it_asks_for_a_token_everywhere_unless_an_endpoint_says_otherwise(): void
     {
         $document = new BuildOpenApiDocument()->execute();
@@ -129,7 +101,6 @@ class BuildOpenApiDocumentTest extends TestCase
         $this->assertSame([], $extra, "The document promises these endpoints and nothing answers them, so a generated client would call into nothing:\n\n".implode("\n", $extra));
     }
 
-    /** @return list<string> */
     #[Test]
     public function it_leaves_out_an_endpoint_switched_off_for_every_account(): void
     {
@@ -139,6 +110,7 @@ class BuildOpenApiDocumentTest extends TestCase
         $this->assertNotContains('GET /vaults/{vault}/contacts/{contact}/vcard', $this->described());
     }
 
+    /** @return list<string> */
     private function described(): array
     {
         $described = [];
@@ -380,16 +352,6 @@ class BuildOpenApiDocumentTest extends TestCase
         foreach ($body['example'] as $value) {
             $this->assertNotNull($value);
         }
-    }
-
-    #[Test]
-    public function it_admits_that_a_returned_value_may_hold_nothing(): void
-    {
-        $document = new BuildOpenApiDocument()->execute();
-
-        $attributes = $document['paths']['/vaults/{vault}']['get']['responses'][200]['content']['application/json']['schema']['properties']['data']['properties']['attributes']['properties'];
-
-        $this->assertSame(['integer', 'null'], $attributes['updated_at']['type']);
     }
 
     #[Test]

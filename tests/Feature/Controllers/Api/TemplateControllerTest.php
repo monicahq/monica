@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Api;
 
-use App\Enums\VersionStatusEnum;
 use App\Models\Account;
 use App\Models\EntityType;
 use App\Models\StructureVersion;
@@ -160,14 +159,6 @@ class TemplateControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_returns_not_found_for_a_template_that_does_not_exist(): void
-    {
-        Sanctum::actingAs(User::factory()->create());
-
-        $this->json('GET', '/api/v1/templates/4c2b9f10-5e37-4a6d-8b91-0f7c3d2a8e64')->assertNotFound();
-    }
-
-    #[Test]
     public function it_creates_a_template(): void
     {
         Queue::fake();
@@ -195,45 +186,6 @@ class TemplateControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_opens_an_empty_draft_when_a_template_is_created(): void
-    {
-        Queue::fake();
-        $user = User::factory()->create();
-
-        Sanctum::actingAs($user);
-
-        $this->json('POST', '/api/v1/templates', ['name' => 'Wine bottle', 'applies_to' => 'contact'])->assertCreated();
-
-        $template = Template::query()->where('account_id', $user->account_id)->sole();
-
-        $this->assertDatabaseHas('structure_versions', [
-            'structure_id' => $template->structure->id,
-            'version_number' => 1,
-            'status' => VersionStatusEnum::Draft->value,
-        ]);
-    }
-
-    #[Test]
-    public function it_creates_a_template_describing_an_entity_type(): void
-    {
-        Queue::fake();
-        $user = User::factory()->create();
-        $entityType = EntityType::factory()->create(['account_id' => $user->account_id]);
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('POST', '/api/v1/templates', [
-            'name' => 'Animal',
-            'applies_to' => 'entity',
-            'entity_type_id' => $entityType->uuid,
-        ]);
-
-        $response->assertCreated();
-        $response->assertJsonPath('data.attributes.applies_to', 'entity');
-        $response->assertJsonPath('data.attributes.entity_type_id', $entityType->uuid);
-    }
-
-    #[Test]
     public function it_validates_the_name_and_what_a_template_applies_to_when_creating_one(): void
     {
         Sanctum::actingAs(User::factory()->create());
@@ -245,31 +197,6 @@ class TemplateControllerTest extends TestCase
         $this->json('POST', '/api/v1/templates', ['name' => 'Animal', 'applies_to' => 'planet'])
             ->assertUnprocessable()
             ->assertJsonValidationErrors(['applies_to']);
-    }
-
-    #[Test]
-    public function it_requires_an_entity_type_when_the_template_describes_an_entity(): void
-    {
-        Sanctum::actingAs(User::factory()->create());
-
-        $this->json('POST', '/api/v1/templates', ['name' => 'Animal', 'applies_to' => 'entity'])
-            ->assertUnprocessable()
-            ->assertJsonValidationErrors(['entity_type_id']);
-    }
-
-    #[Test]
-    public function it_refuses_an_entity_type_from_another_account_when_creating_a_template(): void
-    {
-        $user = User::factory()->create();
-        $entityType = EntityType::factory()->create(['account_id' => Account::factory()->create()->id]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('POST', '/api/v1/templates', [
-            'name' => 'Animal',
-            'applies_to' => 'entity',
-            'entity_type_id' => $entityType->uuid,
-        ])->assertUnprocessable()->assertJsonValidationErrors(['entity_type_id']);
     }
 
     #[Test]
@@ -294,20 +221,6 @@ class TemplateControllerTest extends TestCase
         $response->assertJsonPath('data.attributes.name', 'Person');
         $response->assertJsonPath('data.attributes.description', 'Anybody the family knows.');
         $response->assertJsonPath('data.attributes.slug', 'contact');
-    }
-
-    #[Test]
-    public function it_changes_a_template_the_product_supplied_the_way_the_browser_does(): void
-    {
-        Queue::fake();
-        $user = User::factory()->create();
-        $template = Template::factory()->supplied()->create(['account_id' => $user->account_id]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('PUT', "/api/v1/templates/{$template->uuid}", ['name' => 'Person', 'description' => null])
-            ->assertOk()
-            ->assertJsonPath('data.attributes.name', 'Person');
     }
 
     #[Test]

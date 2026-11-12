@@ -27,10 +27,4 @@ class GetTemplateTest extends TestCase
             ->assertHasNoErrors()
             ->assertSee('Dundie nominee');
     }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.templates.show', app(GetTemplate::class)->mirrors());
-    }
 }

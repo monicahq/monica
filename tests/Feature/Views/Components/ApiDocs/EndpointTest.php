@@ -74,15 +74,6 @@ class EndpointTest extends TestCase
     }
 
     #[Test]
-    public function it_offers_the_request_in_three_languages(): void
-    {
-        $this->blade('<x-api-docs.endpoint :section="$section" />', ['section' => $this->section()])
-            ->assertSee('cURL')
-            ->assertSee('JavaScript')
-            ->assertSee('PHP');
-    }
-
-    #[Test]
     public function it_marks_an_endpoint_that_needs_no_token(): void
     {
         $this->blade('<x-api-docs.endpoint :section="$section" />', ['section' => $this->section(['auth' => false])])

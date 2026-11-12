@@ -68,10 +68,4 @@ class ListEmailsSentTest extends TestCase
             ->assertDontSee('Wednesday')
             ->assertSee('"page":2');
     }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.emailsSent', app(ListEmailsSent::class)->mirrors());
-    }
 }

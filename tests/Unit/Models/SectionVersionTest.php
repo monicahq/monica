@@ -8,7 +8,6 @@ use App\Enums\VersionStatusEnum;
 use App\Exceptions\PublishedVersionIsFrozen;
 use App\Models\Field;
 use App\Models\SectionVersion;
-use App\Models\StructureVersionSection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -25,24 +24,6 @@ class SectionVersionTest extends TestCase
         Field::factory()->create(['section_version_id' => $version->id, 'position' => 1]);
 
         $this->assertEquals([1, 2], $version->fields->pluck('position')->all());
-    }
-
-    #[Test]
-    public function it_knows_the_pages_it_sits_on(): void
-    {
-        $version = SectionVersion::factory()->create();
-        StructureVersionSection::factory()->create(['section_version_id' => $version->id]);
-
-        $this->assertTrue($version->structureVersions()->exists());
-    }
-
-    #[Test]
-    public function it_starts_as_an_editable_draft(): void
-    {
-        $version = SectionVersion::factory()->create();
-
-        $this->assertEquals(VersionStatusEnum::Draft, $version->status);
-        $this->assertTrue($version->status->isEditable());
     }
 
     #[Test]

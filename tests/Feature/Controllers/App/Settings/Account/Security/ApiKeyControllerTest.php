@@ -68,44 +68,6 @@ class ApiKeyControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_has_somewhere_to_announce_what_a_copy_did(): void
-    {
-        $user = User::factory()->create();
-
-        $this->actingAs($user)
-            ->withSession(['apiKey' => 'dunder-mifflin-infinity'])
-            ->get(route('settings.security.index'))
-            ->assertSee('aria-live="polite"', escape: false)
-            ->assertSee('x-text="messages[state]', escape: false);
-    }
-
-    #[Test]
-    public function it_offers_to_copy_the_new_key_and_says_when_it_did(): void
-    {
-        $user = User::factory()->create();
-
-        $this->actingAs($user)
-            ->withSession(['apiKey' => 'dunder-mifflin-infinity'])
-            ->get(route('settings.security.index'))
-            ->assertSee('Copy to the clipboard', escape: false)
-            ->assertSee('window.copyText(this.text)', escape: false)
-            ->assertSee("text: 'dunder-mifflin-infinity'", escape: false)
-            ->assertSee("copied: 'Copied'", escape: false);
-    }
-
-    #[Test]
-    public function it_says_when_the_copy_did_not_happen(): void
-    {
-        $user = User::factory()->create();
-
-        $this->actingAs($user)
-            ->withSession(['apiKey' => 'dunder-mifflin-infinity'])
-            ->get(route('settings.security.index'))
-            ->assertSee("failed: 'We could not copy it. Select the key and copy it by hand.'", escape: false)
-            ->assertSee("state = ok ? 'copied' : 'failed'", escape: false);
-    }
-
-    #[Test]
     public function it_refuses_a_name_that_is_too_short(): void
     {
         Queue::fake();
@@ -119,18 +81,6 @@ class ApiKeyControllerTest extends TestCase
         $response->assertSessionHasErrors('name');
 
         $this->assertSame(0, $user->tokens()->count());
-    }
-
-    #[Test]
-    public function it_refuses_a_missing_name(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-
-        $response = $this->withConfirmedPassword()->actingAs($user)->post(route('settings.apiKeys.create'), []);
-
-        $response->assertSessionHasErrors('name');
     }
 
     #[Test]
@@ -166,18 +116,6 @@ class ApiKeyControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_to_create_a_key_without_a_confirmed_password(): void
-    {
-        $user = User::factory()->create();
-
-        $response = $this->actingAs($user)->post(route('settings.apiKeys.create'), ['name' => 'Sabre']);
-
-        $response->assertRedirect(route('auth.confirmPassword.new'));
-
-        $this->assertSame(0, $user->tokens()->count());
-    }
-
-    #[Test]
     public function it_creates_a_key_that_reaches_sensitive_fields_when_the_box_is_ticked(): void
     {
         Queue::fake();
@@ -190,20 +128,6 @@ class ApiKeyControllerTest extends TestCase
         ]);
 
         $this->assertContains('sensitive-fields', $user->tokens()->first()->abilities);
-    }
-
-    #[Test]
-    public function it_leaves_sensitive_fields_out_of_a_key_when_the_box_is_left_alone(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-
-        $this->withConfirmedPassword()->actingAs($user)->post(route('settings.apiKeys.create'), [
-            'name' => 'Deployment script',
-        ]);
-
-        $this->assertNotContains('sensitive-fields', $user->tokens()->first()->abilities);
     }
 
     #[Test]

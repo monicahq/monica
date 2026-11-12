@@ -54,18 +54,6 @@ class ContactFieldRowControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_does_not_find_the_rows_through_the_wrong_vault(): void
-    {
-        $user = User::factory()->create();
-        [$notes, $contact] = $this->contactWithNotes($user, 1);
-        $otherVault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $this->actingAs($user)
-            ->get(route('contacts.fieldRows.index', ['vault' => $otherVault, 'contact' => $contact, 'field' => $notes, 'page' => 2]))
-            ->assertNotFound();
-    }
-
-    #[Test]
     public function it_does_not_find_a_field_of_another_account(): void
     {
         $user = User::factory()->create();

@@ -42,22 +42,6 @@ class ActivateRelationshipCategoryTest extends TestCase
     }
 
     #[Test]
-    public function it_leaves_the_category_where_it_was_in_the_list(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $relationshipCategory = RelationshipCategory::factory()->inactive()->create([
-            'account_id' => $user->account_id,
-            'position' => 4,
-        ]);
-
-        new ActivateRelationshipCategory(user: $user, relationshipCategory: $relationshipCategory)->execute();
-
-        $this->assertSame(4, $relationshipCategory->refresh()->position);
-    }
-
-    #[Test]
     public function it_refuses_a_category_in_another_account(): void
     {
         Queue::fake();

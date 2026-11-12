@@ -35,6 +35,8 @@ class GrantLifetimeAccessTest extends TestCase
         $this->assertNotNull($account->access_granted_at);
         $this->assertSame(AccessKindEnum::Granted, $account->accessKind());
         $this->assertSame(0, StripeOrder::query()->count());
+
+        Queue::assertPushedOn('low', LogAdministratorAction::class);
     }
 
     #[Test]
@@ -49,30 +51,5 @@ class GrantLifetimeAccessTest extends TestCase
         new GrantLifetimeAccess(account: $account, administrator: $michael)->execute();
 
         $this->assertEquals($granted->toDateString(), $account->refresh()->access_granted_at->toDateString());
-    }
-
-    #[Test]
-    public function it_writes_the_grant_down(): void
-    {
-        Queue::fake();
-
-        $michael = User::factory()->create();
-        $account = Account::factory()->create();
-
-        new GrantLifetimeAccess(account: $account, administrator: $michael)->execute();
-
-        Queue::assertPushedOn('low', LogAdministratorAction::class);
-    }
-
-    #[Test]
-    public function it_lets_an_administrator_grant_it_to_their_own_account(): void
-    {
-        Queue::fake();
-
-        $michael = User::factory()->create();
-
-        new GrantLifetimeAccess(account: $michael->account, administrator: $michael)->execute();
-
-        $this->assertTrue($michael->account->refresh()->hasFullAccess());
     }
 }

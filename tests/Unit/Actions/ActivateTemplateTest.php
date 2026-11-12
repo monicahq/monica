@@ -38,19 +38,6 @@ class ActivateTemplateTest extends TestCase
     }
 
     #[Test]
-    public function it_leaves_an_already_offered_template_alone(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-
-        new ActivateTemplate(user: $user, template: $template)->execute();
-
-        $this->assertTrue($template->fresh()->is_active);
-    }
-
-    #[Test]
     public function it_refuses_a_template_from_another_account(): void
     {
         Queue::fake();

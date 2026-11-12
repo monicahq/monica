@@ -23,20 +23,4 @@ class ShareLinkExpiryEnumTest extends TestCase
     {
         $this->assertNull(ShareLinkExpiryEnum::Never->expiresAt());
     }
-
-    #[Test]
-    public function it_warns_about_the_link_somebody_has_to_remember_to_revoke(): void
-    {
-        $this->assertStringContainsString('remember to revoke', ShareLinkExpiryEnum::Never->help());
-        $this->assertStringContainsString('stops working on its own', ShareLinkExpiryEnum::ThirtyDays->help());
-    }
-
-    #[Test]
-    public function every_case_carries_a_name_and_a_sentence_for_the_screen(): void
-    {
-        foreach (ShareLinkExpiryEnum::cases() as $case) {
-            $this->assertNotEmpty($case->label());
-            $this->assertSame([$case->label(), $case->help()], $case->translationKeys());
-        }
-    }
 }

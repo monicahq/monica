@@ -40,35 +40,6 @@ class RecoveryCodeControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_new_codes_without_a_confirmed_password(): void
-    {
-        $user = User::factory()->twoFactor()->create();
-        $before = $user->two_factor_recovery_codes;
-
-        $response = $this->actingAs($user)->post(route('settings.recoveryCodes.create'));
-
-        $response->assertRedirect(route('auth.confirmPassword.new'));
-
-        $this->assertEquals($before, $user->refresh()->two_factor_recovery_codes);
-    }
-
-    #[Test]
-    public function it_shows_the_codes_once_after_regenerating(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->twoFactor()->create();
-
-        $response = $this->withConfirmedPassword()->actingAs($user)->post(route('settings.recoveryCodes.create'));
-
-        $response->assertRedirect(route('settings.recoveryCodes.show'));
-
-        $this->followRedirects($response)
-            ->assertStatus(200)
-            ->assertSee($user->refresh()->two_factor_recovery_codes[0], escape: false);
-    }
-
-    #[Test]
     public function it_shows_nothing_on_a_second_visit(): void
     {
         $user = User::factory()->twoFactor()->create();

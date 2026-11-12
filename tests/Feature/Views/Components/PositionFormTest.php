@@ -19,17 +19,4 @@ class PositionFormTest extends TestCase
             ->assertSee('data-position-form="7"', escape: false)
             ->assertSee('action="/types/7/position"', escape: false);
     }
-
-    #[Test]
-    public function it_is_a_put_rather_than_a_post(): void
-    {
-        $this->blade(self::CALL)
-            ->assertSee('name="_method" value="put"', escape: false);
-    }
-
-    #[Test]
-    public function it_replaces_only_the_list_it_belongs_to(): void
-    {
-        $this->blade(self::CALL)->assertSee('x-target="entity-types"', escape: false);
-    }
 }

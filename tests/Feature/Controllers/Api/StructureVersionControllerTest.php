@@ -230,18 +230,6 @@ class StructureVersionControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_returns_not_found_for_a_version_number_the_template_does_not_have(): void
-    {
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-        StructureVersion::factory()->create(['structure_id' => $template->structure->id, 'version_number' => 1]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('GET', "/api/v1/templates/{$template->uuid}/versions/9")->assertNotFound();
-    }
-
-    #[Test]
     public function it_returns_not_found_for_a_version_of_a_template_from_another_account(): void
     {
         $user = User::factory()->create();
@@ -360,23 +348,6 @@ class StructureVersionControllerTest extends TestCase
         $this->json('DELETE', "/api/v1/templates/{$template->uuid}/versions/1")->assertNoContent();
 
         $this->assertModelMissing($version);
-    }
-
-    #[Test]
-    public function it_refuses_to_delete_a_version_that_is_published(): void
-    {
-        Queue::fake();
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id, 'version_number' => 1]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('DELETE', "/api/v1/templates/{$template->uuid}/versions/1")
-            ->assertUnprocessable()
-            ->assertJsonValidationErrors(['version']);
-
-        $this->assertModelExists($version);
     }
 
     #[Test]

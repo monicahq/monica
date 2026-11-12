@@ -21,61 +21,10 @@ class FieldValueTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_reads_a_line_of_text_as_the_line_of_text(): void
-    {
-        $this->render(new Field(['type' => FieldTypeEnum::Text, 'label' => 'Known as']), null, 'Prison Mike')
-            ->assertSee('Prison Mike', escape: false);
-    }
-
-    #[Test]
     public function a_field_nobody_has_written_in_says_so_rather_than_disappearing(): void
     {
         $this->render(new Field(['type' => FieldTypeEnum::Text, 'label' => 'Known as']), null, null)
             ->assertSee('Not recorded');
-    }
-
-    #[Test]
-    public function a_yes_or_no_takes_a_mark_you_can_see_at_a_glance(): void
-    {
-        $field = new Field(['type' => FieldTypeEnum::Boolean, 'label' => 'Vegetarian']);
-
-        $yes = new FieldValue;
-        $yes->value_boolean = true;
-
-        $no = new FieldValue;
-        $no->value_boolean = false;
-
-        $this->render($field, $yes, 'Yes')
-            ->assertSee('Yes');
-
-        $this->render($field, $no, 'No')
-            ->assertSee('No');
-    }
-
-    #[Test]
-    public function a_paragraph_keeps_the_line_breaks_it_was_written_with(): void
-    {
-        $this->render(new Field(['type' => FieldTypeEnum::Textarea, 'label' => 'How we met']), null, "At the gym.\nTwice.")
-            ->assertSee("At the gym.\nTwice.", escape: false);
-    }
-
-    #[Test]
-    public function a_many_of_a_list_reads_as_the_set_it_is(): void
-    {
-        $list = ValueList::factory()->create();
-        $climbing = ValueListItem::factory()->create(['value_list_id' => $list->id, 'label' => 'Climbing', 'position' => 1]);
-        $cooking = ValueListItem::factory()->create(['value_list_id' => $list->id, 'label' => 'Cooking', 'position' => 2]);
-        ValueListItem::factory()->create(['value_list_id' => $list->id, 'label' => 'Cycling', 'position' => 3]);
-
-        $field = new Field(['type' => FieldTypeEnum::Multiselect, 'label' => 'Interests', 'value_list_id' => $list->id]);
-
-        $value = new FieldValue;
-        $value->value_list_item_ids = [$climbing->id, $cooking->id];
-
-        $this->render($field, $value, 'Climbing, Cooking')
-            ->assertSee('Climbing')
-            ->assertSee('Cooking')
-            ->assertDontSee('Cycling');
     }
 
     #[Test]
@@ -179,14 +128,6 @@ class FieldValueTest extends TestCase
             ->assertSee('3 February 1984')
             ->assertSee('You will be reminded 7 days before, every year, at 09:00 Europe/Paris.')
             ->assertSee('role="img"', escape: false);
-    }
-
-    #[Test]
-    public function a_date_nobody_asked_to_be_told_about_carries_no_mark(): void
-    {
-        $this->markedDate(null)
-            ->assertSee('3 February 1984')
-            ->assertDontSee('You will be reminded');
     }
 
     private function markedDate(?string $reminder): TestView

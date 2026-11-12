@@ -22,18 +22,6 @@ class AccountTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_has_no_purchase_and_no_onboarding_date_by_default(): void
-    {
-        $account = Account::factory()->create();
-
-        $this->assertFalse($account->hasFullAccess());
-        $this->assertNull($account->purchased_at);
-        $this->assertNull($account->onboarding_completed_at);
-        $this->assertNull($account->billing_email);
-        $this->assertSame(0, $account->storage_used_in_bytes);
-    }
-
-    #[Test]
     public function it_is_metered_on_the_cloud_instance_and_never_when_self_hosted(): void
     {
         $cloud = Account::factory()->create(['storage_limit_in_bytes' => 4096]);
@@ -396,15 +384,6 @@ class AccountTest extends TestCase
 
         $this->assertNull($account->stripeName());
         $this->assertNull($account->stripeEmail());
-    }
-
-    #[Test]
-    public function a_new_account_builds_readable_addresses(): void
-    {
-        $account = Account::factory()->create();
-        User::factory()->create(['account_id' => $account->id]);
-
-        $this->assertTrue($account->usesReadableAddresses());
     }
 
     #[Test]

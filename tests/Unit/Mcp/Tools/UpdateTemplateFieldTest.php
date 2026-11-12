@@ -67,12 +67,6 @@ class UpdateTemplateFieldTest extends TestCase
         $this->assertSame(['Road'], $row->refresh()->sectionVersion->fields()->pluck('label')->all());
     }
 
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.templates.versions.sections.fields.update', app(UpdateTemplateField::class)->mirrors());
-    }
-
     /** @return array{User, Template, StructureVersionSection} */
     private function placement(): array
     {

@@ -36,10 +36,4 @@ class GetRelationshipCategoryTest extends TestCase
         EricaServer::actingAs($user)->tool(GetRelationshipCategory::class, ['relationship_category' => $category->uuid])
             ->assertHasErrors(['That relationship category does not exist.']);
     }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.relationshipCategories.show', app(GetRelationshipCategory::class)->mirrors());
-    }
 }

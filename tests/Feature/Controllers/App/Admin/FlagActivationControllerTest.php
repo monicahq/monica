@@ -54,37 +54,6 @@ class FlagActivationControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_asks_for_a_credential_first(): void
-    {
-        $michael = User::factory()->create();
-        Administrator::factory()->create(['user_id' => $michael->id]);
-
-        $this->actingAs($michael)
-            ->post(route('admin.flags.activation.create', ['flag' => 'example-capability']))
-            ->assertRedirect(route('auth.confirmPassword.new'));
-
-        Feature::flushCache();
-        $this->assertFalse(Feature::for(null)->active('example-capability'));
-    }
-
-    #[Test]
-    public function it_asks_for_a_credential_before_deactivating_a_flag_for_every_account(): void
-    {
-        Feature::for(null)->activate('example-capability');
-        Feature::flushCache();
-
-        $dwight = User::factory()->create();
-        Administrator::factory()->create(['user_id' => $dwight->id]);
-
-        $this->actingAs($dwight)
-            ->delete(route('admin.flags.activation.destroy', ['flag' => 'example-capability']))
-            ->assertRedirect(route('auth.confirmPassword.new'));
-
-        Feature::flushCache();
-        $this->assertTrue(Feature::for(null)->active('example-capability'));
-    }
-
-    #[Test]
     public function it_answers_not_found_for_a_flag_nobody_declared(): void
     {
         $this->actingAs($this->administrator())

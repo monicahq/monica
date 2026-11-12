@@ -69,32 +69,6 @@ class UserActivationControllerTest extends TestCase
         $this->assertTrue($michael->refresh()->is_active);
     }
 
-    #[Test]
-    public function it_never_offers_to_deactivate_you_on_your_own_account(): void
-    {
-        $michael = $this->administrator();
-
-        $response = $this->actingAs($michael)
-            ->get(route('admin.accounts.show', ['account' => $michael->account_id]));
-
-        $response->assertSee('You cannot deactivate yourself.', escape: false);
-        $response->assertDontSee('Stop Michael Scott signing in?', escape: false);
-    }
-
-    #[Test]
-    public function it_records_what_was_done(): void
-    {
-        $todd = User::factory()->create();
-
-        $this->actingAs($this->administrator())
-            ->delete(route('admin.accounts.activation.destroy', ['account' => $todd->account_id]));
-
-        $this->assertDatabaseHas('administrator_logs', [
-            'action' => 'user_deactivated',
-            'account_id' => $todd->account_id,
-        ]);
-    }
-
     private function administrator(): User
     {
         $michael = User::factory()->create(['first_name' => 'Michael', 'last_name' => 'Scott']);

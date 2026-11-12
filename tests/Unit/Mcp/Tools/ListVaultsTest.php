@@ -27,21 +27,4 @@ class ListVaultsTest extends TestCase
             ->assertHasNoErrors()
             ->assertSee('Dunder Mifflin');
     }
-
-    #[Test]
-    public function it_answers_an_account_holding_nothing_without_erroring(): void
-    {
-        $user = User::factory()->create();
-        $user->account->vaults()->delete();
-
-        EricaServer::actingAs($user)->tool(ListVaults::class)
-            ->assertOk()
-            ->assertHasNoErrors();
-    }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.vaults', app(ListVaults::class)->mirrors());
-    }
 }

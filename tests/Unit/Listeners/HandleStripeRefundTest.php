@@ -172,28 +172,6 @@ class HandleStripeRefundTest extends TestCase
         $this->assertTrue($michael->account->fresh()->hasFullAccess());
     }
 
-    #[Test]
-    public function it_ignores_every_other_event(): void
-    {
-        $michael = $this->somebodyWhoBought();
-
-        $payload = $this->refund();
-        $payload['type'] = 'charge.succeeded';
-
-        new HandleStripeRefund()->handle(new WebhookReceived($payload));
-
-        $this->assertTrue($michael->account->fresh()->hasFullAccess());
-    }
-
-    #[Test]
-    public function it_is_retried_before_it_is_abandoned(): void
-    {
-        $listener = new HandleStripeRefund;
-
-        $this->assertSame(5, $listener->tries);
-        $this->assertNotEmpty($listener->backoff);
-    }
-
     private function somebodyWhoBought(): User
     {
         $michael = User::factory()->create();

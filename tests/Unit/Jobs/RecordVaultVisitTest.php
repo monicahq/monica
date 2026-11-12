@@ -15,19 +15,6 @@ class RecordVaultVisitTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_writes_down_when_the_vault_was_opened(): void
-    {
-        $vault = Vault::factory()->create(['last_visited_at' => null]);
-
-        RecordVaultVisit::dispatch(vault: $vault);
-
-        $vault->refresh();
-
-        $this->assertNotNull($vault->last_visited_at);
-        $this->assertEqualsWithDelta(now()->timestamp, $vault->last_visited_at->timestamp, 2);
-    }
-
-    #[Test]
     public function it_takes_the_moment_the_vault_was_opened_rather_than_the_moment_the_queue_got_to_it(): void
     {
         $vault = Vault::factory()->create(['last_visited_at' => null]);

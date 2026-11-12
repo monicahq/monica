@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Listeners;
 
-use App\Listeners\RecordEmailDelivered;
 use App\Models\EmailSent;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
@@ -31,17 +30,5 @@ class RecordEmailDeliveredTest extends TestCase
             'uuid' => 'a1b2c3',
             'delivered_at' => '2026-09-04 10:00:00',
         ]);
-    }
-
-    #[Test]
-    public function it_is_the_listener_the_provider_event_reaches(): void
-    {
-        $this->assertContains(
-            RecordEmailDelivered::class.'@handle',
-            array_map(
-                fn (object|string $listener): string => is_string($listener) ? $listener : $listener::class,
-                app('events')->getRawListeners()[EmailDelivered::class] ?? [],
-            ),
-        );
     }
 }

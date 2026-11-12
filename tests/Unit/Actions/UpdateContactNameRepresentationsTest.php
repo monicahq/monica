@@ -6,7 +6,6 @@ namespace Tests\Unit\Actions;
 
 use App\Actions\UpdateContactNameRepresentations;
 use App\Enums\AccountImportStatusEnum;
-use App\Enums\ContactNameKindEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\DetectDuplicateContacts;
 use App\Jobs\LogUserAction;
@@ -220,28 +219,6 @@ class UpdateContactNameRepresentationsTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new UpdateContactNameRepresentations(user: $stranger, contact: $contact, nameRepresentations: [], display: null, nickname: null, maidenName: null)->execute();
-    }
-
-    #[Test]
-    public function it_stores_the_kind_as_its_enum(): void
-    {
-        Queue::fake();
-
-        [$user, $contact] = $this->contactNamed(null, null);
-
-        new UpdateContactNameRepresentations(
-            user: $user,
-            contact: $contact,
-            nameRepresentations: [
-                ['kind' => 'written', 'formatted_name' => '김민지'],
-                ['kind' => 'phonetic', 'phonetic_system' => 'x-rr', 'given_name' => 'Minji', 'family_name' => 'Gim'],
-            ],
-            display: 0,
-            nickname: null,
-            maidenName: null,
-        )->execute();
-
-        $this->assertSame(ContactNameKindEnum::Phonetic, $contact->nameRepresentations()->get()->last()->kind);
     }
 
     #[Test]

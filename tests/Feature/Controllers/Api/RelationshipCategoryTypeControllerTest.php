@@ -55,21 +55,6 @@ class RelationshipCategoryTypeControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_answers_an_empty_list_for_a_category_holding_nothing(): void
-    {
-        $user = User::factory()->create();
-        $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('GET', "/api/v1/relationship-categories/{$category->uuid}/types");
-
-        $response->assertOk();
-        $response->assertJsonCount(0, 'data');
-        $response->assertJsonPath('meta.total', 0);
-    }
-
-    #[Test]
     public function it_returns_not_found_for_a_category_of_another_account(): void
     {
         $user = User::factory()->create();

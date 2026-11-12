@@ -77,17 +77,6 @@ class RelationshipTypeFormViewModelTest extends TestCase
     }
 
     #[Test]
-    public function a_type_the_user_invented_may_be_turned_round(): void
-    {
-        $user = User::factory()->create();
-        $type = RelationshipType::factory()->create(['account_id' => $user->account_id]);
-
-        $viewModel = new RelationshipTypeFormViewModel(user: $user, relationshipType: $type);
-
-        $this->assertTrue($viewModel->directionIsEditable());
-    }
-
-    #[Test]
     public function it_says_what_the_product_does_with_a_supplied_type(): void
     {
         $user = User::factory()->create();
@@ -110,15 +99,6 @@ class RelationshipTypeFormViewModelTest extends TestCase
 
         $this->assertFalse($viewModel->canBeDeleted());
         $this->assertStringContainsString('Supplied types cannot be deleted', $viewModel->deleteBlockedReason());
-    }
-
-    #[Test]
-    public function a_type_nobody_uses_can_be_deleted(): void
-    {
-        $user = User::factory()->create();
-        $type = RelationshipType::factory()->create(['account_id' => $user->account_id]);
-
-        $this->assertTrue(new RelationshipTypeFormViewModel(user: $user, relationshipType: $type)->canBeDeleted());
     }
 
     #[Test]

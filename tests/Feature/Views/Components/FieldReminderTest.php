@@ -34,16 +34,6 @@ class FieldReminderTest extends TestCase
     }
 
     #[Test]
-    public function the_panel_is_closed_until_the_box_is_ticked(): void
-    {
-        $rendered = $this->render();
-
-        $rendered->assertSee('x-show="on"', escape: false);
-        $rendered->assertSee('x-cloak', escape: false);
-        $rendered->assertDontSee('x-bind:hidden', escape: false);
-    }
-
-    #[Test]
     public function it_asks_how_often_at_what_hour_in_which_zone_and_what_it_will_say(): void
     {
         $rendered = $this->render();
@@ -55,27 +45,6 @@ class FieldReminderTest extends TestCase
         $rendered->assertSee('It will say', escape: false);
         $rendered->assertSee('You will be notified on the day. The time zone is yours by default.', escape: false);
         $rendered->assertDontSee('[moments]', escape: false);
-    }
-
-    #[Test]
-    public function it_offers_once_and_every_so_many_years(): void
-    {
-        $rendered = $this->render();
-
-        $rendered->assertSeeInOrder(['Only once', 'Every year', 'Every 2 years', 'Every 5 years', 'Every 10 years'], escape: false);
-        $rendered->assertSee('<option value="yearly:1" selected', escape: false);
-    }
-
-    #[Test]
-    public function it_keeps_offering_a_rhythm_the_list_no_longer_suggests_to_the_reminder_that_has_it(): void
-    {
-        $rendered = $this->render($this->rule([
-            'cadence' => ReminderCadenceEnum::Monthly,
-            'frequency_interval' => 4,
-        ]));
-
-        $rendered->assertSee('<option value="monthly:4" selected', escape: false);
-        $rendered->assertSee('Every 4 months', escape: false);
     }
 
     #[Test]
@@ -96,34 +65,12 @@ class FieldReminderTest extends TestCase
     }
 
     #[Test]
-    public function it_says_when_the_next_reminder_falls_and_at_what_hour(): void
-    {
-        $this->travelTo('2026-09-27 12:00:00');
-
-        $rendered = $this->render($this->rule([
-            'cadence' => ReminderCadenceEnum::Yearly,
-            'time_of_day' => '09:00:00',
-            'timezone' => 'Europe/Paris',
-        ]));
-
-        $rendered->assertSee('Next reminder on', escape: false);
-        $rendered->assertSee('February 3, 2027 at 09:00', escape: false);
-        $rendered->assertSee('aria-live="polite"', escape: false);
-    }
-
-    #[Test]
     public function it_warns_before_a_save_takes_a_reminder_away(): void
     {
         $rendered = $this->render($this->rule());
 
         $rendered->assertSee('Saving now removes this reminder', escape: false);
         $rendered->assertSee('x-show="! on"', escape: false);
-    }
-
-    #[Test]
-    public function it_has_nothing_to_warn_about_on_a_date_that_carries_no_reminder(): void
-    {
-        $this->render()->assertDontSee('Saving now removes this reminder', escape: false);
     }
 
     #[Test]

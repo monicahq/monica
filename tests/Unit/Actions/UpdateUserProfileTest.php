@@ -103,26 +103,6 @@ class UpdateUserProfileTest extends TestCase
     public function it_unconfirms_the_address_when_it_changes(): void
     {
         Queue::fake();
-
-        $user = User::factory()->create([
-            'email' => 'pam.beesly@dundermifflin.com',
-            'email_verified_at' => now(),
-        ]);
-
-        new UpdateUserProfile(
-            user: $user,
-            firstName: 'Pam',
-            lastName: 'Halpert',
-            email: 'pam.halpert@dundermifflin.com',
-        )->execute();
-
-        $this->assertNull($user->refresh()->email_verified_at);
-    }
-
-    #[Test]
-    public function it_asks_to_confirm_the_new_address_when_it_changes(): void
-    {
-        Queue::fake();
         Notification::fake();
 
         $user = User::factory()->create([
@@ -137,6 +117,7 @@ class UpdateUserProfileTest extends TestCase
             email: 'pam.halpert@dundermifflin.com',
         )->execute();
 
+        $this->assertNull($user->refresh()->email_verified_at);
         Notification::assertSentTo($user, VerifyEmail::class);
     }
 

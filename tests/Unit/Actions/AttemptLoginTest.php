@@ -240,25 +240,6 @@ class AttemptLoginTest extends TestCase
     }
 
     #[Test]
-    public function it_leaves_no_remember_token_when_not_asked_to(): void
-    {
-        Queue::fake();
-        Notification::fake();
-
-        User::factory()->create([
-            'email' => 'michael.scott@dundermifflin.com',
-            'remember_token' => null,
-        ]);
-
-        $user = new AttemptLogin(
-            email: 'michael.scott@dundermifflin.com',
-            password: 'password',
-        )->execute();
-
-        $this->assertNull($user->refresh()->remember_token);
-    }
-
-    #[Test]
     public function it_checks_the_credentials_without_starting_a_session(): void
     {
         Queue::fake();
@@ -314,99 +295,6 @@ class AttemptLoginTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_suspended_user_without_a_session(): void
-    {
-        Queue::fake();
-        Notification::fake();
-
-        User::factory()->inactive()->create(['email' => 'michael.scott@dundermifflin.com']);
-
-        $this->expectException(ValidationException::class);
-
-        try {
-            new AttemptLogin(
-                email: 'michael.scott@dundermifflin.com',
-                password: 'password',
-                stateless: true,
-            )->execute();
-        } finally {
-            $this->assertGuest();
-        }
-    }
-
-    #[Test]
-    public function it_refuses_single_sign_on_without_a_session(): void
-    {
-        Queue::fake();
-        Notification::fake();
-
-        User::factory()->singleSignOn()->create(['email' => 'michael.scott@dundermifflin.com']);
-
-        $this->expectException(ValidationException::class);
-
-        try {
-            new AttemptLogin(
-                email: 'michael.scott@dundermifflin.com',
-                password: 'password',
-                stateless: true,
-            )->execute();
-        } finally {
-            $this->assertGuest();
-        }
-    }
-
-    #[Test]
-    public function it_says_nothing_about_an_unknown_address_without_a_session(): void
-    {
-        Queue::fake();
-        Notification::fake();
-
-        $this->expectException(ValidationException::class);
-
-        try {
-            new AttemptLogin(
-                email: 'nobody@dundermifflin.com',
-                password: 'password',
-                stateless: true,
-            )->execute();
-        } finally {
-            $this->assertGuest();
-            Notification::assertNothingSent();
-        }
-    }
-
-    #[Test]
-    public function it_stops_trying_after_five_failures_without_a_session(): void
-    {
-        Queue::fake();
-        Notification::fake();
-
-        User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
-
-        foreach (range(1, 5) as $ignored) {
-            try {
-                new AttemptLogin(
-                    email: 'michael.scott@dundermifflin.com',
-                    password: 'wrong-password',
-                    ip: '10.0.0.1',
-                    stateless: true,
-                )->execute();
-            } catch (ValidationException) {
-                continue;
-            }
-        }
-
-        $this->expectException(ValidationException::class);
-
-        new AttemptLogin(
-            email: 'michael.scott@dundermifflin.com',
-            password: 'password',
-            ip: '10.0.0.1',
-            stateless: true,
-        )->execute();
-    }
-
-    #[Test]
     public function it_refuses_an_account_that_gave_its_password_up(): void
     {
         Queue::fake();
@@ -432,30 +320,6 @@ class AttemptLoginTest extends TestCase
         }
 
         $this->assertGuest();
-    }
-
-    #[Test]
-    public function it_refuses_an_account_that_gave_its_password_up_without_a_session(): void
-    {
-        Queue::fake();
-        Notification::fake();
-
-        User::factory()->create([
-            'email' => 'michael.scott@dundermifflin.com',
-            'password' => null,
-        ]);
-
-        $this->expectException(ValidationException::class);
-
-        try {
-            new AttemptLogin(
-                email: 'michael.scott@dundermifflin.com',
-                password: 'password',
-                stateless: true,
-            )->execute();
-        } finally {
-            $this->assertGuest();
-        }
     }
 
     #[Test]

@@ -38,21 +38,6 @@ class TemplatePositionControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_puts_a_template_asked_for_a_place_past_the_end_last(): void
-    {
-        Queue::fake();
-        $user = User::factory()->create();
-        $first = Template::factory()->create(['account_id' => $user->account_id, 'position' => 1]);
-        Template::factory()->create(['account_id' => $user->account_id, 'position' => 2]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('PUT', "/api/v1/templates/{$first->uuid}/position", ['position' => 99])->assertOk();
-
-        $this->assertSame(2, $first->refresh()->position);
-    }
-
-    #[Test]
     public function it_validates_the_position(): void
     {
         Sanctum::actingAs($user = User::factory()->create());

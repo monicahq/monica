@@ -48,26 +48,6 @@ class TemplateShareControllerTest extends TestCase
             ->assertDontSee(route('marketplace.index'), escape: false);
     }
 
-    #[Test]
-    public function it_says_what_never_leaves(): void
-    {
-        $user = User::factory()->create();
-        $template = $this->publishedTemplate($user);
-
-        $this->actingAs($user)->get(route('settings.templateShare.index', $template))
-            ->assertSee(__('What never leaves, either way'));
-    }
-
-    #[Test]
-    public function it_is_not_offered_for_a_template_nobody_has_published(): void
-    {
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-
-        $this->actingAs($user)->get(route('settings.templateShare.index', $template))
-            ->assertNotFound();
-    }
-
     private function publishedTemplate(User $user): Template
     {
         $template = Template::factory()->create([

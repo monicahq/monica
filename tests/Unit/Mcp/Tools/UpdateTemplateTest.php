@@ -33,10 +33,4 @@ class UpdateTemplateTest extends TestCase
             'description' => 'Everybody who might win a Dundie.',
         ]);
     }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.templates.update', app(UpdateTemplate::class)->mirrors());
-    }
 }

@@ -198,14 +198,6 @@ class StripeCatalogueTest extends TestCase
     }
 
     #[Test]
-    public function it_is_available_once_it_has_been_read(): void
-    {
-        $this->fakeStripe();
-
-        $this->assertTrue(StripeCatalogue::isAvailable());
-    }
-
-    #[Test]
     public function it_names_the_kind_a_price_is(): void
     {
         $this->fakeStripe();

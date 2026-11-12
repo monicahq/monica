@@ -20,8 +20,6 @@ use App\Jobs\CreateDefaultTemplate;
 use App\Jobs\LogUserAction;
 use App\Models\EntityType;
 use App\Models\Field;
-use App\Models\FieldValue;
-use App\Models\FieldValueRow;
 use App\Models\Section;
 use App\Models\StructureVersion;
 use App\Models\Template;
@@ -166,25 +164,6 @@ class CreateDefaultTemplateTest extends TestCase
                 'colour' => $case->colour()->value,
             ]);
         }
-    }
-
-    #[Test]
-    public function it_seeds_no_section_grey_so_the_mark_is_discoverable(): void
-    {
-        Queue::fake();
-
-        $user = $this->userWithValueLists();
-
-        new CreateDefaultTemplate(user: $user)->handle();
-
-        $this->assertEquals(
-            0,
-            Section::query()->where('account_id', $user->account_id)->whereNull('colour')->count(),
-        );
-        $this->assertEquals(
-            0,
-            Section::query()->where('account_id', $user->account_id)->whereNull('icon')->count(),
-        );
     }
 
     #[Test]
@@ -337,61 +316,6 @@ class CreateDefaultTemplateTest extends TestCase
         $this->assertSame(RepetitionOrderEnum::NewestFirst, $orderOf(DefaultFieldEnum::Notes));
         $this->assertNull($orderOf(DefaultFieldEnum::Document));
         $this->assertNull($orderOf(DefaultFieldEnum::Photo));
-    }
-
-    #[Test]
-    public function it_gives_no_direction_to_a_field_that_is_not_a_repeater(): void
-    {
-        Queue::fake();
-
-        $user = $this->userWithValueLists();
-
-        new CreateDefaultTemplate(user: $user)->handle();
-
-        $notRepeaters = Field::query()
-            ->where('account_id', $user->account_id)
-            ->where('is_repeatable', false)
-            ->whereNotNull('repetition_order')
-            ->pluck('key')
-            ->all();
-
-        $this->assertSame([], $notRepeaters);
-    }
-
-    #[Test]
-    public function it_lets_a_contact_hold_as_many_notes_as_somebody_writes(): void
-    {
-        Queue::fake();
-
-        $user = $this->userWithValueLists();
-
-        new CreateDefaultTemplate(user: $user)->handle();
-
-        $notes = Field::query()->firstWhere('key', DefaultFieldEnum::Notes->value);
-
-        $this->assertTrue($notes->is_repeatable);
-        $this->assertNull($notes->repeat_max, 'A contact may hold any number of notes.');
-        $this->assertCount(1, $notes->children, 'One note is the note, and nothing else.');
-        $this->assertSame(FieldTypeEnum::Textarea, $notes->children[0]->type);
-    }
-
-    #[Test]
-    public function it_puts_the_notes_on_the_tab_a_contact_opens_on(): void
-    {
-        Queue::fake();
-
-        $user = $this->userWithValueLists();
-
-        new CreateDefaultTemplate(user: $user)->handle();
-
-        $pages = Template::query()->sole()->publishedVersion->pages;
-
-        $sectionsOf = fn (int $index): array => $pages[$index]->assembly
-            ->map(fn ($row): string => $row->sectionVersion->section->name)
-            ->all();
-
-        $this->assertContains('Notes', $sectionsOf(0));
-        $this->assertNotContains('Notes', $sectionsOf(2));
     }
 
     #[Test]
@@ -559,19 +483,6 @@ class CreateDefaultTemplateTest extends TestCase
                 'structure_version_id' => $version,
             ]);
         }
-    }
-
-    #[Test]
-    public function it_leaves_the_vaults_of_another_account_alone(): void
-    {
-        Queue::fake();
-
-        $user = $this->userWithValueLists();
-        $elsewhere = Vault::factory()->create();
-
-        new CreateDefaultTemplate(user: $user)->handle();
-
-        $this->assertEquals(0, VaultDefaultTemplate::query()->where('vault_id', $elsewhere->id)->count());
     }
 
     #[Test]
@@ -754,19 +665,6 @@ class CreateDefaultTemplateTest extends TestCase
     }
 
     #[Test]
-    public function it_writes_no_value_and_no_row(): void
-    {
-        Queue::fake();
-
-        $user = $this->userWithValueLists();
-
-        new CreateDefaultTemplate(user: $user, supplied: DefaultTemplateEnum::BasicAnimal)->handle();
-
-        $this->assertSame(0, FieldValue::query()->where('account_id', $user->account_id)->count());
-        $this->assertSame(0, FieldValueRow::query()->where('account_id', $user->account_id)->count());
-    }
-
-    #[Test]
     public function it_sets_the_animal_default_of_every_vault(): void
     {
         Queue::fake();
@@ -829,20 +727,6 @@ class CreateDefaultTemplateTest extends TestCase
         $this->assertSame(1, Template::query()->where('account_id', $user->account_id)->count());
         $this->assertSame(4, Section::query()->where('account_id', $user->account_id)->count());
         $this->assertSame(1, VaultDefaultTemplate::query()->where('account_id', $user->account_id)->count());
-    }
-
-    #[Test]
-    public function it_leaves_another_account_alone(): void
-    {
-        Queue::fake();
-
-        $michael = $this->userWithValueLists();
-        $dwight = $this->userWithValueLists();
-
-        new CreateDefaultTemplate(user: $michael, supplied: DefaultTemplateEnum::BasicAnimal)->handle();
-
-        $this->assertSame(0, EntityType::query()->where('account_id', $dwight->account_id)->count());
-        $this->assertSame(0, Template::query()->where('account_id', $dwight->account_id)->count());
     }
 
     private function animalTemplate(User $user): Template

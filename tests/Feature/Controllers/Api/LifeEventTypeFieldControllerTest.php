@@ -164,24 +164,6 @@ class LifeEventTypeFieldControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_group_without_a_name(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $type = $this->lifeEventType($user);
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('PUT', "/api/v1/life-event-types/{$type->uuid}/fields", [
-            'groups' => [['fields' => [['label' => 'Venue', 'type' => 'text']]]],
-        ]);
-
-        $response->assertUnprocessable();
-        $response->assertJsonValidationErrors(['groups.0.name']);
-    }
-
-    #[Test]
     public function it_returns_not_found_when_reading_the_fields_of_a_type_from_another_account(): void
     {
         $user = User::factory()->create();

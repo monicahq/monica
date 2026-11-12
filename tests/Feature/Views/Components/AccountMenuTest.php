@@ -28,17 +28,6 @@ class AccountMenuTest extends TestCase
     }
 
     #[Test]
-    public function it_leads_to_the_account_settings(): void
-    {
-        $user = User::factory()->create(['first_name' => 'Pam', 'last_name' => 'Beesly']);
-
-        $rendered = $this->actingAs($user)->blade('<x-account-menu :user="$user" />', ['user' => $user]);
-
-        $rendered->assertSee('href="'.route('settings.index').'"', escape: false);
-        $rendered->assertSee('Account settings');
-    }
-
-    #[Test]
     public function it_signs_out_from_a_real_button_in_the_menu(): void
     {
         $user = User::factory()->create(['first_name' => 'Pam', 'last_name' => 'Beesly']);

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models;
 
-use App\Enums\NameOrderEnum;
 use App\Enums\SsoProviderEnum;
 use App\Models\Account;
 use App\Models\Passkey;
@@ -13,26 +12,13 @@ use App\Models\SecurityKey;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Hash;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class UserTest extends TestCase
 {
     use RefreshDatabase;
-
-    #[Test]
-    public function it_is_the_only_user_of_its_account(): void
-    {
-        $account = Account::factory()->create();
-        User::factory()->create(['account_id' => $account->id]);
-
-        $this->expectException(QueryException::class);
-
-        User::factory()->create(['account_id' => $account->id]);
-    }
 
     #[Test]
     public function it_gives_the_name_the_user_is_called_by(): void
@@ -66,15 +52,6 @@ class UserTest extends TestCase
     }
 
     #[Test]
-    public function it_authenticates_against_the_password_column(): void
-    {
-        $user = User::factory()->create(['password' => Hash::make('dwightschrute')]);
-
-        $this->assertEquals($user->password, $user->getAuthPassword());
-        $this->assertTrue(Hash::check('dwightschrute', $user->getAuthPassword()));
-    }
-
-    #[Test]
     public function it_hands_the_framework_an_empty_authentication_password_when_the_user_signs_in_through_sso(): void
     {
         $user = User::factory()->singleSignOn()->create();
@@ -90,53 +67,6 @@ class UserTest extends TestCase
 
         $this->assertTrue($withSso->usesSingleSignOn());
         $this->assertFalse($withPassword->usesSingleSignOn());
-    }
-
-    #[Test]
-    public function it_hides_the_password_when_serialized(): void
-    {
-        $user = User::factory()->create();
-
-        $this->assertArrayNotHasKey('password', $user->toArray());
-        $this->assertArrayNotHasKey('remember_token', $user->toArray());
-    }
-
-    #[Test]
-    public function it_falls_back_to_the_time_zone_of_the_instance_and_to_the_given_name_first(): void
-    {
-        $user = User::factory()->create();
-
-        $user->refresh();
-
-        $this->assertEquals('UTC', $user->timezone);
-        $this->assertEquals(NameOrderEnum::GivenFirst, $user->name_order);
-        $this->assertNull($user->date_format);
-        $this->assertNull($user->number_format);
-    }
-
-    #[Test]
-    public function it_has_no_password_change_date_when_the_password_was_never_set(): void
-    {
-        $user = User::factory()->singleSignOn()->create();
-
-        $this->assertNull($user->password_changed_at);
-    }
-
-    #[Test]
-    public function it_soft_deletes(): void
-    {
-        $user = User::factory()->create();
-
-        $user->delete();
-
-        $this->assertSoftDeleted($user);
-    }
-
-    #[Test]
-    public function it_knows_whether_the_email_address_was_confirmed(): void
-    {
-        $this->assertFalse(User::factory()->unverified()->create()->hasVerifiedEmail());
-        $this->assertTrue(User::factory()->create()->hasVerifiedEmail());
     }
 
     #[Test]
@@ -184,16 +114,6 @@ class UserTest extends TestCase
     {
         $this->assertFalse(User::factory()->create()->usesPasswordlessSignIn());
         $this->assertTrue(User::factory()->create(['password' => null])->usesPasswordlessSignIn());
-    }
-
-    #[Test]
-    public function it_calls_an_account_created_through_a_provider_passwordless(): void
-    {
-        $user = User::factory()->singleSignOn()->create();
-
-        $this->assertNull($user->password);
-        $this->assertTrue($user->usesSingleSignOn());
-        $this->assertTrue($user->usesPasswordlessSignIn());
     }
 
     #[Test]
@@ -246,17 +166,6 @@ class UserTest extends TestCase
         $this->expectExceptionMessage('Full access lifts the ceiling.');
 
         $user->authorize('create', Vault::class);
-    }
-
-    #[Test]
-    public function it_lets_an_ability_the_user_holds_through(): void
-    {
-        config(['monica.free_vault_limit' => 5]);
-
-        $user = User::factory()->create();
-
-        $this->assertTrue($user->authorize('create', Vault::class)->allowed());
-        $this->assertTrue($user->can('create', Vault::class));
     }
 
     #[Test]

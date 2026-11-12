@@ -116,19 +116,6 @@ class CreateVaultTest extends TestCase
     }
 
     #[Test]
-    public function it_gives_a_vault_a_colour_when_nobody_picks_one(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        new CreateDefaultTemplate(user: $user)->handle();
-
-        $vault = new CreateVault(user: $user, name: 'Dunder Mifflin')->execute();
-
-        $this->assertEquals(Vault::DEFAULT_COLOUR, $vault->colour);
-    }
-
-    #[Test]
     public function it_strips_the_markup_out_of_what_it_is_given(): void
     {
         Queue::fake();
@@ -144,19 +131,6 @@ class CreateVaultTest extends TestCase
 
         $this->assertEquals('Schrute Farms', $vault->name);
         $this->assertEquals('Beets', $vault->description);
-    }
-
-    #[Test]
-    public function it_leaves_the_description_empty_when_there_is_none(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        new CreateDefaultTemplate(user: $user)->handle();
-
-        $vault = new CreateVault(user: $user, name: 'Dunder Mifflin', description: '  ')->execute();
-
-        $this->assertNull($vault->description);
     }
 
     #[Test]

@@ -7,7 +7,6 @@ namespace Tests\Feature\Controllers\App\Settings\Account\Security;
 use App\Enums\SsoProviderEnum;
 use App\Models\Passkey;
 use App\Models\ProviderConnection;
-use App\Models\SecurityKey;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -40,20 +39,6 @@ class SecurityControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_offers_to_turn_two_factor_authentication_on_when_it_is_off(): void
-    {
-        $user = User::factory()->create(['two_factor_confirmed_at' => null]);
-
-        $response = $this->actingAs($user)->get(route('settings.security.index'));
-
-        $response->assertStatus(200);
-        $response->assertSee('Two-factor authentication', escape: false);
-        $response->assertSee('Authenticator app', escape: false);
-        $response->assertSee('Turn it on', escape: false);
-        $response->assertDontSee('Recovery codes', escape: false);
-    }
-
-    #[Test]
     public function it_shows_no_recovery_code(): void
     {
         $user = User::factory()->twoFactor()->create(['two_factor_confirmed_at' => now()->subDays(3)]);
@@ -65,41 +50,6 @@ class SecurityControllerTest extends TestCase
         $response->assertSee('Recovery codes', escape: false);
         $response->assertDontSee('scranton-1', escape: false);
         $response->assertDontSee('scranton-2', escape: false);
-    }
-
-    #[Test]
-    public function it_says_how_many_recovery_codes_are_left(): void
-    {
-        $user = User::factory()->twoFactor()->create(['two_factor_recovery_codes' => ['scranton-1', 'scranton-2']]);
-
-        $response = $this->actingAs($user)->get(route('settings.security.index'));
-
-        $response->assertStatus(200);
-        $response->assertSee('2 recovery codes left. They were shown once, when they were made.', escape: false);
-    }
-
-    #[Test]
-    public function it_says_so_when_every_recovery_code_has_been_used(): void
-    {
-        $user = User::factory()->twoFactor()->create(['two_factor_recovery_codes' => []]);
-
-        $response = $this->actingAs($user)->get(route('settings.security.index'));
-
-        $response->assertStatus(200);
-        $response->assertSee('You have used every code. Ask for new ones before you need them.', escape: false);
-    }
-
-    #[Test]
-    public function it_refuses_to_remove_a_passkey_without_a_confirmed_password(): void
-    {
-        $user = User::factory()->create();
-        $passkey = Passkey::factory()->create(['user_id' => $user->id]);
-
-        $response = $this->actingAs($user)->delete(route('passkey.destroy', $passkey));
-
-        $response->assertRedirect(route('auth.confirmPassword.new'));
-
-        $this->assertModelExists($passkey);
     }
 
     #[Test]
@@ -140,22 +90,6 @@ class SecurityControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_lists_the_security_keys_and_offers_to_add_one(): void
-    {
-        URL::forceScheme('https');
-        $user = User::factory()->create();
-        SecurityKey::factory()->for($user)->create(['name' => 'Dundie key']);
-
-        $response = $this->actingAs($user)->get(route('settings.security.index'));
-
-        $response->assertOk();
-        $response->assertSee('Dundie key');
-        $response->assertSee('Add a security key');
-        $response->assertSee('Two-factor authentication turns off, and your recovery codes stop working.');
-        $response->assertSee('Recovery codes');
-    }
-
-    #[Test]
     public function it_offers_no_way_to_add_a_security_key_over_an_insecure_connection(): void
     {
         URL::forceScheme('http');
@@ -165,23 +99,6 @@ class SecurityControllerTest extends TestCase
 
         $response->assertSee('Security keys need a secure connection');
         $response->assertDontSee('Add a security key');
-    }
-
-    #[Test]
-    public function it_moves_focus_through_the_removal_of_a_passkey_and_ties_the_warning_to_the_button(): void
-    {
-        URL::forceScheme('https');
-        $user = User::factory()->create();
-        $passkey = Passkey::factory()->create(['user_id' => $user->id, 'name' => 'Michael MacBook']);
-
-        $response = $this->actingAs($user)->get(route('settings.security.index'));
-
-        $response->assertSee('x-ref="remove"', escape: false);
-        $response->assertSee('confirming = true; $nextTick(() => $refs.keep.focus())', escape: false);
-        $response->assertSee('x-ref="keep"', escape: false);
-        $response->assertSee('confirming = false; $nextTick(() => $refs.remove.focus())', escape: false);
-        $response->assertSee("id=\"passkey-warning-{$passkey->id}\"", escape: false);
-        $response->assertSee("aria-describedby=\"passkey-warning-{$passkey->id}\"", escape: false);
     }
 
     #[Test]

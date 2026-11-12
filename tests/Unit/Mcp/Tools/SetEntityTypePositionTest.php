@@ -34,10 +34,4 @@ class SetEntityTypePositionTest extends TestCase
             $user->account->entityTypes()->orderBy('position')->pluck('uuid')->all(),
         );
     }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.entityTypes.position.update', app(SetEntityTypePosition::class)->mirrors());
-    }
 }

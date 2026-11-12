@@ -54,10 +54,4 @@ class DeleteLifeEventTest extends TestCase
             'life_event' => '7c1e5a92-4b3d-4f80-a6e2-93d0b1c4f857',
         ])->assertHasErrors(['That life event does not exist.']);
     }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.lifeEvents.destroy', app(DeleteLifeEvent::class)->mirrors());
-    }
 }

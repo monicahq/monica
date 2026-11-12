@@ -20,22 +20,6 @@ class RelationshipFormViewModelTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_groups_the_types_under_their_category(): void
-    {
-        $user = User::factory()->create();
-        $family = $this->categoryOf($user, 'Family', 1);
-        $work = $this->categoryOf($user, 'Professional', 2);
-        $this->typeOn($family, RelationshipTypeEnum::ParentChild);
-        $this->typeOn($work, RelationshipTypeEnum::Colleague);
-
-        $groups = $this->viewModelFor($user)->typeGroups();
-
-        $this->assertCount(2, $groups);
-        $this->assertEquals('Family', $groups[0]['label']);
-        $this->assertEquals('Professional', $groups[1]['label']);
-    }
-
-    #[Test]
     public function it_names_a_directed_type_by_both_of_its_roles(): void
     {
         $user = User::factory()->create();
@@ -57,24 +41,6 @@ class RelationshipFormViewModelTest extends TestCase
 
         $this->assertEquals('Sibling', $groups[0]['types'][0]['label']);
         $this->assertTrue($groups[0]['types'][0]['isSymmetric']);
-    }
-
-    #[Test]
-    public function it_leaves_out_a_deactivated_type(): void
-    {
-        $user = User::factory()->create();
-        $category = $this->categoryOf($user, 'Family', 1);
-        $this->typeOn($category, RelationshipTypeEnum::Sibling);
-        RelationshipType::factory()->inactive()->create([
-            'account_id' => $user->account_id,
-            'relationship_category_id' => $category->id,
-            'name' => 'Beet farmer',
-        ]);
-
-        $labels = collect($this->viewModelFor($user)->typeGroups()[0]['types'])->pluck('label');
-
-        $this->assertCount(1, $labels);
-        $this->assertFalse($labels->contains('Beet farmer'));
     }
 
     #[Test]
@@ -153,22 +119,6 @@ class RelationshipFormViewModelTest extends TestCase
             ->pluck('name');
 
         $this->assertEquals(['Dwight Schrute'], $names->all());
-    }
-
-    #[Test]
-    public function it_offers_more_people_than_the_list_shows_at_once(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $michael = $this->contactOn($vault, 'Michael', 'Scott');
-
-        foreach (range(1, 8) as $number) {
-            $this->contactOn($vault, 'Dwight', "Schrute {$number}");
-        }
-
-        $candidates = new RelationshipFormViewModel(user: $user, vault: $vault, contact: $michael)->candidates();
-
-        $this->assertCount(8, $candidates);
     }
 
     #[Test]

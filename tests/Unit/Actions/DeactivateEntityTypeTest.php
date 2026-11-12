@@ -42,26 +42,6 @@ class DeactivateEntityTypeTest extends TestCase
     }
 
     #[Test]
-    public function it_leaves_the_records_the_type_holds_alone(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $entityType = EntityType::factory()->used(9)->create([
-            'account_id' => $user->account_id,
-            'position' => 3,
-        ]);
-
-        new DeactivateEntityType(user: $user, entityType: $entityType)->execute();
-
-        $entityType->refresh();
-
-        $this->assertSame(9, $entityType->entity_count);
-        $this->assertSame(3, $entityType->position);
-        $this->assertNotSoftDeleted($entityType);
-    }
-
-    #[Test]
     public function it_refuses_a_type_in_another_account(): void
     {
         Queue::fake();

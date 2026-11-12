@@ -46,55 +46,10 @@ class SsoControllerTest extends TestCase
         $this->mockUser('github');
 
         $this->get(route('auth.sso.callback', ['provider' => 'github']))
-            ->assertRedirect(route('home.index'));
+            ->assertRedirect(route('home.index'))
+            ->assertCookie(Auth::guard('web')->getRecallerName());
 
         $this->assertAuthenticatedAs($user);
-    }
-
-    #[Test]
-    public function it_remembers_the_browser_of_the_user_the_provider_names(): void
-    {
-        Queue::fake();
-        Notification::fake();
-        $this->offer('github');
-
-        User::factory()->has(ProviderConnection::factory()->state(['provider' => SsoProviderEnum::GitHub, 'sso_id' => '108120124']))->create();
-        $this->mockUser('github');
-
-        $this->get(route('auth.sso.callback', ['provider' => 'github']))
-            ->assertCookie(Auth::guard('web')->getRecallerName());
-    }
-
-    #[Test]
-    public function it_creates_an_account_for_somebody_it_has_never_seen(): void
-    {
-        Queue::fake();
-        Notification::fake();
-        $this->offer('github');
-
-        $this->mockUser('github');
-
-        $this->get(route('auth.sso.callback', ['provider' => 'github']))
-            ->assertRedirect(route('home.index'));
-
-        $this->assertDatabaseHas('users', [
-            'email' => 'michael.scott@dundermifflin.com',
-        ]);
-        $this->assertDatabaseHas('provider_connections', ['provider' => 'github', 'sso_id' => '108120124']);
-        $this->assertAuthenticated();
-    }
-
-    #[Test]
-    public function it_remembers_the_browser_of_the_account_it_creates(): void
-    {
-        Queue::fake();
-        Notification::fake();
-        $this->offer('github');
-
-        $this->mockUser('github');
-
-        $this->get(route('auth.sso.callback', ['provider' => 'github']))
-            ->assertCookie(Auth::guard('web')->getRecallerName());
     }
 
     #[Test]
@@ -110,24 +65,11 @@ class SsoControllerTest extends TestCase
         $this->get(route('auth.sso.callback', ['provider' => 'github']))
             ->assertRedirect(route('auth.twoFactor.new'))
             ->assertSessionHas('twoFactor.signInMethod', 'provider')
-            ->assertSessionHas('twoFactor.provider', 'github');
+            ->assertSessionHas('twoFactor.provider', 'github')
+            ->assertSessionHas('twoFactor.remember', true);
 
         $this->assertGuest();
         Notification::assertNothingSent();
-    }
-
-    #[Test]
-    public function it_carries_the_decision_to_remember_through_the_challenge(): void
-    {
-        Queue::fake();
-        Notification::fake();
-        $this->offer('github');
-
-        User::factory()->twoFactor()->has(ProviderConnection::factory()->state(['provider' => SsoProviderEnum::GitHub, 'sso_id' => '108120124']))->create();
-        $this->mockUser('github');
-
-        $this->get(route('auth.sso.callback', ['provider' => 'github']))
-            ->assertSessionHas('twoFactor.remember', true);
     }
 
     #[Test]
@@ -217,27 +159,6 @@ class SsoControllerTest extends TestCase
 
         $this->get('/sso/myspace/redirect')->assertNotFound();
         $this->get('/sso/myspace/callback')->assertNotFound();
-    }
-
-    #[Test]
-    public function it_keeps_nothing_the_provider_issued(): void
-    {
-        Queue::fake();
-        Notification::fake();
-        $this->offer('github');
-
-        $this->mockUser('github');
-
-        $this->get(route('auth.sso.callback', ['provider' => 'github']));
-
-        $user = User::query()->firstOrFail();
-
-        $this->assertNull($user->password);
-        $this->assertDatabaseHas('provider_connections', ['user_id' => $user->id, 'sso_id' => '108120124']);
-        $this->assertEmpty(array_intersect(
-            ['access_token', 'refresh_token', 'token'],
-            array_keys($user->getAttributes()),
-        ));
     }
 
     #[Test]

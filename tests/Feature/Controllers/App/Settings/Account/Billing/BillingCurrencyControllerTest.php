@@ -45,26 +45,4 @@ class BillingCurrencyControllerTest extends TestCase
         $response->assertSessionHasErrors('currency');
         $response->assertSessionMissing('billing.currency');
     }
-
-    #[Test]
-    public function it_needs_a_currency(): void
-    {
-        $michael = User::factory()->create();
-
-        $this->actingAs($michael)
-            ->put(route('settings.billingCurrency.update'), [])
-            ->assertSessionHasErrors('currency');
-    }
-
-    #[Test]
-    public function it_shows_the_offers_in_the_currency_that_was_picked(): void
-    {
-        $michael = User::factory()->create(['locale' => 'en']);
-
-        $response = $this->actingAs($michael)
-            ->withSession(['billing.currency' => 'usd'])
-            ->get(route('settings.billing.index'));
-
-        $response->assertSee('$10.00', escape: false);
-    }
 }

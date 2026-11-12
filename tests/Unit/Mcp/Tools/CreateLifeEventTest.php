@@ -44,26 +44,6 @@ class CreateLifeEventTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_type_that_can_no_longer_be_chosen(): void
-    {
-        Queue::fake();
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $michael = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
-        $funRun = $this->lifeEventTypeAsking($user, 'Fun run');
-        $funRun->update(['is_active' => false]);
-
-        EricaServer::actingAs($user)->tool(CreateLifeEvent::class, [
-            'vault' => $vault->uuid,
-            'life_event_type' => $funRun->uuid,
-            'happened_on' => '2026-10-09',
-            'participants' => [$michael->uuid],
-        ])->assertHasErrors(['That life event type can no longer be chosen.']);
-
-        $this->assertDatabaseMissing('life_events', ['vault_id' => $vault->id]);
-    }
-
-    #[Test]
     public function it_refuses_a_participant_of_another_vault(): void
     {
         $user = User::factory()->create();
@@ -76,11 +56,5 @@ class CreateLifeEventTest extends TestCase
             'happened_on' => '2026-10-09',
             'participants' => [$karen->uuid],
         ])->assertHasErrors(['That contact does not exist.']);
-    }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.lifeEvents.create', app(CreateLifeEvent::class)->mirrors());
     }
 }

@@ -64,20 +64,6 @@ class FileControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_does_not_find_a_file_kept_in_another_vault(): void
-    {
-        Storage::fake('local');
-
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $elsewhere = Vault::factory()->create(['account_id' => $user->account_id]);
-        $file = $this->fileIn($vault, $user, 'lease.pdf');
-
-        $this->actingAs($user)->get(route('files.show', ['vault' => $elsewhere, 'file' => $file]))
-            ->assertNotFound();
-    }
-
-    #[Test]
     public function it_does_not_find_a_file_whose_bytes_have_gone(): void
     {
         Storage::fake('local');

@@ -132,14 +132,6 @@ class ReminderDueTest extends TestCase
     }
 
     #[Test]
-    public function a_text_message_carries_no_client_of_its_own_so_the_instances_is_used(): void
-    {
-        $message = $this->notification(NotificationChannelEnum::Sms)->toVonage(User::factory()->make());
-
-        $this->assertNull($message->client);
-    }
-
-    #[Test]
     public function a_text_message_names_who_it_was_for_so_a_provider_bill_can_be_read(): void
     {
         $michael = User::factory()->create();

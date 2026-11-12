@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions;
 
-use App\Actions\DisableValueListItem;
 use App\Actions\EnableValueListItem;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
@@ -48,26 +47,6 @@ class EnableValueListItemTest extends TestCase
             callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::ValueListItemEnabled
                 && $job->parameters === ['label' => 'Fax', 'name' => 'Phone labels'],
         );
-    }
-
-    #[Test]
-    public function it_puts_the_choice_back_in_the_place_it_had(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $item = ValueListItem::factory()->create([
-            'account_id' => $user->account_id,
-            'position' => 3,
-        ]);
-
-        new DisableValueListItem(user: $user, item: $item)->execute();
-        new EnableValueListItem(user: $user, item: $item)->execute();
-
-        $item->refresh();
-
-        $this->assertTrue($item->is_active);
-        $this->assertSame(3, $item->position);
     }
 
     #[Test]

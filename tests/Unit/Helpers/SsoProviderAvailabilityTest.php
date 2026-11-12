@@ -57,17 +57,6 @@ class SsoProviderAvailabilityTest extends TestCase
     }
 
     #[Test]
-    public function it_offers_nothing_when_no_driver_is_installed_at_all(): void
-    {
-        $this->install([]);
-        $this->configure('github');
-        $this->configure('google');
-
-        $this->assertEquals([], SsoProviderAvailability::onThisInstance());
-        $this->assertFalse(SsoProviderAvailability::anyOnThisInstance());
-    }
-
-    #[Test]
     public function it_keeps_the_order_the_enum_declares(): void
     {
         $this->install(['github', 'google', 'facebook']);

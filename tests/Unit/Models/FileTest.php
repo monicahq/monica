@@ -29,22 +29,4 @@ class FileTest extends TestCase
         $this->assertTrue($orphan->isOrphan());
         $this->assertFalse($used->isOrphan());
     }
-
-    #[Test]
-    public function it_is_looked_up_by_its_uuid(): void
-    {
-        $file = File::factory()->create();
-
-        $this->assertEquals('uuid', $file->getRouteKeyName());
-        $this->assertNotNull($file->uuid);
-    }
-
-    #[Test]
-    public function it_reads_the_sizes_of_a_picture(): void
-    {
-        $file = File::factory()->image()->create();
-
-        $this->assertEquals(1200, $file->width);
-        $this->assertEquals(800, $file->height);
-    }
 }

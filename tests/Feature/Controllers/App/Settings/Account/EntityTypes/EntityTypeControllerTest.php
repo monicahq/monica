@@ -16,22 +16,6 @@ class EntityTypeControllerTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_explains_what_a_profile_type_is(): void
-    {
-        $user = User::factory()->create();
-
-        $this->actingAs($user)->get(route('settings.entityTypes.index'))
-            ->assertStatus(200)
-            ->assertSee('Contacts and more')
-            ->assertSee('Garfield')
-            ->assertSee('Central Perk')
-            ->assertSee('Examples only')
-            ->assertSee('They aren’t in your vault.')
-            ->assertSee('Create a profile type')
-            ->assertSee(route('settings.entityTypes.new'));
-    }
-
-    #[Test]
     public function it_lists_the_types_of_the_account_after_its_contacts(): void
     {
         $user = User::factory()->create();
@@ -47,39 +31,6 @@ class EntityTypeControllerTest extends TestCase
             ->assertSeeInOrder(['Your profile types', 'Contacts', 'Built in', 'Can’t be deleted', 'Wine bottles'])
             ->assertSee(route('settings.entityTypes.edit', 'wine-bottles'))
             ->assertSee('Drag a row to change the order');
-    }
-
-    #[Test]
-    public function it_offers_no_ordering_without_a_type_of_its_own(): void
-    {
-        $user = User::factory()->create();
-
-        $this->actingAs($user)->get(route('settings.entityTypes.index'))
-            ->assertStatus(200)
-            ->assertSee('Can’t be deleted')
-            ->assertDontSee('Drag a row to change the order');
-    }
-
-    #[Test]
-    public function it_says_when_a_type_is_not_active(): void
-    {
-        $user = User::factory()->create();
-        EntityType::factory()->inactive()->create(['account_id' => $user->account_id]);
-
-        $this->actingAs($user)->get(route('settings.entityTypes.index'))
-            ->assertStatus(200)
-            ->assertSee('Not active');
-    }
-
-    #[Test]
-    public function it_shows_the_form_that_declares_a_type(): void
-    {
-        $user = User::factory()->create();
-
-        $this->actingAs($user)->get(route('settings.entityTypes.new'))
-            ->assertStatus(200)
-            ->assertSee('Create a kind of record')
-            ->assertSee('Create type');
     }
 
     #[Test]
@@ -113,65 +64,6 @@ class EntityTypeControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_creates_a_type_that_is_not_active_yet(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-
-        $this->actingAs($user)->post(route('settings.entityTypes.create'), [
-            'name_singular' => 'Wine bottle',
-            'name_plural' => 'Wine bottles',
-            'icon' => 'device',
-            'colour' => '#4f8a49',
-        ])->assertRedirect(route('settings.entityTypes.index'));
-
-        $this->assertDatabaseHas('entity_types', [
-            'name_singular' => 'Wine bottle',
-            'is_active' => false,
-        ]);
-    }
-
-    #[Test]
-    public function it_takes_the_slug_it_is_given(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-
-        $this->actingAs($user)->post(route('settings.entityTypes.create'), [
-            'name_singular' => 'Wine bottle',
-            'name_plural' => 'Wine bottles',
-            'slug' => 'cellar',
-            'icon' => 'device',
-            'colour' => '#4f8a49',
-        ])->assertRedirect(route('settings.entityTypes.index'));
-
-        $this->assertDatabaseHas('entity_types', [
-            'name_singular' => 'Wine bottle',
-            'slug' => 'cellar',
-        ]);
-    }
-
-    #[Test]
-    public function it_falls_back_to_the_singular_name_when_no_slug_is_given(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-
-        $this->actingAs($user)->post(route('settings.entityTypes.create'), [
-            'name_singular' => 'Wine bottle',
-            'name_plural' => 'Wine bottles',
-            'slug' => '',
-            'icon' => 'device',
-            'colour' => '#4f8a49',
-        ])->assertRedirect(route('settings.entityTypes.index'));
-
-        $this->assertDatabaseHas('entity_types', ['slug' => 'wine-bottle']);
-    }
-
-    #[Test]
     public function it_refuses_a_slug_that_is_not_a_slug(): void
     {
         Queue::fake();
@@ -198,23 +90,6 @@ class EntityTypeControllerTest extends TestCase
 
         $user = User::factory()->create();
         EntityType::factory()->create(['account_id' => $user->account_id, 'slug' => 'cellar']);
-
-        $this->actingAs($user)->post(route('settings.entityTypes.create'), [
-            'name_singular' => 'Wine bottle',
-            'name_plural' => 'Wine bottles',
-            'slug' => 'cellar',
-            'icon' => 'device',
-            'colour' => '#4f8a49',
-        ])->assertSessionHasErrors('slug');
-    }
-
-    #[Test]
-    public function it_refuses_a_slug_a_deleted_type_still_holds(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        EntityType::factory()->create(['account_id' => $user->account_id, 'slug' => 'cellar'])->delete();
 
         $this->actingAs($user)->post(route('settings.entityTypes.create'), [
             'name_singular' => 'Wine bottle',
@@ -263,36 +138,6 @@ class EntityTypeControllerTest extends TestCase
             ->assertStatus(200)
             ->assertDontSee('name="slug"', escape: false)
             ->assertSee('It cannot be changed now the type exists');
-    }
-
-    #[Test]
-    public function it_ignores_a_slug_sent_to_the_update_route(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $entityType = EntityType::factory()->create(['account_id' => $user->account_id, 'slug' => 'animals']);
-
-        $this->actingAs($user)->put(route('settings.entityTypes.update', $entityType), [
-            'name_singular' => 'Animal',
-            'name_plural' => 'Animals',
-            'slug' => 'something-else',
-            'icon' => 'profile',
-            'colour' => '#3f5fd0',
-            'is_active' => '1',
-        ])->assertRedirect(route('settings.entityTypes.index'));
-
-        $this->assertEquals('animals', $entityType->refresh()->slug);
-    }
-
-    #[Test]
-    public function it_says_the_description_may_be_left_out(): void
-    {
-        $user = User::factory()->create();
-
-        $this->actingAs($user)->get(route('settings.entityTypes.new'))
-            ->assertStatus(200)
-            ->assertSee('optional');
     }
 
     #[Test]

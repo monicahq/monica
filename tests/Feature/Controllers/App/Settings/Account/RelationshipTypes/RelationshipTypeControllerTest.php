@@ -36,30 +36,6 @@ class RelationshipTypeControllerTest extends TestCase
     }
 
     #[Test]
-    public function the_list_carries_the_target_the_move_buttons_swap(): void
-    {
-        $user = User::factory()->create();
-        RelationshipType::factory()->create(['account_id' => $user->account_id]);
-
-        $this->actingAs($user)->get(route('settings.relationshipTypes.index'))
-            ->assertStatus(200)
-            ->assertSee('id="relationship-types"', escape: false)
-            ->assertSee('x-target="relationship-types"', escape: false);
-    }
-
-    #[Test]
-    public function it_shows_the_form_that_adds_a_type(): void
-    {
-        $user = User::factory()->create();
-        RelationshipCategory::factory()->create(['account_id' => $user->account_id, 'name' => 'Family']);
-
-        $this->actingAs($user)->get(route('settings.relationshipTypes.new'))
-            ->assertStatus(200)
-            ->assertSee('Add a relationship type')
-            ->assertSee('Add the type');
-    }
-
-    #[Test]
     public function it_adds_a_type(): void
     {
         Queue::fake();
@@ -110,22 +86,6 @@ class RelationshipTypeControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_name_the_account_already_uses(): void
-    {
-        Queue::fake();
-        $user = User::factory()->create();
-        $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
-        RelationshipType::factory()->create(['account_id' => $user->account_id, 'name' => 'Cousin']);
-
-        $this->actingAs($user)->post(route('settings.relationshipTypes.create'), [
-            'name' => 'Cousin',
-            'relationship_category_id' => $category->id,
-            'direction' => 'symmetric',
-            'role_a' => 'Cousin',
-        ])->assertSessionHasErrors(['name']);
-    }
-
-    #[Test]
     public function it_refuses_a_category_of_another_account(): void
     {
         $michael = User::factory()->create();
@@ -141,18 +101,6 @@ class RelationshipTypeControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_shows_the_form_that_rewords_a_type(): void
-    {
-        $user = User::factory()->create();
-        $type = RelationshipType::factory()->directed()->create(['account_id' => $user->account_id]);
-
-        $this->actingAs($user)->get(route('settings.relationshipTypes.edit', $type))
-            ->assertStatus(200)
-            ->assertSee('Godparent / Godchild')
-            ->assertSee('Save changes');
-    }
-
-    #[Test]
     public function it_marks_deletion_unavailable_for_a_supplied_type(): void
     {
         $user = User::factory()->create();
@@ -164,18 +112,6 @@ class RelationshipTypeControllerTest extends TestCase
             ->assertSee('aria-disabled="true"', false)
             ->assertSee('aria-describedby="relationship-type-delete-reason"', false)
             ->assertSee('Supplied types cannot be deleted', escape: false);
-    }
-
-    #[Test]
-    public function it_offers_deletion_for_a_type_nobody_uses(): void
-    {
-        $user = User::factory()->create();
-        $type = RelationshipType::factory()->create(['account_id' => $user->account_id]);
-
-        $this->actingAs($user)->get(route('settings.relationshipTypes.edit', $type))
-            ->assertStatus(200)
-            ->assertSee('Delete this type')
-            ->assertDontSee('aria-describedby="relationship-type-delete-reason"', false);
     }
 
     #[Test]

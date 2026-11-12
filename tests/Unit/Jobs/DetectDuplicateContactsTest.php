@@ -80,18 +80,6 @@ class DetectDuplicateContactsTest extends TestCase
     }
 
     #[Test]
-    public function it_proposes_nothing_for_two_plainly_different_people(): void
-    {
-        $vault = Vault::factory()->create();
-        $this->contactIn($vault, 'Jim', 'Halpert');
-        $this->contactIn($vault, 'Dwight', 'Schrute');
-
-        new DetectDuplicateContacts(subject: $vault)->handle();
-
-        $this->assertDatabaseCount('contact_duplicate_candidates', 0);
-    }
-
-    #[Test]
     public function it_proposes_nothing_for_two_siblings_who_share_only_a_family_name(): void
     {
         $vault = Vault::factory()->create();

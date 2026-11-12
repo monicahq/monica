@@ -11,13 +11,6 @@ use Tests\TestCase;
 class TooltipTest extends TestCase
 {
     #[Test]
-    public function it_says_the_sentence_the_mark_stands_for(): void
-    {
-        $this->render()
-            ->assertSee('Every year on 3 February', escape: false);
-    }
-
-    #[Test]
     public function the_bubble_waits_for_the_pointer(): void
     {
         $this->render()

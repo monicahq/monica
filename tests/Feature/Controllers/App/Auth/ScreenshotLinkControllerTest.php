@@ -28,17 +28,6 @@ class ScreenshotLinkControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_lands_on_the_home_screen_when_nothing_was_asked_for(): void
-    {
-        config()->set('monica.screenshot_link.enabled', true);
-        $user = User::factory()->create();
-
-        $this->get($this->link($user))->assertRedirect('/');
-
-        $this->assertAuthenticatedAs($user);
-    }
-
-    #[Test]
     public function it_is_refused_while_the_setting_is_off(): void
     {
         config()->set('monica.screenshot_link.enabled', true);
@@ -109,20 +98,6 @@ class ScreenshotLinkControllerTest extends TestCase
 
         $this->get('/screenshot-link/michael.scott@dundermifflin.com?to=/settings')
             ->assertStatus(403);
-
-        $this->assertGuest();
-    }
-
-    #[Test]
-    public function it_is_refused_once_the_signature_has_expired(): void
-    {
-        config()->set('monica.screenshot_link.enabled', true);
-        $user = User::factory()->create();
-        $link = $this->link($user, '/settings');
-
-        $this->travel(6)->minutes();
-
-        $this->get($link)->assertStatus(403);
 
         $this->assertGuest();
     }

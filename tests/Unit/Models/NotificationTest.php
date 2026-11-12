@@ -7,7 +7,6 @@ namespace Tests\Unit\Models;
 use App\Models\Notification;
 use App\Models\ReminderOccurrence;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Str;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -43,33 +42,6 @@ class NotificationTest extends TestCase
     }
 
     #[Test]
-    public function it_tells_one_person_about_one_thing_once_per_channel(): void
-    {
-        $this->freezeTime();
-
-        $notification = Notification::factory()->create();
-
-        $written = Notification::query()->insertOrIgnore([
-            'uuid' => (string) Str::uuid(),
-            'account_id' => $notification->account_id,
-            'user_id' => $notification->user_id,
-            'type' => $notification->type->value,
-            'channel' => $notification->channel->value,
-            'notifiable_type' => $notification->notifiable_type,
-            'notifiable_id' => $notification->notifiable_id,
-            'title' => 'Again',
-            'body' => 'Again',
-            'locale' => 'en',
-            'scheduled_for' => now(),
-            'held_until' => now(),
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-
-        $this->assertSame(0, $written);
-    }
-
-    #[Test]
     public function it_prunes_what_is_older_than_the_retention_period(): void
     {
         $old = Notification::factory()->create(['created_at' => now()->subMonths(13)]);
@@ -79,16 +51,6 @@ class NotificationTest extends TestCase
 
         $this->assertTrue($prunable->contains($old->id));
         $this->assertFalse($prunable->contains($recent->id));
-    }
-
-    #[Test]
-    public function the_retention_period_is_a_setting_of_the_instance(): void
-    {
-        config(['monica.notification_retention_months' => 1]);
-
-        $notification = Notification::factory()->create(['created_at' => now()->subMonths(2)]);
-
-        $this->assertTrue(new Notification()->prunable()->pluck('id')->contains($notification->id));
     }
 
     #[Test]

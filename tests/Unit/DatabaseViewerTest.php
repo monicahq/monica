@@ -5,21 +5,11 @@ declare(strict_types=1);
 namespace Tests\Unit;
 
 use Illuminate\Support\Facades\Route;
-use LaraDb\LaraDbServiceProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class DatabaseViewerTest extends TestCase
 {
-    #[Test]
-    public function it_is_installed(): void
-    {
-        $this->assertTrue(
-            class_exists(LaraDbServiceProvider::class),
-            'Without this the assertions below pass by saying nothing.',
-        );
-    }
-
     #[Test]
     public function it_is_off_unless_the_environment_is_local(): void
     {

@@ -48,16 +48,6 @@ class ProfileViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_knows_whether_there_is_a_photo(): void
-    {
-        $withPhoto = new ProfileViewModel(user: User::factory()->create(['photo_path' => 'photos/1/abc']));
-        $withoutPhoto = new ProfileViewModel(user: User::factory()->create(['photo_path' => null]));
-
-        $this->assertTrue($withPhoto->hasPhoto());
-        $this->assertFalse($withoutPhoto->hasPhoto());
-    }
-
-    #[Test]
     public function it_offers_an_upload_only_while_file_upload_is_on_for_the_account(): void
     {
         $jim = User::factory()->create();

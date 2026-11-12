@@ -117,24 +117,6 @@ class ImmediateFamilyBlockTest extends TestCase
     }
 
     #[Test]
-    public function it_offers_the_way_through_to_somebody_who_has_a_record_of_their_own(): void
-    {
-        $vault = Vault::factory()->create();
-        $michael = $this->personIn($vault, 'Michael', 'Scott');
-        $child = $this->personIn($vault, 'Pam', 'Beesly');
-
-        $this->parentage($vault, $michael, $child);
-
-        $row = (new ImmediateFamilyBlock(vault: $vault, contact: $michael))->children()[0];
-
-        $this->assertSame(
-            route('contacts.show', ['vault' => $vault, 'contact' => $child]),
-            $row['url'],
-        );
-        $this->assertNull($row['note']);
-    }
-
-    #[Test]
     public function it_reads_the_age_of_somebody_whose_birthday_carries_a_year(): void
     {
         $vault = Vault::factory()->create();

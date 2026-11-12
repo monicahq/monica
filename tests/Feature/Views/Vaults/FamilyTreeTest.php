@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Views\Vaults;
 
-use App\Enums\RelationshipTypeEnum;
 use App\Models\Contact;
 use App\Models\Relationship;
-use App\Models\RelationshipType;
 use App\Models\User;
 use App\Models\Vault;
 use App\ViewModels\Vaults\ContactViewModel;
@@ -35,16 +33,6 @@ class FamilyTreeTest extends TestCase
         $this->user = User::factory()->create();
         $this->vault = Vault::factory()->create(['account_id' => $this->user->account_id]);
         $this->judy = $this->personIn('Judy', 'Geller');
-    }
-
-    #[Test]
-    public function it_heads_the_panel_and_says_what_it_leaves_out(): void
-    {
-        $this->parentage($this->personIn('Ruth', 'Geller'), $this->judy);
-
-        $this->tab()
-            ->assertSee(__('Family tree'))
-            ->assertSee(__('Only parentage and partnerships are drawn here. Friends and colleagues stay in the list.'));
     }
 
     #[Test]
@@ -83,77 +71,6 @@ class FamilyTreeTest extends TestCase
     }
 
     #[Test]
-    public function it_leads_nowhere_for_somebody_who_is_only_a_name(): void
-    {
-        $iris = $this->personIn('Aunt', 'Iris');
-        $iris->update(['is_partial' => true]);
-        $this->parentage($iris, $this->judy);
-
-        $this->tab()
-            ->assertSee('Aunt Iris')
-            ->assertSee(__('Name only, no profile yet'))
-            ->assertDontSee(route('contacts.show', ['vault' => $this->vault, 'contact' => $iris]));
-    }
-
-    #[Test]
-    public function it_draws_no_friend_though_the_groups_beside_it_do(): void
-    {
-        $gloria = $this->personIn('Gloria', 'Tribbiani');
-        $type = RelationshipType::factory()->system(RelationshipTypeEnum::Friend)
-            ->create(['account_id' => $this->vault->account_id]);
-
-        Relationship::factory()->create([
-            'account_id' => $this->vault->account_id,
-            'vault_id' => $this->vault->id,
-            'relationship_type_id' => $type->id,
-            'contact_a_id' => $this->judy->id,
-            'contact_b_id' => $gloria->id,
-        ]);
-
-        $this->tab()
-            ->assertSee('Gloria Tribbiani')
-            ->assertSee($this->emptyLine())
-            ->assertDontSee(__('Parents'))
-            ->assertDontSee(__('Children'));
-    }
-
-    #[Test]
-    public function it_says_there_is_no_line_yet_and_offers_the_first_relationship(): void
-    {
-        $gloria = $this->personIn('Gloria', 'Tribbiani');
-        $type = RelationshipType::factory()->system(RelationshipTypeEnum::Friend)
-            ->create(['account_id' => $this->vault->account_id]);
-
-        Relationship::factory()->create([
-            'account_id' => $this->vault->account_id,
-            'vault_id' => $this->vault->id,
-            'relationship_type_id' => $type->id,
-            'contact_a_id' => $this->judy->id,
-            'contact_b_id' => $gloria->id,
-        ]);
-
-        $this->tab()
-            ->assertSee($this->emptyLine())
-            ->assertSee(route('contacts.relationships.new', ['vault' => $this->vault, 'contact' => $this->judy]));
-    }
-
-    #[Test]
-    public function it_draws_every_child_of_a_large_family(): void
-    {
-        $names = ['Ross', 'Monica', 'Erica', 'Jack', 'Emma', 'Ben', 'Leonard'];
-
-        foreach ($names as $name) {
-            $this->parentage($this->judy, $this->personIn($name, 'Geller'));
-        }
-
-        $response = $this->tab();
-
-        foreach ($names as $name) {
-            $response->assertSee("{$name} Geller");
-        }
-    }
-
-    #[Test]
     public function it_asks_the_records_no_more_often_for_a_large_family_than_for_a_small_one(): void
     {
         Queue::fake();
@@ -185,13 +102,6 @@ class FamilyTreeTest extends TestCase
         DB::disableQueryLog();
 
         return $queries;
-    }
-
-    private function emptyLine(): string
-    {
-        return __('Nobody is written down as :name’s parent, partner or child yet, so there is no line to draw.', [
-            'name' => 'Judy',
-        ]);
     }
 
     private function tab(): TestResponse

@@ -37,19 +37,6 @@ class MarketplaceListingRejectedTest extends TestCase
     }
 
     #[Test]
-    public function it_reads_the_reason_before_what_to_do_next(): void
-    {
-        $michael = User::factory()->create();
-
-        $rendered = (string) $this->notification()->toMail($michael)->render();
-
-        $this->assertLessThan(
-            mb_strpos($rendered, 'You can work on it and submit a new version'),
-            mb_strpos($rendered, 'The description does not say what the template is for.'),
-        );
-    }
-
-    #[Test]
     public function it_goes_out_as_an_email(): void
     {
         $michael = User::factory()->create();

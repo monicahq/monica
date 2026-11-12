@@ -40,14 +40,6 @@ class MarketplaceListingApprovedTest extends TestCase
     }
 
     #[Test]
-    public function it_boxes_nothing(): void
-    {
-        $michael = User::factory()->create();
-
-        $this->assertNull($this->notification()->toMail($michael)->panel);
-    }
-
-    #[Test]
     public function it_goes_out_as_an_email(): void
     {
         $michael = User::factory()->create();

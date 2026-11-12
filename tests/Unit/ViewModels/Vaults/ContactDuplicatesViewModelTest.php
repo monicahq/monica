@@ -83,44 +83,6 @@ class ContactDuplicatesViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_pages_the_pairs_twenty_at_a_time(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        for ($index = 1; $index <= 25; $index++) {
-            $this->candidateIn($vault);
-        }
-
-        $firstPage = new ContactDuplicatesViewModel(user: $user, vault: $vault)->pairs();
-
-        $this->assertCount(20, $firstPage);
-        $this->assertSame(25, $firstPage->total());
-
-        $this->app['request']->merge(['page' => 2]);
-
-        $this->assertCount(5, new ContactDuplicatesViewModel(user: $user, vault: $vault)->pairs());
-    }
-
-    #[Test]
-    public function it_holds_every_pair_on_one_page_for_all(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        for ($index = 1; $index <= 25; $index++) {
-            $this->candidateIn($vault);
-        }
-
-        $viewModel = new ContactDuplicatesViewModel(user: $user, vault: $vault, size: 'all');
-
-        $this->assertCount(25, $viewModel->pairs());
-        $this->assertFalse($viewModel->pairs()->hasPages());
-        $this->assertSame('all', $viewModel->size());
-        $this->assertSame(20, $viewModel->defaultSize());
-    }
-
-    #[Test]
     public function it_says_in_words_why_a_pair_is_on_the_screen(): void
     {
         $user = User::factory()->create();

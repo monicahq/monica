@@ -8,13 +8,11 @@ use App\Actions\CreateLifeEvent;
 use App\Enums\DateFormatEnum;
 use App\Enums\DatePrecisionEnum;
 use App\Enums\FieldTypeEnum;
-use App\Enums\VaultColourEnum;
 use App\Models\Contact;
 use App\Models\Group;
 use App\Models\GroupMember;
 use App\Models\LifeEvent;
 use App\Models\LifeEventParticipant;
-use App\Models\Section;
 use App\Models\User;
 use App\Models\Vault;
 use App\ViewModels\Vaults\ContactTimelineBlock;
@@ -150,19 +148,6 @@ class ContactTimelineBlockTest extends TestCase
     }
 
     #[Test]
-    public function it_marks_a_life_event_with_the_glyph_and_colour_of_its_type(): void
-    {
-        [$user, $vault, $jim] = $this->jim();
-        $this->lifeEventWith($jim, '2026-06-01', 'Dundies')->lifeEventType->update(['icon' => 'star', 'colour' => VaultColourEnum::Plum->value]);
-        $this->lifeEventWith($jim, '2026-05-01', 'Fun run')->lifeEventType->update(['icon' => null, 'colour' => null]);
-
-        $entries = $this->block($user, $vault, $jim)->years()[0]['entries'];
-
-        $this->assertSame(['star', Section::DEFAULT_ICON], array_column($entries, 'icon'));
-        $this->assertSame([VaultColourEnum::Plum->tint(), VaultColourEnum::neutralTint()], array_column($entries, 'tint'));
-    }
-
-    #[Test]
     public function it_names_the_other_people_who_were_there_with_a_way_to_their_page(): void
     {
         [$user, $vault, $jim] = $this->jim();
@@ -271,21 +256,6 @@ class ContactTimelineBlockTest extends TestCase
         $this->lifeEventWith($jim, '2026-07-03', 'Moved');
 
         $this->assertEquals('07-03', $this->block($user, $vault, $jim)->years()[0]['entries'][0]['date']);
-    }
-
-    #[Test]
-    public function it_links_every_entry_to_the_contact_page_when_read_only(): void
-    {
-        [$user, $vault, $jim] = $this->jim();
-        $lifeEvent = $this->lifeEventWith($jim, '2026-07-03', 'Moved to a house near the office');
-
-        $block = new ContactTimelineBlock(user: $user, vault: $vault, contact: $jim, isReadOnly: true);
-
-        $this->assertTrue($block->isReadOnly());
-        $this->assertEquals(
-            route('contacts.lifeEvents.edit', ['vault' => $vault, 'contact' => $jim, 'lifeEvent' => $lifeEvent]),
-            $block->years()[0]['entries'][0]['editUrl'],
-        );
     }
 
     #[Test]

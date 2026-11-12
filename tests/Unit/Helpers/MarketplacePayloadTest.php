@@ -205,14 +205,6 @@ class MarketplacePayloadTest extends TestCase
     }
 
     #[Test]
-    public function it_hashes_the_same_payload_the_same_way_every_time(): void
-    {
-        $payload = ['type' => 'section', 'section' => ['slug' => 'medical']];
-
-        $this->assertEquals(MarketplacePayload::checksum($payload), MarketplacePayload::checksum($payload));
-    }
-
-    #[Test]
     public function it_hashes_a_changed_payload_differently(): void
     {
         $before = ['type' => 'section', 'section' => ['slug' => 'medical']];

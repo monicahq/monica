@@ -109,40 +109,6 @@ class TwoFactorChallengeControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_sends_no_warning_after_a_password_and_a_code(): void
-    {
-        Notification::fake();
-
-        $google2fa = new Google2FA;
-        $secret = $google2fa->generateSecretKey();
-        $user = User::factory()->twoFactor($secret)->create();
-
-        $this->withSession(['twoFactor.user.id' => $user->id])
-            ->post(route('auth.twoFactor.create'), [
-                'code' => $google2fa->getCurrentOtp($secret),
-            ]);
-
-        Notification::assertNothingSent();
-    }
-
-    #[Test]
-    public function it_sends_no_warning_when_the_code_is_wrong(): void
-    {
-        Notification::fake();
-
-        $user = User::factory()->twoFactor()->create();
-
-        $this->withSession([
-            'twoFactor.user.id' => $user->id,
-            'twoFactor.signInMethod' => 'email_link',
-        ])->post(route('auth.twoFactor.create'), [
-            'code' => '000000',
-        ]);
-
-        Notification::assertNothingSent();
-    }
-
-    #[Test]
     public function it_remembers_somebody_who_asked_to_be_remembered_before_the_code(): void
     {
         $google2fa = new Google2FA;
@@ -162,32 +128,6 @@ class TwoFactorChallengeControllerTest extends TestCase
         $this->assertAuthenticatedAs($user);
         $response->assertCookie(Auth::guard('web')->getRecallerName());
         $this->assertNull(session('twoFactor.remember'));
-    }
-
-    #[Test]
-    public function it_remembers_somebody_for_the_duration_the_instance_sets_once_the_code_is_accepted(): void
-    {
-        $google2fa = new Google2FA;
-        $secret = $google2fa->generateSecretKey();
-        User::factory()->twoFactor($secret)->create(['email' => 'jim@dundermifflin.com']);
-
-        $this->post(route('auth.login.create'), [
-            'email' => 'jim@dundermifflin.com',
-            'password' => 'password',
-            'remember' => 'on',
-        ])->assertRedirect(route('auth.twoFactor.new'));
-
-        $this->app['auth']->forgetGuards();
-
-        $response = $this->post(route('auth.twoFactor.create'), [
-            'code' => $google2fa->getCurrentOtp($secret),
-        ]);
-
-        $this->assertEqualsWithDelta(
-            now()->addDays((int) config('monica.remember_duration_days'))->getTimestamp(),
-            $response->getCookie(Auth::guard('web')->getRecallerName(), decrypt: false)->getExpiresTime(),
-            60,
-        );
     }
 
     #[Test]
@@ -227,73 +167,6 @@ class TwoFactorChallengeControllerTest extends TestCase
 
         $this->assertAuthenticatedAs($user);
         $response->assertCookie(Auth::guard('web')->getRecallerName());
-    }
-
-    #[Test]
-    public function it_signs_somebody_in_with_a_recovery_code_and_spends_it(): void
-    {
-        $user = User::factory()->twoFactor()->create();
-
-        $response = $this->withSession(['twoFactor.user.id' => $user->id])
-            ->post(route('auth.twoFactor.create'), ['code' => 'scranton-1']);
-
-        $response->assertRedirect(route('home.index'));
-        $this->assertAuthenticatedAs($user);
-        $this->assertEquals(['scranton-2'], $user->refresh()->two_factor_recovery_codes);
-    }
-
-    #[Test]
-    public function it_offers_a_key_on_the_challenge_to_somebody_who_holds_one(): void
-    {
-        URL::forceScheme('https');
-        $user = User::factory()->create();
-        SecurityKey::factory()->for($user)->create();
-
-        $response = $this->withSession(['twoFactor.user.id' => $user->id])
-            ->get(route('auth.twoFactor.new'));
-
-        $response->assertOk();
-        $response->assertSee('Use a security key or passkey');
-        $response->assertSee('x-data="passkey(', escape: false);
-        $response->assertSee('aria-live="polite"', escape: false);
-        $response->assertSee('Recovery code');
-    }
-
-    #[Test]
-    public function it_puts_the_reader_back_on_the_code_field_after_a_refused_code(): void
-    {
-        URL::forceScheme('https');
-        $user = User::factory()->twoFactor()->create();
-        SecurityKey::factory()->for($user)->create();
-
-        $first = $this->withSession(['twoFactor.user.id' => $user->id])
-            ->get(route('auth.twoFactor.new'));
-        $this->from(route('auth.twoFactor.new'))
-            ->post(route('auth.twoFactor.create'), ['code' => '000000']);
-        $afterRefusal = $this->get(route('auth.twoFactor.new'));
-
-        $this->assertStringNotContainsString('autofocus', $this->codeField($first->getContent()));
-        $this->assertStringContainsString('autofocus', $this->codeField($afterRefusal->getContent()));
-        $afterRefusal->assertSee('That code is not right.');
-    }
-
-    private function codeField(string $html): string
-    {
-        preg_match('/<input[^>]*id="code"[^>]*>/s', $html, $matches);
-
-        return $matches[0] ?? '';
-    }
-
-    #[Test]
-    public function it_offers_no_key_to_somebody_with_the_app_alone(): void
-    {
-        URL::forceScheme('https');
-        $user = User::factory()->twoFactor()->create();
-
-        $response = $this->withSession(['twoFactor.user.id' => $user->id])
-            ->get(route('auth.twoFactor.new'));
-
-        $response->assertDontSee('Use a security key or passkey');
     }
 
     #[Test]

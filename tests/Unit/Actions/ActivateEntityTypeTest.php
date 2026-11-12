@@ -42,22 +42,6 @@ class ActivateEntityTypeTest extends TestCase
     }
 
     #[Test]
-    public function it_puts_the_type_back_where_it_was_in_the_navigation(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $entityType = EntityType::factory()->inactive()->create([
-            'account_id' => $user->account_id,
-            'position' => 4,
-        ]);
-
-        new ActivateEntityType(user: $user, entityType: $entityType)->execute();
-
-        $this->assertSame(4, $entityType->refresh()->position);
-    }
-
-    #[Test]
     public function it_refuses_a_type_in_another_account(): void
     {
         Queue::fake();

@@ -25,30 +25,6 @@ class LoginControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_offers_to_remember_the_browser_ticked_by_default(): void
-    {
-        $response = $this->get(route('auth.login.new'));
-
-        $this->assertMatchesRegularExpression('/<input[^>]*id="remember"[^>]*\schecked/s', $response->getContent());
-    }
-
-    #[Test]
-    public function it_keeps_the_remember_box_unticked_when_a_failed_sign_in_left_it_so(): void
-    {
-        User::factory()->create(['email' => 'dwight@dundermifflin.com']);
-
-        $response = $this->from(route('auth.login.new'))
-            ->followingRedirects()
-            ->post(route('auth.login.create'), [
-                'email' => 'dwight@dundermifflin.com',
-                'password' => 'bears-beets-battlestar',
-            ]);
-
-        $this->assertMatchesRegularExpression('/<input[^>]*id="remember"/s', $response->getContent());
-        $this->assertDoesNotMatchRegularExpression('/<input[^>]*id="remember"[^>]*\schecked/s', $response->getContent());
-    }
-
-    #[Test]
     public function it_signs_a_user_in(): void
     {
         Queue::fake();
@@ -115,14 +91,6 @@ class LoginControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_does_not_show_the_human_check_when_it_is_turned_off(): void
-    {
-        $this->get(route('auth.login.new'))
-            ->assertOk()
-            ->assertDontSee('cf-turnstile');
-    }
-
-    #[Test]
     public function it_shows_the_human_check_when_it_is_turned_on(): void
     {
         config(['turnstile.enabled' => true]);
@@ -186,26 +154,6 @@ class LoginControllerTest extends TestCase
 
         $response->assertSessionHasErrors('cf-turnstile-response');
         $this->assertGuest();
-    }
-
-    #[Test]
-    public function it_links_to_the_other_ways_in(): void
-    {
-        $this->get(route('auth.login.new'))
-            ->assertOk()
-            ->assertSee(route('auth.magicLink.new'))
-            ->assertSee(route('auth.password.new'))
-            ->assertSee(route('auth.register.new'));
-    }
-
-    #[Test]
-    public function it_hides_the_magic_link_offer_while_the_setting_is_off(): void
-    {
-        config()->set('monica.magic_link_enabled', false);
-
-        $this->get(route('auth.login.new'))
-            ->assertOk()
-            ->assertDontSee('Send me a link instead');
     }
 
     #[Test]

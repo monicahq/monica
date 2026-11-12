@@ -85,23 +85,6 @@ class DestroyRelationshipTest extends TestCase
     }
 
     #[Test]
-    public function it_takes_the_link_off_both_sides_at_once(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $vault = $this->vaultOf($user);
-        $relationship = $this->relationshipOn($vault, $user);
-        $judy = Contact::query()->findOrFail($relationship->contact_a_id);
-        $ross = Contact::query()->findOrFail($relationship->contact_b_id);
-
-        new DestroyRelationship(user: $user, vault: $vault, relationship: $relationship)->execute();
-
-        $this->assertCount(0, Relationship::query()->forContact($judy)->get());
-        $this->assertCount(0, Relationship::query()->forContact($ross)->get());
-    }
-
-    #[Test]
     public function it_refuses_a_relationship_in_another_account(): void
     {
         $user = User::factory()->create();

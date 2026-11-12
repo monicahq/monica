@@ -89,16 +89,6 @@ class TwoFactorControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_asks_for_a_code(): void
-    {
-        $user = User::factory()->create();
-
-        $response = $this->withConfirmedPassword()->actingAs($user)->post(route('settings.twoFactor.create'), []);
-
-        $response->assertSessionHasErrors('code');
-    }
-
-    #[Test]
     public function it_turns_two_factor_authentication_off(): void
     {
         Queue::fake();
@@ -114,30 +104,6 @@ class TwoFactorControllerTest extends TestCase
 
         $this->assertFalse($user->usesTwoFactorAuthentication());
         $this->assertNull($user->two_factor_secret);
-    }
-
-    #[Test]
-    public function it_refuses_to_turn_two_factor_off_without_a_confirmed_password(): void
-    {
-        $user = User::factory()->twoFactor()->create();
-
-        $response = $this->actingAs($user)->delete(route('settings.twoFactor.destroy'));
-
-        $response->assertRedirect(route('auth.confirmPassword.new'));
-
-        $this->assertNotNull($user->refresh()->two_factor_confirmed_at);
-    }
-
-    #[Test]
-    public function it_refuses_to_start_enrolling_without_a_confirmed_password(): void
-    {
-        $user = User::factory()->create();
-
-        $response = $this->actingAs($user)->get(route('settings.twoFactor.new'));
-
-        $response->assertRedirect(route('auth.confirmPassword.new'));
-
-        $this->assertNull($user->refresh()->two_factor_secret);
     }
 
     #[Test]

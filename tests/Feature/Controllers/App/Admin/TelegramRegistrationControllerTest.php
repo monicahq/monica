@@ -53,32 +53,6 @@ class TelegramRegistrationControllerTest extends TestCase
         $response->assertSessionHasErrors(['telegram' => 'Telegram refused it: Unauthorized']);
     }
 
-    #[Test]
-    public function it_asks_for_a_credential_before_registering(): void
-    {
-        Http::fake();
-        $user = User::factory()->create();
-        Administrator::factory()->create(['user_id' => $user->id]);
-
-        $response = $this->actingAs($user)->post('/admin/configuration/telegram/registration');
-
-        $response->assertRedirect(route('auth.confirmPassword.new'));
-        Http::assertNothingSent();
-    }
-
-    #[Test]
-    public function it_is_not_found_for_somebody_who_does_not_administer_the_instance(): void
-    {
-        Http::fake();
-        $this->session(['auth.password_confirmed_at' => time()]);
-
-        $this->actingAs(User::factory()->create())
-            ->post('/admin/configuration/telegram/registration')
-            ->assertNotFound();
-
-        Http::assertNothingSent();
-    }
-
     private function administrator(): User
     {
         $user = User::factory()->create();

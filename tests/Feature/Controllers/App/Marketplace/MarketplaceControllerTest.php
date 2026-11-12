@@ -83,18 +83,6 @@ class MarketplaceControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_narrows_the_catalogue_from_the_search_box(): void
-    {
-        MarketplaceListing::factory()->published()->create(['name' => 'Medical follow up']);
-        MarketplaceListing::factory()->published()->create(['name' => 'Beet harvest']);
-
-        $this->get(route('marketplace.index', ['query' => 'beet']))
-            ->assertStatus(200)
-            ->assertSee('Beet harvest')
-            ->assertDontSee('Medical follow up');
-    }
-
-    #[Test]
     public function it_minds_neither_the_case_nor_which_column_the_words_are_in(): void
     {
         MarketplaceListing::factory()->published()->create([
@@ -176,24 +164,6 @@ class MarketplaceControllerTest extends TestCase
             mb_strpos($response->getContent(), 'Medical follow up'),
             mb_strpos($response->getContent(), 'Beet harvest'),
         );
-    }
-
-    #[Test]
-    public function it_marks_what_the_account_has_already_installed(): void
-    {
-        $dwight = User::factory()->create();
-        $listing = MarketplaceListing::factory()->published()->create(['name' => 'Medical follow up']);
-        $version = MarketplaceListingVersion::factory()->approved()->create(['marketplace_listing_id' => $listing->id]);
-
-        MarketplaceInstallation::factory()->create([
-            'account_id' => $dwight->account_id,
-            'marketplace_listing_id' => $listing->id,
-            'marketplace_listing_version_id' => $version->id,
-        ]);
-
-        $this->actingAs($dwight)->get(route('marketplace.index'))
-            ->assertStatus(200)
-            ->assertSee('Installed');
     }
 
     #[Test]

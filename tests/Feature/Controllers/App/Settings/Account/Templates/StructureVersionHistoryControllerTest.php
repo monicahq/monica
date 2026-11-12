@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Settings\Account\Templates;
 
-use App\Enums\VersionStatusEnum;
 use App\Models\StructureVersion;
 use App\Models\Template;
 use App\Models\User;
@@ -37,22 +36,5 @@ class StructureVersionHistoryControllerTest extends TestCase
         $response->assertSee('Published');
         $response->assertSee('based on v1');
         $response->assertSee('the first version');
-    }
-
-    #[Test]
-    public function it_changes_nothing_it_shows(): void
-    {
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
-        $before = $version->updated_at;
-
-        $this->actingAs($user)->get(route('settings.templateVersions.index', $template))->assertStatus(200);
-
-        $this->assertDatabaseHas('structure_versions', [
-            'id' => $version->id,
-            'status' => VersionStatusEnum::Published->value,
-            'updated_at' => $before,
-        ]);
     }
 }

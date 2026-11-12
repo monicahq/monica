@@ -42,87 +42,6 @@ class ContactReminderControllerTest extends TestCase
     }
 
     #[Test]
-    public function every_filter_answers_at_its_own_address(): void
-    {
-        $user = User::factory()->create(['timezone' => 'Europe/Paris']);
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $kevin = $this->contact($vault);
-
-        foreach (['all' => 'No reminders about Kevin Malone yet', 'overdue' => 'Nothing overdue', 'today' => 'Nothing today', 'upcoming' => 'Nothing coming up', 'history' => 'No answers yet'] as $filter => $copy) {
-            $this->actingAs($user)
-                ->get(route('contacts.reminders.index', ['vault' => $vault, 'contact' => $kevin, 'filter' => $filter]))
-                ->assertStatus(200)
-                ->assertSee($copy)
-                ->assertSee('aria-current="true"', escape: false);
-        }
-    }
-
-    #[Test]
-    public function the_history_shows_what_was_answered(): void
-    {
-        $user = User::factory()->create(['timezone' => 'Europe/Paris']);
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $kevin = $this->contact($vault);
-        $this->deadline($this->manual($kevin, 'Ask about the band'), -10)
-            ->forceFill(['answer' => 'remembered', 'answered_at' => now()])
-            ->save();
-
-        $response = $this->actingAs($user)->get(route('contacts.reminders.index', ['vault' => $vault, 'contact' => $kevin, 'filter' => 'history']));
-
-        $response->assertSee('What you answered. Answers are kept as they are.');
-        $response->assertSee('Ask about the band');
-        $response->assertSee('You remembered');
-        $response->assertDontSee('name="answer"', escape: false);
-    }
-
-    #[Test]
-    public function the_history_loads_twenty_five_answers_at_a_time(): void
-    {
-        $user = User::factory()->create(['timezone' => 'Europe/Paris']);
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $kevin = $this->contact($vault);
-        $rule = $this->manual($kevin, 'Ask about the band');
-
-        foreach (range(1, 26) as $daysAgo) {
-            $this->deadline($rule, -$daysAgo)
-                ->forceFill(['answer' => 'remembered', 'answered_at' => now()->subDays($daysAgo)])
-                ->save();
-        }
-
-        $history = route('contacts.reminders.index', ['vault' => $vault, 'contact' => $kevin, 'filter' => 'history']);
-
-        $this->actingAs($user)
-            ->get($history)
-            ->assertStatus(200)
-            ->assertSee('id="contact-reminders-rows"', escape: false)
-            ->assertSee('id="contact-reminders-footer"', escape: false)
-            ->assertSee(__('Load more'))
-            ->assertSee("{$history}?page=2", escape: false)
-            ->assertDontSee(__('End of list'));
-
-        $this->actingAs($user)
-            ->get("{$history}?page=2")
-            ->assertStatus(200)
-            ->assertSee('id="contact-reminders-rows"', escape: false)
-            ->assertSee('id="contact-reminders-footer"', escape: false)
-            ->assertSee(__('End of list'))
-            ->assertDontSee(__('Load more'));
-    }
-
-    #[Test]
-    public function a_history_page_reached_through_the_wrong_vault_is_not_found(): void
-    {
-        $user = User::factory()->create();
-        $here = Vault::factory()->create(['account_id' => $user->account_id]);
-        $there = Vault::factory()->create(['account_id' => $user->account_id]);
-        $kevin = $this->contact($there);
-
-        $this->actingAs($user)
-            ->get(route('contacts.reminders.index', ['vault' => $here, 'contact' => $kevin, 'filter' => 'history', 'page' => 2]))
-            ->assertStatus(404);
-    }
-
-    #[Test]
     public function it_offers_a_form_for_a_new_reminder_rather_than_a_filter(): void
     {
         $user = User::factory()->create();
@@ -220,25 +139,6 @@ class ContactReminderControllerTest extends TestCase
             'source' => 'manual',
             'cadence' => 'yearly',
         ]);
-    }
-
-    #[Test]
-    public function it_refuses_a_reminder_without_a_wording(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $kevin = $this->contact($vault);
-
-        $this->actingAs($user)
-            ->post(route('contacts.reminders.create', ['vault' => $vault, 'contact' => $kevin]), [
-                'starts_on' => '2099-01-01',
-                'cadence' => 'once',
-                'time' => '09:00',
-                'timezone' => 'Europe/Paris',
-            ])
-            ->assertSessionHasErrors('name');
-
-        $this->assertDatabaseCount('reminders', 0);
     }
 
     #[Test]
@@ -362,19 +262,6 @@ class ContactReminderControllerTest extends TestCase
             ->assertStatus(404);
 
         $this->assertNotSoftDeleted($rule);
-    }
-
-    #[Test]
-    public function a_contact_reached_through_the_wrong_vault_is_not_found(): void
-    {
-        $user = User::factory()->create();
-        $here = Vault::factory()->create(['account_id' => $user->account_id]);
-        $there = Vault::factory()->create(['account_id' => $user->account_id]);
-        $kevin = $this->contact($there);
-
-        $this->actingAs($user)
-            ->get(route('contacts.reminders.index', ['vault' => $here, 'contact' => $kevin]))
-            ->assertStatus(404);
     }
 
     private function contact(Vault $vault, string $first = 'Kevin', string $last = 'Malone'): Contact

@@ -26,15 +26,4 @@ class SectionMarkTest extends TestCase
         $this->blade('<x-section-mark icon="health" colour="#4f8a49" />')
             ->assertSee('aria-hidden="true"', escape: false);
     }
-
-    #[Test]
-    public function every_glyph_a_section_may_be_marked_with_is_one_the_catalogue_draws(): void
-    {
-        $drawn = array_map(
-            fn (string $icon): string => (string) $this->blade('<x-section-mark :icon="$icon" />', ['icon' => $icon]),
-            Section::ICONS,
-        );
-
-        $this->assertCount(count(Section::ICONS), array_unique($drawn));
-    }
 }

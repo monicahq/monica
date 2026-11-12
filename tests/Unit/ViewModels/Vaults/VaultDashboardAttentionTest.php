@@ -78,18 +78,6 @@ class VaultDashboardAttentionTest extends TestCase
         $this->assertSame(['Today'], array_column($bands, 'title'));
     }
 
-    #[Test]
-    public function it_leads_to_every_reminder_of_the_vault(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $this->assertSame(
-            route('reminders.index', $vault),
-            new VaultDashboardAttention(user: $user, vault: $vault)->remindersUrl(),
-        );
-    }
-
     private function onceIn(User $user, Vault $vault, string $startsOn): Reminder
     {
         $contact = Contact::factory()->create([

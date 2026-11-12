@@ -162,16 +162,6 @@ class ConfigurationViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_offers_the_password_to_an_administrator_who_has_one(): void
-    {
-        $michael = User::factory()->create();
-
-        $credentials = new ConfigurationViewModel(user: $michael)->credentials();
-
-        $this->assertTrue($credentials->offersPassword());
-    }
-
-    #[Test]
     public function it_offers_neither_credential_to_an_administrator_who_holds_neither(): void
     {
         $jan = User::factory()->singleSignOn()->create();

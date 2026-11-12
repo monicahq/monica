@@ -12,18 +12,6 @@ use Tests\TestCase;
 class TimezoneCatalogueTest extends TestCase
 {
     #[Test]
-    public function it_carries_every_canonical_zone(): void
-    {
-        $this->assertCount(419, TimezoneCatalogue::all());
-    }
-
-    #[Test]
-    public function it_carries_the_zone_a_new_account_starts_on(): void
-    {
-        $this->assertNotNull(TimezoneCatalogue::find('UTC'));
-    }
-
-    #[Test]
     public function it_leaves_out_the_deprecated_aliases(): void
     {
         $this->assertNull(TimezoneCatalogue::find('US/Pacific'));
@@ -42,12 +30,6 @@ class TimezoneCatalogueTest extends TestCase
     }
 
     #[Test]
-    public function it_does_not_know_a_zone_that_does_not_exist(): void
-    {
-        $this->assertNull(TimezoneCatalogue::find('Nowhere/Here'));
-    }
-
-    #[Test]
     public function it_names_the_city_a_reader_would_recognise(): void
     {
         $zone = TimezoneCatalogue::find('America/Argentina/Buenos_Aires');
@@ -61,15 +43,6 @@ class TimezoneCatalogueTest extends TestCase
     {
         $this->assertSame('Allemagne', TimezoneCatalogue::find('Europe/Berlin', 'fr_FR')['country']);
         $this->assertSame('Germany', TimezoneCatalogue::find('Europe/Berlin', 'en')['country']);
-    }
-
-    #[Test]
-    public function it_carries_the_position_of_a_zone(): void
-    {
-        $zone = TimezoneCatalogue::find('Europe/Paris');
-
-        $this->assertEqualsWithDelta(48.87, $zone['latitude'], 0.1);
-        $this->assertEqualsWithDelta(2.33, $zone['longitude'], 0.1);
     }
 
     #[Test]
@@ -103,24 +76,10 @@ class TimezoneCatalogueTest extends TestCase
     }
 
     #[Test]
-    public function it_indexes_every_zone_it_carries(): void
-    {
-        $this->assertCount(count(TimezoneCatalogue::all()), TimezoneCatalogue::searchIndex());
-    }
-
-    #[Test]
     public function it_finds_the_zone_a_click_lands_on(): void
     {
         $this->assertSame('Asia/Tokyo', TimezoneCatalogue::nearest(35.68, 139.69)['timezone']);
         $this->assertSame('Europe/Paris', TimezoneCatalogue::nearest(48.86, 2.35)['timezone']);
-    }
-
-    #[Test]
-    public function it_finds_a_zone_for_a_click_on_open_ocean(): void
-    {
-        $zone = TimezoneCatalogue::nearest(-30.0, -130.0);
-
-        $this->assertNotNull(TimezoneCatalogue::find($zone['timezone']));
     }
 
     #[Test]

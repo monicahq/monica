@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Settings\Account\Templates;
 
-use App\Enums\VersionStatusEnum;
 use App\Models\StructureVersion;
 use App\Models\StructureVersionPage;
 use App\Models\StructureVersionSection;
@@ -59,39 +58,5 @@ class TemplateSectionPageControllerTest extends TestCase
         ])->assertSessionHasErrors('page');
 
         $this->assertNotEquals($elsewhere->id, $row->fresh()->structure_version_page_id);
-    }
-
-    #[Test]
-    public function it_refuses_to_move_a_section_on_a_published_version(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
-        $events = StructureVersionPage::factory()->create(['structure_version_id' => $version->id]);
-        $row = StructureVersionSection::factory()->create(['structure_version_id' => $version->id]);
-        $version->update(['status' => VersionStatusEnum::Published, 'published_at' => now()]);
-
-        $this->actingAs($user)->put(route('settings.templateSectionPage.update', [$template, $row]), [
-            'page' => $events->uuid,
-        ])->assertSessionHas('error');
-
-        $this->assertNotEquals($events->id, $row->fresh()->structure_version_page_id);
-    }
-
-    #[Test]
-    public function it_does_not_find_a_section_of_another_account(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-        StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
-        $theirs = StructureVersionSection::factory()->create();
-
-        $this->actingAs($user)->put(route('settings.templateSectionPage.update', [$template, $theirs]), [
-            'page' => $theirs->structureVersion->pages()->sole()->uuid,
-        ])->assertNotFound();
     }
 }

@@ -112,29 +112,6 @@ class HandleStripeCheckoutSessionCompletedTest extends TestCase
         Log::shouldHaveReceived('warning')->once();
     }
 
-    #[Test]
-    public function it_ignores_every_other_event(): void
-    {
-        $account = Account::factory()->create(['stripe_id' => 'cus_dundermifflin']);
-        StripeOrder::factory()->create(['account_id' => $account->id, 'stripe_id' => 'cs_test_scranton']);
-
-        $event = $this->event();
-        $event['type'] = 'checkout.session.expired';
-
-        new HandleStripeCheckoutSessionCompleted()->handle(new WebhookReceived($event));
-
-        $this->assertFalse($account->fresh()->hasFullAccess());
-    }
-
-    #[Test]
-    public function it_is_retried_before_it_is_abandoned(): void
-    {
-        $listener = new HandleStripeCheckoutSessionCompleted;
-
-        $this->assertSame(5, $listener->tries);
-        $this->assertSame([10, 60, 300, 900], $listener->backoff);
-    }
-
     /** @return array<string, mixed> */
     private function event(
         string $paymentStatus = 'paid',

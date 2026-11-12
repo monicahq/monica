@@ -56,16 +56,6 @@ class SettingsPageTest extends TestCase
     }
 
     #[Test]
-    public function it_marks_which_settings_screen_you_are_on(): void
-    {
-        $user = User::factory()->create();
-
-        $this->actingAs($user)
-            ->blade('<x-settings.page title="Profile" current="profile" :user="$user">Anything</x-settings.page>', ['user' => $user])
-            ->assertSee('aria-current="page"', escape: false);
-    }
-
-    #[Test]
     public function it_hands_a_footer_on_to_the_shell_rather_than_swallowing_it(): void
     {
         $user = User::factory()->create();

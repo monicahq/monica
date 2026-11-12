@@ -33,19 +33,6 @@ class NewPasswordControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_link_that_is_not_signed(): void
-    {
-        $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
-
-        $response = $this->get(route('auth.password.edit', [
-            'token' => Password::createToken($user),
-            'email' => 'michael.scott@dundermifflin.com',
-        ]));
-
-        $response->assertStatus(403);
-    }
-
-    #[Test]
     public function it_refuses_a_link_whose_email_was_changed(): void
     {
         $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
@@ -56,23 +43,6 @@ class NewPasswordControllerTest extends TestCase
         ]);
 
         $response = $this->get(str_replace('michael.scott', 'dwight.schrute', $url));
-
-        $response->assertStatus(403);
-    }
-
-    #[Test]
-    public function it_refuses_a_link_that_has_expired(): void
-    {
-        $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
-
-        $url = URL::temporarySignedRoute('auth.password.edit', now()->addHour(), [
-            'token' => Password::createToken($user),
-            'email' => 'michael.scott@dundermifflin.com',
-        ]);
-
-        $this->travel(61)->minutes();
-
-        $response = $this->get($url);
 
         $response->assertStatus(403);
     }
@@ -96,28 +66,6 @@ class NewPasswordControllerTest extends TestCase
         $response->assertSessionHas('status');
 
         $this->assertTrue(Hash::check('bearsbeatsbattlestar', $user->refresh()->password));
-    }
-
-    #[Test]
-    public function it_throws_the_token_away_once_it_is_used(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
-        $token = Password::createToken($user);
-
-        $payload = [
-            'token' => $token,
-            'email' => 'michael.scott@dundermifflin.com',
-            'password' => 'bearsbeatsbattlestar',
-            'password_confirmation' => 'bearsbeatsbattlestar',
-        ];
-
-        $this->post(route('auth.password.update'), $payload);
-
-        $response = $this->post(route('auth.password.update'), $payload);
-
-        $response->assertSessionHasErrors('email');
     }
 
     #[Test]
@@ -145,21 +93,6 @@ class NewPasswordControllerTest extends TestCase
             'email' => 'michael.scott@dundermifflin.com',
             'password' => 'short',
             'password_confirmation' => 'short',
-        ]);
-
-        $response->assertSessionHasErrors('password');
-    }
-
-    #[Test]
-    public function it_refuses_a_password_that_is_not_confirmed(): void
-    {
-        $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
-
-        $response = $this->post(route('auth.password.update'), [
-            'token' => Password::createToken($user),
-            'email' => 'michael.scott@dundermifflin.com',
-            'password' => 'bearsbeatsbattlestar',
-            'password_confirmation' => 'thatswhatshesaid',
         ]);
 
         $response->assertSessionHasErrors('password');

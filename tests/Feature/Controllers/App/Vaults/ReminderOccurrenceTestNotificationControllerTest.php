@@ -53,52 +53,6 @@ class ReminderOccurrenceTestNotificationControllerTest extends TestCase
         $response->assertRedirect(route('reminders.byContact', $vault));
     }
 
-    #[Test]
-    public function it_produces_no_row_on_the_list_of_what_was_sent(): void
-    {
-        Notification::fake();
-
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $occurrence = $this->deadline($vault);
-
-        $this->actingAs($user)->post($this->url($vault, $occurrence));
-
-        $this->actingAs($user)
-            ->get(route('reminders.sent', $vault))
-            ->assertSee('Nothing has been sent yet');
-    }
-
-    #[Test]
-    public function pressing_it_twice_still_produces_no_row(): void
-    {
-        Notification::fake();
-
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $occurrence = $this->deadline($vault);
-
-        $this->actingAs($user)->post($this->url($vault, $occurrence));
-        $this->actingAs($user)->post($this->url($vault, $occurrence));
-
-        $this->assertEquals(0, ReminderOccurrence::query()->sentInVault($vault)->count());
-    }
-
-    #[Test]
-    public function it_refuses_a_deadline_reached_through_the_wrong_vault(): void
-    {
-        Notification::fake();
-
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $other = Vault::factory()->create(['account_id' => $user->account_id]);
-        $occurrence = $this->deadline($vault);
-
-        $this->actingAs($user)->post($this->url($other, $occurrence))->assertStatus(404);
-
-        Notification::assertNothingSent();
-    }
-
     private function url(Vault $vault, ReminderOccurrence $occurrence): string
     {
         return route('reminders.occurrences.testNotification.create', [

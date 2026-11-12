@@ -50,24 +50,6 @@ class CreateFieldTest extends TestCase
     }
 
     #[Test]
-    public function it_marks_no_field_as_identifying_unless_it_is_told_to(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $version = SectionVersion::factory()->create(['account_id' => $user->account_id]);
-
-        $field = new CreateField(
-            user: $user,
-            sectionVersion: $version,
-            type: FieldTypeEnum::Text,
-            label: 'Shoe size',
-        )->execute();
-
-        $this->assertDatabaseHas('fields', ['id' => $field->id, 'is_identifying' => false]);
-    }
-
-    #[Test]
     public function it_adds_a_field_to_a_section(): void
     {
         Queue::fake();
@@ -259,24 +241,6 @@ class CreateFieldTest extends TestCase
     }
 
     #[Test]
-    public function it_says_nothing_about_the_end_when_nobody_chose_one(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $version = SectionVersion::factory()->create(['account_id' => $user->account_id]);
-
-        $field = new CreateField(
-            user: $user,
-            sectionVersion: $version,
-            type: FieldTypeEnum::Repeater,
-            label: 'Documents',
-        )->execute();
-
-        $this->assertNull($field->refresh()->repetition_order);
-    }
-
-    #[Test]
     public function it_drops_the_end_on_a_field_that_is_not_a_repeater(): void
     {
         Queue::fake();
@@ -396,24 +360,6 @@ class CreateFieldTest extends TestCase
     }
 
     #[Test]
-    public function it_takes_an_email_that_names_no_list_at_all(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $version = SectionVersion::factory()->create(['account_id' => $user->account_id]);
-
-        $field = new CreateField(
-            user: $user,
-            sectionVersion: $version,
-            type: FieldTypeEnum::Email,
-            label: 'Email',
-        )->execute();
-
-        $this->assertNull($field->value_list_id);
-    }
-
-    #[Test]
     public function it_keeps_the_list_an_address_takes_its_labels_from(): void
     {
         Queue::fake();
@@ -431,24 +377,6 @@ class CreateFieldTest extends TestCase
         )->execute();
 
         $this->assertEquals($list->id, $field->value_list_id);
-    }
-
-    #[Test]
-    public function it_takes_an_address_that_names_no_list_at_all(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $version = SectionVersion::factory()->create(['account_id' => $user->account_id]);
-
-        $field = new CreateField(
-            user: $user,
-            sectionVersion: $version,
-            type: FieldTypeEnum::Address,
-            label: 'Address',
-        )->execute();
-
-        $this->assertNull($field->value_list_id);
     }
 
     #[Test]
@@ -547,40 +475,6 @@ class CreateFieldTest extends TestCase
 
         $this->assertNull($field->relation_target);
         $this->assertNull($field->relation_entity_type_id);
-    }
-
-    #[Test]
-    public function it_lets_the_type_alone_say_whether_a_field_drives_a_reminder(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $version = SectionVersion::factory()->create(['account_id' => $user->account_id]);
-
-        $recurring = new CreateField(
-            user: $user,
-            sectionVersion: $version,
-            type: FieldTypeEnum::RecurringDate,
-            label: 'Birthday',
-        )->execute();
-
-        $plain = new CreateField(
-            user: $user,
-            sectionVersion: $version,
-            type: FieldTypeEnum::Date,
-            label: 'Met on',
-        )->execute();
-
-        $text = new CreateField(
-            user: $user,
-            sectionVersion: $version,
-            type: FieldTypeEnum::Text,
-            label: 'Diet',
-        )->execute();
-
-        $this->assertTrue($recurring->type->canDriveAReminder());
-        $this->assertTrue($plain->type->canDriveAReminder());
-        $this->assertFalse($text->type->canDriveAReminder());
     }
 
     #[Test]

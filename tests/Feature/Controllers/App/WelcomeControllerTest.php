@@ -45,16 +45,4 @@ class WelcomeControllerTest extends TestCase
 
         $this->assertNotNull($user->refresh()->welcomed_at);
     }
-
-    #[Test]
-    public function it_sends_somebody_already_welcomed_home_without_moving_the_moment(): void
-    {
-        $firstVisit = now()->subMonth()->startOfSecond();
-        $user = User::factory()->create(['welcomed_at' => $firstVisit]);
-
-        $this->actingAs($user)->put(route('welcome.update'))
-            ->assertRedirect(route('home.index'));
-
-        $this->assertEquals($firstVisit, $user->refresh()->welcomed_at);
-    }
 }

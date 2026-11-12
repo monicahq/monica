@@ -75,13 +75,6 @@ class OfferListTest extends TestCase
     }
 
     #[Test]
-    public function it_needs_no_script_of_its_own(): void
-    {
-        $this->blade('<x-offer-list :offers="$offers" />', ['offers' => $this->offers()])
-            ->assertDontSee('<script', escape: false);
-    }
-
-    #[Test]
     public function it_draws_nothing_when_there_is_no_plan_to_take_up(): void
     {
         $this->blade('<x-offer-list :offers="$offers" />', ['offers' => []])

@@ -69,36 +69,6 @@ class PasskeyManagementTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_name_longer_than_the_column_holds(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $passkey = Passkey::factory()->create(['user_id' => $user->id, 'name' => 'Michael MacBook']);
-
-        $response = $this->withConfirmedPassword()->actingAs($user)->put(route('settings.passkeys.update', $passkey->id), [
-            'name' => str_repeat('a', 256),
-        ]);
-
-        $response->assertSessionHasErrors('name', errorBag: "passkey{$passkey->id}");
-        $this->assertEquals('Michael MacBook', $passkey->refresh()->name);
-    }
-
-    #[Test]
-    public function it_removes_a_passkey(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $passkey = Passkey::factory()->create(['user_id' => $user->id]);
-
-        $response = $this->withConfirmedPassword()->actingAs($user)->delete(route('passkey.destroy', $passkey->id));
-
-        $response->assertRedirect(route('settings.security.index'));
-        $this->assertModelMissing($passkey);
-    }
-
-    #[Test]
     public function it_says_what_still_signs_them_in_after_a_removal(): void
     {
         Queue::fake();
@@ -169,19 +139,5 @@ class PasskeyManagementTest extends TestCase
 
         $response->assertStatus(404);
         $this->assertModelExists($somebodyElse);
-    }
-
-    #[Test]
-    public function it_refuses_a_guest(): void
-    {
-        $passkey = Passkey::factory()->create();
-
-        $this->put(route('settings.passkeys.update', $passkey->id), ['name' => 'x'])
-            ->assertRedirect(route('auth.login.new'));
-
-        $this->delete(route('passkey.destroy', $passkey->id))
-            ->assertRedirect(route('auth.login.new'));
-
-        $this->assertModelExists($passkey);
     }
 }

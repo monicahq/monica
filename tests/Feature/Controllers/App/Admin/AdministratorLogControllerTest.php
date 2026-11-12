@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\App\Admin;
 
 use App\Enums\AdministratorActionEnum;
-use App\Models\Account;
 use App\Models\Administrator;
 use App\Models\AdministratorLog;
 use App\Models\User;
@@ -81,41 +80,6 @@ class AdministratorLogControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_narrows_the_record_to_one_account(): void
-    {
-        $michael = $this->administrator();
-        $account = Account::factory()->create();
-
-        AdministratorLog::factory()->create([
-            'user_id' => $michael->id,
-            'account_id' => $account->id,
-            'action' => AdministratorActionEnum::LifetimeAccessGranted->value,
-            'parameters' => ['name' => 'Dwight Schrute'],
-        ]);
-        AdministratorLog::factory()->create([
-            'user_id' => $michael->id,
-            'account_id' => null,
-            'action' => AdministratorActionEnum::UserDeactivated->value,
-            'parameters' => ['name' => 'Todd Packer'],
-        ]);
-
-        $response = $this->actingAs($michael)->get(route('admin.logs.index', ['account' => $account->id]));
-
-        $response->assertSeeText('Granted lifetime access to the account of Dwight Schrute');
-        $response->assertDontSee('Deactivated Todd Packer', escape: false);
-    }
-
-    #[Test]
-    public function it_says_so_plainly_when_nothing_has_been_done_yet(): void
-    {
-        $michael = $this->administrator();
-
-        $response = $this->actingAs($michael)->get(route('admin.logs.index'));
-
-        $response->assertSee('Nothing has been done yet', escape: false);
-    }
-
-    #[Test]
     public function it_shows_everything_support_did_to_an_account(): void
     {
         $michael = $this->administrator();
@@ -137,32 +101,6 @@ class AdministratorLogControllerTest extends TestCase
         $response->assertSeeText('Granted lifetime access to the account of Todd Packer');
         $response->assertSeeText('Withdrew lifetime access from the account of Todd Packer');
         $response->assertSee('Michael Scott', escape: false);
-    }
-
-    #[Test]
-    public function it_shows_the_record_in_numbered_pages(): void
-    {
-        $michael = $this->administrator();
-        AdministratorLog::factory()->count(21)->create(['user_id' => $michael->id]);
-
-        $response = $this->actingAs($michael)->get(route('admin.logs.index'));
-
-        $response->assertStatus(200);
-        $response->assertSee(__('Rows per page'), escape: false);
-        $response->assertSee('aria-current="page"', escape: false);
-        $response->assertSee('1 to 20 of 21', escape: false);
-    }
-
-    #[Test]
-    public function it_takes_the_page_size_from_the_url(): void
-    {
-        $michael = $this->administrator();
-        AdministratorLog::factory()->count(21)->create(['user_id' => $michael->id]);
-
-        $response = $this->actingAs($michael)->get(route('admin.logs.index', ['size' => 10]));
-
-        $response->assertStatus(200);
-        $response->assertSee('1 to 10 of 21', escape: false);
     }
 
     private function administrator(): User

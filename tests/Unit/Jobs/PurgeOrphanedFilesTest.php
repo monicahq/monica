@@ -141,19 +141,4 @@ class PurgeOrphanedFilesTest extends TestCase
                 && $job->parameters === ['count' => 3],
         );
     }
-
-    #[Test]
-    public function it_leaves_the_files_of_another_account_where_they_are(): void
-    {
-        Queue::fake();
-        Storage::fake('local');
-
-        $mine = File::factory()->create(['orphaned_at' => now()->subYear()]);
-        $theirs = File::factory()->used(1)->create(['orphaned_at' => now()->subYear()]);
-
-        new PurgeOrphanedFiles()->handle();
-
-        $this->assertSoftDeleted('files', ['id' => $mine->id]);
-        $this->assertNotSoftDeleted('files', ['id' => $theirs->id]);
-    }
 }

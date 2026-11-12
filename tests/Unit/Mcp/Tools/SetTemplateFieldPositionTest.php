@@ -39,12 +39,6 @@ class SetTemplateFieldPositionTest extends TestCase
         $this->assertSame(2, $first->refresh()->position);
     }
 
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.templates.versions.sections.fields.position.update', app(SetTemplateFieldPosition::class)->mirrors());
-    }
-
     /** @return array{User, Template, StructureVersionSection} */
     private function placement(): array
     {

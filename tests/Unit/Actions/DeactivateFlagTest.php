@@ -7,9 +7,7 @@ namespace Tests\Unit\Actions;
 use App\Actions\DeactivateFlag;
 use App\Enums\AdministratorActionEnum;
 use App\Jobs\LogAdministratorAction;
-use App\Models\Contact;
 use App\Models\User;
-use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -55,26 +53,6 @@ class DeactivateFlagTest extends TestCase
             && $job->administrator?->is($michael) === true
             && $job->account?->is($pam->account) === true
             && $job->parameters === ['flag' => 'example-capability', 'name' => $pam->name]);
-    }
-
-    #[Test]
-    public function it_keeps_what_was_created_while_the_flag_was_on(): void
-    {
-        Queue::fake();
-
-        $pam = User::factory()->create();
-        $pam->account->features()->activate('example-capability');
-        $contact = Contact::factory()->create([
-            'vault_id' => Vault::factory()->create(['account_id' => $pam->account_id])->id,
-        ]);
-
-        new DeactivateFlag(
-            account: $pam->account,
-            flag: 'example-capability',
-        )->execute();
-        $pam->account->features()->activate('example-capability');
-
-        $this->assertModelExists($contact);
     }
 
     #[Test]

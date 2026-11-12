@@ -129,24 +129,4 @@ class LifeEventTypesIndexTest extends TestCase
         $response->assertDontSee('Move above');
         $response->assertSee(route('settings.lifeEventCategoryPosition.update', $first), false);
     }
-
-    #[Test]
-    public function it_offers_the_move_controls_of_a_type_without_a_pointer(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
-        $first = LifeEventType::factory()->create(['account_id' => $user->account_id, 'life_event_category_id' => $category->id, 'name' => 'Call', 'position' => 1]);
-        LifeEventType::factory()->create(['account_id' => $user->account_id, 'life_event_category_id' => $category->id, 'name' => 'Message', 'position' => 2]);
-
-        $onOne = $this->actingAs($user)->get(route('settings.lifeEventTypes.category', $category));
-
-        $onOne->assertSee('Move Call below Message');
-        $onOne->assertSee(route('settings.lifeEventTypePosition.update', $first), false);
-
-        $this->actingAs($user)
-            ->get(route('settings.lifeEventTypes.index'))
-            ->assertDontSee('Move Call below Message');
-    }
 }

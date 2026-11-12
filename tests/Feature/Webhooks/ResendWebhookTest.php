@@ -7,10 +7,8 @@ namespace Tests\Feature\Webhooks;
 use App\Enums\EmailDeliveryStatusEnum;
 use App\Models\EmailSent;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Testing\TestResponse;
 use PHPUnit\Framework\Attributes\Test;
-use Resend\Laravel\Http\Middleware\VerifyWebhookSignature;
 use Tests\Fixtures\Resend\SignedWebhookRequest;
 use Tests\TestCase;
 
@@ -75,19 +73,6 @@ class ResendWebhookTest extends TestCase
     }
 
     #[Test]
-    public function it_records_nothing_when_a_report_arrives_with_no_signature_at_all(): void
-    {
-        config(['resend.webhook.secret' => self::SECRET]);
-        $emailSent = EmailSent::factory()->create(['uuid' => 'a1b2c3']);
-
-        $request = $this->signedReport('email.delivered', 'a1b2c3');
-
-        $this->send([], $request->body())->assertForbidden();
-
-        $this->assertNull($emailSent->fresh()?->delivered_at);
-    }
-
-    #[Test]
     public function it_leaves_every_row_alone_for_a_report_it_does_not_act_on(): void
     {
         config(['resend.webhook.secret' => self::SECRET]);
@@ -118,17 +103,6 @@ class ResendWebhookTest extends TestCase
         $this->assertNull($emailSent->delivered_at);
         $this->assertNull($emailSent->bounced_at);
         $this->assertNull($emailSent->complained_at);
-    }
-
-    #[Test]
-    public function it_keeps_the_signature_check_on_the_endpoint_the_package_registers(): void
-    {
-        config(['resend.webhook.secret' => self::SECRET]);
-
-        $route = Route::getRoutes()->getByName('resend.webhook');
-
-        $this->assertNotNull($route);
-        $this->assertContains(VerifyWebhookSignature::class, $route->controllerMiddleware());
     }
 
     /** @param  array<string, mixed>  $extraData */

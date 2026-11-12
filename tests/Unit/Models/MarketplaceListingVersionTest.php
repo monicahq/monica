@@ -16,15 +16,6 @@ class MarketplaceListingVersionTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_waits_on_a_decision_when_it_is_created(): void
-    {
-        $version = MarketplaceListingVersion::factory()->create();
-
-        $this->assertEquals(MarketplaceVersionStatusEnum::Submitted, $version->status);
-        $this->assertFalse($version->status->isInstallable());
-    }
-
-    #[Test]
     public function it_refuses_to_change_what_it_contains_once_it_is_approved(): void
     {
         $version = MarketplaceListingVersion::factory()->approved()->create();

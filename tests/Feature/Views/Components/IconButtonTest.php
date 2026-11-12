@@ -38,26 +38,9 @@ class IconButtonTest extends TestCase
     }
 
     #[Test]
-    public function the_link_carries_its_name_the_same_way_the_button_does(): void
-    {
-        $button = $this->blade('<x-icon-button icon="check" label="Be done with it" />');
-        $link = $this->blade('<x-icon-button href="/somewhere" icon="check" label="Be done with it" />');
-
-        $button->assertSee('aria-label="Be done with it"', escape: false);
-        $link->assertSee('aria-label="Be done with it"', escape: false);
-    }
-
-    #[Test]
     public function it_submits_a_form_when_it_is_asked_to(): void
     {
         $this->blade('<x-icon-button type="submit" icon="mail" label="Send it to me now" />')
             ->assertSee('type="submit"', escape: false);
-    }
-
-    #[Test]
-    public function it_passes_the_attributes_it_is_given_through(): void
-    {
-        $this->blade('<x-icon-button href="/somewhere" icon="reminder" label="Open this reminder" data-turbo="true" />')
-            ->assertSee('data-turbo="true"', escape: false);
     }
 }

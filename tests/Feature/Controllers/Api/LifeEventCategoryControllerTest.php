@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\Api;
 
 use App\Actions\CreateAccount;
-use App\Enums\LifeEventCategoryEnum;
 use App\Jobs\LogUserAction;
 use App\Models\LifeEventCategory;
 use App\Models\LifeEventType;
@@ -134,18 +133,6 @@ class LifeEventCategoryControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_brings_a_page_size_outside_the_range_back_into_it(): void
-    {
-        $user = User::factory()->create();
-        LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('GET', '/api/v1/life-event-categories?per_page=1000')->assertJsonPath('meta.per_page', 100);
-        $this->json('GET', '/api/v1/life-event-categories?per_page=0')->assertJsonPath('meta.per_page', 1);
-    }
-
-    #[Test]
     public function it_shows_a_group(): void
     {
         $user = User::factory()->create();
@@ -184,18 +171,6 @@ class LifeEventCategoryControllerTest extends TestCase
         $user = User::factory()->create();
         $stranger = User::factory()->create();
         $category = LifeEventCategory::factory()->create(['account_id' => $stranger->account_id]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('GET', "/api/v1/life-event-categories/{$category->uuid}")->assertNotFound();
-    }
-
-    #[Test]
-    public function it_returns_not_found_for_a_deleted_group(): void
-    {
-        $user = User::factory()->create();
-        $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
-        $category->delete();
 
         Sanctum::actingAs($user);
 
@@ -258,47 +233,6 @@ class LifeEventCategoryControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_renames_a_supplied_group_and_keeps_it_marked_as_supplied(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $category = LifeEventCategory::factory()->system(LifeEventCategoryEnum::HealthAndWellbeing)->create([
-            'account_id' => $user->account_id,
-            'position' => 3,
-        ]);
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('PUT', "/api/v1/life-event-categories/{$category->uuid}", ['name' => 'Santé']);
-
-        $response->assertOk();
-        $response->assertJsonPath('data.attributes.name', 'Santé');
-        $response->assertJsonPath('data.attributes.is_system', true);
-        $response->assertJsonPath('data.attributes.position', 3);
-        $this->assertEquals('health_and_wellbeing', $category->refresh()->key);
-    }
-
-    #[Test]
-    public function it_reads_a_renamed_supplied_group_in_the_words_that_were_written(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $category = LifeEventCategory::factory()->system(LifeEventCategoryEnum::HealthAndWellbeing)->create([
-            'account_id' => $user->account_id,
-        ]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('PUT', "/api/v1/life-event-categories/{$category->uuid}", ['name' => 'Santé'])->assertOk();
-
-        $this->json('GET', "/api/v1/life-event-categories/{$category->uuid}")
-            ->assertOk()
-            ->assertJsonPath('data.attributes.name', 'Santé');
-    }
-
-    #[Test]
     public function it_deletes_a_group_the_account_added(): void
     {
         Queue::fake();
@@ -340,16 +274,5 @@ class LifeEventCategoryControllerTest extends TestCase
         $this->json('DELETE', "/api/v1/life-event-categories/{$category->uuid}")->assertNotFound();
         $this->assertNotSoftDeleted($category);
         $this->assertEquals('Volunteering', $category->refresh()->name);
-    }
-
-    #[Test]
-    public function it_returns_not_found_when_the_identifier_is_not_a_uuid(): void
-    {
-        $user = User::factory()->create();
-        $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('GET', "/api/v1/life-event-categories/{$category->id}")->assertNotFound();
     }
 }

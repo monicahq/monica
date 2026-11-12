@@ -52,12 +52,6 @@ class CreateTemplateFieldTest extends TestCase
         ])->assertHasErrors(['A repeater cannot sit inside another repeater.']);
     }
 
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.templates.versions.sections.fields.create', app(CreateTemplateField::class)->mirrors());
-    }
-
     /** @return array{User, Template, StructureVersionSection} */
     private function placement(): array
     {

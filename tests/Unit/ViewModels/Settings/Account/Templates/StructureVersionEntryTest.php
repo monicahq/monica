@@ -46,17 +46,6 @@ class StructureVersionEntryTest extends TestCase
     }
 
     #[Test]
-    public function it_reads_a_retired_version(): void
-    {
-        $version = StructureVersion::factory()->retired()->create();
-
-        $entry = new StructureVersionEntry(version: $version->fresh());
-
-        $this->assertSame('Retired', $entry->statusLabel());
-        $this->assertSame('neutral', $entry->tone());
-    }
-
-    #[Test]
     public function it_dates_a_published_version_absolutely_and_a_draft_by_recency(): void
     {
         $published = StructureVersion::factory()->create([

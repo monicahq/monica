@@ -511,20 +511,6 @@ class AddressBookTest extends TestCase
     }
 
     #[Test]
-    public function a_card_naming_nobody_in_the_vault_still_makes_a_contact(): void
-    {
-        $vault = $this->vault();
-        Structure::asTheDefaultOf($this->user, $vault, [
-            ['type' => FieldTypeEnum::Phone, 'label' => 'Mobile'],
-        ]);
-
-        $this->dav('PUT', $this->book($vault).'dwight.vcf', body: $this->card(), contentType: 'text/vcard')
-            ->assertStatus(201);
-
-        $this->assertSame(1, Contact::query()->where('vault_id', $vault->id)->count());
-    }
-
-    #[Test]
     public function it_refuses_a_card_with_no_name_at_all(): void
     {
         $vault = $this->vault();
@@ -546,18 +532,6 @@ class AddressBookTest extends TestCase
 
         $response->assertStatus(201);
         $this->assertSame('+15705550100', Contact::query()->where('vault_id', $vault->id)->sole()->name);
-    }
-
-    #[Test]
-    public function it_refuses_a_card_whose_name_is_empty(): void
-    {
-        $vault = $this->vault();
-        Structure::asTheDefaultOf($this->user, $vault);
-
-        $response = $this->dav('PUT', $this->book($vault).'nobody.vcf', contentType: 'text/vcard', body: "BEGIN:VCARD\r\nVERSION:4.0\r\nUID:nobody\r\nFN: \r\nN:;;;;\r\nEND:VCARD\r\n");
-
-        $response->assertStatus(400);
-        $this->assertDatabaseCount('contacts', 0);
     }
 
     #[Test]

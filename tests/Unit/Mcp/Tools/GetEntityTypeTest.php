@@ -41,10 +41,4 @@ class GetEntityTypeTest extends TestCase
         EricaServer::actingAs($user)->tool(GetEntityType::class, ['entity_type' => $other->uuid])
             ->assertHasErrors(['That entity type does not exist.']);
     }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.entityTypes.show', app(GetEntityType::class)->mirrors());
-    }
 }

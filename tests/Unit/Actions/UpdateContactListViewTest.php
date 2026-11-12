@@ -66,43 +66,4 @@ class UpdateContactListViewTest extends TestCase
 
         $this->assertEquals($savedAt, $user->refresh()->updated_at);
     }
-
-    #[Test]
-    public function it_writes_when_one_of_the_three_choices_differs(): void
-    {
-        $user = User::factory()->create([
-            'contact_list_grouping' => 'names-only',
-            'contact_list_sort' => 'added',
-            'contact_list_direction' => 'asc',
-        ]);
-
-        new UpdateContactListView(
-            user: $user,
-            grouping: ContactGroupingEnum::NamesOnly,
-            sort: ContactSortEnum::Added,
-            direction: SortDirectionEnum::Descending,
-        )->execute();
-
-        $this->assertDatabaseHas('users', [
-            'id' => $user->id,
-            'contact_list_grouping' => 'names-only',
-            'contact_list_direction' => 'desc',
-        ]);
-    }
-
-    #[Test]
-    public function it_remembers_nothing_for_anybody_else(): void
-    {
-        $user = User::factory()->create();
-        $somebodyElse = User::factory()->create();
-
-        new UpdateContactListView(
-            user: $user,
-            grouping: ContactGroupingEnum::NamesOnly,
-            sort: ContactSortEnum::Nickname,
-            direction: SortDirectionEnum::Ascending,
-        )->execute();
-
-        $this->assertNull($somebodyElse->refresh()->contact_list_grouping);
-    }
 }

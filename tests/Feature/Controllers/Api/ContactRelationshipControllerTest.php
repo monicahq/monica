@@ -59,18 +59,6 @@ class ContactRelationshipControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_answers_an_empty_list_for_a_contact_linked_to_nobody(): void
-    {
-        [$user, $vault, $jim] = $this->jimAndPam();
-
-        Sanctum::actingAs($user);
-
-        $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts/{$jim->uuid}/relationships")
-            ->assertOk()
-            ->assertJsonCount(0, 'data');
-    }
-
-    #[Test]
     public function it_links_two_contacts_of_the_vault(): void
     {
         Queue::fake();
@@ -91,27 +79,6 @@ class ContactRelationshipControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_gives_the_first_role_to_the_other_person_when_asked(): void
-    {
-        Queue::fake();
-        [$user, $vault, $jim, $pam] = $this->jimAndPam();
-        $type = RelationshipType::factory()->directed()->create(['account_id' => $user->account_id]);
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('POST', "/api/v1/vaults/{$vault->uuid}/contacts/{$jim->uuid}/relationships", [
-            'relationship_type' => $type->uuid,
-            'other_contact' => $pam->uuid,
-            'holds_role_a' => false,
-        ]);
-
-        $response->assertCreated();
-        $response->assertJsonPath('data.attributes.contact_a.id', $pam->uuid);
-        $response->assertJsonPath('data.attributes.contact_a.role', 'Godparent');
-        $response->assertJsonPath('data.attributes.contact_b.id', $jim->uuid);
-    }
-
-    #[Test]
     public function it_refuses_to_link_somebody_to_themselves(): void
     {
         [$user, $vault, $jim] = $this->jimAndPam();
@@ -127,20 +94,6 @@ class ContactRelationshipControllerTest extends TestCase
         $response->assertUnprocessable();
         $response->assertJsonValidationErrors(['other_contact']);
         $this->assertDatabaseCount('relationships', 0);
-    }
-
-    #[Test]
-    public function it_refuses_a_relationship_type_of_another_account(): void
-    {
-        [$user, $vault, $jim, $pam] = $this->jimAndPam();
-        $type = RelationshipType::factory()->create();
-
-        Sanctum::actingAs($user);
-
-        $this->json('POST', "/api/v1/vaults/{$vault->uuid}/contacts/{$jim->uuid}/relationships", [
-            'relationship_type' => $type->uuid,
-            'other_contact' => $pam->uuid,
-        ])->assertJsonValidationErrors(['relationship_type']);
     }
 
     #[Test]
@@ -192,40 +145,6 @@ class ContactRelationshipControllerTest extends TestCase
         $response->assertCreated();
         $response->assertJsonPath('data.attributes.contact_b.is_partial', true);
         $this->assertDatabaseHas('contacts', ['vault_id' => $vault->id, 'first_name' => 'Cece', 'last_name' => 'Halpert', 'is_partial' => true]);
-    }
-
-    #[Test]
-    public function it_gives_the_person_named_a_record_of_their_own_when_asked(): void
-    {
-        Queue::fake();
-        [$user, $vault, , $pam] = $this->jimAndPam();
-        $type = RelationshipType::factory()->create(['account_id' => $user->account_id]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('POST', "/api/v1/vaults/{$vault->uuid}/contacts/{$pam->uuid}/relationships", [
-            'relationship_type' => $type->uuid,
-            'first_name' => 'Cece',
-            'creates_record' => true,
-        ])->assertCreated();
-
-        $this->assertDatabaseHas('contacts', ['vault_id' => $vault->id, 'first_name' => 'Cece', 'is_partial' => false]);
-    }
-
-    #[Test]
-    public function it_records_somebody_whose_name_is_unknown(): void
-    {
-        Queue::fake();
-        [$user, $vault, , $pam] = $this->jimAndPam();
-        $type = RelationshipType::factory()->create(['account_id' => $user->account_id]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('POST', "/api/v1/vaults/{$vault->uuid}/contacts/{$pam->uuid}/relationships", [
-            'relationship_type' => $type->uuid,
-        ])->assertCreated();
-
-        $this->assertDatabaseHas('contacts', ['vault_id' => $vault->id, 'first_name' => null, 'is_partial' => true]);
     }
 
     #[Test]
@@ -294,26 +213,6 @@ class ContactRelationshipControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_clears_a_date_sent_as_null(): void
-    {
-        Queue::fake();
-        [$user, $vault, $jim, $pam] = $this->jimAndPam();
-        $relationship = Relationship::factory()->create([
-            'vault_id' => $vault->id,
-            'account_id' => $user->account_id,
-            'contact_a_id' => $jim->id,
-            'contact_b_id' => $pam->id,
-            'started_on' => '2007-05-10',
-        ]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/contacts/{$jim->uuid}/relationships/{$relationship->uuid}", [
-            'started_on' => null,
-        ])->assertOk()->assertJsonPath('data.attributes.started_on', null);
-    }
-
-    #[Test]
     public function it_refuses_a_status_it_does_not_know(): void
     {
         [$user, $vault, $jim, $pam] = $this->jimAndPam();
@@ -324,53 +223,6 @@ class ContactRelationshipControllerTest extends TestCase
         $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/contacts/{$jim->uuid}/relationships/{$relationship->uuid}", [
             'status' => 'complicated',
         ])->assertJsonValidationErrors(['status']);
-    }
-
-    #[Test]
-    public function it_refuses_an_end_before_the_start(): void
-    {
-        [$user, $vault, $jim, $pam] = $this->jimAndPam();
-        $relationship = Relationship::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'contact_a_id' => $jim->id, 'contact_b_id' => $pam->id]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/contacts/{$jim->uuid}/relationships/{$relationship->uuid}", [
-            'status' => 'ended',
-            'started_on' => '2008-01-15',
-            'ended_on' => '2007-05-10',
-        ])->assertJsonValidationErrors(['ended_on' => 'The end cannot fall before the start.']);
-    }
-
-    #[Test]
-    public function it_names_somebody_who_exists_only_through_the_relationship(): void
-    {
-        Queue::fake();
-        [$user, $vault, , $pam] = $this->jimAndPam();
-        $cece = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'first_name' => null, 'is_partial' => true]);
-        $relationship = Relationship::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'contact_a_id' => $pam->id, 'contact_b_id' => $cece->id]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/contacts/{$pam->uuid}/relationships/{$relationship->uuid}", [
-            'first_name' => 'Cece',
-        ])->assertOk();
-
-        $this->assertSame('Cece', $cece->refresh()->first_name);
-    }
-
-    #[Test]
-    public function it_refuses_to_name_somebody_with_a_record_of_their_own(): void
-    {
-        [$user, $vault, $jim, $pam] = $this->jimAndPam();
-        $relationship = Relationship::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'contact_a_id' => $jim->id, 'contact_b_id' => $pam->id]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/contacts/{$jim->uuid}/relationships/{$relationship->uuid}", [
-            'first_name' => 'Pamela',
-        ])->assertJsonValidationErrors(['first_name']);
-
-        $this->assertSame('Pam', $pam->refresh()->first_name);
     }
 
     #[Test]

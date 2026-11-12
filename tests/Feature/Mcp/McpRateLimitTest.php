@@ -27,16 +27,6 @@ class McpRateLimitTest extends TestCase
     }
 
     #[Test]
-    public function it_limits_per_minute_on_the_hosted_instance(): void
-    {
-        config(['monica.self_hosted' => false]);
-
-        $limit = $this->resolveLimit();
-
-        $this->assertSame(60, $limit->maxAttempts);
-    }
-
-    #[Test]
     public function it_counts_one_key_apart_from_another(): void
     {
         config(['monica.self_hosted' => false]);

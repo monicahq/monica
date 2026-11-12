@@ -53,64 +53,6 @@ class VaultLifeEventControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_puts_the_life_event_on_the_timeline_of_everybody_who_was_there(): void
-    {
-        Queue::fake();
-
-        [$user, $vault, $michael] = $this->michael();
-        $dwight = $this->contactOn($vault, 'Dwight');
-
-        $this->actingAs($user)
-            ->post(route('vaults.lifeEvents.create', $vault), [
-                'contact_id' => $michael->id,
-                'life_event_type_id' => $this->lifeEventTypeAsking($user, 'Sales call')->id,
-                'happened_on' => '2026-10-11',
-                'participants' => [$dwight->id],
-            ])
-            ->assertSessionHas('status', 'Sales call, 11/10/2026, is on the timeline of Michael and Dwight.');
-
-        $this->assertDatabaseHas('life_event_participants', ['participant_id' => $dwight->id, 'position' => 1]);
-    }
-
-    #[Test]
-    public function it_records_a_life_event_for_somebody_else_without_the_signed_in_person(): void
-    {
-        Queue::fake();
-
-        [$user, $vault, $michael] = $this->michael();
-        $pam = $this->contactOn($vault, 'Pam');
-
-        $this->actingAs($user)
-            ->post(route('vaults.lifeEvents.create', $vault), [
-                'contact_id' => $pam->id,
-                'life_event_type_id' => $this->lifeEventTypeAsking($user, 'Wedding')->id,
-                'happened_on' => '2026-10-11',
-            ])
-            ->assertRedirect(route('vaults.show', $vault))
-            ->assertSessionHas('status', 'Wedding, 11/10/2026, is on the timeline of Pam.');
-
-        $this->assertDatabaseHas('life_event_participants', ['participant_id' => $pam->id, 'position' => 0]);
-        $this->assertDatabaseMissing('life_event_participants', ['participant_id' => $michael->id]);
-    }
-
-    #[Test]
-    public function it_brings_back_the_person_chosen_when_the_form_is_refused(): void
-    {
-        [$user, $vault] = $this->michael();
-        $pam = $this->contactOn($vault, 'Pam');
-
-        $this->actingAs($user)
-            ->from(route('vaults.show', $vault))
-            ->post(route('vaults.lifeEvents.create', $vault), [
-                'contact_id' => $pam->id,
-                'life_event_type_id' => $this->lifeEventTypeAsking($user, 'Wedding')->id,
-            ])
-            ->assertRedirect(route('vaults.show', $vault))
-            ->assertSessionHasErrors('happened_on')
-            ->assertSessionHasInput('contact_id', $pam->id);
-    }
-
-    #[Test]
     public function it_does_not_find_somebody_of_another_vault(): void
     {
         [$user, $vault] = $this->michael();

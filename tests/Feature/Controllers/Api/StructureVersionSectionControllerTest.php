@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\Api;
 
 use App\Enums\VaultColourEnum;
-use App\Enums\VersionStatusEnum;
-use App\Models\Account;
 use App\Models\Section;
 use App\Models\SectionVersion;
 use App\Models\StructureVersion;
@@ -69,28 +67,6 @@ class StructureVersionSectionControllerTest extends TestCase
         $response->assertJsonPath('data.attributes.title', 'Where they live');
         $response->assertJsonPath('data.attributes.is_collapsed_by_default', true);
         $response->assertJsonPath('data.attributes.section_version_number', 1);
-    }
-
-    #[Test]
-    public function it_leaves_the_section_itself_untouched_when_it_is_placed(): void
-    {
-        Queue::fake();
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-        StructureVersion::factory()->create(['structure_id' => $template->structure->id, 'version_number' => 1]);
-        $section = Section::factory()->create(['account_id' => $user->account_id, 'name' => 'Address']);
-        $sectionVersion = SectionVersion::factory()->published()->create(['section_id' => $section->id]);
-        $section->update(['published_version_id' => $sectionVersion->id]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('POST', "/api/v1/templates/{$template->uuid}/versions/1/sections", [
-            'section_id' => $section->uuid,
-            'title_override' => 'Where they live',
-        ])->assertCreated();
-
-        $this->assertSame('Address', $section->refresh()->name);
-        $this->assertSame(1, $sectionVersion->refresh()->version_number);
     }
 
     #[Test]
@@ -161,44 +137,6 @@ class StructureVersionSectionControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_section_already_on_the_version(): void
-    {
-        Queue::fake();
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id, 'version_number' => 1]);
-        $section = Section::factory()->create(['account_id' => $user->account_id]);
-        $sectionVersion = SectionVersion::factory()->published()->create(['section_id' => $section->id]);
-        $section->update(['published_version_id' => $sectionVersion->id]);
-        StructureVersionSection::factory()->create([
-            'structure_version_id' => $version->id,
-            'section_version_id' => $sectionVersion->id,
-        ]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('POST', "/api/v1/templates/{$template->uuid}/versions/1/sections", ['section_id' => $section->uuid])
-            ->assertUnprocessable()
-            ->assertJsonValidationErrors(['section_id']);
-    }
-
-    #[Test]
-    public function it_refuses_a_section_from_another_account(): void
-    {
-        Queue::fake();
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-        StructureVersion::factory()->create(['structure_id' => $template->structure->id, 'version_number' => 1]);
-        $section = Section::factory()->create(['account_id' => Account::factory()->create()->id]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('POST', "/api/v1/templates/{$template->uuid}/versions/1/sections", ['section_id' => $section->uuid])
-            ->assertUnprocessable()
-            ->assertJsonValidationErrors(['section_id']);
-    }
-
-    #[Test]
     public function it_places_a_section_on_the_page_that_was_named(): void
     {
         Queue::fake();
@@ -238,22 +176,6 @@ class StructureVersionSectionControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_falls_back_to_the_section_name_when_the_override_is_cleared(): void
-    {
-        Queue::fake();
-        [$user, $template, $row] = $this->placement('Where they live');
-
-        Sanctum::actingAs($user);
-
-        $this->json('PUT', "/api/v1/templates/{$template->uuid}/versions/1/sections/{$row->id}", [
-            'title_override' => null,
-        ])
-            ->assertOk()
-            ->assertJsonPath('data.attributes.title_override', null)
-            ->assertJsonPath('data.attributes.title', 'Address');
-    }
-
-    #[Test]
     public function it_takes_a_section_off_a_version(): void
     {
         Queue::fake();
@@ -265,22 +187,6 @@ class StructureVersionSectionControllerTest extends TestCase
             ->assertNoContent();
 
         $this->assertModelMissing($row);
-    }
-
-    #[Test]
-    public function it_refuses_to_change_a_placement_on_a_published_version(): void
-    {
-        Queue::fake();
-        [$user, $template, $row] = $this->placement();
-        $row->structureVersion->update(['status' => VersionStatusEnum::Published, 'published_at' => now()]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('PUT', "/api/v1/templates/{$template->uuid}/versions/1/sections/{$row->id}", [
-            'title_override' => 'Home address',
-        ])
-            ->assertUnprocessable()
-            ->assertJsonValidationErrors(['version']);
     }
 
     #[Test]

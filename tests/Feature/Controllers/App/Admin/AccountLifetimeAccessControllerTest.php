@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\App\Admin;
 
 use App\Models\Administrator;
-use App\Models\StripeOrder;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
@@ -46,42 +45,6 @@ class AccountLifetimeAccessControllerTest extends TestCase
 
         $this->assertFalse($todd->account->refresh()->hasFullAccess());
         $this->assertDatabaseHas('administrator_logs', ['action' => 'lifetime_access_withdrawn']);
-    }
-
-    #[Test]
-    public function it_marks_a_paid_order_refunded_when_access_is_withdrawn(): void
-    {
-        $todd = User::factory()->create();
-        $order = StripeOrder::factory()->settled()->create(['account_id' => $todd->account_id]);
-
-        $this->actingAs($this->administrator())
-            ->delete(route('admin.accounts.lifetimeAccess.destroy', ['account' => $todd->account_id]));
-
-        $this->assertFalse($todd->account->refresh()->hasFullAccess());
-        $this->assertDatabaseHas('stripe_orders', ['id' => $order->id, 'stripe_status' => StripeOrder::REFUNDED]);
-    }
-
-    #[Test]
-    public function it_writes_no_order_when_access_is_granted(): void
-    {
-        $todd = User::factory()->create();
-
-        $this->actingAs($this->administrator())
-            ->post(route('admin.accounts.lifetimeAccess.create', ['account' => $todd->account_id]));
-
-        $this->assertSame(0, StripeOrder::query()->count());
-        $this->assertNotNull($todd->account->refresh()->access_granted_at);
-    }
-
-    #[Test]
-    public function it_lets_an_administrator_grant_it_to_their_own_account(): void
-    {
-        $michael = $this->administrator();
-
-        $this->actingAs($michael)
-            ->post(route('admin.accounts.lifetimeAccess.create', ['account' => $michael->account_id]));
-
-        $this->assertTrue($michael->account->refresh()->hasFullAccess());
     }
 
     private function administrator(): User

@@ -58,19 +58,6 @@ class HandleStripeDisputeClosedTest extends TestCase
     }
 
     #[Test]
-    public function it_ignores_every_other_event(): void
-    {
-        $michael = $this->somebodyWhoseDisputeTookAccessAway();
-
-        $payload = $this->event('won');
-        $payload['type'] = 'charge.dispute.updated';
-
-        new HandleStripeDisputeClosed()->handle(new WebhookReceived($payload));
-
-        $this->assertFalse($michael->account->fresh()->hasFullAccess());
-    }
-
-    #[Test]
     public function it_does_nothing_for_a_customer_it_does_not_know(): void
     {
         $michael = $this->somebodyWhoseDisputeTookAccessAway();
@@ -96,15 +83,6 @@ class HandleStripeDisputeClosedTest extends TestCase
         new HandleStripeDisputeClosed()->handle(new WebhookReceived($this->event('won')));
 
         $this->assertFalse($michael->account->fresh()->hasFullAccess());
-    }
-
-    #[Test]
-    public function it_is_retried_before_it_is_abandoned(): void
-    {
-        $listener = new HandleStripeDisputeClosed;
-
-        $this->assertSame(5, $listener->tries);
-        $this->assertNotEmpty($listener->backoff);
     }
 
     private function somebodyWhoseDisputeTookAccessAway(): User

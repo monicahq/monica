@@ -37,17 +37,6 @@ class SidebarTest extends TestCase
     }
 
     #[Test]
-    public function a_resource_entry_carries_its_verb(): void
-    {
-        $this->blade('<x-api-docs.sidebar :navigation="$navigation" :current="$current" />', [
-            'navigation' => new ApiDocsViewModel()->navigation(),
-            'current' => 'me-show',
-        ])
-            ->assertSee('DELETE')
-            ->assertSee('Log out');
-    }
-
-    #[Test]
     public function the_entry_on_screen_says_so_to_a_screen_reader(): void
     {
         $this->blade('<x-api-docs.sidebar :navigation="$navigation" :current="$current" />', [

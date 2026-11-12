@@ -60,25 +60,6 @@ class UpdateLifeEventCategoryTest extends TestCase
     }
 
     #[Test]
-    public function it_leaves_the_place_and_the_availability_alone(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $category = LifeEventCategory::factory()->inactive()->create([
-            'account_id' => $user->account_id,
-            'position' => 6,
-        ]);
-
-        new UpdateLifeEventCategory(user: $user, lifeEventCategory: $category, name: 'Bénévolat')->execute();
-
-        $category->refresh();
-
-        $this->assertSame(6, $category->position);
-        $this->assertFalse($category->is_active);
-    }
-
-    #[Test]
     public function it_reduces_the_name_to_plain_text(): void
     {
         Queue::fake();

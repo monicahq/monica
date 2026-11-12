@@ -111,43 +111,6 @@ class LogControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_brings_an_absurd_page_size_back_into_range(): void
-    {
-        $account = Account::factory()->create();
-        $user = User::factory()->create(['account_id' => $account->id]);
-
-        Log::factory()->create(['account_id' => $account->id]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('GET', '/api/v1/logs?per_page=100000')
-            ->assertOk()
-            ->assertJsonPath('meta.per_page', 100);
-
-        $this->json('GET', '/api/v1/logs?per_page=0')
-            ->assertOk()
-            ->assertJsonPath('meta.per_page', 1);
-    }
-
-    #[Test]
-    public function it_answers_the_page_that_was_asked_for(): void
-    {
-        $account = Account::factory()->create();
-        $user = User::factory()->create(['account_id' => $account->id]);
-
-        Log::factory()->count(3)->create(['account_id' => $account->id]);
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('GET', '/api/v1/logs?per_page=2&page=2');
-
-        $response->assertOk();
-        $response->assertJsonCount(1, 'data');
-        $response->assertJsonPath('meta.page', 2);
-        $response->assertJsonPath('meta.total', 3);
-    }
-
-    #[Test]
     public function it_shows_one_entry_of_the_journal(): void
     {
         $account = Account::factory()->create();

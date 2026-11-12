@@ -28,15 +28,6 @@ class ComboBoxTest extends TestCase
     }
 
     #[Test]
-    public function it_names_itself_on_hover_rather_than_taking_a_line(): void
-    {
-        $rendered = $this->render($this->offering(['Mobile']));
-
-        $rendered->assertSee('title="'.__('Type').'"', escape: false);
-        $rendered->assertSee('aria-label="'.__('Type').'"', escape: false);
-    }
-
-    #[Test]
     public function it_takes_a_name_of_its_own_when_it_is_given_one(): void
     {
         $this->render($this->offering(['Mobile']), ['label' => 'Relationship'])

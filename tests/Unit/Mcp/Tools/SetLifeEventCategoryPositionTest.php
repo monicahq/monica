@@ -34,10 +34,4 @@ class SetLifeEventCategoryPositionTest extends TestCase
             $user->account->lifeEventCategories()->orderBy('position')->pluck('uuid')->all(),
         );
     }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.lifeEventCategories.position.update', app(SetLifeEventCategoryPosition::class)->mirrors());
-    }
 }

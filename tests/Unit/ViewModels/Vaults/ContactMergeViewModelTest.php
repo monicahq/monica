@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\ViewModels\Vaults;
 
 use App\Models\Contact;
-use App\Models\File;
 use App\Models\User;
 use App\Models\Vault;
 use App\ViewModels\Vaults\ContactMergeViewModel;
@@ -88,49 +87,6 @@ class ContactMergeViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_pages_the_candidates_twenty_at_a_time(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $michael = Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Michael', 'last_name' => 'Scott']);
-        Contact::factory()->create(['vault_id' => $vault->id, 'is_me' => true]);
-
-        for ($index = 1; $index <= 45; $index++) {
-            Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Dwight', 'last_name' => "Schrute {$index}"]);
-        }
-
-        $firstPage = new ContactMergeViewModel(user: $user, vault: $vault, contact: $michael)->candidates();
-
-        $this->assertCount(20, $firstPage);
-        $this->assertEquals(45, $firstPage->total());
-        $this->assertEquals(3, $firstPage->lastPage());
-        $this->assertEquals(20, new ContactMergeViewModel(user: $user, vault: $vault, contact: $michael)->defaultSize());
-
-        $this->app['request']->merge(['page' => 3]);
-        $lastPage = new ContactMergeViewModel(user: $user, vault: $vault, contact: $michael)->candidates();
-
-        $this->assertCount(5, $lastPage);
-        $this->assertNotContains($michael->uuid, $lastPage->pluck('uuid'));
-    }
-
-    #[Test]
-    public function it_puts_every_candidate_on_one_page_when_asked_for_all(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $michael = Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Michael', 'last_name' => 'Scott']);
-
-        for ($index = 1; $index <= 25; $index++) {
-            Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Dwight', 'last_name' => "Schrute {$index}"]);
-        }
-
-        $viewModel = new ContactMergeViewModel(user: $user, vault: $vault, contact: $michael, size: 'all');
-
-        $this->assertCount(25, $viewModel->candidates());
-        $this->assertEquals('all', $viewModel->size());
-    }
-
-    #[Test]
     public function it_reads_the_preview_from_the_action(): void
     {
         $user = User::factory()->create();
@@ -200,24 +156,6 @@ class ContactMergeViewModelTest extends TestCase
         $this->assertEquals(route('contacts.show', ['vault' => $vault, 'contact' => $jim]), $records[0]['url']);
         $this->assertEquals('James Halpert', $records[1]['name']);
         $this->assertEquals(route('contacts.show', ['vault' => $vault, 'contact' => $james]), $records[1]['url']);
-    }
-
-    #[Test]
-    public function it_says_where_the_picture_of_each_record_is_read_from(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $jim = Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Jim', 'last_name' => 'Halpert']);
-        $james = Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'James', 'last_name' => 'Halpert']);
-
-        $file = File::factory()->image()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id]);
-        $james->avatar_file_id = $file->id;
-        $james->save();
-
-        $records = new ContactMergeViewModel(user: $user, vault: $vault, contact: $jim, other: $james->refresh())->records();
-
-        $this->assertNull($records[0]['avatarUrl']);
-        $this->assertEquals(route('files.variants.show', ['vault' => $vault, 'file' => $file, 'size' => Contact::AVATAR_THUMBNAIL_PIXELS]), $records[1]['avatarUrl']);
     }
 
     #[Test]

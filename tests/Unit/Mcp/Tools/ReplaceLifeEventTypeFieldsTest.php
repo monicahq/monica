@@ -88,12 +88,6 @@ class ReplaceLifeEventTypeFieldsTest extends TestCase
         $this->assertSame([], $this->fields($user, $type));
     }
 
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.lifeEventTypes.fields.update', app(ReplaceLifeEventTypeFields::class)->mirrors());
-    }
-
     private function type(User $user): LifeEventType
     {
         return LifeEventType::factory()->create([

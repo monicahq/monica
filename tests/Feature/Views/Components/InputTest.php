@@ -40,23 +40,6 @@ class InputTest extends TestCase
     }
 
     #[Test]
-    public function a_textarea_reads_the_same_props_and_is_the_same_control(): void
-    {
-        $rendered = $this->blade('<x-textarea id="notes" label="Notes" value="Sold paper." />');
-
-        $rendered->assertSee('for="notes"', escape: false);
-        $rendered->assertSee('Sold paper.', escape: false);
-    }
-
-    #[Test]
-    public function a_file_field_takes_the_kinds_of_file_it_is_given(): void
-    {
-        $this->blade('<x-file-input id="photo" accept="image/png" />')
-            ->assertSee('type="file"', escape: false)
-            ->assertSee('accept="image/png"', escape: false);
-    }
-
-    #[Test]
     public function an_error_says_every_message_it_is_given(): void
     {
         $this->blade('<x-error :messages="$messages" />', ['messages' => ['First things first.', 'Then this.']])

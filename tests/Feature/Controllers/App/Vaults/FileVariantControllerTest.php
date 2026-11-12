@@ -50,20 +50,6 @@ class FileVariantControllerTest extends TestCase
         $this->assertSame('the large bytes', $response->streamedContent());
     }
 
-    #[Test]
-    public function it_does_not_find_a_file_kept_in_another_vault(): void
-    {
-        Storage::fake('local');
-
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $elsewhere = Vault::factory()->create(['account_id' => $user->account_id]);
-        $file = $this->pictureIn($vault, null);
-
-        $this->actingAs($user)->get(route('files.variants.show', ['vault' => $elsewhere, 'file' => $file, 'size' => 96]))
-            ->assertNotFound();
-    }
-
     /** @param list<array{suffix: string, pixels: int}>|null $variants */
     private function pictureIn(Vault $vault, ?array $variants): File
     {

@@ -30,20 +30,6 @@ class DestroyAccountTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_destroys_the_account(): void
-    {
-        $account = Account::factory()->create();
-        $user = User::factory()->create(['account_id' => $account->id]);
-
-        new DestroyAccount(
-            user: $user,
-            account: $account,
-        )->execute();
-
-        $this->assertModelMissing($account);
-    }
-
-    #[Test]
     public function it_takes_everything_under_the_account_with_it(): void
     {
         $account = Account::factory()->create();

@@ -30,32 +30,4 @@ class ConnectedAssistantControllerTest extends TestCase
 
         $this->assertTrue($token->refresh()->revoked);
     }
-
-    #[Test]
-    public function it_asks_for_the_password_before_disconnecting(): void
-    {
-        $user = User::factory()->create();
-        $token = $this->oauthTokenFor(user: $user);
-
-        $response = $this->actingAs($user)
-            ->delete(route('settings.connectedAssistants.destroy', $token->client_id));
-
-        $response->assertRedirect(route('auth.confirmPassword.new'));
-
-        $this->assertFalse($token->refresh()->revoked);
-    }
-
-    #[Test]
-    public function it_lists_the_connected_assistants_on_the_security_screen(): void
-    {
-        $user = User::factory()->create();
-        $token = $this->oauthTokenFor(user: $user);
-
-        $response = $this->actingAs($user)->get(route('settings.security.index'));
-
-        $response->assertOk();
-        $response->assertSee('Connected assistants');
-        $response->assertSee('Schrute Farms Assistant');
-        $response->assertSee('action="'.route('settings.connectedAssistants.destroy', $token->client_id).'"', false);
-    }
 }

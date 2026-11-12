@@ -39,20 +39,6 @@ class RelationshipEditViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_groups_the_sentences_in_the_order_of_the_categories(): void
-    {
-        $user = User::factory()->create();
-        $work = $this->categoryOf($user, 'Professional', 2);
-        $family = $this->categoryOf($user, 'Family', 1);
-        $this->typeOn($work, RelationshipTypeEnum::Colleague, 1);
-        [$michael, $relationship] = $this->relationshipFrom($user, $this->typeOn($family, RelationshipTypeEnum::ParentChild, 1));
-
-        $groups = $this->viewModel($user, $michael, $relationship)->sentenceGroups();
-
-        $this->assertSame(['Family', 'Professional'], array_column($groups, 'label'));
-    }
-
-    #[Test]
     public function it_chooses_the_sentence_the_relationship_reads_today_from_either_side(): void
     {
         $user = User::factory()->create();

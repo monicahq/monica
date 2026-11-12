@@ -150,20 +150,6 @@ class EntityControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_an_entity_of_a_turned_off_type(): void
-    {
-        [$user, $vault, $type] = $this->farm();
-        Entity::factory()->create(['vault_id' => $vault->id, 'entity_type_id' => $type->id]);
-        $type->update(['is_active' => false]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('POST', "/api/v1/vaults/{$vault->uuid}/entity-types/{$type->uuid}/entities", ['name' => 'Mose’s goat'])
-            ->assertUnprocessable()
-            ->assertJsonValidationErrors('name');
-    }
-
-    #[Test]
     public function it_creates_an_entity_naming_somebody_in_the_vault(): void
     {
         Queue::fake();

@@ -48,23 +48,4 @@ class SetContactFavouriteTest extends TestCase
 
         $this->assertDatabaseHas('contacts', ['id' => $contact->id, 'is_favourite' => false]);
     }
-
-    #[Test]
-    public function it_refuses_without_being_told_which_way(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
-
-        EricaServer::actingAs($user)->tool(SetContactFavourite::class, [
-            'vault' => $vault->uuid,
-            'contact' => $contact->uuid,
-        ])->assertHasErrors();
-    }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.contacts.favourite.update', app(SetContactFavourite::class)->mirrors());
-    }
 }

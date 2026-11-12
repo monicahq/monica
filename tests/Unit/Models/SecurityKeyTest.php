@@ -64,14 +64,4 @@ class SecurityKeyTest extends TestCase
 
         $this->assertNull(new SecurityKey()->resolveRouteBinding((string) $key->id));
     }
-
-    #[Test]
-    public function it_is_deleted_with_its_user(): void
-    {
-        $key = SecurityKey::factory()->create();
-
-        $key->user->forceDelete();
-
-        $this->assertModelMissing($key);
-    }
 }

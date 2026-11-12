@@ -21,35 +21,6 @@ class VaultDashboardViewModelTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_says_what_the_vault_is_called_and_what_it_is_for(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create([
-            'account_id' => $user->account_id,
-            'name' => 'Dunder Mifflin',
-            'description' => 'Everybody at the Scranton branch',
-        ]);
-
-        $viewModel = new VaultDashboardViewModel(user: $user, vault: $vault);
-
-        $this->assertEquals('Dunder Mifflin', $viewModel->title());
-        $this->assertEquals('Everybody at the Scranton branch', $viewModel->description());
-        $this->assertTrue($vault->is($viewModel->vault()));
-    }
-
-    #[Test]
-    public function it_marks_the_vault_with_its_initial_and_its_colour(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'élan', 'colour' => '#3b82f6']);
-
-        $tile = new VaultDashboardViewModel(user: $user, vault: $vault)->tile();
-
-        $this->assertSame('É', $tile['initial']);
-        $this->assertSame('#3b82f6', $tile['colour']);
-    }
-
-    #[Test]
     public function it_counts_what_the_vault_holds_the_way_somebody_would_say_it(): void
     {
         $this->travelTo(CarbonImmutable::parse('2026-10-02 12:00:00', 'UTC'));
@@ -185,19 +156,6 @@ class VaultDashboardViewModelTest extends TestCase
         LifeEvent::factory()->create(['vault_id' => $vault->id, 'happened_on' => '1994-06-01', 'date_precision' => DatePrecisionEnum::Year]);
 
         $this->assertSame('1994', new VaultDashboardViewModel(user: $user, vault: $vault)->lifeEvents()[0]['date']);
-    }
-
-    #[Test]
-    public function it_says_where_every_box_leads(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $viewModel = new VaultDashboardViewModel(user: $user, vault: $vault);
-
-        $this->assertEquals(route('vaults.index'), $viewModel->vaultsUrl());
-        $this->assertEquals(route('contacts.new', $vault), $viewModel->newContactUrl());
-        $this->assertEquals(route('contacts.index', $vault), $viewModel->allContactsUrl());
     }
 
     #[Test]

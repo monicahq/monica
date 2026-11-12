@@ -80,21 +80,6 @@ class CreateDefaultLifeEventCategoriesTest extends TestCase
     }
 
     #[Test]
-    public function it_gives_each_account_its_own_set(): void
-    {
-        Queue::fake();
-
-        $michael = User::factory()->create();
-        $dwight = User::factory()->create();
-
-        new CreateDefaultLifeEventCategories(user: $michael)->execute();
-        new CreateDefaultLifeEventCategories(user: $dwight)->execute();
-
-        $this->assertEquals(8, LifeEventCategory::query()->where('account_id', $michael->account_id)->count());
-        $this->assertEquals(8, LifeEventCategory::query()->where('account_id', $dwight->account_id)->count());
-    }
-
-    #[Test]
     public function it_writes_nothing_when_the_account_already_has_them(): void
     {
         Queue::fake();

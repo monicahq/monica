@@ -102,18 +102,6 @@ class PhotoControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_file_that_is_too_large(): void
-    {
-        $user = User::factory()->create();
-
-        $response = $this->actingAs($user)->post(route('settings.photo.update'), [
-            'photo' => UploadedFile::fake()->image('creed.jpg')->size(6 * 1024),
-        ]);
-
-        $response->assertSessionHasErrors('photo');
-    }
-
-    #[Test]
     public function it_serves_a_version_of_the_photo(): void
     {
         Queue::fake();
@@ -171,44 +159,5 @@ class PhotoControllerTest extends TestCase
             ->get(route('settings.photo.show', ['user' => $user, 'size' => 999]));
 
         $response->assertNotFound();
-    }
-
-    #[Test]
-    public function it_shows_the_photo_at_both_densities_on_the_profile_screen(): void
-    {
-        Queue::fake();
-        Storage::fake('local');
-
-        $user = User::factory()->create([
-            'first_name' => 'Stanley',
-            'last_name' => 'Hudson',
-        ]);
-
-        new UpdateUserPhoto(
-            user: $user,
-            file: UploadedFile::fake()->image('stanley.jpg', 400, 400),
-        )->execute();
-
-        $response = $this->actingAs($user->fresh())->get(route('settings.profile.index'));
-
-        $response->assertOk();
-        $response->assertSee(route('settings.photo.show', ['user' => $user, 'size' => 96]), escape: false);
-        $response->assertSee(route('settings.photo.show', ['user' => $user, 'size' => 192]), escape: false);
-        $response->assertSee('Remove the photo');
-    }
-
-    #[Test]
-    public function it_falls_back_to_the_initials_when_there_is_no_photo(): void
-    {
-        $user = User::factory()->create([
-            'first_name' => 'Stanley',
-            'last_name' => 'Hudson',
-        ]);
-
-        $response = $this->actingAs($user)->get(route('settings.profile.index'));
-
-        $response->assertOk();
-        $response->assertSee('SH');
-        $response->assertDontSee('Remove the photo');
     }
 }

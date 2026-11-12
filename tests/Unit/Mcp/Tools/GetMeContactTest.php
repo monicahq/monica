@@ -57,10 +57,4 @@ class GetMeContactTest extends TestCase
         EricaServer::actingAs($user)->tool(GetMeContact::class, ['vault' => $vault->uuid])
             ->assertHasErrors(['That vault holds no contact standing for you.']);
     }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.contacts.me', app(GetMeContact::class)->mirrors());
-    }
 }

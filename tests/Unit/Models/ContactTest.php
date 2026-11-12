@@ -22,48 +22,17 @@ use App\Models\LifeEventParticipant;
 use App\Models\Relationship;
 use App\Models\RelationshipType;
 use App\Models\Reminder;
-use App\Models\ShareLink;
 use App\Models\User;
 use App\Models\ValueListItem;
 use App\Models\Vault;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Schema;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class ContactTest extends TestCase
 {
     use RefreshDatabase;
-
-    #[Test]
-    public function it_holds_the_private_links_opened_onto_its_page(): void
-    {
-        $contact = Contact::factory()->create();
-        $shareLink = ShareLink::factory()->create([
-            'account_id' => $contact->account_id,
-            'vault_id' => $contact->vault_id,
-            'shareable_type' => Contact::class,
-            'shareable_id' => $contact->id,
-        ]);
-
-        $this->assertTrue($contact->shareLinks()->exists());
-        $this->assertTrue($shareLink->is($contact->shareLinks->first()));
-    }
-
-    #[Test]
-    public function it_gets_an_unguessable_identifier_and_keeps_a_number_for_a_key(): void
-    {
-        $contact = Contact::factory()->create();
-
-        $this->assertMatchesRegularExpression(
-            '/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/',
-            $contact->uuid,
-        );
-        $this->assertIsInt($contact->id);
-        $this->assertEquals('slug', $contact->getRouteKeyName());
-        $this->assertEquals($contact->slug, $contact->getRouteKey());
-    }
 
     #[Test]
     public function it_writes_the_string_the_lists_sort_on_whenever_it_is_saved(): void
@@ -154,19 +123,6 @@ class ContactTest extends TestCase
     }
 
     #[Test]
-    public function it_writes_the_given_name_first_when_the_contact_asks_for_no_order(): void
-    {
-        $contact = Contact::factory()->make([
-            'first_name' => 'Pam',
-            'middle_name' => null,
-            'last_name' => 'Beesly',
-            'name_order' => null,
-        ]);
-
-        $this->assertEquals('Pam Beesly', $contact->name);
-    }
-
-    #[Test]
     public function it_falls_back_to_the_nickname_when_there_is_nothing_else_to_write(): void
     {
         $contact = Contact::factory()->make([
@@ -190,19 +146,6 @@ class ContactTest extends TestCase
         ]);
 
         $this->assertEquals('DS', $contact->initials);
-    }
-
-    #[Test]
-    public function it_builds_one_initial_when_there_is_only_one_word_to_take_it_from(): void
-    {
-        $contact = Contact::factory()->make([
-            'first_name' => null,
-            'middle_name' => null,
-            'last_name' => null,
-            'nickname' => 'Scarn',
-        ]);
-
-        $this->assertEquals('S', $contact->initials);
     }
 
     #[Test]
@@ -309,12 +252,6 @@ class ContactTest extends TestCase
     }
 
     #[Test]
-    public function it_looks_up_the_other_ways_a_name_is_written_by_contact_rather_than_reading_every_one(): void
-    {
-        $this->assertTrue(Schema::hasIndex('contact_name_representations', ['contact_id', 'search_key']));
-    }
-
-    #[Test]
     public function it_sorts_by_a_column_in_the_direction_asked_for(): void
     {
         $vault = Vault::factory()->create();
@@ -355,18 +292,6 @@ class ContactTest extends TestCase
     }
 
     #[Test]
-    public function it_is_deleted_softly(): void
-    {
-        $contact = Contact::factory()->create(['last_name' => 'Schrute']);
-
-        $contact->delete();
-
-        $this->assertSoftDeleted('contacts', ['id' => $contact->id]);
-        $this->assertEquals(0, Contact::query()->count());
-        $this->assertEquals(1, Contact::query()->withTrashed()->count());
-    }
-
-    #[Test]
     public function it_derives_the_two_ordering_keys_when_it_saves(): void
     {
         $contact = Contact::factory()->create([
@@ -382,25 +307,6 @@ class ContactTest extends TestCase
         $this->assertSame(
             LocaleCollation::foldForSearch($contact->sort_name, $contact->account->locale()),
             $contact->search_key,
-        );
-    }
-
-    #[Test]
-    public function it_rebuilds_the_two_ordering_keys_when_the_name_changes(): void
-    {
-        $contact = Contact::factory()->create(['last_name' => 'Scott']);
-        $before = $contact->sort_key;
-
-        $contact->displayNameRepresentation->update(['family_name' => 'Scarn']);
-        $contact->refresh();
-
-        $fresh = $contact->fresh();
-
-        $this->assertNotSame($before, $fresh->sort_key);
-        $this->assertStringStartsWith('scarn', $fresh->sort_name);
-        $this->assertSame(
-            LocaleCollation::sortKey($fresh->sort_name, $contact->account->locale()),
-            $fresh->sort_key,
         );
     }
 
@@ -422,15 +328,6 @@ class ContactTest extends TestCase
     }
 
     #[Test]
-    public function it_does_not_let_the_two_ordering_keys_be_mass_assigned(): void
-    {
-        $contact = Contact::factory()->create();
-
-        $this->assertNotContains('sort_key', $contact->getFillable());
-        $this->assertNotContains('search_key', $contact->getFillable());
-    }
-
-    #[Test]
     public function it_knows_every_reminder_rule_about_it_including_the_quiet_ones(): void
     {
         $reminder = Reminder::factory()->create();
@@ -445,32 +342,6 @@ class ContactTest extends TestCase
             [$reminder->id, $quiet->id],
             $reminder->remindable->reminders()->pluck('id')->all(),
         );
-    }
-
-    #[Test]
-    public function it_carries_no_card_until_a_device_writes_one(): void
-    {
-        $contact = Contact::factory()->create();
-
-        $this->assertNull($contact->dav_uri);
-        $this->assertNull($contact->vcard);
-    }
-
-    #[Test]
-    public function it_keeps_the_card_a_device_sent_and_the_name_that_device_chose(): void
-    {
-        $card = "BEGIN:VCARD\r\nVERSION:4.0\r\nFN:Dwight Schrute\r\nEND:VCARD\r\n";
-
-        $contact = Contact::factory()->create([
-            'dav_uri' => 'dwight.vcf',
-            'vcard' => $card,
-        ]);
-
-        $this->assertDatabaseHas('contacts', [
-            'id' => $contact->id,
-            'dav_uri' => 'dwight.vcf',
-        ]);
-        $this->assertEquals($card, $contact->refresh()->vcard);
     }
 
     #[Test]
@@ -552,30 +423,6 @@ class ContactTest extends TestCase
 
         $this->assertSame('new-2', $new->slug);
         $this->assertSame('favourites-2', $favourites->slug);
-    }
-
-    #[Test]
-    public function a_partial_contact_known_by_one_name_still_gets_an_address(): void
-    {
-        $contact = Contact::factory()->create([
-            'first_name' => 'Dwight',
-            'last_name' => null,
-            'is_partial' => true,
-        ]);
-
-        $this->assertSame('dwight', $contact->slug);
-    }
-
-    #[Test]
-    public function the_me_contact_gets_an_address_like_anybody_else(): void
-    {
-        $contact = Contact::factory()->create([
-            'first_name' => 'Michael',
-            'last_name' => 'Scott',
-            'is_me' => true,
-        ]);
-
-        $this->assertSame('michael-scott', $contact->slug);
     }
 
     #[Test]

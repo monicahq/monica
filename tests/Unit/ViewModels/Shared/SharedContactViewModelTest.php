@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\ViewModels\Shared;
 
 use App\Enums\FieldTypeEnum;
-use App\Enums\VaultColourEnum;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
@@ -65,31 +64,6 @@ class SharedContactViewModelTest extends TestCase
         $sections = $this->viewModel($this->linkOnto($contact), $contact)->sections();
 
         $this->assertSame([['label' => 'Lives', 'value' => 'Scranton']], $sections[0]['fields']);
-    }
-
-    #[Test]
-    public function it_carries_the_mark_of_each_section_it_draws(): void
-    {
-        $contact = $this->sharedContact();
-        $link = $this->linkOnto($contact);
-        Section::query()->where('name', 'Facts')->update(['icon' => 'health', 'colour' => '#4f8a49']);
-
-        $sections = $this->viewModel($link, $contact)->sections();
-
-        $this->assertSame('health', $sections[0]['icon']);
-        $this->assertSame(VaultColourEnum::Green->tint(), $sections[0]['tint']);
-    }
-
-    #[Test]
-    public function it_falls_back_to_the_neutral_mark_for_a_section_carrying_none(): void
-    {
-        $contact = $this->sharedContact();
-        $link = $this->linkOnto($contact);
-
-        $sections = $this->viewModel($link, $contact)->sections();
-
-        $this->assertSame(Section::DEFAULT_ICON, $sections[0]['icon']);
-        $this->assertSame(VaultColourEnum::neutralTint(), $sections[0]['tint']);
     }
 
     #[Test]

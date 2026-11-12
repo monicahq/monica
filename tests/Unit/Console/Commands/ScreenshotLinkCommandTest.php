@@ -15,18 +15,6 @@ class ScreenshotLinkCommandTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_mints_a_link_that_signs_the_user_in(): void
-    {
-        config()->set('monica.screenshot_link.enabled', true);
-        $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
-
-        $this->artisan('monica:screenshot-link', [
-            'email' => $user->email,
-            '--to' => '/settings',
-        ])->assertSuccessful();
-    }
-
-    #[Test]
     public function the_link_it_mints_works(): void
     {
         config()->set('monica.screenshot_link.enabled', true);

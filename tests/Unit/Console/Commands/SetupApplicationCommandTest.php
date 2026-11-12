@@ -94,14 +94,6 @@ class SetupApplicationCommandTest extends TestCase
     }
 
     #[Test]
-    public function it_leaves_the_storage_link_alone_while_testing(): void
-    {
-        $this->artisan('monica:setup', ['--force' => true, '--build' => true])
-            ->doesntExpectOutputToContain('Linking the storage folder into public')
-            ->assertSuccessful();
-    }
-
-    #[Test]
     public function it_generates_the_keys_that_sign_oauth_tokens_when_there_are_none(): void
     {
         $keys = sys_get_temp_dir().'/'.uniqid('oauth-keys-');

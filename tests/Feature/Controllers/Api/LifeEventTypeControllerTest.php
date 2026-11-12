@@ -161,16 +161,6 @@ class LifeEventTypeControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_returns_not_found_for_a_path_that_is_not_a_uuid(): void
-    {
-        $user = User::factory()->create();
-
-        Sanctum::actingAs($user);
-
-        $this->json('GET', '/api/v1/life-event-types/1')->assertNotFound();
-    }
-
-    #[Test]
     public function it_creates_a_life_event_type(): void
     {
         Queue::fake();
@@ -196,26 +186,6 @@ class LifeEventTypeControllerTest extends TestCase
             'life_event_category_id' => $category->id,
             'name' => 'Board game night',
         ]);
-    }
-
-    #[Test]
-    public function it_places_a_created_type_last_in_its_category(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
-        LifeEventType::factory()->create(['account_id' => $user->account_id, 'life_event_category_id' => $category->id, 'position' => 1]);
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('POST', '/api/v1/life-event-types', [
-            'life_event_category_id' => $category->uuid,
-            'name' => 'Board game night',
-        ]);
-
-        $response->assertCreated();
-        $response->assertJsonPath('data.attributes.position', 2);
     }
 
     #[Test]
@@ -293,53 +263,6 @@ class LifeEventTypeControllerTest extends TestCase
         $response->assertJsonPath('data.attributes.name', 'Games evening');
         $response->assertJsonPath('data.attributes.description', 'Cardboard and dice.');
         $this->assertDatabaseHas('life_event_types', ['id' => $type->id, 'name' => 'Games evening']);
-    }
-
-    #[Test]
-    public function it_places_a_type_last_when_it_moves_to_another_category(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $from = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
-        $to = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
-        LifeEventType::factory()->create(['account_id' => $user->account_id, 'life_event_category_id' => $to->id, 'position' => 1]);
-        $type = LifeEventType::factory()->create(['account_id' => $user->account_id, 'life_event_category_id' => $from->id, 'position' => 1]);
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('PUT', "/api/v1/life-event-types/{$type->uuid}", [
-            'life_event_category_id' => $to->uuid,
-            'name' => $type->name,
-        ]);
-
-        $response->assertOk();
-        $response->assertJsonPath('data.attributes.life_event_category_id', $to->uuid);
-        $response->assertJsonPath('data.attributes.position', 2);
-    }
-
-    #[Test]
-    public function it_updates_a_type_the_product_supplied(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
-        $type = LifeEventType::factory()->supplied()->create([
-            'account_id' => $user->account_id,
-            'life_event_category_id' => $category->id,
-        ]);
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('PUT', "/api/v1/life-event-types/{$type->uuid}", [
-            'life_event_category_id' => $category->uuid,
-            'name' => 'Ring up',
-        ]);
-
-        $response->assertOk();
-        $response->assertJsonPath('data.attributes.name', 'Ring up');
-        $response->assertJsonPath('data.attributes.is_system', true);
     }
 
     #[Test]

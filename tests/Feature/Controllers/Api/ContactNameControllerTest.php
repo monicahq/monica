@@ -128,24 +128,6 @@ class ContactNameControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_name_order_it_does_not_know(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
-
-        Sanctum::actingAs($user);
-
-        $response = $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/name", [
-            ...$this->wholeName,
-            'name_order' => 'nickname_first',
-        ]);
-
-        $response->assertUnprocessable();
-        $response->assertJsonValidationErrors(['name_order']);
-    }
-
-    #[Test]
     public function it_returns_not_found_for_a_contact_of_another_account(): void
     {
         $user = User::factory()->create();

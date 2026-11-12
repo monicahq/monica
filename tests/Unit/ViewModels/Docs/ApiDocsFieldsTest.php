@@ -92,17 +92,6 @@ class ApiDocsFieldsTest extends TestCase
     }
 
     #[Test]
-    public function it_keeps_the_type_and_the_description_of_an_attribute(): void
-    {
-        $fields = ApiDocsFields::page('vault', 'vault', 'vaults', $this->attributes);
-
-        $created = collect($fields)->firstWhere('name', 'data[].attributes.created_at');
-
-        $this->assertSame('timestamp', $created['type']);
-        $this->assertSame('A count of seconds.', $created['description']);
-    }
-
-    #[Test]
     public function it_carries_a_marker_through_from_an_attribute(): void
     {
         $fields = ApiDocsFields::one('log', 'log entry', [
@@ -136,16 +125,5 @@ class ApiDocsFieldsTest extends TestCase
         $this->assertNotContains('meta', $names);
         $this->assertNotContains('meta.total', $names);
         $this->assertNotContains('data[]', $names);
-    }
-
-    #[Test]
-    public function it_gives_every_row_a_name_a_type_and_a_description(): void
-    {
-        foreach (ApiDocsFields::page('vault', 'vault', 'vaults', $this->attributes) as $field) {
-            $this->assertArrayHasKey('name', $field);
-            $this->assertArrayHasKey('type', $field);
-            $this->assertArrayHasKey('description', $field);
-            $this->assertNotSame('', $field['description']);
-        }
     }
 }

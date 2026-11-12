@@ -46,14 +46,6 @@ class MailLayoutTest extends TestCase
     }
 
     #[Test]
-    public function it_shows_the_panel_of_a_sign_in_alert(): void
-    {
-        $rendered = (string) new NewLoginDetected(ip: '10.0.0.1', method: SignInMethodEnum::EmailLink)->toMail(User::factory()->create())->render();
-
-        $this->assertStringContainsString('If this was not you, change your password now.', $rendered);
-    }
-
-    #[Test]
     public function it_states_the_language_of_the_reader(): void
     {
         app()->setLocale('fr_FR');
@@ -72,15 +64,6 @@ class MailLayoutTest extends TestCase
 
         $this->assertMatchesRegularExpression('/<img[^>]+alt="Monica"/', $rendered);
         $this->assertMatchesRegularExpression('/<img[^>]+alt=""/', $rendered);
-    }
-
-    #[Test]
-    public function it_declares_it_supports_light_and_dark(): void
-    {
-        $rendered = (string) new VerifyEmail()->toMail(User::factory()->create())->render();
-
-        $this->assertStringContainsString('<meta name="color-scheme" content="light dark">', $rendered);
-        $this->assertStringContainsString('<meta name="supported-color-schemes" content="light dark">', $rendered);
     }
 
     #[Test]

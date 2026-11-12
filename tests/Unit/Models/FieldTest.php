@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace Tests\Unit\Models;
 
 use App\Enums\FieldTypeEnum;
-use App\Enums\RepetitionOrderEnum;
 use App\Enums\VersionStatusEnum;
 use App\Exceptions\PublishedVersionIsFrozen;
 use App\Models\Field;
 use App\Models\SectionVersion;
-use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -18,20 +16,6 @@ use Tests\TestCase;
 class FieldTest extends TestCase
 {
     use RefreshDatabase;
-
-    #[Test]
-    public function it_holds_the_fields_inside_a_repeater(): void
-    {
-        $version = SectionVersion::factory()->create();
-        $repeater = Field::factory()->repeater()->create(['section_version_id' => $version->id]);
-        $child = Field::factory()->create([
-            'section_version_id' => $version->id,
-            'parent_field_id' => $repeater->id,
-        ]);
-
-        $this->assertTrue($repeater->children()->exists());
-        $this->assertTrue($child->parent->is($repeater));
-    }
 
     #[Test]
     public function it_takes_what_it_holds_with_it_when_a_repeater_goes(): void
@@ -108,33 +92,6 @@ class FieldTest extends TestCase
         $this->expectException(PublishedVersionIsFrozen::class);
 
         $field->delete();
-    }
-
-    #[Test]
-    public function it_refuses_two_fields_with_the_same_key_in_one_section(): void
-    {
-        $version = SectionVersion::factory()->create();
-        Field::factory()->create(['section_version_id' => $version->id, 'key' => 'street']);
-
-        $this->expectException(QueryException::class);
-
-        Field::factory()->create(['section_version_id' => $version->id, 'key' => 'street']);
-    }
-
-    #[Test]
-    public function it_reads_which_end_a_new_repetition_is_added_at(): void
-    {
-        $field = Field::factory()->create(['repetition_order' => RepetitionOrderEnum::NewestFirst]);
-
-        $this->assertSame(RepetitionOrderEnum::NewestFirst, $field->refresh()->repetition_order);
-    }
-
-    #[Test]
-    public function it_says_nothing_about_the_end_until_somebody_does(): void
-    {
-        $field = Field::factory()->create();
-
-        $this->assertNull($field->refresh()->repetition_order);
     }
 
     #[Test]

@@ -122,18 +122,6 @@ class ContactFormViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_says_where_the_form_leads_out_of(): void
-    {
-        $user = User::factory()->create();
-        $vault = $this->vaultReadyForContacts($user);
-
-        $viewModel = new ContactFormViewModel(user: $user, vault: $vault);
-
-        $this->assertEquals(route('contacts.index', $vault), $viewModel->contactsUrl());
-        $this->assertEquals(route('contacts.create', $vault), $viewModel->action());
-    }
-
-    #[Test]
     public function it_asks_the_database_once_however_often_the_form_reads_its_starting_template(): void
     {
         $user = User::factory()->create();

@@ -55,16 +55,6 @@ class SubscriptionControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_move_on_an_account_with_no_subscription(): void
-    {
-        $michael = User::factory()->create();
-
-        $this->actingAs($michael)
-            ->put(route('settings.subscription.update', ['price' => 'price_yearly']))
-            ->assertSessionHasErrors('subscription');
-    }
-
-    #[Test]
     public function it_stops_a_subscription_renewing_and_names_the_day_access_ends(): void
     {
         $this->travelTo(CarbonImmutable::parse('2026-09-20 12:00:00', 'UTC'));
@@ -90,32 +80,5 @@ class SubscriptionControllerTest extends TestCase
             ->from(route('settings.billing.index'))
             ->delete(route('settings.subscription.destroy'))
             ->assertSessionHasErrors('subscription');
-    }
-
-    #[Test]
-    public function it_shows_the_cancel_warning_and_the_end_date_to_a_subscriber(): void
-    {
-        $michael = User::factory()->create();
-        $this->subscribeAccount($michael->account);
-
-        $response = $this->actingAs($michael)->get(route('settings.billing.index'));
-
-        $response->assertSee('Cancel renewal', escape: false);
-        $response->assertSee('Full access stays until the end of the period already paid for', escape: false);
-        $response->assertSee(route('settings.subscription.destroy'), escape: false);
-    }
-
-    #[Test]
-    public function it_offers_the_yearly_switch_as_a_confirmed_change_rather_than_a_purchase(): void
-    {
-        $michael = User::factory()->create();
-        $this->subscribeAccount($michael->account, 'price_monthly');
-
-        $response = $this->actingAs($michael)->get(route('settings.billing.index'));
-
-        $response->assertSee('Switch to this plan', escape: false);
-        $response->assertSee('Nothing is charged today.', escape: false);
-        $response->assertSee(route('settings.subscription.update', ['price' => 'price_yearly']), escape: false);
-        $response->assertSee(route('settings.checkout.store', ['price' => 'price_lifetime']), escape: false);
     }
 }

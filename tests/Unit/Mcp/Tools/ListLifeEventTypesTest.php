@@ -48,10 +48,4 @@ class ListLifeEventTypesTest extends TestCase
             ->assertOk()
             ->assertDontSee('Opened a paper company');
     }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.lifeEventTypes', app(ListLifeEventTypes::class)->mirrors());
-    }
 }

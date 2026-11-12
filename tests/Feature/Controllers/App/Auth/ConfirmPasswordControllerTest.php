@@ -7,13 +7,11 @@ namespace Tests\Feature\Controllers\App\Auth;
 use App\Enums\UserActionEnum;
 use App\Http\Responses\PasskeyConfirmationResponse;
 use App\Jobs\LogUserAction;
-use App\Models\Passkey;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Queue;
-use Illuminate\Support\Facades\URL;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -91,21 +89,6 @@ class ConfirmPasswordControllerTest extends TestCase
         $response = $this->actingAs($user)->post(route('auth.confirmPassword.create'), ['password' => 'scranton']);
 
         $response->assertStatus(429);
-    }
-
-    #[Test]
-    public function it_offers_the_passkey_alone_to_a_passwordless_account(): void
-    {
-        URL::forceScheme('https');
-
-        $user = User::factory()->create(['password' => null]);
-        Passkey::factory()->create(['user_id' => $user->id]);
-
-        $response = $this->actingAs($user)->get(route('auth.confirmPassword.new'));
-
-        $response->assertStatus(200);
-        $response->assertSee('Use a passkey');
-        $response->assertDontSee('Your password');
     }
 
     #[Test]

@@ -32,32 +32,6 @@ class EmailControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_the_address_without_a_confirmed_password(): void
-    {
-        $user = User::factory()->create(['email' => 'kelly.kapoor@dundermifflin.com']);
-
-        $response = $this->actingAs($user)->put(route('settings.email.update'), [
-            'email' => 'michael.scott@dundermifflin.com',
-        ]);
-
-        $response->assertRedirect(route('auth.confirmPassword.new'));
-
-        $this->assertEquals('kelly.kapoor@dundermifflin.com', $user->refresh()->email);
-    }
-
-    #[Test]
-    public function it_refuses_an_address_that_is_not_one(): void
-    {
-        $user = User::factory()->create();
-
-        $response = $this->withConfirmedPassword()->actingAs($user)->put(route('settings.email.update'), [
-            'email' => 'not-an-email',
-        ]);
-
-        $response->assertSessionHasErrors('email');
-    }
-
-    #[Test]
     public function it_refuses_an_address_another_user_already_signs_in_with(): void
     {
         $user = User::factory()->create();

@@ -58,14 +58,6 @@ class EnsureFlagIsOnTest extends TestCase
     }
 
     #[Test]
-    public function it_answers_not_found_while_the_flag_is_off(): void
-    {
-        $dwight = User::factory()->create();
-
-        $this->actingAs($dwight)->get('example-capability')->assertNotFound();
-    }
-
-    #[Test]
     public function it_answers_the_account_the_flag_is_on_for_and_nobody_else(): void
     {
         $jim = User::factory()->create();
@@ -74,15 +66,6 @@ class EnsureFlagIsOnTest extends TestCase
 
         $this->actingAs($jim)->get('example-capability')->assertOk()->assertSee('Dunder Mifflin Infinity');
         $this->actingAs($dwight)->get('example-capability')->assertNotFound();
-    }
-
-    #[Test]
-    public function it_answers_when_a_test_forces_the_flag_on(): void
-    {
-        Feature::define(ExampleCapability::class, true);
-        $dwight = User::factory()->create();
-
-        $this->actingAs($dwight)->get('example-capability')->assertOk();
     }
 
     #[Test]

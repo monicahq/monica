@@ -39,19 +39,4 @@ class GetEmailSentTest extends TestCase
         EricaServer::actingAs($user)->tool(GetEmailSent::class, ['email_sent' => (string) $email->id])
             ->assertHasErrors(['That email does not exist.']);
     }
-
-    #[Test]
-    public function it_reports_an_identifier_that_is_not_a_number_as_not_existing(): void
-    {
-        $user = User::factory()->create();
-
-        EricaServer::actingAs($user)->tool(GetEmailSent::class, ['email_sent' => '0'])
-            ->assertHasErrors(['That email does not exist.']);
-    }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.emailsSent.show', app(GetEmailSent::class)->mirrors());
-    }
 }

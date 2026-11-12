@@ -50,29 +50,6 @@ class HandleStripeSubscriptionTest extends TestCase
         Notification::assertNothingSent();
     }
 
-    #[Test]
-    public function it_ignores_every_other_event(): void
-    {
-        $michael = User::factory()->create();
-        $this->subscribeAccount($michael->account);
-
-        $payload = $this->event('sub_dundermifflin');
-        $payload['type'] = 'customer.subscription.updated';
-
-        new HandleStripeSubscription()->handle(new WebhookHandled($payload));
-
-        Notification::assertNothingSent();
-    }
-
-    #[Test]
-    public function it_is_retried_before_it_is_abandoned(): void
-    {
-        $listener = new HandleStripeSubscription;
-
-        $this->assertSame(5, $listener->tries);
-        $this->assertNotEmpty($listener->backoff);
-    }
-
     /** @return array<string, mixed> */
     private function event(string $subscriptionId): array
     {

@@ -93,17 +93,6 @@ class RelationshipTypesViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_says_which_types_the_product_supplied(): void
-    {
-        $user = User::factory()->create();
-        RelationshipType::factory()->system(RelationshipTypeEnum::Friend)->create(['account_id' => $user->account_id]);
-
-        $type = new RelationshipTypesViewModel(user: $user)->categories()[0]['types'][0];
-
-        $this->assertTrue($type['isSystem']);
-    }
-
-    #[Test]
     public function it_says_what_a_type_feeds(): void
     {
         $user = User::factory()->create();

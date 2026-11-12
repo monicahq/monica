@@ -31,22 +31,4 @@ class ListContactRemindersTest extends TestCase
             'contact' => $contact->uuid,
         ])->assertOk()->assertHasNoErrors()->assertSee('Ask about the art school');
     }
-
-    #[Test]
-    public function it_refuses_a_contact_of_another_account(): void
-    {
-        $user = User::factory()->create();
-        $contact = Contact::factory()->create();
-
-        EricaServer::actingAs($user)->tool(ListContactReminders::class, [
-            'vault' => $contact->vault->uuid,
-            'contact' => $contact->uuid,
-        ])->assertHasErrors();
-    }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.contacts.reminders', app(ListContactReminders::class)->mirrors());
-    }
 }

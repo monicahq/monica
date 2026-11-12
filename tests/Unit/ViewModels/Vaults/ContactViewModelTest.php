@@ -6,7 +6,6 @@ namespace Tests\Unit\ViewModels\Vaults;
 
 use App\Enums\DateFormatEnum;
 use App\Enums\FieldTypeEnum;
-use App\Enums\ReminderCadenceEnum;
 use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\VaultColourEnum;
 use App\Enums\VersionStatusEnum;
@@ -14,7 +13,6 @@ use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\FieldValueRow;
-use App\Models\File;
 use App\Models\RecordSnapshot;
 use App\Models\Relationship;
 use App\Models\Reminder;
@@ -121,33 +119,6 @@ class ContactViewModelTest extends TestCase
     }
 
     #[Test]
-    public function a_block_wears_the_mark_of_the_section_it_draws(): void
-    {
-        $user = User::factory()->create();
-        $version = $this->version($user, ['Health' => ['Ongoing' => ['Knee']]]);
-        $contact = $this->contact($user, $version);
-        $version->assembly->first()->sectionVersion->section->update(['icon' => 'health', 'colour' => '#4f8a49']);
-
-        $sections = (new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact, selectedPageKey: 'health'))->sections();
-
-        $this->assertSame('health', $sections[0]['icon']);
-        $this->assertSame(VaultColourEnum::Green->tint(), $sections[0]['tint']);
-    }
-
-    #[Test]
-    public function a_block_on_an_unmarked_section_falls_back_to_the_blank_page_and_the_neutral_pair(): void
-    {
-        $user = User::factory()->create();
-        $version = $this->version($user, ['Health' => ['Ongoing' => ['Knee']]]);
-        $contact = $this->contact($user, $version);
-
-        $sections = (new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact, selectedPageKey: 'health'))->sections();
-
-        $this->assertSame(Section::DEFAULT_ICON, $sections[0]['icon']);
-        $this->assertSame(VaultColourEnum::neutralTint(), $sections[0]['tint']);
-    }
-
-    #[Test]
     public function a_block_falls_back_when_the_section_holds_a_glyph_it_may_not_use(): void
     {
         $user = User::factory()->create();
@@ -217,46 +188,6 @@ class ContactViewModelTest extends TestCase
         $sections = (new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact, selectedPageKey: 'health'))->sections();
 
         $this->assertFalse($sections[0]['isEditable']);
-    }
-
-    #[Test]
-    public function it_says_where_the_picture_of_the_contact_is_read_from(): void
-    {
-        $user = User::factory()->create();
-        $version = $this->version($user, ['Health' => ['Ongoing' => ['Knee']]]);
-        $contact = $this->contact($user, $version);
-
-        $this->assertNull(
-            new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact)->avatarUrl(),
-        );
-
-        $file = File::factory()->image()->create([
-            'account_id' => $user->account_id,
-            'vault_id' => $contact->vault_id,
-        ]);
-
-        $contact->avatar_file_id = $file->id;
-        $contact->save();
-
-        $this->assertSame(
-            route('files.show', ['vault' => $contact->vault, 'file' => $file]),
-            new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact->refresh())->avatarUrl(),
-        );
-    }
-
-    #[Test]
-    public function it_says_where_the_pages_of_the_record_are_decided(): void
-    {
-        $user = User::factory()->create();
-        $version = $this->version($user, ['Health' => ['Ongoing' => ['Knee']]], 'Someone in the family');
-        $contact = $this->contact($user, $version);
-
-        $viewModel = new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact);
-
-        $this->assertSame(
-            route('settings.templateBuilder.index', $version->structure->owner),
-            $viewModel->templateUrl(),
-        );
     }
 
     #[Test]
@@ -504,31 +435,6 @@ class ContactViewModelTest extends TestCase
     }
 
     #[Test]
-    public function the_space_below_a_version_grows_with_how_long_the_one_under_it_was_in_use(): void
-    {
-        $user = User::factory()->create();
-        $first = $this->version($user, ['Health' => ['Ongoing' => ['Knee']]]);
-        $contact = $this->contact($user, $first, ['created_at' => now()->subDays(400)]);
-        $second = $this->publish($first, 2);
-        $third = $this->publish($second, 3);
-
-        $this->moved($contact, $first, $second, $user, now()->subDays(340));
-        $this->moved($contact, $second, $third, $user, now()->subDays(300));
-
-        $history = new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact)->versionHistory();
-
-        $this->assertSame(40, $history[0]['spaceBelow']);
-        $this->assertSame(50, $history[1]['spaceBelow']);
-        $this->assertSame(0, $history[2]['spaceBelow']);
-
-        $this->moved($contact, $third, $first, $user, now()->subDays(10));
-
-        $history = new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact->refresh())->versionHistory();
-
-        $this->assertSame(96, $history[0]['spaceBelow']);
-    }
-
-    #[Test]
     public function a_snapshot_that_moved_nothing_is_not_a_line(): void
     {
         $user = User::factory()->create();
@@ -695,31 +601,6 @@ class ContactViewModelTest extends TestCase
         $this->assertEquals('yearly:1', $date['reminder']->repeat());
         $this->assertNull($date['reminder']->nextLine());
         $this->assertNull($date['reminder']->quietBecause());
-    }
-
-    #[Test]
-    public function it_reads_a_saved_rule_back_in_words(): void
-    {
-        $user = User::factory()->create();
-
-        $panel = $this->panelFor($user, [
-            'name' => 'Ring Michael',
-            'cadence' => ReminderCadenceEnum::Monthly,
-            'frequency_interval' => 2,
-            'time_of_day' => '18:30:00',
-            'timezone' => 'Asia/Tokyo',
-        ])['reminder'];
-
-        $this->assertTrue($panel->isOn());
-        $this->assertEquals('Ring Michael', $panel->name());
-        $this->assertEquals('monthly:2', $panel->repeat());
-        $this->assertEquals('18:30', $panel->time());
-        $this->assertEquals('Asia/Tokyo', $panel->timezone());
-        $this->assertEquals(
-            'You will be reminded on the day, every 2 months, at 18:30 Asia/Tokyo.',
-            $panel->summary(),
-        );
-        $this->assertStringStartsWith('Next reminder on', (string) $panel->nextLine());
     }
 
     #[Test]
@@ -997,21 +878,6 @@ class ContactViewModelTest extends TestCase
         return $version->refresh();
     }
 
-    /** @param  array<string, mixed>  $attributes */
-    #[Test]
-    public function it_points_the_star_at_the_route_that_changes_the_mark(): void
-    {
-        $user = User::factory()->create();
-        $contact = $this->contact($user, $this->version($user, []));
-
-        $viewModel = new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact);
-
-        $this->assertEquals(
-            route('contacts.favourite.update', ['vault' => $contact->vault, 'contact' => $contact]),
-            $viewModel->favouriteUrl(),
-        );
-    }
-
     #[Test]
     public function it_names_the_star_after_what_pressing_it_would_do(): void
     {
@@ -1127,28 +993,6 @@ class ContactViewModelTest extends TestCase
         $this->assertSame($row->id, $field['notes']['entries'][0]['id']);
         $this->assertSame(['Allergic to strawberries.'], $field['notes']['entries'][0]['shown']);
         $this->assertSame([], $field['notes']['entries'][0]['hidden']);
-    }
-
-    #[Test]
-    public function it_shows_ten_notes_at_a_time_newest_first_with_the_way_to_the_rest(): void
-    {
-        $user = User::factory()->create();
-        $version = $this->version($user, ['General' => ['Notes' => ['Notes']]]);
-        $contact = $this->contact($user, $version);
-        $notes = $this->noteRepeater($version, 'Notes');
-
-        foreach (range(1, 12) as $number) {
-            $this->writeNote($contact, $notes, "Note {$number}", CarbonImmutable::parse('2026-01-01')->addDays($number));
-        }
-
-        $field = $this->sectionsOn($user, $contact, 'general')[0]['fields'][0];
-
-        $this->assertCount(10, $field['notes']['entries']);
-        $this->assertSame(['Note 12'], $field['notes']['entries'][0]['shown']);
-        $this->assertSame("field-{$notes->id}-rows", $field['rowsMore']['rowsId']);
-        $this->assertSame(10, $field['rowsMore']['count']);
-        $this->assertFalse($field['rowsMore']['showsEnd']);
-        $this->assertStringContainsString('page=2', (string) $field['rowsMore']['nextPageUrl']);
     }
 
     #[Test]

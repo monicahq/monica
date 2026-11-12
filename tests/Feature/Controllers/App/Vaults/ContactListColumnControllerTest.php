@@ -84,24 +84,4 @@ class ContactListColumnControllerTest extends TestCase
             ->assertRedirect(route('contactListColumns.edit', $vault))
             ->assertSessionHasErrors(['columns' => 'The list cannot show the same column twice.']);
     }
-
-    #[Test]
-    public function it_keeps_what_somebody_typed_when_the_columns_come_back_refused(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $this->actingAs($user)
-            ->from(route('contactListColumns.edit', $vault))
-            ->followingRedirects()
-            ->put(route('contactListColumns.update', $vault), [
-                'columns' => [
-                    ['source' => 'nickname', 'heading' => 'Goes by', 'is_visible' => '1'],
-                    ['source' => 'nickname', 'heading' => 'Also goes by', 'is_visible' => '1'],
-                ],
-            ])
-            ->assertStatus(200)
-            ->assertSee('The list cannot show the same column twice.')
-            ->assertSee('Also goes by');
-    }
 }

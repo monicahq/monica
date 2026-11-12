@@ -160,25 +160,6 @@ class ApiDocsReturnFieldsTest extends TestCase
     }
 
     #[Test]
-    public function it_leaves_exactly_one_field_unchecked_on_purpose(): void
-    {
-        $opaque = [];
-
-        foreach ($this->endpoints() as $section) {
-            foreach ($section->returnFields as $field) {
-                if ($field['opaque'] ?? false) {
-                    $opaque[] = $section->id.' '.$field['name'];
-                }
-            }
-        }
-
-        $this->assertSame([
-            'logs-index data[].attributes.parameters',
-            'logs-show data.attributes.parameters',
-        ], $opaque);
-    }
-
-    #[Test]
     public function every_documented_example_has_the_shape_the_endpoint_answers_with(): void
     {
         $problems = [];

@@ -10,6 +10,7 @@ use App\Models\Vault;
 use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -86,5 +87,18 @@ class ResolvesModelInVaultTest extends TestCase
             'account_id' => $user->account_id,
             'vault_id' => $vault->id,
         ]);
+    }
+
+    #[Test]
+    public function it_refuses_a_record_reached_through_another_vault_of_the_same_account(): void
+    {
+        $user = User::factory()->create();
+        $entity = $this->entityOf($user);
+        $otherVault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        Route::middleware('web')->get('test/{vault}/{entity}', fn (Vault $vault, Entity $entity): string => $entity->uuid);
+
+        $this->actingAs($user)->get("test/{$entity->vault->uuid}/{$entity->uuid}")->assertOk();
+        $this->actingAs($user)->get("test/{$otherVault->uuid}/{$entity->uuid}")->assertNotFound();
     }
 }

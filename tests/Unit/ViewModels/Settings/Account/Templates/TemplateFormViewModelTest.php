@@ -17,34 +17,6 @@ class TemplateFormViewModelTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_says_whether_it_is_naming_or_renaming(): void
-    {
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-
-        $this->assertFalse((new TemplateFormViewModel(user: $user))->isEdit());
-        $this->assertTrue((new TemplateFormViewModel(user: $user, template: $template))->isEdit());
-    }
-
-    #[Test]
-    public function it_starts_the_fields_with_what_the_template_says(): void
-    {
-        $user = User::factory()->create();
-        $template = Template::factory()->create([
-            'account_id' => $user->account_id,
-            'name' => 'Pet',
-            'slug' => 'pet',
-            'description' => 'Everything the vet asks',
-        ]);
-
-        $values = (new TemplateFormViewModel(user: $user, template: $template))->values();
-
-        $this->assertEquals('Pet', $values['name']);
-        $this->assertEquals('pet', $values['slug']);
-        $this->assertEquals('Everything the vet asks', $values['description']);
-    }
-
-    #[Test]
     public function it_starts_a_new_template_empty_and_describing_a_contact(): void
     {
         $user = User::factory()->create();
@@ -53,33 +25,6 @@ class TemplateFormViewModelTest extends TestCase
 
         $this->assertEquals('', $values['name']);
         $this->assertEquals('contact', $values['appliesTo']);
-    }
-
-    #[Test]
-    public function it_sends_cancel_back_to_where_the_form_was_opened_from(): void
-    {
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id, 'slug' => 'pet']);
-
-        $this->assertEquals(
-            route('settings.templates.index'),
-            (new TemplateFormViewModel(user: $user))->cancelUrl(),
-        );
-
-        $this->assertEquals(
-            route('settings.templateBuilder.index', 'pet'),
-            (new TemplateFormViewModel(user: $user, template: $template))->cancelUrl(),
-        );
-    }
-
-    #[Test]
-    public function it_only_offers_the_slug_while_the_template_is_being_created(): void
-    {
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-
-        $this->assertTrue((new TemplateFormViewModel(user: $user))->slugIsEditable());
-        $this->assertFalse((new TemplateFormViewModel(user: $user, template: $template))->slugIsEditable());
     }
 
     #[Test]

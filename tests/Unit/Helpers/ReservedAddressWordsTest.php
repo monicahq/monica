@@ -37,14 +37,6 @@ class ReservedAddressWordsTest extends TestCase
     }
 
     #[Test]
-    public function it_reads_the_routes_rather_than_a_copy_of_them(): void
-    {
-        $this->assertContains('new', $this->fixedSegmentsAfter('vaults'));
-        $this->assertContains('favourites', $this->fixedSegmentsAfter('contacts'));
-        $this->assertContains('names-only', $this->fixedSegmentsAfter('contacts'));
-    }
-
-    #[Test]
     public function it_reserves_every_grouping_the_contact_list_answers_to(): void
     {
         foreach (ContactGroupingEnum::values() as $grouping) {

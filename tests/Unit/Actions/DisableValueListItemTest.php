@@ -50,26 +50,6 @@ class DisableValueListItemTest extends TestCase
     }
 
     #[Test]
-    public function it_leaves_the_choice_where_it_is_and_touches_nothing_that_uses_it(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $item = ValueListItem::factory()->used(7)->create([
-            'account_id' => $user->account_id,
-            'position' => 3,
-        ]);
-
-        new DisableValueListItem(user: $user, item: $item)->execute();
-
-        $item->refresh();
-
-        $this->assertSame(3, $item->position);
-        $this->assertSame(7, $item->usage_count);
-        $this->assertNotSoftDeleted('value_list_items', ['id' => $item->id]);
-    }
-
-    #[Test]
     public function it_refuses_a_choice_in_another_account(): void
     {
         Queue::fake();

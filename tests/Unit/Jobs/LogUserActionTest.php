@@ -150,20 +150,6 @@ class LogUserActionTest extends TestCase
     }
 
     #[Test]
-    public function it_touches_no_vault_unless_it_is_given_one(): void
-    {
-        $user = User::factory()->create();
-
-        new LogUserAction(
-            account: $user->account,
-            user: $user,
-            action: UserActionEnum::UserProfileUpdate,
-        )->handle();
-
-        $this->assertNull(Log::query()->latest()->first()->vault_id);
-    }
-
-    #[Test]
     public function it_logs_the_interface_the_action_came_from(): void
     {
         $user = User::factory()->create();
@@ -182,20 +168,6 @@ class LogUserActionTest extends TestCase
         $this->assertEquals(LogSourceEnum::Api, $log->source);
         $this->assertEquals('Dundie awards bot', $log->source_detail);
         $this->assertEquals('10.0.0.1', $log->ip_address);
-    }
-
-    #[Test]
-    public function it_takes_the_action_for_a_web_one_unless_told_otherwise(): void
-    {
-        $user = User::factory()->create();
-
-        new LogUserAction(
-            account: $user->account,
-            user: $user,
-            action: UserActionEnum::UserLogin,
-        )->handle();
-
-        $this->assertEquals(LogSourceEnum::Web, Log::query()->latest()->first()->source);
     }
 
     #[Test]

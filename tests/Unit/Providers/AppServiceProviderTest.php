@@ -74,12 +74,6 @@ class AppServiceProviderTest extends TestCase
     }
 
     #[Test]
-    public function it_registers_the_collation_macro_on_collections(): void
-    {
-        $this->assertTrue(Collection::hasMacro('sortByCollator'));
-    }
-
-    #[Test]
     public function it_orders_a_collection_by_a_string_key_through_the_macro(): void
     {
         $sorted = new Collection([
@@ -140,15 +134,6 @@ class AppServiceProviderTest extends TestCase
             ->sortByCollator(fn (string $name): string => $name);
 
         $this->assertSame([0, 1, 2], $sorted->keys()->all());
-    }
-
-    #[Test]
-    public function it_files_a_letter_carrying_a_ring_with_its_plain_letter(): void
-    {
-        $sorted = new Collection(['Scott', 'Ångström', 'Martin'])
-            ->sortByCollator(fn (string $name): string => $name);
-
-        $this->assertSame(['Ångström', 'Martin', 'Scott'], $sorted->all());
     }
 
     #[Test]

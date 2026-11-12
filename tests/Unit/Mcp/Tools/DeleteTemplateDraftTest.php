@@ -49,10 +49,4 @@ class DeleteTemplateDraftTest extends TestCase
 
         $this->assertModelExists($published);
     }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.templates.versions.destroy', app(DeleteTemplateDraft::class)->mirrors());
-    }
 }

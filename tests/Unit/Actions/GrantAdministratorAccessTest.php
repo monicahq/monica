@@ -30,6 +30,8 @@ class GrantAdministratorAccessTest extends TestCase
         $this->assertInstanceOf(Administrator::class, $capacity);
         $this->assertDatabaseHas('administrators', ['user_id' => $dwight->id]);
         $this->assertTrue($dwight->refresh()->isAdministrator());
+
+        Queue::assertPushedOn('low', LogAdministratorAction::class);
     }
 
     #[Test]
@@ -46,18 +48,6 @@ class GrantAdministratorAccessTest extends TestCase
             'user_id' => $dwight->id,
             'granted_by_user_id' => $michael->id,
         ]);
-    }
-
-    #[Test]
-    public function it_writes_the_grant_down(): void
-    {
-        Queue::fake();
-
-        $dwight = User::factory()->create();
-
-        new GrantAdministratorAccess(user: $dwight)->execute();
-
-        Queue::assertPushedOn('low', LogAdministratorAction::class);
     }
 
     #[Test]

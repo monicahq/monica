@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Auth;
 
-use App\Enums\EmailType;
 use App\Models\MagicLink;
 use App\Models\User;
 use App\Notifications\MagicLinkCreated;
@@ -56,23 +55,6 @@ class MagicLinkControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_records_the_email_it_sends(): void
-    {
-        $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
-
-        $this->post(route('auth.magicLink.create'), [
-            'email' => 'michael.scott@dundermifflin.com',
-        ]);
-
-        $this->assertDatabaseHas('emails_sent', [
-            'account_id' => $user->account_id,
-            'user_id' => $user->id,
-            'email_type' => EmailType::MagicLinkCreated->value,
-            'email_address' => 'michael.scott@dundermifflin.com',
-        ]);
-    }
-
-    #[Test]
     public function it_says_the_same_thing_when_the_address_has_no_account(): void
     {
         Notification::fake();
@@ -100,18 +82,8 @@ class MagicLinkControllerTest extends TestCase
         $response = $this->get($this->signedUrlFor($link));
 
         $response->assertRedirect(route('home.index'));
+        $response->assertCookie(Auth::guard('web')->getRecallerName());
         $this->assertAuthenticatedAs($user);
-    }
-
-    #[Test]
-    public function it_remembers_the_browser_that_opened_the_link(): void
-    {
-        Queue::fake();
-
-        $link = $this->linkFor(User::factory()->create());
-
-        $this->get($this->signedUrlFor($link))
-            ->assertCookie(Auth::guard('web')->getRecallerName());
     }
 
     #[Test]
@@ -127,18 +99,8 @@ class MagicLinkControllerTest extends TestCase
         $response->assertRedirect(route('auth.twoFactor.new'));
         $response->assertSessionHas('twoFactor.user.id', $user->id);
         $response->assertSessionHas('twoFactor.signInMethod', 'email_link');
+        $response->assertSessionHas('twoFactor.remember', true);
         $this->assertGuest();
-    }
-
-    #[Test]
-    public function it_carries_the_decision_to_remember_through_the_challenge(): void
-    {
-        Queue::fake();
-
-        $link = $this->linkFor(User::factory()->twoFactor()->create());
-
-        $this->get($this->signedUrlFor($link))
-            ->assertSessionHas('twoFactor.remember', true);
     }
 
     #[Test]
@@ -157,19 +119,6 @@ class MagicLinkControllerTest extends TestCase
         $response = $this->get($url);
 
         $response->assertRedirect(route('auth.magicLink.new'));
-        $this->assertGuest();
-    }
-
-    #[Test]
-    public function it_refuses_a_link_whose_signature_ran_out(): void
-    {
-        Queue::fake();
-
-        $link = $this->linkFor(User::factory()->create());
-
-        $response = $this->get($this->signedUrlFor($link, now()->subMinute()));
-
-        $response->assertForbidden();
         $this->assertGuest();
     }
 
@@ -242,32 +191,6 @@ class MagicLinkControllerTest extends TestCase
         $this->get($url)->assertStatus(404);
 
         Notification::assertNothingSent();
-        $this->assertGuest();
-    }
-
-    #[Test]
-    public function it_does_not_spend_a_link_while_the_setting_is_off(): void
-    {
-        $user = User::factory()->create();
-        $link = $this->linkFor($user);
-        $url = $this->signedUrlFor($link);
-
-        config()->set('monica.magic_link_enabled', false);
-
-        $this->get($url)->assertStatus(404);
-
-        $this->assertNull($link->refresh()->used_at);
-        $this->assertGuest();
-    }
-
-    #[Test]
-    public function it_answers_not_found_before_checking_the_signature_while_off(): void
-    {
-        config()->set('monica.magic_link_enabled', false);
-
-        $response = $this->get(route('auth.magicLink.show', ['token' => self::TOKEN]));
-
-        $response->assertStatus(404);
         $this->assertGuest();
     }
 

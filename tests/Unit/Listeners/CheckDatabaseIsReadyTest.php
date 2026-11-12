@@ -33,16 +33,4 @@ class CheckDatabaseIsReadyTest extends TestCase
 
         new CheckDatabaseIsReady()->handle(new DiagnosingHealth);
     }
-
-    #[Test]
-    public function it_is_the_listener_the_health_check_reaches(): void
-    {
-        $this->assertContains(
-            CheckDatabaseIsReady::class.'@handle',
-            array_map(
-                fn (object|string $listener): string => is_string($listener) ? $listener : $listener::class,
-                app('events')->getRawListeners()[DiagnosingHealth::class] ?? [],
-            ),
-        );
-    }
 }

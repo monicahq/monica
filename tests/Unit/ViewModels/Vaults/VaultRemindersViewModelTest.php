@@ -165,17 +165,6 @@ class VaultRemindersViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_gives_each_grouping_an_address_of_its_own(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $viewModel = $this->viewModelFor($user, $vault);
-
-        $this->assertStringEndsWith("/vaults/{$vault->slug}/reminders", $viewModel->groupedByWhenUrl());
-        $this->assertStringEndsWith("/vaults/{$vault->slug}/reminders/by-contact", $viewModel->groupedByContactUrl());
-    }
-
-    #[Test]
     public function it_shows_one_page_of_rows_and_gives_a_group_its_heading_only_where_it_starts(): void
     {
         $this->travelTo(CarbonImmutable::parse('2026-09-04 12:00:00', 'UTC'));

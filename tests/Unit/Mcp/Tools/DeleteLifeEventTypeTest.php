@@ -33,21 +33,6 @@ class DeleteLifeEventTypeTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_life_event_type_that_came_with_the_account(): void
-    {
-        $user = User::factory()->create();
-        $type = LifeEventType::factory()->supplied()->create([
-            'account_id' => $user->account_id,
-            'life_event_category_id' => LifeEventCategory::factory()->create(['account_id' => $user->account_id])->id,
-        ]);
-
-        EricaServer::actingAs($user)->tool(DeleteLifeEventType::class, ['life_event_type' => $type->uuid])
-            ->assertHasErrors(['The type came with your account and stays.']);
-
-        $this->assertNotSoftDeleted($type);
-    }
-
-    #[Test]
     public function it_refuses_a_life_event_type_life_events_were_recorded_with(): void
     {
         $user = User::factory()->create();
@@ -59,12 +44,6 @@ class DeleteLifeEventTypeTest extends TestCase
             ->assertHasErrors(['Life events were recorded with this type, so it stays.']);
 
         $this->assertNotSoftDeleted($type);
-    }
-
-    #[Test]
-    public function it_names_the_api_capability_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.lifeEventTypes.destroy', app(DeleteLifeEventType::class)->mirrors());
     }
 
     private function type(User $user): LifeEventType

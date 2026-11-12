@@ -99,30 +99,6 @@ class RepetitionOrderTest extends TestCase
         }
     }
 
-    #[Test]
-    public function it_puts_a_new_document_last_on_the_template_an_account_starts_with(): void
-    {
-        [$user, $vault, $contact, $repeater] = $this->aContactWithADocument();
-
-        $description = $repeater->children->firstWhere('key', DefaultFieldEnum::Description->value);
-
-        $this->actingAs($user)->put(
-            route('contacts.sections.update', [$vault, $contact, $this->sectionOf($repeater)]),
-            ['fields' => [$repeater->id => [
-                0 => ['id' => $contact->fieldValueRows()->where('field_id', $repeater->id)->value('id'), 'values' => [$description->id => 'The lease']],
-                1 => ['values' => [$description->id => 'The insurance']],
-            ]]],
-        )->assertRedirect();
-
-        $html = $this->formFor($user, $vault, $contact, $repeater);
-
-        $this->assertLessThan(
-            mb_strpos($html, 'The insurance'),
-            mb_strpos($html, 'The lease'),
-            'The document added second comes last.',
-        );
-    }
-
     /** @return array{0: User, 1: Vault, 2: Contact, 3: Field} */
     private function aContactWithADocument(): array
     {

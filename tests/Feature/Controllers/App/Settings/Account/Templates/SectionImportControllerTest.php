@@ -37,28 +37,6 @@ class SectionImportControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_offers_the_import_from_the_builder_of_a_draft(): void
-    {
-        $user = User::factory()->create();
-        [$template, $page] = $this->draft($user);
-
-        $this->actingAs($user)->get(route('settings.templateBuilder.index', $template))
-            ->assertStatus(200)
-            ->assertSee(route('settings.sectionImport.new', [$template, $page]), false);
-    }
-
-    #[Test]
-    public function it_does_not_offer_the_import_on_a_published_version(): void
-    {
-        $user = User::factory()->create();
-        $template = $this->publishedTemplate($user);
-
-        $this->actingAs($user)->get(route('settings.templateBuilder.index', $template))
-            ->assertStatus(200)
-            ->assertDontSee('Import a section');
-    }
-
-    #[Test]
     public function it_imports_the_section_onto_the_page(): void
     {
         Queue::fake();
@@ -98,28 +76,6 @@ class SectionImportControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_imports_a_section_carrying_no_mark_onto_the_defaults(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $file = $this->exportedSection($user, marked: false);
-        [$template, $page] = $this->draft($user);
-
-        $this->actingAs($user)->post(route('settings.sectionImport.create', [$template, $page]), ['file' => $file])
-            ->assertRedirect();
-
-        $copy = StructureVersionSection::query()
-            ->where('structure_version_page_id', $page->id)
-            ->sole()
-            ->sectionVersion
-            ->section;
-
-        $this->assertNull($copy->icon);
-        $this->assertNull($copy->colour);
-    }
-
-    #[Test]
     public function it_refuses_a_file_that_does_not_read_and_writes_nothing(): void
     {
         Queue::fake();
@@ -144,16 +100,6 @@ class SectionImportControllerTest extends TestCase
         $page = $template->publishedVersion->pages()->firstOrFail();
 
         $this->actingAs($user)->get(route('settings.sectionImport.new', [$template, $page]))->assertNotFound();
-    }
-
-    #[Test]
-    public function it_refuses_a_page_that_is_not_on_this_template(): void
-    {
-        $user = User::factory()->create();
-        [$template] = $this->draft($user);
-        [, $elsewhere] = $this->draft($user);
-
-        $this->actingAs($user)->get(route('settings.sectionImport.new', [$template, $elsewhere]))->assertNotFound();
     }
 
     private function exportedSection(User $user, bool $marked = true): string

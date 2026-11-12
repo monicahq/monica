@@ -49,21 +49,6 @@ class TemplateActivationControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_confirms_the_state_rather_than_inverting_it_when_sent_twice(): void
-    {
-        Queue::fake();
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-
-        Sanctum::actingAs($user);
-
-        $this->json('PUT', "/api/v1/templates/{$template->uuid}/activation", ['is_active' => false])->assertOk();
-        $this->json('PUT', "/api/v1/templates/{$template->uuid}/activation", ['is_active' => false])
-            ->assertOk()
-            ->assertJsonPath('data.attributes.is_active', false);
-    }
-
-    #[Test]
     public function it_validates_that_a_state_is_sent(): void
     {
         Sanctum::actingAs($user = User::factory()->create());

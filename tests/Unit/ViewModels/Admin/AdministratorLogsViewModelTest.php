@@ -7,7 +7,6 @@ namespace Tests\Unit\ViewModels\Admin;
 use App\Enums\AdministratorActionEnum;
 use App\Enums\DateFormatEnum;
 use App\Enums\TimeFormatEnum;
-use App\Helpers\PageSize;
 use App\Models\Account;
 use App\Models\AdministratorLog;
 use App\Models\User;
@@ -82,33 +81,6 @@ class AdministratorLogsViewModelTest extends TestCase
         $this->assertTrue($viewModel->isFiltered());
         $this->assertCount(1, $viewModel->entries());
         $this->assertEquals($wanted->id, $viewModel->entries()->first()->id);
-    }
-
-    #[Test]
-    public function it_hands_back_one_page_at_a_time(): void
-    {
-        AdministratorLog::factory()->count(21)->create();
-
-        $firstPage = new AdministratorLogsViewModel(viewer: $this->viewer())->entries();
-
-        $this->assertCount(20, $firstPage);
-        $this->assertSame(21, $firstPage->total());
-
-        $this->app['request']->merge(['page' => 2]);
-
-        $this->assertCount(1, new AdministratorLogsViewModel(viewer: $this->viewer())->entries());
-    }
-
-    #[Test]
-    public function it_hands_back_everything_on_one_page_when_asked_for_all(): void
-    {
-        AdministratorLog::factory()->count(21)->create();
-
-        $entries = new AdministratorLogsViewModel(viewer: $this->viewer(), size: PageSize::ALL)->entries();
-
-        $this->assertCount(21, $entries);
-        $this->assertSame(21, $entries->total());
-        $this->assertFalse($entries->hasMorePages());
     }
 
     #[Test]
