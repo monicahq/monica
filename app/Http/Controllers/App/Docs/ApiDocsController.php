@@ -28,6 +28,10 @@ class ApiDocsController extends Controller
         return view('app.docs.api.show', [
             'navigation' => $viewModel->navigation(),
             'section' => $current,
+            'previous' => $viewModel->previous($current),
+            'next' => $viewModel->next($current),
+            'lastGenerated' => $viewModel->lastGenerated(),
+            'supportUrl' => $viewModel->supportUrl(),
         ]);
     }
 }

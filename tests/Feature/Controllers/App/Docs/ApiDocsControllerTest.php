@@ -143,4 +143,20 @@ class ApiDocsControllerTest extends TestCase
         $this->get(route('docs.api.show', ['section' => 'support-requests-index']))->assertSee('List support requests');
         $this->get(route('docs.api.show', ['section' => 'admin-support-requests-index']))->assertSee('List support requests of the instance');
     }
+
+    #[Test]
+    public function a_page_ends_with_its_neighbours_and_the_footer(): void
+    {
+        $response = $this->get(route('docs.api.show', ['section' => 'rate-limits']));
+
+        $response->assertSee('Authentication');
+        $response->assertSee(route('docs.api.show', ['section' => 'authentication-guide']), escape: false);
+        $response->assertSee('Pagination');
+        $response->assertSee(route('docs.api.show', ['section' => 'pagination']), escape: false);
+        $response->assertSee(route('llmsText.index'), escape: false);
+        $response->assertSee(route('docs.api.changelog.index'), escape: false);
+        $response->assertSee('Read the changelog');
+        $response->assertSee(route('support.requests.new'), escape: false);
+        $response->assertSee('datetime="2026-11-12"', escape: false);
+    }
 }

@@ -69,6 +69,19 @@ Conventions:
 - You MUST name each refusal the endpoint answers with 422, in the words the action or the policy uses.
 - You MUST NOT use em dashes in the copy. You MUST rephrase with periods, commas or parentheses.
 
+Whenever the reference changes, you MUST move `ApiDocsViewModel::LAST_GENERATED` to the current date.
+
+## Step 2b: Record the change in the changelog
+
+A pull request that adds, changes, deprecates or removes an endpoint or a field MUST add an entry to the API changelog, in the same pull request. The changelog is read at `/docs/api/changelog`.
+
+- Write it in `resources/docs/api-changelog/YYYY-MM-DD.php`, the date the change ships. Add to that file when it exists; create it otherwise, returning `['date' => 'YYYY-MM-DD', 'note' => '...', 'entries' => [...]]`. The note is optional.
+- Each entry carries `id` (lower case letters, digits and hyphens, unique across every release), `kind` (`Added`, `Changed`, `Deprecated` or `Removed`), `group` (the `name` of the file in `resources/docs/api` it concerns), `title`, `summary`, `why`, and `changes`: a list of `['field' => ..., 'change' => ..., 'endpoints' => ['GET /vaults/{vault}/contacts']]`, paths written as in `resources/docs/api`. An empty `endpoints` list reads "All endpoints".
+- A change that can stop an existing integration from working sets `'breaking' => true` and an `impact` sentence saying what fails.
+- An optional `example` holds a `label`, an `after` shape and, for a change to an existing shape, a `before` shape.
+- There is no upgrade section. Say what an integration has to do in `impact` or `summary`.
+- `tests/Unit/ViewModels/Docs/ApiChangelogViewModelTest.php` refuses a malformed entry; the fixtures under `tests/Fixtures/Docs/ApiChangelog/Valid` show complete releases.
+
 ## Step 3: Test
 
 Three tests fail on their own when the reference and the API disagree. Each new endpoint asks for two edits to the tests:

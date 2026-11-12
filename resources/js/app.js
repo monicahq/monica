@@ -7,6 +7,7 @@ import focus from '@alpinejs/focus';
 import anchor from '@alpinejs/anchor';
 import ajax from '@imacrayon/alpine-ajax';
 
+import apiChangelog from './api-changelog';
 import apiDocsSidebarScroll from './api-docs-sidebar-scroll';
 import confirmPassword from './confirm-password';
 import contactListColumns from './contact-list-columns';
@@ -44,6 +45,7 @@ window.addEventListener('touchstart', leaveTurboLinksToTurbo, { capture: true, p
 // The docs offer each page as Markdown. Turbo would fetch it as a page, get text back, then load it a second time.
 Turbo.config.drive.unvisitableExtensions.add('.md');
 
+Alpine.data('apiChangelog', apiChangelog);
 Alpine.data('apiDocsSidebarScroll', apiDocsSidebarScroll);
 Alpine.data('carddavDocs', (options) => mcpDocs({ ...options, endpoint: '/dav' }));
 Alpine.data('confirmPassword', confirmPassword);

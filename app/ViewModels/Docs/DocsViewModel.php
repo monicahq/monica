@@ -88,6 +88,12 @@ class DocsViewModel
             $lines[] = "- [{$section->title}](".route('docs.api.markdown.show', ['section' => $section->id]).')';
         }
 
+        $lines[] = '- [Changelog]('.route('docs.api.changelog.markdown.index').'): every change to the API, by the date it shipped';
+
+        foreach (app(ApiChangelogViewModel::class)->entries() as $entry) {
+            $lines[] = "- [{$entry->title}](".route('docs.api.changelog.markdown.show', ['entry' => $entry->id]).')';
+        }
+
         if ($this->mcpIsOn()) {
             $lines[] = '';
             $lines[] = '## MCP';
@@ -114,6 +120,12 @@ class DocsViewModel
 
         foreach (new ApiDocsViewModel()->sections() as $section) {
             $lastUpdatedByAddress[route('docs.api.show', ['section' => $section->id])] = null;
+        }
+
+        $lastUpdatedByAddress[route('docs.api.changelog.index')] = null;
+
+        foreach (app(ApiChangelogViewModel::class)->entries() as $entry) {
+            $lastUpdatedByAddress[route('docs.api.changelog.show', ['entry' => $entry->id])] = null;
         }
 
         foreach (PortalCatalogue::locales() as $locale) {

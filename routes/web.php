@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use App\Enums\ContactGroupingEnum;
 use App\Enums\SsoProviderEnum;
+use App\Http\Controllers\App\Docs\ApiChangelogController;
+use App\Http\Controllers\App\Docs\ApiChangelogMarkdownController;
 use App\Http\Controllers\App\Docs\ApiDocsController;
 use App\Http\Controllers\App\Docs\ApiDocsMarkdownController;
 use App\Http\Controllers\App\Docs\CarddavDocsController;
@@ -200,6 +202,22 @@ Route::get('docs/api.md', [ApiDocsMarkdownController::class, 'index'])
 
 Route::get('docs/api/v1/openapi', [OpenApiDocumentController::class, 'index'])
     ->name('docs.api.openapi');
+
+Route::get('docs/api/changelog', [ApiChangelogController::class, 'index'])
+    ->middleware(['searchable'])
+    ->name('docs.api.changelog.index');
+
+Route::get('docs/api/changelog.md', [ApiChangelogMarkdownController::class, 'index'])
+    ->name('docs.api.changelog.markdown.index');
+
+Route::get('docs/api/changelog/{entry}.md', [ApiChangelogMarkdownController::class, 'show'])
+    ->where('entry', '[a-z0-9\-]+')
+    ->name('docs.api.changelog.markdown.show');
+
+Route::get('docs/api/changelog/{entry}', [ApiChangelogController::class, 'show'])
+    ->middleware(['searchable'])
+    ->where('entry', '[a-z0-9\-]+')
+    ->name('docs.api.changelog.show');
 
 Route::get('docs/api/{section}.md', [ApiDocsMarkdownController::class, 'show'])
     ->where('section', '[a-z0-9\-]+')

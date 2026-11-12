@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\ViewModels\Docs;
 
 use App\Models\User;
+use App\ViewModels\Docs\ApiChangelogViewModel;
 use App\ViewModels\Docs\ApiDocsViewModel;
 use App\ViewModels\Docs\DocsViewModel;
 use App\ViewModels\Docs\PortalCatalogue;
@@ -93,6 +94,20 @@ class DocsViewModelTest extends TestCase
         config()->set('monica.registration_enabled', false);
 
         $this->assertFalse(new DocsViewModel()->registrationIsEnabled());
+    }
+
+    #[Test]
+    public function it_lists_the_api_changelog_and_its_entries_for_assistants_and_crawlers(): void
+    {
+        $this->app->instance(ApiChangelogViewModel::class, new ApiChangelogViewModel(directory: base_path('tests/Fixtures/Docs/ApiChangelog/Valid')));
+
+        $text = new DocsViewModel()->llmsText();
+        $sitemap = new DocsViewModel()->sitemap();
+
+        $this->assertStringContainsString('- [Changelog]('.route('docs.api.changelog.markdown.index').')', $text);
+        $this->assertStringContainsString('- [Adds colour to the vault object]('.route('docs.api.changelog.markdown.show', ['entry' => 'vault-colour']).')', $text);
+        $this->assertStringContainsString('<loc>'.route('docs.api.changelog.index').'</loc>', $sitemap);
+        $this->assertStringContainsString('<loc>'.route('docs.api.changelog.show', ['entry' => 'vault-colour']).'</loc>', $sitemap);
     }
 
     #[Test]

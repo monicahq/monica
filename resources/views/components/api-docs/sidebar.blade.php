@@ -19,7 +19,7 @@
   <nav class="mb-6.5 flex flex-col gap-px" aria-label="Getting started">
     @foreach ($navigation['guides'] as $guide)
       <a
-        href="{{ route('docs.api.show', ['section' => $guide['id']]) }}"
+        href="{{ $guide['url'] }}"
         data-turbo="true"
         x-show="!query || {{ Js::from(mb_strtolower($guide['label'])) }}.includes(query.toLowerCase())"
         @if ($current === $guide['id']) aria-current="page" @endif

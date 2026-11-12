@@ -6,10 +6,13 @@ namespace App\ViewModels\Docs;
 
 use App\Helpers\FlagState;
 use App\Helpers\SupportAvailability;
+use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Route;
 
 class ApiDocsViewModel
 {
+    public const string LAST_GENERATED = '2026-11-12';
+
     /** @var list<array{name: string, guide: bool, sections: list<ApiDocsSection>}>|null */
     private ?array $groups = null;
 
@@ -88,8 +91,65 @@ class ApiDocsViewModel
         return null;
     }
 
+    public function sectionFor(string $method, string $path): ?ApiDocsSection
+    {
+        foreach ($this->groups() as $group) {
+            if ($group['guide']) {
+                continue;
+            }
+
+            foreach ($group['sections'] as $section) {
+                if ($section->method === $method && $section->path === $path) {
+                    return $section;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public function previous(ApiDocsSection $section): ?ApiDocsSection
+    {
+        $sections = $this->sections();
+
+        foreach ($sections as $index => $candidate) {
+            if ($candidate->id === $section->id) {
+                return $sections[$index - 1] ?? null;
+            }
+        }
+
+        return null;
+    }
+
+    public function next(ApiDocsSection $section): ?ApiDocsSection
+    {
+        $sections = $this->sections();
+
+        foreach ($sections as $index => $candidate) {
+            if ($candidate->id === $section->id) {
+                return $sections[$index + 1] ?? null;
+            }
+        }
+
+        return null;
+    }
+
+    public function lastGenerated(): CarbonImmutable
+    {
+        return CarbonImmutable::parse(self::LAST_GENERATED);
+    }
+
+    public function supportUrl(): ?string
+    {
+        if (! SupportAvailability::isEnabled()) {
+            return null;
+        }
+
+        return route('support.requests.new');
+    }
+
     /**
-     * @return array{guides: list<array{id: string, label: string}>, resources: list<array{name: string, items: list<array{id: string, label: string, method: string}>}>}
+     * @return array{guides: list<array{id: string, label: string, url: string}>, resources: list<array{name: string, items: list<array{id: string, label: string, method: string}>}>}
      */
     public function navigation(): array
     {
@@ -99,8 +159,10 @@ class ApiDocsViewModel
         foreach ($this->groups() as $group) {
             if ($group['guide']) {
                 foreach ($group['sections'] as $section) {
-                    $guides[] = ['id' => $section->id, 'label' => $section->label];
+                    $guides[] = ['id' => $section->id, 'label' => $section->label, 'url' => route('docs.api.show', ['section' => $section->id])];
                 }
+
+                $guides[] = ['id' => 'changelog', 'label' => 'Changelog', 'url' => route('docs.api.changelog.index')];
 
                 continue;
             }

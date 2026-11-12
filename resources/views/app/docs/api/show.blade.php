@@ -2,6 +2,10 @@
 {{--
   @var array $navigation
   @var \App\ViewModels\Docs\ApiDocsSection $section
+  @var \App\ViewModels\Docs\ApiDocsSection|null $previous
+  @var \App\ViewModels\Docs\ApiDocsSection|null $next
+  @var \Carbon\CarbonInterface $lastGenerated
+  @var string|null $supportUrl
 --}}
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -33,6 +37,8 @@
 
         <main id="main-content" tabindex="-1" class="min-h-[calc(100vh-7rem)] min-w-0 flex-1 bg-canvas px-4 py-8 focus:outline-none sm:px-7 sm:pb-24">
           <x-api-docs.endpoint :section="$section" />
+
+          <x-api-docs.page-end :previous="$previous" :next="$next" :last-generated="$lastGenerated" :support-url="$supportUrl" />
         </main>
       </div>
     </div>

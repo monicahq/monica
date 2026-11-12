@@ -63,7 +63,7 @@ class ApiDocsViewModelTest extends TestCase
 
         $this->assertEquals(
             [
-                'Introduction', 'Authentication', 'Rate limits', 'Pagination', 'Errors',
+                'Introduction', 'Authentication', 'Rate limits', 'Pagination', 'Errors', 'Changelog',
             ],
             array_column($navigation['guides'], 'label'),
         );
@@ -128,6 +128,24 @@ class ApiDocsViewModelTest extends TestCase
 
         $this->assertNull(new ApiDocsViewModel()->section('group-files-index'));
         $this->assertNotNull(new ApiDocsViewModel()->section('group-notes-index'));
+    }
+
+    #[Test]
+    public function it_leads_the_last_guide_to_the_changelog(): void
+    {
+        $guides = new ApiDocsViewModel()->navigation()['guides'];
+
+        $this->assertSame(route('docs.api.changelog.index'), end($guides)['url']);
+        $this->assertSame(route('docs.api.show', ['section' => 'introduction']), $guides[0]['url']);
+    }
+
+    #[Test]
+    public function it_finds_the_section_documenting_an_endpoint(): void
+    {
+        $viewModel = new ApiDocsViewModel;
+
+        $this->assertSame('me-show', $viewModel->sectionFor('GET', '/me')?->id);
+        $this->assertNull($viewModel->sectionFor('PUT', '/me/job-title'));
     }
 
     #[Test]
@@ -254,5 +272,72 @@ class ApiDocsViewModelTest extends TestCase
 
         $this->assertNull(new ApiDocsViewModel()->section('support-requests-index'));
         $this->assertNotContains('Support requests', array_column(new ApiDocsViewModel()->navigation()['resources'], 'name'));
+    }
+
+    #[Test]
+    public function it_has_no_previous_page_before_the_first_one(): void
+    {
+        $viewModel = new ApiDocsViewModel;
+        $first = $viewModel->sections()[0];
+
+        $this->assertNull($viewModel->previous($first));
+        $this->assertEquals('authentication-guide', $viewModel->next($first)->id);
+    }
+
+    #[Test]
+    public function it_has_no_next_page_after_the_last_one(): void
+    {
+        $viewModel = new ApiDocsViewModel;
+        $sections = $viewModel->sections();
+        $last = $sections[count($sections) - 1];
+
+        $this->assertNull($viewModel->next($last));
+        $this->assertEquals($sections[count($sections) - 2]->id, $viewModel->previous($last)->id);
+    }
+
+    #[Test]
+    public function it_names_both_neighbours_of_a_page_in_the_middle(): void
+    {
+        $viewModel = new ApiDocsViewModel;
+
+        $section = $viewModel->section('rate-limits');
+
+        $this->assertEquals('authentication-guide', $viewModel->previous($section)->id);
+        $this->assertEquals('pagination', $viewModel->next($section)->id);
+    }
+
+    #[Test]
+    public function it_skips_a_page_switched_off_when_naming_the_neighbours(): void
+    {
+        $viewModel = new ApiDocsViewModel;
+        $ids = array_map(fn (ApiDocsSection $section): string => $section->id, $viewModel->sections());
+        $position = array_search('group-files-index', $ids, true);
+
+        $this->assertEquals('group-files-index', $viewModel->next($viewModel->section($ids[$position - 1]))->id);
+
+        Feature::for(null)->deactivate('file-upload');
+        Feature::flushCache();
+
+        $viewModel = new ApiDocsViewModel;
+
+        $this->assertNotEquals('group-files-index', $viewModel->next($viewModel->section($ids[$position - 1]))->id);
+    }
+
+    #[Test]
+    public function it_parses_the_date_the_reference_was_last_generated(): void
+    {
+        $date = new ApiDocsViewModel()->lastGenerated();
+
+        $this->assertEquals(ApiDocsViewModel::LAST_GENERATED, $date->toDateString());
+    }
+
+    #[Test]
+    public function it_gives_the_support_page_only_while_support_is_switched_on(): void
+    {
+        $this->assertEquals(route('support.requests.new'), new ApiDocsViewModel()->supportUrl());
+
+        config(['monica.support_enabled' => false]);
+
+        $this->assertNull(new ApiDocsViewModel()->supportUrl());
     }
 }
