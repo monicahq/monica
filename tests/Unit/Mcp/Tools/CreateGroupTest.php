@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\CreateGroup;
 use App\Models\User;
 use App\Models\Vault;
@@ -24,7 +24,7 @@ class CreateGroupTest extends TestCase
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(CreateGroup::class, ['vault' => $vault->uuid, 'name' => 'Party planning committee'])
+        MonicaServer::actingAs($user)->tool(CreateGroup::class, ['vault' => $vault->uuid, 'name' => 'Party planning committee'])
             ->assertOk()
             ->assertHasNoErrors();
 

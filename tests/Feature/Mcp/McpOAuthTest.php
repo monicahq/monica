@@ -51,7 +51,7 @@ class McpOAuthTest extends TestCase
         $response = $this->actingAs($user)->get($this->authorizationUrl($clientId));
 
         $response->assertOk();
-        $response->assertSee('Connect Schrute Farms Assistant');
+        $response->assertSee('Schrute Farms Assistant');
         $response->assertSee('dwight@dundermifflin.com');
         $response->assertSee('claude.ai');
         $response->assertSee('action="'.route('passport.authorizations.approve').'"', false);

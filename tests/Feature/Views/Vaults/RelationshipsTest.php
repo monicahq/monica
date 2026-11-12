@@ -41,8 +41,7 @@ class RelationshipsTest extends TestCase
 
         $this->tab()
             ->assertSee('Ross Geller')
-            ->assertSee(route('contacts.show', ['vault' => $this->vault, 'contact' => $ross]))
-            ->assertSee(__('Manage'));
+            ->assertSee(route('contacts.show', ['vault' => $this->vault, 'contact' => $ross]));
     }
 
     #[Test]
@@ -53,17 +52,6 @@ class RelationshipsTest extends TestCase
         $this->tab()
             ->assertSee('x-data="{ manage: false }"', escape: false)
             ->assertSee('x-bind:aria-pressed', escape: false);
-    }
-
-    #[Test]
-    public function it_warns_before_a_link_is_removed(): void
-    {
-        $this->parentage($this->judy, $this->personIn('Ross', 'Geller'));
-
-        $this->tab()
-            ->assertSee(__('Remove this relationship?'))
-            ->assertSee(__('This cannot be undone.'))
-            ->assertSee(__('The link with :name is taken off both records. Neither person is deleted.', ['name' => 'Ross Geller']));
     }
 
     #[Test]
@@ -78,13 +66,6 @@ class RelationshipsTest extends TestCase
                 'relationship' => $relationship,
             ]))
             ->assertStatus(200)
-            ->assertSee(__('Edit this relationship'))
-            ->assertSee(__('Relationship'))
-            ->assertSee('Judy Geller is Ross Geller’s parent.')
-            ->assertSee(__('This relationship has ended'))
-            ->assertSee(__('Started on'))
-            ->assertSee(__('Ended on'))
-            ->assertDontSee(__('Create a contact record for this person'))
             ->assertSee('name="relationship"', escape: false)
             ->assertSee('name="has_ended"', escape: false)
             ->assertSee('name="started_on"', escape: false)

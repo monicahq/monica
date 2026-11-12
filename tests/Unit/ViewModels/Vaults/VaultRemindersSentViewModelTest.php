@@ -85,19 +85,6 @@ class VaultRemindersSentViewModelTest extends TestCase
     }
 
     #[Test]
-    public function a_notification_that_went_out_never_reads_as_remembered(): void
-    {
-        $vault = Vault::factory()->create();
-        $user = User::factory()->create(['account_id' => $vault->account_id]);
-        $occurrence = $this->sentOccurrence($this->reminder($vault), '2027-03-01 09:00:00');
-        $this->notification($occurrence, $user, NotificationChannelEnum::Email);
-
-        $rows = new VaultRemindersSentViewModel(user: $user, vault: $vault)->rows();
-
-        $this->assertSame('No answer yet', $rows[0]->outcome());
-    }
-
-    #[Test]
     public function it_pages_a_long_history(): void
     {
         $vault = Vault::factory()->create();

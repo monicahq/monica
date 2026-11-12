@@ -7,7 +7,7 @@
 
 A package that adds behaviour to the product, as opposed to a template which configures data with the capabilities that already exist. Section 3.9 draws that line explicitly and it is the line to hold: a template configures, a module extends.
 
-Modules matter most for self hosted instances, which need to adapt Erica to specialised needs without waiting for a feature to be accepted into the official product. A module may add screens, commands, events, integrations, field types, imports, exports, automations or connectors, at the extension points the product declares.
+Modules matter most for self hosted instances, which need to adapt Monica to specialised needs without waiting for a feature to be accepted into the official product. A module may add screens, commands, events, integrations, field types, imports, exports, automations or connectors, at the extension points the product declares.
 
 Section 3.9 also says the contract itself, the format, the lifecycle, the technical permissions, the compatibility rules and the distribution mechanism, is still to be specified. Section 15 puts the foundations in v1 and accepts that the catalogue may stay small at launch. This file describes the registry only, and deliberately stops where the specification does.
 
@@ -22,7 +22,7 @@ author                      string (255)                    who wrote it
 homepage_url                string (512)                    where to read more about it
 repository_url              string (512)                    where the source is
 version                     string (32)                     version of the package
-minimum_app_version         string (32)                     oldest version of Erica it runs on
+minimum_app_version         string (32)                     oldest version of Monica it runs on
 manifest                    json                            what it declares, its extension points, its permissions, its assets
 extension_points            json                            which parts of the product it hooks into, extracted from the manifest for querying
 permissions                 json                            what it asks to reach, which the user sees before installing

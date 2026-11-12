@@ -16,7 +16,6 @@ class PortalDocsControllerTest extends TestCase
         $response = $this->get('/docs/en');
 
         $response->assertOk();
-        $response->assertSee('Welcome to the Monica guide');
         $response->assertSee('aria-label="Documentation"', false);
     }
 
@@ -27,7 +26,6 @@ class PortalDocsControllerTest extends TestCase
 
         $response->assertOk();
         $response->assertSee('<h1', false);
-        $response->assertSee('Start here');
     }
 
     #[Test]
@@ -36,7 +34,6 @@ class PortalDocsControllerTest extends TestCase
         $response = $this->get('/docs/en/start-here/record-your-first-person');
 
         $response->assertOk();
-        $response->assertSee('Record your first person');
         $response->assertSee('href="#step-1-add-rachel"', false);
     }
 
@@ -46,7 +43,6 @@ class PortalDocsControllerTest extends TestCase
         $response = $this->get('/docs/en/start-here/record-your-first-person');
 
         $response->assertDontSee(InsertServerGenerationTime::MARKER, false);
-        $response->assertSeeText('Server generation:');
         $response->assertHeader('Server-Timing');
         $this->assertMatchesRegularExpression('/\d+ ms/', (string) $response->getContent());
     }

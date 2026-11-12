@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Mcp;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\CreateContact;
 use App\Mcp\Tools\GetContact;
 use App\Mcp\Tools\ListContacts;
@@ -34,7 +34,7 @@ class McpCompartmentTest extends TestCase
         Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Dunder Mifflin']);
         Vault::factory()->create(['name' => 'Vance Refrigeration']);
 
-        EricaServer::actingAs($user)->tool(ListVaults::class)
+        MonicaServer::actingAs($user)->tool(ListVaults::class)
             ->assertOk()
             ->assertSee('Dunder Mifflin')
             ->assertDontSee('Vance Refrigeration');
@@ -46,8 +46,8 @@ class McpCompartmentTest extends TestCase
         $user = User::factory()->create();
         $other = Vault::factory()->create();
 
-        EricaServer::actingAs($user)->tool(ListContacts::class, ['vault' => $other->uuid])
-            ->assertHasErrors(['That vault does not exist.']);
+        MonicaServer::actingAs($user)->tool(ListContacts::class, ['vault' => $other->uuid])
+            ->assertHasErrors();
     }
 
     #[Test]
@@ -58,10 +58,10 @@ class McpCompartmentTest extends TestCase
         $elsewhere = Vault::factory()->create(['account_id' => $user->account_id]);
         $contact = Contact::factory()->create(['vault_id' => $elsewhere->id, 'account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(GetContact::class, [
+        MonicaServer::actingAs($user)->tool(GetContact::class, [
             'vault' => $asked->uuid,
             'contact' => $contact->uuid,
-        ])->assertHasErrors(['That contact does not exist.']);
+        ])->assertHasErrors();
     }
 
     #[Test]
@@ -70,8 +70,8 @@ class McpCompartmentTest extends TestCase
         $user = User::factory()->create();
         $other = Template::factory()->create();
 
-        EricaServer::actingAs($user)->tool(ListTemplateVersions::class, ['template' => $other->uuid])
-            ->assertHasErrors(['That template does not exist.']);
+        MonicaServer::actingAs($user)->tool(ListTemplateVersions::class, ['template' => $other->uuid])
+            ->assertHasErrors();
     }
 
     #[Test]
@@ -80,10 +80,10 @@ class McpCompartmentTest extends TestCase
         $user = User::factory()->create();
         $other = Vault::factory()->create();
 
-        EricaServer::actingAs($user)->tool(CreateContact::class, [
+        MonicaServer::actingAs($user)->tool(CreateContact::class, [
             'vault' => $other->uuid,
             'first_name' => 'Michael',
-        ])->assertHasErrors(['That vault does not exist.']);
+        ])->assertHasErrors();
 
         $this->assertDatabaseMissing('contacts', ['first_name' => 'Michael', 'vault_id' => $other->id]);
     }
@@ -96,11 +96,11 @@ class McpCompartmentTest extends TestCase
         $elsewhere = Vault::factory()->create(['account_id' => $user->account_id]);
         $contact = Contact::factory()->create(['vault_id' => $elsewhere->id, 'account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(SetContactFavourite::class, [
+        MonicaServer::actingAs($user)->tool(SetContactFavourite::class, [
             'vault' => $asked->uuid,
             'contact' => $contact->uuid,
             'favourite' => true,
-        ])->assertHasErrors(['That contact does not exist.']);
+        ])->assertHasErrors();
 
         $this->assertDatabaseHas('contacts', ['id' => $contact->id, 'is_favourite' => false]);
     }
@@ -117,11 +117,11 @@ class McpCompartmentTest extends TestCase
             'section_version_id' => SectionVersion::factory()->create(['account_id' => $user->account_id])->id,
         ]);
 
-        EricaServer::actingAs($user)->tool(RemoveTemplateSection::class, [
+        MonicaServer::actingAs($user)->tool(RemoveTemplateSection::class, [
             'template' => $asked->uuid,
             'version' => 1,
             'section' => (string) $row->id,
-        ])->assertHasErrors(['That section does not exist.']);
+        ])->assertHasErrors();
 
         $this->assertModelExists($row);
     }

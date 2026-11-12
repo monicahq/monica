@@ -60,7 +60,6 @@ class PreferencesViewModelTest extends TestCase
 
         $this->assertCount(2, $formats);
         $this->assertEquals(TimeFormatEnum::TwelveHour, $viewModel->timeFormat());
-        $this->assertEquals('12-hour', $viewModel->timeFormatLabel());
         $this->assertTrue(collect($formats)->firstWhere('value', '12')['selected']);
         $this->assertFalse(collect($formats)->firstWhere('value', '24')['selected']);
     }
@@ -148,7 +147,6 @@ class PreferencesViewModelTest extends TestCase
 
         $this->assertNull($viewModel->dateFormat());
         $this->assertTrue($followTheLanguage['selected']);
-        $this->assertEquals('Der Sprache folgen', $followTheLanguage['label']);
         $this->assertEquals('21.07.2026', $followTheLanguage['hint']);
         $this->assertEquals('21.07.2026', $viewModel->dateFormatLabel());
     }

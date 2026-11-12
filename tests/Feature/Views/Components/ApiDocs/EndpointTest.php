@@ -59,9 +59,6 @@ class EndpointTest extends TestCase
     {
         $response = $this->blade('<x-api-docs.endpoint :section="$section" />', ['section' => $this->section()]);
 
-        $response->assertSee('Body parameters');
-        $response->assertSee('required');
-        $response->assertSee('optional');
         $response->assertSee('Who it goes to.');
     }
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\ListLifeEventTypes;
 use App\Models\LifeEventCategory;
 use App\Models\LifeEventType;
@@ -44,7 +44,7 @@ class ListLifeEventTypesTest extends TestCase
         $user = User::factory()->create();
         LifeEventType::factory()->create(['name' => 'Opened a paper company']);
 
-        EricaServer::actingAs($user)->tool(ListLifeEventTypes::class)
+        MonicaServer::actingAs($user)->tool(ListLifeEventTypes::class)
             ->assertOk()
             ->assertDontSee('Opened a paper company');
     }

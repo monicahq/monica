@@ -20,7 +20,7 @@ $type = [
         'is_system' => true,
         'is_active' => true,
         'created_at' => 1756252800,
-        'updated_at' => null,
+        'updated_at' => 1756252800,
     ],
     'links' => [
         'self' => $base.'/life-event-types/c3f9a8d1-4e62-4b07-9a35-6d180b2fc74e',
@@ -66,7 +66,7 @@ $typeAttributes = [
     ['name' => 'is_system', 'type' => 'boolean', 'description' => 'Whether the product supplied the nature with the account. It governs one thing and one thing only: a supplied nature cannot be deleted. It may be renamed, redrawn, moved and retired like any other.'],
     ['name' => 'is_active', 'type' => 'boolean', 'description' => 'Whether the nature is offered when a life event is recorded. False takes it out of that choice and touches nothing already written.'],
     ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When the nature was added, as a count of seconds since 1970 rather than a written date.'],
-    ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When it last changed, as a count of seconds, or null if it has not changed since it was added.'],
+    ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When it last changed, as a count of seconds. Equal to created_at until it first changes.'],
 ];
 
 $nested = function (string $prefix, string $type, string $singular, string $plural, array $attributes, string $summary): array {
@@ -166,7 +166,7 @@ $exampleLayout = [
                         'default_value' => null,
                         'relation_target' => null,
                         'created_at' => 1756339200,
-                        'updated_at' => null,
+                        'updated_at' => 1756339200,
                     ],
                 ],
             ],

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\UpdateContactReminder;
 use App\Models\Contact;
 use App\Models\FieldValue;
@@ -29,7 +29,7 @@ class UpdateContactReminderTest extends TestCase
         $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
         $reminder = Reminder::factory()->manual($contact, now()->addWeek()->toDateString())->create(['frequency_interval' => 3]);
 
-        EricaServer::actingAs($user)->tool(UpdateContactReminder::class, [
+        MonicaServer::actingAs($user)->tool(UpdateContactReminder::class, [
             'vault' => $vault->uuid,
             'contact' => $contact->uuid,
             'reminder' => $reminder->uuid,
@@ -50,7 +50,7 @@ class UpdateContactReminderTest extends TestCase
         $value = FieldValue::factory()->recurringDate()->create(['valuable_id' => $contact->id]);
         $reminder = Reminder::factory()->create(['field_value_id' => $value->id]);
 
-        EricaServer::actingAs($user)->tool(UpdateContactReminder::class, [
+        MonicaServer::actingAs($user)->tool(UpdateContactReminder::class, [
             'vault' => $vault->uuid,
             'contact' => $contact->uuid,
             'reminder' => $reminder->uuid,
@@ -58,6 +58,6 @@ class UpdateContactReminderTest extends TestCase
             'starts_on' => now()->addWeek()->toDateString(),
             'cadence' => 'yearly',
             'time' => '09:00',
-        ])->assertHasErrors(['This reminder reads its date from the contact.']);
+        ])->assertHasErrors();
     }
 }

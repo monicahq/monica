@@ -22,7 +22,7 @@ class TelegramWebhookRegistrationFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'url' => 'https://erica.dundermifflin.com/telegram/webhook',
+            'url' => 'https://monica.dundermifflin.com/telegram/webhook',
             'token_fingerprint' => Hash::make(fake()->sha1()),
             'secret_fingerprint' => Hash::make(fake()->sha1()),
             'registered_at' => now(),

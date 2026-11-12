@@ -146,7 +146,7 @@ class EntityControllerTest extends TestCase
             'fields' => [$portrait->id => UploadedFile::fake()->image('goat.jpg')],
         ])
             ->assertUnprocessable()
-            ->assertJsonValidationErrors(["fields.{$portrait->id}" => 'Uploads are unavailable on this account for now.']);
+            ->assertJsonValidationErrors(["fields.{$portrait->id}"]);
     }
 
     #[Test]

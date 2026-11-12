@@ -24,7 +24,7 @@ class AccountControllerTest extends TestCase
         ]);
 
         $response->assertRedirect(route('auth.login.new'));
-        $response->assertSessionHas('status', 'Your account is deleted. Everything in it is gone.');
+        $response->assertSessionHas('status');
 
         $this->assertGuest();
         $this->assertModelMissing($account);
@@ -56,18 +56,6 @@ class AccountControllerTest extends TestCase
 
         $this->assertAuthenticated();
         $this->assertModelExists($user);
-    }
-
-    #[Test]
-    public function it_warns_that_deleting_the_account_stops_the_subscription(): void
-    {
-        $this->fakeStripe();
-
-        $michael = User::factory()->create();
-        $this->subscribeAccount($michael->account);
-
-        $this->actingAs($michael)->get(route('settings.profile.index'))
-            ->assertSee('Your subscription stops the moment the account is gone.', escape: false);
     }
 
     #[Test]

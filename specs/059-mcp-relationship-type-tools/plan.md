@@ -4,7 +4,7 @@
 
 ## Summary
 
-Thirteen new tools on `EricaServer`, one class each under `app/Mcp/Tools`: six for relationship types
+Thirteen new tools on `MonicaServer`, one class each under `app/Mcp/Tools`: six for relationship types
 and seven for relationship categories. Each mirrors an existing `api.v1.relationshipTypes.*` or
 `api.v1.relationshipCategories.*` route by calling the same action and returning the same resource
 ([contracts/mcp-tools.md](contracts/mcp-tools.md)). The API already covers everything
@@ -79,7 +79,7 @@ app/Mcp/Tools/{GetRelationshipType,CreateRelationshipType,UpdateRelationshipType
 app/Mcp/Tools/{GetRelationshipCategory,ListRelationshipCategoryTypes,CreateRelationshipCategory,
   UpdateRelationshipCategory,DeleteRelationshipCategory,SetRelationshipCategoryActivation,
   SetRelationshipCategoryPosition}.php
-app/Mcp/Servers/EricaServer.php               # register 13 tools; one sentence of instructions
+app/Mcp/Servers/MonicaServer.php               # register 13 tools; one sentence of instructions
 app/ViewModels/Docs/McpDocsViewModel.php      # tool groups, RELATIONSHIP_TYPES paragraphs, markdown
 resources/views/app/docs/mcp.blade.php        # draw the paragraphs under their heading
 lang/*.json                                   # four new sentences via monica:localize

@@ -1,12 +1,12 @@
-# Erica: product specification
+# Monica: product specification
 
-> Erica is the code name of Monica v3. This document describes what the product does and why, without going into the technical side. It reads from the most general to the most detailed: the first sections are enough to understand the intent, the ones that follow specify each feature.
+> This document describes what the product does and why, without going into the technical side. It reads from the most general to the most detailed: the first sections are enough to understand the intent, the ones that follow specify each feature.
 
 ---
 
 ## 1. In one sentence
 
-Erica is an open source tool for **documenting your life and the lives of the people around you**, and one where **anybody can redefine the structure** so that it matches their own way of keeping track of people.
+Monica is an open source tool for **documenting your life and the lives of the people around you**, and one where **anybody can redefine the structure** so that it matches their own way of keeping track of people.
 
 ---
 
@@ -16,17 +16,17 @@ Erica is an open source tool for **documenting your life and the lives of the pe
 
 The first two versions of Monica started from an assumption: that you can guess in advance what people want to record about the people close to them (birthday, partner, children, last call, and so on). That assumption is false. Everybody keeps track of different things, and nobody uses more than a third of what is offered to them.
 
-Erica changes stance. Rather than aiming for simplicity through constraint, it aims for **total personalisation**:
+Monica changes stance. Rather than aiming for simplicity through constraint, it aims for **total personalisation**:
 
 - a minimal skeleton is supplied by default, so the tool is usable from the first minute;
 - on top of that skeleton, everybody builds their own data structures;
 - those structures can be **shared with other users**, which saves everybody from reinventing the same blocks on their own.
 
-The consequence: Erica does not try to be right about what should be recorded. It tries never to be an obstacle to what somebody wants to record.
+The consequence: Monica does not try to be right about what should be recorded. It tries never to be an obstacle to what somebody wants to record.
 
 ### 2.2. Two faces of the same product
 
-Erica has two ways in, and they are not separable.
+Monica has two ways in, and they are not separable.
 
 **The first is the directory.** Records about people (and about whatever you want to track around them), with their relations, their important dates, everything you do not want to forget. That is the subject of sections 4 to 8.
 
@@ -50,11 +50,11 @@ Concretely:
 
 ### 3.2. The core stays stable
 
-Seven objects are never personalisable in their nature: the **Account**, the **Vault**, the **Contact**, the **LifeEvent**, the **Relationship**, the **Group** and the special identity **Me**. Two others complete them (**Reminders** and **Changelog**), not because they are indispensable to every use, but because the product has to be able to handle them transversally, whatever structure was chosen.
+Seven objects are never personalisable in their nature: the **Account**, the **Vault**, the **Contact**, the **LifeEvent**, the **Relationship**, the **Group** and the special identity **Me**. Two others complete them (**Reminders** and **Changelog**), not because they are indispensable to every use, but because the product has to be able to handle them transversally, whatever structure was chosen. The **Location** joins them: a place of the account, shared by all its vaults, which can sit inside another, because its path and the refusal of a cycle are computed from that parent. The **Possession type** joins them too: a kind of thing the account owns, carrying its own ordered groups and fields, each field with a kind and, for a choice, its options. It is the first place user defined fields live outside templates, by a deliberate choice of dedicated tables over a template. The **Possession** joins them as well: a thing owned, in one vault, of one possession type, possibly at one location, holding one value for each field of its type. The **Possession tag** joins them: a word of the account, shared by all its vaults, with a vault colour, to sort possessions across types and locations. The **Possession condition** joins them: the state a possession is in, from new to broken, shared by all the account's vaults, with a vault colour, an optional icon and a place in an order the account chooses. **Knowledge** joins them after: folders of a vault holding notes, Markdown text, and lists, whose columns the owner names. Those columns are the second place user defined fields live outside templates, text only, for the same reason.
 
 Note the nuance: **it is the concept that is fixed, not its content.** A life event will always be something that happened on a date with people, but the list of life event natures and the fields they carry are entirely configurable (see 9.3). The same logic applies to the contact: its name has a stable product-owned structure, but every part of it may be unknown.
 
-Erica is a **mono-user** product. An account corresponds to a single person who signs in. There are therefore no invitations, no roles, no permissions between users, and no shared vault. This simplicity is deliberate: multi-user was little used and added disproportionate complexity to access, reminders, the journal and files.
+Monica is a **mono-user** product. An account corresponds to a single person who signs in. There are therefore no invitations, no roles, no permissions between users, and no shared vault. This simplicity is deliberate: multi-user was little used and added disproportionate complexity to access, reminders, the journal and files.
 
 Everything else is open.
 
@@ -64,7 +64,7 @@ When something disappears (a field removed from a structure, a deleted contact, 
 
 ### 3.4. One tool, two deployment modes
 
-Erica works identically self hosted (free, unlimited) and in the version we host. On the hosted version, a limited free offer coexists with full access, which is held either by a purchase made once, for good, or by a subscription, billed monthly or yearly, that renews until it is cancelled. The two unlock exactly the same product: there are no tiers, no per offer features and no trial, so the only thing a payment changes is whether the free caps apply.
+Monica works identically self hosted (free, unlimited) and in the version we host. On the hosted version, a limited free offer coexists with full access, which is held either by a purchase made once, for good, or by a subscription, billed monthly or yearly, that renews until it is cancelled. The two unlock exactly the same product: there are no tiers, no per offer features and no trial, so the only thing a payment changes is whether the free caps apply.
 
 The free offer caps how many vaults and contacts an account may hold and how much storage it may use. An account that finds itself above a cap, after a refund or a subscription that lapsed, keeps everything it holds and can read and edit all of it. Only adding more is refused, and the refusal names the cap and where to lift it.
 
@@ -87,13 +87,13 @@ What this brings:
 - the mobile applications (3.8) consume the same API;
 - automation becomes possible without waiting for us: importing data, syncing with other tools, personal scripts;
 - the API acts as a permanent test of the product's completeness;
-- an **official MCP server** can expose Erica's capabilities to compatible assistants and tools, without building an artificial intelligence assistant into the product itself.
+- an **official MCP server** can expose Monica's capabilities to compatible assistants and tools, without building an artificial intelligence assistant into the product itself.
 
-Erica therefore imposes no built in artificial intelligence. The user stays free to plug in the tool of their choice through MCP, the API or webhooks.
+Monica therefore imposes no built in artificial intelligence. The user stays free to plug in the tool of their choice through MCP, the API or webhooks.
 
 The API is publicly documented, versioned, authenticated by tokens with limitable scopes, and subject to rate limits on the hosted version. The MCP server applies the same authorisation rules and never bypasses the API.
 
-The API and MCP cover the inbound direction, where an external tool comes to query or modify Erica. The outbound direction, where Erica tells an external tool that something just happened, is handled by **webhooks** (section 14).
+The API and MCP cover the inbound direction, where an external tool comes to query or modify Monica. The outbound direction, where Monica tells an external tool that something just happened, is handled by **webhooks** (section 14).
 
 ### 3.7. Multilingual from day one
 
@@ -111,7 +111,7 @@ They come after the first web version, but they shape choices now: the API has t
 
 ### 3.9. A core extensible by modules
 
-Erica has to let the community develop **modules** without modifying the core of the product. That matters particularly for self hosted instances, which need to adapt Erica to specialised needs without waiting for a feature to be accepted into the official product.
+Monica has to let the community develop **modules** without modifying the core of the product. That matters particularly for self hosted instances, which need to adapt Monica to specialised needs without waiting for a feature to be accepted into the official product.
 
 A module can add capabilities around the extension points explicitly provided: screens, commands, events, integrations, field types, imports, exports, automations or connectors. It must not bypass the fundamental rules of the product, in particular the API, accessibility, data compartmentalisation, history and update compatibility.
 
@@ -139,11 +139,11 @@ Ten words to know before reading on.
 | **Entity** | A type of object invented by the user (Animal, Company, Recipe, Musical instrument, and so on) that lives alongside contacts. |
 | **LifeEvent** | Something that happened, on a date, possibly with contacts or entities. It is the building block of the journal. |
 | **Journal** | The day by day reading of everything you lived through. The counterpart of the record, which is the reading by person. |
-| **Private share** | A revocable link giving limited access to a contact record or a vault, without creating an account or collaboration inside Erica. |
+| **Private share** | A revocable link giving limited access to a contact record or a vault, without creating an account or collaboration inside Monica. |
 
 ### 4.1. One account, one person
 
-Erica is deliberately **mono-user**. An account belongs to a single person and contains only one sign in identity.
+Monica is deliberately **mono-user**. An account belongs to a single person and contains only one sign in identity.
 
 There are no account roles, invitations, members, permissions between users or real time collaboration. This decision removes a layer of complexity that was little used in previous versions and makes the rules for privacy, notification, history and storage far more predictable.
 
@@ -155,7 +155,7 @@ A contact or a life event belongs to a specific vault. Searches, exports, webhoo
 
 ### 4.3. The notion of Me
 
-Every vault holds a special contact called **Me**, representing the person using Erica. Each vault is created holding it, named after the account at that moment, and every Me of an account stands for the same person.
+Every vault holds a special contact called **Me**, representing the person using Monica. Each vault is created holding it, named after the account at that moment, and every Me of an account stands for the same person.
 
 Me is a real contact: it can carry a template, custom fields, life events and relationships, and it can belong to groups. This identity makes it possible to model sentences like "Alice is my sister", "I had lunch with Marc" or "we lived in Montreal" correctly, without creating an invisible parallel logic.
 
@@ -167,13 +167,13 @@ Me does, however, have invariants:
 - its name and its record stay editable like those of a normal contact;
 - relationships displayed from Me read naturally from the user's point of view.
 
-When importing old data, Erica has to allow identifying which existing contact represents Me, or creating one.
+When importing old data, Monica has to allow identifying which existing contact represents Me, or creating one.
 
 ### 4.4. Sharing without reintroducing multi-user
 
-Erica allows sharing a **contact record** or a **vault** by means of a private link, the way you share a document.
+Monica allows sharing a **contact record** or a **vault** by means of a private link, the way you share a document.
 
-That share gives read access, not collaborative access to the application. The recipient does not need an Erica account and never becomes a user of the source account.
+That share gives read access, not collaborative access to the application. The recipient does not need an Monica account and never becomes a user of the source account.
 
 Every share link is:
 
@@ -240,7 +240,7 @@ This flexibility is deliberate and it is not shared with life event natures. An 
 
 Many fields offer a choice among values: genders, countries, languages, currencies, phone labels (mobile, home, work), contact categories (family, close friend, colleague). Rather than retyping those lists in every field, they are defined once at the account level and reused everywhere.
 
-Erica supplies a set of ready to use lists when the account is created. Each one is editable: you add your own values, and you can deactivate a value supplied by default without deleting it, so as not to break the records already using it.
+Monica supplies a set of ready to use lists when the account is created. Each one is editable: you add your own values, and you can deactivate a value supplied by default without deleting it, so as not to break the records already using it.
 
 ### 5.5. The available field types
 
@@ -263,7 +263,7 @@ Without going into detail, here are the families offered.
 
 ### 5.7. What stays imposed on a contact
 
-The **name** stays structured by the product, in all its components: title, given name, middle name, family name, suffix, maiden name, nickname. It cannot depend on a field the user might not have created. Every component is optional, including all of them at once: a contact may exist before any part of their name is known. Erica displays a translated **Unnamed contact** fallback without storing it as a name, draws `?` instead of initials, and sorts unnamed contacts after named contacts.
+The **name** stays structured by the product, in all its components: title, given name, middle name, family name, suffix, maiden name, nickname. It cannot depend on a field the user might not have created. Every component is optional, including all of them at once: a contact may exist before any part of their name is known. Monica displays a translated **Unnamed contact** fallback without storing it as a name, draws `?` instead of initials, and sorts unnamed contacts after named contacts.
 
 Conversely, information you would think fundamental is in fact made of customisable fields supplied by default: gender, date of birth, description. They are there from the start, but they can be removed, renamed or replaced.
 
@@ -309,7 +309,7 @@ The number of installations of an item is displayed publicly, as a quality signa
 
 We could have treated "parent of", "spouse of" and "friend of" as one customisable field among others. That would lose the direction of reading, the history of a relationship and the stable meaning required to draw a family tree. Relationships therefore have their own small model.
 
-Erica therefore makes this a capability of its own belonging to contacts, deliberately **not extended** to custom entities. The link between a contact and their dog stays an ordinary relation field.
+Monica therefore makes this a capability of its own belonging to contacts, deliberately **not extended** to custom entities. The link between a contact and their dog stays an ordinary relation field.
 
 ### 8.2. Categories and types
 
@@ -329,9 +329,9 @@ The supplied types are Parent / Child, Sibling, Grandparent / Grandchild, Aunt o
 
 **The household is not the couple.** Two partners can live apart, have several households, remain co-parents after a breakup. The product therefore models **groups** (household, family unit, couple, social circle, team) separately from relationships, with their own dates of entry and exit. A household is never automatically deduced from a couple.
 
-**Every relationship always links two real contacts.** The relationship editor never stores a person as free text and never creates a relationship with a missing endpoint. When the user selects an existing person, Erica uses that contact. When the user enters a new person, Erica always creates a Contact and then links it, even when **Create a contact record for this person** is unchecked. The checkbox only chooses the contact's initial state: checked creates a regular contact visible in the contact lists; unchecked creates a partial contact hidden from those lists. Both have an id, a page and ordinary relationships.
+**Every relationship always links two real contacts.** The relationship editor never stores a person as free text and never creates a relationship with a missing endpoint. When the user selects an existing person, Monica uses that contact. When the user enters a new person, Monica always creates a Contact and then links it, even when **Create a contact record for this person** is unchecked. The checkbox only chooses the contact's initial state: checked creates a regular contact visible in the contact lists; unchecked creates a partial contact hidden from those lists. Both have an id, a page and ordinary relationships.
 
-**Partial and nameless are separate ideas.** A partial contact is still a Contact; `is_partial` changes its visibility, not its identity or capabilities. A partial contact may have a name, and a regular contact may have none. When you enter "Monica's son, Jack", Jack may be created as a named partial contact. When you only know that Monica has two children, Erica creates two distinct nameless partial contacts and two explicit Parent / Child relationships. No placeholder name is stored, and adding a name later updates the same contact and relationship.
+**Partial and nameless are separate ideas.** A partial contact is still a Contact; `is_partial` changes its visibility, not its identity or capabilities. A partial contact may have a name, and a regular contact may have none. When you enter "Monica's son, Jack", Jack may be created as a named partial contact. When you only know that Monica has two children, Monica creates two distinct nameless partial contacts and two explicit Parent / Child relationships. No placeholder name is stored, and adding a name later updates the same contact and relationship.
 
 **Groups are distinct objects.** A household, family, team or social circle has its own name and members. It is never created or suggested from a relationship in the first version.
 
@@ -381,7 +381,7 @@ A life event always carries:
 
 ### 9.3. Life event categories and natures
 
-The list of natures is configured at the account level, like the other shared value lists (see 5.4). Erica supplies a starting set that is immediately usable, and everybody adapts it: adding to it, renaming, deactivating without breaking the past life events that use it.
+The list of natures is configured at the account level, like the other shared value lists (see 5.4). Monica supplies a starting set that is immediately usable, and everybody adapts it: adding to it, renaming, deactivating without breaking the past life events that use it.
 
 The [supplied catalogue](models/035-life-event-type-in-progress.md#supplied-types) covers ordinary interactions, work and education, health, home, leisure, travel, personal events and one fallback, Other life event.
 
@@ -432,7 +432,7 @@ This is the whole reason the mechanism exists. Life events are not an isolated m
 
 ### 9.6. The privacy of the journal
 
-The journal is personal. In Erica, a life event, its narrative and the day it belongs to are private by default because the account has only one user.
+The journal is personal. In Monica, a life event, its narrative and the day it belongs to are private by default because the account has only one user.
 
 When a contact record or a vault is exposed by a private link, life events and narratives are never included implicitly. The owner explicitly chooses what may be visible:
 
@@ -558,13 +558,13 @@ Search inside the marketplace is a distinct need, at a smaller scale, and will b
 
 ### 14.1. Why
 
-The API lets you come and ask Erica what is going on. It does not let you be told. Without webhooks, any tool wanting to react to an event is condemned to poll the API in a loop, which is slow, expensive, and in any case impossible for a self hosted instance behind a home connection.
+The API lets you come and ask Monica what is going on. It does not let you be told. Without webhooks, any tool wanting to react to an event is condemned to poll the API in a loop, which is slow, expensive, and in any case impossible for a self hosted instance behind a home connection.
 
 Webhooks are therefore the outbound counterpart of principle 3.6: **if an action exists, it must be listenable from outside.**
 
 The intended uses:
 
-- plugging Erica into a personal automation tool to trigger any reaction whatsoever;
+- plugging Monica into a personal automation tool to trigger any reaction whatsoever;
 - syncing in one direction or the other with a calendar, a task list, a notes tool;
 - feeding a dashboard or an external backup without exporting the whole account each time;
 - allowing somebody to build their own notification, on a channel the product does not carry itself.
@@ -591,7 +591,7 @@ A subscription is created from the settings, or through the API like everything 
 - a **destination address**;
 - a **selection of events**, never "everything" by default. You choose what you want to receive;
 - a **scope**: the whole account, or a specific vault. This matters, because vaults exist to compartmentalise contexts. A subscription limited to a vault never receives events from the others;
-- a **secret**, which lets the recipient verify that the call really comes from Erica and has not been tampered with.
+- a **secret**, which lets the recipient verify that the call really comes from Monica and has not been tampered with.
 
 A test function allows sending a dummy event to check the wiring before relying on it.
 

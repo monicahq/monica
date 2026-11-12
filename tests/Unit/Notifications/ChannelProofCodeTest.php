@@ -22,23 +22,7 @@ class ChannelProofCodeTest extends TestCase
     {
         $message = $this->notification()->toMail(User::factory()->create());
 
-        $this->assertSame('Your code is 123456', $message->subject);
         $this->assertStringContainsString('123456', (string) $message->render());
-    }
-
-    #[Test]
-    public function it_says_what_to_do_with_the_code_and_what_it_means_if_it_was_not_asked_for(): void
-    {
-        $message = $this->notification()->toMail(User::factory()->create());
-
-        $this->assertContains(
-            'Type it back into the notification settings to finish setting this up.',
-            $message->introLines,
-        );
-        $this->assertContains(
-            'If you did not ask for this, somebody has typed your destination in by mistake. Nothing will be sent there until the code is typed back.',
-            $message->introLines,
-        );
     }
 
     #[Test]

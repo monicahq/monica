@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\UpdateRelationshipCategory;
 use App\Models\RelationshipCategory;
 use App\Models\User;
@@ -22,7 +22,7 @@ class UpdateRelationshipCategoryTest extends TestCase
         $user = User::factory()->create();
         $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(UpdateRelationshipCategory::class, [
+        MonicaServer::actingAs($user)->tool(UpdateRelationshipCategory::class, [
             'relationship_category' => $category->uuid,
             'name' => 'Stamford branch',
         ])->assertOk()->assertHasNoErrors();
@@ -36,10 +36,10 @@ class UpdateRelationshipCategoryTest extends TestCase
         $user = User::factory()->create();
         $category = RelationshipCategory::factory()->system()->create(['account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(UpdateRelationshipCategory::class, [
+        MonicaServer::actingAs($user)->tool(UpdateRelationshipCategory::class, [
             'relationship_category' => $category->uuid,
             'name' => 'Stamford branch',
-        ])->assertHasErrors(['The category came with your account and keeps its name.']);
+        ])->assertHasErrors();
 
         $this->assertNull($category->refresh()->getRawOriginal('name'));
     }

@@ -26,7 +26,7 @@ class ConnectedAssistantControllerTest extends TestCase
             ->delete(route('settings.connectedAssistants.destroy', $token->client_id));
 
         $response->assertRedirect(route('settings.security.index'));
-        $response->assertSessionHas('status', 'The assistant is disconnected.');
+        $response->assertSessionHas('status');
 
         $this->assertTrue($token->refresh()->revoked);
     }

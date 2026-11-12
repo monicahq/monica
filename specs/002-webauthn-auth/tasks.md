@@ -191,7 +191,7 @@ state explains itself.
 
 ## Phase 6: User Story 4 - Sign in on a device that holds no passkey (Priority: P3)
 
-**Goal**: the platform's own cross device flow works and Erica does not get in the way.
+**Goal**: the platform's own cross device flow works and Monica does not get in the way.
 
 **Independent Test**: with a passkey registered on a phone, sign in on a separate computer that
 holds no passkey, using the platform's cross device flow, and confirm the session is a normal one.

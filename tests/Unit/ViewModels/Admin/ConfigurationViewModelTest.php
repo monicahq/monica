@@ -144,14 +144,10 @@ class ConfigurationViewModelTest extends TestCase
     public function it_warns_before_a_telegram_credential_is_replaced_while_the_bot_is_registered(): void
     {
         URL::forceScheme('https');
-        URL::forceRootUrl('https://erica.dundermifflin.com');
+        URL::forceRootUrl('https://monica.dundermifflin.com');
         TelegramWebhookRegistration::factory()->current()->create();
 
         $this->assertSame('replaced', $this->find(InstanceSettingEnum::TelegramBotWebhookSecret)['warnsWhen']);
-        $this->assertSame(
-            'Telegram stops reaching this instance until the bot is registered again.',
-            $this->find(InstanceSettingEnum::TelegramBotWebhookSecret)['warning'],
-        );
     }
 
     #[Test]

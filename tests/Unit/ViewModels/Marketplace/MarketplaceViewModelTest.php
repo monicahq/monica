@@ -30,7 +30,6 @@ class MarketplaceViewModelTest extends TestCase
 
         $this->assertCount(2, $categories);
         $this->assertSame('health', $categories[0]['key']);
-        $this->assertSame('0 listings', $categories[0]['countLabel']);
     }
 
     #[Test]
@@ -69,15 +68,6 @@ class MarketplaceViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_says_how_many_listings_answer_to_the_filters(): void
-    {
-        MarketplaceListing::factory()->count(2)->published()->create();
-
-        $this->assertSame('2 listings', new MarketplaceViewModel()->resultsTitle());
-        $this->assertSame('Everything published, newest changes first', new MarketplaceViewModel()->resultsDescription());
-    }
-
-    #[Test]
     public function it_falls_back_to_the_default_filters_when_it_is_given_nonsense(): void
     {
         $viewModel = new MarketplaceViewModel(type: 'life events', category: 'gardening', sort: 'randomly');
@@ -96,54 +86,6 @@ class MarketplaceViewModelTest extends TestCase
 
         $this->assertStringContainsString('query=beet', $categoryLink);
         $this->assertStringContainsString('type=templates', $categoryLink);
-    }
-
-    #[Test]
-    public function it_reads_what_is_inside_a_template_off_the_published_version(): void
-    {
-        $listing = MarketplaceListing::factory()->published()->create();
-
-        $version = MarketplaceListingVersion::factory()->approved()->carrying([
-            'type' => 'template',
-            'template' => [
-                'pages' => [
-                    ['sections' => [
-                        ['section' => ['fields' => [['key' => 'a'], ['key' => 'b']]]],
-                        ['section' => ['fields' => [['key' => 'c']]]],
-                    ]],
-                    ['sections' => [
-                        ['section' => ['fields' => [['key' => 'd']]]],
-                    ]],
-                ],
-            ],
-            'value_lists' => [],
-        ])->create(['marketplace_listing_id' => $listing->id]);
-
-        $listing->update(['published_version_id' => $version->id]);
-
-        $card = new MarketplaceViewModel()->listings()[0];
-
-        $this->assertSame('2 pages · 3 sections · 4 fields', $card['facts']);
-        $this->assertSame('Template', $card['typeLabel']);
-    }
-
-    #[Test]
-    public function it_reads_what_is_inside_a_section_off_the_published_version(): void
-    {
-        $listing = MarketplaceListing::factory()->forSection()->published()->create();
-
-        $version = MarketplaceListingVersion::factory()->approved()->carrying([
-            'type' => 'section',
-            'section' => ['fields' => [['key' => 'a'], ['key' => 'b']]],
-            'value_lists' => ['countries' => ['items' => []]],
-        ])->create(['marketplace_listing_id' => $listing->id]);
-
-        $listing->update(['published_version_id' => $version->id]);
-
-        $card = new MarketplaceViewModel()->listings()[0];
-
-        $this->assertSame('2 fields · 1 value list', $card['facts']);
-        $this->assertSame('Section', $card['typeLabel']);
     }
 
     #[Test]

@@ -66,22 +66,6 @@ class FieldChoicesViewModelTest extends TestCase
         $this->assertCount(25, $candidates);
     }
 
-    #[Test]
-    public function it_says_why_there_is_nothing_to_choose(): void
-    {
-        [$user, $scranton] = $this->vaultOf();
-        $field = Field::factory()->relation()->create(['account_id' => $user->account_id]);
-
-        $this->assertSame(
-            __('Nothing in this vault to choose yet.'),
-            new FieldChoicesViewModel(user: $user, vault: $scranton, field: $field, query: ' ')->noCandidatesLine(),
-        );
-        $this->assertSame(
-            __('Nothing in this vault matches “:query”.', ['query' => 'Toby']),
-            new FieldChoicesViewModel(user: $user, vault: $scranton, field: $field, query: 'Toby')->noCandidatesLine(),
-        );
-    }
-
     /** @return array{0: User, 1: Vault} */
     private function vaultOf(): array
     {

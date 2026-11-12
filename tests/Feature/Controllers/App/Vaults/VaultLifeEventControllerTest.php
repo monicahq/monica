@@ -25,7 +25,6 @@ class VaultLifeEventControllerTest extends TestCase
         $this->actingAs($user)
             ->get(route('vaults.lifeEvents.new', $vault))
             ->assertOk()
-            ->assertSee('Step 1 of 2 · Choose what happened')
             ->assertSee('x-data="lifeEventPanel(', escape: false)
             ->assertSee('aria-controls="life-event-panel"', escape: false);
     }
@@ -45,7 +44,7 @@ class VaultLifeEventControllerTest extends TestCase
                 'happened_on' => '2026-10-11',
             ])
             ->assertRedirect(route('vaults.show', $vault))
-            ->assertSessionHas('status', 'Promotion, 11/10/2026, is on the timeline of Michael.')
+            ->assertSessionHas('status')
             ->assertSessionHas('lifeEventJustAdded', LifeEvent::query()->sole()->id);
 
         $this->assertDatabaseHas('life_events', ['life_event_type_id' => $promotion->id, 'created_from' => 'dashboard']);

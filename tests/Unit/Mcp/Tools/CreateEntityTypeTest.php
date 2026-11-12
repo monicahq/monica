@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\CreateEntityType;
 use App\Models\EntityType;
 use App\Models\User;
@@ -21,7 +21,7 @@ class CreateEntityTypeTest extends TestCase
     {
         $user = User::factory()->create();
 
-        EricaServer::actingAs($user)->tool(CreateEntityType::class, [
+        MonicaServer::actingAs($user)->tool(CreateEntityType::class, [
             'name_singular' => 'Paper ream',
             'name_plural' => 'Paper reams',
             'icon' => 'pet',
@@ -45,7 +45,7 @@ class CreateEntityTypeTest extends TestCase
         $user = User::factory()->create();
         EntityType::factory()->create(['account_id' => $user->account_id, 'slug' => 'dundie']);
 
-        EricaServer::actingAs($user)->tool(CreateEntityType::class, [
+        MonicaServer::actingAs($user)->tool(CreateEntityType::class, [
             'name_singular' => 'Dundie',
             'name_plural' => 'Dundies',
             'slug' => 'dundie',
@@ -59,7 +59,7 @@ class CreateEntityTypeTest extends TestCase
     {
         $user = User::factory()->create();
 
-        EricaServer::actingAs($user)->tool(CreateEntityType::class, [
+        MonicaServer::actingAs($user)->tool(CreateEntityType::class, [
             'name_singular' => 'Dundie',
             'name_plural' => 'Dundies',
             'is_active' => '0',

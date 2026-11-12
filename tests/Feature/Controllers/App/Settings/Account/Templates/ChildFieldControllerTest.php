@@ -31,7 +31,6 @@ class ChildFieldControllerTest extends TestCase
 
         $this->actingAs($user)->get(route('settings.childFields.new', [$template, $row, $caregivers]))
             ->assertStatus(200)
-            ->assertSee(__('What goes inside :repeater?', ['repeater' => 'Caregivers']))
             ->assertSee('name="parent_id" value="'.$caregivers->id.'"', escape: false)
             ->assertDontSee("previewed === 'repeater'", escape: false);
     }

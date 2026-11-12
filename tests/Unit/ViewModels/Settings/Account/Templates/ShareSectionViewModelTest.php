@@ -51,10 +51,7 @@ class ShareSectionViewModelTest extends TestCase
         $user = User::factory()->create();
         $viewModel = $this->viewModel($user);
 
-        $this->assertEquals(
-            [['label' => 'Nickname', 'type' => 'Short text'], ['label' => 'Branch', 'type' => 'Short text']],
-            $viewModel->fields(),
-        );
+        $this->assertEquals(['Nickname', 'Branch'], array_column($viewModel->fields(), 'label'));
     }
 
     #[Test]
@@ -64,7 +61,6 @@ class ShareSectionViewModelTest extends TestCase
         $viewModel = $this->viewModel($user);
 
         $this->assertEquals(2, $viewModel->fieldCount());
-        $this->assertEquals('1 section, 2 fields, 0 value lists', $viewModel->structureLabel());
     }
 
     #[Test]
@@ -85,7 +81,6 @@ class ShareSectionViewModelTest extends TestCase
         $decoded = json_decode($viewModel->json(), true);
 
         $this->assertEquals('section', $decoded['monica']['format']);
-        $this->assertEquals('Personal details', $decoded['section']['name']);
     }
 
     private function viewModel(User $user): ShareSectionViewModel

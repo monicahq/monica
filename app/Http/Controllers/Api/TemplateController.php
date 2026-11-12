@@ -56,6 +56,7 @@ class TemplateController extends Controller
             'applies_to' => ['required', Rule::enum(StructureAppliesToEnum::class)],
             'description' => ['nullable', 'string', 'max:65535'],
             'entity_type_id' => [
+                'bail',
                 Rule::requiredIf(fn (): bool => $request->string('applies_to')->value() === StructureAppliesToEnum::Entity->value),
                 'nullable',
                 'string',

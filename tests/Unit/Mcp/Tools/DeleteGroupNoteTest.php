@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\DeleteGroupNote;
 use App\Models\Group;
 use App\Models\GroupNote;
@@ -28,7 +28,7 @@ class DeleteGroupNoteTest extends TestCase
         $group = Group::factory()->create(['vault_id' => $vault->id]);
         $note = GroupNote::factory()->create(['group_id' => $group->id]);
 
-        EricaServer::actingAs($user)->tool(DeleteGroupNote::class, ['vault' => $vault->uuid, 'group' => $group->uuid, 'note' => $note->uuid])
+        MonicaServer::actingAs($user)->tool(DeleteGroupNote::class, ['vault' => $vault->uuid, 'group' => $group->uuid, 'note' => $note->uuid])
             ->assertOk();
 
         $this->assertSoftDeleted($note);

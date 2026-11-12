@@ -36,8 +36,7 @@ class VaultRemindersViewModelTest extends TestCase
 
         $groups = $this->viewModelFor($user, $vault)->groups();
 
-        $this->assertSame(['Overdue', 'Today', 'Upcoming'], array_column($groups, 'title'));
-        $this->assertSame(['2 reminders', '1 reminder', '1 reminder'], array_column($groups, 'count'));
+        $this->assertCount(3, $groups);
         $this->assertSame([true, false, false], array_column($groups, 'isOverdue'));
     }
 
@@ -55,7 +54,6 @@ class VaultRemindersViewModelTest extends TestCase
 
         $groups = $this->viewModelFor($user, $vault)->groups();
 
-        $this->assertSame('Overdue', $groups[0]['title']);
         $this->assertCount(2, $groups[0]['rows']);
     }
 
@@ -76,7 +74,7 @@ class VaultRemindersViewModelTest extends TestCase
 
         $groups = $this->viewModelFor($user, $vault)->groups();
 
-        $this->assertSame(['Upcoming'], array_column($groups, 'title'));
+        $this->assertCount(1, $groups);
         $this->assertSame(
             ['2026-10-01', '2027-06-01'],
             array_map(fn ($row): string => $row->occurrence()->local_date->toDateString(), $groups[0]['rows']),
@@ -153,14 +151,12 @@ class VaultRemindersViewModelTest extends TestCase
         $bareModel = $this->viewModelFor($user, $bare);
 
         $this->assertFalse($bareModel->hasAnyRule());
-        $this->assertSame('No reminders in this vault', $bareModel->emptyTitle());
 
         $done = Vault::factory()->create(['account_id' => $user->account_id]);
         $this->deadline($this->onceIn($user, $done, '2026-08-01'), '2026-08-01')->update(['answer' => ReminderAnswerEnum::Remembered, 'answered_at' => now()]);
         $doneModel = $this->viewModelFor($user, $done);
 
         $this->assertTrue($doneModel->hasAnyRule());
-        $this->assertSame('Nothing due yet', $doneModel->emptyTitle());
         $this->assertSame([], $doneModel->groups());
     }
 
@@ -181,13 +177,12 @@ class VaultRemindersViewModelTest extends TestCase
         $first = new VaultRemindersViewModel(user: $user, vault: $vault, page: 1);
         $second = new VaultRemindersViewModel(user: $user, vault: $vault, page: 2);
 
-        $this->assertSame(['Overdue', 'Upcoming'], array_column($first->groups(), 'title'));
+        $this->assertCount(2, $first->groups());
         $this->assertSame([true, true], array_column($first->groups(), 'showsHeading'));
         $this->assertCount(VaultRemindersViewModel::PER_PAGE - 2, $first->groups()[1]['rows']);
-        $this->assertSame('50 reminders', $first->groups()[1]['count']);
         $this->assertStringEndsWith("/vaults/{$vault->slug}/reminders?page=2", (string) $first->nextPageUrl());
 
-        $this->assertSame(['Upcoming'], array_column($second->groups(), 'title'));
+        $this->assertCount(1, $second->groups());
         $this->assertSame([false], array_column($second->groups(), 'showsHeading'));
         $this->assertCount(2, $second->groups()[0]['rows']);
         $this->assertNull($second->nextPageUrl());

@@ -88,8 +88,8 @@
 - [X] T055 [US4] Admin API controllers in app/Http/Controllers/Api/Admin/, routes under `v1/admin` with `administrator`, refusing a key without `administration` as 404
 - [X] T056 [P] [US4] User API tests (shape, 404 for another account, no note) in tests/Feature/Controllers/Api/
 - [X] T057 [P] [US4] Admin API tests (non administrator 404, key without scope 404, counts in `meta`) in tests/Feature/Controllers/Api/Admin/
-- [X] T058 [US4] Five user MCP tools per contracts/mcp.md in app/Mcp/Tools/, registered in app/Mcp/Servers/EricaServer.php
-- [X] T059 [US4] Five admin MCP tools whose `shouldRegister()` needs an administrator and the `administration` ability, in app/Mcp/Tools/, registered in app/Mcp/Servers/EricaServer.php
+- [X] T058 [US4] Five user MCP tools per contracts/mcp.md in app/Mcp/Tools/, registered in app/Mcp/Servers/MonicaServer.php
+- [X] T059 [US4] Five admin MCP tools whose `shouldRegister()` needs an administrator and the `administration` ability, in app/Mcp/Tools/, registered in app/Mcp/Servers/MonicaServer.php
 - [X] T060 [P] [US4] MCP tool tests (no note, another account not found, admin tools absent without rights) in tests/Unit/Mcp/Tools/
 - [X] T061 [US4] Offer the `administration` scope only to administrators, and refuse it to anybody else, in app/ViewModels/Settings/Account/Security/SecurityViewModel.php, app/Http/Controllers/App/Settings/Account/Security/ApiKeyController.php and app/Http/Controllers/Api/ApiKeyController.php, with tests
 

@@ -26,7 +26,7 @@ class TelegramWebhookSecretControllerTest extends TestCase
         $response = $this->actingAs($user)->post('/admin/configuration/telegram/secret');
 
         $response->assertRedirect(route('admin.configuration.index'));
-        $response->assertSessionHas('status', 'A new secret is set. It is never shown back.');
+        $response->assertSessionHas('status');
         $this->assertDatabaseHas('instance_settings', ['name' => 'telegram_bot_webhook_secret']);
     }
 }

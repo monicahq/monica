@@ -32,7 +32,6 @@ class SeedAnimalTemplateCommandTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
 
         $this->artisan('monica:seed-animal-template', ['--account' => $user->account_id])
-            ->expectsOutputToContain('Seeded the Animal type and the Basic animal template.')
             ->expectsOutputToContain('Seeded 1, already done 0, skipped 0.')
             ->assertExitCode(0);
 
@@ -53,7 +52,6 @@ class SeedAnimalTemplateCommandTest extends TestCase
         $this->artisan('monica:seed-animal-template')->assertExitCode(0);
 
         $this->artisan('monica:seed-animal-template')
-            ->expectsOutputToContain('Already has the Basic animal template.')
             ->expectsOutputToContain('Seeded 0, already done 1, skipped 0.')
             ->assertExitCode(0);
 

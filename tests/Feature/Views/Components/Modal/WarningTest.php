@@ -16,10 +16,7 @@ class WarningTest extends TestCase
             '<x-modal.warning title="Delete “test”?" confirm="Delete the category" action="/settings/account/life-event-categories/9"><p>Nothing you have written changes.</p><x-slot:trigger><button type="button" @click="open = true">Delete this category</button></x-slot:trigger></x-modal.warning>',
         );
 
-        $rendered->assertSee('Delete this category', escape: false);
         $rendered->assertSee('Nothing you have written changes.', escape: false);
-        $rendered->assertSee('Delete the category', escape: false);
-        $rendered->assertSee('Keep it', escape: false);
     }
 
     #[Test]

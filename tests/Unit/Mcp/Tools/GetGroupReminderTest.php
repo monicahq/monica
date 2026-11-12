@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\GetGroupReminder;
 use App\Models\Group;
 use App\Models\Reminder;
@@ -26,7 +26,7 @@ class GetGroupReminderTest extends TestCase
         $group = Group::factory()->create(['vault_id' => $vault->id, 'name' => 'Finer things club']);
         $reminder = Reminder::factory()->manual($group, now()->addWeek()->toDateString())->create(['name' => 'Book the room']);
 
-        EricaServer::actingAs($user)->tool(GetGroupReminder::class, ['vault' => $vault->uuid, 'group' => $group->uuid, 'reminder' => $reminder->uuid])
+        MonicaServer::actingAs($user)->tool(GetGroupReminder::class, ['vault' => $vault->uuid, 'group' => $group->uuid, 'reminder' => $reminder->uuid])
             ->assertOk()
             ->assertSee(['Book the room', 'Finer things club']);
     }
@@ -39,7 +39,7 @@ class GetGroupReminderTest extends TestCase
         $group = Group::factory()->create(['vault_id' => $vault->id, 'name' => 'Finer things club']);
         $reminder = Reminder::factory()->manual(Group::factory()->create(['vault_id' => $vault->id]), now()->addWeek()->toDateString())->create();
 
-        EricaServer::actingAs($user)->tool(GetGroupReminder::class, ['vault' => $vault->uuid, 'group' => $group->uuid, 'reminder' => $reminder->uuid])
+        MonicaServer::actingAs($user)->tool(GetGroupReminder::class, ['vault' => $vault->uuid, 'group' => $group->uuid, 'reminder' => $reminder->uuid])
             ->assertHasErrors(['That reminder does not exist.']);
     }
 

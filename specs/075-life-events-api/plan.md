@@ -46,7 +46,7 @@ app/Http/Controllers/Api/LifeEventRestorationController.php  update
 app/Http/Resources/LifeEventResource.php              withSensitive property, as SearchResultResource
 app/Mcp/Tools/{List,Get,Create,Update,Delete,Restore}LifeEvent(s).php
 app/Mcp/Tools/MirrorsAnApiCapability.php              + lifeEvent()
-app/Mcp/Servers/EricaServer.php                       register six tools, one instructions paragraph
+app/Mcp/Servers/MonicaServer.php                       register six tools, one instructions paragraph
 app/ViewModels/Docs/McpDocsViewModel.php              two tool groups, summary corrected
 resources/docs/api/22-life-events.php                 six sections, in api-docs-writer order
 routes/api.php                                        six routes (contracts/api.md)

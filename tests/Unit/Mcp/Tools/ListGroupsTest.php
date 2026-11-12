@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\ListGroups;
 use App\Models\Group;
 use App\Models\User;
@@ -26,7 +26,7 @@ class ListGroupsTest extends TestCase
         Group::factory()->create(['vault_id' => $vault->id, 'name' => 'Halpert household']);
         Group::factory()->create();
 
-        EricaServer::actingAs($user)->tool(ListGroups::class, ['vault' => $vault->uuid])
+        MonicaServer::actingAs($user)->tool(ListGroups::class, ['vault' => $vault->uuid])
             ->assertOk()
             ->assertSee('Halpert household');
     }
@@ -38,7 +38,7 @@ class ListGroupsTest extends TestCase
         $user->account->features()->deactivate('groups');
         Feature::flushCache();
 
-        EricaServer::actingAs($user)->tools()->assertNotRegistered([ListGroups::class]);
+        MonicaServer::actingAs($user)->tools()->assertNotRegistered([ListGroups::class]);
     }
 
     #[Test]

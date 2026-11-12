@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\SetRelationshipCategoryActivation;
 use App\Models\RelationshipCategory;
 use App\Models\User;
@@ -22,7 +22,7 @@ class SetRelationshipCategoryActivationTest extends TestCase
         $user = User::factory()->create();
         $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(SetRelationshipCategoryActivation::class, [
+        MonicaServer::actingAs($user)->tool(SetRelationshipCategoryActivation::class, [
             'relationship_category' => $category->uuid,
             'is_active' => false,
         ])->assertOk()->assertHasNoErrors();
@@ -36,7 +36,7 @@ class SetRelationshipCategoryActivationTest extends TestCase
         $user = User::factory()->create();
         $category = RelationshipCategory::factory()->inactive()->create(['account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(SetRelationshipCategoryActivation::class, [
+        MonicaServer::actingAs($user)->tool(SetRelationshipCategoryActivation::class, [
             'relationship_category' => $category->uuid,
             'is_active' => true,
         ])->assertOk()->assertHasNoErrors();

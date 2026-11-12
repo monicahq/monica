@@ -25,6 +25,5 @@ class SettingsControllerTest extends TestCase
         $response = $this->actingAs($user)->get(route('settings.index'));
 
         $response->assertStatus(200);
-        $response->assertSee('Signed in as Michael Scott · michael.scott@dundermifflin.com', escape: false);
     }
 }

@@ -30,7 +30,7 @@ Independent test: create the Halpert household, add three contacts, open the gro
 - [X] T016 [US1] Link the vault's groups from the vault navigation in `resources/views/components/vault/sidebar.blade.php` behind `FlagState::isOn('groups', $account)`
 - [X] T017 [P] [US1] `app/Http/Resources/GroupResource.php`, `GroupMembershipResource.php` with the shapes in contracts/api.md
 - [X] T018 [US1] `app/Http/Controllers/Api/GroupController.php`, `GroupRestorationController.php`, `GroupMemberController.php` (index, create, destroy), routes in `routes/api.php`; tests in `tests/Feature/Controllers/Api/`
-- [X] T019 [US1] MCP tools `ListGroups`, `GetGroup`, `CreateGroup`, `UpdateGroup`, `DeleteGroup`, `RestoreGroup`, `ListGroupMembers`, `AddGroupMember`, `RemoveGroupMember` in `app/Mcp/Tools/` through `MirrorsAnApiCapability`, registered in `app/Mcp/Servers/EricaServer.php` while the flag is on; tests in `tests/Unit/Mcp/Tools/`
+- [X] T019 [US1] MCP tools `ListGroups`, `GetGroup`, `CreateGroup`, `UpdateGroup`, `DeleteGroup`, `RestoreGroup`, `ListGroupMembers`, `AddGroupMember`, `RemoveGroupMember` in `app/Mcp/Tools/` through `MirrorsAnApiCapability`, registered in `app/Mcp/Servers/MonicaServer.php` while the flag is on; tests in `tests/Unit/Mcp/Tools/`
 
 ## Phase 4: User Story 2, see somebody's groups on their page (P1)
 

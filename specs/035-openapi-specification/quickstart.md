@@ -32,8 +32,8 @@ php artisan test --compact tests/Unit/ViewModels/Docs/ApiDocsViewModelTest.php t
 ## Prove it is valid
 
 ```bash
-curl -s http://localhost:8000/docs/api/v1/openapi.json > /tmp/erica-openapi.json
-bunx @redocly/cli@latest lint /tmp/erica-openapi.json
+curl -s http://localhost:8000/docs/api/v1/openapi.json > /tmp/monica-openapi.json
+bunx @redocly/cli@latest lint /tmp/monica-openapi.json
 ```
 
 FR-002 asks for no error and no warning, so a warning here is a failure, not a note.
@@ -45,7 +45,7 @@ Import `http://localhost:8000/docs/api/v1/openapi.json` into Postman, Bruno or S
 Client generation is the part 3.2 currently costs. `openapi-generator` is built on `swagger-parser`, which cannot read 3.2, so it fails before writing a file. To generate a client today, serve the document as 3.1 by changing the one constant in `BuildOpenApiDocument::execute()`, then:
 
 ```bash
-bunx @openapitools/openapi-generator-cli generate -i /tmp/erica-openapi.json -g typescript-fetch -o /tmp/erica-client
+bunx @openapitools/openapi-generator-cli generate -i /tmp/monica-openapi.json -g typescript-fetch -o /tmp/monica-client
 ```
 
 That produces 109 operations across 18 classes, one per tag, which is SC-001. See [research D1](research.md).

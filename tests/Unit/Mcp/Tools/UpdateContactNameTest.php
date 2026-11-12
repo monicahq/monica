@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\UpdateContactName;
 use App\Models\Contact;
 use App\Models\User;
@@ -29,7 +29,7 @@ class UpdateContactNameTest extends TestCase
             'last_name' => 'Scott',
         ]);
 
-        EricaServer::actingAs($user)->tool(UpdateContactName::class, [
+        MonicaServer::actingAs($user)->tool(UpdateContactName::class, [
             'vault' => $vault->uuid,
             'contact' => $contact->uuid,
             'first_name' => 'Pam',
@@ -50,7 +50,7 @@ class UpdateContactNameTest extends TestCase
             'last_name' => 'Scott',
         ]);
 
-        EricaServer::actingAs($user)->tool(UpdateContactName::class, [
+        MonicaServer::actingAs($user)->tool(UpdateContactName::class, [
             'vault' => $vault->uuid,
             'contact' => $contact->uuid,
             'first_name' => 'Michel',

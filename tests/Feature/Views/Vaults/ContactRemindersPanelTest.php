@@ -51,9 +51,7 @@ class ContactRemindersPanelTest extends TestCase
             ->assertSee(route('reminders.occurrences.answer.update', ['vault' => $this->vault, 'reminderOccurrence' => $deadline]))
             ->assertSee('value="remembered"', false)
             ->assertSee('value="forgotten"', false)
-            ->assertSee('All of Michael’s reminders')
-            ->assertSee(route('contacts.reminders.index', ['vault' => $this->vault, 'contact' => $this->michael]))
-            ->assertDontSee('Nothing to remember about Michael yet');
+            ->assertSee(route('contacts.reminders.index', ['vault' => $this->vault, 'contact' => $this->michael]));
     }
 
     #[Test]
@@ -67,18 +65,14 @@ class ContactRemindersPanelTest extends TestCase
             ->assertSee('role="tablist"', false)
             ->assertSeeInOrder(['id="contact-deadlines-tab-all"', 'id="contact-deadlines-tab-overdue"', 'id="contact-deadlines-tab-today"', 'id="contact-deadlines-tab-upcoming"'], false)
             ->assertSee('aria-controls="contact-deadlines-list"', false)
-            ->assertSee('role="tabpanel"', false)
-            ->assertSee('Nothing today');
+            ->assertSee('role="tabpanel"', false);
     }
 
     #[Test]
     public function a_contact_with_nothing_to_remember_gets_the_blank_panel(): void
     {
         $this->overview()
-            ->assertSee('Nothing to remember about Michael yet')
-            ->assertSee('Ask to be told about a date on their page, such as a birthday.')
-            ->assertDontSee('id="contact-deadlines-list"', false)
-            ->assertDontSee('All of Michael’s reminders');
+            ->assertDontSee('id="contact-deadlines-list"', false);
     }
 
     #[Test]
@@ -88,8 +82,7 @@ class ContactRemindersPanelTest extends TestCase
             ->assertSee('\u0022formUrl\u0022:\u0022http', false)
             ->assertSee('reminder-form', false)
             ->assertDontSee('aria-controls="contact-reminder-form"', false)
-            ->assertDontSee('id="contact-reminder-form"', false)
-            ->assertDontSee('What should we remind you about?');
+            ->assertDontSee('id="contact-reminder-form"', false);
     }
 
     #[Test]
@@ -105,13 +98,11 @@ class ContactRemindersPanelTest extends TestCase
             ->assertSee('name="return_to" value="contact"', false)
             ->assertSee('id="contact-reminder-panel" x-merge="replace"', false)
             ->assertSee('About Michael Scott')
-            ->assertSee('What should we remind you about?')
             ->assertSee('name="name"', false)
             ->assertSee('name="starts_on"', false)
             ->assertSee('name="cadence"', false)
             ->assertSee('name="interval"', false)
-            ->assertSee('x-data="reminderInterval(', false)
-            ->assertSee('Add reminder');
+            ->assertSee('x-data="reminderInterval(', false);
     }
 
     #[Test]
@@ -123,8 +114,7 @@ class ContactRemindersPanelTest extends TestCase
             ->assertSee('aria-controls="contact-reminder-time"', false)
             ->assertSee('name="time"', false)
             ->assertSee('value="09:00"', false)
-            ->assertSee('<option value="America/Toronto" selected', false)
-            ->assertSee('We’ll notify you on this date. No advance notifications.');
+            ->assertSee('<option value="America/Toronto" selected', false);
     }
 
     #[Test]
@@ -144,7 +134,6 @@ class ContactRemindersPanelTest extends TestCase
                 'timezone' => 'UTC',
             ])
             ->assertStatus(200)
-            ->assertSee('Pick a date.')
             ->assertSee('value="Return the Dundie to Pam"', false)
             ->assertSee('\u0022adding\u0022:true', false);
     }

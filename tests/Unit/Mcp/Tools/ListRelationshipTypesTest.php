@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\ListRelationshipTypes;
 use App\Models\RelationshipType;
 use App\Models\User;
@@ -22,7 +22,7 @@ class ListRelationshipTypesTest extends TestCase
         $user = User::factory()->create();
         $mine = RelationshipType::factory()->create(['account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(ListRelationshipTypes::class)
+        MonicaServer::actingAs($user)->tool(ListRelationshipTypes::class)
             ->assertOk()
             ->assertHasNoErrors()
             ->assertSee($mine->uuid);
@@ -34,7 +34,7 @@ class ListRelationshipTypesTest extends TestCase
         $user = User::factory()->create();
         $theirs = RelationshipType::factory()->create();
 
-        EricaServer::actingAs($user)->tool(ListRelationshipTypes::class)
+        MonicaServer::actingAs($user)->tool(ListRelationshipTypes::class)
             ->assertOk()
             ->assertDontSee($theirs->uuid);
     }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\GetTemplate;
 use App\Models\Template;
 use App\Models\User;
@@ -22,7 +22,7 @@ class GetTemplateTest extends TestCase
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id, 'name' => 'Dundie nominee']);
 
-        EricaServer::actingAs($user)->tool(GetTemplate::class, ['template' => $template->uuid])
+        MonicaServer::actingAs($user)->tool(GetTemplate::class, ['template' => $template->uuid])
             ->assertOk()
             ->assertHasNoErrors()
             ->assertSee('Dundie nominee');

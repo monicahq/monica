@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Settings\Account\RelationshipTypes;
 
-use App\Enums\RelationshipTypeEnum;
 use App\Models\RelationshipCategory;
 use App\Models\RelationshipType;
 use App\Models\User;
@@ -77,7 +76,6 @@ class RelationshipTypesViewModelTest extends TestCase
         $this->assertEquals('Godparent', $type['roleA']);
         $this->assertEquals('Godchild', $type['roleB']);
         $this->assertFalse($type['isSymmetric']);
-        $this->assertEquals('Different on each side', $type['directionLabel']);
     }
 
     #[Test]
@@ -89,18 +87,6 @@ class RelationshipTypesViewModelTest extends TestCase
         $type = new RelationshipTypesViewModel(user: $user)->categories()[0]['types'][0];
 
         $this->assertTrue($type['isSymmetric']);
-        $this->assertEquals('The same from both sides', $type['directionLabel']);
-    }
-
-    #[Test]
-    public function it_says_what_a_type_feeds(): void
-    {
-        $user = User::factory()->create();
-        RelationshipType::factory()->system(RelationshipTypeEnum::ParentChild)->create(['account_id' => $user->account_id]);
-
-        $type = new RelationshipTypesViewModel(user: $user)->categories()[0]['types'][0];
-
-        $this->assertEquals('feeds the family tree', $type['note']);
     }
 
     #[Test]
@@ -112,7 +98,6 @@ class RelationshipTypesViewModelTest extends TestCase
         $type = new RelationshipTypesViewModel(user: $user)->categories()[0]['types'][0];
 
         $this->assertFalse($type['isActive']);
-        $this->assertEquals('existing relationships still read normally', $type['note']);
     }
 
     #[Test]

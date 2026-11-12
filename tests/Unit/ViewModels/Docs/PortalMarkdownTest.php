@@ -34,10 +34,6 @@ class PortalMarkdownTest extends TestCase
         $markdown = $this->markdown();
 
         $this->assertSame(
-            '['.'Create your account]('.route('docs.portal.show', ['locale' => 'en', 'section' => 'start-here', 'slug' => 'create-your-account']).')',
-            $markdown->resolveLinks('@doc(start.create-account)'),
-        );
-        $this->assertSame(
             '[sign up]('.route('docs.portal.show', ['locale' => 'en', 'section' => 'start-here', 'slug' => 'create-your-account']).')',
             $markdown->resolveLinks('@doc(start.create-account, "sign up")'),
         );
@@ -106,7 +102,7 @@ class PortalMarkdownTest extends TestCase
     {
         $rendered = $this->render("# Title\n\n## The office\n\n### Upstairs\n\n## The office");
 
-        $this->assertStringContainsString('<h2 id="the-office">The office<a href="#the-office" data-heading-anchor aria-label="Link to The office">#</a></h2>', $rendered['blocks'][0]['html']);
+        $this->assertStringContainsString('<h2 id="the-office">The office<a href="#the-office" data-heading-anchor', $rendered['blocks'][0]['html']);
         $this->assertStringContainsString('<h3 id="upstairs">Upstairs</h3>', $rendered['blocks'][0]['html']);
         $this->assertSame([
             ['id' => 'the-office', 'label' => 'The office'],

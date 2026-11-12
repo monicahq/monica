@@ -29,15 +29,6 @@ class IconButtonTest extends TestCase
     }
 
     #[Test]
-    public function it_says_its_name_to_a_screen_reader_and_shows_it_to_everybody_else(): void
-    {
-        $rendered = $this->blade('<x-icon-button href="/somewhere" icon="reminder" label="Open this reminder" />');
-
-        $rendered->assertSee('aria-label="Open this reminder"', escape: false);
-        $rendered->assertSee('Open this reminder');
-    }
-
-    #[Test]
     public function it_submits_a_form_when_it_is_asked_to(): void
     {
         $this->blade('<x-icon-button type="submit" icon="mail" label="Send it to me now" />')

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\ListGroupLifeEvents;
 use App\Models\Group;
 use App\Models\LifeEvent;
@@ -27,7 +27,7 @@ class ListGroupLifeEventsTest extends TestCase
         LifeEvent::factory()->create(['vault_id' => $vault->id, 'group_id' => $group->id, 'title' => 'Budget review']);
         LifeEvent::factory()->create(['vault_id' => $vault->id, 'title' => 'Booze cruise']);
 
-        EricaServer::actingAs($user)->tool(ListGroupLifeEvents::class, ['vault' => $vault->uuid, 'group' => $group->uuid])
+        MonicaServer::actingAs($user)->tool(ListGroupLifeEvents::class, ['vault' => $vault->uuid, 'group' => $group->uuid])
             ->assertOk()
             ->assertSee('Budget review')
             ->assertDontSee('Booze cruise');

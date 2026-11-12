@@ -28,10 +28,12 @@ export default (projection) => ({
     choose(uuid, name) {
         this.chosen = uuid;
         this.chosenName = name;
+        this.$dispatch('record-chosen', { uuid, name });
     },
 
     forget() {
         this.chosen = '';
         this.chosenName = '';
+        this.$dispatch('record-chosen', { uuid: '', name: '' });
     },
 });

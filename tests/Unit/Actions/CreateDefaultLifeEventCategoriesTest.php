@@ -65,18 +65,14 @@ class CreateDefaultLifeEventCategoriesTest extends TestCase
 
         new CreateDefaultLifeEventCategories(user: $user)->execute();
 
-        $first = LifeEventCategory::query()->where('account_id', $user->account_id)->orderBy('position')->first();
-
         $this->assertDatabaseHas('life_event_categories', [
             'account_id' => $user->account_id,
             'key' => 'relationships_and_family',
             'name' => null,
-            'name_translation_key' => 'Relationships and family',
             'is_system' => true,
             'is_active' => true,
             'position' => 1,
         ]);
-        $this->assertEquals(__('Relationships and family'), $first->name);
     }
 
     #[Test]

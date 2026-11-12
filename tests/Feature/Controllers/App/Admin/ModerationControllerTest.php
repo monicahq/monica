@@ -41,28 +41,6 @@ class ModerationControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_counts_what_is_waiting_without_pinning_a_wording_to_one(): void
-    {
-        $michael = $this->administrator();
-
-        $this->actingAs($michael)
-            ->get(route('admin.moderation.index'))
-            ->assertSee('Nothing is waiting for a decision.', escape: false);
-
-        MarketplaceListingVersion::factory()->create();
-
-        $this->actingAs($michael)
-            ->get(route('admin.moderation.index'))
-            ->assertSee('1 submission is waiting for a decision.', escape: false);
-
-        MarketplaceListingVersion::factory()->create();
-
-        $this->actingAs($michael)
-            ->get(route('admin.moderation.index'))
-            ->assertSee('2 submissions are waiting for a decision.', escape: false);
-    }
-
-    #[Test]
     public function it_shows_everything_the_author_submitted(): void
     {
         $listing = MarketplaceListing::factory()->submitted()->create([

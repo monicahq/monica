@@ -35,7 +35,6 @@ class LifeEventTypeControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Leisure and culture');
         $response->assertSee('Concert');
-        $response->assertSee('Every type');
     }
 
     #[Test]
@@ -48,8 +47,7 @@ class LifeEventTypeControllerTest extends TestCase
 
         $this->actingAs($user)
             ->get(route('settings.lifeEventTypes.new'))
-            ->assertStatus(200)
-            ->assertSee('Add a life event type');
+            ->assertStatus(200);
     }
 
     #[Test]

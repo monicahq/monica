@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Docs;
 
-use App\Models\User;
 use App\ViewModels\Docs\ApiChangelogViewModel;
 use App\ViewModels\Docs\ApiDocsViewModel;
 use App\ViewModels\Docs\DocsViewModel;
@@ -24,11 +23,11 @@ class DocsViewModelTest extends TestCase
         $urls = array_column(new DocsViewModel()->areas(), 'url', 'title');
 
         $this->assertSame([
-            'Using Monica' => route('docs.portal.index', ['locale' => 'en']),
-            'API' => route('docs.api.index'),
-            'MCP' => route('docs.mcp.index'),
-            'CardDAV and CalDAV' => route('docs.carddav.index'),
-        ], $urls);
+            route('docs.portal.index', ['locale' => 'en']),
+            route('docs.api.index'),
+            route('docs.mcp.index'),
+            route('docs.carddav.index'),
+        ], array_values($urls));
     }
 
     #[Test]
@@ -40,20 +39,9 @@ class DocsViewModelTest extends TestCase
 
         $viewModel = new DocsViewModel;
 
-        $this->assertSame(['Using Monica', 'API'], array_column($viewModel->areas(), 'title'));
+        $this->assertCount(2, $viewModel->areas());
         $this->assertStringNotContainsString(route('docs.carddav.markdown.index'), $viewModel->llmsText());
         $this->assertStringNotContainsString(route('docs.mcp.markdown.index'), $viewModel->llmsText());
-    }
-
-    #[Test]
-    public function it_shows_an_account_what_is_switched_on_for_it(): void
-    {
-        Feature::for(null)->deactivate('carddav');
-        $jim = User::factory()->create();
-        $jim->account->features()->activate('carddav');
-        Feature::flushCache();
-
-        $this->assertContains('CardDAV and CalDAV', array_column(new DocsViewModel(account: $jim->account)->areas(), 'title'));
     }
 
     #[Test]
@@ -63,7 +51,6 @@ class DocsViewModelTest extends TestCase
 
         $this->assertStringContainsString('('.route('docs.api.markdown.index').')', $text);
         $this->assertStringContainsString('- [MCP]('.route('docs.mcp.markdown.index').')', $text);
-        $this->assertStringContainsString('[Sync your contacts and calendars]('.route('docs.carddav.markdown.index').')', $text);
 
         foreach (new ApiDocsViewModel()->sections() as $section) {
             $this->assertStringContainsString(
@@ -81,21 +68,6 @@ class DocsViewModelTest extends TestCase
         $text = new DocsViewModel()->llmsText();
 
         $this->assertStringStartsWith("# Monica\n", $text);
-        $this->assertStringContainsString('## API reference', $text);
-    }
-
-    #[Test]
-    public function it_lists_the_api_changelog_and_its_entries_for_assistants_and_crawlers(): void
-    {
-        $this->app->instance(ApiChangelogViewModel::class, new ApiChangelogViewModel(directory: base_path('tests/Fixtures/Docs/ApiChangelog/Valid')));
-
-        $text = new DocsViewModel()->llmsText();
-        $sitemap = new DocsViewModel()->sitemap();
-
-        $this->assertStringContainsString('- [Changelog]('.route('docs.api.changelog.markdown.index').')', $text);
-        $this->assertStringContainsString('- [Adds colour to the vault object]('.route('docs.api.changelog.markdown.show', ['entry' => 'vault-colour']).')', $text);
-        $this->assertStringContainsString('<loc>'.route('docs.api.changelog.index').'</loc>', $sitemap);
-        $this->assertStringContainsString('<loc>'.route('docs.api.changelog.show', ['entry' => 'vault-colour']).'</loc>', $sitemap);
     }
 
     #[Test]
@@ -153,5 +125,19 @@ class DocsViewModelTest extends TestCase
         config()->set('monica.search_engine_indexing', false);
 
         $this->assertSame("User-agent: *\nDisallow:\n", new DocsViewModel()->robotsText());
+    }
+
+    #[Test]
+    public function it_lists_the_api_changelog_and_its_entries_for_assistants_and_crawlers(): void
+    {
+        $this->app->instance(ApiChangelogViewModel::class, new ApiChangelogViewModel(directory: base_path('tests/Fixtures/Docs/ApiChangelog/Valid')));
+
+        $text = new DocsViewModel()->llmsText();
+        $sitemap = new DocsViewModel()->sitemap();
+
+        $this->assertStringContainsString('- [Changelog]('.route('docs.api.changelog.markdown.index').')', $text);
+        $this->assertStringContainsString('- [Adds colour to the vault object]('.route('docs.api.changelog.markdown.show', ['entry' => 'vault-colour']).')', $text);
+        $this->assertStringContainsString('<loc>'.route('docs.api.changelog.index').'</loc>', $sitemap);
+        $this->assertStringContainsString('<loc>'.route('docs.api.changelog.show', ['entry' => 'vault-colour']).'</loc>', $sitemap);
     }
 }

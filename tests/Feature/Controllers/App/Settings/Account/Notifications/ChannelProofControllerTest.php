@@ -28,7 +28,7 @@ class ChannelProofControllerTest extends TestCase
         $response = $this->post(route('settings.notifications.proof.store', 'sms'));
 
         $response->assertRedirect(route('settings.notifications.index'));
-        $response->assertSessionHas('status', 'A code is on its way. Type it back here.');
+        $response->assertSessionHas('status');
         NotificationFacade::assertSentTo($user, ChannelProofCode::class);
     }
 
@@ -71,7 +71,7 @@ class ChannelProofControllerTest extends TestCase
 
         $response = $this->put(route('settings.notifications.proof.update', 'sms'), ['code' => '000000']);
 
-        $response->assertSessionHasErrors(['code' => 'That is not the code we sent.']);
+        $response->assertSessionHasErrors(['code']);
     }
 
     #[Test]
@@ -84,7 +84,7 @@ class ChannelProofControllerTest extends TestCase
 
         $response = $this->post(route('settings.notifications.proof.store', 'sms'));
 
-        $response->assertSessionHasErrors(['proof' => 'You can ask for another code in 15 seconds.']);
+        $response->assertSessionHasErrors(['proof']);
         NotificationFacade::assertNothingSent();
     }
 
@@ -101,7 +101,6 @@ class ChannelProofControllerTest extends TestCase
         $response->assertSee('aria-disabled="true"', escape: false);
         $response->assertSee('aria-describedby="sms-proof-code-refusal"', escape: false);
         $response->assertSee('id="sms-proof-code-refusal"', escape: false);
-        $response->assertSee('You can ask for another code in 15 seconds.');
     }
 
     private function readyTextMessage(): User

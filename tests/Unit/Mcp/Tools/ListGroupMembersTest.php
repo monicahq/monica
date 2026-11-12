@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\ListGroupMembers;
 use App\Models\Group;
 use App\Models\GroupMember;
@@ -26,7 +26,7 @@ class ListGroupMembersTest extends TestCase
         $group = Group::factory()->create(['vault_id' => $vault->id]);
         GroupMember::factory()->create(['group_id' => $group->id, 'role' => 'Assistant to the regional manager']);
 
-        EricaServer::actingAs($user)->tool(ListGroupMembers::class, ['vault' => $vault->uuid, 'group' => $group->uuid])
+        MonicaServer::actingAs($user)->tool(ListGroupMembers::class, ['vault' => $vault->uuid, 'group' => $group->uuid])
             ->assertOk()
             ->assertSee('Assistant to the regional manager');
     }

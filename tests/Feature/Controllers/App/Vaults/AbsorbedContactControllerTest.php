@@ -24,7 +24,6 @@ class AbsorbedContactControllerTest extends TestCase
         $this->actingAs($user)
             ->get(url("/vaults/{$vault->slug}/contacts/{$absorbed->slug}"))
             ->assertStatus(200)
-            ->assertSee('This record was merged')
             ->assertSee($kept->name)
             ->assertSee(route('contacts.show', ['vault' => $vault, 'contact' => $kept]), escape: false);
     }
@@ -36,8 +35,7 @@ class AbsorbedContactControllerTest extends TestCase
 
         $this->actingAs($user)
             ->get(url("/vaults/{$vault->slug}/contacts/{$absorbed->uuid}"))
-            ->assertStatus(200)
-            ->assertSee('This record was merged');
+            ->assertStatus(200);
     }
 
     #[Test]

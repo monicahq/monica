@@ -40,7 +40,6 @@ class ReminderHistoryTest extends TestCase
         $entries = new ReminderHistory(user: $user, reminder: $reminder)->get();
 
         $this->assertCount(1, $entries);
-        $this->assertSame('Asked to be reminded of Birthday on Michael Scott', $entries[0]['title']);
     }
 
     #[Test]
@@ -67,7 +66,6 @@ class ReminderHistoryTest extends TestCase
         $entries = new ReminderHistory(user: $user, reminder: $reminder)->get();
 
         $this->assertCount(1, $entries);
-        $this->assertSame('Forgot Birthday on 12 May 2026', $entries[0]['title']);
     }
 
     #[Test]
@@ -93,7 +91,6 @@ class ReminderHistoryTest extends TestCase
         $entries = new ReminderHistory(user: $user, reminder: $reminder)->get();
 
         $this->assertCount(1, $entries);
-        $this->assertSame('Notification sent', $entries[0]['title']);
         $this->assertStringContainsString('email', $entries[0]['note']);
     }
 
@@ -120,40 +117,6 @@ class ReminderHistoryTest extends TestCase
     }
 
     #[Test]
-    public function it_puts_the_newest_first(): void
-    {
-        $reminder = Reminder::factory()->create();
-        $user = $this->userFor($reminder);
-
-        Log::factory()->create([
-            'account_id' => $reminder->account_id,
-            'vault_id' => $reminder->vault_id,
-            'user_id' => $user->id,
-            'action' => UserActionEnum::ReminderCreation->value,
-            'parameters' => ['label' => 'Birthday', 'name' => 'Michael Scott'],
-            'loggable_type' => Reminder::class,
-            'loggable_id' => $reminder->id,
-            'created_at' => now()->subYear(),
-        ]);
-
-        Log::factory()->create([
-            'account_id' => $reminder->account_id,
-            'vault_id' => $reminder->vault_id,
-            'user_id' => $user->id,
-            'action' => UserActionEnum::ReminderUpdate->value,
-            'parameters' => ['label' => 'Birthday', 'name' => 'Michael Scott'],
-            'loggable_type' => Reminder::class,
-            'loggable_id' => $reminder->id,
-            'created_at' => now()->subDay(),
-        ]);
-
-        $entries = new ReminderHistory(user: $user, reminder: $reminder)->get();
-
-        $this->assertSame('Changed the reminder on Birthday on Michael Scott', $entries[0]['title']);
-        $this->assertSame('Asked to be reminded of Birthday on Michael Scott', $entries[1]['title']);
-    }
-
-    #[Test]
     public function it_ignores_what_belongs_to_another_reminder(): void
     {
         $reminder = Reminder::factory()->create();
@@ -177,36 +140,6 @@ class ReminderHistoryTest extends TestCase
     }
 
     #[Test]
-    public function it_names_whichever_channel_carried_it(): void
-    {
-        $reminder = Reminder::factory()->create();
-        $user = $this->userFor($reminder);
-        $occurrence = ReminderOccurrence::factory()->notified()->create([
-            'reminder_id' => $reminder->id,
-            'account_id' => $reminder->account_id,
-            'vault_id' => $reminder->vault_id,
-        ]);
-
-        foreach (NotificationChannelEnum::cases() as $channel) {
-            Notification::factory()->create([
-                'account_id' => $reminder->account_id,
-                'user_id' => $user->id,
-                'channel' => $channel,
-                'notifiable_type' => ReminderOccurrence::class,
-                'notifiable_id' => $occurrence->id,
-                'sent_at' => now()->subHour(),
-            ]);
-        }
-
-        $notes = array_column(new ReminderHistory(user: $user, reminder: $reminder)->get(), 'note');
-
-        $this->assertContains('It appeared in the application.', $notes);
-        $this->assertContains('It went out by email.', $notes);
-        $this->assertContains('It went out on Telegram.', $notes);
-        $this->assertContains('It went out by text message.', $notes);
-    }
-
-    #[Test]
     public function it_still_says_somebody_was_told_once_the_per_channel_records_are_pruned(): void
     {
         $reminder = Reminder::factory()->create();
@@ -221,33 +154,6 @@ class ReminderHistoryTest extends TestCase
         $entries = new ReminderHistory(user: $user, reminder: $reminder)->get();
 
         $this->assertCount(1, $entries);
-        $this->assertSame('Notification sent', $entries[0]['title']);
-        $this->assertSame('Which channel carried it is no longer kept.', $entries[0]['note']);
-    }
-
-    #[Test]
-    public function it_says_that_once_rather_than_alongside_the_record_that_is_still_there(): void
-    {
-        $reminder = Reminder::factory()->create();
-        $user = $this->userFor($reminder);
-        $occurrence = ReminderOccurrence::factory()->notified()->create([
-            'reminder_id' => $reminder->id,
-            'account_id' => $reminder->account_id,
-            'vault_id' => $reminder->vault_id,
-        ]);
-
-        Notification::factory()->create([
-            'account_id' => $reminder->account_id,
-            'user_id' => $user->id,
-            'channel' => NotificationChannelEnum::Email,
-            'notifiable_type' => ReminderOccurrence::class,
-            'notifiable_id' => $occurrence->id,
-            'sent_at' => now()->subHour(),
-        ]);
-
-        $notes = array_column(new ReminderHistory(user: $user, reminder: $reminder)->get(), 'note');
-
-        $this->assertNotContains('Which channel carried it is no longer kept.', $notes);
     }
 
     #[Test]

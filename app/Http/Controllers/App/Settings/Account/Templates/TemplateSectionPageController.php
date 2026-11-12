@@ -22,6 +22,7 @@ class TemplateSectionPageController extends Controller
 
         $validated = $request->validate([
             'page' => [
+                'bail',
                 'required',
                 'string',
                 'bail',

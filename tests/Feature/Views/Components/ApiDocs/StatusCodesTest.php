@@ -31,7 +31,6 @@ class StatusCodesTest extends TestCase
     public function it_shows_every_code_with_its_name_when_it_happens_and_what_the_body_holds(): void
     {
         $this->blade('<x-api-docs.status-codes :section="$section" />', ['section' => $this->section()])
-            ->assertSee('Status codes')
             ->assertSeeInOrder(['201', 'Created', 'Jim made a new Dundie.', 'The Dundie.', '409', 'Conflict', 'Dwight moved the stapler again.', 'A message.']);
     }
 

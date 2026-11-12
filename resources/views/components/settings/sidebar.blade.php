@@ -22,13 +22,22 @@
       ],
     ],
     [
-      'title' => __('Personalisation'),
+      'title' => __('Contacts and types'),
       'entries' => [
         ['key' => 'entity-types', 'label' => __('Contacts and more'), 'icon' => 'organization', 'url' => route('settings.entityTypes.index')],
         ['key' => 'templates', 'label' => __('Templates'), 'icon' => 'file', 'url' => route('settings.templates.index')],
         ['key' => 'value-lists', 'label' => __('Value lists'), 'icon' => 'tasks', 'url' => route('settings.valueLists.index')],
         ['key' => 'relationship-types', 'label' => __('Relationship types'), 'icon' => 'relationship', 'url' => route('settings.relationshipTypes.index')],
         ['key' => 'life-event-types', 'label' => __('Life event types'), 'icon' => 'activity', 'url' => route('settings.lifeEventTypes.index')],
+      ],
+    ],
+    [
+      'title' => __('Possessions'),
+      'entries' => [
+        ['key' => 'locations', 'label' => __('Locations'), 'icon' => 'place', 'url' => route('settings.locations.index')],
+        ['key' => 'possession-types', 'label' => __('Possession types'), 'icon' => 'tag', 'url' => route('settings.possessionTypes.index')],
+        ['key' => 'possession-tags', 'label' => __('Possession tags'), 'icon' => 'hash', 'url' => route('settings.possessionTags.index')],
+        ['key' => 'possession-conditions', 'label' => __('Possession conditions'), 'icon' => 'star', 'url' => route('settings.possessionConditions.index')],
       ],
     ],
     ...(config('monica.self_hosted') ? [] : [[

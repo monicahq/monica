@@ -70,7 +70,6 @@ class ContactFormViewModelTest extends TestCase
         $viewModel = new ContactFormViewModel(user: $user, vault: $vault);
 
         $this->assertFalse($viewModel->showsTemplates());
-        $this->assertNotContains('Basic animal', array_column($viewModel->templates(), 'name'));
     }
 
     #[Test]
@@ -118,7 +117,6 @@ class ContactFormViewModelTest extends TestCase
         $viewModel = new ContactFormViewModel(user: $user, vault: $vault);
 
         $this->assertFalse($viewModel->canCreate());
-        $this->assertStringContainsString('no template for new contacts', (string) $viewModel->blocker());
     }
 
     #[Test]
@@ -176,21 +174,6 @@ class ContactFormViewModelTest extends TestCase
         $template->structure->update(['published_version_id' => $version->id]);
 
         return $template;
-    }
-
-    #[Test]
-    public function it_names_the_contact_ceiling_once_the_account_is_at_it(): void
-    {
-        config(['monica.free_contact_limit' => 1]);
-
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id]);
-
-        $this->assertSame(
-            'The free plan holds 1 contact across every vault, and this account already has it. Full access lifts the ceiling.',
-            new ContactFormViewModel(user: $user, vault: $vault)->ceilingMessage(),
-        );
     }
 
     #[Test]

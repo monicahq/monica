@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\UpdateGroupNote;
 use App\Models\Group;
 use App\Models\GroupNote;
@@ -28,7 +28,7 @@ class UpdateGroupNoteTest extends TestCase
         $group = Group::factory()->create(['vault_id' => $vault->id]);
         $note = GroupNote::factory()->create(['group_id' => $group->id]);
 
-        EricaServer::actingAs($user)->tool(UpdateGroupNote::class, ['vault' => $vault->uuid, 'group' => $group->uuid, 'note' => $note->uuid, 'body' => 'Paper plates are fine.'])
+        MonicaServer::actingAs($user)->tool(UpdateGroupNote::class, ['vault' => $vault->uuid, 'group' => $group->uuid, 'note' => $note->uuid, 'body' => 'Paper plates are fine.'])
             ->assertOk()
             ->assertSee('Paper plates are fine.');
     }

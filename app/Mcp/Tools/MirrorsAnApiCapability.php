@@ -18,10 +18,29 @@ use App\Models\Group;
 use App\Models\GroupFile;
 use App\Models\GroupMember;
 use App\Models\GroupNote;
+use App\Models\KnowledgeFolder;
+use App\Models\KnowledgeList;
+use App\Models\KnowledgeListColumn;
+use App\Models\KnowledgeListItem;
+use App\Models\KnowledgeNote;
 use App\Models\LifeEvent;
 use App\Models\LifeEventCategory;
 use App\Models\LifeEventType;
+use App\Models\Location;
 use App\Models\Log;
+use App\Models\Possession;
+use App\Models\PossessionCondition;
+use App\Models\PossessionField;
+use App\Models\PossessionFieldGroup;
+use App\Models\PossessionInsuranceRecord;
+use App\Models\PossessionLoan;
+use App\Models\PossessionLocationStay;
+use App\Models\PossessionMaintenanceRecord;
+use App\Models\PossessionProvenanceEvent;
+use App\Models\PossessionTag;
+use App\Models\PossessionTransaction;
+use App\Models\PossessionType;
+use App\Models\PossessionValuation;
 use App\Models\Relationship;
 use App\Models\RelationshipCategory;
 use App\Models\RelationshipType;
@@ -242,6 +261,215 @@ trait MirrorsAnApiCapability
         }
 
         return $this->found($entityType);
+    }
+
+    protected function location(Request $request, string $address): Location
+    {
+        $location = $this->user($request)->account->locations()->where('uuid', $address)->first();
+
+        if ($location === null) {
+            throw $this->doesNotExist(__('That location does not exist.'));
+        }
+
+        return $this->found($location);
+    }
+
+    protected function possessionType(Request $request, string $address): PossessionType
+    {
+        $possessionType = $this->user($request)->account->possessionTypes()->where('uuid', $address)->first();
+
+        if ($possessionType === null) {
+            throw $this->doesNotExist(__('That possession type does not exist.'));
+        }
+
+        return $this->found($possessionType);
+    }
+
+    protected function possessionTag(Request $request, string $address): PossessionTag
+    {
+        $possessionTag = $this->user($request)->account->possessionTags()->where('uuid', $address)->first();
+
+        if ($possessionTag === null) {
+            throw $this->doesNotExist(__('That possession tag does not exist.'));
+        }
+
+        return $this->found($possessionTag);
+    }
+
+    protected function possessionCondition(Request $request, string $address): PossessionCondition
+    {
+        $possessionCondition = $this->user($request)->account->possessionConditions()->where('uuid', $address)->first();
+
+        if ($possessionCondition === null) {
+            throw $this->doesNotExist(__('That possession condition does not exist.'));
+        }
+
+        return $this->found($possessionCondition);
+    }
+
+    protected function possessionFieldGroup(PossessionType $possessionType, string $address): PossessionFieldGroup
+    {
+        $group = $possessionType->groups()->where('uuid', $address)->first();
+
+        if ($group === null) {
+            throw $this->doesNotExist(__('That group does not exist.'));
+        }
+
+        return $this->found($group);
+    }
+
+    protected function possessionField(PossessionType $possessionType, string $address): PossessionField
+    {
+        $field = $possessionType->fields()->where('uuid', $address)->first();
+
+        if ($field === null) {
+            throw $this->doesNotExist(__('That field does not exist.'));
+        }
+
+        return $this->found($field);
+    }
+
+    protected function possession(Vault $vault, string $address): Possession
+    {
+        $possession = $vault->possessions()->where('uuid', $address)->first();
+
+        if ($possession === null) {
+            throw $this->doesNotExist(__('That possession does not exist.'));
+        }
+
+        return $this->found($possession);
+    }
+
+    protected function possessionTransaction(Possession $possession, string $address): PossessionTransaction
+    {
+        $transaction = $possession->transactions()->where('uuid', $address)->first();
+
+        if ($transaction === null) {
+            throw $this->doesNotExist(__('That transaction does not exist.'));
+        }
+
+        return $this->found($transaction);
+    }
+
+    protected function possessionValuation(Possession $possession, string $address): PossessionValuation
+    {
+        $valuation = $possession->valuations()->where('uuid', $address)->first();
+
+        if ($valuation === null) {
+            throw $this->doesNotExist(__('That valuation does not exist.'));
+        }
+
+        return $this->found($valuation);
+    }
+
+    protected function possessionProvenanceEvent(Possession $possession, string $address): PossessionProvenanceEvent
+    {
+        $event = $possession->provenanceEvents()->where('uuid', $address)->first();
+
+        if ($event === null) {
+            throw $this->doesNotExist(__('That provenance event does not exist.'));
+        }
+
+        return $this->found($event);
+    }
+
+    protected function possessionLoan(Possession $possession, string $address): PossessionLoan
+    {
+        $loan = $possession->loans()->where('uuid', $address)->first();
+
+        if ($loan === null) {
+            throw $this->doesNotExist(__('That loan does not exist.'));
+        }
+
+        return $this->found($loan);
+    }
+
+    protected function possessionLocationStay(Possession $possession, string $address): PossessionLocationStay
+    {
+        $stay = $possession->locationStays()->where('uuid', $address)->first();
+
+        if ($stay === null) {
+            throw $this->doesNotExist(__('That stay does not exist.'));
+        }
+
+        return $this->found($stay);
+    }
+
+    protected function possessionInsuranceRecord(Possession $possession, string $address): PossessionInsuranceRecord
+    {
+        $record = $possession->insuranceRecords()->where('uuid', $address)->first();
+
+        if ($record === null) {
+            throw $this->doesNotExist(__('That insurance record does not exist.'));
+        }
+
+        return $this->found($record);
+    }
+
+    protected function possessionMaintenanceRecord(Possession $possession, string $address): PossessionMaintenanceRecord
+    {
+        $record = $possession->maintenanceRecords()->where('uuid', $address)->first();
+
+        if ($record === null) {
+            throw $this->doesNotExist(__('That maintenance record does not exist.'));
+        }
+
+        return $this->found($record);
+    }
+
+    protected function knowledgeFolder(Vault $vault, string $address): KnowledgeFolder
+    {
+        $folder = $vault->knowledgeFolders()->where('uuid', $address)->first();
+
+        if ($folder === null) {
+            throw $this->doesNotExist(__('That folder does not exist.'));
+        }
+
+        return $this->found($folder);
+    }
+
+    protected function knowledgeNote(Vault $vault, string $address): KnowledgeNote
+    {
+        $note = KnowledgeNote::query()->where('vault_id', $vault->id)->where('uuid', $address)->first();
+
+        if ($note === null) {
+            throw $this->doesNotExist(__('That note does not exist.'));
+        }
+
+        return $this->found($note);
+    }
+
+    protected function knowledgeList(Vault $vault, string $address): KnowledgeList
+    {
+        $list = KnowledgeList::query()->where('vault_id', $vault->id)->where('uuid', $address)->first();
+
+        if ($list === null) {
+            throw $this->doesNotExist(__('That list does not exist.'));
+        }
+
+        return $this->found($list);
+    }
+
+    protected function knowledgeListColumn(KnowledgeList $list, string $address): KnowledgeListColumn
+    {
+        $column = $list->columns()->where('uuid', $address)->first();
+
+        if ($column === null) {
+            throw $this->doesNotExist(__('That column does not exist.'));
+        }
+
+        return $this->found($column);
+    }
+
+    protected function knowledgeListItem(KnowledgeList $list, string $address): KnowledgeListItem
+    {
+        $item = $list->items()->where('uuid', $address)->first();
+
+        if ($item === null) {
+            throw $this->doesNotExist(__('That item does not exist.'));
+        }
+
+        return $this->found($item);
     }
 
     protected function relationshipType(Request $request, string $address): RelationshipType

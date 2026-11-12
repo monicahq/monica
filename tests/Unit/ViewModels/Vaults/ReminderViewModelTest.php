@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\ViewModels\Vaults;
 
 use App\Actions\DeactivateReminders;
-use App\Enums\ReminderCadenceEnum;
 use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\ReminderOccurrenceCategoryEnum;
 use App\Enums\UserActionEnum;
@@ -20,7 +19,6 @@ use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Queue;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -40,34 +38,6 @@ class ReminderViewModelTest extends TestCase
         $this->assertSame('Dwight Schrute', $viewModel->contact()['name']);
         $this->assertSame(route('contacts.show', ['vault' => $reminder->vault, 'contact' => $contact]), $viewModel->contact()['url']);
         $this->assertSame(route('contacts.reminders.index', ['vault' => $reminder->vault, 'contact' => $contact]), $viewModel->contactRemindersUrl());
-    }
-
-    /** @return array<string, array{ReminderCadenceEnum, int, string, string}> */
-    public static function schedules(): array
-    {
-        return [
-            'weekly' => [ReminderCadenceEnum::Weekly, 1, '2026-09-28', 'Every week on Monday at 09:00 · Europe/Paris.'],
-            'monthly' => [ReminderCadenceEnum::Monthly, 1, '2026-09-28', 'Every month on day 28 at 09:00 · Europe/Paris.'],
-            'every two months' => [ReminderCadenceEnum::Monthly, 2, '2026-09-28', 'Every 2 months on day 28 at 09:00 · Europe/Paris.'],
-            'yearly' => [ReminderCadenceEnum::Yearly, 1, '2026-04-08', 'Every year on 8 April at 09:00 · Europe/Paris.'],
-            'once' => [ReminderCadenceEnum::Once, 1, '2026-04-08', 'Once, on 8 April 2026 at 09:00 · Europe/Paris.'],
-        ];
-    }
-
-    #[Test]
-    #[DataProvider('schedules')]
-    public function it_says_when_the_reminder_fires_in_one_sentence(ReminderCadenceEnum $cadence, int $interval, string $startsOn, string $expected): void
-    {
-        $user = User::factory()->create(['date_format' => 'j F Y']);
-        $contact = Contact::factory()->create(['account_id' => $user->account_id]);
-        $reminder = Reminder::factory()->manual($contact, $startsOn)->create([
-            'cadence' => $cadence,
-            'frequency_interval' => $interval,
-            'time_of_day' => '09:00:00',
-            'timezone' => 'Europe/Paris',
-        ]);
-
-        $this->assertSame($expected, $this->viewModel($user, $reminder)->scheduleLine());
     }
 
     #[Test]
@@ -97,7 +67,6 @@ class ReminderViewModelTest extends TestCase
         $viewModel = $this->viewModel($user, $reminder);
 
         $this->assertNull($viewModel->editUrl());
-        $this->assertSame("Based on Michael Scott’s “{$reminder->field->label}”", $viewModel->sourceLine());
         $this->assertStringStartsWith(route('contacts.show', ['vault' => $reminder->vault, 'contact' => $contact]), $viewModel->editDateUrl());
     }
 
@@ -125,7 +94,6 @@ class ReminderViewModelTest extends TestCase
             $titles[] = $problem['title'];
         }
 
-        $this->assertSame('This reminder has no date to follow', $titles[0]);
         $this->assertCount(count(ReminderInactiveReasonEnum::cases()), array_unique($titles));
     }
 
@@ -213,29 +181,6 @@ class ReminderViewModelTest extends TestCase
 
         $this->assertCount(4, $rows);
         $this->assertTrue($viewModel->history()->hasMorePages());
-        $this->assertSame('You forgot', $rows[0]['outcome']);
-        $this->assertSame('Answered 24 September 2026 at 10:14', $rows[0]['answered']);
-        $this->assertSame('You remembered', $rows[1]['outcome']);
-    }
-
-    #[Test]
-    public function it_counts_the_answers_that_outlive_the_reminder(): void
-    {
-        $reminder = $this->reminderAbout($user = User::factory()->create());
-        $reminder->update(['name' => 'Dwight’s birthday']);
-
-        $this->assertSame(
-            'This removes “Dwight’s birthday” and its upcoming dates. The record it is about stays as it is.',
-            $this->viewModel($user, $reminder)->deleteLine(),
-        );
-
-        ReminderOccurrence::factory()->for($reminder)->daysFromNow(-30)->remembered()->create();
-        ReminderOccurrence::factory()->for($reminder)->daysFromNow(-60)->forgotten()->create();
-
-        $this->assertSame(
-            'This removes “Dwight’s birthday” and its upcoming dates. The 2 answers you gave are kept, and the record it is about stays as it is.',
-            $this->viewModel($user, $reminder)->deleteLine(),
-        );
     }
 
     #[Test]

@@ -29,6 +29,7 @@ class StructureVersionSectionController extends TemplateScopedController
 
         $validated = $request->validate([
             'section_id' => [
+                'bail',
                 'required_without:name',
                 'prohibits:name',
                 'nullable',

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\RestoreGroup;
 use App\Models\Group;
 use App\Models\User;
@@ -27,7 +27,7 @@ class RestoreGroupTest extends TestCase
         $group = Group::factory()->create(['vault_id' => $vault->id]);
         $group->delete();
 
-        EricaServer::actingAs($user)->tool(RestoreGroup::class, ['vault' => $vault->uuid, 'group' => $group->uuid])
+        MonicaServer::actingAs($user)->tool(RestoreGroup::class, ['vault' => $vault->uuid, 'group' => $group->uuid])
             ->assertOk()
             ->assertHasNoErrors();
 
@@ -41,7 +41,7 @@ class RestoreGroupTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $group = Group::factory()->create(['vault_id' => $vault->id]);
 
-        EricaServer::actingAs($user)->tool(RestoreGroup::class, ['vault' => $vault->uuid, 'group' => $group->uuid])
+        MonicaServer::actingAs($user)->tool(RestoreGroup::class, ['vault' => $vault->uuid, 'group' => $group->uuid])
             ->assertHasErrors(['That group is not deleted.']);
     }
 

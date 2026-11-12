@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\AddSupportMessage;
 use App\Mcp\Tools\CreateSupportRequest;
 use App\Mcp\Tools\GetSupportRequest;
@@ -32,7 +32,7 @@ class SupportRequestToolsTest extends TestCase
         Administrator::factory()->create(['user_id' => User::factory()->create()->id]);
         $user = User::factory()->create();
 
-        EricaServer::actingAs($user)->tool(CreateSupportRequest::class, [
+        MonicaServer::actingAs($user)->tool(CreateSupportRequest::class, [
             'category' => 'question',
             'subject' => 'Can I share one contact without sharing the vault?',
             'body' => 'I want Holly to see Toby’s page but nothing else.',
@@ -49,12 +49,12 @@ class SupportRequestToolsTest extends TestCase
         SupportMessage::factory()->note()->create(['support_request_id' => $supportRequest->id, 'body' => 'Toby set the time zone wrong again.']);
         SupportRequest::factory()->create(['subject' => 'Stamford branch closing']);
 
-        EricaServer::actingAs($user)->tool(ListSupportRequests::class, [])
+        MonicaServer::actingAs($user)->tool(ListSupportRequests::class, [])
             ->assertOk()
             ->assertSee('Late reminders')
             ->assertDontSee('Stamford branch closing');
 
-        EricaServer::actingAs($user)->tool(GetSupportRequest::class, ['support_request' => $supportRequest->uuid])
+        MonicaServer::actingAs($user)->tool(GetSupportRequest::class, ['support_request' => $supportRequest->uuid])
             ->assertOk()
             ->assertDontSee('Toby set the time zone wrong again.');
     }
@@ -67,17 +67,17 @@ class SupportRequestToolsTest extends TestCase
         $user = User::factory()->create();
         $supportRequest = SupportRequest::factory()->create(['account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(ListSupportRequests::class, [])->assertHasErrors();
-        EricaServer::actingAs($user)->tool(GetSupportRequest::class, ['support_request' => $supportRequest->uuid])->assertHasErrors();
-        EricaServer::actingAs($user)->tool(CreateSupportRequest::class, ['category' => 'question', 'subject' => 'Printer', 'body' => 'The printer is on fire again.'])->assertHasErrors();
-        EricaServer::actingAs($user)->tool(AddSupportMessage::class, ['support_request' => $supportRequest->uuid, 'body' => 'Still on fire.'])->assertHasErrors();
-        EricaServer::actingAs($user)->tool(SolveSupportRequest::class, ['support_request' => $supportRequest->uuid])->assertHasErrors();
+        MonicaServer::actingAs($user)->tool(ListSupportRequests::class, [])->assertHasErrors();
+        MonicaServer::actingAs($user)->tool(GetSupportRequest::class, ['support_request' => $supportRequest->uuid])->assertHasErrors();
+        MonicaServer::actingAs($user)->tool(CreateSupportRequest::class, ['category' => 'question', 'subject' => 'Printer', 'body' => 'The printer is on fire again.'])->assertHasErrors();
+        MonicaServer::actingAs($user)->tool(AddSupportMessage::class, ['support_request' => $supportRequest->uuid, 'body' => 'Still on fire.'])->assertHasErrors();
+        MonicaServer::actingAs($user)->tool(SolveSupportRequest::class, ['support_request' => $supportRequest->uuid])->assertHasErrors();
     }
 
     #[Test]
     public function it_does_not_find_a_request_of_another_account(): void
     {
-        EricaServer::actingAs(User::factory()->create())->tool(GetSupportRequest::class, ['support_request' => SupportRequest::factory()->create()->uuid])
+        MonicaServer::actingAs(User::factory()->create())->tool(GetSupportRequest::class, ['support_request' => SupportRequest::factory()->create()->uuid])
             ->assertHasErrors(['That support request does not exist.']);
     }
 
@@ -88,9 +88,9 @@ class SupportRequestToolsTest extends TestCase
         $user = User::factory()->create();
         $supportRequest = SupportRequest::factory()->waitingOnUser()->create(['account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(AddSupportMessage::class, ['support_request' => $supportRequest->uuid, 'body' => 'Settings show New York.'])
+        MonicaServer::actingAs($user)->tool(AddSupportMessage::class, ['support_request' => $supportRequest->uuid, 'body' => 'Settings show New York.'])
             ->assertOk();
-        EricaServer::actingAs($user)->tool(SolveSupportRequest::class, ['support_request' => $supportRequest->uuid])
+        MonicaServer::actingAs($user)->tool(SolveSupportRequest::class, ['support_request' => $supportRequest->uuid])
             ->assertOk();
 
         $this->assertEquals('solved', $supportRequest->refresh()->status->value);

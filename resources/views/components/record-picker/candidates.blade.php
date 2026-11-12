@@ -29,4 +29,6 @@
   @elseif ($emptyLine !== null)
     <p class="rounded-md border border-hairline px-3 py-3.5 text-sm text-muted">{{ $emptyLine }}</p>
   @endif
+
+  {{ $slot }}
 </div>

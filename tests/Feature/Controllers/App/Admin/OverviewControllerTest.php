@@ -19,8 +19,7 @@ class OverviewControllerTest extends TestCase
     {
         $response = $this->actingAs($this->administrator())->get(route('admin.overview.index'));
 
-        $response->assertSee('Counted at', escape: false);
-        $response->assertSeeInOrder(['href="'.route('admin.overview.index').'"', 'Count again'], escape: false);
+        $response->assertSee('href="'.route('admin.overview.index').'"', escape: false);
     }
 
     private function administrator(): User

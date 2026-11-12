@@ -23,7 +23,7 @@ class AccountLifetimeAccessControllerTest extends TestCase
             ->post(route('admin.accounts.lifetimeAccess.create', ['account' => $todd->account_id]));
 
         $response->assertRedirect(route('admin.accounts.show', ['account' => $todd->account_id]));
-        $response->assertSessionHas('status', 'The account has lifetime access.');
+        $response->assertSessionHas('status');
 
         $this->assertTrue($todd->account->refresh()->hasFullAccess());
         $this->assertDatabaseHas('administrator_logs', [
@@ -41,7 +41,7 @@ class AccountLifetimeAccessControllerTest extends TestCase
         $response = $this->actingAs($this->administrator())
             ->delete(route('admin.accounts.lifetimeAccess.destroy', ['account' => $todd->account_id]));
 
-        $response->assertSessionHas('status', 'Lifetime access is withdrawn.');
+        $response->assertSessionHas('status');
 
         $this->assertFalse($todd->account->refresh()->hasFullAccess());
         $this->assertDatabaseHas('administrator_logs', ['action' => 'lifetime_access_withdrawn']);

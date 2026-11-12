@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Mcp\Tools;
 
 use App\Enums\VersionStatusEnum;
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\PublishTemplateVersion;
 use App\Models\SectionVersion;
 use App\Models\StructureVersion;
@@ -31,7 +31,7 @@ class PublishTemplateVersionTest extends TestCase
             'section_version_id' => SectionVersion::factory()->create(['account_id' => $user->account_id])->id,
         ]);
 
-        EricaServer::actingAs($user)->tool(PublishTemplateVersion::class, ['template' => $template->uuid, 'version' => 1])
+        MonicaServer::actingAs($user)->tool(PublishTemplateVersion::class, ['template' => $template->uuid, 'version' => 1])
             ->assertOk()
             ->assertHasNoErrors();
 
@@ -45,7 +45,7 @@ class PublishTemplateVersionTest extends TestCase
         $template = Template::factory()->create(['account_id' => $user->account_id]);
         StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
 
-        EricaServer::actingAs($user)->tool(PublishTemplateVersion::class, ['template' => $template->uuid, 'version' => 1])
+        MonicaServer::actingAs($user)->tool(PublishTemplateVersion::class, ['template' => $template->uuid, 'version' => 1])
             ->assertHasErrors(['Version 1 is not a draft.']);
     }
 }

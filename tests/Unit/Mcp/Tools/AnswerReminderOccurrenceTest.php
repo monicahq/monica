@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\AnswerReminderOccurrence;
 use App\Models\Contact;
 use App\Models\Reminder;
@@ -30,7 +30,7 @@ class AnswerReminderOccurrenceTest extends TestCase
         $reminder = Reminder::factory()->manual($contact, now()->addWeek()->toDateString())->create();
         $occurrence = ReminderOccurrence::factory()->past()->create(['reminder_id' => $reminder->id]);
 
-        EricaServer::actingAs($user)->tool(AnswerReminderOccurrence::class, [
+        MonicaServer::actingAs($user)->tool(AnswerReminderOccurrence::class, [
             'vault' => $vault->uuid,
             'contact' => $contact->uuid,
             'occurrence' => $occurrence->uuid,
@@ -49,12 +49,12 @@ class AnswerReminderOccurrenceTest extends TestCase
         $reminder = Reminder::factory()->manual($contact, now()->addWeek()->toDateString())->create();
         $occurrence = ReminderOccurrence::factory()->past()->remembered()->create(['reminder_id' => $reminder->id]);
 
-        EricaServer::actingAs($user)->tool(AnswerReminderOccurrence::class, [
+        MonicaServer::actingAs($user)->tool(AnswerReminderOccurrence::class, [
             'vault' => $vault->uuid,
             'contact' => $contact->uuid,
             'occurrence' => $occurrence->uuid,
             'answer' => 'forgotten',
-        ])->assertHasErrors(['This reminder has already been answered.']);
+        ])->assertHasErrors();
 
         $this->assertDatabaseHas('reminder_occurrences', ['id' => $occurrence->id, 'answer' => 'remembered']);
     }

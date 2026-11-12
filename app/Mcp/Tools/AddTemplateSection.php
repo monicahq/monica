@@ -37,6 +37,7 @@ class AddTemplateSection extends Tool
             'template' => ['required', 'string'],
             'version' => ['required', 'integer', 'min:1'],
             'section_id' => [
+                'bail',
                 'required_without:name',
                 'prohibits:name',
                 'nullable',

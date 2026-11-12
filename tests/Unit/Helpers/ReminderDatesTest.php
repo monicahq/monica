@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Helpers;
 
-use App\Models\Vault;
-use App\Models\Group;
 use App\Enums\ReminderCadenceEnum;
 use App\Helpers\ReminderDates;
 use App\Models\Contact;
+use App\Models\Group;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
 use App\Models\User;
+use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;

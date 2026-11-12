@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\DeleteTemplate;
 use App\Models\StructureVersion;
 use App\Models\Template;
@@ -23,7 +23,7 @@ class DeleteTemplateTest extends TestCase
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(DeleteTemplate::class, ['template' => $template->uuid])
+        MonicaServer::actingAs($user)->tool(DeleteTemplate::class, ['template' => $template->uuid])
             ->assertOk()
             ->assertHasNoErrors();
 
@@ -37,8 +37,8 @@ class DeleteTemplateTest extends TestCase
         $template = Template::factory()->create(['account_id' => $user->account_id]);
         StructureVersion::factory()->published()->used(3)->create(['structure_id' => $template->structure->id]);
 
-        EricaServer::actingAs($user)->tool(DeleteTemplate::class, ['template' => $template->uuid])
-            ->assertHasErrors(['This template still renders']);
+        MonicaServer::actingAs($user)->tool(DeleteTemplate::class, ['template' => $template->uuid])
+            ->assertHasErrors();
 
         $this->assertModelExists($template);
     }

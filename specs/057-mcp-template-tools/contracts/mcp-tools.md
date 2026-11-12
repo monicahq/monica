@@ -60,6 +60,6 @@ The schema descriptions list enum values from the enums themselves (`FieldTypeEn
 
 ## Server instructions
 
-`EricaServer`'s instructions gain one paragraph: a template's sections and fields change only on a
+`MonicaServer`'s instructions gain one paragraph: a template's sections and fields change only on a
 draft version; open one with create-template-draft, read ids from get-template-version, and nothing
 reaches records until publish-template-version.

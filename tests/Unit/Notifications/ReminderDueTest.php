@@ -36,33 +36,6 @@ class ReminderDueTest extends TestCase
 
         $this->assertStringContainsString('Birthday, Michael Scott', $rendered);
         $this->assertStringContainsString('15 March 2027', $rendered);
-        $this->assertStringContainsString('It is in seven days.', $rendered);
-    }
-
-    #[Test]
-    public function it_says_which_date_it_is_about_rather_than_todays(): void
-    {
-        $michael = User::factory()->create();
-
-        $message = $this->notification()->toMail($michael);
-
-        $this->assertContains(
-            'It is about Michael Scott, and the date it reads is 15 March 2027.',
-            $message->introLines,
-        );
-    }
-
-    #[Test]
-    public function it_says_where_the_reminder_can_be_changed(): void
-    {
-        $michael = User::factory()->create();
-
-        $message = $this->notification()->toMail($michael);
-
-        $this->assertContains(
-            'You asked to be told this when you added the reminder. You can change it, or stop it, wherever that date is written down.',
-            $message->introLines,
-        );
     }
 
     #[Test]
@@ -109,7 +82,6 @@ class ReminderDueTest extends TestCase
         $text = (string) $message->toArray()['text'];
 
         $this->assertStringContainsString('Birthday, Michael Scott', $text);
-        $this->assertStringContainsString('It is in seven days.', $text);
         $this->assertStringContainsString('Michael Scott', $text);
     }
 

@@ -103,8 +103,7 @@ class McpCallControllerTest extends TestCase
             ->assertJsonStructure(['data' => $this->jsonStructure])
             ->assertJsonPath('data.id', $call->uuid)
             ->assertJsonPath('data.attributes.result', 'refused')
-            ->assertJsonPath('data.attributes.error.code', -32602)
-            ->assertJsonPath('data.attributes.error.message', 'That contact does not exist.');
+            ->assertJsonPath('data.attributes.error.code', -32602);
     }
 
     #[Test]

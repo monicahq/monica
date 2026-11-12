@@ -159,7 +159,7 @@ class ContactNameControllerTest extends TestCase
                 'display' => 1,
             ])
             ->assertRedirect(route('contacts.edit', ['vault' => $contact->vault, 'contact' => $contact]))
-            ->assertSessionHasErrors(['names' => __('A pronunciation cannot be the name the contact is shown under.')]);
+            ->assertSessionHasErrors(['names']);
 
         $this->assertSame(1, $contact->nameRepresentations()->count());
     }

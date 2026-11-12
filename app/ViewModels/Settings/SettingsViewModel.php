@@ -7,6 +7,8 @@ namespace App\ViewModels\Settings;
 use App\Enums\TimeFormatEnum;
 use App\Helpers\AvailableLocales;
 use App\Models\EntityType;
+use App\Models\Location;
+use App\Models\PossessionType;
 use App\Models\RelationshipType;
 use App\Models\Template;
 use App\Models\User;
@@ -136,6 +138,20 @@ class SettingsViewModel
                 'url' => route('settings.valueLists.index'),
             ],
             [
+                'title' => __('Locations'),
+                'description' => __('The places your things are kept in: a house, a room, a shelf, a box.'),
+                'icon' => 'place',
+                'meta' => $this->locationCount(),
+                'url' => route('settings.locations.index'),
+            ],
+            [
+                'title' => __('Possession types'),
+                'description' => __('The kinds of things you own, and the details each kind carries.'),
+                'icon' => 'tag',
+                'meta' => $this->possessionTypeCount(),
+                'url' => route('settings.possessionTypes.index'),
+            ],
+            [
                 'title' => __('Logs'),
                 'description' => __('What has been done in this account, and every email it has sent.'),
                 'icon' => 'timeline',
@@ -204,6 +220,20 @@ class SettingsViewModel
     private function entityTypeCount(): string
     {
         $count = EntityType::query()->where('account_id', $this->user->account_id)->count();
+
+        return trans_choice(':count type|:count types', $count);
+    }
+
+    private function locationCount(): string
+    {
+        $count = Location::query()->where('account_id', $this->user->account_id)->count();
+
+        return trans_choice(':count location|:count locations', $count);
+    }
+
+    private function possessionTypeCount(): string
+    {
+        $count = PossessionType::query()->where('account_id', $this->user->account_id)->count();
 
         return trans_choice(':count type|:count types', $count);
     }

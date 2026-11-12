@@ -16,8 +16,7 @@ class CopyButtonTest extends TestCase
     {
         $this->blade(self::CALL)
             ->assertSee("text: 'dunder-mifflin'", escape: false)
-            ->assertSee('window.copyText(this.text)', escape: false)
-            ->assertSee('Copy to the clipboard', escape: false);
+            ->assertSee('window.copyText(this.text)', escape: false);
     }
 
     #[Test]

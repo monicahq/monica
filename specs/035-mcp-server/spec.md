@@ -19,7 +19,7 @@
 ### User Story 1 - An assistant reads the directory (Priority: P1)
 
 Somebody pastes their instance address and an API key they already hold into their assistant's
-connector settings. The assistant discovers what Erica offers and answers questions about the people
+connector settings. The assistant discovers what Monica offers and answers questions about the people
 in their vaults, without anybody exporting a file.
 
 **Why this priority**: this is the whole feature at its smallest. It proves the connection, the

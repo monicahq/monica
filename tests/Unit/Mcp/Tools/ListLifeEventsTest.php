@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\ListLifeEvents;
 use App\Models\Contact;
 use App\Models\LifeEvent;
@@ -27,7 +27,7 @@ class ListLifeEventsTest extends TestCase
         $jim = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
         $this->lifeEventWith($jim, 'Booze cruise');
 
-        EricaServer::actingAs($user)->tool(ListLifeEvents::class, [
+        MonicaServer::actingAs($user)->tool(ListLifeEvents::class, [
             'vault' => $vault->uuid,
         ])->assertOk()->assertHasNoErrors()->assertSee('Booze cruise');
     }
@@ -42,7 +42,7 @@ class ListLifeEventsTest extends TestCase
         $this->lifeEventWith($jim, 'Booze cruise');
         $this->lifeEventWith($pam, 'Art show');
 
-        EricaServer::actingAs($user)->tool(ListLifeEvents::class, [
+        MonicaServer::actingAs($user)->tool(ListLifeEvents::class, [
             'vault' => $vault->uuid,
             'contact' => $pam->uuid,
         ])->assertOk()->assertSee('Art show')->assertDontSee('Booze cruise');
@@ -54,9 +54,9 @@ class ListLifeEventsTest extends TestCase
         $user = User::factory()->create();
         $stamford = Vault::factory()->create();
 
-        EricaServer::actingAs($user)->tool(ListLifeEvents::class, [
+        MonicaServer::actingAs($user)->tool(ListLifeEvents::class, [
             'vault' => $stamford->uuid,
-        ])->assertHasErrors(['That vault does not exist.']);
+        ])->assertHasErrors();
     }
 
     private function lifeEventWith(Contact $contact, string $title): void

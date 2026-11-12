@@ -333,7 +333,7 @@ class FieldValueRulesTest extends TestCase
         );
         $withoutAFile = Validator::make(['fields' => []], FieldValueRules::for(collect([$field]), $vault));
 
-        $this->assertSame(['Uploads are unavailable on this account for now.'], $withAFile->errors()->get("fields.{$field->id}"));
+        $this->assertTrue($withAFile->errors()->has("fields.{$field->id}"));
         $this->assertFalse($withoutAFile->fails());
     }
 

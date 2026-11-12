@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\RemoveGroupFile;
 use App\Models\Group;
 use App\Models\GroupFile;
@@ -28,7 +28,7 @@ class RemoveGroupFileTest extends TestCase
         $group = Group::factory()->create(['vault_id' => $vault->id]);
         $attachment = GroupFile::factory()->create(['group_id' => $group->id]);
 
-        EricaServer::actingAs($user)->tool(RemoveGroupFile::class, ['vault' => $vault->uuid, 'group' => $group->uuid, 'file' => $attachment->uuid])
+        MonicaServer::actingAs($user)->tool(RemoveGroupFile::class, ['vault' => $vault->uuid, 'group' => $group->uuid, 'file' => $attachment->uuid])
             ->assertOk()
             ->assertHasNoErrors();
 

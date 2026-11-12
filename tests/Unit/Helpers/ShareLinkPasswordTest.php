@@ -66,7 +66,7 @@ class ShareLinkPasswordTest extends TestCase
     private function requestWithASession(): Request
     {
         $request = Request::create('/s/a-token');
-        $request->setLaravelSession(new Store('erica-test', new ArraySessionHandler(120)));
+        $request->setLaravelSession(new Store('monica-test', new ArraySessionHandler(120)));
 
         return $request;
     }

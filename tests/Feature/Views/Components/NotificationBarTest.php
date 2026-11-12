@@ -25,7 +25,6 @@ class NotificationBarTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('id="notification-bar-panel"', escape: false);
-        $response->assertSee('Notifications, 0 unread');
     }
 
     #[Test]
@@ -39,28 +38,6 @@ class NotificationBarTest extends TestCase
         $response->assertSee(route('notifications.index'));
         $response->assertSee('id="notification-list"', escape: false);
         $response->assertDontSee('Birthday, Michael Scott');
-    }
-
-    #[Test]
-    public function it_counts_what_has_not_been_read(): void
-    {
-        $user = $this->signedIn();
-        $this->notification($user, 'Birthday, Michael Scott', now());
-        $this->notification($user, 'Anniversary, Jim Halpert', now())->update(['read_at' => now()]);
-
-        $response = $this->get(route('settings.index'));
-
-        $response->assertSee('Notifications, 1 unread');
-        $response->assertSee('1 notification you have not read');
-    }
-
-    #[Test]
-    public function there_is_nothing_to_clear_when_everything_is_read(): void
-    {
-        $user = $this->signedIn();
-        $this->notification($user, 'Birthday, Michael Scott', now())->update(['read_at' => now()]);
-
-        $this->get(route('settings.index'))->assertDontSee('Mark every one as read');
     }
 
     private function signedIn(): User

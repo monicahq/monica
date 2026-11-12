@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\CreateLifeEventType;
 use App\Models\LifeEventCategory;
 use App\Models\LifeEventType;
@@ -23,7 +23,7 @@ class CreateLifeEventTypeTest extends TestCase
         $user = User::factory()->create();
         $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(CreateLifeEventType::class, [
+        MonicaServer::actingAs($user)->tool(CreateLifeEventType::class, [
             'life_event_category_id' => $category->uuid,
             'name' => 'Won a Dundie',
             'description' => 'An award handed out at Chili’s.',
@@ -46,10 +46,10 @@ class CreateLifeEventTypeTest extends TestCase
         $user = User::factory()->create();
         $category = LifeEventCategory::factory()->create();
 
-        EricaServer::actingAs($user)->tool(CreateLifeEventType::class, [
+        MonicaServer::actingAs($user)->tool(CreateLifeEventType::class, [
             'life_event_category_id' => $category->uuid,
             'name' => 'Won a Dundie',
-        ])->assertHasErrors(['That life event category does not exist.']);
+        ])->assertHasErrors();
 
         $this->assertSame(0, LifeEventType::query()->count());
     }

@@ -22,7 +22,7 @@ removal in `CreateEmailSentTest` (not again in `RecordEmailSentTest`).
 returning `array<string, Type>`. Descriptions are the ones in the contract.
 
 **Model for every tool test**: `tests/Unit/Mcp/Tools/GetRelationshipTypeTest.php`:
-`EricaServer::actingAs($user)->tool(Tool::class, [...])`, `->assertOk()->assertSee(...)`,
+`MonicaServer::actingAs($user)->tool(Tool::class, [...])`, `->assertOk()->assertSee(...)`,
 `assertHasErrors(['sentence'])`, plus `it_names_the_api_capability_it_mirrors`. Build rows with
 `Log::factory()->create(['account_id' => $user->account_id, ...])` and
 `EmailSent::factory()->create(['account_id' => $user->account_id, ...])`.
@@ -59,7 +59,7 @@ real MCP client.
 
 - [X] T004 [P] [US1] Create `app/Mcp/Tools/ListLogs.php` mirroring `api.v1.logs`. Validate `'page' => ['nullable', 'integer']`, `'per_page' => ['nullable', 'integer']`. `$perPage = max(1, min($validated['per_page'] ?? (int) config('monica.api_default_items_per_page'), (int) config('monica.api_maximum_items_per_page')))`. Query `$this->user($request)->account->logs()->with('user')->orderByDesc('id')->paginate($perPage, ['*'], 'page', max(1, $validated['page'] ?? 1))`. Answer `Response::json(['data' => LogResource::collection($logs->items())->resolve(), 'meta' => ['page' => ..., 'per_page' => ..., 'total' => ...]])`, the envelope of `app/Http/Controllers/Api/LogController.php`. Schema: `page` and `per_page` as `$schema->integer()` with the contract's descriptions, the default and maximum interpolated from config (research R2).
 - [X] T005 [P] [US1] Create `app/Mcp/Tools/GetLog.php` mirroring `api.v1.logs.show`. Validate `'log' => ['required', 'string']`. Answer `Response::json(new LogResource($this->log($request, $validated['log']))->resolve())`. Schema: `log` string, required, "The identifier of the entry, as list-logs gives it."
-- [X] T006 [US1] Register `ListLogs::class` and `GetLog::class` in `$tools` in `app/Mcp/Servers/EricaServer.php`, after `ListLifeEventCategories::class`, with their imports.
+- [X] T006 [US1] Register `ListLogs::class` and `GetLog::class` in `$tools` in `app/Mcp/Servers/MonicaServer.php`, after `ListLifeEventCategories::class`, with their imports.
 
 **Checkpoint**: run T002 and T003; `tests/Feature/Mcp/McpCatalogueTest.php` passes.
 
@@ -85,7 +85,7 @@ never holds a web address.
 - [X] T011 [US2] In `app/Http/Resources/EmailSentResource.php`, add `public function __construct(EmailSent $resource, private readonly bool $withBody = false) { parent::__construct($resource); }` and replace the `routeIs(...)` condition with `$this->when($this->withBody, ...)`. In `app/Http/Controllers/Api/EmailSentController.php` `show()`, build `new EmailSentResource($email, withBody: true)` (research R3). Run `tests/Feature/Controllers/Api/EmailSentControllerTest.php` unchanged.
 - [X] T012 [P] [US2] Create `app/Mcp/Tools/ListEmailsSent.php` mirroring `api.v1.emailsSent`: as T004, querying `account->emailsSent()->orderByDesc('sent_at')->orderByDesc('id')` and `EmailSentResource::collection(...)`, the envelope of `app/Http/Controllers/Api/EmailSentController.php`.
 - [X] T013 [US2] Create `app/Mcp/Tools/GetEmailSent.php` mirroring `api.v1.emailsSent.show`. Validate `'email_sent' => ['required', 'string']`. Answer `Response::json(new EmailSentResource($this->emailSent($request, $validated['email_sent']), withBody: true)->resolve())`. Schema: `email_sent` string, required, "The identifier of the email, as list-emails-sent gives it." Depends on T011.
-- [X] T014 [US2] Register `ListEmailsSent::class` and `GetEmailSent::class` in `app/Mcp/Servers/EricaServer.php` after `GetLog::class`, with their imports.
+- [X] T014 [US2] Register `ListEmailsSent::class` and `GetEmailSent::class` in `app/Mcp/Servers/MonicaServer.php` after `GetLog::class`, with their imports.
 
 **Checkpoint**: run T007 to T009 and `EmailSentControllerTest`.
 
@@ -107,7 +107,7 @@ tools and the address removal.
 
 - [X] T017 [US3] In `app/ViewModels/Docs/McpDocsViewModel.php`: add `['id' => 'logs', 'label' => 'Read the logs']` to `SECTIONS` before `troubleshooting`; add `public const array LOGS` holding the two paragraphs of research R7 word for word; add the group `['name' => 'Account logs', 'changesData' => false, 'tools' => [...]]` after `Life event categories`, with `list-logs` "Lists what has been done in your account, newest first, a page at a time.", `get-log` "Returns one entry of the activity: who, what, from where and when.", `list-emails-sent` "Lists the emails sent to your account and whether each arrived, a page at a time.", `get-email-sent` "Returns one email, including what it said with links and web addresses removed."; in `markdown()`, write `## Read the logs` and `...$this->paragraphs(self::LOGS)` after the relationship types section, following it.
 - [X] T018 [US3] In `resources/views/app/docs/mcp.blade.php`, add `<section id="logs" aria-labelledby="logs-heading">` with `<h2 id="logs-heading">Read the logs</h2>` and the `McpDocsViewModel::LOGS` paragraphs, copying the `relationship-types` section markup exactly (lines 273 onward).
-- [X] T019 [P] [US3] In `app/Mcp/Servers/EricaServer.php` `#[Instructions]`, append: "The account's activity and the emails it was sent are read with list-logs and list-emails-sent, a page at a time, newest first, with the total. Read one email with get-email-sent to see what it said."
+- [X] T019 [P] [US3] In `app/Mcp/Servers/MonicaServer.php` `#[Instructions]`, append: "The account's activity and the emails it was sent are read with list-logs and list-emails-sent, a page at a time, newest first, with the total. Read one email with get-email-sent to see what it said."
 - [X] T020 [P] [US3] In `resources/docs/api/09-emails-sent.php`, extend the `$emailBody` description with the sentence "Links and web addresses are removed from the copy before it is kept, so a sign-in link can never be read back." Run `tests/Feature/Controllers/App/Docs` to confirm the API docs still render.
 
 **Checkpoint**: run T015 and T016.
@@ -135,7 +135,7 @@ tools and the address removal.
 
 - After T001: T002, T003, T004, T005, T007, T008, T009, T012 touch separate files.
 - US3: T015, T016, T019, T020 touch separate files; T017 then T018.
-- `EricaServer.php` is edited by T006, T014 and T019: do them one after another.
+- `MonicaServer.php` is edited by T006, T014 and T019: do them one after another.
 
 ## Implementation strategy
 

@@ -4,7 +4,7 @@
 
 ## Summary
 
-`EricaServer` replaces the package's `tools/call` handler with one that writes a row before the tool
+`MonicaServer` replaces the package's `tools/call` handler with one that writes a row before the tool
 runs and closes it with a result read from the exception or the response, never the HTTP status
 ([research R1, R2](research.md)). The settings screen and a read only API list the rows. A daily prune
 removes them after 90 days.
@@ -47,7 +47,7 @@ database/migrations/2026_10_23_000000_create_mcp_calls_table.php
 app/Models/McpCall.php                                   + Account::mcpCalls()
 app/Enums/McpCallResultEnum.php, McpOperationEnum.php, McpConnectionTypeEnum.php
 app/Mcp/Servers/RecordedCallTool.php                     tools/call handler (R1, R2, R3)
-app/Mcp/Servers/EricaServer.php                          $methods points tools/call at it
+app/Mcp/Servers/MonicaServer.php                          $methods points tools/call at it
 app/Mcp/Tools/MirrorsAnApiCapability.php                 sets mcp_vault, mcp_subject (R4)
 app/Http/Middleware/SetMcpLogSource.php                  also sets connection kind and id (R6)
 app/Helpers/McpPayload.php                               mask and cap (R5)

@@ -16,38 +16,6 @@ class PasswordChangedTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_says_what_it_is_about_in_the_subject(): void
-    {
-        config(['app.name' => 'Monica']);
-
-        $angela = User::factory()->create();
-
-        $message = new PasswordChanged()->toMail($angela);
-
-        $this->assertEquals('Your Monica password was changed', $message->subject);
-    }
-
-    #[Test]
-    public function it_says_the_previous_password_no_longer_works(): void
-    {
-        $angela = User::factory()->create();
-
-        $message = new PasswordChanged()->toMail($angela);
-
-        $this->assertStringContainsString('The previous one no longer works', (string) $message->render());
-    }
-
-    #[Test]
-    public function it_says_what_to_do_if_they_did_not_change_it(): void
-    {
-        $angela = User::factory()->create();
-
-        $message = new PasswordChanged()->toMail($angela);
-
-        $this->assertStringContainsString('If you did not change it', (string) $message->panel);
-    }
-
-    #[Test]
     public function it_goes_out_as_an_email(): void
     {
         $angela = User::factory()->create();

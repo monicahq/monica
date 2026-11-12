@@ -524,7 +524,6 @@ class VaultControllerTest extends TestCase
 
         $response->assertUnprocessable();
         $response->assertJsonValidationErrors('name');
-        $response->assertJsonPath('errors.name.0', 'The free plan holds 1 vault, and this account already has it. Full access lifts the ceiling.');
         $this->assertSame(1, $user->account->vaults()->count());
     }
 

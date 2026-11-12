@@ -83,7 +83,7 @@
 - [X] T044 Audit `resources/views/app/settings/account/billing/index.blade.php` and `resources/views/app/admin/accounts/show.blade.php` for keyboard operation, screen reader announcement, contrast, visible focus and 200% zoom
 - [X] T045 [P] Run `vendor/bin/pint --dirty --format agent`
 - [X] T046 [P] Run `vendor/bin/phpstan analyse --memory-limit=2G` and fix new findings
-- [X] T047 Run `php artisan test --compact` against each of SQLite, MySQL and PostgreSQL. SQLite passes. MySQL is reachable locally but the `erica` user sees only the development database, and running the suite there would wipe it. `pdo_pgsql` is not installed. CI covers MySQL
+- [X] T047 Run `php artisan test --compact` against each of SQLite, MySQL and PostgreSQL. SQLite passes. MySQL is reachable locally but the `monica` user sees only the development database, and running the suite there would wipe it. `pdo_pgsql` is not installed. CI covers MySQL
 - [X] T048 Walk [quickstart.md](quickstart.md) end to end in Stripe test mode, the closed tab, the abandoned session, the foreign session and the refund included
 
 ## Phase 7: Asked for after the walkthrough

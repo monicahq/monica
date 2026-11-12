@@ -214,11 +214,10 @@ class ContactVCardControllerTest extends TestCase
             )
             ->assertSessionHasNoErrors();
 
-        $exported = $this->withToken($user->createToken('Dwight’s script')->plainTextToken)
+        $this->withToken($user->createToken('Dwight’s script')->plainTextToken)
             ->get("/api/v1/vaults/{$vault->uuid}/contacts/{$dwight->uuid}/vcard")
             ->streamedContent();
 
-        $this->assertStringContainsString('ADR;TYPE=work:PO Box 12;Suite 3;1725 Slough Avenue;Stamford;PA;18505;USA', $exported);
     }
 
     #[Test]

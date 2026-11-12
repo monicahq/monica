@@ -50,7 +50,7 @@ Gate passes. Re-checked after design: unchanged.
 | Dav | `VCardReader`, `VCardMerger` (R5, R6); new `app/Http/Dav/CardDavPlugin.php` overriding `convertVCard()` (R7), registered in `DavServiceProvider` |
 | Web | `App/Vaults/ContactNameController@update`, `ContactController@create`, `ContactMergeController`; `ContactEditViewModel`, `ContactFormViewModel`, `ContactMergeViewModel`; `contacts/edit.blade.php`, `contacts/form.blade.php`, `contacts/merge/new.blade.php` |
 | Component | `resources/views/components/contact-name-editor.blade.php` and `resources/js/contact-name-editor.js`: used by edit and create, extracted at the second file for its keyboard and ARIA contract (components rule) |
-| API and MCP | `Api/ContactNameRepresentationController` (index, update), two routes in `routes/api.php`; `ContactResource`, `ContactMergePreviewResource`, `Api/ContactMergeController`; `app/Mcp/Tools/ListContactNameRepresentations.php`, `UpdateContactNameRepresentations.php`, registered in `EricaServer`; `resources/docs/api/06-contacts.php` |
+| API and MCP | `Api/ContactNameRepresentationController` (index, update), two routes in `routes/api.php`; `ContactResource`, `ContactMergePreviewResource`, `Api/ContactMergeController`; `app/Mcp/Tools/ListContactNameRepresentations.php`, `UpdateContactNameRepresentations.php`, registered in `MonicaServer`; `resources/docs/api/06-contacts.php` |
 | Product spec | New `spec/models/057-contact-name-representation-done.md`; `019-contact-done.md` and `034-contact-merge-done.md` point at it |
 | Copy | `lang/*.json` through `monica:localize` only |
 

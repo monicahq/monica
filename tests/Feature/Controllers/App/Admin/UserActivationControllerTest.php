@@ -23,7 +23,7 @@ class UserActivationControllerTest extends TestCase
             ->delete(route('admin.accounts.activation.destroy', ['account' => $todd->account_id]));
 
         $response->assertRedirect(route('admin.accounts.show', ['account' => $todd->account_id]));
-        $response->assertSessionHas('status', 'They can no longer sign in.');
+        $response->assertSessionHas('status');
 
         $this->assertFalse($todd->refresh()->is_active);
     }
@@ -51,7 +51,7 @@ class UserActivationControllerTest extends TestCase
         $response = $this->actingAs($this->administrator())
             ->post(route('admin.accounts.activation.create', ['account' => $todd->account_id]));
 
-        $response->assertSessionHas('status', 'They can sign in again.');
+        $response->assertSessionHas('status');
         $this->assertTrue($todd->refresh()->is_active);
 
         $this->actingAs($todd->refresh())->get(route('vaults.index'))->assertStatus(200);

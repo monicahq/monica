@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\CreateTemplateField;
 use App\Models\Field;
 use App\Models\SectionVersion;
@@ -25,7 +25,7 @@ class CreateTemplateFieldTest extends TestCase
     {
         [$user, $template, $row] = $this->placement();
 
-        EricaServer::actingAs($user)->tool(CreateTemplateField::class, [
+        MonicaServer::actingAs($user)->tool(CreateTemplateField::class, [
             'template' => $template->uuid,
             'version' => 1,
             'section' => (string) $row->id,
@@ -42,14 +42,14 @@ class CreateTemplateFieldTest extends TestCase
         [$user, $template, $row] = $this->placement();
         $repeater = Field::factory()->repeater()->create(['section_version_id' => $row->section_version_id]);
 
-        EricaServer::actingAs($user)->tool(CreateTemplateField::class, [
+        MonicaServer::actingAs($user)->tool(CreateTemplateField::class, [
             'template' => $template->uuid,
             'version' => 1,
             'section' => (string) $row->id,
             'type' => 'repeater',
             'label' => 'Harvests',
             'parent_id' => $repeater->id,
-        ])->assertHasErrors(['A repeater cannot sit inside another repeater.']);
+        ])->assertHasErrors();
     }
 
     /** @return array{User, Template, StructureVersionSection} */

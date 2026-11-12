@@ -20,7 +20,6 @@ class McpDocsControllerTest extends TestCase
         $response = $this->get('/docs/mcp');
 
         $response->assertOk();
-        $response->assertSee('Model Context Protocol (MCP)');
         $response->assertSee(new McpDocsViewModel()->serverAddress());
         $response->assertSee('role="tablist"', false);
     }

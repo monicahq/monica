@@ -3,11 +3,13 @@
   @var string $label
   @var string|null $href
   @var bool $turbo
+  @var string|null $unavailable
 --}}
 @props([
   'label',
   'href' => null,
   'turbo' => true,
+  'unavailable' => null,
 ])
 
 @php
@@ -16,7 +18,16 @@
 
 @if ($hasMenu)
   <div x-data="{ open: false }" @keydown.escape.window="open = false" @ajax:before.window="open = false" {{ $attributes->class(['flex']) }}>
-    <x-button :href="$href" :data-turbo="$turbo ? 'true' : null" class="flex-1 rounded-r-none">{{ $label }}</x-button>
+    @if ($unavailable !== null)
+      @php
+        $unavailableId = 'split-unavailable-'.md5($label.$unavailable);
+      @endphp
+
+      <x-button type="button" :dim-when-disabled="false" aria-disabled="true" :aria-describedby="$unavailableId" class="flex-1 rounded-r-none">{{ $label }}</x-button>
+      <span id="{{ $unavailableId }}" class="sr-only">{{ $unavailable }}</span>
+    @else
+      <x-button :href="$href" :data-turbo="$turbo ? 'true' : null" class="flex-1 rounded-r-none">{{ $label }}</x-button>
+    @endif
 
     <x-button
       type="button"

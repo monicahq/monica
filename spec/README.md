@@ -1,6 +1,6 @@
 # Spec
 
-This folder holds the written specification of Erica (the code name of Monica v3), turned into something the application can be built from.
+This folder holds the written specification of Monica (the code name of Monica v3), turned into something the application can be built from.
 
 | File or folder | What it holds |
 |---|---|

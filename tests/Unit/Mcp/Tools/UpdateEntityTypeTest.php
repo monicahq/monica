@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\UpdateEntityType;
 use App\Models\EntityType;
 use App\Models\User;
@@ -28,7 +28,7 @@ class UpdateEntityTypeTest extends TestCase
             'slug' => 'paper-ream',
         ]);
 
-        EricaServer::actingAs($user)->tool(UpdateEntityType::class, [
+        MonicaServer::actingAs($user)->tool(UpdateEntityType::class, [
             'entity_type' => $entityType->uuid,
             'colour' => '#9a3f2b',
         ])->assertOk()->assertHasNoErrors();
@@ -48,7 +48,7 @@ class UpdateEntityTypeTest extends TestCase
         $user = User::factory()->create();
         $entityType = EntityType::factory()->create(['account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(UpdateEntityType::class, [
+        MonicaServer::actingAs($user)->tool(UpdateEntityType::class, [
             'entity_type' => $entityType->uuid,
             'description' => null,
         ])->assertOk()->assertHasNoErrors();

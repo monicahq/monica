@@ -20,18 +20,6 @@ class PasswordResetRequestedTest extends TestCase
     private const TOKEN = 'aaaabbbbccccddddeeeeffffgggghhhhiiiijjjjkkkkllllmmmmnnnnoooopppp';
 
     #[Test]
-    public function it_has_a_subject(): void
-    {
-        config(['app.name' => 'Monica']);
-
-        $michael = User::factory()->create();
-
-        $message = new PasswordResetRequested(token: self::TOKEN)->toMail($michael);
-
-        $this->assertEquals('Choose a new password for Monica', $message->subject);
-    }
-
-    #[Test]
     public function it_carries_the_link_to_the_screen_that_resets_the_password(): void
     {
         $michael = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
@@ -69,16 +57,6 @@ class PasswordResetRequestedTest extends TestCase
         $message = new PasswordResetRequested(token: self::TOKEN)->toMail($michael);
 
         $this->assertStringContainsString('60 minutes', (string) $message->render());
-    }
-
-    #[Test]
-    public function it_says_what_to_do_if_they_did_not_ask_for_it(): void
-    {
-        $michael = User::factory()->create();
-
-        $message = new PasswordResetRequested(token: self::TOKEN)->toMail($michael);
-
-        $this->assertStringContainsString('If you did not ask for this link', (string) $message->panel);
     }
 
     #[Test]

@@ -163,32 +163,7 @@ class SharedContactViewModelTest extends TestCase
 
         $viewModel = $this->viewModel($link, $contact);
 
-        $this->assertSame("Shared with you by {$user->name}", $viewModel->sharedBy());
-        $this->assertStringContainsString('Read only · ends', $viewModel->terms());
         $this->assertStringContainsString(now()->addDays(30)->isoFormat('LL'), $viewModel->terms());
-    }
-
-    #[Test]
-    public function a_link_that_never_ends_says_only_that_it_is_read_only(): void
-    {
-        $contact = $this->sharedContact();
-        $link = $this->linkOnto($contact, ['expires_at' => null, 'created_by_user_id' => null]);
-
-        $viewModel = $this->viewModel($link, $contact);
-
-        $this->assertSame('Read only', $viewModel->terms());
-        $this->assertSame('Shared with you', $viewModel->sharedBy());
-        $this->assertStringNotContainsString('tell', $viewModel->closingLine());
-    }
-
-    #[Test]
-    public function it_says_whom_to_tell_when_something_is_wrong(): void
-    {
-        $contact = $this->sharedContact();
-        $user = $contact->account->user;
-        $link = $this->linkOnto($contact, ['created_by_user_id' => $user->id]);
-
-        $this->assertStringContainsString('tell', $this->viewModel($link, $contact)->closingLine());
     }
 
     #[Test]

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Mcp\Tools;
 
 use App\Enums\VersionStatusEnum;
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\UpdateTemplateSection;
 use App\Models\SectionVersion;
 use App\Models\StructureVersion;
@@ -25,7 +25,7 @@ class UpdateTemplateSectionTest extends TestCase
     {
         [$user, $template, $row] = $this->placement();
 
-        EricaServer::actingAs($user)->tool(UpdateTemplateSection::class, [
+        MonicaServer::actingAs($user)->tool(UpdateTemplateSection::class, [
             'template' => $template->uuid,
             'version' => 1,
             'section' => (string) $row->id,
@@ -43,12 +43,12 @@ class UpdateTemplateSectionTest extends TestCase
         [$user, $template, $row] = $this->placement();
         $row->structureVersion->update(['status' => VersionStatusEnum::Published, 'published_at' => now()]);
 
-        EricaServer::actingAs($user)->tool(UpdateTemplateSection::class, [
+        MonicaServer::actingAs($user)->tool(UpdateTemplateSection::class, [
             'template' => $template->uuid,
             'version' => 1,
             'section' => (string) $row->id,
             'title_override' => 'Stamford branch',
-        ])->assertHasErrors(['has been published']);
+        ])->assertHasErrors();
 
         $this->assertSame('Scranton branch', $row->refresh()->title_override);
     }

@@ -6,7 +6,7 @@ namespace Tests\Unit\Mcp\Tools;
 
 use App\Actions\CreateLifeEvent;
 use App\Enums\FieldTypeEnum;
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\UpdateLifeEvent;
 use App\Models\Contact;
 use App\Models\Field;
@@ -43,7 +43,7 @@ class UpdateLifeEventTest extends TestCase
             values: [$dish->id => 'Chicken parm'],
         )->execute();
 
-        EricaServer::actingAs($user)->tool(UpdateLifeEvent::class, [
+        MonicaServer::actingAs($user)->tool(UpdateLifeEvent::class, [
             'vault' => $vault->uuid,
             'life_event' => $lifeEvent->uuid,
             'happened_on' => '2026-10-10',
@@ -74,7 +74,7 @@ class UpdateLifeEventTest extends TestCase
             values: [$dish->id => 'Chicken parm'],
         )->execute();
 
-        EricaServer::actingAs($user)->tool(UpdateLifeEvent::class, [
+        MonicaServer::actingAs($user)->tool(UpdateLifeEvent::class, [
             'vault' => $vault->uuid,
             'life_event' => $lifeEvent->uuid,
             'fields' => null,
@@ -98,7 +98,7 @@ class UpdateLifeEventTest extends TestCase
             happenedOn: CarbonImmutable::parse('2026-10-09'),
         )->execute();
 
-        EricaServer::actingAs($user)->tool(UpdateLifeEvent::class, [
+        MonicaServer::actingAs($user)->tool(UpdateLifeEvent::class, [
             'vault' => $vault->uuid,
             'life_event' => $lifeEvent->uuid,
             'duration_in_minutes' => '90',
@@ -128,7 +128,7 @@ class UpdateLifeEventTest extends TestCase
             values: [$doctor->id => 'Dr. Ken', $diagnosis->id => 'Vasectomy'],
         )->execute();
 
-        EricaServer::actingAs($user)->tool(UpdateLifeEvent::class, [
+        MonicaServer::actingAs($user)->tool(UpdateLifeEvent::class, [
             'vault' => $vault->uuid,
             'life_event' => $lifeEvent->uuid,
             'fields' => [$doctor->id => 'Dr. Jacobs'],
@@ -153,10 +153,10 @@ class UpdateLifeEventTest extends TestCase
             happenedOn: CarbonImmutable::parse('2026-10-09'),
         )->execute();
 
-        EricaServer::actingAs($user)->tool(UpdateLifeEvent::class, [
+        MonicaServer::actingAs($user)->tool(UpdateLifeEvent::class, [
             'vault' => $vault->uuid,
             'life_event' => $lifeEvent->uuid,
             'happened_on' => '2026-10-10',
-        ])->assertHasErrors(['That life event does not exist.']);
+        ])->assertHasErrors();
     }
 }

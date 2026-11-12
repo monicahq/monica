@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\UpdateGroupMember;
 use App\Models\Group;
 use App\Models\GroupMember;
@@ -28,7 +28,7 @@ class UpdateGroupMemberTest extends TestCase
         $group = Group::factory()->create(['vault_id' => $vault->id]);
         $ryan = GroupMember::factory()->create(['group_id' => $group->id, 'role' => 'Temp']);
 
-        EricaServer::actingAs($user)->tool(UpdateGroupMember::class, ['vault' => $vault->uuid, 'group' => $group->uuid, 'membership' => $ryan->uuid, 'left_on' => '2007-01-01'])
+        MonicaServer::actingAs($user)->tool(UpdateGroupMember::class, ['vault' => $vault->uuid, 'group' => $group->uuid, 'membership' => $ryan->uuid, 'left_on' => '2007-01-01'])
             ->assertOk()
             ->assertHasNoErrors();
 

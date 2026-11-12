@@ -148,7 +148,7 @@ Quotation is `“…”`.
 
 A product noun is translated once per language and then never again. The same English word must reach
 the reader as the same word on every screen, which is what ASD-STE100 calls one word for one meaning,
-and what a reader notices immediately when it is broken. Nineteen nouns carry the product, and around
+and what a reader notices immediately when it is broken. Twenty-seven nouns carry the product, and around
 800 of the 2,206 strings hold at least one of them.
 
 Fill a column when you translate a language. A blank cell is a language nobody has fixed the words
@@ -175,6 +175,14 @@ for yet, and the first person to translate it decides.
 | share | 10 | общий доступ | பங்கிடல் | ভাগ করা | බෙදාගැනීම | ulashish | साझाकरण | pagbabahagi | comhroinnt | chia sẻ | การแบ่งปัน | κοινοποίηση | compartició | bendrinimas | jakaminen | deiling | megosztás | deling | deling | delning | 공유 | udostępnianie | 分享 | 共有 | partager | teilen | compartir | condividere | delen | partilhar | compartilhar | paylaşmak |
 | API key | 10 | API-ключ | API சாவி | API কী | API යතුර | API kaliti | API कुंजी | API key | eochair API | khóa API | คีย์ API | κλειδί API | clau API | API raktas | API-avain | API-lykill | API-kulcs | API-nøkkel | API-nøgle | API-nyckel | API 키 | klucz API | API 密钥 | APIキー | clé API | API-Schlüssel | clave de API | chiave API | API-sleutel | chave API | chave de API | API anahtarı |
 | life event | 2 | событие | செயல்பாடு | কার্যকলাপ | ක්‍රියාකාරකම | faoliyat | गतिविधि | aktibidad | gníomhaíocht | hoạt động | กิจกรรม | δραστηριότητα | activitat | veikla | aktiviteetti | athöfn | tevékenység | aktivitet | aktivitet | aktivitet | 활동 | aktywność | 活动 | アクティビティ | événement de vie | Aktivität | actividad | attività | activiteit | atividade | atividade | etkinlik |
+| location | 19 | местоположение | இடம் | অবস্থান | ස්ථානය | joy | स्थान | lokasyon | suíomh | vị trí | สถานที่ | τοποθεσία | ubicació | vieta | sijainti | staðsetning | helyszín | plassering | placering | plats | 위치 | lokalizacja | 位置 | 場所 | emplacement | Standort | ubicación | luogo | locatie | local | local | konum |
+| possession type | 19 | тип имущества | உடைமை வகை | সম্পত্তির ধরন | සන්තක වර්ගය | mulk turi | संपत्ति प्रकार | uri ng ari-arian | cineál sealúchais | loại tài sản | ประเภททรัพย์สิน | τύπος αποκτήματος | tipus de bé | turto tipas | omaisuustyyppi | eignategund | javaktípus | eiendelstype | ejendelstype | ägodelstyp | 소유물 유형 | typ mienia | 物品类型 | 所有物の種類 | type de bien | Besitztyp | tipo de pertenencia | tipo di bene | bezittingstype | tipo de bem | tipo de bem | eşya türü |
+| tag | 23 | тег | குறிச்சொல் | ট্যাগ | ටැගය | teg | टैग | tag | clib | từ khóa | แท็ก | λέξη-κλειδί | paraula clau | raktažodis | avainsana | efnisorð | kulcsszó | stikkord | nøgleord | tagg | 태그 | tag | 关键词 | タグ | mot-clé | Schlagwort | palabra clave | parola chiave | tag | palavra-chave | palavra-chave | anahtar kelime |
+| condition | 24 | состояние | நிலை | অবস্থা | තත්ත්වය | holat | स्थिति | kondisyon | riocht | tình trạng | สภาพ | κατάσταση | estat | būklė | kunto | ástand | állapot | tilstand | stand | skick | 상태 | stan | 品相 | 状態 | état | Zustand | estado | condizione | staat | estado | estado | durum |
+| knowledge | 11 | знания | அறிவு | জ্ঞান | දැනුම | Bilim | ज्ञान | Kaalaman | Eolas | Kiến thức | คลังความรู้ | Γνώσεις | Coneixement | Žinios | Tietopankki | Þekking | Tudástár | Kunnskap | Viden | Kunskap | 지식 | Wiedza | 知识库 | ナレッジ | Connaissances | Wissen | Conocimiento | Conoscenze | Kennis | Conhecimento | Conhecimento | Bilgi |
+| folder | 27 | папка | கோப்புறை | ফোল্ডার | ෆෝල්ඩරය | jild | फ़ोल्डर | folder | fillteán | thư mục | โฟลเดอร์ | φάκελος | carpeta | aplankas | kansio | mappa | mappa | mappe | mappe | mapp | 폴더 | folder | 文件夹 | フォルダ | dossier | Ordner | carpeta | cartella | map | pasta | pasta | klasör |
+| list | 109 | список | பட்டியல் | তালিকা | ලැයිස්තුව | roʻyxat | सूची | listahan | liosta | danh sách | ลิสต์ | λίστα | llista | sąrašas | lista | listi | lista | liste | liste | lista | 리스트 | lista | 列表 | リスト | liste | Liste | lista | lista | lijst | lista | lista | liste |
+| valuation | 28 | оценка стоимости | மதிப்பீடு | মূল্যায়ন | තක්සේරුව | baholash | मूल्यांकन | pagtatasa | luacháil | định giá | การประเมินมูลค่า | εκτίμηση | valoració | vertinimas | arviointi | verðmat | értékbecslés | verdivurdering | vurdering | värdering | 평가 | wycena | 估值 | 評価額 | estimation | Bewertung | valoración | valutazione | waardering | avaliação | avaliação | değerleme |
 
 Add a column for a language rather than a row for a word. A word that is not a product noun does not
 belong here: this table exists to stop one concept acquiring two names, not to hold a dictionary.

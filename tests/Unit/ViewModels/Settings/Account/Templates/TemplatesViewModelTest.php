@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Settings\Account\Templates;
 
-use App\Enums\VersionStatusEnum;
 use App\Models\StructureVersion;
-use App\Models\StructureVersionSection;
 use App\Models\Template;
 use App\Models\User;
 use App\ViewModels\Settings\Account\Templates\TemplatesViewModel;
@@ -85,17 +83,6 @@ class TemplatesViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_says_how_much_of_the_list_is_showing(): void
-    {
-        $user = User::factory()->create();
-        Template::factory()->create(['account_id' => $user->account_id, 'name' => 'Pet']);
-        Template::factory()->create(['account_id' => $user->account_id, 'name' => 'Company']);
-
-        $this->assertEquals('2 templates', (new TemplatesViewModel(user: $user))->summary());
-        $this->assertEquals('1 of 2 templates', (new TemplatesViewModel(user: $user, query: 'pet'))->summary());
-    }
-
-    #[Test]
     public function it_says_which_version_is_showing_and_what_state_it_is_in(): void
     {
         $user = User::factory()->create();
@@ -106,7 +93,6 @@ class TemplatesViewModelTest extends TestCase
         $row = (new TemplatesViewModel(user: $user))->ownTemplates()[0];
 
         $this->assertEquals('v1', $row['versionLabel']);
-        $this->assertEquals('published', $row['versionSubLabel']);
     }
 
     #[Test]
@@ -124,7 +110,6 @@ class TemplatesViewModelTest extends TestCase
         $row = (new TemplatesViewModel(user: $user))->ownTemplates()[0];
 
         $this->assertEquals('v2', $row['versionLabel']);
-        $this->assertEquals('draft, based on v1', $row['versionSubLabel']);
         $this->assertTrue($row['hasDraft']);
     }
 
@@ -137,7 +122,6 @@ class TemplatesViewModelTest extends TestCase
         $row = (new TemplatesViewModel(user: $user))->ownTemplates()[0];
 
         $this->assertEquals('—', $row['versionLabel']);
-        $this->assertEquals('never published', $row['versionSubLabel']);
     }
 
     #[Test]
@@ -178,20 +162,5 @@ class TemplatesViewModelTest extends TestCase
         $names = array_column(new TemplatesViewModel(user: $user)->ownTemplates(), 'name');
 
         $this->assertSame(['Zoe', 'Élodie', 'Erin'], $names);
-    }
-
-    #[Test]
-    public function it_counts_the_sections_of_the_version_it_shows(): void
-    {
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
-        StructureVersionSection::factory()->create(['structure_version_id' => $version->id]);
-        $version->update(['status' => VersionStatusEnum::Published, 'published_at' => now()]);
-        $template->structure->update(['published_version_id' => $version->id]);
-
-        $row = (new TemplatesViewModel(user: $user))->ownTemplates()[0];
-
-        $this->assertEquals('1 section', $row['sectionLabel']);
     }
 }

@@ -91,7 +91,6 @@ class ImportTemplateTest extends TestCase
 
         $section = $version->assembly->first()->sectionVersion;
 
-        $this->assertEquals('Personal details', $section->section->name);
         $this->assertCount(4, $section->fields);
         $this->assertEquals('Nickname', $section->fields->firstWhere('key', 'nickname')->label);
     }

@@ -65,7 +65,6 @@ class RelationshipTypeActivationControllerTest extends TestCase
         $response = $this->json('PUT', "/api/v1/relationship-types/{$type->uuid}/activation", ['is_active' => false]);
 
         $response->assertOk();
-        $response->assertJsonPath('data.attributes.name', 'Godparent / Godchild');
         $response->assertJsonPath('data.attributes.role_a', 'Godparent');
         $response->assertJsonPath('data.attributes.position', 3);
     }

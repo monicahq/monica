@@ -8,8 +8,8 @@
 
 ### Session 2026-09-09
 
-- Q: When a field is marked sensitive, does its value reach the device through the address book, or stay in Erica as it stays out of a private link? → A: Only when the device key was minted with that choice, which is off by default.
-- Q: When somebody deletes a card on their phone, what happens to the contact in Erica? → A: It is removed the way the API removes one, recoverable in the data and journalled, rather than archived or refused.
+- Q: When a field is marked sensitive, does its value reach the device through the address book, or stay in Monica as it stays out of a private link? → A: Only when the device key was minted with that choice, which is off by default.
+- Q: When somebody deletes a card on their phone, what happens to the contact in Monica? → A: It is removed the way the API removes one, recoverable in the data and journalled, rather than archived or refused.
 - Q: What does the calendar a device subscribes to hold for each vault? → A: Both a calendar of the recurring dates on records, as yearly all day entries, and a task list of the upcoming deadlines the reminders screen lists, each per vault and both read only.
 - Q: What happens when a card saved from a device carries information the structure has no field for? → A: Revised the same day. The card is kept whole as the device sent it; what has a field is written to the record, the rest stays on the card, and the card reads back as that original with every value the record holds merged over it, so nothing a device wrote is lost and nothing Monica holds is stale.
 - Q: Which contacts and calendar applications must the first release be verified against? → A: Apple Contacts and Calendar on iOS and macOS, Android through DAVx5, Thunderbird, GNOME Contacts and Evolution, and KDE Kontact.
@@ -26,7 +26,7 @@
 
 ### User Story 1 - See the people of a vault on a device (Priority: P1)
 
-The people somebody documents in Erica are the people they call, text and visit, and the phone is where those gestures start. Adding the account to the contacts application of a phone or a computer, over CardDAV, the standard those applications already speak, puts every vault on the device as an address book of its own, with the name, the nickname, the picture and the ways of reaching each person that the record holds. Nothing of ours is installed on the device.
+The people somebody documents in Monica are the people they call, text and visit, and the phone is where those gestures start. Adding the account to the contacts application of a phone or a computer, over CardDAV, the standard those applications already speak, puts every vault on the device as an address book of its own, with the name, the nickname, the picture and the ways of reaching each person that the record holds. Nothing of ours is installed on the device.
 
 **Why this priority**: It is the story every other one connects through, and read only is already most of the value, since a name and a number where the call is made is what most people want from an address book. **Independent test**: mint a key for a device, connect a stock contacts application with the address the security screen shows, and confirm each vault appears as an address book whose cards match the records field for field.
 

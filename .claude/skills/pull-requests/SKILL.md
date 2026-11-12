@@ -42,6 +42,9 @@ description: Conventions for writing pull requests, including Conventional Commi
 | `billing` | Stripe, paywall, subscription and purchase, storage quota |
 | `admin` | The administrator space and the configuration of the instance |
 | `marketplace` | The marketplace, and the sharing of a template or a section |
+| `locations` | Locations: the places of an account, their tree and their addresses |
+| `possessions` | Possessions: what an account owns, the possession types and their fields |
+| `tests` | The test suite and its fixtures, when no area of the application changes |
 
 A change with no area of the application, such as a dependency update or a build or CI change, takes the scope `deps`, `build` or `ci`.
 

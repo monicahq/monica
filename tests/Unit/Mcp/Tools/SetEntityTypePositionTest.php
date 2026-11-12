@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\SetEntityTypePosition;
 use App\Models\EntityType;
 use App\Models\User;
@@ -24,7 +24,7 @@ class SetEntityTypePositionTest extends TestCase
         $printer = EntityType::factory()->create(['account_id' => $user->account_id, 'position' => 2]);
         $dundie = EntityType::factory()->create(['account_id' => $user->account_id, 'position' => 3]);
 
-        EricaServer::actingAs($user)->tool(SetEntityTypePosition::class, [
+        MonicaServer::actingAs($user)->tool(SetEntityTypePosition::class, [
             'entity_type' => $dundie->uuid,
             'position' => 1,
         ])->assertOk()->assertHasNoErrors();

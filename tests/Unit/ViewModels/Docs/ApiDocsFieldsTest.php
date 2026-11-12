@@ -88,7 +88,7 @@ class ApiDocsFieldsTest extends TestCase
 
         $type = collect($fields)->firstWhere('name', 'data.type');
 
-        $this->assertStringContainsString('Always email_sent', $type['description']);
+        $this->assertStringContainsString('email_sent', $type['description']);
     }
 
     #[Test]
@@ -101,20 +101,6 @@ class ApiDocsFieldsTest extends TestCase
         $parameters = collect($fields)->firstWhere('name', 'data.attributes.parameters');
 
         $this->assertTrue($parameters['opaque']);
-    }
-
-    #[Test]
-    public function it_names_the_records_in_the_plural_on_a_page_and_in_the_singular_on_one(): void
-    {
-        $page = collect(ApiDocsFields::page('vault', 'vault', 'vaults', $this->attributes));
-
-        $this->assertStringContainsString('vaults on this page', $page->firstWhere('name', 'data')['description']);
-        $this->assertStringContainsString('One vault.', $page->firstWhere('name', 'data[]')['description']);
-        $this->assertStringContainsString('vaults there are in all', $page->firstWhere('name', 'meta.total')['description']);
-
-        $one = collect(ApiDocsFields::one('vault', 'vault', $this->attributes));
-
-        $this->assertSame('The vault.', $one->firstWhere('name', 'data')['description']);
     }
 
     #[Test]

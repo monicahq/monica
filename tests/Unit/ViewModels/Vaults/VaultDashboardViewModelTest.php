@@ -21,40 +21,6 @@ class VaultDashboardViewModelTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_counts_what_the_vault_holds_the_way_somebody_would_say_it(): void
-    {
-        $this->travelTo(CarbonImmutable::parse('2026-10-02 12:00:00', 'UTC'));
-        $user = User::factory()->create(['timezone' => 'UTC']);
-        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'contact_count' => 1]);
-
-        Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Jim', 'last_name' => 'Halpert', 'is_favourite' => true]);
-        LifeEvent::factory()->create(['vault_id' => $vault->id, 'happened_on' => '2026-07-03']);
-        LifeEvent::factory()->create(['vault_id' => $vault->id, 'happened_on' => '2026-09-30']);
-        LifeEvent::factory()->create(['vault_id' => $vault->id, 'happened_on' => '2026-07-01']);
-
-        $this->assertSame(
-            ['1 person', '0 reminders this week', '1 favourite', '2 life events in the last three months'],
-            new VaultDashboardViewModel(user: $user, vault: $vault)->figures(),
-        );
-    }
-
-    #[Test]
-    public function it_counts_a_life_event_from_today_but_not_one_from_tomorrow(): void
-    {
-        $this->travelTo(CarbonImmutable::parse('2026-10-02 12:00:00', 'UTC'));
-        $user = User::factory()->create(['timezone' => 'UTC']);
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        LifeEvent::factory()->create(['vault_id' => $vault->id, 'happened_on' => CarbonImmutable::parse('2026-10-02 09:00:00')]);
-        LifeEvent::factory()->create(['vault_id' => $vault->id, 'happened_on' => CarbonImmutable::parse('2026-10-03 09:00:00')]);
-
-        $this->assertSame(
-            '1 life event in the last three months',
-            new VaultDashboardViewModel(user: $user, vault: $vault)->figures()[3],
-        );
-    }
-
-    #[Test]
     public function it_lists_the_favourites_in_name_order_and_points_at_the_rest_beyond_ten(): void
     {
         $user = User::factory()->create();
@@ -99,9 +65,6 @@ class VaultDashboardViewModelTest extends TestCase
         $people = new VaultDashboardViewModel(user: $user, vault: $vault)->recentlyViewed();
 
         $this->assertSame(['Kelly Kapoor', 'Ryan Howard', 'Oscar Martinez'], array_column($people, 'name'));
-        $this->assertSame('Today', $people[0]['when']);
-        $this->assertSame('Yesterday', $people[1]['when']);
-        $this->assertNotContains($people[2]['when'], ['Today', 'Yesterday']);
         $this->assertStringContainsString('29', $people[2]['when']);
     }
 

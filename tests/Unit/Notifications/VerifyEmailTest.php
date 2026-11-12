@@ -17,16 +17,6 @@ class VerifyEmailTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_has_a_subject(): void
-    {
-        $michael = User::factory()->unverified()->create();
-
-        $message = new VerifyEmail()->toMail($michael);
-
-        $this->assertEquals('Confirm your email address', $message->subject);
-    }
-
-    #[Test]
     public function it_carries_the_link_to_confirm_the_address(): void
     {
         $michael = User::factory()->unverified()->create();

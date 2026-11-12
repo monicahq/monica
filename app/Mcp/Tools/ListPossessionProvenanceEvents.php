@@ -1,0 +1,49 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Mcp\Tools;
+
+use App\Http\Resources\PossessionProvenanceEventResource;
+use App\Models\PossessionProvenanceEvent;
+use Illuminate\Contracts\JsonSchema\JsonSchema;
+use Illuminate\JsonSchema\Types\Type;
+use Laravel\Mcp\Request;
+use Laravel\Mcp\Response;
+use Laravel\Mcp\Server\Attributes\Description;
+use Laravel\Mcp\Server\Tool;
+use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
+
+#[Description('List the provenance events of a possession, oldest first and those with an unknown date last: where it was made, who owned or held it, and what authenticated it, with how precise each date is and whether the event is verified.')]
+#[IsReadOnly]
+class ListPossessionProvenanceEvents extends Tool
+{
+    use MirrorsAnApiCapability;
+
+    protected string $mirrors = 'api.v1.possessions.provenance';
+
+    public function handle(Request $request): Response
+    {
+        $validated = $request->validate([
+            'vault' => ['required', 'string'],
+            'possession' => ['required', 'string'],
+        ]);
+
+        $possession = $this->possession($this->vault($request, $validated['vault']), $validated['possession']);
+        $possession->load('provenanceEvents.transaction');
+
+        $events = $possession->provenanceEvents
+            ->each(fn (PossessionProvenanceEvent $event) => $event->setRelation('possession', $possession));
+
+        return Response::json(['data' => PossessionProvenanceEventResource::collection($events)->resolve()]);
+    }
+
+    /** @return array<string, Type> */
+    public function schema(JsonSchema $schema): array
+    {
+        return [
+            'vault' => $schema->string()->description('The address of the vault holding the possession.')->required(),
+            'possession' => $schema->string()->description('The identifier of the possession, as list-possessions gives it.')->required(),
+        ];
+    }
+}

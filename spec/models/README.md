@@ -157,6 +157,15 @@ Model 056, [Structure](056-structure-done.md), is the container models 012 to 01
 | 058 | [AccountExport](058-account-export-done.md) | 4.2, 11, 12 |
 | 059 | [AccountImport](059-account-import-done.md) | 4.3, 11, 12 |
 | 060 | [AccountImportItem](060-account-import-item-done.md) | 12 |
+| 058 | [Location](058-location-in-progress.md) | 3.2, specs/086-location-management |
+| 059 | [PossessionType](059-possession-type-in-progress.md) | 3.2, specs/088-possession-types |
+| 060 | [PossessionFieldGroup](060-possession-field-group-in-progress.md) | 3.2, specs/088-possession-types |
+| 061 | [PossessionField](061-possession-field-in-progress.md) | 3.2, specs/088-possession-types |
+| 062 | [Possession](062-possession-in-progress.md) | 3.2, specs/091-possessions |
+| 063 | [PossessionFieldValue](063-possession-field-value-in-progress.md) | 3.2, specs/091-possessions |
+| 064 | [PossessionTag](064-possession-tag-in-progress.md) | 3.2, specs/092-possession-tags |
+| 065 | [PossessionCondition](065-possession-condition-in-progress.md) | 3.2, specs/093-possession-conditions |
+| 066 | [PossessionTransaction](066-possession-transaction-in-progress.md) | 3.2, specs/099-possession-transactions |
 
 ## Not modelled here
 

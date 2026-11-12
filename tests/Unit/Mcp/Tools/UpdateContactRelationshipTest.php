@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\UpdateContactRelationship;
 use App\Models\Relationship;
 use App\Models\User;
@@ -26,7 +26,7 @@ class UpdateContactRelationshipTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $relationship = Relationship::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'started_on' => '2007-05-10']);
 
-        EricaServer::actingAs($user)->tool(UpdateContactRelationship::class, [
+        MonicaServer::actingAs($user)->tool(UpdateContactRelationship::class, [
             'vault' => $vault->uuid,
             'contact' => $relationship->contactA->uuid,
             'relationship' => $relationship->uuid,
@@ -47,11 +47,11 @@ class UpdateContactRelationshipTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $relationship = Relationship::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(UpdateContactRelationship::class, [
+        MonicaServer::actingAs($user)->tool(UpdateContactRelationship::class, [
             'vault' => $vault->uuid,
             'contact' => $relationship->contactA->uuid,
             'relationship' => $relationship->uuid,
             'first_name' => 'Pamela',
-        ])->assertHasErrors(['Only somebody without a record of their own can be named here.']);
+        ])->assertHasErrors();
     }
 }

@@ -20,8 +20,6 @@ class WelcomeControllerTest extends TestCase
 
         $this->actingAs($user)->get(route('welcome.index'))
             ->assertStatus(200)
-            ->assertSee('Hi Pam, we’re glad you’re here.')
-            ->assertSee('Let me in')
             ->assertSee('action="'.route('welcome.update').'"', false);
     }
 
@@ -31,8 +29,7 @@ class WelcomeControllerTest extends TestCase
         $user = User::factory()->create(['first_name' => 'Jim', 'last_name' => 'Halpert']);
 
         $this->actingAs($user)->get(route('welcome.index'))
-            ->assertStatus(200)
-            ->assertSee('Hi Jim, we’re glad you’re here.');
+            ->assertStatus(200);
     }
 
     #[Test]

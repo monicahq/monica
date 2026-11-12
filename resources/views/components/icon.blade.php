@@ -20,6 +20,7 @@
     'timeline' => '<line x1="4" y1="2.6" x2="4" y2="13.4"></line><circle cx="4" cy="5.2" r="1.4"></circle><circle cx="4" cy="10.8" r="1.4"></circle><line x1="7.2" y1="5.2" x2="13.4" y2="5.2"></line><line x1="7.2" y1="10.8" x2="12" y2="10.8"></line>',
     'memory' => '<rect x="2.2" y="3.4" width="11.6" height="9.2" rx="1.6"></rect><path d="m3.5 11.3 2.9-3.1 2.3 2.2 2-1.8 2 2.2"></path><circle cx="10.4" cy="6.4" r="1"></circle>',
     'note' => '<path d="M4 2.4h5.2L12.4 5.6V13.6H4z"></path><line x1="6.2" y1="8" x2="10.2" y2="8"></line><line x1="6.2" y1="10.6" x2="10.2" y2="10.6"></line>',
+    'folder' => '<path d="M2 4.5A1.5 1.5 0 0 1 3.5 3h2.6l1.5 1.6h4.9A1.5 1.5 0 0 1 14 6.1v5.4a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 11.5z"></path>',
     'reminder' => '<path d="M4.4 11.2V7.6a3.6 3.6 0 0 1 7.2 0v3.6"></path><line x1="3" y1="11.2" x2="13" y2="11.2"></line><path d="M6.8 13.1a1.6 1.6 0 0 0 2.4 0"></path>',
     'activity' => '<path d="M2.2 8.6h3L6.8 4l2.4 8 1.6-3.4h3"></path>',
     'place' => '<path d="M8 14c2.6-3 4-5.1 4-7A4 4 0 0 0 4 7c0 1.9 1.4 4 4 7Z"></path><circle cx="8" cy="6.9" r="1.5"></circle>',

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\ListTemplateVersions;
 use App\Models\StructureVersion;
 use App\Models\Template;
@@ -24,7 +24,7 @@ class ListTemplateVersionsTest extends TestCase
         $template = Template::factory()->create(['account_id' => $user->account_id]);
         $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
 
-        EricaServer::actingAs($user)->tool(ListTemplateVersions::class, ['template' => $template->uuid])
+        MonicaServer::actingAs($user)->tool(ListTemplateVersions::class, ['template' => $template->uuid])
             ->assertOk()
             ->assertHasNoErrors()
             ->assertSee((string) $version->version);

@@ -1,7 +1,7 @@
 # Contract: life event MCP tools
 
 One class per tool under `app/Mcp/Tools`, using `MirrorsAnApiCapability`, registered in
-`EricaServer`, calling the same action as the API and answering with `LifeEventResource` resolved
+`MonicaServer`, calling the same action as the API and answering with `LifeEventResource` resolved
 with no sensitive value (research R7). A record out of reach answers the trait's translated
 "does not exist" refusal; a refusal from an action answers `Response::error($e->getMessage())`.
 
@@ -28,4 +28,4 @@ answering "That life event does not exist." when out of reach.
 
 - `McpDocsViewModel::toolGroups()`: two groups, "Life events, reading" and "Life events, changing".
 - `McpDocsViewModel::toolsSummary()`: drop "or life events" from the sentence about what contact responses leave out, and add one paragraph: a life event has a type that decides its custom fields, the people who were there with the first one the person it is recorded for, and is restorable after deletion.
-- `EricaServer` instructions: one paragraph telling the assistant to read the type's fields with `get-life-event-type-fields` before writing `fields`, and that ids, not keys, address a field.
+- `MonicaServer` instructions: one paragraph telling the assistant to read the type's fields with `get-life-event-type-fields` before writing `fields`, and that ids, not keys, address a field.

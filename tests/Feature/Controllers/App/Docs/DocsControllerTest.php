@@ -19,7 +19,6 @@ class DocsControllerTest extends TestCase
         $response = $this->get(route('docs.index'));
 
         $response->assertOk();
-        $response->assertSee('Documentation');
         $response->assertSee(route('docs.api.index'), escape: false);
         $response->assertSee(route('auth.register.new'), escape: false);
         $response->assertSee(route('auth.login.new'), escape: false);

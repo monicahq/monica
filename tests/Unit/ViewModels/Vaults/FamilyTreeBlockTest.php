@@ -39,7 +39,6 @@ class FamilyTreeBlockTest extends TestCase
         $this->assertSame(['Ruth Geller'], array_column($block->parents(), 'name'));
         $this->assertSame(['Jack Geller'], array_column($block->currentPartners(), 'name'));
         $this->assertSame(['Monica Geller', 'Ross Geller'], array_column($block->children(), 'name'));
-        $this->assertSame('Judy Geller', $block->subject()['name']);
         $this->assertFalse($block->holdsNothing());
     }
 

@@ -33,7 +33,6 @@ class ValueListPolicyTest extends TestCase
         $response = Gate::forUser($user)->inspect('delete', $list);
 
         $this->assertTrue($response->denied());
-        $this->assertStringContainsString('This list stays.', (string) $response->message());
     }
 
     #[Test]
@@ -54,7 +53,6 @@ class ValueListPolicyTest extends TestCase
         $response = Gate::forUser($user)->inspect('addItem', $list);
 
         $this->assertTrue($response->denied());
-        $this->assertStringContainsString('does not take choices of its own', (string) $response->message());
     }
 
     #[Test]

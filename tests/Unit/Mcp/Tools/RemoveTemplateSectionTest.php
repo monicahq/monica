@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\RemoveTemplateSection;
 use App\Models\SectionVersion;
 use App\Models\StructureVersion;
@@ -30,7 +30,7 @@ class RemoveTemplateSectionTest extends TestCase
             'section_version_id' => SectionVersion::factory()->create(['account_id' => $user->account_id])->id,
         ]);
 
-        EricaServer::actingAs($user)->tool(RemoveTemplateSection::class, [
+        MonicaServer::actingAs($user)->tool(RemoveTemplateSection::class, [
             'template' => $template->uuid,
             'version' => 1,
             'section' => (string) $row->id,

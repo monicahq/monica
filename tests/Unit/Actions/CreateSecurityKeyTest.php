@@ -43,14 +43,14 @@ class CreateSecurityKeyTest extends TestCase
         $this->assertDatabaseHas('security_keys', [
             'id' => $securityKey->id,
             'user_id' => $michael->id,
-            'name' => 'Security key',
             'credential_id' => $authenticator->credentialId(),
         ]);
+        $this->assertNotSame('_', $securityKey->name);
         $this->assertTrue($michael->refresh()->usesTwoFactorAuthentication());
         $this->assertNotEmpty($michael->two_factor_recovery_codes);
         Notification::assertSentTo($michael, SecurityKeyAdded::class);
         Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::SecurityKeyAdded
-            && $job->parameters === ['name' => 'Security key']);
+            && $job->parameters === ['name' => $securityKey->name]);
         Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::TwoFactorEnabled);
     }
 

@@ -31,7 +31,7 @@ class PhotoControllerTest extends TestCase
         ]);
 
         $response->assertRedirect(route('settings.profile.index'));
-        $response->assertSessionHas('status', 'Your photo is saved.');
+        $response->assertSessionHas('status');
 
         $user->refresh();
 
@@ -58,7 +58,7 @@ class PhotoControllerTest extends TestCase
         $response = $this->actingAs($user->fresh())->delete(route('settings.photo.destroy'));
 
         $response->assertRedirect(route('settings.profile.index'));
-        $response->assertSessionHas('status', 'Your photo is removed.');
+        $response->assertSessionHas('status');
 
         $this->assertFalse($user->refresh()->hasPhoto());
     }

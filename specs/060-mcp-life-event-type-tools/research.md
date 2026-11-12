@@ -113,10 +113,10 @@ asked state, as the API activation controllers do.
 "Relationship vocabulary", and gains the six new reading tools. A new "Life event vocabulary,
 changing" group (`changesData: true`) holds the ten changing tools. A `LIFE_EVENT_TYPES` constant of
 two paragraphs is rendered under "Manage life event types" after the relationship types section, in
-the page and the Markdown. `EricaServer` instructions gain one paragraph.
+the page and the Markdown. `MonicaServer` instructions gain one paragraph.
 
 ## R11. Branch
 
 **Decision**: the branch starts from `2026-09-25-mcp-relationship-types` (PR #246), as asked. Both
-features append to `EricaServer`, `McpDocsViewModel`, the docs view and the same tests; building on
+features append to `MonicaServer`, `McpDocsViewModel`, the docs view and the same tests; building on
 top avoids conflicts. Once #246 is merged, this branch is rebased onto `main`.

@@ -25,7 +25,7 @@
           <x-caption>{{ __('Request number') }}</x-caption>
           <p class="font-mono text-lg font-semibold tracking-wide text-ink">{{ $supportRequest->reference }}</p>
         </div>
-        <x-copy-button :text="$supportRequest->reference" :label="__('Copy number')" :failure="__('The number could not be copied. Select it and copy it by hand.')" variant="secondary" size="small" />
+        <x-copy-button :text="$supportRequest->reference" :label="__('Copy the number')" :failure="__('The number could not be copied. Select it and copy it by hand.')" variant="secondary" size="small" />
       </div>
 
       <x-detail-list class="border-t border-hairline">

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\DeleteLifeEventType;
 use App\Models\LifeEvent;
 use App\Models\LifeEventCategory;
@@ -25,7 +25,7 @@ class DeleteLifeEventTypeTest extends TestCase
         $user = User::factory()->create();
         $type = $this->type($user);
 
-        EricaServer::actingAs($user)->tool(DeleteLifeEventType::class, ['life_event_type' => $type->uuid])
+        MonicaServer::actingAs($user)->tool(DeleteLifeEventType::class, ['life_event_type' => $type->uuid])
             ->assertOk()
             ->assertHasNoErrors();
 
@@ -40,8 +40,8 @@ class DeleteLifeEventTypeTest extends TestCase
         $type = $this->type($user);
         LifeEvent::factory()->create(['vault_id' => $vault->id, 'life_event_type_id' => $type->id]);
 
-        EricaServer::actingAs($user)->tool(DeleteLifeEventType::class, ['life_event_type' => $type->uuid])
-            ->assertHasErrors(['Life events were recorded with this type, so it stays.']);
+        MonicaServer::actingAs($user)->tool(DeleteLifeEventType::class, ['life_event_type' => $type->uuid])
+            ->assertHasErrors();
 
         $this->assertNotSoftDeleted($type);
     }

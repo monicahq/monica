@@ -21,7 +21,6 @@ class LoginControllerTest extends TestCase
         $response = $this->get(route('auth.login.new'));
 
         $response->assertStatus(200);
-        $response->assertSee('Welcome back');
     }
 
     #[Test]

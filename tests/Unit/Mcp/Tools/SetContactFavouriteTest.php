@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\SetContactFavourite;
 use App\Models\Contact;
 use App\Models\User;
@@ -24,7 +24,7 @@ class SetContactFavouriteTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(SetContactFavourite::class, [
+        MonicaServer::actingAs($user)->tool(SetContactFavourite::class, [
             'vault' => $vault->uuid,
             'contact' => $contact->uuid,
             'favourite' => true,
@@ -40,7 +40,7 @@ class SetContactFavouriteTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $contact = Contact::factory()->favourite()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(SetContactFavourite::class, [
+        MonicaServer::actingAs($user)->tool(SetContactFavourite::class, [
             'vault' => $vault->uuid,
             'contact' => $contact->uuid,
             'favourite' => false,

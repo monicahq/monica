@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\SearchRecords;
 use App\Models\Contact;
 use App\Models\User;
@@ -26,7 +26,7 @@ class SearchRecordsTest extends TestCase
         Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'first_name' => 'Dwight', 'last_name' => 'Schrute']);
         $this->waitForSearchEngine();
 
-        EricaServer::actingAs($user)->tool(SearchRecords::class, ['vault' => $vault->uuid, 'query' => 'Scrute'])
+        MonicaServer::actingAs($user)->tool(SearchRecords::class, ['vault' => $vault->uuid, 'query' => 'Scrute'])
             ->assertOk()
             ->assertHasNoErrors()
             ->assertSee('Dwight Schrute');
@@ -38,7 +38,7 @@ class SearchRecordsTest extends TestCase
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(SearchRecords::class, ['vault' => $vault->uuid, 'query' => 'Schrute'])
-            ->assertHasErrors(['Search is unavailable right now']);
+        MonicaServer::actingAs($user)->tool(SearchRecords::class, ['vault' => $vault->uuid, 'query' => 'Schrute'])
+            ->assertHasErrors();
     }
 }

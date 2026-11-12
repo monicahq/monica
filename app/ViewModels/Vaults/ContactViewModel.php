@@ -807,6 +807,19 @@ class ContactViewModel
         ));
     }
 
+    /**
+     * The possessions the contact has had or lent, or null when there is none.
+     */
+    public function loans(): ?ContactLoansBlock
+    {
+        $block = once(fn (): ContactLoansBlock => new ContactLoansBlock(
+            user: $this->user,
+            contact: $this->contact,
+        ));
+
+        return $block->isEmpty() ? null : $block;
+    }
+
     public function deadlines(): ContactDeadlinesBlock
     {
         return once(fn (): ContactDeadlinesBlock => new ContactDeadlinesBlock(

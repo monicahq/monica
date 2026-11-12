@@ -32,9 +32,9 @@ name, and `shouldRegister(Request $request)` reading the presented key.
 
 **Purpose**: the endpoint, its authentication and its changelog source. Every story rides on this and none can start before it.
 
-- [X] T004 Create `app/Mcp/Servers/EricaServer.php` extending `Laravel\Mcp\Server`, with `#[Name]`, `#[Version]` and `#[Instructions]` telling an assistant what Erica is and that every capability is confined to the key's account, and an empty `$tools` array the story phases fill
+- [X] T004 Create `app/Mcp/Servers/MonicaServer.php` extending `Laravel\Mcp\Server`, with `#[Name]`, `#[Version]` and `#[Instructions]` telling an assistant what Monica is and that every capability is confined to the key's account, and an empty `$tools` array the story phases fill
 - [X] T005 [P] Create `app/Http/Middleware/SetMcpLogSource.php` setting `log_source` to `LogSourceEnum::Mcp` and `log_source_detail` to the presented key's name on the request attributes, following `app/Http/Middleware/AuthenticateWithApiKeyOnBasicAuth.php`, which is where `LogUserAction` reads both from
-- [X] T006 Register the endpoint in `routes/api.php` with `Mcp::web('mcp', EricaServer::class)->middleware(['auth:sanctum', 'throttle:mcp', SetMcpLogSource::class])`, outside the `v1` prefix group, so the api group's `SetApiLocale` resolves the locale FR-011 needs
+- [X] T006 Register the endpoint in `routes/api.php` with `Mcp::web('mcp', MonicaServer::class)->middleware(['auth:sanctum', 'throttle:mcp', SetMcpLogSource::class])`, outside the `v1` prefix group, so the api group's `SetApiLocale` resolves the locale FR-011 needs
 - [X] T007 Create `tests/Feature/Mcp/McpAuthenticationTest.php` covering FR-002: no key, a deleted key and an expired key are each refused and no capability is offered, and a live key reaches the catalogue whatever kind it was minted for
 - [X] T008 [P] Create `tests/Feature/Mcp/McpRateLimitTest.php` covering FR-010 and SC-006: a limit applies when `monica.self_hosted` is false, none applies when it is true, and the catalogue is identical either way
 - [X] T009 [P] Create `tests/Feature/Mcp/McpTransportTest.php` asserting the route answers 405 to GET and DELETE as the protocol requires, and that `SetApiLocale` has run by the time a tool answers
@@ -57,7 +57,7 @@ name, and `shouldRegister(Request $request)` reading the presented key.
 - [X] T017 [P] [US1] Create `app/Mcp/Tools/GetMeContact.php` mirroring `api.v1.contacts.me`
 - [X] T018 [P] [US1] Create `app/Mcp/Tools/ListTemplates.php` and `app/Mcp/Tools/ListTemplateVersions.php` mirroring `api.v1.templates` and `api.v1.templates.versions`
 - [X] T019 [P] [US1] Create `app/Mcp/Tools/ListEntityTypes.php`, `app/Mcp/Tools/ListRelationshipTypes.php`, `app/Mcp/Tools/ListRelationshipCategories.php` and `app/Mcp/Tools/ListActivityCategories.php`, four account scoped lists mirroring the routes of the same names
-- [X] T020 [US1] Register the ten reading tools in `$tools` on `app/Mcp/Servers/EricaServer.php`
+- [X] T020 [US1] Register the ten reading tools in `$tools` on `app/Mcp/Servers/MonicaServer.php`
 - [X] T021 [US1] Create `tests/Feature/Mcp/McpCatalogueTest.php` covering SC-003: every tool the server registers names a `$mirrors` route, `Route::has()` knows each one, and the test fails on a tool that names none. This is the only guard that the correspondence is real
 - [X] T022 [P] [US1] Create `tests/Feature/Mcp/McpCompartmentTest.php` covering SC-004: every reading capability answers not found, never forbidden, for another account's vault and for a contact of a vault the request did not name
 - [X] T023 [P] [US1] Create `tests/Feature/Mcp/McpRefusalLanguageTest.php` covering FR-011: with the account in a non-English locale, a refusal comes back in that locale rather than in English
@@ -76,7 +76,7 @@ name, and `shouldRegister(Request $request)` reading the presented key.
 - [X] T027 [P] [US2] Create `app/Mcp/Tools/CreateContact.php` mirroring `api.v1.contacts.create` and running `App\Actions\CreateContact`, validating through its schema what `ContactController::create` validates inline
 - [X] T028 [P] [US2] Create `app/Mcp/Tools/UpdateContactName.php` mirroring `api.v1.contacts.name.update` and running `App\Actions\UpdateContactName`
 - [X] T029 [P] [US2] Create `app/Mcp/Tools/SetContactFavourite.php` mirroring `api.v1.contacts.favourite.update`, taking the state wanted rather than a toggle and running `App\Actions\FavouriteContact` or `App\Actions\UnfavouriteContact`
-- [X] T030 [US2] Register the three writing tools in `$tools` on `app/Mcp/Servers/EricaServer.php`
+- [X] T030 [US2] Register the three writing tools in `$tools` on `app/Mcp/Servers/MonicaServer.php`
 - [X] T031 [US2] Create `tests/Feature/Mcp/McpChangelogTest.php` covering FR-008 and SC-005: each of the three writes lands a `Log` row with source `mcp` and `source_detail` naming the key, and a contact created through MCP is indistinguishable from one typed in a browser apart from that row
 - [X] T032 [US2] Extend `tests/Feature/Mcp/McpCompartmentTest.php` with the three writing capabilities: a vault of another account answers not found and nothing is written
 - [X] T033 [P] [US2] Create the three classes under `tests/Unit/Mcp/Tools/` covering the schema, the action being run with the validated arguments, and a refusal leaving nothing written
@@ -117,7 +117,7 @@ name, and `shouldRegister(Request $request)` reading the presented key.
 - T004, T005 and T006 are serial: the server must exist before the route names it, and the middleware before the route lists it. T007 to T009 need all three.
 - Phase 2 blocks all three stories. Nothing in Phase 3, 4 or 5 can start before T006 answers a request.
 - Within US1, T010 blocks T011 blocks T013, and T017 needs T011, because a tool cannot mirror a route that does not exist. The five tool tasks T015 to T019 are otherwise genuinely parallel: different files, no shared state.
-- T020 is serial against T015 to T019 and against T030, because all six edit `$tools` on `EricaServer`. T021 needs T020, since it reads the registered list.
+- T020 is serial against T015 to T019 and against T030, because all six edit `$tools` on `MonicaServer`. T021 needs T020, since it reads the registered list.
 - T022 is created in US1 and extended by T032, so those two are serial across the stories. So is `resources/docs/api/19-mcp.php`, created by T025 and edited by T034 and T044.
 - US2 needs only Phase 2 and the writing actions, which already exist, so it could be built beside US1. It is second because a write is only safe once the reads prove the compartment holds.
 - US3 touches no tool and no capability. It needs only Phase 2 for the changelog detail to have a key name to write, so it is independent of US1 and US2 and could be built first if the key list mattered more than the connection.

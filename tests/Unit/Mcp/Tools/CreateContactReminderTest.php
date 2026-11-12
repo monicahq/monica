@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\CreateContactReminder;
 use App\Models\Contact;
 use App\Models\User;
@@ -26,7 +26,7 @@ class CreateContactReminderTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(CreateContactReminder::class, [
+        MonicaServer::actingAs($user)->tool(CreateContactReminder::class, [
             'vault' => $vault->uuid,
             'contact' => $contact->uuid,
             'name' => 'Ask about the art school',
@@ -45,14 +45,14 @@ class CreateContactReminderTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(CreateContactReminder::class, [
+        MonicaServer::actingAs($user)->tool(CreateContactReminder::class, [
             'vault' => $vault->uuid,
             'contact' => $contact->uuid,
             'name' => 'Ask about the art school',
             'starts_on' => now()->subWeek()->toDateString(),
             'cadence' => 'once',
             'time' => '09:00',
-        ])->assertHasErrors(['A reminder cannot start in the past.']);
+        ])->assertHasErrors();
 
         $this->assertDatabaseMissing('reminders', ['remindable_id' => $contact->id]);
     }

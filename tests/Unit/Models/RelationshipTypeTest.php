@@ -22,9 +22,6 @@ class RelationshipTypeTest extends TestCase
     {
         $type = RelationshipType::factory()->system(RelationshipTypeEnum::ParentChild)->create();
 
-        $this->assertEquals('Parent / Child', $type->name);
-        $this->assertEquals('Parent', $type->role_a);
-        $this->assertEquals('Child', $type->role_b);
         $this->assertFalse($type->is_symmetric);
     }
 

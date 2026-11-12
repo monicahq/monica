@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\ListContactGroups;
 use App\Models\Contact;
 use App\Models\Group;
@@ -27,7 +27,7 @@ class ListContactGroupsTest extends TestCase
         $dwight = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id]);
         GroupMember::factory()->create(['contact_id' => $dwight->id, 'group_id' => Group::factory()->create(['vault_id' => $vault->id, 'name' => 'Schrute farm'])->id]);
 
-        EricaServer::actingAs($user)->tool(ListContactGroups::class, ['vault' => $vault->uuid, 'contact' => $dwight->uuid])
+        MonicaServer::actingAs($user)->tool(ListContactGroups::class, ['vault' => $vault->uuid, 'contact' => $dwight->uuid])
             ->assertOk()
             ->assertSee('Schrute farm');
     }

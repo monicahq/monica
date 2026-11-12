@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\ListContactRelationships;
 use App\Models\Contact;
 use App\Models\Relationship;
@@ -27,7 +27,7 @@ class ListContactRelationshipsTest extends TestCase
         $pam = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'first_name' => 'Pam']);
         Relationship::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'contact_a_id' => $jim->id, 'contact_b_id' => $pam->id]);
 
-        EricaServer::actingAs($user)->tool(ListContactRelationships::class, [
+        MonicaServer::actingAs($user)->tool(ListContactRelationships::class, [
             'vault' => $vault->uuid,
             'contact' => $pam->uuid,
         ])->assertOk()->assertHasNoErrors()->assertSee($jim->uuid);

@@ -44,7 +44,7 @@ class LoginViewModelTest extends TestCase
     {
         $this->overHttp();
 
-        foreach (['localhost', '127.0.0.1', 'erica.test'] as $host) {
+        foreach (['localhost', '127.0.0.1', 'monica.test'] as $host) {
             $this->app['request']->headers->set('host', $host);
 
             $this->assertFalse(new LoginViewModel()->passkeysAreAvailable(), $host);

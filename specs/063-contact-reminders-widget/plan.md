@@ -54,7 +54,7 @@ app/Http/Controllers/App/Vaults/ReminderOccurrenceAnswerController.php new
 app/Http/Controllers/App/Vaults/ReminderOccurrence{Postponement,Dismissal}Controller.php, ReminderPauseController.php  deleted
 app/Http/Controllers/Api/{ContactReminder,ContactReminderOccurrence,ReminderOccurrenceAnswer}Controller.php  new
 app/Http/Resources/{Reminder,ReminderOccurrence}Resource.php          new
-app/Mcp/Tools/*.php (7), MirrorsAnApiCapability.php, Servers/EricaServer.php
+app/Mcp/Tools/*.php (7), MirrorsAnApiCapability.php, Servers/MonicaServer.php
 app/ViewModels/Vaults/ContactRemindersViewModel.php + ReminderAnswerSummary.php + ContactReminderForm.php  new
 app/Helpers/{NextReminderDeadlines,ContactReminderDates}.php   new, shared by screens, API and MCP
 app/ViewModels/Vaults/{VaultReminders,ReminderViewModel,ReminderRow,ReminderHistory,ContactReminderBlock,ContactViewModel}.php  changed

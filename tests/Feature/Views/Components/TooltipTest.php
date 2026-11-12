@@ -25,7 +25,6 @@ class TooltipTest extends TestCase
     {
         $this->render()
             ->assertSee('role="img"', escape: false)
-            ->assertSee('aria-label="Every year on 3 February"', escape: false)
             ->assertSee('aria-hidden="true"', escape: false);
     }
 

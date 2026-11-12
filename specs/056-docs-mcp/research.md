@@ -47,7 +47,7 @@ with the key's name; `throttle:mcp` is 60 a minute per key, none when self hoste
 <a id="r5"></a>
 ## R5. Holding the table to the server
 
-- **Decision**: the unit test reads `EricaServer`'s `$tools` default through reflection, builds each
+- **Decision**: the unit test reads `MonicaServer`'s `$tools` default through reflection, builds each
   tool, and compares the set of `name()` values with the names in the view model.
 - **Alternatives**: building the table from the server at run time, rejected: descriptions are
   written for readers and differ from the tools' own, which are written for assistants.

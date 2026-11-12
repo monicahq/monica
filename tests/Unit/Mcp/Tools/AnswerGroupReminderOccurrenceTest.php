@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\AnswerGroupReminderOccurrence;
 use App\Models\Group;
 use App\Models\Reminder;
@@ -30,7 +30,7 @@ class AnswerGroupReminderOccurrenceTest extends TestCase
         $reminder = Reminder::factory()->manual($group, now()->addWeek()->toDateString())->create();
         $occurrence = ReminderOccurrence::factory()->past()->create(['reminder_id' => $reminder->id]);
 
-        EricaServer::actingAs($user)->tool(AnswerGroupReminderOccurrence::class, [
+        MonicaServer::actingAs($user)->tool(AnswerGroupReminderOccurrence::class, [
             'vault' => $vault->uuid,
             'group' => $group->uuid,
             'occurrence' => $occurrence->uuid,
@@ -49,7 +49,7 @@ class AnswerGroupReminderOccurrenceTest extends TestCase
         $reminder = Reminder::factory()->manual(Group::factory()->create(['vault_id' => $vault->id]), now()->addWeek()->toDateString())->create();
         $occurrence = ReminderOccurrence::factory()->past()->create(['reminder_id' => $reminder->id]);
 
-        EricaServer::actingAs($user)->tool(AnswerGroupReminderOccurrence::class, [
+        MonicaServer::actingAs($user)->tool(AnswerGroupReminderOccurrence::class, [
             'vault' => $vault->uuid,
             'group' => $group->uuid,
             'occurrence' => $occurrence->uuid,

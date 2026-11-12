@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Mcp\Tools;
 
 use App\Jobs\LogUserAction;
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\SetEntityTypeActivation;
 use App\Models\EntityType;
 use App\Models\User;
@@ -24,7 +24,7 @@ class SetEntityTypeActivationTest extends TestCase
         $user = User::factory()->create();
         $entityType = EntityType::factory()->create(['account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(SetEntityTypeActivation::class, [
+        MonicaServer::actingAs($user)->tool(SetEntityTypeActivation::class, [
             'entity_type' => $entityType->uuid,
             'is_active' => false,
         ])->assertOk()->assertHasNoErrors();
@@ -38,7 +38,7 @@ class SetEntityTypeActivationTest extends TestCase
         $user = User::factory()->create();
         $entityType = EntityType::factory()->inactive()->create(['account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(SetEntityTypeActivation::class, [
+        MonicaServer::actingAs($user)->tool(SetEntityTypeActivation::class, [
             'entity_type' => $entityType->uuid,
             'is_active' => true,
         ])->assertOk()->assertHasNoErrors();
@@ -54,7 +54,7 @@ class SetEntityTypeActivationTest extends TestCase
         $user = User::factory()->create();
         $entityType = EntityType::factory()->create(['account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(SetEntityTypeActivation::class, [
+        MonicaServer::actingAs($user)->tool(SetEntityTypeActivation::class, [
             'entity_type' => $entityType->uuid,
             'is_active' => true,
         ])->assertOk()->assertHasNoErrors();

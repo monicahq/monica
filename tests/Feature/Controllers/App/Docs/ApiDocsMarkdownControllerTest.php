@@ -28,8 +28,8 @@ class ApiDocsMarkdownControllerTest extends TestCase
 
         $response->assertOk();
         $response->assertHeader('Content-Type', 'text/markdown; charset=UTF-8');
-        $response->assertSee('# Get your profile', escape: false);
-        $response->assertDontSee('# Log out', escape: false);
+        $response->assertSee('`GET /api/v1/me`', escape: false);
+        $response->assertDontSee('`DELETE /api/v1/logout`', escape: false);
     }
 
     #[Test]

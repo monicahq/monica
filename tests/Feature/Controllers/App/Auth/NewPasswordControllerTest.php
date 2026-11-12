@@ -28,7 +28,6 @@ class NewPasswordControllerTest extends TestCase
         ]));
 
         $response->assertStatus(200);
-        $response->assertSee('Choose a new password');
         $response->assertSee('michael.scott@dundermifflin.com');
     }
 

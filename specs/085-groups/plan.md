@@ -56,7 +56,7 @@ app/Http/Controllers/Api/{Group,GroupRestoration,GroupMember,ContactGroup}Contro
 app/Http/Resources/{Group,GroupMembership}Resource.php
 app/ViewModels/Vaults/{GroupsViewModel,GroupViewModel,GroupFormViewModel,ContactGroupsBlock}.php
 app/ViewModels/Vaults/ContactTimelineBlock.php                          join and leave entries (R5)
-app/Mcp/Tools/*Group*.php             eleven tools; EricaServer registers them
+app/Mcp/Tools/*Group*.php             eleven tools; MonicaServer registers them
 resources/views/app/vaults/groups/    index, show, form, _member-form; link in components/vault/sidebar
 resources/views/app/vaults/contacts/  _group-memberships block; share link toggle
 resources/docs/api/27-groups.php      API reference; McpDocsViewModel and CarddavDocsViewModel

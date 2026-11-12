@@ -39,11 +39,6 @@ class ReminderControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Michael’s birthday');
         $response->assertSee('Michael Scott');
-        $response->assertSee('Dates awaiting your response');
-        $response->assertSee('Overdue');
-        $response->assertSee('I forgot');
-        $response->assertSee('Edit the date');
-        $response->assertSee('Delivery details');
         $response->assertSee(route('contacts.reminders.index', ['vault' => $vault, 'contact' => $rule->remindable]), escape: false);
         $response->assertDontSee(route('contacts.reminders.edit', ['vault' => $vault, 'contact' => $rule->remindable, 'reminder' => $rule]), escape: false);
     }

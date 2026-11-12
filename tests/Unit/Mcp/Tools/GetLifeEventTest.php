@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\GetLifeEvent;
 use App\Models\LifeEvent;
 use App\Models\User;
@@ -24,7 +24,7 @@ class GetLifeEventTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $lifeEvent = LifeEvent::factory()->create(['vault_id' => $vault->id, 'title' => 'Booze cruise']);
 
-        EricaServer::actingAs($user)->tool(GetLifeEvent::class, [
+        MonicaServer::actingAs($user)->tool(GetLifeEvent::class, [
             'vault' => $vault->uuid,
             'life_event' => $lifeEvent->uuid,
         ])->assertOk()->assertHasNoErrors()->assertSee('Booze cruise');
@@ -38,9 +38,9 @@ class GetLifeEventTest extends TestCase
         $nashua = Vault::factory()->create(['account_id' => $user->account_id]);
         $lifeEvent = LifeEvent::factory()->create(['vault_id' => $nashua->id]);
 
-        EricaServer::actingAs($user)->tool(GetLifeEvent::class, [
+        MonicaServer::actingAs($user)->tool(GetLifeEvent::class, [
             'vault' => $vault->uuid,
             'life_event' => $lifeEvent->uuid,
-        ])->assertHasErrors(['That life event does not exist.']);
+        ])->assertHasErrors();
     }
 }

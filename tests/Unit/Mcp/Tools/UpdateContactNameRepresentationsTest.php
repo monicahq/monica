@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\UpdateContactNameRepresentations;
 use App\Models\Contact;
 use App\Models\User;
@@ -24,7 +24,7 @@ class UpdateContactNameRepresentationsTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'first_name' => 'Michael', 'last_name' => 'Scott', 'nickname' => 'Prison Mike']);
 
-        EricaServer::actingAs($user)->tool(UpdateContactNameRepresentations::class, [
+        MonicaServer::actingAs($user)->tool(UpdateContactNameRepresentations::class, [
             'vault' => $vault->uuid,
             'contact' => $contact->uuid,
             'name_representations' => [
@@ -47,7 +47,7 @@ class UpdateContactNameRepresentationsTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(UpdateContactNameRepresentations::class, [
+        MonicaServer::actingAs($user)->tool(UpdateContactNameRepresentations::class, [
             'vault' => $vault->uuid,
             'contact' => $contact->uuid,
             'name_representations' => [['kind' => 'phonetic', 'given_name' => 'Maikeru']],

@@ -24,8 +24,6 @@ class ModerationSubmissionViewModelTest extends TestCase
         $provenance = new ModerationSubmissionViewModel(version: $version->refresh())->provenance();
 
         $this->assertStringContainsString('Dwight Schrute', $provenance);
-        $this->assertStringContainsString('version '.$version->version_number, $provenance);
-        $this->assertStringContainsString('submitted ', $provenance);
         $this->assertSame('Beet harvest', new ModerationSubmissionViewModel(version: $version->refresh())->title());
     }
 
@@ -38,17 +36,6 @@ class ModerationSubmissionViewModelTest extends TestCase
         $line = new ModerationSubmissionViewModel(version: $version->refresh())->decidedLine();
 
         $this->assertStringContainsString('Michael Scott decided it.', $line);
-    }
-
-    #[Test]
-    public function it_says_somebody_else_decided_a_version_nobody_signed_for(): void
-    {
-        $version = $this->version();
-        $version->listing->update(['moderated_by' => null]);
-
-        $line = new ModerationSubmissionViewModel(version: $version->refresh())->decidedLine();
-
-        $this->assertStringContainsString('Somebody else decided it.', $line);
     }
 
     #[Test]

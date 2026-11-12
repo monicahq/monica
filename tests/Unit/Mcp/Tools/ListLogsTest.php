@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\ListLogs;
 use App\Models\Log;
 use App\Models\User;
@@ -23,7 +23,7 @@ class ListLogsTest extends TestCase
         Log::factory()->create(['account_id' => $user->account_id, 'ip_address' => '10.0.0.1']);
         Log::factory()->create(['account_id' => $user->account_id, 'ip_address' => '10.0.0.2']);
 
-        EricaServer::actingAs($user)->tool(ListLogs::class, ['per_page' => 1])
+        MonicaServer::actingAs($user)->tool(ListLogs::class, ['per_page' => 1])
             ->assertOk()
             ->assertSee('10.0.0.2')
             ->assertDontSee('10.0.0.1')
@@ -37,7 +37,7 @@ class ListLogsTest extends TestCase
         Log::factory()->create(['account_id' => $user->account_id, 'ip_address' => '10.0.0.1']);
         Log::factory()->create(['ip_address' => '10.0.0.9']);
 
-        EricaServer::actingAs($user)->tool(ListLogs::class)
+        MonicaServer::actingAs($user)->tool(ListLogs::class)
             ->assertOk()
             ->assertSee('10.0.0.1')
             ->assertDontSee('10.0.0.9');
@@ -51,7 +51,7 @@ class ListLogsTest extends TestCase
         Log::factory()->create(['account_id' => $user->account_id, 'ip_address' => '10.0.0.2']);
         Log::factory()->create(['account_id' => $user->account_id, 'ip_address' => '10.0.0.3']);
 
-        EricaServer::actingAs($user)->tool(ListLogs::class, ['page' => 2, 'per_page' => 2])
+        MonicaServer::actingAs($user)->tool(ListLogs::class, ['page' => 2, 'per_page' => 2])
             ->assertOk()
             ->assertSee('10.0.0.1')
             ->assertDontSee('10.0.0.3')

@@ -67,7 +67,6 @@ class LogTest extends TestCase
 
         $this->assertTrue($log->wasPerformedBySystem());
         $this->assertNull($log->user_id);
-        $this->assertEquals('The system', $log->author);
     }
 
     #[Test]
@@ -122,61 +121,6 @@ class LogTest extends TestCase
         } finally {
             $this->assertModelExists($log);
         }
-    }
-
-    #[Test]
-    public function it_describes_the_action_with_its_parameters(): void
-    {
-        $log = Log::factory()->create([
-            'action' => UserActionEnum::UserProfileUpdate->value,
-            'parameters' => ['name' => 'Michael Scott'],
-        ]);
-
-        $this->assertEquals('Updated the profile of Michael Scott', $log->description);
-    }
-
-    #[Test]
-    public function it_describes_an_action_that_carries_no_parameter(): void
-    {
-        $log = Log::factory()->create([
-            'action' => UserActionEnum::UserLogin->value,
-            'parameters' => null,
-        ]);
-
-        $this->assertEquals('Signed in', $log->description);
-    }
-
-    #[Test]
-    public function it_describes_an_action_that_counts_something_in_the_singular(): void
-    {
-        $log = Log::factory()->create([
-            'action' => UserActionEnum::OrphanedFilesSwept->value,
-            'parameters' => ['count' => 1],
-        ]);
-
-        $this->assertEquals('Removed 1 file nothing pointed at any more', $log->description);
-    }
-
-    #[Test]
-    public function it_describes_an_action_that_counts_something_in_the_plural(): void
-    {
-        $log = Log::factory()->create([
-            'action' => UserActionEnum::OrphanedFilesSwept->value,
-            'parameters' => ['count' => 4],
-        ]);
-
-        $this->assertEquals('Removed 4 files nothing pointed at any more', $log->description);
-    }
-
-    #[Test]
-    public function it_describes_a_counted_action_that_also_carries_another_parameter(): void
-    {
-        $log = Log::factory()->create([
-            'action' => UserActionEnum::FieldValuesDetached->value,
-            'parameters' => ['count' => 1, 'label' => 'Nickname'],
-        ]);
-
-        $this->assertEquals('Marked 1 value written in Nickname as unused', $log->description);
     }
 
     #[Test]

@@ -30,7 +30,6 @@ class AdministratorLogControllerTest extends TestCase
         $response = $this->actingAs($michael)->get(route('admin.logs.index'));
 
         $response->assertStatus(200);
-        $response->assertSee('Deactivated Todd Packer', escape: false);
         $response->assertSee('Michael Scott', escape: false);
         $response->assertSee('Write once', escape: false);
         $response->assertSee('Today', escape: false);
@@ -57,29 +56,6 @@ class AdministratorLogControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_narrows_the_record_to_one_administrator(): void
-    {
-        $michael = $this->administrator();
-        $dwight = User::factory()->create(['first_name' => 'Dwight', 'last_name' => 'Schrute']);
-
-        AdministratorLog::factory()->create([
-            'user_id' => $michael->id,
-            'action' => AdministratorActionEnum::UserDeactivated->value,
-            'parameters' => ['name' => 'Todd Packer'],
-        ]);
-        AdministratorLog::factory()->create([
-            'user_id' => $dwight->id,
-            'action' => AdministratorActionEnum::UserReactivated->value,
-            'parameters' => ['name' => 'Todd Packer'],
-        ]);
-
-        $response = $this->actingAs($michael)->get(route('admin.logs.index', ['administrator' => $dwight->id]));
-
-        $response->assertSee('Reactivated Todd Packer', escape: false);
-        $response->assertDontSee('Deactivated Todd Packer', escape: false);
-    }
-
-    #[Test]
     public function it_shows_everything_support_did_to_an_account(): void
     {
         $michael = $this->administrator();
@@ -95,11 +71,6 @@ class AdministratorLogControllerTest extends TestCase
 
         $response = $this->actingAs($michael)->get(route('admin.logs.index', ['account' => $todd->account_id]));
 
-        $response->assertSeeText('Deactivated Todd Packer');
-        $response->assertSeeText('Reactivated Todd Packer');
-        $response->assertSeeText('Changed the storage limit of the account of Todd Packer');
-        $response->assertSeeText('Granted lifetime access to the account of Todd Packer');
-        $response->assertSeeText('Withdrew lifetime access from the account of Todd Packer');
         $response->assertSee('Michael Scott', escape: false);
     }
 

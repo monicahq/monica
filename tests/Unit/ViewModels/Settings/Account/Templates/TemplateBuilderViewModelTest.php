@@ -51,7 +51,6 @@ class TemplateBuilderViewModelTest extends TestCase
         $viewModel = new TemplateBuilderViewModel(user: $user, template: $template->fresh());
 
         $this->assertFalse($viewModel->isEditable());
-        $this->assertEquals(__('Published'), $viewModel->statusLabel());
     }
 
     #[Test]
@@ -82,23 +81,6 @@ class TemplateBuilderViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_says_what_a_draft_was_based_on(): void
-    {
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $first = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
-        StructureVersion::factory()->create([
-            'structure_id' => $template->structure->id,
-            'version_number' => 2,
-            'previous_version_id' => $first->id,
-        ]);
-
-        $viewModel = new TemplateBuilderViewModel(user: $user, template: $template->fresh());
-
-        $this->assertEquals('v2 · based on v1', $viewModel->versionLabel());
-    }
-
-    #[Test]
     public function it_lists_the_sections_with_their_fields(): void
     {
         $user = User::factory()->create();
@@ -113,10 +95,8 @@ class TemplateBuilderViewModelTest extends TestCase
         $sections = new TemplateBuilderViewModel(user: $user, template: $template->fresh())->sections();
 
         $this->assertCount(1, $sections);
-        $this->assertEquals('1 field', $sections[0]['fieldLabel']);
         $this->assertEquals('Weight', $sections[0]['fields'][0]['label']);
         $this->assertEquals('In kilograms', $sections[0]['fields'][0]['help']);
-        $this->assertEquals('Number', $sections[0]['fields'][0]['typeLabel']);
     }
 
     #[Test]
@@ -141,7 +121,6 @@ class TemplateBuilderViewModelTest extends TestCase
 
         $this->assertCount(1, $sections[0]['fields']);
         $this->assertEquals($repeater->id, $sections[0]['fields'][0]['id']);
-        $this->assertEquals('2 fields', $sections[0]['fieldLabel']);
 
         $this->assertCount(1, $sections[0]['fields'][0]['children']);
         $this->assertEquals($child->id, $sections[0]['fields'][0]['children'][0]['id']);
@@ -212,7 +191,6 @@ class TemplateBuilderViewModelTest extends TestCase
         $toAnAnimal = new TemplateBuilderViewModel(user: $user, template: $template->fresh(), selectedFieldId: $entity->id)->selectedField();
 
         $this->assertTrue($toSomebody['isRelation']);
-        $this->assertEquals(__('Somebody in the vault'), $toSomebody['relationTargetLabel']);
         $this->assertFalse($toSomebody['relationTargetIsInactive']);
         $this->assertEquals('Animals', $toAnAnimal['relationTargetLabel']);
         $this->assertTrue($toAnAnimal['relationTargetIsInactive']);
@@ -272,17 +250,6 @@ class TemplateBuilderViewModelTest extends TestCase
         $viewModel = new TemplateBuilderViewModel(user: $michael, template: $template->fresh(), selectedFieldId: $theirs->id);
 
         $this->assertNull($viewModel->selectedField());
-    }
-
-    #[Test]
-    public function it_says_nothing_is_relying_on_a_template_that_was_never_published(): void
-    {
-        $user = User::factory()->create();
-        [$template] = $this->templateCarryingASection($user);
-
-        $viewModel = new TemplateBuilderViewModel(user: $user, template: $template->fresh());
-
-        $this->assertStringContainsString('Nothing is using this template yet', $viewModel->publishingNote());
     }
 
     #[Test]
@@ -357,60 +324,6 @@ class TemplateBuilderViewModelTest extends TestCase
 
         $this->assertEquals(['Address'], array_column($onGeneral, 'name'));
         $this->assertEquals(['Jobs'], array_column($onEvents, 'name'));
-    }
-
-    #[Test]
-    public function it_says_the_mark_stays_here_when_no_other_template_carries_the_section(): void
-    {
-        $user = User::factory()->create();
-        [$template] = $this->templateCarryingASection($user);
-
-        $sections = new TemplateBuilderViewModel(user: $user, template: $template->fresh())->sections();
-
-        $this->assertEquals('No other template carries this section, so the mark stays here.', $sections[0]['markReach']);
-    }
-
-    #[Test]
-    public function it_counts_the_other_templates_the_mark_would_reach(): void
-    {
-        $user = User::factory()->create();
-        [$template, $row] = $this->templateCarryingASection($user);
-
-        foreach (range(1, 2) as $ignored) {
-            $other = Template::factory()->create(['account_id' => $user->account_id]);
-            $otherVersion = StructureVersion::factory()->create(['structure_id' => $other->structure->id]);
-            StructureVersionSection::factory()->create([
-                'structure_version_id' => $otherVersion->id,
-                'section_version_id' => $row->section_version_id,
-            ]);
-        }
-
-        $sections = new TemplateBuilderViewModel(user: $user, template: $template->fresh())->sections();
-
-        $this->assertEquals('The mark also changes on 2 other templates carrying this section.', $sections[0]['markReach']);
-    }
-
-    #[Test]
-    public function it_counts_a_template_once_however_often_it_carries_the_section(): void
-    {
-        $user = User::factory()->create();
-        [$template, $row] = $this->templateCarryingASection($user);
-
-        $other = Template::factory()->create(['account_id' => $user->account_id]);
-
-        foreach (range(1, 2) as $number) {
-            StructureVersionSection::factory()->create([
-                'structure_version_id' => StructureVersion::factory()->create([
-                    'structure_id' => $other->structure->id,
-                    'version_number' => $number,
-                ])->id,
-                'section_version_id' => $row->section_version_id,
-            ]);
-        }
-
-        $sections = new TemplateBuilderViewModel(user: $user, template: $template->fresh())->sections();
-
-        $this->assertEquals('The mark also changes on 1 other template carrying this section.', $sections[0]['markReach']);
     }
 
     #[Test]

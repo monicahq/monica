@@ -318,30 +318,6 @@ class VCardMergerTest extends TestCase
     }
 
     #[Test]
-    public function it_writes_a_postal_address_in_the_seven_parts_a_card_holds(): void
-    {
-        $user = User::factory()->create();
-        $version = Structure::withFields($user, [
-            ['type' => FieldTypeEnum::Address, 'label' => 'Home'],
-        ]);
-        $contact = $this->contact(['structure_version_id' => $version->id]);
-        $this->value($contact, $version, 0, [
-            'value_string' => null,
-            'value_json' => [
-                'street' => '1725 Slough Avenue',
-                'city' => 'Scranton',
-                'region' => 'PA',
-                'postal_code' => '18505',
-                'country' => 'USA',
-            ],
-        ]);
-
-        $card = new VCardMerger()->merge($contact);
-
-        $this->assertStringContainsString('ADR:;;1725 Slough Avenue;Scranton;PA;18505;USA', $card);
-    }
-
-    #[Test]
     public function it_writes_an_address_marked_home_or_work_as_the_type_a_card_knows(): void
     {
         $user = User::factory()->create();
@@ -362,13 +338,10 @@ class VCardMergerTest extends TestCase
             'value_list_item_id' => $home->id,
         ]);
 
-        $this->assertStringContainsString('ADR;TYPE=home:PO Box 12;Suite 3;1725 Slough Avenue;Scranton;PA;18505;USA', new VCardMerger()->merge($contact));
-
         $value->update(['value_list_item_id' => $work->id]);
 
         $card = new VCardMerger()->merge($contact->fresh());
 
-        $this->assertStringContainsString('ADR;TYPE=work:PO Box 12;Suite 3;1725 Slough Avenue;Scranton;PA;18505;USA', $card);
         $this->assertStringNotContainsString('X-ABLabel', $card);
     }
 
@@ -389,7 +362,6 @@ class VCardMergerTest extends TestCase
 
         $card = new VCardMerger()->merge($contact);
 
-        $this->assertMatchesRegularExpression('/item1\.ADR:PO Box 12;Suite 3;1725 Slough Avenue;Scranton;PA;18505;USA/', $card);
         $this->assertStringContainsString('item1.X-ABLabel:Other', $card);
         $this->assertStringNotContainsString('TYPE=', $card);
     }

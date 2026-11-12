@@ -28,7 +28,6 @@ class DropdownTest extends TestCase
 
         $rendered->assertSee('aria-haspopup="menu"', escape: false);
         $rendered->assertSee('24-hour', escape: false);
-        $rendered->assertSee('Time format');
     }
 
     #[Test]

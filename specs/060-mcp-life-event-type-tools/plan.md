@@ -5,7 +5,7 @@
 
 ## Summary
 
-Sixteen new tools on `EricaServer`, one class each under `app/Mcp/Tools`: nine for life event types
+Sixteen new tools on `MonicaServer`, one class each under `app/Mcp/Tools`: nine for life event types
 (including reading and replacing their fields) and seven for life event categories. Each mirrors an
 existing `api.v1.lifeEventTypes.*` or `api.v1.lifeEventCategories.*` route by calling the same action
 and returning the same resource ([contracts/mcp-tools.md](contracts/mcp-tools.md)). No route changes.
@@ -80,7 +80,7 @@ app/Mcp/Tools/{ListLifeEventTypes,GetLifeEventType,CreateLifeEventType,UpdateLif
 app/Mcp/Tools/{GetLifeEventCategory,ListLifeEventCategoryTypes,CreateLifeEventCategory,
   UpdateLifeEventCategory,DeleteLifeEventCategory,SetLifeEventCategoryActivation,
   SetLifeEventCategoryPosition}.php
-app/Mcp/Servers/EricaServer.php               # register 16 tools; one paragraph of instructions
+app/Mcp/Servers/MonicaServer.php               # register 16 tools; one paragraph of instructions
 app/ViewModels/Docs/McpDocsViewModel.php      # tool groups, LIFE_EVENT_TYPES paragraphs, markdown
 resources/views/app/docs/mcp.blade.php        # draw the paragraphs under their heading
 lang/*.json                                   # four new sentences via monica:localize

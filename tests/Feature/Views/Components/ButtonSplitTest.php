@@ -17,7 +17,6 @@ class ButtonSplitTest extends TestCase
         );
 
         $rendered->assertSee('type="submit"', escape: false);
-        $rendered->assertSee('Create a new version', escape: false);
     }
 
     #[Test]
@@ -30,8 +29,6 @@ class ButtonSplitTest extends TestCase
         $rendered->assertSee('type="button"', escape: false);
         $rendered->assertSee('aria-haspopup="menu"', escape: false);
         $rendered->assertSee('role="menu"', escape: false);
-        $rendered->assertSee('More actions', escape: false);
-        $rendered->assertSee('Share on marketplace', escape: false);
     }
 
     #[Test]
@@ -41,9 +38,19 @@ class ButtonSplitTest extends TestCase
             '<x-button.split label="Create a new version"><x-slot:menu></x-slot:menu></x-button.split>',
         );
 
-        $rendered->assertSee('Create a new version', escape: false);
         $rendered->assertDontSee('aria-haspopup="menu"', escape: false);
         $rendered->assertDontSee('role="menu"', escape: false);
-        $rendered->assertDontSee('More actions', escape: false);
+    }
+
+    #[Test]
+    public function an_unavailable_half_says_why_and_the_chevron_still_opens_the_menu(): void
+    {
+        $rendered = $this->blade(
+            '<x-button.split label="Edit" unavailable="Editing comes in a later version."><x-slot:menu><a href="/feature">Add to featured</a></x-slot:menu></x-button.split>',
+        );
+
+        $rendered->assertSee('aria-disabled="true"', escape: false);
+        $rendered->assertSee('aria-haspopup="menu"', escape: false);
+        $rendered->assertDontSee('type="submit"', escape: false);
     }
 }

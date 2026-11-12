@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\SetRelationshipTypePosition;
 use App\Models\RelationshipCategory;
 use App\Models\RelationshipType;
@@ -27,7 +27,7 @@ class SetRelationshipTypePositionTest extends TestCase
         $deskmate = RelationshipType::factory()->create([...$attributes, 'name' => 'Deskmate', 'position' => 2]);
         $rival = RelationshipType::factory()->create([...$attributes, 'name' => 'Rival', 'position' => 3]);
 
-        EricaServer::actingAs($user)->tool(SetRelationshipTypePosition::class, [
+        MonicaServer::actingAs($user)->tool(SetRelationshipTypePosition::class, [
             'relationship_type' => $rival->uuid,
             'position' => 1,
         ])->assertOk()->assertHasNoErrors();

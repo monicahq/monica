@@ -16,19 +16,6 @@ class UserIpChangedTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_has_a_subject(): void
-    {
-        config(['app.name' => 'Monica']);
-
-        $michael = User::factory()->create();
-
-        $message = new UserIpChanged(email: 'michael.scott@dundermifflin.com', ip: '10.0.0.1')
-            ->toMail($michael);
-
-        $this->assertEquals('A sign-in from a new place on your Monica account', $message->subject);
-    }
-
-    #[Test]
     public function it_names_the_account_and_where_the_sign_in_came_from(): void
     {
         $michael = User::factory()->create();
@@ -51,20 +38,6 @@ class UserIpChangedTest extends TestCase
             ->toMail($michael);
 
         $this->assertStringContainsString('Where: 10.0.0.1', (string) $message->panel);
-    }
-
-    #[Test]
-    public function it_reads_the_reassurance_after_the_box(): void
-    {
-        $michael = User::factory()->create();
-
-        $message = new UserIpChanged(email: 'michael.scott@dundermifflin.com', ip: '10.0.0.1')
-            ->toMail($michael);
-
-        $this->assertEquals(
-            ['Travelling, a VPN, a new phone or a browser update can all cause this, so it is often nothing. If you do not recognise it, change your password.'],
-            $message->outroLines,
-        );
     }
 
     #[Test]

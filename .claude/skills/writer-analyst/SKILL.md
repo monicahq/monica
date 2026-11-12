@@ -1,6 +1,6 @@
 ---
 name: writer-analyst
-description: Audit Monica/Erica and design an evidence-backed product documentation roadmap using Diátaxis. Use when planning the documentation portal, defining its information architecture, auditing coverage, or preparing page briefs for documentation writers. Produces a roadmap, not finished documentation pages or portal code.
+description: Audit Monica and design an evidence-backed product documentation roadmap using Diátaxis. Use when planning the documentation portal, defining its information architecture, auditing coverage, or preparing page briefs for documentation writers. Produces a roadmap, not finished documentation pages or portal code.
 ---
 
 # Product Documentation Analyst

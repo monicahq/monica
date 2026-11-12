@@ -2,7 +2,7 @@
 
 ## R1. Where the capture sits (`laravel/mcp` v1.0.1)
 
-- **Decision**: `EricaServer` maps `tools/call` to `App\Mcp\Servers\RecordedCallTool` through
+- **Decision**: `MonicaServer` maps `tools/call` to `App\Mcp\Servers\RecordedCallTool` through
   `$methods`. That class writes the row, runs the tool, classifies the outcome and closes the row.
 - **Rationale**: `Server::handle()` routes every method through `$methods`, so this is the one place
   every tool call passes. `ToolInvoker::callHandler()` turns any exception into `Response::error()`
@@ -11,7 +11,7 @@
 - **Alternatives**: HTTP middleware (sees only status 200 and a JSON body, the brief rules it out);
   a wrapper in each of the 92 tools (92 copies); a new `app/Mcp/Methods` folder (needs an amendment).
 - **Cost**: it copies package internals. An upgrade of `laravel/mcp` rereads `CallTool` and
-  `ToolInvoker`, and a test calling a tool through `EricaServer::tool()` fails if the copy drifts.
+  `ToolInvoker`, and a test calling a tool through `MonicaServer::tool()` fails if the copy drifts.
 
 ## R2. How an outcome becomes a result
 

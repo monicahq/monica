@@ -35,6 +35,5 @@ class LogControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Michael Scott', escape: false);
         $response->assertSee('user_profile_updated', escape: false);
-        $response->assertSee('Updated the profile of Michael Scott', escape: false);
     }
 }

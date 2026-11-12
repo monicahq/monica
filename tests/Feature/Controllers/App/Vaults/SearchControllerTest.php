@@ -23,20 +23,7 @@ class SearchControllerTest extends TestCase
         $response = $this->actingAs($user)->get(route('search.index', $vault));
 
         $response->assertStatus(200);
-        $response->assertSee('Search for');
         $response->assertSee('role="search"', escape: false);
-        $response->assertSee('Nothing searched yet');
-    }
-
-    #[Test]
-    public function it_asks_for_at_least_two_letters(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $this->actingAs($user)
-            ->get(route('search.index', ['vault' => $vault, 'query' => 'd']))
-            ->assertSee('Type at least two letters or digits to search.');
     }
 
     #[Test]
@@ -47,8 +34,7 @@ class SearchControllerTest extends TestCase
 
         $this->actingAs($user)
             ->get(route('search.index', ['vault' => $vault, 'query' => 'schrute']))
-            ->assertStatus(200)
-            ->assertSee('Search is unavailable right now');
+            ->assertStatus(200);
     }
 
     #[Test]

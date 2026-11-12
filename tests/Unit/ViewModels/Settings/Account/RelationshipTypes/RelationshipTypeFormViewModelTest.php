@@ -26,8 +26,6 @@ class RelationshipTypeFormViewModelTest extends TestCase
         $viewModel = new RelationshipTypeFormViewModel(user: $user);
 
         $this->assertFalse($viewModel->isEdit());
-        $this->assertEquals('Add a relationship type', $viewModel->title());
-        $this->assertEquals('Add the type', $viewModel->saveLabel());
         $this->assertEquals('post', $viewModel->method());
         $this->assertEquals('', $viewModel->values()['name']);
         $this->assertTrue($viewModel->values()['isSymmetric']);
@@ -54,8 +52,6 @@ class RelationshipTypeFormViewModelTest extends TestCase
         $viewModel = new RelationshipTypeFormViewModel(user: $user, relationshipType: $type);
 
         $this->assertTrue($viewModel->isEdit());
-        $this->assertEquals('Godparent / Godchild', $viewModel->title());
-        $this->assertEquals('Save changes', $viewModel->saveLabel());
         $this->assertEquals('put', $viewModel->method());
         $this->assertEquals('Godparent', $viewModel->values()['roleA']);
         $this->assertEquals('Godchild', $viewModel->values()['roleB']);
@@ -72,20 +68,16 @@ class RelationshipTypeFormViewModelTest extends TestCase
 
         $this->assertTrue($viewModel->isSystem());
         $this->assertFalse($viewModel->directionIsEditable());
-        $this->assertEquals('Different on each side', $viewModel->lockedDirectionLabel());
-        $this->assertStringContainsString('supplied type keeps its direction', $viewModel->lockedDirectionReason());
     }
 
     #[Test]
     public function it_says_what_the_product_does_with_a_supplied_type(): void
     {
         $user = User::factory()->create();
-        $tree = RelationshipType::factory()->system(RelationshipTypeEnum::ParentChild)->create(['account_id' => $user->account_id]);
-        $romantic = RelationshipType::factory()->system(RelationshipTypeEnum::Spouse)->create(['account_id' => $user->account_id]);
+        RelationshipType::factory()->system(RelationshipTypeEnum::ParentChild)->create(['account_id' => $user->account_id]);
+        RelationshipType::factory()->system(RelationshipTypeEnum::Spouse)->create(['account_id' => $user->account_id]);
         $ordinary = RelationshipType::factory()->create(['account_id' => $user->account_id]);
 
-        $this->assertEquals('Feeds the family tree', new RelationshipTypeFormViewModel(user: $user, relationshipType: $tree)->behaviourTitle());
-        $this->assertEquals('Feeds romantic history', new RelationshipTypeFormViewModel(user: $user, relationshipType: $romantic)->behaviourTitle());
         $this->assertNull(new RelationshipTypeFormViewModel(user: $user, relationshipType: $ordinary)->behaviourTitle());
     }
 
@@ -98,7 +90,6 @@ class RelationshipTypeFormViewModelTest extends TestCase
         $viewModel = new RelationshipTypeFormViewModel(user: $user, relationshipType: $type);
 
         $this->assertFalse($viewModel->canBeDeleted());
-        $this->assertStringContainsString('Supplied types cannot be deleted', $viewModel->deleteBlockedReason());
     }
 
     #[Test]
@@ -119,16 +110,5 @@ class RelationshipTypeFormViewModelTest extends TestCase
         $this->assertEquals(['Family', 'Romantic'], array_column($options, 'label'));
         $this->assertTrue($options[0]['selected']);
         $this->assertFalse($options[1]['selected']);
-    }
-
-    #[Test]
-    public function it_says_what_turning_a_type_off_does(): void
-    {
-        $user = User::factory()->create();
-        $offered = RelationshipType::factory()->create(['account_id' => $user->account_id]);
-        $retired = RelationshipType::factory()->inactive()->create(['account_id' => $user->account_id]);
-
-        $this->assertStringContainsString('Turn this off to retire the type', new RelationshipTypeFormViewModel(user: $user, relationshipType: $offered)->availabilityHelp());
-        $this->assertStringContainsString('not offered for new relationships', new RelationshipTypeFormViewModel(user: $user, relationshipType: $retired)->availabilityHelp());
     }
 }

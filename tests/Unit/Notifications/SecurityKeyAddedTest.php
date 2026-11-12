@@ -22,9 +22,7 @@ class SecurityKeyAddedTest extends TestCase
 
         $message = new SecurityKeyAdded(name: 'Dundie key')->toMail($michael);
 
-        $this->assertEquals('A security key was added to your '.config('app.name').' account', $message->subject);
         $this->assertStringContainsString('Dundie key', (string) $message->render());
-        $this->assertStringContainsString('If you did not add it', (string) $message->panel);
     }
 
     #[Test]

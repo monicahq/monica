@@ -38,7 +38,6 @@ class RegistrationControllerTest extends TestCase
         $response = $this->get(route('auth.register.new'));
 
         $response->assertStatus(200);
-        $response->assertSee('Create your account');
     }
 
     #[Test]

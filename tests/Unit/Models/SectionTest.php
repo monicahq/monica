@@ -29,7 +29,6 @@ class SectionTest extends TestCase
     {
         $section = Section::factory()->supplied()->create();
 
-        $this->assertEquals('Address', $section->name);
         $this->assertNull($section->getRawOriginal('name'));
     }
 

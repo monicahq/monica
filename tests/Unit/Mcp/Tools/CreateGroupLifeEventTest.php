@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\CreateGroupLifeEvent;
 use App\Models\Contact;
 use App\Models\Group;
@@ -29,7 +29,7 @@ class CreateGroupLifeEventTest extends TestCase
         $angela = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id]);
         $meeting = $this->lifeEventTypeAsking($user, 'Meeting');
 
-        EricaServer::actingAs($user)->tool(CreateGroupLifeEvent::class, [
+        MonicaServer::actingAs($user)->tool(CreateGroupLifeEvent::class, [
             'vault' => $vault->uuid,
             'group' => $group->uuid,
             'life_event_type' => $meeting->uuid,

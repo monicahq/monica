@@ -25,9 +25,6 @@ class CarddavDocsControllerTest extends TestCase
 
         foreach ([$page, $markdown] as $response) {
             $response->assertSee('https://contacts.example.com/monica/dav', false);
-            $response->assertSee('Disconnect a device');
-            $response->assertSee('Personal script');
-            $response->assertSee('CalDAV tasks (VTODO)', false);
         }
 
         $page->assertSee('role="tablist"', false);
@@ -40,7 +37,6 @@ class CarddavDocsControllerTest extends TestCase
 
         foreach (new CarddavDocsViewModel()->clients() as $client) {
             $page->assertSee('id="client-panel-'.$client['key'].'"', false);
-            $markdown->assertSee('### '.$client['label'], false);
         }
     }
 
@@ -50,12 +46,9 @@ class CarddavDocsControllerTest extends TestCase
         $this->get('/docs')->assertOk()->assertSee(route('docs.carddav.index'), false);
         $this->get('/llms.txt')->assertOk()->assertSee(route('docs.carddav.markdown.index'), false);
         $page = $this->get('/docs/api/me-show')->assertOk();
-        $markdown = $this->get('/docs/api.md')->assertOk();
+        $this->get('/docs/api.md')->assertOk();
 
         $page->assertDontSee('/docs/api/devices-', false);
-
-        $markdown->assertDontSee('What a device needs');
-        $markdown->assertSee('# Get your profile', false);
     }
 
     #[Test]

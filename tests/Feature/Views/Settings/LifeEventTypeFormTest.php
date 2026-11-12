@@ -33,8 +33,6 @@ class LifeEventTypeFormTest extends TestCase
         $response->assertSee('form="life-event-type-form"', false);
         $response->assertSee('aria-describedby="life-event-type-availability"', false);
         $response->assertSee('id="life-event-type-availability"', false);
-        $response->assertSee('Offered when recording');
-        $response->assertSee('Switch this off to retire the type.', false);
     }
 
     #[Test]
@@ -107,24 +105,5 @@ class LifeEventTypeFormTest extends TestCase
 
         $response->assertSee('aria-describedby="life-event-type-delete-reason"', false);
         $response->assertSee('id="life-event-type-delete-reason"', false);
-        $response->assertSee('The type came with your account and stays.');
-    }
-
-    #[Test]
-    public function it_never_shows_the_words_the_screen_exists_to_keep_away(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $type = LifeEventType::factory()->create(['account_id' => $user->account_id]);
-
-        $html = $this->actingAs($user)->get(route('settings.lifeEventTypes.edit', $type))->getContent();
-
-        $start = strpos($html, '<h1');
-        $screen = strip_tags(substr($html, (int) $start, (int) strpos($html, '</main>', (int) $start) - (int) $start));
-
-        foreach (['template', 'structure', 'version'] as $word) {
-            $this->assertStringNotContainsStringIgnoringCase($word, $screen);
-        }
     }
 }

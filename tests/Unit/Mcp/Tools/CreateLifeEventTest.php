@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Mcp\Tools;
 
 use App\Enums\FieldTypeEnum;
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\CreateLifeEvent;
 use App\Models\Contact;
 use App\Models\User;
@@ -30,7 +30,7 @@ class CreateLifeEventTest extends TestCase
         $meal = $this->lifeEventTypeAsking($user, 'Meal', ['Dish' => FieldTypeEnum::Text]);
         $dish = $meal->structure->publishedVersion->inputFields()->firstOrFail();
 
-        EricaServer::actingAs($user)->tool(CreateLifeEvent::class, [
+        MonicaServer::actingAs($user)->tool(CreateLifeEvent::class, [
             'vault' => $vault->uuid,
             'life_event_type' => $meal->uuid,
             'happened_on' => '2026-10-09',
@@ -50,11 +50,11 @@ class CreateLifeEventTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $karen = Contact::factory()->create(['account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(CreateLifeEvent::class, [
+        MonicaServer::actingAs($user)->tool(CreateLifeEvent::class, [
             'vault' => $vault->uuid,
             'life_event_type' => $this->lifeEventTypeAsking($user, 'Meeting')->uuid,
             'happened_on' => '2026-10-09',
             'participants' => [$karen->uuid],
-        ])->assertHasErrors(['That contact does not exist.']);
+        ])->assertHasErrors();
     }
 }

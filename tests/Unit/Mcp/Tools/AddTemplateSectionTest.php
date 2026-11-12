@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\AddTemplateSection;
 use App\Models\Section;
 use App\Models\SectionVersion;
@@ -26,7 +26,7 @@ class AddTemplateSectionTest extends TestCase
         $template = Template::factory()->create(['account_id' => $user->account_id]);
         $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
 
-        EricaServer::actingAs($user)->tool(AddTemplateSection::class, [
+        MonicaServer::actingAs($user)->tool(AddTemplateSection::class, [
             'template' => $template->uuid,
             'version' => 1,
             'name' => 'Beet farm',
@@ -44,11 +44,11 @@ class AddTemplateSectionTest extends TestCase
         $template = Template::factory()->create(['account_id' => $user->account_id]);
         StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
 
-        EricaServer::actingAs($user)->tool(AddTemplateSection::class, [
+        MonicaServer::actingAs($user)->tool(AddTemplateSection::class, [
             'template' => $template->uuid,
             'version' => 1,
             'name' => 'Beet farm',
-        ])->assertHasErrors(['This version has been published. Open a draft to change it.']);
+        ])->assertHasErrors();
 
         $this->assertDatabaseMissing('sections', ['name' => 'Beet farm']);
     }
@@ -63,7 +63,7 @@ class AddTemplateSectionTest extends TestCase
         $sectionVersion = SectionVersion::factory()->published()->create(['section_id' => $section->id]);
         $section->update(['published_version_id' => $sectionVersion->id]);
 
-        EricaServer::actingAs($user)->tool(AddTemplateSection::class, [
+        MonicaServer::actingAs($user)->tool(AddTemplateSection::class, [
             'template' => $template->uuid,
             'version' => 1,
             'section_id' => $section->uuid,

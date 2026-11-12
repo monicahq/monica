@@ -126,7 +126,7 @@ $otherContact = [
         'created_at' => 1756080000,
         'last_interaction_at' => 1756166400,
         'last_consulted_at' => null,
-        'updated_at' => null,
+        'updated_at' => 1756080000,
     ],
     'links' => [
         'self' => $base.'/vaults/'.$vaultSlug.'/contacts/dwight-kurt-schrute',
@@ -251,7 +251,7 @@ $contactAttributes = [
     ['name' => 'last_interaction_at', 'type' => 'timestamp', 'description' => 'When you and the contact last took part in the same life event, as a count of seconds since 1970, or null when you never have. This is what "last spoke" reads, and what an inactivity reminder counts from.'],
     ['name' => 'last_consulted_at', 'type' => 'timestamp', 'description' => 'When the contact was last consulted on their own, as a count of seconds since 1970, or null when they never have been: their page opened in Monica, the contact read through this endpoint, or read by an assistant connected over MCP. Listing contacts does not change it.'],
     ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When the contact was written down, as a count of seconds since 1970 rather than a written date.'],
-    ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When the contact last changed, as a count of seconds, or null if it has not changed since it was written down.'],
+    ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When the contact last changed, as a count of seconds. Equal to created_at until it first changes.'],
 ];
 
 $freshContactAttributes = array_values(array_filter(
@@ -264,7 +264,7 @@ $freshContactAttributes = array_values(array_filter(
     fn (array $field): bool => ! str_starts_with($field['name'], 'avatar.'),
 ));
 
-$freshContact = [...$contact, 'attributes' => [...$contact['attributes'], 'avatar' => null, 'updated_at' => null]];
+$freshContact = [...$contact, 'attributes' => [...$contact['attributes'], 'avatar' => null, 'updated_at' => $contact['attributes']['created_at']]];
 
 $newContactAttributes = array_values(array_filter(
     array_map(

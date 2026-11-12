@@ -118,7 +118,6 @@ class RelationshipTypeChoicesTest extends TestCase
 
         $types = new RelationshipTypeChoices(accountId: $user->account_id)->groups()[0]['types'];
 
-        $this->assertSame('Parent / Child', $types[0]['name']);
         $this->assertSame('Beet farm partner', $types[1]['name']);
     }
 

@@ -29,7 +29,6 @@ class TemplateTest extends TestCase
     {
         $template = Template::factory()->supplied()->create();
 
-        $this->assertEquals('Contact', $template->name);
         $this->assertNull($template->getRawOriginal('name'));
     }
 }

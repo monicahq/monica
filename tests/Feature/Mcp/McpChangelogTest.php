@@ -39,6 +39,40 @@ class McpChangelogTest extends TestCase
     }
 
     #[Test]
+    public function it_records_a_location_change_as_having_arrived_over_mcp(): void
+    {
+        $user = User::factory()->create();
+        $key = $user->createToken('Dundie awards bot');
+
+        $this->invoke($key->plainTextToken, 'create-location', [
+            'name' => 'Dunder Mifflin Scranton',
+        ])->assertOk();
+
+        $this->assertDatabaseHas('logs', [
+            'action' => 'location_created',
+            'source' => LogSourceEnum::Mcp->value,
+            'source_detail' => 'Dundie awards bot',
+        ]);
+    }
+
+    #[Test]
+    public function it_records_a_possession_type_change_as_having_arrived_over_mcp(): void
+    {
+        $user = User::factory()->create();
+        $key = $user->createToken('Dundie awards bot');
+
+        $this->invoke($key->plainTextToken, 'create-possession-type', [
+            'name' => 'Office equipment',
+        ])->assertOk();
+
+        $this->assertDatabaseHas('logs', [
+            'action' => 'possession_type_created',
+            'source' => LogSourceEnum::Mcp->value,
+            'source_detail' => 'Dundie awards bot',
+        ]);
+    }
+
+    #[Test]
     public function a_change_made_in_a_browser_is_still_recorded_as_the_web(): void
     {
         $user = User::factory()->create();

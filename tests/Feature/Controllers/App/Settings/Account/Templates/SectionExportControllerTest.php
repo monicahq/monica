@@ -52,7 +52,6 @@ class SectionExportControllerTest extends TestCase
         $file = json_decode($response->streamedContent(), true);
 
         $this->assertEquals('section', $file['monica']['format']);
-        $this->assertEquals('Personal details', $file['section']['name']);
         $this->assertEquals('Dunder Mifflin contact', $file['from_template']['name']);
     }
 

@@ -3,7 +3,7 @@
 **Feature Branch**: `082-mcp-call-history`
 **Created**: 2026-10-23
 **Status**: Draft
-**Input**: "Implémente une page « Historique MCP », accessible depuis Paramètres → Sécurité, pour consulter les appels MCP reçus par Erica." Full brief in the conversation; design: claude.ai design project `4efc2d07`, `MCP Activity.dc.html`.
+**Input**: "Implémente une page « Historique MCP », accessible depuis Paramètres → Sécurité, pour consulter les appels MCP reçus par Monica." Full brief in the conversation; design: claude.ai design project `4efc2d07`, `MCP Activity.dc.html`.
 
 The changelog records changes, not reads, refusals or failures, so an account holder cannot see what
 a connected assistant asked for. This adds a separate, read only history of every MCP tool call.

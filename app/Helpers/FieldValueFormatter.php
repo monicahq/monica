@@ -7,9 +7,12 @@ namespace App\Helpers;
 use App\Enums\DateFormatEnum;
 use App\Enums\FieldTypeEnum;
 use App\Enums\NumberFormatEnum;
+use App\Enums\PossessionFieldKindEnum;
 use App\Models\FieldValue;
+use App\Models\PossessionFieldValue;
 use App\Models\User;
 use App\Models\ValueListItem;
+use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 
 class FieldValueFormatter
@@ -58,6 +61,37 @@ class FieldValueFormatter
             FieldTypeEnum::Relation => $value->relatedContact->name ?? $value->relatedEntity?->name,
             default => null,
         };
+    }
+
+    public function formatPossessionValue(PossessionFieldValue $value): ?string
+    {
+        $kind = $value->field->kind;
+
+        return match ($kind) {
+            PossessionFieldKindEnum::Number => $this->possessionNumber($value->value),
+            PossessionFieldKindEnum::Date => $this->possessionDate($value->value),
+            PossessionFieldKindEnum::Boolean => PossessionFieldValueFormat::read($kind, $value->value) ? __('Yes') : __('No'),
+            PossessionFieldKindEnum::Rating => __(':rating out of 5', ['rating' => PossessionFieldValueFormat::read($kind, $value->value)]),
+            default => $this->blankToNull($value->value),
+        };
+    }
+
+    private function possessionNumber(string $number): string
+    {
+        $decimals = 0;
+
+        if (str_contains($number, '.')) {
+            $decimals = mb_strlen(rtrim(explode('.', $number)[1], '0'));
+        }
+
+        return $this->numberFormat()->format((float) $number, $decimals);
+    }
+
+    private function possessionDate(string $date): string
+    {
+        $parsed = CarbonImmutable::createFromFormat('Y-m-d', $date);
+
+        return $parsed instanceof CarbonImmutable ? $this->write($parsed, $this->dateFormat()) : $date;
     }
 
     private function labelled(FieldValue $value): ?string

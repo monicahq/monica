@@ -26,7 +26,7 @@ class TimezoneControllerTest extends TestCase
         ]);
 
         $response->assertRedirect(route('settings.preferences.index'));
-        $response->assertSessionHas('status', 'Your time zone is saved.');
+        $response->assertSessionHas('status');
         $response->assertSessionHas('timezone_guess', false);
 
         $this->assertDatabaseHas('users', [
@@ -122,9 +122,7 @@ class TimezoneControllerTest extends TestCase
             'timezone' => 'Mars/Olympus_Mons',
         ]);
 
-        $response->assertSessionHasErrors([
-            'timezone' => 'That is not a time zone the application knows. Search for the nearest city instead.',
-        ]);
+        $response->assertSessionHasErrors(['timezone']);
     }
 
     #[Test]

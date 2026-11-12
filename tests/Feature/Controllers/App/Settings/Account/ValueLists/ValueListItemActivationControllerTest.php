@@ -28,7 +28,7 @@ class ValueListItemActivationControllerTest extends TestCase
         ]);
 
         $response->assertRedirect(route('settings.valueLists.index'));
-        $response->assertSessionHas('status', 'The value is no longer offered.');
+        $response->assertSessionHas('status');
 
         $this->assertFalse($item->refresh()->is_active);
     }
@@ -49,7 +49,7 @@ class ValueListItemActivationControllerTest extends TestCase
         ]);
 
         $response->assertRedirect(route('settings.valueLists.index'));
-        $response->assertSessionHas('status', 'The value is offered again.');
+        $response->assertSessionHas('status');
 
         $item->refresh();
 

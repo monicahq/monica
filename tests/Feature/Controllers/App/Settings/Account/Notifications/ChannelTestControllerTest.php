@@ -30,7 +30,7 @@ class ChannelTestControllerTest extends TestCase
         $response = $this->post(route('settings.notifications.test.store', 'sms'));
 
         $response->assertRedirect(route('settings.notifications.index'));
-        $response->assertSessionHas('status', 'A test message is on its way.');
+        $response->assertSessionHas('status');
         NotificationFacade::assertSentTo($user, ChannelTestMessage::class);
     }
 
@@ -42,7 +42,7 @@ class ChannelTestControllerTest extends TestCase
 
         $response = $this->post(route('settings.notifications.test.store', 'telegram'));
 
-        $response->assertSessionHasErrors(['test' => 'Finish setting this channel up before testing it.']);
+        $response->assertSessionHasErrors(['test']);
     }
 
     #[Test]

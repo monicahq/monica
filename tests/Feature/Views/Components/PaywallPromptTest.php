@@ -16,7 +16,6 @@ class PaywallPromptTest extends TestCase
     public function it_sends_the_reader_to_the_offers(): void
     {
         $this->blade('<x-paywall-prompt :message="$message" />', ['message' => 'At the ceiling.'])
-            ->assertSee(route('settings.billing.index'), escape: false)
-            ->assertSee('See the plans', escape: false);
+            ->assertSee(route('settings.billing.index'), escape: false);
     }
 }

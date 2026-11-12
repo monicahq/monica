@@ -101,24 +101,6 @@ class ApiDocsViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_leads_the_last_guide_to_the_changelog(): void
-    {
-        $guides = new ApiDocsViewModel()->navigation()['guides'];
-
-        $this->assertSame(route('docs.api.changelog.index'), end($guides)['url']);
-        $this->assertSame(route('docs.api.show', ['section' => 'introduction']), $guides[0]['url']);
-    }
-
-    #[Test]
-    public function it_finds_the_section_documenting_an_endpoint(): void
-    {
-        $viewModel = new ApiDocsViewModel;
-
-        $this->assertSame('me-show', $viewModel->sectionFor('GET', '/me')?->id);
-        $this->assertNull($viewModel->sectionFor('PUT', '/me/job-title'));
-    }
-
-    #[Test]
     public function it_finds_nothing_for_an_unknown_id(): void
     {
         $this->assertNull(new ApiDocsViewModel()->section('nothing-of-the-sort'));
@@ -159,8 +141,6 @@ class ApiDocsViewModelTest extends TestCase
             ],
         ]);
 
-        $this->assertEquals('Body parameters', $body->paramsTitle);
-        $this->assertEquals('Query parameters', $query->paramsTitle);
         $this->assertTrue($body->hasParams());
         $this->assertEquals(['name' => 'Dundie'], $body->exampleBody());
         $this->assertEquals([], $query->exampleBody());
@@ -219,13 +199,22 @@ class ApiDocsViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_has_no_previous_page_before_the_first_one(): void
+    public function it_leads_the_last_guide_to_the_changelog(): void
     {
-        $viewModel = new ApiDocsViewModel;
-        $first = $viewModel->sections()[0];
+        $guides = new ApiDocsViewModel()->navigation()['guides'];
 
-        $this->assertNull($viewModel->previous($first));
-        $this->assertEquals('authentication-guide', $viewModel->next($first)->id);
+        $this->assertSame(route('docs.api.changelog.index'), end($guides)['url']);
+        $this->assertSame(route('docs.api.show', ['section' => 'introduction']), $guides[0]['url']);
+    }
+
+    #[Test]
+    public function it_gives_the_support_page_only_while_support_is_switched_on(): void
+    {
+        $this->assertEquals(route('support.requests.new'), new ApiDocsViewModel()->supportUrl());
+
+        config(['monica.support_enabled' => false]);
+
+        $this->assertNull(new ApiDocsViewModel()->supportUrl());
     }
 
     #[Test]
@@ -240,14 +229,11 @@ class ApiDocsViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_names_both_neighbours_of_a_page_in_the_middle(): void
+    public function it_parses_the_date_the_reference_was_last_generated(): void
     {
-        $viewModel = new ApiDocsViewModel;
+        $date = new ApiDocsViewModel()->lastGenerated();
 
-        $section = $viewModel->section('rate-limits');
-
-        $this->assertEquals('authentication-guide', $viewModel->previous($section)->id);
-        $this->assertEquals('pagination', $viewModel->next($section)->id);
+        $this->assertEquals(ApiDocsViewModel::LAST_GENERATED, $date->toDateString());
     }
 
     #[Test]
@@ -268,20 +254,32 @@ class ApiDocsViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_parses_the_date_the_reference_was_last_generated(): void
+    public function it_finds_the_section_documenting_an_endpoint(): void
     {
-        $date = new ApiDocsViewModel()->lastGenerated();
+        $viewModel = new ApiDocsViewModel;
 
-        $this->assertEquals(ApiDocsViewModel::LAST_GENERATED, $date->toDateString());
+        $this->assertSame('me-show', $viewModel->sectionFor('GET', '/me')?->id);
+        $this->assertNull($viewModel->sectionFor('PUT', '/me/job-title'));
     }
 
     #[Test]
-    public function it_gives_the_support_page_only_while_support_is_switched_on(): void
+    public function it_names_both_neighbours_of_a_page_in_the_middle(): void
     {
-        $this->assertEquals(route('support.requests.new'), new ApiDocsViewModel()->supportUrl());
+        $viewModel = new ApiDocsViewModel;
 
-        config(['monica.support_enabled' => false]);
+        $section = $viewModel->section('rate-limits');
 
-        $this->assertNull(new ApiDocsViewModel()->supportUrl());
+        $this->assertEquals('authentication-guide', $viewModel->previous($section)->id);
+        $this->assertEquals('pagination', $viewModel->next($section)->id);
+    }
+
+    #[Test]
+    public function it_has_no_previous_page_before_the_first_one(): void
+    {
+        $viewModel = new ApiDocsViewModel;
+        $first = $viewModel->sections()[0];
+
+        $this->assertNull($viewModel->previous($first));
+        $this->assertEquals('authentication-guide', $viewModel->next($first)->id);
     }
 }

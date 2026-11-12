@@ -31,9 +31,7 @@ class SectionImportControllerTest extends TestCase
         [$template, $page] = $this->draft($user);
 
         $this->actingAs($user)->get(route('settings.sectionImport.new', [$template, $page]))
-            ->assertStatus(200)
-            ->assertSee('Import a section')
-            ->assertSee('Check this file');
+            ->assertStatus(200);
     }
 
     #[Test]

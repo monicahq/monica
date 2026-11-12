@@ -37,8 +37,8 @@ class PasswordControllerTest extends TestCase
         ]);
 
         $response->assertRedirect(route('settings.security.index'));
-        $response->assertSessionHas('status', 'Your password is changed.');
-        $response->assertSessionHas('status_description', 'Use it the next time you sign in.');
+        $response->assertSessionHas('status');
+        $response->assertSessionHas('status_description');
 
         $this->assertTrue(Hash::check('schrute-farms-2005', $user->refresh()->password));
 

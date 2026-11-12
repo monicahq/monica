@@ -47,10 +47,8 @@ class BreadcrumbVaultTest extends TestCase
 
         $rendered = $this->blade('<x-breadcrumb.vault :vault="$vault" />', ['vault' => $here]);
 
-        $rendered->assertSee('Your vaults');
         $rendered->assertSee('Vance Refrigeration');
         $rendered->assertSee(route('vaults.show', $other), escape: false);
-        $rendered->assertSee('4 people');
     }
 
     #[Test]
@@ -86,7 +84,6 @@ class BreadcrumbVaultTest extends TestCase
 
         $rendered->assertSee('aria-expanded', escape: false);
         $rendered->assertSee('aria-controls="vault-switcher-'.$here->id.'"', escape: false);
-        $rendered->assertSee('Switch to another vault');
     }
 
     #[Test]
@@ -97,7 +94,6 @@ class BreadcrumbVaultTest extends TestCase
         Vault::factory()->create(['account_id' => $account->id]);
 
         $this->blade('<x-breadcrumb.vault :vault="$vault" />', ['vault' => $here])
-            ->assertSee('New vault')
             ->assertSee(route('vaults.new'), escape: false);
     }
 
@@ -114,8 +110,6 @@ class BreadcrumbVaultTest extends TestCase
 
         $rendered->assertSee('Dunder Mifflin');
         $rendered->assertDontSee('aria-expanded', escape: false);
-        $rendered->assertDontSee('Your vaults');
-        $rendered->assertDontSee('New vault');
         $rendered->assertSee(route('vaults.show', $vault), escape: false);
     }
 

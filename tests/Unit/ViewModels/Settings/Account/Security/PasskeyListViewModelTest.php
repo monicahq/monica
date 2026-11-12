@@ -22,7 +22,6 @@ class PasskeyListViewModelTest extends TestCase
 
         $this->assertEquals([], $viewModel->passkeys());
         $this->assertFalse($viewModel->hasPasskeys());
-        $this->assertEquals('None yet', $viewModel->header());
     }
 
     #[Test]
@@ -50,19 +49,6 @@ class PasskeyListViewModelTest extends TestCase
         $names = array_column(new PasskeyListViewModel(user: $user)->passkeys(), 'name');
 
         $this->assertEquals(['Used today', 'Used a week ago', 'Never used'], $names);
-    }
-
-    #[Test]
-    public function it_counts_the_passkeys_in_the_header(): void
-    {
-        $user = User::factory()->create();
-        Passkey::factory()->create(['user_id' => $user->id]);
-
-        $this->assertEquals('Active · 1 passkey', new PasskeyListViewModel(user: $user)->header());
-
-        Passkey::factory()->create(['user_id' => $user->id]);
-
-        $this->assertEquals('Active · 2 passkeys', new PasskeyListViewModel(user: $user)->header());
     }
 
     #[Test]

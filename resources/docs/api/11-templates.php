@@ -45,7 +45,7 @@ $otherTemplate = [
         'position' => 2,
         'published_version_number' => null,
         'created_at' => 1756166400,
-        'updated_at' => null,
+        'updated_at' => 1756166400,
     ],
     'links' => ['self' => $base.'/templates/'.$otherTemplateId],
 ];
@@ -81,7 +81,7 @@ $draftVersion = [
         'record_count' => 0,
         'previous_version_number' => 3,
         'created_at' => 1756425600,
-        'updated_at' => null,
+        'updated_at' => 1756425600,
     ],
     'links' => ['self' => $versionLink.'4'],
 ];
@@ -133,7 +133,7 @@ $nestedVersion['attributes']['pages'] = [
                                     'default_value' => null,
                                     'relation_target' => null,
                                     'created_at' => 1756335600,
-                                    'updated_at' => null,
+                                    'updated_at' => 1756335600,
                                 ],
                             ],
                         ],
@@ -174,7 +174,7 @@ $templateAttributes = [
     ['name' => 'position', 'type' => 'integer', 'description' => 'Where the template sits in the list on the templates screen, counting from 1. It is the order you arranged, and it is the order the list endpoint answers in.'],
     ['name' => 'published_version_number', 'type' => 'integer', 'description' => 'The number of the version records are put on when the template is applied today, or null when nothing has been published yet. A template with no published version is one still being designed.'],
     ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When the template was created, as a count of seconds since 1970 rather than a written date.'],
-    ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When it last changed, as a count of seconds, or null if it has not changed since it was created.'],
+    ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When it last changed, as a count of seconds. Equal to created_at until it first changes.'],
 ];
 
 $versionAttributes = [
@@ -186,7 +186,7 @@ $versionAttributes = [
     ['name' => 'record_count', 'type' => 'integer', 'description' => 'How many records point at this precise version. A record follows the version it was put on until somebody moves it deliberately, so a retired version keeps a count above zero for as long as anything is still on it.'],
     ['name' => 'previous_version_number', 'type' => 'integer', 'description' => 'The number of the version this one was started from, or null on the first version of a template.'],
     ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When the version was started, as a count of seconds.'],
-    ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When it last changed, as a count of seconds, or null if it has not changed since it was started. A published version never changes, so this stops moving at publication.'],
+    ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When it last changed, as a count of seconds. Equal to created_at until it first changes. A published version never changes, so this stops moving at publication.'],
 ];
 
 /**
@@ -360,7 +360,7 @@ $fieldExample = [
         'default_value' => null,
         'relation_target' => null,
         'created_at' => 1756335600,
-        'updated_at' => null,
+        'updated_at' => 1756335600,
     ],
 ];
 

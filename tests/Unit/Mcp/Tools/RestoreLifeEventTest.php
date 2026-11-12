@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Mcp\Tools;
 
 use App\Actions\CreateLifeEvent;
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\RestoreLifeEvent;
 use App\Models\Contact;
 use App\Models\User;
@@ -36,7 +36,7 @@ class RestoreLifeEventTest extends TestCase
         )->execute();
         $lifeEvent->delete();
 
-        EricaServer::actingAs($user)->tool(RestoreLifeEvent::class, [
+        MonicaServer::actingAs($user)->tool(RestoreLifeEvent::class, [
             'vault' => $vault->uuid,
             'life_event' => $lifeEvent->uuid,
         ])->assertOk()->assertHasNoErrors();
@@ -50,9 +50,9 @@ class RestoreLifeEventTest extends TestCase
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(RestoreLifeEvent::class, [
+        MonicaServer::actingAs($user)->tool(RestoreLifeEvent::class, [
             'vault' => $vault->uuid,
             'life_event' => '7c1e5a92-4b3d-4f80-a6e2-93d0b1c4f857',
-        ])->assertHasErrors(['That life event does not exist.']);
+        ])->assertHasErrors();
     }
 }

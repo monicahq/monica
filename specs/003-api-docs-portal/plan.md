@@ -11,14 +11,14 @@ rebased onto a later head of it.
 
 ## Summary
 
-Erica gets its first API. Six endpoints (status, register, log in, log out, get profile, update
+Monica gets its first API. Six endpoints (status, register, log in, log out, get profile, update
 profile) under `/api/v1`, each one a thin controller over an action that already exists, plus a public
 reference at `/docs/api` built from PHP definition files and rendered with Blade.
 
 The API surface is copied from beaver, which ships exactly these endpoints. The portal's look comes
 from `API portal.dc.html`, which shows one endpoint at a time rather than stacking every section on
 one long page as beaver does, and here that is one endpoint to a page with an address of its own
-rather than an anchor into a long one. Erica's `resources/css/app.css` already
+rather than an anchor into a long one. Monica's `resources/css/app.css` already
 defines the same token vocabulary as the design system the file imports, so the portal is Tailwind
 utilities over existing tokens and needs no new CSS.
 

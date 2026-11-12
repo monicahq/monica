@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\SetRelationshipCategoryPosition;
 use App\Models\RelationshipCategory;
 use App\Models\User;
@@ -24,7 +24,7 @@ class SetRelationshipCategoryPositionTest extends TestCase
         $warehouse = RelationshipCategory::factory()->create(['account_id' => $user->account_id, 'name' => 'Warehouse', 'position' => 2]);
         $annex = RelationshipCategory::factory()->create(['account_id' => $user->account_id, 'name' => 'Annex', 'position' => 3]);
 
-        EricaServer::actingAs($user)->tool(SetRelationshipCategoryPosition::class, [
+        MonicaServer::actingAs($user)->tool(SetRelationshipCategoryPosition::class, [
             'relationship_category' => $annex->uuid,
             'position' => 1,
         ])->assertOk()->assertHasNoErrors();

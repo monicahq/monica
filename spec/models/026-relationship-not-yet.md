@@ -40,7 +40,7 @@ deleted_at                  datetime, nullable
 - Each side is either an existing contact selected by the user or a new contact created as part of saving the relationship. Creating the new contact and the relationship is one transaction: both succeed or neither exists.
 - For a new person, the relationship editor offers **Create a contact record for this person**. Checked creates a regular contact (`is_partial = false`) visible in the main contact lists. Unchecked still creates a Contact, but marks it partial (`is_partial = true`) so it stays out of those lists.
 - The checkbox changes only the initial value of `is_partial`. It does not change the model used, the relationship endpoint, access to the contact page, custom fields, future relationships, merge behaviour or family-tree membership. Editing the contact later does not silently promote it; promotion to the main contact lists is an explicit action.
-- Name and partial state are independent. Either kind of contact may have no name. A nameless contact uses the product fallback described by [Contact](019-contact-done.md); Erica never stores the fallback as a name.
+- Name and partial state are independent. Either kind of contact may have no name. A nameless contact uses the product fallback described by [Contact](019-contact-done.md); Monica never stores the fallback as a name.
 - Saving two unnamed children creates two distinct Contact rows and two distinct Parent / Child relationships. They remain separately identifiable by their ids even though they have the same fallback display.
 
 ## Reading relationships on a contact
@@ -119,14 +119,14 @@ Every contact record, including Me, has an **Immediate family** block (**Famille
 - Given a qualifying contact is partial or archived, the block includes them. Deleting the contact or its only qualifying relationship removes the entry; a valid restoration makes it eligible again.
 - Given a qualifying type is renamed, moved or deactivated, existing Immediate family membership is unchanged. A custom type named Spouse does not qualify.
 - Given repeated parentage rows and 10,000 other relationships, Children counts each child once and loads only the requested preview or page through database queries.
-- Given Alice records that she has two children without knowing their names, Erica creates two distinct nameless partial contacts and two Parent / Child relationships. Alice's Children list and family tree show two nodes. Naming either child updates that same contact without replacing its relationship.
-- Given a user enters Jack while creating a relationship and unchecks **Create a contact record for this person**, Erica creates Jack as a partial Contact and creates the relationship to his id. Jack is absent from the main contact lists but has a contact page and can participate in other relationships.
-- Given the same checkbox is checked, Erica creates a regular Contact instead. Leaving every name component empty is valid in either case.
+- Given Alice records that she has two children without knowing their names, Monica creates two distinct nameless partial contacts and two Parent / Child relationships. Alice's Children list and family tree show two nodes. Naming either child updates that same contact without replacing its relationship.
+- Given a user enters Jack while creating a relationship and unchecks **Create a contact record for this person**, Monica creates Jack as a partial Contact and creates the relationship to his id. Jack is absent from the main contact lists but has a contact page and can participate in other relationships.
+- Given the same checkbox is checked, Monica creates a regular Contact instead. Leaving every name component empty is valid in either case.
 - Given Alice is Bob's parent and Bob is Chloé's parent, a tree rooted at Alice can display Chloé as a descendant without creating a Grandparent / Grandchild row.
-- Given Alice and Bob share a recorded parent, both can appear in the same tree, but Erica does not create or assert a Sibling relationship.
+- Given Alice and Bob share a recorded parent, both can appear in the same tree, but Monica does not create or assert a Sibling relationship.
 - Given a custom type named Parent, relationships using it never appear as parentage in the family tree or in the Parents and Children filters.
-- Given Alice is already an ancestor of Bob, Erica refuses to record Bob as Alice's parent.
-- Given two contacts are in different vaults, Erica refuses to create or restore a relationship between them.
+- Given Alice is already an ancestor of Bob, Monica refuses to record Bob as Alice's parent.
+- Given two contacts are in different vaults, Monica refuses to create or restore a relationship between them.
 
 ## Deferred extensions
 

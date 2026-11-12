@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\AddGroupMember;
 use App\Models\Contact;
 use App\Models\Group;
@@ -29,7 +29,7 @@ class AddGroupMemberTest extends TestCase
         $group = Group::factory()->create(['vault_id' => $vault->id]);
         $pam = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id]);
 
-        EricaServer::actingAs($user)->tool(AddGroupMember::class, ['vault' => $vault->uuid, 'group' => $group->uuid, 'contact' => $pam->uuid, 'role' => 'Receptionist'])
+        MonicaServer::actingAs($user)->tool(AddGroupMember::class, ['vault' => $vault->uuid, 'group' => $group->uuid, 'contact' => $pam->uuid, 'role' => 'Receptionist'])
             ->assertOk()
             ->assertHasNoErrors();
 
@@ -45,7 +45,7 @@ class AddGroupMemberTest extends TestCase
         $group = Group::factory()->create(['vault_id' => $vault->id]);
         $membership = GroupMember::factory()->create(['group_id' => $group->id]);
 
-        EricaServer::actingAs($user)->tool(AddGroupMember::class, ['vault' => $vault->uuid, 'group' => $group->uuid, 'contact' => $membership->contact->uuid])
+        MonicaServer::actingAs($user)->tool(AddGroupMember::class, ['vault' => $vault->uuid, 'group' => $group->uuid, 'contact' => $membership->contact->uuid])
             ->assertHasErrors();
     }
 

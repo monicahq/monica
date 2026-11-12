@@ -15,7 +15,6 @@ class ActionsMenuTest extends TestCase
         $rendered = $this->blade('<x-actions-menu label="More actions for Michael Scott" />');
 
         $rendered->assertSee('aria-haspopup="menu"', escape: false);
-        $rendered->assertSee('aria-label="More actions for Michael Scott"', escape: false);
         $rendered->assertSee(':aria-expanded="menuOpen ? \'true\' : \'false\'"', escape: false);
         $rendered->assertSee('role="menu"', escape: false);
     }

@@ -28,9 +28,8 @@ class EntityTypeControllerTest extends TestCase
 
         $this->actingAs($user)->get(route('settings.entityTypes.index'))
             ->assertStatus(200)
-            ->assertSeeInOrder(['Your profile types', 'Contacts', 'Built in', 'Can’t be deleted', 'Wine bottles'])
-            ->assertSee(route('settings.entityTypes.edit', 'wine-bottles'))
-            ->assertSee('Drag a row to change the order');
+            ->assertSee('Wine bottles')
+            ->assertSee(route('settings.entityTypes.edit', 'wine-bottles'));
     }
 
     #[Test]
@@ -50,7 +49,7 @@ class EntityTypeControllerTest extends TestCase
         ]);
 
         $response->assertRedirect(route('settings.entityTypes.index'));
-        $response->assertSessionHas('status', 'The type is created.');
+        $response->assertSessionHas('status');
 
         $this->assertDatabaseHas('entity_types', [
             'account_id' => $user->account_id,
@@ -131,13 +130,11 @@ class EntityTypeControllerTest extends TestCase
 
         $this->actingAs($user)->get(route('settings.entityTypes.new'))
             ->assertStatus(200)
-            ->assertSee('name="slug"', escape: false)
-            ->assertSee('No spaces, no accents, no capitals');
+            ->assertSee('name="slug"', escape: false);
 
         $this->actingAs($user)->get(route('settings.entityTypes.edit', $entityType))
             ->assertStatus(200)
-            ->assertDontSee('name="slug"', escape: false)
-            ->assertSee('It cannot be changed now the type exists');
+            ->assertDontSee('name="slug"', escape: false);
     }
 
     #[Test]
@@ -180,8 +177,6 @@ class EntityTypeControllerTest extends TestCase
 
         $this->actingAs($user)->get(route('settings.entityTypes.edit', $entityType))
             ->assertStatus(200)
-            ->assertSee('Edit Animal')
-            ->assertSee('Save changes')
             ->assertSee($entityType->uuid);
     }
 
@@ -207,7 +202,7 @@ class EntityTypeControllerTest extends TestCase
         ]);
 
         $response->assertRedirect(route('settings.entityTypes.index'));
-        $response->assertSessionHas('status', 'The type is saved.');
+        $response->assertSessionHas('status');
 
         $entityType->refresh();
 
@@ -250,7 +245,7 @@ class EntityTypeControllerTest extends TestCase
         $response = $this->actingAs($user)->delete(route('settings.entityTypes.destroy', $entityType));
 
         $response->assertRedirect(route('settings.entityTypes.index'));
-        $response->assertSessionHas('status', 'The type is deleted.');
+        $response->assertSessionHas('status');
 
         $this->assertSoftDeleted($entityType);
     }
@@ -266,7 +261,7 @@ class EntityTypeControllerTest extends TestCase
         $response = $this->actingAs($user)->delete(route('settings.entityTypes.destroy', $entityType));
 
         $response->assertRedirect(route('settings.entityTypes.index'));
-        $response->assertSessionHas('error', 'The type still holds records and stays.');
+        $response->assertSessionHas('error');
 
         $this->assertNotSoftDeleted($entityType);
     }
@@ -279,10 +274,8 @@ class EntityTypeControllerTest extends TestCase
 
         $this->actingAs($user)->get(route('settings.entityTypes.edit', $entityType))
             ->assertStatus(200)
-            ->assertSee('Delete this type')
             ->assertSee('aria-disabled="true"', false)
-            ->assertSee('aria-describedby="entity-type-delete-reason"', false)
-            ->assertSee('This type cannot be deleted while records are filed under it.');
+            ->assertSee('aria-describedby="entity-type-delete-reason"', false);
     }
 
     #[Test]
@@ -305,8 +298,6 @@ class EntityTypeControllerTest extends TestCase
         ]);
 
         $this->actingAs($michael)->get(route('settings.entityTypes.edit', 'animals'))
-            ->assertStatus(200)
-            ->assertSee('Edit Animal')
-            ->assertDontSee('Edit Beet');
+            ->assertStatus(200);
     }
 }

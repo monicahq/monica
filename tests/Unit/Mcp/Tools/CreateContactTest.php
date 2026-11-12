@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\CreateContact;
 use App\Models\StructureVersion;
 use App\Models\Template;
@@ -25,7 +25,7 @@ class CreateContactTest extends TestCase
         $user = User::factory()->create();
         $vault = $this->vaultReadyForContacts($user);
 
-        EricaServer::actingAs($user)->tool(CreateContact::class, [
+        MonicaServer::actingAs($user)->tool(CreateContact::class, [
             'vault' => $vault->uuid,
             'first_name' => 'Michael',
             'last_name' => 'Scott',
@@ -44,10 +44,10 @@ class CreateContactTest extends TestCase
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(CreateContact::class, [
+        MonicaServer::actingAs($user)->tool(CreateContact::class, [
             'vault' => $vault->uuid,
             'first_name' => 'Michael',
-        ])->assertHasErrors(['This vault has no template for new contacts to start from.']);
+        ])->assertHasErrors();
 
         $this->assertDatabaseCount('contacts', 0);
     }

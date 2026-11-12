@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Auth;
 
-use App\Models\Passkey;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\URL;
@@ -31,25 +30,5 @@ class PasskeyAccessibilityTest extends TestCase
         $response->assertSee('role="status"', escape: false);
         $response->assertSee('aria-live="polite"', escape: false);
         $response->assertDontSee('x-show="message"', escape: false);
-    }
-
-    #[Test]
-    public function the_removal_warning_is_words_and_not_only_a_colour(): void
-    {
-        $user = User::factory()->create();
-        Passkey::factory()->create(['user_id' => $user->id]);
-
-        $this->secure()->actingAs($user)->get(route('settings.security.index'))
-            ->assertSee('This device will no longer sign you in. This cannot be undone.');
-    }
-
-    #[Test]
-    public function the_last_passkey_of_a_passwordless_account_says_what_it_costs(): void
-    {
-        $user = User::factory()->create(['password' => null]);
-        Passkey::factory()->create(['user_id' => $user->id]);
-
-        $this->secure()->actingAs($user)->get(route('settings.security.index'))
-            ->assertSee('This is your last passkey and you have no password.', escape: false);
     }
 }

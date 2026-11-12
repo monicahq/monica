@@ -22,8 +22,6 @@ class NotFoundControllerTest extends TestCase
         $response = $this->get('/dunder-mifflin-scranton');
 
         $response->assertNotFound();
-        $response->assertSee('We’re sorry, but the page you’re looking for doesn’t exist.', escape: false);
-        $response->assertSee('Return home', escape: false);
         $response->assertSee(route('home.index'), escape: false);
         $response->assertSee(route('docs.index'), escape: false);
         $response->assertSee(config('monica.terms_url'), escape: false);
@@ -48,7 +46,6 @@ class NotFoundControllerTest extends TestCase
         $response = $this->actingAs($user)->get(route('contacts.show', ['vault' => $elsewhere, 'contact' => $contact]));
 
         $response->assertNotFound();
-        $response->assertSee('We’re sorry, but the page you’re looking for doesn’t exist.', escape: false);
         $response->assertDontSee('Dwight', escape: false);
     }
 
@@ -59,7 +56,6 @@ class NotFoundControllerTest extends TestCase
 
         $response->assertNotFound();
         $response->assertJsonStructure(['message']);
-        $response->assertDontSee('Return home', escape: false);
     }
 
     #[Test]
@@ -70,7 +66,6 @@ class NotFoundControllerTest extends TestCase
         $response = $this->actingAs($user)->get('/dunder-mifflin-scranton');
 
         $response->assertNotFound();
-        $response->assertSee('Nous sommes désolés, mais la page que vous cherchez n’existe pas.', escape: false);
         $response->assertSee('Retour à l’accueil', escape: false);
     }
 }

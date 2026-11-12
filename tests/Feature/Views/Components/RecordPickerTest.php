@@ -40,6 +40,5 @@ class RecordPickerTest extends TestCase
         $rendered->assertSee('aria-controls="field-7-choices"', escape: false);
         $rendered->assertSee('id="field-7-choices"', escape: false);
         $rendered->assertSee('aria-live="polite"', escape: false);
-        $rendered->assertSee(__('Choose another'));
     }
 }

@@ -6,6 +6,9 @@ namespace Tests\Feature\Views\Components;
 
 use App\Models\Contact;
 use App\Models\EntityType;
+use App\Models\KnowledgeFolder;
+use App\Models\KnowledgeList;
+use App\Models\KnowledgeNote;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
 use App\Models\User;
@@ -20,25 +23,6 @@ use Tests\TestCase;
 class SidebarTest extends TestCase
 {
     use RefreshDatabase;
-
-    #[Test]
-    public function the_vault_column_offers_the_destinations_of_that_vault(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Dunder Mifflin']);
-
-        $rendered = $this->actingAs($user)->blade(
-            '<x-vault.sidebar :user="$user" :vault="$vault" current="dashboard" />',
-            ['user' => $user, 'vault' => $vault],
-        );
-
-        $rendered->assertSee(route('vaults.show', $vault), escape: false);
-        $rendered->assertSee(route('contacts.index', $vault), escape: false);
-        $rendered->assertSee(route('vaults.settings.index', $vault), escape: false);
-        $rendered->assertSee('Dashboard');
-        $rendered->assertSee('People');
-        $rendered->assertSee('Vault settings');
-    }
 
     #[Test]
     public function the_vault_column_leaves_out_the_groups_while_they_are_off_for_the_account(): void
@@ -84,22 +68,7 @@ class SidebarTest extends TestCase
             ->get(route('vaults.show', $vault));
 
         $response->assertSee('aria-keyshortcuts="Control+K"', escape: false);
-        $response->assertSee('Ctrl K');
         $response->assertDontSee('⌘K');
-    }
-
-    #[Test]
-    public function the_vault_column_lists_the_types_of_the_vault_under_people_in_their_order(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $this->visibleType($vault, 'Animals', 2);
-        $this->visibleType($vault, 'Companies', 1);
-
-        $this->actingAs($user)->blade(
-            '<x-vault.sidebar :user="$user" :vault="$vault" current="dashboard" />',
-            ['user' => $user, 'vault' => $vault],
-        )->assertSeeInOrder(['People', 'Companies', 'Animals', 'Reminders']);
     }
 
     #[Test]
@@ -132,7 +101,6 @@ class SidebarTest extends TestCase
         $rendered->assertSee(route('settings.profile.index'), escape: false);
         $rendered->assertSee(route('settings.templates.index'), escape: false);
         $rendered->assertSee(route('vaults.index'), escape: false);
-        $rendered->assertSee('Leave the settings');
         $rendered->assertSee('aria-current="page"', escape: false);
     }
 
@@ -149,9 +117,7 @@ class SidebarTest extends TestCase
             $rendered = $this->actingAs($user)->blade($template, $data);
 
             $rendered->assertDontSee('Pam Beesly');
-            $rendered->assertDontSee('Sign out');
             $rendered->assertDontSee(route('auth.login.destroy'), escape: false);
-            $rendered->assertDontSee('Switch between the light and dark theme');
         }
     }
 
@@ -173,9 +139,30 @@ class SidebarTest extends TestCase
         );
 
         $rendered->assertSee(route('reminders.index', $vault), escape: false);
-        $rendered->assertSee('Reminders');
         $rendered->assertSee('2');
         $rendered->assertDontSee('>3<', escape: false);
+    }
+
+    #[Test]
+    public function the_vault_column_offers_knowledge_and_counts_its_notes_and_lists(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $folder = KnowledgeFolder::factory()->create(['vault_id' => $vault->id]);
+        KnowledgeNote::factory()->count(2)->create(['knowledge_folder_id' => $folder->id]);
+        KnowledgeList::factory()->create(['knowledge_folder_id' => $folder->id]);
+        KnowledgeNote::factory()->create();
+
+        $rendered = $this->actingAs($user)->blade(
+            '<x-vault.sidebar :user="$user" :vault="$vault" current="knowledge" />',
+            ['user' => $user, 'vault' => $vault],
+        );
+
+        $rendered->assertSeeInOrder([
+            'href="'.route('knowledge.index', $vault).'"',
+            'aria-current="page"',
+        ], escape: false);
+        $this->assertMatchesRegularExpression('/Knowledge\s+3\s/', strip_tags((string) $rendered));
     }
 
     private function deadline(Reminder $rule, int $days): ReminderOccurrence

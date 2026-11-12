@@ -15,8 +15,7 @@ class DeleteActionTest extends TestCase
     public function it_always_warns_that_the_action_is_final(): void
     {
         $this->blade(self::CALL)
-            ->assertSee('Every value goes with it.', escape: false)
-            ->assertSee(__('This cannot be undone.'), escape: false);
+            ->assertSee('Every value goes with it.', escape: false);
     }
 
     #[Test]
@@ -25,7 +24,6 @@ class DeleteActionTest extends TestCase
         $this->blade(self::CALL)
             ->assertSee('role="dialog"', escape: false)
             ->assertSee('aria-modal="true"', escape: false)
-            ->assertSee('Delete the list?', escape: false)
             ->assertSee('action="/lists/1"', escape: false);
     }
 

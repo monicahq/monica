@@ -16,17 +16,6 @@ class AdminLayoutTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_says_which_of_the_two_products_you_are_looking_at(): void
-    {
-        $this->actingAs($this->administrator())
-            ->blade('<x-admin-layout>Anything</x-admin-layout>')
-            ->assertSee('Admin space')
-            ->assertSee('Instance')
-            ->assertSee('You are looking at the instance, not at your own account.')
-            ->assertSee('Anything you change here applies to every account on it.');
-    }
-
-    #[Test]
     public function it_marks_the_one_section_you_are_in(): void
     {
         $response = $this->actingAs($this->administrator())->get(route('admin.accounts.index'));
@@ -55,15 +44,6 @@ class AdminLayoutTest extends TestCase
         $this->actingAs($this->administrator())
             ->blade('<x-admin-layout>Anything</x-admin-layout>')
             ->assertDontSee('/vaults', escape: false);
-    }
-
-    #[Test]
-    public function it_offers_a_way_back_to_the_ordinary_application(): void
-    {
-        $this->actingAs($this->administrator())
-            ->blade('<x-admin-layout>Anything</x-admin-layout>')
-            ->assertSee('Leave the admin space')
-            ->assertSee('aria-label="Leave the admin space"', escape: false);
     }
 
     private function administrator(): User

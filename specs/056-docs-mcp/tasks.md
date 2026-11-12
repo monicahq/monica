@@ -45,7 +45,7 @@ No setup: no dependency, configuration or schema change.
 
 - [X] T010 [US2] Add `toolGroups(): list<array{name: string, changesData: bool, tools: list<array{name: string, description: string}>}>` to `McpDocsViewModel.php`, groups and order from `contracts/page-content.md`, descriptions as corrected in the spec
 - [X] T011 [US2] In `mcp.blade.php`, add "Manage access" (Settings → Logs, revocation under API keys, the "Assistant is a label, not a limit" info notice saying "every vault in your account") and "Available tools" (a panel per group, `x-caption` for its name, `x-badge tone="warning"` "Changes data" where `changesData`, `<code>` names), the sentence counting the tools from `toolGroups()`, and "Our goal is to make every action available in Monica accessible through MCP."
-- [X] T012 [US2] In `McpDocsViewModelTest.php`, add `it_lists_exactly_the_tools_the_server_registers` (reflect `EricaServer`'s `tools` default, build each class, compare the sorted `name()` values with the names in `toolGroups()`, research R5) and `it_marks_only_the_contact_changing_tools_as_changing_data`
+- [X] T012 [US2] In `McpDocsViewModelTest.php`, add `it_lists_exactly_the_tools_the_server_registers` (reflect `MonicaServer`'s `tools` default, build each class, compare the sorted `name()` values with the names in `toolGroups()`, research R5) and `it_marks_only_the_contact_changing_tools_as_changing_data`
 
 ## Phase 5: User Story 3 - Fix a failing connection (Priority: P3)
 

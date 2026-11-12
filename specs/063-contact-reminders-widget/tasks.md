@@ -93,7 +93,7 @@ Independent test: a client answers a deadline, is refused on a second answer and
 - [X] T057 [US5] Create `app/Http/Controllers/Api/{ContactReminderController,ContactReminderOccurrenceController,ReminderOccurrenceAnswerController}.php` and the seven routes in `routes/api.php` per `contracts/api.md`; policy refusals as 422
 - [X] T058 [US5] Document the seven endpoints in `resources/docs/api/20-reminders.php`
 - [X] T059 [P] [US5] Test the three API controllers in `tests/Feature/Controllers/Api/`: shapes, pagination, category filter, 422 refusals, another account's records left out
-- [X] T060 [US5] Add `reminder()` and `reminderOccurrence()` to `app/Mcp/Tools/MirrorsAnApiCapability.php`; create the seven tools of `contracts/api.md` in `app/Mcp/Tools/`; register them and add the answer paragraph in `app/Mcp/Servers/EricaServer.php`
+- [X] T060 [US5] Add `reminder()` and `reminderOccurrence()` to `app/Mcp/Tools/MirrorsAnApiCapability.php`; create the seven tools of `contracts/api.md` in `app/Mcp/Tools/`; register them and add the answer paragraph in `app/Mcp/Servers/MonicaServer.php`
 - [X] T061 [P] [US5] One test per tool in `tests/Unit/Mcp/Tools/`, including `it_names_the_api_capability_it_mirrors`
 - [X] T062 [US5] Add the Reminders group to `app/ViewModels/Docs/McpDocsViewModel.php::toolGroups()`; update the count to 78 and the changing groups in `tests/Unit/ViewModels/Docs/McpDocsViewModelTest.php`
 

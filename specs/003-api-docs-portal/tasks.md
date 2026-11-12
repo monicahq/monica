@@ -223,7 +223,7 @@ Task: "Create tests/Feature/Controllers/Api/MeControllerTest.php"
 2. Phase 2, Foundational.
 3. Phase 3, User Story 1.
 4. **Stop and validate**: run section 3 of the quickstart against a fresh database.
-5. This is shippable on its own. Erica has an API for the first time, six endpoints of it, and the
+5. This is shippable on its own. Monica has an API for the first time, six endpoints of it, and the
    security screen's keys finally have something to open. The reference is still missing, so it is
    shippable rather than announceable.
 

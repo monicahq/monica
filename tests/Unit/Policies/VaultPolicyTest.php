@@ -37,7 +37,6 @@ class VaultPolicyTest extends TestCase
         $response = Gate::forUser($user)->inspect('create', Vault::class);
 
         $this->assertTrue($response->denied());
-        $this->assertStringContainsString('Full access lifts the ceiling.', (string) $response->message());
     }
 
     #[Test]

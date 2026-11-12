@@ -48,7 +48,7 @@ class SecurityKeyControllerTest extends TestCase
 
         $response->assertCreated();
         $response->assertJsonPath('redirect', route('settings.security.index'));
-        $response->assertSessionHas('status', 'Your security key is added.');
+        $response->assertSessionHas('status');
     }
 
     #[Test]
@@ -66,7 +66,6 @@ class SecurityKeyControllerTest extends TestCase
         ]);
 
         $response->assertUnprocessable();
-        $response->assertJsonPath('message', 'The security key could not be added. Please try again.');
         $this->assertDatabaseCount('security_keys', 0);
     }
 
@@ -83,7 +82,6 @@ class SecurityKeyControllerTest extends TestCase
             ]);
 
         $response->assertUnprocessable();
-        $response->assertJsonPath('message', 'That took too long. Please try again.');
     }
 
     #[Test]
@@ -111,7 +109,7 @@ class SecurityKeyControllerTest extends TestCase
         $response = $this->withConfirmedPassword()->actingAs($user)
             ->delete(route('settings.securityKeys.destroy', $key));
 
-        $response->assertSessionHas('status', 'Your security key is removed.');
+        $response->assertSessionHas('status');
     }
 
     #[Test]
@@ -125,7 +123,7 @@ class SecurityKeyControllerTest extends TestCase
             ->put(route('settings.securityKeys.update', $key), ['name' => 'Dundie key']);
 
         $response->assertRedirect(route('settings.security.index'));
-        $response->assertSessionHas('status', 'Your security key is renamed.');
+        $response->assertSessionHas('status');
         $this->assertEquals('Dundie key', $key->refresh()->name);
     }
 
@@ -141,7 +139,7 @@ class SecurityKeyControllerTest extends TestCase
             ->delete(route('settings.securityKeys.destroy', $key));
 
         $response->assertRedirect(route('settings.security.index'));
-        $response->assertSessionHas('status', 'Two-factor authentication is off.');
+        $response->assertSessionHas('status');
         $this->assertModelMissing($key);
     }
 

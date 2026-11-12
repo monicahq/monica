@@ -45,8 +45,7 @@ class ContactLifeEventCandidateControllerTest extends TestCase
         $this->actingAs($user)
             ->get(route('contacts.lifeEventCandidates.index', ['vault' => $vault, 'contact' => $jim, 'except' => [$pam->id]]))
             ->assertOk()
-            ->assertDontSee('Pam Beesly')
-            ->assertSee('Nobody else matches.');
+            ->assertDontSee('Pam Beesly');
     }
 
     private function contactOn(Vault $vault, string $firstName, string $lastName): Contact

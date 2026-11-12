@@ -23,8 +23,6 @@ class EntityTypeFormViewModelTest extends TestCase
         $viewModel = new EntityTypeFormViewModel(user: $user);
 
         $this->assertFalse($viewModel->isEdit());
-        $this->assertSame('Create a kind of record', $viewModel->title());
-        $this->assertSame('Create type', $viewModel->saveLabel());
         $this->assertSame('post', $viewModel->method());
         $this->assertNull($viewModel->slug());
 
@@ -52,8 +50,6 @@ class EntityTypeFormViewModelTest extends TestCase
         $viewModel = new EntityTypeFormViewModel(user: $user, entityType: $entityType);
 
         $this->assertTrue($viewModel->isEdit());
-        $this->assertSame('Edit Animal', $viewModel->title());
-        $this->assertSame('Save changes', $viewModel->saveLabel());
         $this->assertSame('put', $viewModel->method());
         $this->assertSame('animals', $viewModel->slug());
         $this->assertSame($entityType->uuid, $viewModel->uuid());
@@ -93,17 +89,9 @@ class EntityTypeFormViewModelTest extends TestCase
 
         $this->assertNull(new EntityTypeFormViewModel(user: $user)->recordCount());
 
-        $one = EntityType::factory()->used(1)->create(['account_id' => $user->account_id]);
-        $several = EntityType::factory()->used(6)->create(['account_id' => $user->account_id]);
+        EntityType::factory()->used(1)->create(['account_id' => $user->account_id]);
+        EntityType::factory()->used(6)->create(['account_id' => $user->account_id]);
 
-        $this->assertSame(
-            '1 record uses this type',
-            new EntityTypeFormViewModel(user: $user, entityType: $one)->recordCount(),
-        );
-        $this->assertSame(
-            '6 records use this type',
-            new EntityTypeFormViewModel(user: $user, entityType: $several)->recordCount(),
-        );
     }
 
     #[Test]

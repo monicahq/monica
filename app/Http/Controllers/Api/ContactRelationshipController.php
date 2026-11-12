@@ -61,6 +61,7 @@ class ContactRelationshipController extends Controller
 
         $validated = $request->validate([
             'relationship_type' => [
+                'bail',
                 'required',
                 'string',
                 'bail',
@@ -116,6 +117,7 @@ class ContactRelationshipController extends Controller
 
         $validated = $request->validate([
             'relationship_type' => [
+                'bail',
                 'sometimes',
                 'required',
                 'string',

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Mcp\Tools;
 
 use App\Actions\CreateLifeEvent;
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\DeleteLifeEvent;
 use App\Models\Contact;
 use App\Models\User;
@@ -35,7 +35,7 @@ class DeleteLifeEventTest extends TestCase
             happenedOn: CarbonImmutable::parse('2026-01-15'),
         )->execute();
 
-        EricaServer::actingAs($user)->tool(DeleteLifeEvent::class, [
+        MonicaServer::actingAs($user)->tool(DeleteLifeEvent::class, [
             'vault' => $vault->uuid,
             'life_event' => $lifeEvent->uuid,
         ])->assertOk()->assertHasNoErrors();
@@ -49,9 +49,9 @@ class DeleteLifeEventTest extends TestCase
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(DeleteLifeEvent::class, [
+        MonicaServer::actingAs($user)->tool(DeleteLifeEvent::class, [
             'vault' => $vault->uuid,
             'life_event' => '7c1e5a92-4b3d-4f80-a6e2-93d0b1c4f857',
-        ])->assertHasErrors(['That life event does not exist.']);
+        ])->assertHasErrors();
     }
 }

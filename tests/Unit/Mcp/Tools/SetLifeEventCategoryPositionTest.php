@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\SetLifeEventCategoryPosition;
 use App\Models\LifeEventCategory;
 use App\Models\User;
@@ -24,7 +24,7 @@ class SetLifeEventCategoryPositionTest extends TestCase
         $warehouse = LifeEventCategory::factory()->create(['account_id' => $user->account_id, 'name' => 'Warehouse', 'position' => 2]);
         $sales = LifeEventCategory::factory()->create(['account_id' => $user->account_id, 'name' => 'Sales', 'position' => 3]);
 
-        EricaServer::actingAs($user)->tool(SetLifeEventCategoryPosition::class, [
+        MonicaServer::actingAs($user)->tool(SetLifeEventCategoryPosition::class, [
             'life_event_category' => $sales->uuid,
             'position' => 1,
         ])->assertOk()->assertHasNoErrors();

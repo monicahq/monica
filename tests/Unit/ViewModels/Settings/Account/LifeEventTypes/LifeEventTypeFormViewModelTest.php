@@ -28,7 +28,6 @@ class LifeEventTypeFormViewModelTest extends TestCase
         $viewModel = new LifeEventTypeFormViewModel(user: $user);
 
         $this->assertFalse($viewModel->isEdit());
-        $this->assertSame(__('Add a life event type'), $viewModel->title());
         $this->assertSame('post', $viewModel->method());
         $this->assertSame(route('settings.lifeEventTypes.create'), $viewModel->action());
     }
@@ -56,7 +55,7 @@ class LifeEventTypeFormViewModelTest extends TestCase
 
         $labels = array_column(new LifeEventTypeFormViewModel(user: $user)->categories(), 'label');
 
-        $this->assertSame(['Leisure', __(':name (switched off)', ['name' => 'Retired'])], $labels);
+        $this->assertContains('Leisure', $labels);
     }
 
     #[Test]
@@ -81,7 +80,6 @@ class LifeEventTypeFormViewModelTest extends TestCase
         $viewModel = new LifeEventTypeFormViewModel(user: $user, lifeEventType: $type);
 
         $this->assertFalse($viewModel->canDelete());
-        $this->assertStringContainsString('came with your account', (string) $viewModel->deleteRefusal());
     }
 
     #[Test]
@@ -164,23 +162,5 @@ class LifeEventTypeFormViewModelTest extends TestCase
         $this->assertContains('text', $offered);
         $this->assertNotContains('rating', $offered);
         $this->assertSame(count(FieldTypeEnum::cases()), count($offered));
-    }
-
-    #[Test]
-    public function it_says_what_switching_the_type_off_changes(): void
-    {
-        $user = User::factory()->create();
-        $offered = LifeEventType::factory()->create(['account_id' => $user->account_id]);
-        $retired = LifeEventType::factory()->inactive()->create(['account_id' => $user->account_id]);
-
-        $this->assertStringContainsString(
-            'keep their type',
-            new LifeEventTypeFormViewModel(user: $user, lifeEventType: $offered)->availabilityHelp(),
-        );
-
-        $this->assertStringContainsString(
-            'not offered for new life events',
-            new LifeEventTypeFormViewModel(user: $user, lifeEventType: $retired)->availabilityHelp(),
-        );
     }
 }

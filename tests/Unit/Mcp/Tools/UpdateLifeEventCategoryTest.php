@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\UpdateLifeEventCategory;
 use App\Models\LifeEventCategory;
 use App\Models\User;
@@ -22,7 +22,7 @@ class UpdateLifeEventCategoryTest extends TestCase
         $user = User::factory()->create();
         $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(UpdateLifeEventCategory::class, [
+        MonicaServer::actingAs($user)->tool(UpdateLifeEventCategory::class, [
             'life_event_category' => $category->uuid,
             'name' => 'Sales',
         ])->assertOk()->assertHasNoErrors();

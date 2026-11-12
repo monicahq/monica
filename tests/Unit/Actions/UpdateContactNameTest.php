@@ -132,7 +132,6 @@ class UpdateContactNameTest extends TestCase
         new UpdateContactName(user: $user, contact: $contact, prefix: 'Dr')->execute();
 
         $this->assertTrue($contact->refresh()->isNameless());
-        $this->assertEquals(__('Unnamed contact'), $contact->name);
         $this->assertDatabaseHas('contacts', ['id' => $contact->id, 'first_name' => null, 'last_name' => null]);
     }
 

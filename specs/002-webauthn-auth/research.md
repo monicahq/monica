@@ -57,7 +57,7 @@ question this plan was answering from first principles. What it does:
 What the example does **not** cover, and this feature still has to design: removing a password and
 the passwordless account rules (FR-024 to FR-028), the refusal policy this application applies to
 every sign in, the two factor interaction of FR-020 and FR-022, and the passkey management section
-on the security screen. Those are the parts that are Erica's and not the package's.
+on the security screen. Those are the parts that are Monica's and not the package's.
 
 The example is a Jetstream and Fortify application, so its scaffolding, its Inertia views and its
 Vue components are not reusable here. Its *mechanics* are, and that is what is taken.
@@ -190,7 +190,7 @@ from the specification. It carries all of them, in the example's own idiom.
 The example has `WebauthnLoginHandler` on `WebauthnLogin`, `WebauthnRegisterHandler` on
 `WebauthnRegister`, `WebauthnRegisterFailedListener` on `WebauthnRegisterFailed`, and
 `WebauthnAuthenticateListener` on the `webauthn-lib` validation event. Each does logging and
-notifications and nothing else. That is exactly the shape of Erica's own side effects:
+notifications and nothing else. That is exactly the shape of Monica's own side effects:
 
 | Obligation | Where it goes |
 |---|---|
@@ -212,7 +212,7 @@ example's `Fortify::authenticateThrough()` does, and the stage runs before
 `AttemptToAuthenticate::class`, so a refused user never reaches the assertion check.
 
 **Open item**: whether the throttle key can be made per credential inside
-`EnsureLoginIsNotThrottled`, or whether the Erica stage has to own the throttle to satisfy FR-014.
+`EnsureLoginIsNotThrottled`, or whether the Monica stage has to own the throttle to satisfy FR-014.
 Step 1.
 
 ## 7. The model, and `used_at`
@@ -387,7 +387,7 @@ reaches `validateCredentials`, which with `fallback` true hands a null hash to
 message as every other refusal, which FR-027 requires.
 
 The example flagged something this plan had missed. Its `FortifyServiceProvider` replaces the
-password confirmation validator so that passwordless users can get past it. Erica has the same
+password confirmation validator so that passwordless users can get past it. Monica has the same
 problem in a different place: `PasswordController::update` validates `'current_password' =>
 ['required', 'string', 'current_password']`, and that rule cannot pass for an account with no
 password. That is why setting a password is a separate route with no `current_password` rule, and it
@@ -404,11 +404,11 @@ FR-028 asks for notification on removing and on setting, not on every change.
 register that limiter with the same shape `AttemptLogin` already uses.
 
 **Rationale**: the example sets `limiters.login` to `'login'` and defines the limiter in its service
-provider at five a minute per email and IP, which is exactly `AttemptLogin::MAX_ATTEMPTS`. Erica
+provider at five a minute per email and IP, which is exactly `AttemptLogin::MAX_ATTEMPTS`. Monica
 does the same, except that a passkey sign in has no email, so the key is the credential id and the
 IP (FR-014). With the package's routes in use, `EnsureLoginIsNotThrottled` is the stage that reads
 it, which is why section 6 leaves it open whether the key can be shaped there or has to move into
-the Erica stage.
+the Monica stage.
 
 ## 14. Naming, and one inconsistency worth stating
 
@@ -422,7 +422,7 @@ reader than either convention applied consistently. The constitution's own follo
 records that `.claude/CLAUDE.md` states things this repository contradicts, and this is one more for
 that list rather than something to settle inside this feature.
 
-The example uses notifications rather than mailables. Erica uses mailables dispatched through the
+The example uses notifications rather than mailables. Monica uses mailables dispatched through the
 `SendEmail` job with an `EmailType`, because that is how every email in this application is already
 sent and because `emails_sent` records them. The example's mechanism is not followed here.
 
@@ -521,7 +521,7 @@ in the task list, because the answers change what a later reader should believe.
 - **The package's guest routes carry no `set.locale`.** Its routes file puts only the guard and the
   throttle middleware on the sign-in group, and `config('webauthn.middleware')` reaches the key
   management group alone. So a refusal returned from `webauthn.auth` is rendered in the default
-  locale rather than the reader's. The screens themselves are Erica's own routes and are unaffected.
+  locale rather than the reader's. The screens themselves are Monica's own routes and are unaffected.
   This needs a decision in Phase 5, where the refusal copy is built, and the options are to add
   `set.locale` to the `web` group or to accept that these few strings follow the instance default.
 - **`brick/math` had to come down from 0.18.0 to 0.17.2** for `web-token/jwt-library` to install.

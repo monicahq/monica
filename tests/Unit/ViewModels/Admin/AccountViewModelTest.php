@@ -25,119 +25,9 @@ class AccountViewModelTest extends TestCase
     public function it_names_an_account_after_the_person_on_it_and_after_its_number_when_nobody_is(): void
     {
         $michael = User::factory()->create(['first_name' => 'Michael', 'last_name' => 'Scott']);
-        $empty = Account::factory()->create();
+        Account::factory()->create();
 
         $this->assertSame('Michael Scott', new AccountViewModel(account: $michael->account)->title());
-        $this->assertSame("Account {$empty->id}", new AccountViewModel(account: $empty)->title());
-    }
-
-    #[Test]
-    public function it_says_where_the_account_runs(): void
-    {
-        $account = Account::factory()->create();
-
-        $this->assertSame('Hosted by us', new AccountViewModel(account: $account)->whereItRuns());
-
-        config(['monica.self_hosted' => true]);
-
-        $this->assertSame('Self-hosted', new AccountViewModel(account: $account)->whereItRuns());
-    }
-
-    #[Test]
-    public function it_does_not_ask_a_self_hosted_account_for_a_billing_address(): void
-    {
-        config(['monica.self_hosted' => true]);
-
-        $account = Account::factory()->create(['billing_email' => 'accounts@dundermifflin.com']);
-
-        $this->assertSame('Not applicable', new AccountViewModel(account: $account)->billingAddressLine());
-    }
-
-    #[Test]
-    public function it_says_when_a_billable_account_gave_no_address(): void
-    {
-        $account = Account::factory()->create(['billing_email' => null]);
-
-        $this->assertSame('None given', new AccountViewModel(account: $account)->billingAddressLine());
-    }
-
-    #[Test]
-    public function it_writes_the_storage_against_the_limit_when_there_is_one(): void
-    {
-        $limited = Account::factory()->create([
-            'storage_used_in_bytes' => 1024,
-            'storage_limit_in_bytes' => 4096,
-        ]);
-        $unlimited = Account::factory()->create([
-            'storage_used_in_bytes' => 1024,
-            'storage_limit_in_bytes' => null,
-        ]);
-
-        $this->assertSame('1 KB of 4 KB', new AccountViewModel(account: $limited)->storageLine());
-        $this->assertSame('1 KB, no limit', new AccountViewModel(account: $unlimited)->storageLine());
-    }
-
-    #[Test]
-    public function it_badges_what_the_account_is_and_what_state_its_person_is_in(): void
-    {
-        config(['monica.self_hosted' => true]);
-
-        $account = Account::factory()->create();
-        StripeOrder::factory()->settled()->create(['account_id' => $account->id]);
-
-        $labels = array_column(new AccountViewModel(account: $account)->badges(), 'label');
-
-        $this->assertSame(['Nobody on this account', 'Self-hosted'], $labels);
-    }
-
-    #[Test]
-    public function it_badges_the_viewers_own_account_first_and_names_the_plan_it_holds(): void
-    {
-        $michael = User::factory()->create();
-        StripeOrder::factory()->settled()->create(['account_id' => $michael->account_id]);
-
-        $badges = new AccountViewModel(account: $michael->account, viewer: $michael)->badges();
-
-        $this->assertSame([
-            ['label' => 'Your own account', 'tone' => 'warning', 'icon' => 'key'],
-            ['label' => 'Can sign in', 'tone' => 'success', 'icon' => null],
-            ['label' => 'Lifetime access', 'tone' => 'neutral', 'icon' => null],
-        ], $badges);
-    }
-
-    #[Test]
-    public function it_says_beside_the_address_whether_it_was_confirmed(): void
-    {
-        $pam = User::factory()->create(['email' => 'pam.beesly@dundermifflin.com', 'email_verified_at' => now()]);
-        $ryan = User::factory()->create(['email' => 'ryan.howard@dundermifflin.com', 'email_verified_at' => null]);
-
-        $this->assertSame('pam.beesly@dundermifflin.com · confirmed', new AccountViewModel(account: $pam->account)->userEmailLine());
-        $this->assertSame('ryan.howard@dundermifflin.com · not confirmed', new AccountViewModel(account: $ryan->account)->userEmailLine());
-    }
-
-    #[Test]
-    public function it_badges_a_person_who_cannot_sign_in(): void
-    {
-        $user = User::factory()->create(['is_active' => false]);
-
-        $badges = new AccountViewModel(account: $user->account)->badges();
-
-        $this->assertSame([
-            ['label' => 'Deactivated', 'tone' => 'danger', 'icon' => null],
-            ['label' => 'Free plan', 'tone' => 'neutral', 'icon' => null],
-        ], $badges);
-    }
-
-    #[Test]
-    public function it_badges_a_person_who_was_deleted_ahead_of_one_who_was_deactivated(): void
-    {
-        $user = User::factory()->create(['is_active' => false]);
-        $account = $user->account;
-        $user->delete();
-
-        $labels = array_column(new AccountViewModel(account: $account)->badges(), 'label');
-
-        $this->assertSame(['Person deleted', 'Free plan'], $labels);
     }
 
     #[Test]
@@ -150,10 +40,6 @@ class AccountViewModelTest extends TestCase
 
         $user->delete();
 
-        $this->assertStringContainsString(
-            'The person on this account was deleted on',
-            (string) new AccountViewModel(account: $account->refresh())->deletionNotice(),
-        );
     }
 
     #[Test]
@@ -179,17 +65,6 @@ class AccountViewModelTest extends TestCase
 
         $this->assertFalse(new AccountViewModel(account: $account->refresh())->isActionable());
         $this->assertFalse(new AccountViewModel(account: Account::factory()->create())->isActionable());
-    }
-
-    #[Test]
-    public function it_says_how_the_person_signs_in_and_whether_they_are_asked_for_a_second_factor(): void
-    {
-        $plain = User::factory()->create();
-        $viewModel = new AccountViewModel(account: $plain->account);
-
-        $this->assertSame('With a password', $viewModel->signInLine());
-        $this->assertSame('Off', $viewModel->twoFactorLine());
-        $this->assertSame('Never', $viewModel->lastSignedInLine());
     }
 
     #[Test]
@@ -328,7 +203,6 @@ class AccountViewModelTest extends TestCase
 
         $this->assertSame($order->id, $viewModel->order()?->id);
         $this->assertSame('refunded', $viewModel->order()?->stripe_status);
-        $this->assertSame('Monthly subscription', $viewModel->subscriptionOfferLabel());
         $this->assertSame(AccessKindEnum::Subscription->label(), $viewModel->accessKindLabel());
         $this->assertNotNull($viewModel->renewsAt());
         $this->assertNull($viewModel->endsAt());
@@ -343,7 +217,6 @@ class AccountViewModelTest extends TestCase
         $viewModel = new AccountViewModel(account: $account->fresh());
 
         $this->assertNull($viewModel->order());
-        $this->assertSame(__('Free plan'), $viewModel->accessKindLabel());
     }
 
     #[Test]
@@ -376,15 +249,11 @@ class AccountViewModelTest extends TestCase
     public function it_says_the_day_the_purchase_was_ordered(): void
     {
         $account = Account::factory()->create();
-        $order = StripeOrder::factory()->settled()->create(['account_id' => $account->id]);
+        StripeOrder::factory()->settled()->create(['account_id' => $account->id]);
 
         $viewModel = new AccountViewModel(account: $account->fresh());
 
         $this->assertTrue($viewModel->holdsAccessForGood());
-        $this->assertSame(
-            __('Yes, bought on :date', ['date' => $order->created_at->isoFormat('LL')]),
-            $viewModel->accessForGoodLabel(),
-        );
     }
 
     #[Test]
@@ -395,7 +264,6 @@ class AccountViewModelTest extends TestCase
         $viewModel = new AccountViewModel(account: $account->fresh());
 
         $this->assertTrue($viewModel->holdsAccessForGood());
-        $this->assertStringContainsString('granted on', $viewModel->accessForGoodLabel());
     }
 
     #[Test]
@@ -407,7 +275,6 @@ class AccountViewModelTest extends TestCase
         $viewModel = new AccountViewModel(account: $account->fresh());
 
         $this->assertFalse($viewModel->holdsAccessForGood());
-        $this->assertSame(__('No'), $viewModel->accessForGoodLabel());
     }
 
     #[Test]

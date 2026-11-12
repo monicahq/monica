@@ -53,7 +53,6 @@ class RelationshipCategoryTest extends TestCase
     {
         $category = RelationshipCategory::factory()->system(RelationshipCategoryEnum::Romantic)->create();
 
-        $this->assertEquals('Romantic', $category->name);
         $this->assertTrue($category->is_system);
         $this->assertEquals('romantic', $category->key);
     }

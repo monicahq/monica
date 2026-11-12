@@ -39,7 +39,6 @@ class ShareTemplateViewModelTest extends TestCase
         $this->assertEquals(1, $viewModel->sectionCount());
         $this->assertEquals(2, $viewModel->fieldCount());
         $this->assertEquals(0, $viewModel->valueListCount());
-        $this->assertEquals('1 section, 2 fields, 0 value lists', $viewModel->structureLabel());
     }
 
     #[Test]
@@ -52,20 +51,6 @@ class ShareTemplateViewModelTest extends TestCase
 
         $this->assertEquals('template', $decoded['monica']['format']);
         $this->assertEquals('Dunder Mifflin contact', $decoded['template']['name']);
-    }
-
-    #[Test]
-    public function it_says_how_many_records_are_on_the_version(): void
-    {
-        $user = User::factory()->create();
-        $template = $this->publishedTemplate($user);
-
-        $template->publishedVersion->record_count = 42;
-        $template->publishedVersion->save();
-
-        $viewModel = new ShareTemplateViewModel(user: $user, template: $template->fresh());
-
-        $this->assertEquals('42 records', $viewModel->recordCountLabel());
     }
 
     private function publishedTemplate(User $user): Template

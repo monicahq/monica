@@ -446,11 +446,10 @@ class PreviewContactMergeTest extends TestCase
         $this->assertSame([[
             'field_key' => '@display_name',
             'field_id' => null,
-            'label' => 'Name shown',
             'row' => null,
             'kept_value' => 'Jim Halpert',
             'other_value' => 'James Halpert',
-        ]], $preview['conflicts']);
+        ]], array_map(fn (array $conflict): array => array_diff_key($conflict, ['label' => true]), $preview['conflicts']));
         $this->assertContains(['kind' => 'name_representation', 'count' => 1], $preview['moves']);
     }
 

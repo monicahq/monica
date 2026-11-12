@@ -112,7 +112,7 @@ Once a capability is released to everybody, its flag and the decisions stored fo
 ## Assumptions
 
 - The mechanism is Laravel Pennant, as the request names, storing decisions in the database so web servers and workers share them.
-- A flag is scoped to the account. Erica is mono user, so an account is one person.
+- A flag is scoped to the account. Monica is mono user, so an account is one person.
 - Rollout by percentage, A/B experiments and per plan entitlements are out of scope; the last breaks the invariant that paying unlocks no feature.
 - The migration the package publishes is kept as it ships (principle IV).
 - Flags live in `app/Features`, admitted by constitution 2.5.0.

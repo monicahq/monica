@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Mcp\Tools;
 
 use App\Enums\VersionStatusEnum;
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\UpdateTemplateField;
 use App\Models\Field;
 use App\Models\SectionVersion;
@@ -32,7 +32,7 @@ class UpdateTemplateFieldTest extends TestCase
             'is_sensitive' => true,
         ]);
 
-        EricaServer::actingAs($user)->tool(UpdateTemplateField::class, [
+        MonicaServer::actingAs($user)->tool(UpdateTemplateField::class, [
             'template' => $template->uuid,
             'version' => 1,
             'section' => (string) $row->id,
@@ -55,7 +55,7 @@ class UpdateTemplateFieldTest extends TestCase
         $field = Field::factory()->create(['section_version_id' => $published->id, 'label' => 'Street']);
         $published->update(['status' => VersionStatusEnum::Published, 'published_at' => now()]);
 
-        EricaServer::actingAs($user)->tool(UpdateTemplateField::class, [
+        MonicaServer::actingAs($user)->tool(UpdateTemplateField::class, [
             'template' => $template->uuid,
             'version' => 1,
             'section' => (string) $row->id,

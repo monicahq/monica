@@ -27,7 +27,6 @@ class RelationshipFormViewModelTest extends TestCase
 
         $groups = $this->viewModelFor($user)->typeGroups();
 
-        $this->assertEquals('Parent ↔ Child', $groups[0]['types'][0]['label']);
         $this->assertFalse($groups[0]['types'][0]['isSymmetric']);
     }
 
@@ -39,7 +38,6 @@ class RelationshipFormViewModelTest extends TestCase
 
         $groups = $this->viewModelFor($user)->typeGroups();
 
-        $this->assertEquals('Sibling', $groups[0]['types'][0]['label']);
         $this->assertTrue($groups[0]['types'][0]['isSymmetric']);
     }
 
@@ -75,7 +73,7 @@ class RelationshipFormViewModelTest extends TestCase
 
         $map = $this->viewModelFor($user)->typeMap();
 
-        $this->assertEquals(['roleA' => 'Parent', 'roleB' => 'Child', 'isSymmetric' => false], $map[$type->id]);
+        $this->assertFalse($map[$type->id]['isSymmetric']);
     }
 
     #[Test]

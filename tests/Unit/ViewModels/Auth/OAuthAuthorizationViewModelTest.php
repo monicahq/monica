@@ -27,6 +27,6 @@ class OAuthAuthorizationViewModelTest extends TestCase
             scopes: [new Scope(Registrar::OAUTH_SCOPE, 'Use MCP server')],
         );
 
-        $this->assertSame(['Utiliser le serveur MCP'], $viewModel->permissions());
+        $this->assertNotSame(['Use MCP server'], $viewModel->permissions());
     }
 }

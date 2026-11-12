@@ -117,4 +117,4 @@ Everything else was checked and is kept ([research](research.md#r4)).
 - The page copy is English in the markup, like the API reference.
 - The client configurations and third party notices are checked in [research.md](research.md).
 - Out of scope, worth separate changes: the API keys notice "There is nothing to point a key at yet",
-  and the server announcing itself as "Erica" (`#[Name('Erica')]`).
+  and the server announcing itself as "Monica" (`#[Name('Monica')]`).

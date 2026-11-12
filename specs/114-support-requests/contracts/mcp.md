@@ -18,4 +18,4 @@ does not exist." MCP sends no files: attachments are listed, not uploaded.
 | `ChangeSupportRequestStatus` | `PUT admin/support-requests/{request}/status` | same |
 
 `shouldRegister()` of the admin tools returns false unless both conditions hold, so the tools are
-not even listed to anybody else. Each tool is added to `EricaServer::$tools`.
+not even listed to anybody else. Each tool is added to `MonicaServer::$tools`.

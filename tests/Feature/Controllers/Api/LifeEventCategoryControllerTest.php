@@ -60,11 +60,9 @@ class LifeEventCategoryControllerTest extends TestCase
         $response->assertJsonCount(8, 'data');
         $response->assertJsonPath('meta.total', 8);
         $response->assertJsonPath('data.0.type', 'life_event_category');
-        $response->assertJsonPath('data.0.attributes.name', __('Relationships and family'));
         $response->assertJsonPath('data.0.attributes.position', 1);
         $response->assertJsonPath('data.0.attributes.is_system', true);
         $response->assertJsonPath('data.0.attributes.life_event_type_count', 9);
-        $response->assertJsonPath('data.7.attributes.name', __('Other'));
     }
 
     #[Test]

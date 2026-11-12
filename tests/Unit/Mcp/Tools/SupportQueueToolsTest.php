@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\AddSupportNote;
 use App\Mcp\Tools\ChangeSupportRequestStatus;
 use App\Mcp\Tools\GetSupportQueueRequest;
@@ -34,11 +34,11 @@ class SupportQueueToolsTest extends TestCase
         SupportMessage::factory()->note()->create(['support_request_id' => $supportRequest->id, 'body' => 'Probably the embedded photo.']);
         $administrator = $this->holding(['*', 'administration'], administrator: true);
 
-        EricaServer::actingAs($administrator)->tool(ListSupportQueue::class, [])->assertOk()->assertSee('vCard import stops at 50');
-        EricaServer::actingAs($administrator)->tool(GetSupportQueueRequest::class, ['support_request' => $supportRequest->uuid])->assertOk()->assertSee('Probably the embedded photo.');
-        EricaServer::actingAs($administrator)->tool(AddSupportNote::class, ['support_request' => $supportRequest->uuid, 'body' => 'Asked for the file.'])->assertOk();
-        EricaServer::actingAs($administrator)->tool(SendSupportReply::class, ['support_request' => $supportRequest->uuid, 'body' => 'Could you send the file?'])->assertOk();
-        EricaServer::actingAs($administrator)->tool(ChangeSupportRequestStatus::class, ['support_request' => $supportRequest->uuid, 'status' => 'solved'])->assertOk();
+        MonicaServer::actingAs($administrator)->tool(ListSupportQueue::class, [])->assertOk()->assertSee('vCard import stops at 50');
+        MonicaServer::actingAs($administrator)->tool(GetSupportQueueRequest::class, ['support_request' => $supportRequest->uuid])->assertOk()->assertSee('Probably the embedded photo.');
+        MonicaServer::actingAs($administrator)->tool(AddSupportNote::class, ['support_request' => $supportRequest->uuid, 'body' => 'Asked for the file.'])->assertOk();
+        MonicaServer::actingAs($administrator)->tool(SendSupportReply::class, ['support_request' => $supportRequest->uuid, 'body' => 'Could you send the file?'])->assertOk();
+        MonicaServer::actingAs($administrator)->tool(ChangeSupportRequestStatus::class, ['support_request' => $supportRequest->uuid, 'status' => 'solved'])->assertOk();
 
         $this->assertEquals('solved', $supportRequest->refresh()->status->value);
     }
@@ -48,7 +48,7 @@ class SupportQueueToolsTest extends TestCase
     {
         $administrator = $this->holding(['*'], administrator: true);
 
-        EricaServer::actingAs($administrator)->tool(ListSupportQueue::class, [])->assertHasErrors();
+        MonicaServer::actingAs($administrator)->tool(ListSupportQueue::class, [])->assertHasErrors();
     }
 
     #[Test]
@@ -57,7 +57,7 @@ class SupportQueueToolsTest extends TestCase
         config(['monica.support_enabled' => false]);
         $administrator = $this->holding(['*', 'administration'], administrator: true);
 
-        EricaServer::actingAs($administrator)->tool(ListSupportQueue::class, [])->assertHasErrors();
+        MonicaServer::actingAs($administrator)->tool(ListSupportQueue::class, [])->assertHasErrors();
     }
 
     #[Test]
@@ -65,7 +65,7 @@ class SupportQueueToolsTest extends TestCase
     {
         $dwight = $this->holding(['*', 'administration'], administrator: false);
 
-        EricaServer::actingAs($dwight)->tool(ListSupportQueue::class, [])->assertHasErrors();
+        MonicaServer::actingAs($dwight)->tool(ListSupportQueue::class, [])->assertHasErrors();
     }
 
     #[Test]

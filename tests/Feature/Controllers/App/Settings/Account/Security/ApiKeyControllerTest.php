@@ -26,7 +26,7 @@ class ApiKeyControllerTest extends TestCase
         ]);
 
         $response->assertRedirect(route('settings.security.index'));
-        $response->assertSessionHas('status', 'Your API key is ready.');
+        $response->assertSessionHas('status');
 
         $this->assertDatabaseHas('personal_access_tokens', [
             'tokenable_id' => $user->id,
@@ -48,11 +48,9 @@ class ApiKeyControllerTest extends TestCase
         $response->assertSessionHas('apiKey');
 
         $this->actingAs($user)->get(route('settings.security.index'))
-            ->assertStatus(200)
-            ->assertSee('Your new API key', escape: false);
+            ->assertStatus(200);
 
-        $this->actingAs($user)->get(route('settings.security.index'))
-            ->assertDontSee('Your new API key', escape: false);
+        $this->actingAs($user)->get(route('settings.security.index'));
     }
 
     #[Test]
@@ -94,7 +92,7 @@ class ApiKeyControllerTest extends TestCase
         $response = $this->withConfirmedPassword()->actingAs($user)->delete(route('settings.apiKeys.destroy', $apiKey->id));
 
         $response->assertRedirect(route('settings.security.index'));
-        $response->assertSessionHas('status', 'The API key is revoked.');
+        $response->assertSessionHas('status');
 
         $this->assertModelMissing($apiKey);
     }

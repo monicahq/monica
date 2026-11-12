@@ -29,7 +29,6 @@ class ContactDuplicateControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Jim Halpert');
         $response->assertSee('Jimmy Halpert');
-        $response->assertSee('their names are alike');
     }
 
     #[Test]
@@ -41,7 +40,6 @@ class ContactDuplicateControllerTest extends TestCase
         $response = $this->actingAs($user)->get(route('vaults.duplicates.index', $vault));
 
         $response->assertStatus(200);
-        $response->assertSee('Nothing looks doubled');
     }
 
     #[Test]

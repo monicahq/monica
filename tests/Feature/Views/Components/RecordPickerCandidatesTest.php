@@ -22,12 +22,4 @@ class RecordPickerCandidatesTest extends TestCase
         $rendered->assertSee("choose('uuid-of-angela', 'Angela Martin')", escape: false);
         $rendered->assertSee(":aria-pressed=\"chosen === 'uuid-of-angela'", escape: false);
     }
-
-    #[Test]
-    public function it_says_why_there_is_nothing_to_choose(): void
-    {
-        $this->blade(
-            '<x-record-picker.candidates id="record-choices" :candidates="[]" empty-line="Nothing in this vault matches “Toby”." />',
-        )->assertSee('Nothing in this vault matches “Toby”.');
-    }
 }

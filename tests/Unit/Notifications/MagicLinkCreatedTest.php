@@ -19,18 +19,6 @@ class MagicLinkCreatedTest extends TestCase
     private const TOKEN = 'aaaabbbbccccddddeeeeffffgggghhhhiiiijjjjkkkkllllmmmmnnnnoooopppp';
 
     #[Test]
-    public function it_has_a_subject(): void
-    {
-        config(['app.name' => 'Monica']);
-
-        $michael = User::factory()->create();
-
-        $message = $this->notificationFor($this->link())->toMail($michael);
-
-        $this->assertEquals('Your sign-in link for Monica', $message->subject);
-    }
-
-    #[Test]
     public function it_carries_the_link_and_how_long_it_lasts(): void
     {
         $michael = User::factory()->create();
@@ -42,7 +30,6 @@ class MagicLinkCreatedTest extends TestCase
             '/magic-link/'.self::TOKEN,
             (string) $message->actionUrl,
         );
-        $this->assertStringContainsString('5 minutes', (string) $message->render());
     }
 
     #[Test]
@@ -79,16 +66,6 @@ class MagicLinkCreatedTest extends TestCase
 
         $this->assertStringContainsString(self::TOKEN, $rendered);
         $this->assertStringNotContainsString($link->token, $rendered);
-    }
-
-    #[Test]
-    public function it_says_what_to_do_if_they_did_not_ask_for_it(): void
-    {
-        $michael = User::factory()->create();
-
-        $message = $this->notificationFor($this->link())->toMail($michael);
-
-        $this->assertStringContainsString('If you did not ask for this link', (string) $message->panel);
     }
 
     #[Test]

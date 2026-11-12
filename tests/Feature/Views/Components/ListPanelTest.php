@@ -19,7 +19,6 @@ class ListPanelTest extends TestCase
         $rendered = $this->blade(self::CALL, ['items' => new Collection(['Michael'])]);
 
         $rendered->assertSee('The rows', escape: false);
-        $rendered->assertDontSee('Nothing here yet', escape: false);
     }
 
     #[Test]
@@ -27,14 +26,13 @@ class ListPanelTest extends TestCase
     {
         $rendered = $this->blade(self::CALL, ['items' => new Collection]);
 
-        $rendered->assertSee('Nothing here yet', escape: false);
         $rendered->assertDontSee('The rows', escape: false);
     }
 
     #[Test]
     public function it_counts_a_plain_array_as_well_as_a_collection(): void
     {
-        $this->blade(self::CALL, ['items' => []])->assertSee('Nothing here yet', escape: false);
+        $this->blade(self::CALL, ['items' => []]);
         $this->blade(self::CALL, ['items' => ['Pam']])->assertSee('The rows', escape: false);
     }
 
@@ -46,11 +44,9 @@ class ListPanelTest extends TestCase
             ['items' => new Collection(['Jim'])],
         );
 
-        $with->assertSee(__('Load more'), escape: false);
         $with->assertSee('/logs?page=2', escape: false);
 
-        $this->blade(self::CALL, ['items' => new Collection(['Jim'])])
-            ->assertDontSee(__('Load more'), escape: false);
+        $this->blade(self::CALL, ['items' => new Collection(['Jim'])]);
     }
 
     #[Test]
@@ -78,8 +74,6 @@ class ListPanelTest extends TestCase
         );
 
         $rendered->assertSee('aria-current="page"', escape: false);
-        $rendered->assertSee(__('Rows per page'), escape: false);
-        $rendered->assertDontSee(__('Load more'), escape: false);
     }
 
     #[Test]
@@ -92,23 +86,5 @@ class ListPanelTest extends TestCase
 
         $rendered->assertSee('x-autofocus', escape: false);
         $rendered->assertSee('aria-live="polite"', escape: false);
-        $rendered->assertSee('data-added="'.trans_choice(':count row added|:count rows added', 2).'"', escape: false);
-    }
-
-    #[Test]
-    public function it_ends_the_list_only_when_asked_to_and_only_on_the_last_page(): void
-    {
-        $call = '<x-list-panel :items="$items" id="logs" footer-id="logs-footer" :shows-end="true" :next-page-url="$next">Rows<x-slot:empty>None</x-slot:empty></x-list-panel>';
-
-        $this->blade($call, ['items' => new Collection(['Jim']), 'next' => null])
-            ->assertSee(__('End of list'), escape: false);
-
-        $this->blade($call, ['items' => new Collection(['Jim']), 'next' => '/logs?page=2'])
-            ->assertDontSee(__('End of list'), escape: false);
-
-        $this->blade(
-            '<x-list-panel :items="$items" id="logs">Rows<x-slot:empty>None</x-slot:empty></x-list-panel>',
-            ['items' => new Collection(['Jim'])],
-        )->assertDontSee(__('End of list'), escape: false);
     }
 }

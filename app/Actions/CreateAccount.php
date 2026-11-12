@@ -11,7 +11,10 @@ use App\Jobs\CreateDefaultLifeEventTypes;
 use App\Jobs\CreateDefaultTemplate;
 use App\Jobs\LogUserAction;
 use App\Jobs\SeedLifeEventCategories;
+use App\Jobs\SeedLocations;
 use App\Jobs\SeedNotificationPreference;
+use App\Jobs\SeedPossessionConditions;
+use App\Jobs\SeedPossessionTypes;
 use App\Jobs\SeedRelationshipTypes;
 use App\Models\Account;
 use App\Models\User;
@@ -104,6 +107,9 @@ class CreateAccount
             new CreateDefaultTemplate(user: $this->user, supplied: DefaultTemplateEnum::BasicAnimal),
             new CreateDefaultLifeEventTypes(user: $this->user),
             new SeedRelationshipTypes(user: $this->user),
+            new SeedPossessionTypes(user: $this->user),
+            new SeedPossessionConditions(user: $this->user),
+            new SeedLocations(user: $this->user),
         ])->onQueue('high')->dispatch();
     }
 

@@ -4,7 +4,7 @@
 
 ## Summary
 
-Nineteen new tools on `EricaServer`, one class each under `app/Mcp/Tools`, each mirroring an existing
+Nineteen new tools on `MonicaServer`, one class each under `app/Mcp/Tools`, each mirroring an existing
 `api.v1.templates.*` route by calling the same action and returning the same resource
 ([contracts/mcp-tools.md](contracts/mcp-tools.md)). The one gap in the API, creating a new section
 inside a version, is closed by extending the existing add section endpoint
@@ -63,7 +63,7 @@ app/Mcp/Tools/{AddTemplateSection,UpdateTemplateSection,RemoveTemplateSection,
 app/Mcp/Tools/{CreateTemplateField,UpdateTemplateField,DeleteTemplateField,
   SetTemplateFieldPosition}.php
 app/Mcp/Tools/{List*,Get*}.php                # + #[IsReadOnly] on the ten existing read tools
-app/Mcp/Servers/EricaServer.php               # register 19 tools; one paragraph of instructions
+app/Mcp/Servers/MonicaServer.php               # register 19 tools; one paragraph of instructions
 app/Http/Controllers/Api/StructureVersionSectionController.php  # create takes name/icon/colour
 app/Http/Controllers/Api/{StructureVersionSection,StructureVersionSectionPosition,
   Field,FieldPosition}Controller.php          # catch PublishedVersionIsFrozen if R4 confirms

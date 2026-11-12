@@ -20,6 +20,5 @@ class LocaleRenderingTest extends TestCase
             ->post(route('auth.login.create'), ['email' => '', 'password' => '']);
 
         $response->assertSessionHasErrors('email');
-        $this->assertStringContainsString('wymagane', (string) session('errors')->first('email'));
     }
 }

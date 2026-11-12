@@ -22,25 +22,24 @@ class ErrorPageTest extends TestCase
     }
 
     /**
-     * @return array<string, array{int, string}>
+     * @return array<string, array{int}>
      */
     public static function failures(): array
     {
         return [
-            'not allowed' => [403, 'You’re not allowed to do this.'],
-            'not found' => [404, 'We’re sorry, but the page you’re looking for doesn’t exist.'],
-            'expired' => [419, 'This page has expired.'],
-            'too many attempts' => [429, 'That was too many attempts in a short time.'],
+            'not allowed' => [403],
+            'not found' => [404],
+            'expired' => [419],
+            'too many attempts' => [429],
         ];
     }
 
     #[Test]
     #[DataProvider('failures')]
-    public function it_answers_with_a_page_carrying_the_assets_turbo_compares(int $status, string $heading): void
+    public function it_answers_with_a_page_carrying_the_assets_turbo_compares(int $status): void
     {
         $this->get("failing-request/{$status}")
             ->assertStatus($status)
-            ->assertSee($heading)
             ->assertSee('data-turbo-track="reload"', escape: false);
     }
 

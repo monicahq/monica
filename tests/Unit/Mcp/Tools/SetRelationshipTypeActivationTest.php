@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\SetRelationshipTypeActivation;
 use App\Models\RelationshipType;
 use App\Models\User;
@@ -22,7 +22,7 @@ class SetRelationshipTypeActivationTest extends TestCase
         $user = User::factory()->create();
         $type = RelationshipType::factory()->create(['account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(SetRelationshipTypeActivation::class, [
+        MonicaServer::actingAs($user)->tool(SetRelationshipTypeActivation::class, [
             'relationship_type' => $type->uuid,
             'is_active' => false,
         ])->assertOk()->assertHasNoErrors();
@@ -36,7 +36,7 @@ class SetRelationshipTypeActivationTest extends TestCase
         $user = User::factory()->create();
         $type = RelationshipType::factory()->inactive()->create(['account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(SetRelationshipTypeActivation::class, [
+        MonicaServer::actingAs($user)->tool(SetRelationshipTypeActivation::class, [
             'relationship_type' => $type->uuid,
             'is_active' => true,
         ])->assertOk()->assertHasNoErrors();

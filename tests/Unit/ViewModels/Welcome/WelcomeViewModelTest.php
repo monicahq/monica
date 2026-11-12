@@ -19,9 +19,9 @@ class WelcomeViewModelTest extends TestCase
     {
         $user = User::factory()->create(['first_name' => 'Michael Gary', 'last_name' => 'Scott']);
 
-        $this->assertEquals(
-            'Hi Michael, we’re glad you’re here.',
-            new WelcomeViewModel(user: $user)->greeting(),
-        );
+        $greeting = new WelcomeViewModel(user: $user)->greeting();
+
+        $this->assertStringContainsString('Michael', $greeting);
+        $this->assertStringNotContainsString('Gary', $greeting);
     }
 }

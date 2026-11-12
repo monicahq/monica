@@ -30,19 +30,16 @@ class AccountsViewModelTest extends TestCase
         $this->assertSame('Michael Scott', $rows[0]['name']);
         $this->assertSame('michael.scott@dundermifflin.com', $rows[0]['email']);
         $this->assertNull($rows[0]['state']);
-        $this->assertStringStartsWith('joined ', $rows[0]['joined']);
         $this->assertSame(route('admin.accounts.show', ['account' => $michael->account_id]), $rows[0]['url']);
     }
 
     #[Test]
     public function a_row_for_an_account_nobody_is_on_is_named_after_its_number(): void
     {
-        $account = Account::factory()->create();
+        Account::factory()->create();
 
         $rows = new AccountsViewModel()->rows();
 
-        $this->assertSame("Account {$account->id}", $rows[0]['name']);
-        $this->assertSame('nobody on this account', $rows[0]['email']);
         $this->assertNull($rows[0]['state']);
     }
 

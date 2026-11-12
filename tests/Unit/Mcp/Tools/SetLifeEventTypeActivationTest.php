@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\SetLifeEventTypeActivation;
 use App\Models\LifeEventCategory;
 use App\Models\LifeEventType;
@@ -23,7 +23,7 @@ class SetLifeEventTypeActivationTest extends TestCase
         $user = User::factory()->create();
         $type = $this->type($user);
 
-        EricaServer::actingAs($user)->tool(SetLifeEventTypeActivation::class, [
+        MonicaServer::actingAs($user)->tool(SetLifeEventTypeActivation::class, [
             'life_event_type' => $type->uuid,
             'is_active' => false,
         ])->assertOk()->assertHasNoErrors();
@@ -37,7 +37,7 @@ class SetLifeEventTypeActivationTest extends TestCase
         $user = User::factory()->create();
         $type = $this->type($user, active: false);
 
-        EricaServer::actingAs($user)->tool(SetLifeEventTypeActivation::class, [
+        MonicaServer::actingAs($user)->tool(SetLifeEventTypeActivation::class, [
             'life_event_type' => $type->uuid,
             'is_active' => true,
         ])->assertOk()->assertHasNoErrors();

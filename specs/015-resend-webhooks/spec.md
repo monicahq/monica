@@ -116,5 +116,5 @@ The provider sends far more than three kinds of report: opens, clicks, delays, s
 
 - Suppressing further sending to an address that bounced or complained, and telling its owner. [Model 005](../../spec/models/005-email-sent-in-progress.md) requires it, and it is deferred, owing a decision of its own on where suppression is held and how somebody gets back out of it under Principle VIII.
 - The rename of the provider identifier column and the `locale` column that [Model 005](../../spec/models/005-email-sent-in-progress.md) also asks for. Unrelated to whether reports are believed.
-- Outbound webhooks, meaning Erica telling other tools what happened ([spec section 14](../../spec/spec.md)). They share the word and nothing else.
+- Outbound webhooks, meaning Monica telling other tools what happened ([spec section 14](../../spec/spec.md)). They share the word and nothing else.
 - A receiving endpoint of our own. The provider's integration package ships one, and reimplementing it would mean owning a public route, a signature check and their upgrades for no gain.

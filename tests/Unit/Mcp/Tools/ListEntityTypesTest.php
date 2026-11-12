@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\ListEntityTypes;
 use App\Models\EntityType;
 use App\Models\User;
@@ -22,7 +22,7 @@ class ListEntityTypesTest extends TestCase
         $user = User::factory()->create();
         $mine = EntityType::factory()->create(['account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(ListEntityTypes::class)
+        MonicaServer::actingAs($user)->tool(ListEntityTypes::class)
             ->assertOk()
             ->assertHasNoErrors()
             ->assertSee($mine->uuid);
@@ -34,7 +34,7 @@ class ListEntityTypesTest extends TestCase
         $user = User::factory()->create();
         $theirs = EntityType::factory()->create();
 
-        EricaServer::actingAs($user)->tool(ListEntityTypes::class)
+        MonicaServer::actingAs($user)->tool(ListEntityTypes::class)
             ->assertOk()
             ->assertDontSee($theirs->uuid);
     }

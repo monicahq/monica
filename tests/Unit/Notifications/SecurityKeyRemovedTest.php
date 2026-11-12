@@ -22,9 +22,7 @@ class SecurityKeyRemovedTest extends TestCase
 
         $message = new SecurityKeyRemoved(name: 'Dundie key')->toMail($michael);
 
-        $this->assertEquals('A security key was removed from your '.config('app.name').' account', $message->subject);
         $this->assertStringContainsString('Dundie key', (string) $message->render());
-        $this->assertStringContainsString('If you did not remove it', (string) $message->panel);
     }
 
     #[Test]

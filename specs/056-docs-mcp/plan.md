@@ -6,7 +6,7 @@
 
 A public page at `/docs/mcp`, and its Markdown twin at `/docs/mcp.md`, built the way the API
 reference is: a controller per route, one view model holding the page's content, a Blade view drawing
-it. The tools table is written in the view model and a test holds it to the tools `EricaServer`
+it. The tools table is written in the view model and a test holds it to the tools `MonicaServer`
 registers. The portal card and `/llms.txt` point at the new page.
 
 ## Technical Context
@@ -71,7 +71,7 @@ extraction; `api/show` gains the `@guest` guard `index` already has, which the s
 - **Client tabs**: plain markup in the view (`role="tablist"`, `tab`, `tabpanel`, roving
   `tabindex`, arrow keys, Home and End). `x-tabs.item` renders `aria-selected` from PHP only, and
   one file does not meet the bar for a new component.
-- **Tools**: a list of groups in the view model. The unit test builds each tool class `EricaServer`
+- **Tools**: a list of groups in the view model. The unit test builds each tool class `MonicaServer`
   lists (read through reflection of its `$tools`), calls `name()`, and compares with the table.
 - **Copy for LLM / View as Markdown**: as `x-api-docs.endpoint` does, with `window.copyText`.
   **Open in Claude / ChatGPT**: links with a prefilled prompt naming `/docs/mcp.md` ([research](research.md#r3)).

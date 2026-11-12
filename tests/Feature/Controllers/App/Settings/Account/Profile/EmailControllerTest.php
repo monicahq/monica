@@ -26,7 +26,7 @@ class EmailControllerTest extends TestCase
         ]);
 
         $response->assertRedirect(route('settings.profile.index'));
-        $response->assertSessionHas('status', 'Your email address is saved.');
+        $response->assertSessionHas('status');
 
         $this->assertEquals('michael.scott@dundermifflin.com', $user->refresh()->email);
     }

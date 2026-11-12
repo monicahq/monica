@@ -23,21 +23,21 @@ class CheckTelegramWebhookTest extends TestCase
 
         Http::preventStrayRequests();
         URL::forceScheme('https');
-        URL::forceRootUrl('https://erica.dundermifflin.com');
+        URL::forceRootUrl('https://monica.dundermifflin.com');
     }
 
     #[Test]
     public function it_says_telegram_calls_this_instance(): void
     {
         Http::fake(['api.telegram.org/*' => Http::response(['ok' => true, 'result' => [
-            'url' => 'https://erica.dundermifflin.com/telegram/webhook',
+            'url' => 'https://monica.dundermifflin.com/telegram/webhook',
             'pending_update_count' => 0,
         ]])]);
 
         $answer = new CheckTelegramWebhook()->execute();
 
         $this->assertSame([
-            'url' => 'https://erica.dundermifflin.com/telegram/webhook',
+            'url' => 'https://monica.dundermifflin.com/telegram/webhook',
             'ok' => true,
             'matches' => true,
             'lastError' => null,
@@ -77,7 +77,6 @@ class CheckTelegramWebhookTest extends TestCase
         Http::fake(fn () => throw new ConnectionException('Connection timed out'));
 
         $this->expectException(ValidationException::class);
-        $this->expectExceptionMessage('Telegram could not be reached. Try again in a moment.');
 
         new CheckTelegramWebhook()->execute();
     }

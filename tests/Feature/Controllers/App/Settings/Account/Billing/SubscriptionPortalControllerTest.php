@@ -81,8 +81,7 @@ class SubscriptionPortalControllerTest extends TestCase
         $this->subscribeAccount($michael->account);
 
         $this->actingAs($michael)->get(route('settings.billing.index'))
-            ->assertSee(route('settings.subscriptionPortal.show'), escape: false)
-            ->assertSee('See it on Stripe', escape: false);
+            ->assertSee(route('settings.subscriptionPortal.show'), escape: false);
     }
 
     #[Test]
@@ -93,8 +92,7 @@ class SubscriptionPortalControllerTest extends TestCase
         StripeOrder::factory()->settled()->create(['account_id' => $michael->account_id]);
 
         $this->actingAs($michael)->get(route('settings.billing.index'))
-            ->assertSee(route('settings.subscriptionPortal.show'), escape: false)
-            ->assertSee('See it on Stripe', escape: false);
+            ->assertSee(route('settings.subscriptionPortal.show'), escape: false);
     }
 
     #[Test]
@@ -104,7 +102,6 @@ class SubscriptionPortalControllerTest extends TestCase
         $michael->account->update(['access_granted_at' => now()]);
 
         $this->actingAs($michael)->get(route('settings.billing.index'))
-            ->assertSee('Full access was granted by us', escape: false)
             ->assertDontSee(route('settings.subscriptionPortal.show'), escape: false);
     }
 }

@@ -66,7 +66,7 @@ Artifacts: this plan, research.md, data-model.md, contracts/search.md, quickstar
 | `app/View/Components/Shell.php`, `resources/views/layouts/shell.blade.php` | Search box in the top bar |
 | `app/Http/Controllers/Api/SearchController.php`, `app/Http/Resources/SearchResultResource.php`, `routes/api.php` | API |
 | `resources/docs/api/21-search.php`, `resources/views/app/docs/mcp.blade.php` | Docs |
-| `app/Mcp/Tools/SearchRecords.php`, `app/Mcp/Servers/EricaServer.php` | MCP tool |
+| `app/Mcp/Tools/SearchRecords.php`, `app/Mcp/Servers/MonicaServer.php` | MCP tool |
 | `.github/workflows/tests.yml`, `.devcontainer/postCreate.sh`, `.devcontainer/postStart.sh` | The reference engine for the suite |
 | `spec/models/017`, `019`, `022` | Their pointers to `SearchIndexEntry` now point at this design |
 | `lang/*.json` | Through `php artisan monica:localize` |

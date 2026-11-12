@@ -22,7 +22,7 @@ $type = [
         'is_active' => true,
         'relationship_count' => 12,
         'created_at' => 1756252800,
-        'updated_at' => null,
+        'updated_at' => 1756252800,
     ],
     'links' => [
         'self' => $base.'/relationship-types/3a9c5e21-7b40-4f68-8d13-6e2f0a4b9c57',
@@ -76,7 +76,7 @@ $typeAttributes = [
     ['name' => 'is_active', 'type' => 'boolean', 'description' => 'Whether the type is offered when a new relationship is written. False stops it being chosen again and touches nothing already written.'],
     ['name' => 'relationship_count', 'type' => 'integer', 'description' => 'How many relationships are written with this type, across every vault of your account. A relationship in the bin is not counted. It decides both whether the type may be deleted and whether its direction may still move.'],
     ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When the type was added, as a count of seconds since 1970 rather than a written date.'],
-    ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When it last changed, as a count of seconds, or null if it has not changed since it was added.'],
+    ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When it last changed, as a count of seconds. Equal to created_at until it first changes.'],
 ];
 
 return [

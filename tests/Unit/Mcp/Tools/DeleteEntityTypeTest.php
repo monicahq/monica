@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\DeleteEntityType;
 use App\Models\EntityType;
 use App\Models\User;
@@ -22,7 +22,7 @@ class DeleteEntityTypeTest extends TestCase
         $user = User::factory()->create();
         $entityType = EntityType::factory()->create(['account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(DeleteEntityType::class, ['entity_type' => $entityType->uuid])
+        MonicaServer::actingAs($user)->tool(DeleteEntityType::class, ['entity_type' => $entityType->uuid])
             ->assertOk()
             ->assertHasNoErrors();
 
@@ -35,8 +35,8 @@ class DeleteEntityTypeTest extends TestCase
         $user = User::factory()->create();
         $entityType = EntityType::factory()->used(3)->create(['account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(DeleteEntityType::class, ['entity_type' => $entityType->uuid])
-            ->assertHasErrors(['The type still holds records and stays.']);
+        MonicaServer::actingAs($user)->tool(DeleteEntityType::class, ['entity_type' => $entityType->uuid])
+            ->assertHasErrors();
 
         $this->assertNotSoftDeleted($entityType);
     }

@@ -5,6 +5,7 @@
   @var string $size
   @var string $variant
   @var string $tone
+  @var bool $dimWhenDisabled
 --}}
 @props([
   'href',
@@ -12,14 +13,16 @@
   'size' => 'default',
   'variant' => 'primary',
   'tone' => 'default',
+  'dimWhenDisabled' => true,
 ])
 
 @php
   $base = 'inline-flex cursor-pointer items-center justify-center gap-2 rounded-md border '
     .'font-sans font-medium whitespace-nowrap no-underline '
     .'transition duration-(--duration-fast) ease-out '
-    .'disabled:pointer-events-none disabled:cursor-default disabled:opacity-50 disabled:shadow-none '
-    .'aria-disabled:pointer-events-none aria-disabled:cursor-default aria-disabled:opacity-50 aria-disabled:shadow-none aria-disabled:focus-visible:opacity-100';
+    .'disabled:pointer-events-none disabled:cursor-default disabled:shadow-none '
+    .'aria-disabled:pointer-events-none aria-disabled:cursor-default aria-disabled:shadow-none aria-disabled:focus-visible:opacity-100 '
+    .($dimWhenDisabled ? 'disabled:opacity-50 aria-disabled:opacity-50' : '');
 
   $danger = $tone === 'danger';
 

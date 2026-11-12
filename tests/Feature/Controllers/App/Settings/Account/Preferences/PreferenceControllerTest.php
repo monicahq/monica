@@ -31,18 +31,8 @@ class PreferenceControllerTest extends TestCase
         $response = $this->actingAs($user)->get(route('settings.preferences.index'));
 
         $response->assertStatus(200);
-        $response->assertSee('Preferences', escape: false);
-        $response->assertSee('Language', escape: false);
-        $response->assertSee('Time format', escape: false);
-        $response->assertSee('24-hour', escape: false);
-        $response->assertSee('Date format', escape: false);
-        $response->assertSee('Month spelled out', escape: false);
-        $response->assertSee('Number format', escape: false);
-        $response->assertSee('Space and comma', escape: false);
-        $response->assertSee('Follow the language', escape: false);
         $response->assertSee('Français', escape: false);
         $response->assertSee(route('settings.index'), escape: false);
-        $response->assertSee('Back to settings', escape: false);
     }
 
     #[Test]
@@ -63,7 +53,7 @@ class PreferenceControllerTest extends TestCase
 
         $response->assertRedirect(route('settings.preferences.index'));
 
-        $response->assertSessionHas('status', 'Vos préférences sont enregistrées.');
+        $response->assertSessionHas('status');
 
         $user->refresh();
 

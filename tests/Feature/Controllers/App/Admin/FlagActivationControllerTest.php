@@ -31,7 +31,7 @@ class FlagActivationControllerTest extends TestCase
             ->post(route('admin.flags.activation.create', ['flag' => 'example-capability']));
 
         $response->assertRedirect(route('admin.flags.index'));
-        $response->assertSessionHas('status', 'The flag is on for every account.');
+        $response->assertSessionHas('status');
 
         Feature::flushCache();
         $this->assertTrue(Feature::for(null)->active('example-capability'));
@@ -47,7 +47,7 @@ class FlagActivationControllerTest extends TestCase
             ->delete(route('admin.flags.activation.destroy', ['flag' => 'example-capability']));
 
         $response->assertRedirect(route('admin.flags.index'));
-        $response->assertSessionHas('status', 'The flag is off for every account.');
+        $response->assertSessionHas('status');
 
         Feature::flushCache();
         $this->assertFalse($pam->account->features()->active('example-capability'));

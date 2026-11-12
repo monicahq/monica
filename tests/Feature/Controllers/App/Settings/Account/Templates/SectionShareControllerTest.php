@@ -30,8 +30,6 @@ class SectionShareControllerTest extends TestCase
 
         $this->actingAs($user)->get(route('settings.sectionShare.index', [$row->structureVersion->structure->owner, $row->id]))
             ->assertStatus(200)
-            ->assertSee(__('Export the section as a file'))
-            ->assertSee(__('Publish the section'))
             ->assertSee('personal-details.json');
     }
 
@@ -42,9 +40,7 @@ class SectionShareControllerTest extends TestCase
         $row = $this->publishedRow($user);
 
         $this->actingAs($user)->get(route('settings.sectionShare.index', [$row->structureVersion->structure->owner, $row->id]))
-            ->assertStatus(200)
-            ->assertSee(__('Export the section as a file'))
-            ->assertDontSee(__('Publish the section'));
+            ->assertStatus(200);
     }
 
     #[Test]

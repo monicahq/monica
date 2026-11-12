@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\CreateRelationshipCategory;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -20,7 +20,7 @@ class CreateRelationshipCategoryTest extends TestCase
     {
         $user = User::factory()->create();
 
-        EricaServer::actingAs($user)->tool(CreateRelationshipCategory::class, ['name' => 'Scranton branch'])
+        MonicaServer::actingAs($user)->tool(CreateRelationshipCategory::class, ['name' => 'Scranton branch'])
             ->assertOk()
             ->assertHasNoErrors();
 

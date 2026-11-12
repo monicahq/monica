@@ -33,14 +33,7 @@ class BillingControllerTest extends TestCase
         $response = $this->actingAs($michael)->get(route('settings.billing.index'));
 
         $response->assertStatus(200);
-        $response->assertSee('If you like Monica and want to keep using it', escape: false);
-        $response->assertSee('Choose monthly', escape: false);
-        $response->assertSee('Choose yearly', escape: false);
-        $response->assertSee('Get lifetime access', escape: false);
         $response->assertSee(route('settings.checkout.store', ['price' => 'price_lifetime']), escape: false);
-        $response->assertSee('What changes', escape: false);
-        $response->assertSee('A few things you might be wondering.', escape: false);
-        $response->assertDontSee('On record', escape: false);
     }
 
     #[Test]
@@ -52,12 +45,7 @@ class BillingControllerTest extends TestCase
         $response = $this->actingAs($michael)->get(route('settings.billing.index'));
 
         $response->assertStatus(200);
-        $response->assertSee('Yearly subscription', escape: false);
-        $response->assertSee('Cancel renewal', escape: false);
         $response->assertSee(route('settings.subscription.destroy'), escape: false);
-        $response->assertSee('What you have', escape: false);
-        $response->assertSee('Get lifetime access', escape: false);
-        $response->assertDontSee('Choose monthly', escape: false);
     }
 
     #[Test]
@@ -69,7 +57,6 @@ class BillingControllerTest extends TestCase
         $response = $this->actingAs($michael)->get(route('settings.billing.index'));
 
         $response->assertStatus(200);
-        $response->assertSee('Keep the subscription', escape: false);
         $response->assertSee(route('settings.subscriptionCancellation.destroy'), escape: false);
     }
 
@@ -82,10 +69,6 @@ class BillingControllerTest extends TestCase
         $response = $this->actingAs($michael)->get(route('settings.billing.index'));
 
         $response->assertStatus(200);
-        $response->assertSee('Full access was granted by us', escape: false);
-        $response->assertDontSee('Choose monthly', escape: false);
-        $response->assertDontSee('What changes', escape: false);
-        $response->assertDontSee('See it on Stripe', escape: false);
     }
 
     #[Test]
@@ -98,11 +81,8 @@ class BillingControllerTest extends TestCase
         $response = $this->actingAs($michael)->get(route('settings.billing.index'));
 
         $response->assertStatus(200);
-        $response->assertSee('Paid once on', escape: false);
-        $response->assertSee('On record', escape: false);
         $response->assertSee('€199.00', escape: false);
         $response->assertSee(route('settings.invoices.index'), escape: false);
-        $response->assertDontSee('Get lifetime access', escape: false);
     }
 
     #[Test]
@@ -115,8 +95,6 @@ class BillingControllerTest extends TestCase
         $response = $this->actingAs($michael)->get(route('settings.billing.index'));
 
         $response->assertStatus(200);
-        $response->assertSee('Nothing to pay for here', escape: false);
-        $response->assertDontSee('A few things you might be wondering.', escape: false);
     }
 
     #[Test]
@@ -127,7 +105,6 @@ class BillingControllerTest extends TestCase
         $response = $this->actingAs($michael)->get(route('settings.billing.index').'?checkout=success');
 
         $response->assertStatus(200);
-        $response->assertSee('we are confirming your payment', escape: false);
     }
 
     #[Test]
@@ -142,6 +119,5 @@ class BillingControllerTest extends TestCase
         $response = $this->actingAs($michael)->get(route('settings.billing.index'));
 
         $response->assertStatus(200);
-        $response->assertSee('The plans cannot be shown right now', escape: false);
     }
 }

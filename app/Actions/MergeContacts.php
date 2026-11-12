@@ -16,6 +16,7 @@ use App\Models\ContactNameRepresentation;
 use App\Models\FieldValue;
 use App\Models\Group;
 use App\Models\GroupMember;
+use App\Models\PossessionLoan;
 use App\Models\RecordSnapshot;
 use App\Models\Reminder;
 use App\Models\ShareLink;
@@ -76,6 +77,7 @@ class MergeContacts
             $this->takeTheReminders();
             $this->takeTheShareLinks();
             $this->takeTheMemberships();
+            $this->takeTheLoans();
             $this->setAsideWhatTheStructureDoesNotCarry();
             $this->stopBeingPartial();
 
@@ -334,6 +336,24 @@ class MergeContacts
 
         foreach ($links as $id) {
             $this->ledger[] = ['kind' => 'share_link_moved', 'id' => $id, 'from' => $this->absorbed->id];
+        }
+    }
+
+    private function takeTheLoans(): void
+    {
+        $loans = PossessionLoan::query()
+            ->where('contact_id', $this->absorbed->id)
+            ->pluck('id')
+            ->all();
+
+        if ($loans === []) {
+            return;
+        }
+
+        PossessionLoan::query()->whereIn('id', $loans)->update(['contact_id' => $this->kept->id]);
+
+        foreach ($loans as $id) {
+            $this->ledger[] = ['kind' => 'loan_moved', 'id' => $id, 'from' => $this->absorbed->id];
         }
     }
 

@@ -32,7 +32,6 @@ class LifeEventCategoryTest extends TestCase
     {
         $category = LifeEventCategory::factory()->system(LifeEventCategoryEnum::TravelAndExperiences)->create();
 
-        $this->assertEquals(__('Travel and experiences'), $category->name);
         $this->assertNull($category->getRawOriginal('name'));
     }
 

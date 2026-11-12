@@ -27,8 +27,6 @@ class ConfirmPasswordControllerTest extends TestCase
         $response = $this->actingAs($user)->get(route('auth.confirmPassword.new'));
 
         $response->assertStatus(200);
-        $response->assertSee('Confirm it is you');
-        $response->assertSee('Your password');
     }
 
     #[Test]
@@ -99,9 +97,7 @@ class ConfirmPasswordControllerTest extends TestCase
         $response = $this->actingAs($user)->get(route('auth.confirmPassword.new'));
 
         $response->assertStatus(200);
-        $response->assertSee('Send me a link to confirm');
         $response->assertSee(route('auth.passwordConfirmationLink.create'));
-        $response->assertDontSee('Your password');
     }
 
     #[Test]

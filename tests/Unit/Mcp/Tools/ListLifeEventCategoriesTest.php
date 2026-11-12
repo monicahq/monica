@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\ListLifeEventCategories;
 use App\Models\LifeEventCategory;
 use App\Models\User;
@@ -22,7 +22,7 @@ class ListLifeEventCategoriesTest extends TestCase
         $user = User::factory()->create();
         $mine = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(ListLifeEventCategories::class)
+        MonicaServer::actingAs($user)->tool(ListLifeEventCategories::class)
             ->assertOk()
             ->assertHasNoErrors()
             ->assertSee($mine->uuid);
@@ -34,7 +34,7 @@ class ListLifeEventCategoriesTest extends TestCase
         $user = User::factory()->create();
         $theirs = LifeEventCategory::factory()->create();
 
-        EricaServer::actingAs($user)->tool(ListLifeEventCategories::class)
+        MonicaServer::actingAs($user)->tool(ListLifeEventCategories::class)
             ->assertOk()
             ->assertDontSee($theirs->uuid);
     }

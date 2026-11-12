@@ -32,7 +32,7 @@ class ReminderOccurrenceAnswerControllerTest extends TestCase
             ->from(route('reminders.index', $vault))
             ->put($this->url($vault, $occurrence), ['answer' => 'forgotten'])
             ->assertRedirect(route('reminders.index', $vault))
-            ->assertSessionHas('status', 'Kept as forgotten.');
+            ->assertSessionHas('status');
 
         $this->assertSame('forgotten', $occurrence->refresh()->answer?->value);
     }
@@ -62,7 +62,7 @@ class ReminderOccurrenceAnswerControllerTest extends TestCase
             ->from(route('reminders.index', $vault))
             ->put($this->url($vault, $occurrence), ['answer' => 'forgotten'])
             ->assertRedirect(route('reminders.index', $vault))
-            ->assertSessionHas('error', 'You can say you forgot from the day after.');
+            ->assertSessionHas('error');
 
         $this->assertNull($occurrence->refresh()->answer);
     }

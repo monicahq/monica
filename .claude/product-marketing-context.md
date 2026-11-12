@@ -6,7 +6,7 @@
 
 ## Product Overview
 
-**Product name:** Monica. “Erica” is the code name for Monica v3 and should normally stay out of customer-facing copy.
+**Product name:** Monica.
 
 **One-liner:** Monica is an open-source place to document your life and the people in it, structured your way.
 
@@ -196,7 +196,6 @@ The following language comes from product copy and founder narrative in the repo
 | Term | Meaning |
 |---|---|
 | Monica | The customer-facing product name |
-| Erica | Internal code name for Monica v3 |
 | Account | One person’s personal configuration and billing space |
 | Vault | A watertight compartment for one part of life, such as Family, Friends, or Work |
 | Contact | A person being documented; use “person” in most broad marketing copy |

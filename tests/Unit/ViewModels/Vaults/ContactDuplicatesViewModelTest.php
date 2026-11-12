@@ -91,7 +91,6 @@ class ContactDuplicatesViewModelTest extends TestCase
 
         $row = new ContactDuplicatesViewModel(user: $user, vault: $vault)->row($candidate);
 
-        $this->assertEquals('their names are alike', $row['why']);
         $this->assertStringContainsString('/merge/', $row['compare_url']);
         $this->assertStringContainsString('/dismissal', $row['dismiss_url']);
     }

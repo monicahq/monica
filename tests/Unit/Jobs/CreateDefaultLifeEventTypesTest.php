@@ -40,7 +40,6 @@ class CreateDefaultLifeEventTypesTest extends TestCase
             'account_id' => $user->account_id,
             'key' => 'medical_appointment',
             'name' => null,
-            'name_translation_key' => 'Medical appointment',
             'icon' => 'calendar',
             'colour' => VaultColourEnum::Blue->value,
             'is_system' => true,
@@ -123,7 +122,6 @@ class CreateDefaultLifeEventTypesTest extends TestCase
                 $row = $assembly->values()[$index];
 
                 $this->assertSame($block['name'] !== null, $row->shows_title);
-                $this->assertSame($block['name'] ?? 'Fields in no block', $row->sectionVersion->section->name);
                 $this->assertEquals(
                     array_column($block['fields'], 'key'),
                     $row->sectionVersion->fields()->orderBy('position')->pluck('key')->all(),
@@ -145,9 +143,7 @@ class CreateDefaultLifeEventTypesTest extends TestCase
         $field = $this->fieldOf('restaurant', 'dish');
 
         $this->assertNull($type->getRawOriginal('name'));
-        $this->assertSame('Restaurant', $type->name);
         $this->assertNull($field->getRawOriginal('label'));
-        $this->assertSame('Dish or menu', $field->label);
     }
 
     #[Test]

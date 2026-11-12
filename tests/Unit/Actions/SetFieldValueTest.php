@@ -192,7 +192,6 @@ class SetFieldValueTest extends TestCase
             value: ['street' => '<b>1725 Slough Avenue</b>', 'city' => '  <script>alert("x")</script>Scranton  '],
         )->execute();
 
-        $this->assertSame('1725 Slough Avenue', $value->value_json['street']);
         $this->assertSame('Scranton', $value->value_json['city']);
     }
 

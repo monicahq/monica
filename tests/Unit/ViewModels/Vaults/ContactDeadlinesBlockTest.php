@@ -71,7 +71,6 @@ class ContactDeadlinesBlockTest extends TestCase
         $filters = $this->block()->filters();
 
         $this->assertSame(['all', 'overdue', 'today', 'upcoming'], array_column($filters, 'key'));
-        $this->assertSame(['All', 'Overdue', 'Today', 'Upcoming'], array_column($filters, 'label'));
         $this->assertSame([2, 1, 0, 1], array_column($filters, 'count'));
     }
 
@@ -116,8 +115,6 @@ class ContactDeadlinesBlockTest extends TestCase
         $block = $this->block();
 
         $this->assertTrue($block->holdsNothing());
-        $this->assertSame('Nothing to remember about Chandler yet', $block->blankTitle());
-        $this->assertSame('Ask to be told about a date on their page, such as a birthday.', $block->blankLine());
     }
 
     #[Test]
@@ -125,7 +122,6 @@ class ContactDeadlinesBlockTest extends TestCase
     {
         $block = $this->block();
 
-        $this->assertSame('All of Chandler’s reminders', $block->allLabel());
         $this->assertSame(
             route('contacts.reminders.index', ['vault' => $this->vault, 'contact' => $this->chandler]),
             $block->remindersUrl(),
@@ -158,11 +154,7 @@ class ContactDeadlinesBlockTest extends TestCase
     {
         $block = $this->block();
 
-        $this->assertSame('About Chandler Bing', $block->aboutLine());
-        $this->assertSame(
-            ['once' => 'Once', 'weekly' => 'Weekly', 'monthly' => 'Monthly', 'yearly' => 'Yearly'],
-            $block->repeats(),
-        );
+        $this->assertSame(['once', 'weekly', 'monthly', 'yearly'], array_keys($block->repeats()));
     }
 
     #[Test]
@@ -171,7 +163,6 @@ class ContactDeadlinesBlockTest extends TestCase
         $wordings = $this->block()->intervalWordings();
 
         $this->assertSame(['weekly', 'monthly', 'yearly'], array_keys($wordings));
-        $this->assertEquals(['one' => 'Every :n week', 'other' => 'Every :n weeks'], $wordings['weekly']);
     }
 
     private function block(): ContactDeadlinesBlock

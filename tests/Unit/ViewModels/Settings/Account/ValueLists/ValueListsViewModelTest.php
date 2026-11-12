@@ -106,26 +106,8 @@ class ValueListsViewModelTest extends TestCase
         $lists = new ValueListsViewModel(user: $user)->lists();
 
         $this->assertSame($empty->id, $lists[0]['id']);
-        $this->assertSame('no values', $lists[0]['countLabel']);
         $this->assertSame('1 value', $lists[1]['countLabel']);
         $this->assertSame('3 values', $lists[2]['countLabel']);
-    }
-
-    #[Test]
-    public function it_says_how_much_a_value_is_leaned_on(): void
-    {
-        $user = User::factory()->create();
-        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
-
-        ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'position' => 1]);
-        ValueListItem::factory()->used(1)->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'position' => 2]);
-        ValueListItem::factory()->used(4)->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'position' => 3]);
-
-        $values = new ValueListsViewModel(user: $user)->lists()[0]['values'];
-
-        $this->assertSame('not used yet', $values[0]['usageLabel']);
-        $this->assertSame('used once', $values[1]['usageLabel']);
-        $this->assertSame('used 4 times', $values[2]['usageLabel']);
     }
 
     #[Test]

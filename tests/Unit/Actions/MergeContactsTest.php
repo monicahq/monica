@@ -23,6 +23,8 @@ use App\Models\FieldValue;
 use App\Models\File;
 use App\Models\Group;
 use App\Models\GroupMember;
+use App\Models\Possession;
+use App\Models\PossessionLoan;
 use App\Models\RecordSnapshot;
 use App\Models\Reminder;
 use App\Models\SectionVersion;
@@ -467,6 +469,22 @@ class MergeContactsTest extends TestCase
         $this->assertDatabaseHas('group_members', ['id' => $membership->id, 'contact_id' => $jim->id, 'deleted_at' => null]);
         $this->assertContains(['kind' => 'membership_moved', 'id' => $membership->id, 'from' => $james->id], $merge->ledger);
         $this->assertTrue($group->fresh()->updated_at->isAfter('2007-01-01'));
+    }
+
+    #[Test]
+    public function it_moves_the_loans_of_the_absorbed_contact_to_the_survivor(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        [$jim, $james] = $this->twoContactsOf($user);
+        $mug = Possession::factory()->create(['vault_id' => $jim->vault_id]);
+        $loan = PossessionLoan::factory()->create(['possession_id' => $mug->id, 'contact_id' => $james->id]);
+
+        $merge = new MergeContacts(user: $user, kept: $jim, absorbed: $james)->execute();
+
+        $this->assertDatabaseHas('possession_loans', ['id' => $loan->id, 'contact_id' => $jim->id]);
+        $this->assertContains(['kind' => 'loan_moved', 'id' => $loan->id, 'from' => $james->id], $merge->ledger);
     }
 
     #[Test]

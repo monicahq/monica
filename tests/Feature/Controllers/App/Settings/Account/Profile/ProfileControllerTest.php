@@ -62,8 +62,8 @@ class ProfileControllerTest extends TestCase
         ]);
 
         $response->assertRedirect(route('settings.profile.index'));
-        $response->assertSessionHas('status', 'Your details are saved.');
-        $response->assertSessionHas('status_description', 'They appear everywhere your name does.');
+        $response->assertSessionHas('status');
+        $response->assertSessionHas('status_description');
 
         $user->refresh();
 

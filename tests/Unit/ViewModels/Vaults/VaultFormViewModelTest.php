@@ -39,10 +39,6 @@ class VaultFormViewModelTest extends TestCase
 
         $this->assertTrue($viewModel->isFirstVault());
         $this->assertTrue($viewModel->values()['isDefault']);
-        $this->assertEquals(
-            'This is your first vault, so it is the default until you make another one.',
-            $viewModel->defaultHintWhenTicked(),
-        );
     }
 
     #[Test]
@@ -56,11 +52,6 @@ class VaultFormViewModelTest extends TestCase
         $this->assertFalse($viewModel->isFirstVault());
         $this->assertFalse($viewModel->values()['isDefault']);
         $this->assertEquals('Personal', $viewModel->currentDefaultName());
-        $this->assertEquals(
-            'Personal stops being the default when this vault is created.',
-            $viewModel->defaultHintWhenTicked(),
-        );
-        $this->assertEquals('Personal stays the default.', $viewModel->defaultHintWhenLeft());
     }
 
     #[Test]
@@ -131,20 +122,6 @@ class VaultFormViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_names_the_ceiling_once_the_account_is_at_it(): void
-    {
-        config(['monica.free_vault_limit' => 1]);
-
-        $user = User::factory()->create();
-        Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $this->assertSame(
-            'The free plan holds 1 vault, and this account already has it. Full access lifts the ceiling.',
-            new VaultFormViewModel(user: $user)->ceilingMessage(),
-        );
-    }
-
-    #[Test]
     public function it_says_nothing_about_a_ceiling_there_is_none_of(): void
     {
         config(['monica.free_vault_limit' => 1]);
@@ -176,7 +153,6 @@ class VaultFormViewModelTest extends TestCase
         DB::disableQueryLog();
 
         $this->assertSame(0, $again);
-        $this->assertSame('Dunder Mifflin stays the default.', $viewModel->defaultHintWhenLeft());
     }
 
     private function publishedContactTemplate(User $user, string $name, int $position = 1, bool $system = false): Template

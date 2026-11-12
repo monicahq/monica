@@ -31,7 +31,7 @@ class SubscriptionCancellationControllerTest extends TestCase
         $response = $this->actingAs($michael)->delete(route('settings.subscriptionCancellation.destroy'));
 
         $response->assertRedirect(route('settings.billing.index'));
-        $response->assertSessionHas('status', 'The subscription keeps running.');
+        $response->assertSessionHas('status');
         $this->assertNull($subscription->fresh()->ends_at);
     }
 

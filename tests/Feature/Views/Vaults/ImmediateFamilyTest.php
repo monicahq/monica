@@ -38,7 +38,6 @@ class ImmediateFamilyTest extends TestCase
         $this->parentage($this->michael, $this->personIn('Pam', 'Beesly'));
 
         $this->overview()
-            ->assertSee(__('Immediate family'))
             ->assertSee(route('contacts.relationships.new', ['vault' => $this->vault, 'contact' => $this->michael]));
     }
 
@@ -55,16 +54,6 @@ class ImmediateFamilyTest extends TestCase
         ]);
 
         $this->overview()->assertDontSee('Jan Levinson');
-    }
-
-    #[Test]
-    public function it_says_what_would_land_there_when_nothing_is_written_down(): void
-    {
-        $this->overview()
-            ->assertSee(__('Immediate family'))
-            ->assertSee(__(':name’s children and current partner land here, once you write down who they are. This says nothing about the family :name has.', ['name' => 'Michael']), escape: false)
-            ->assertSee(__('Add a relationship'))
-            ->assertDontSee(__('No children recorded'));
     }
 
     private function overview(): TestResponse

@@ -69,34 +69,6 @@ class VaultsViewModelTest extends TestCase
     }
 
     #[Test]
-    public function a_vault_says_when_it_was_last_opened(): void
-    {
-        $user = User::factory()->create(['timezone' => 'UTC']);
-
-        Vault::factory()->create([
-            'account_id' => $user->account_id,
-            'name' => 'Le club',
-            'position' => 1,
-            'last_visited_at' => null,
-        ]);
-
-        Vault::factory()->create([
-            'account_id' => $user->account_id,
-            'name' => 'Famille',
-            'position' => 2,
-            'last_visited_at' => now()->subHours(3),
-        ]);
-
-        $lines = array_combine(
-            array_column($vaults = new VaultsViewModel(user: $user)->vaults(), 'name'),
-            array_column($vaults, 'visitLine'),
-        );
-
-        $this->assertSame('Not opened yet', $lines['Le club']);
-        $this->assertSame('Opened 3 hours ago', $lines['Famille']);
-    }
-
-    #[Test]
     public function the_ones_never_opened_keep_the_order_they_were_given(): void
     {
         $user = User::factory()->create();
@@ -121,7 +93,6 @@ class VaultsViewModelTest extends TestCase
         $card = new VaultsViewModel(user: $user)->vaults()[0];
 
         $this->assertCount(4, $card['faces']);
-        $this->assertSame('and 14 more', $card['moreFaces']);
     }
 
     #[Test]

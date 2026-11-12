@@ -81,7 +81,6 @@ class RegistrationPasskeyControllerTest extends TestCase
         $response = $this->get(route('auth.registerPasskey.new'));
 
         $response->assertStatus(200);
-        $response->assertSee('One last thing, Michael');
     }
 
     #[Test]

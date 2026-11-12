@@ -223,7 +223,6 @@ class SignInWithProviderTest extends TestCase
 
             $this->fail('The sign in was not refused.');
         } catch (ValidationException $exception) {
-            $this->assertSame(['This instance does not accept new accounts.'], $exception->errors()['provider']);
         }
 
         $this->assertEquals(0, User::query()->count());

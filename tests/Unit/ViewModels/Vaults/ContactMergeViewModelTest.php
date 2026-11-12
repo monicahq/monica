@@ -111,37 +111,6 @@ class ContactMergeViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_says_how_many_of_each_thing_would_come_over(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $jim = Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Jim', 'last_name' => 'Halpert']);
-
-        $viewModel = new ContactMergeViewModel(user: $user, vault: $vault, contact: $jim);
-
-        $this->assertEquals('1 answer comes over', $viewModel->movedLine(['kind' => 'field_value', 'count' => 1]));
-        $this->assertEquals('4 answers come over', $viewModel->movedLine(['kind' => 'field_value', 'count' => 4]));
-        $this->assertEquals('0 answers come over', $viewModel->movedLine(['kind' => 'field_value', 'count' => 0]));
-        $this->assertEquals('2 reminders come over', $viewModel->movedLine(['kind' => 'reminder', 'count' => 2]));
-        $this->assertEquals('3 group memberships come over', $viewModel->movedLine(['kind' => 'group_membership', 'count' => 3]));
-    }
-
-    #[Test]
-    public function it_says_which_group_memberships_become_one(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $jim = Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Jim', 'last_name' => 'Halpert']);
-
-        $viewModel = new ContactMergeViewModel(user: $user, vault: $vault, contact: $jim);
-
-        $this->assertEquals(
-            'Both are in Scranton branch, so their two memberships become one.',
-            $viewModel->foldedLine(['group' => 'a-uuid', 'name' => 'Scranton branch']),
-        );
-    }
-
-    #[Test]
     public function it_offers_the_way_into_both_records_with_the_one_that_stays_first(): void
     {
         $user = User::factory()->create();

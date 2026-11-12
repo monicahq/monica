@@ -54,7 +54,7 @@
 - [X] T028 [US3] Test `tests/Feature/Controllers/Api/SearchControllerTest.php` with a shared `$jsonStructure` of contracts/search.md: the structure, 404 for another account's vault, 422 for a missing or one character `query`, 503 while the engine is unreachable, a key without `sensitive-fields` not matching a sensitive value
 - [X] T029 [US3] Add `Route::get('vaults/{vault}/search', [SearchController::class, 'index'])->name('search')` to the v1 group of `routes/api.php`; create `app/Http/Controllers/Api/SearchController.php` resolving the vault like `ContactController::vault()`, `withSensitive` read like `ContactVCardController`, `per_page` clamped like `ContactController::index`; create `app/Http/Resources/SearchResultResource.php`
 - [X] T030 [P] [US3] Write `resources/docs/api/21-search.php` following `.claude/skills/api-docs-writer/SKILL.md`, the 503 included
-- [X] T031 [US3] Create `app/Mcp/Tools/SearchRecords.php` (`#[IsReadOnly]`, `MirrorsAnApiCapability`, `$mirrors = 'api.v1.search'`, schema `address`, `query`, `scope`, `group`), register it in `app/Mcp/Servers/EricaServer.php`, describe it in `resources/views/app/docs/mcp.blade.php`, test it in `tests/Unit/Mcp/Tools/SearchRecordsTest.php`
+- [X] T031 [US3] Create `app/Mcp/Tools/SearchRecords.php` (`#[IsReadOnly]`, `MirrorsAnApiCapability`, `$mirrors = 'api.v1.search'`, schema `address`, `query`, `scope`, `group`), register it in `app/Mcp/Servers/MonicaServer.php`, describe it in `resources/views/app/docs/mcp.blade.php`, test it in `tests/Unit/Mcp/Tools/SearchRecordsTest.php`
 
 ## Phase 6: User Story 4, an operator runs the search engine (P3)
 

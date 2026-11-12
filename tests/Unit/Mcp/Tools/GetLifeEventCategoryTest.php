@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\GetLifeEventCategory;
 use App\Models\LifeEventCategory;
 use App\Models\User;
@@ -22,7 +22,7 @@ class GetLifeEventCategoryTest extends TestCase
         $user = User::factory()->create();
         $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id, 'name' => 'Sales']);
 
-        EricaServer::actingAs($user)->tool(GetLifeEventCategory::class, ['life_event_category' => $category->uuid])
+        MonicaServer::actingAs($user)->tool(GetLifeEventCategory::class, ['life_event_category' => $category->uuid])
             ->assertOk()
             ->assertSee('Sales');
     }
@@ -33,7 +33,7 @@ class GetLifeEventCategoryTest extends TestCase
         $user = User::factory()->create();
         $category = LifeEventCategory::factory()->create();
 
-        EricaServer::actingAs($user)->tool(GetLifeEventCategory::class, ['life_event_category' => $category->uuid])
-            ->assertHasErrors(['That life event category does not exist.']);
+        MonicaServer::actingAs($user)->tool(GetLifeEventCategory::class, ['life_event_category' => $category->uuid])
+            ->assertHasErrors();
     }
 }

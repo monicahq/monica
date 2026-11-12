@@ -31,6 +31,7 @@ class CreateTemplate extends Tool
             'applies_to' => ['required', Rule::enum(StructureAppliesToEnum::class)],
             'description' => ['nullable', 'string', 'max:65535'],
             'entity_type' => [
+                'bail',
                 Rule::requiredIf(fn (): bool => $request->get('applies_to') === StructureAppliesToEnum::Entity->value),
                 'nullable',
                 'string',

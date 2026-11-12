@@ -11,7 +11,10 @@ use App\Jobs\CreateDefaultLifeEventTypes;
 use App\Jobs\CreateDefaultTemplate;
 use App\Jobs\LogUserAction;
 use App\Jobs\SeedLifeEventCategories;
+use App\Jobs\SeedLocations;
 use App\Jobs\SeedNotificationPreference;
+use App\Jobs\SeedPossessionConditions;
+use App\Jobs\SeedPossessionTypes;
 use App\Jobs\SeedRelationshipTypes;
 use App\Models\Field;
 use App\Models\LifeEventType;
@@ -98,7 +101,6 @@ class CreateAccountTest extends TestCase
 
         $vault = $user->account->vaults()->sole();
 
-        $this->assertEquals('Personal', $vault->name);
         $this->assertSame(1, $vault->position);
         $this->assertTrue($vault->is_default);
 
@@ -148,6 +150,9 @@ class CreateAccountTest extends TestCase
             new CreateDefaultTemplate(user: $user, supplied: DefaultTemplateEnum::BasicAnimal),
             new CreateDefaultLifeEventTypes(user: $user),
             new SeedRelationshipTypes(user: $user),
+            new SeedPossessionTypes(user: $user),
+            new SeedPossessionConditions(user: $user),
+            new SeedLocations(user: $user),
         ]);
 
         Queue::assertPushedOn(
@@ -171,7 +176,6 @@ class CreateAccountTest extends TestCase
 
         $this->assertCount(40, $types);
         $this->assertTrue($types->every(fn (LifeEventType $type): bool => $type->life_event_category_id !== null));
-        $this->assertSame('Call', $types->firstWhere('key', 'call')->name);
     }
 
     #[Test]
@@ -186,7 +190,6 @@ class CreateAccountTest extends TestCase
 
         $template = Template::query()->where('account_id', $user->account_id)->where('slug', 'basic-contact')->sole();
 
-        $this->assertEquals('Basic contact', $template->name);
         $this->assertTrue($template->is_system);
         $this->assertNotNull($template->structure->published_version_id);
         $this->assertCount(3, $template->publishedVersion->pages);

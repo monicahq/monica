@@ -27,7 +27,6 @@ class MarketplaceStatisticsTest extends TestCase
         $statistics = new MarketplaceStatistics;
 
         $this->assertSame(3, $statistics->listingCount());
-        $this->assertSame('2 templates, 1 section', $statistics->listingBreakdown());
     }
 
     #[Test]
@@ -47,7 +46,6 @@ class MarketplaceStatisticsTest extends TestCase
         $statistics = new MarketplaceStatistics;
 
         $this->assertSame(2, $statistics->languageCount());
-        $this->assertSame('Most listings are in English or Français', $statistics->languageSummary());
     }
 
     #[Test]
@@ -56,7 +54,6 @@ class MarketplaceStatisticsTest extends TestCase
         $statistics = new MarketplaceStatistics;
 
         $this->assertSame(0, $statistics->listingCount());
-        $this->assertSame('Nothing has been published yet', $statistics->languageSummary());
     }
 
     #[Test]

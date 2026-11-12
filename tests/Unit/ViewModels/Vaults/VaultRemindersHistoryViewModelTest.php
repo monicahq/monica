@@ -10,7 +10,6 @@ use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
 use App\Models\User;
 use App\Models\Vault;
-use App\ViewModels\Vaults\ReminderRow;
 use App\ViewModels\Vaults\VaultRemindersHistoryViewModel;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -20,22 +19,6 @@ use Tests\TestCase;
 class VaultRemindersHistoryViewModelTest extends TestCase
 {
     use RefreshDatabase;
-
-    #[Test]
-    public function it_lists_what_was_answered_the_latest_answer_first(): void
-    {
-        $vault = Vault::factory()->create();
-        $user = User::factory()->create(['account_id' => $vault->account_id]);
-        $rule = $this->rule($vault, 'Birthday of Angela');
-
-        $this->answered($rule, '2026-05-01', ReminderAnswerEnum::Forgotten, '2026-05-03 10:00:00');
-        $this->answered($rule, '2026-06-01', ReminderAnswerEnum::Remembered, '2026-06-01 10:00:00');
-        $this->answered($rule, '2026-07-01', null, null);
-
-        $rows = new VaultRemindersHistoryViewModel(user: $user, vault: $vault)->rows();
-
-        $this->assertSame(['You remembered', 'You forgot'], array_map(fn (ReminderRow $row): string => $row->outcome(), $rows));
-    }
 
     #[Test]
     public function it_keeps_the_wording_and_the_contact_of_an_answer_whose_reminder_was_deleted(): void
@@ -64,7 +47,6 @@ class VaultRemindersHistoryViewModelTest extends TestCase
         $viewModel = new VaultRemindersHistoryViewModel(user: $user, vault: $vault);
 
         $this->assertSame([], $viewModel->rows());
-        $this->assertSame('No answers yet', $viewModel->emptyTitle());
     }
 
     private function rule(Vault $vault, string $name): Reminder

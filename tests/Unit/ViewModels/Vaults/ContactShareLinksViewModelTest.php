@@ -24,17 +24,6 @@ class ContactShareLinksViewModelTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_names_the_screen_after_the_person(): void
-    {
-        $user = User::factory()->create();
-        $contact = $this->contactOf($user);
-
-        $viewModel = new ContactShareLinksViewModel(user: $user, vault: $contact->vault, contact: $contact);
-
-        $this->assertSame('Share Michael’s contact details', $viewModel->title());
-    }
-
-    #[Test]
     public function it_reads_a_working_link_as_live(): void
     {
         $user = User::factory()->create();
@@ -43,7 +32,6 @@ class ContactShareLinksViewModelTest extends TestCase
 
         $link = $this->only($user, $contact);
 
-        $this->assertSame('Live', $link['state']);
         $this->assertSame('success', $link['stateTone']);
         $this->assertTrue($link['isLive']);
     }
@@ -57,7 +45,6 @@ class ContactShareLinksViewModelTest extends TestCase
 
         $link = $this->only($user, $contact);
 
-        $this->assertSame('Expired', $link['state']);
         $this->assertSame('neutral', $link['stateTone']);
         $this->assertFalse($link['isLive']);
     }
@@ -71,7 +58,6 @@ class ContactShareLinksViewModelTest extends TestCase
 
         $link = $this->only($user, $contact);
 
-        $this->assertSame('Revoked', $link['state']);
         $this->assertSame('danger', $link['stateTone']);
     }
 
@@ -83,50 +69,6 @@ class ContactShareLinksViewModelTest extends TestCase
         ShareLink::factory()->for($contact, 'shareable')->create(['recipient_hint' => 'Pam Beesly']);
 
         $this->assertStringContainsString('Pam Beesly', $this->only($user, $contact)['meta']);
-    }
-
-    #[Test]
-    public function a_link_for_nobody_in_particular_says_only_when_it_was_made(): void
-    {
-        $user = User::factory()->create();
-        $contact = $this->contactOf($user);
-        ShareLink::factory()->for($contact, 'shareable')->create(['recipient_hint' => null]);
-
-        $this->assertStringStartsWith('Made ', $this->only($user, $contact)['meta']);
-    }
-
-    #[Test]
-    public function it_counts_the_openings(): void
-    {
-        $user = User::factory()->create();
-        $contact = $this->contactOf($user);
-        ShareLink::factory()->for($contact, 'shareable')->create(['view_count' => 0]);
-
-        $this->assertSame('Not opened', $this->only($user, $contact)['opened']);
-        $this->assertSame('never opened', $this->only($user, $contact)['lastSeen']);
-    }
-
-    #[Test]
-    public function it_says_once_rather_than_one_time(): void
-    {
-        $user = User::factory()->create();
-        $contact = $this->contactOf($user);
-        ShareLink::factory()->for($contact, 'shareable')->create(['view_count' => 1, 'last_viewed_at' => now()->subHour()]);
-
-        $this->assertSame('Opened once', $this->only($user, $contact)['opened']);
-    }
-
-    #[Test]
-    public function the_confirmation_says_what_stops_and_what_stays(): void
-    {
-        $user = User::factory()->create();
-        $contact = $this->contactOf($user);
-        ShareLink::factory()->for($contact, 'shareable')->create(['view_count' => 6, 'last_viewed_at' => now()->subDay()]);
-
-        $line = $this->only($user, $contact)['revokeLine'];
-
-        $this->assertStringContainsString('6 times', $line);
-        $this->assertStringContainsString('never works again', $line);
     }
 
     #[Test]
@@ -169,7 +111,6 @@ class ContactShareLinksViewModelTest extends TestCase
         $this->assertCount(20, $firstPage);
         $this->assertSame('Link 1', $firstPage[0]['label']);
         $this->assertSame('Link 20', $firstPage[19]['label']);
-        $this->assertSame('Revoked', $firstPage[4]['state']);
 
         $this->app['request']->merge(['page' => 2]);
 
@@ -177,7 +118,6 @@ class ContactShareLinksViewModelTest extends TestCase
 
         $this->assertCount(5, $secondPage);
         $this->assertSame('Link 21', $secondPage[0]['label']);
-        $this->assertSame('Revoked', $secondPage[4]['state']);
     }
 
     /** @return array<string, mixed> */

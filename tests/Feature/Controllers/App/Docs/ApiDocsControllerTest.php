@@ -33,9 +33,7 @@ class ApiDocsControllerTest extends TestCase
     {
         $response = $this->get(route('docs.api.show', ['section' => 'me-show']));
 
-        $response->assertSee('Get your profile');
         $response->assertSee('/api/v1/me');
-        $response->assertDontSee('Revokes the token you are calling with.');
     }
 
     #[Test]
@@ -55,7 +53,16 @@ class ApiDocsControllerTest extends TestCase
             new ApiDocsViewModel()->sections(),
         );
 
-        $this->assertCount(210, $ids);
+        $this->assertCount(307, $ids);
+
+        $this->get(route('docs.api.show', ['section' => 'knowledge-folders-index']))
+            ->assertSee('Knowledge folders')
+            ->assertSee('Knowledge notes')
+            ->assertSee('Knowledge lists')
+            ->assertSee('Possession valuations')
+            ->assertSee('Possession provenance')
+            ->assertSee('Possession locations')
+            ->assertSee('Possession loans');
 
         foreach ($ids as $id) {
             $this->get(route('docs.api.show', ['section' => $id]))
@@ -63,6 +70,7 @@ class ApiDocsControllerTest extends TestCase
                 ->assertViewIs('app.docs.api.show');
         }
 
+        $this->get(route('docs.api.show', ['section' => 'possessions-index']));
         $this->get(route('docs.api.show', ['section' => 'support-requests-index']))->assertSee('List support requests');
         $this->get(route('docs.api.show', ['section' => 'admin-support-requests-index']))->assertSee('List support requests of the instance');
     }

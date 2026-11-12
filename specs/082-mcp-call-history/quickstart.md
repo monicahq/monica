@@ -2,7 +2,7 @@
 
 Every scenario is a PHPUnit test. Recording is proven over `POST /mcp` with a real key, the way
 `tests/Feature/Mcp/McpTransportTest` does, because only that path carries a connection;
-`EricaServer::tool()` records nothing. No scenario needs a migration on the local database.
+`MonicaServer::tool()` records nothing. No scenario needs a migration on the local database.
 
 | # | Scenario | Spec | Expected |
 | --- | --- | --- | --- |

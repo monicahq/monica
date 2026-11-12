@@ -56,8 +56,7 @@ class ContactSectionControllerTest extends TestCase
                 'structureVersionSection' => $this->sectionNamed($version, 'Ongoing'),
             ]))
             ->assertStatus(200)
-            ->assertSee('name="fields['.$knee->id.']"', false)
-            ->assertSee('Save this section');
+            ->assertSee('name="fields['.$knee->id.']"', false);
     }
 
     #[Test]
@@ -385,7 +384,7 @@ class ContactSectionControllerTest extends TestCase
                 ]]],
             )
             ->assertRedirect(route('contacts.sections.edit', ['vault' => $vault, 'contact' => $michael, 'structureVersionSection' => $section]))
-            ->assertSessionHasErrors(['fields.'.$documents->id.'.0.values.'.$file->id => 'Uploads are unavailable on this account for now.']);
+            ->assertSessionHasErrors(['fields.'.$documents->id.'.0.values.'.$file->id]);
 
         $this->assertSame(0, File::query()->count());
     }

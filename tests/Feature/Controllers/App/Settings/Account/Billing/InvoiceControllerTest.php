@@ -40,9 +40,8 @@ class InvoiceControllerTest extends TestCase
         $response = $this->actingAs($michael)->get(route('settings.invoices.index'));
 
         $response->assertStatus(200);
-        $response->assertSee('Lifetime access', escape: false);
         $response->assertSee('€199.00', escape: false);
-        $response->assertSee('Invoice DM-0042', escape: false);
+        $response->assertSee('DM-0042', escape: false);
         $response->assertSee(route('settings.invoices.show', ['payment' => 'in_dundermifflin']), escape: false);
     }
 

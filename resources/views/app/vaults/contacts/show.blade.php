@@ -125,6 +125,10 @@
         @endif
 
         @include('app.vaults.contacts._reminders', ['deadlines' => $viewModel->deadlines()])
+
+        @if ($loans = $viewModel->loans())
+          @include('app.vaults.contacts._loans', ['loans' => $loans])
+        @endif
       </div>
     </div>
   @else

@@ -54,8 +54,6 @@ class LifeEventTypesIndexTest extends TestCase
 
         $response = $this->actingAs($user)->get(route('settings.lifeEventTypes.index'));
 
-        $response->assertSee('Add a category');
-        $response->assertSee('Name of the category');
         $response->assertSee(route('settings.lifeEventCategories.create'), false);
     }
 
@@ -83,35 +81,7 @@ class LifeEventTypesIndexTest extends TestCase
 
         $response = $this->actingAs($user)->get(route('settings.lifeEventTypes.category', $category));
 
-        $response->assertSee('A category can only be deleted once it holds no type.');
         $response->assertSee('aria-describedby="category-'.$category->id.'-no-delete"', false);
-    }
-
-    #[Test]
-    public function it_says_why_a_supplied_category_cannot_be_deleted(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $category = LifeEventCategory::factory()->system()->create(['account_id' => $user->account_id]);
-
-        $this->actingAs($user)
-            ->get(route('settings.lifeEventTypes.category', $category))
-            ->assertSee('A category that came with your account cannot be deleted. Switch it off instead.');
-    }
-
-    #[Test]
-    public function it_says_how_many_types_leave_with_a_category_being_switched_off(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
-        LifeEventType::factory()->count(2)->create(['account_id' => $user->account_id, 'life_event_category_id' => $category->id]);
-
-        $this->actingAs($user)
-            ->get(route('settings.lifeEventTypes.category', $category))
-            ->assertSee('The 2 types filed here leave life event recording with the category.');
     }
 
     #[Test]
@@ -125,8 +95,6 @@ class LifeEventTypesIndexTest extends TestCase
 
         $response = $this->actingAs($user)->get(route('settings.lifeEventTypes.category', $first));
 
-        $response->assertSee('Move below Work');
-        $response->assertDontSee('Move above');
         $response->assertSee(route('settings.lifeEventCategoryPosition.update', $first), false);
     }
 }

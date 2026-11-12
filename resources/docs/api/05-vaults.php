@@ -42,7 +42,7 @@ $otherVault = [
         'is_default' => false,
         'contact_count' => 3,
         'created_at' => 1756166400,
-        'updated_at' => null,
+        'updated_at' => 1756166400,
     ],
     'links' => [
         'self' => $base.'/vaults/schrute-farms',
@@ -87,7 +87,7 @@ $vaultAttributes = [
     ['name' => 'is_default', 'type' => 'boolean', 'description' => 'Whether records land here when nothing says which vault. Exactly one of your vaults is true while you hold a vault at all, and none is while you hold none.'],
     ['name' => 'contact_count', 'type' => 'integer', 'description' => 'How many contacts the vault holds, counting the archived and the partial ones. It is a running count kept as contacts are written down and deleted, rather than something counted when you ask.'],
     ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When the vault was opened, as a count of seconds since 1970 rather than a written date.'],
-    ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When its wording last changed, as a count of seconds, or null if it has not changed since it was opened.'],
+    ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When its wording last changed, as a count of seconds. Equal to created_at until it first changes.'],
 ];
 
 return [

@@ -1,6 +1,6 @@
 # Contract: MCP tools for relationship types
 
-Every tool is registered on `EricaServer`, uses `MirrorsAnApiCapability`, and returns
+Every tool is registered on `MonicaServer`, uses `MirrorsAnApiCapability`, and returns
 `RelationshipTypeResource` or `RelationshipCategoryResource` resolved, the same shape the API returns
 under `data`. An identifier outside the key's account answers the validation error `That relationship
 type does not exist.` or `That relationship category does not exist.` Every change is journalled with

@@ -8,11 +8,11 @@ description: "Task list for the MCP tools for templates, sections and fields"
 
 **Prerequisites**: plan.md, spec.md, research.md, contracts/mcp-tools.md, contracts/api-section-create.md, quickstart.md
 
-**Tests**: Required (constitution III). Follow `.claude/rules/testing.md`: `declare(strict_types=1);`, `#[Test]`, snake_case `it_` names, named arguments, no comments, The Office data, `RefreshDatabase` only when the database is touched. Tool tests follow `tests/Unit/Mcp/Tools/SetContactFavouriteTest.php`: `EricaServer::actingAs($user)->tool(Tool::class, [...])`, then `assertOk()`/`assertHasErrors()` and `assertDatabaseHas()`, plus one `it_names_the_api_capability_it_mirrors` test. Do not re-test the actions' business rules; one relayed refusal per tool that has one is enough.
+**Tests**: Required (constitution III). Follow `.claude/rules/testing.md`: `declare(strict_types=1);`, `#[Test]`, snake_case `it_` names, named arguments, no comments, The Office data, `RefreshDatabase` only when the database is touched. Tool tests follow `tests/Unit/Mcp/Tools/SetContactFavouriteTest.php`: `MonicaServer::actingAs($user)->tool(Tool::class, [...])`, then `assertOk()`/`assertHasErrors()` and `assertDatabaseHas()`, plus one `it_names_the_api_capability_it_mirrors` test. Do not re-test the actions' business rules; one relayed refusal per tool that has one is enough.
 
 **Tool shape**: copy `app/Mcp/Tools/UpdateContactName.php` and `CreateContact.php`: `#[Description(...)]`, `use MirrorsAnApiCapability;`, `protected string $mirrors = '<route name>';`, `handle()` validates with the endpoint's rules, reaches records through the trait, calls the same action as the controller (imported `as <Name>Action` when the names collide), catches exactly what the controller catches and returns `Response::error($e->getMessage())`, returns `Response::json(new <Resource>(...)->resolve())`. `schema()` describes every argument; enum values are listed from the enum (`implode(', ', array_column(Enum::cases(), 'value'))`). Arguments, mirrors and annotations per tool are in [contracts/mcp-tools.md](contracts/mcp-tools.md).
 
-**Registration**: `McpCatalogueTest` fails while a tool class exists that `EricaServer::$tools` does not list, and `McpDocsViewModelTest::it_lists_exactly_the_tools_the_server_registers` fails while the docs table and the server disagree. Each story therefore ends by registering its tools and adding them to the docs table, so the suite is green at the end of every story.
+**Registration**: `McpCatalogueTest` fails while a tool class exists that `MonicaServer::$tools` does not list, and `McpDocsViewModelTest::it_lists_exactly_the_tools_the_server_registers` fails while the docs table and the server disagree. Each story therefore ends by registering its tools and adding them to the docs table, so the suite is green at the end of every story.
 
 ## Format: `[ID] [P?] [Story] Description`
 
@@ -64,7 +64,7 @@ No setup: no dependency, configuration, route or schema change.
 
 ### Wiring
 
-- [X] T020 [US1] Register T008 to T019 in `app/Mcp/Servers/EricaServer.php` (`use` lines and `$tools`), and add one paragraph to its `#[Instructions]`: a template's sections and fields change only on a draft version; open one with create-template-draft, read section and field ids from get-template-version, use the ids a changing tool returns, and nothing reaches records until publish-template-version
+- [X] T020 [US1] Register T008 to T019 in `app/Mcp/Servers/MonicaServer.php` (`use` lines and `$tools`), and add one paragraph to its `#[Instructions]`: a template's sections and fields change only on a draft version; open one with create-template-draft, read section and field ids from get-template-version, use the ids a changing tool returns, and nothing reaches records until publish-template-version
 - [X] T021 [US1] In `app/ViewModels/Docs/McpDocsViewModel.php::toolGroups()`, add after "Templates": `Template drafts` (changesData true: create-template-draft, publish-template-version, delete-template-draft), `Sections` (changesData true: add-template-section, update-template-section, remove-template-section, set-template-section-position), `Fields` (changesData true: create-template-field, update-template-field, delete-template-field, set-template-field-position), and add get-template-version to the read group. One sentence each, in the voice of the existing ones; the three removing tools start with "Deletes" or "Removes". Rewrite `it_marks_only_the_contact_changing_tools_as_changing_data` in `tests/Unit/ViewModels/Docs/McpDocsViewModelTest.php` to assert the exact set of groups that change data
 - [X] T022 [US1] Add to `tests/Feature/Mcp/McpCompartmentTest.php`: `it_reports_a_section_of_another_template_as_not_existing` (a row id from template B asked through template A of the same account answers "That section does not exist.") and `it_writes_nothing_into_a_template_of_another_account` (add-template-section on another account's template answers "That template does not exist." and no section is created). Add to `tests/Feature/Mcp/McpChangelogTest.php`: `it_records_a_template_change_as_having_arrived_over_mcp` using `add-template-section`
 - [X] T023 [US1] Run `php artisan test --compact tests/Unit/Mcp tests/Feature/Mcp tests/Unit/ViewModels/Docs tests/Feature/Controllers/Api`
@@ -84,7 +84,7 @@ No setup: no dependency, configuration, route or schema change.
 - [X] T028 [P] [US2] `app/Mcp/Tools/SetTemplateActivation.php`, mirrors `api.v1.templates.activation.update`, args `template`, `is_active` (required boolean); `ActivateTemplate` or `DeactivateTemplate` with two separate `if` blocks as `SetContactFavourite` does. Test: deactivating then activating flips `is_active`
 - [X] T029 [P] [US2] `app/Mcp/Tools/SetTemplatePosition.php`, mirrors `api.v1.templates.position.update`, args `template`, `position` (integer, min 1). Test: moving the second template to 1 swaps the positions
 - [X] T030 [P] [US2] `app/Mcp/Tools/DuplicateTemplate.php` (action `as DuplicateTemplateAction`), mirrors `api.v1.templates.duplicate.create`, args `template`, `name` (nullable, max 255), `slug` (nullable, max 255). Test: the copy exists with the given name
-- [X] T031 [US2] Register T024 to T030 in `app/Mcp/Servers/EricaServer.php`; add get-template to the read group and a `Templates, changing` group (changesData true) with the other six to `McpDocsViewModel::toolGroups()`; delete-template's sentence starts with "Deletes". Update the changing groups assertion from T021
+- [X] T031 [US2] Register T024 to T030 in `app/Mcp/Servers/MonicaServer.php`; add get-template to the read group and a `Templates, changing` group (changesData true) with the other six to `McpDocsViewModel::toolGroups()`; delete-template's sentence starts with "Deletes". Update the changing groups assertion from T021
 - [X] T032 [US2] Add `it_reports_a_template_of_another_account_as_not_existing_when_deleting` to `tests/Feature/Mcp/McpCompartmentTest.php` (delete-template on another account's template answers "That template does not exist." and the template remains). Run `php artisan test --compact tests/Unit/Mcp tests/Feature/Mcp tests/Unit/ViewModels/Docs`
 
 **Checkpoint**: US2 works through MCP.
@@ -111,7 +111,7 @@ No setup: no dependency, configuration, route or schema change.
 
 - Phase 2 blocks everything: T003 is used by every tool; T001/T002 decide what the section and field tools catch.
 - US1: T005 → T006 → T007 and T012 (the tool mirrors the extended endpoint). T008 to T019 are independent files after T003. T020 and T021 after all of them; T022 and T023 last.
-- US2 depends only on Phase 2. It can run before or alongside US1, except T031 and T020 both edit `EricaServer.php` and `McpDocsViewModel.php`, so run those two tasks one after the other.
+- US2 depends only on Phase 2. It can run before or alongside US1, except T031 and T020 both edit `MonicaServer.php` and `McpDocsViewModel.php`, so run those two tasks one after the other.
 - US3 after US1 and US2, so the page lists the final set.
 - Polish last.
 

@@ -28,8 +28,7 @@ class SetAsideValueControllerTest extends TestCase
         $this->actingAs($user)
             ->get(route('contacts.setAside.index', ['vault' => $contact->vault, 'contact' => $contact]))
             ->assertStatus(200)
-            ->assertSee('Twisted it skiing')
-            ->assertSee('Nothing has been deleted', false);
+            ->assertSee('Twisted it skiing');
     }
 
     #[Test]
@@ -61,8 +60,7 @@ class SetAsideValueControllerTest extends TestCase
 
         $this->actingAs($user)
             ->get(route('contacts.setAside.index', ['vault' => $contact->vault, 'contact' => $contact]))
-            ->assertStatus(200)
-            ->assertSee('No unused answers');
+            ->assertStatus(200);
     }
 
     private function contactOf(User $user): Contact

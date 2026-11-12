@@ -34,7 +34,7 @@ enum NumberFormatEnum: string implements Translatable
         return number_format($number, $decimals, $this->decimalSeparator(), $this->thousandsSeparator());
     }
 
-    private function thousandsSeparator(): string
+    public function thousandsSeparator(): string
     {
         return match ($this) {
             self::CommaAndDot => ',',
@@ -44,7 +44,7 @@ enum NumberFormatEnum: string implements Translatable
         };
     }
 
-    private function decimalSeparator(): string
+    public function decimalSeparator(): string
     {
         return match ($this) {
             self::CommaAndDot, self::NoSeparator => '.',

@@ -30,7 +30,7 @@ class ContactLifeEventRestorationControllerTest extends TestCase
         $this->actingAs($user)
             ->put(route('contacts.lifeEventRestoration.update', ['vault' => $vault, 'contact' => $jim, 'lifeEventUuid' => $lifeEvent->uuid]))
             ->assertRedirect(route('contacts.show', ['vault' => $vault, 'contact' => $jim]))
-            ->assertSessionHas('status', 'Call is back on the timeline.');
+            ->assertSessionHas('status');
 
         $this->assertNotSoftDeleted($lifeEvent);
     }

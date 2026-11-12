@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\CreateTemplate;
 use App\Models\EntityType;
 use App\Models\Template;
@@ -22,7 +22,7 @@ class CreateTemplateTest extends TestCase
     {
         $user = User::factory()->create();
 
-        EricaServer::actingAs($user)->tool(CreateTemplate::class, [
+        MonicaServer::actingAs($user)->tool(CreateTemplate::class, [
             'name' => 'Dundie nominee',
             'applies_to' => 'contact',
         ])->assertOk()->assertHasNoErrors()->assertSee('Dundie nominee');
@@ -36,7 +36,7 @@ class CreateTemplateTest extends TestCase
         $user = User::factory()->create();
         $entityType = EntityType::factory()->create(['account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(CreateTemplate::class, [
+        MonicaServer::actingAs($user)->tool(CreateTemplate::class, [
             'name' => 'Paper supplier',
             'applies_to' => 'entity',
             'entity_type' => $entityType->uuid,
@@ -51,7 +51,7 @@ class CreateTemplateTest extends TestCase
     {
         $user = User::factory()->create();
 
-        EricaServer::actingAs($user)->tool(CreateTemplate::class, [
+        MonicaServer::actingAs($user)->tool(CreateTemplate::class, [
             'name' => 'Paper supplier',
             'applies_to' => 'entity',
         ])->assertHasErrors(['entity type field is required']);

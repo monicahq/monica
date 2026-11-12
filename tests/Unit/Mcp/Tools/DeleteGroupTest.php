@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\DeleteGroup;
 use App\Models\Group;
 use App\Models\User;
@@ -26,7 +26,7 @@ class DeleteGroupTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $group = Group::factory()->create(['vault_id' => $vault->id]);
 
-        EricaServer::actingAs($user)->tool(DeleteGroup::class, ['vault' => $vault->uuid, 'group' => $group->uuid])
+        MonicaServer::actingAs($user)->tool(DeleteGroup::class, ['vault' => $vault->uuid, 'group' => $group->uuid])
             ->assertOk()
             ->assertHasNoErrors();
 

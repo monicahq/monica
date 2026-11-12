@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\ListGroupNotes;
 use App\Models\Group;
 use App\Models\GroupNote;
@@ -26,7 +26,7 @@ class ListGroupNotesTest extends TestCase
         $group = Group::factory()->create(['vault_id' => $vault->id]);
         GroupNote::factory()->create(['group_id' => $group->id, 'body' => 'Oscar brings the cheese.']);
 
-        EricaServer::actingAs($user)->tool(ListGroupNotes::class, ['vault' => $vault->uuid, 'group' => $group->uuid])
+        MonicaServer::actingAs($user)->tool(ListGroupNotes::class, ['vault' => $vault->uuid, 'group' => $group->uuid])
             ->assertOk()
             ->assertSee('Oscar brings the cheese.');
     }

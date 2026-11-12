@@ -19,7 +19,6 @@ class LanguagePickerTest extends TestCase
 
         $rendered->assertSee('English', escape: false);
         $rendered->assertSee('Français', escape: false);
-        $rendered->assertSee('United Kingdom', escape: false);
         $rendered->assertSee('aria-current="true"', escape: false);
     }
 

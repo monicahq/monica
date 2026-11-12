@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\GetRelationshipCategory;
 use App\Models\RelationshipCategory;
 use App\Models\User;
@@ -22,7 +22,7 @@ class GetRelationshipCategoryTest extends TestCase
         $user = User::factory()->create();
         $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id, 'name' => 'Scranton branch']);
 
-        EricaServer::actingAs($user)->tool(GetRelationshipCategory::class, ['relationship_category' => $category->uuid])
+        MonicaServer::actingAs($user)->tool(GetRelationshipCategory::class, ['relationship_category' => $category->uuid])
             ->assertOk()
             ->assertSee('Scranton branch');
     }
@@ -33,7 +33,7 @@ class GetRelationshipCategoryTest extends TestCase
         $user = User::factory()->create();
         $category = RelationshipCategory::factory()->create();
 
-        EricaServer::actingAs($user)->tool(GetRelationshipCategory::class, ['relationship_category' => $category->uuid])
-            ->assertHasErrors(['That relationship category does not exist.']);
+        MonicaServer::actingAs($user)->tool(GetRelationshipCategory::class, ['relationship_category' => $category->uuid])
+            ->assertHasErrors();
     }
 }

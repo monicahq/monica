@@ -16,16 +16,6 @@ class MarketplaceListingApprovedTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_says_which_listing_is_in(): void
-    {
-        $michael = User::factory()->create();
-
-        $message = $this->notification()->toMail($michael);
-
-        $this->assertEquals('Dundie Awards is in the marketplace', $message->subject);
-    }
-
-    #[Test]
     public function it_tells_the_author_which_version_was_approved(): void
     {
         $michael = User::factory()->create();

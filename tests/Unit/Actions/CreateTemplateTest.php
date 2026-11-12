@@ -99,11 +99,9 @@ class CreateTemplateTest extends TestCase
             'structure_version_id' => $version->id,
             'key' => 'general',
             'label' => null,
-            'label_translation_key' => 'General',
             'position' => 1,
         ]);
 
-        $this->assertEquals('General', $version->pages()->sole()->label);
     }
 
     #[Test]

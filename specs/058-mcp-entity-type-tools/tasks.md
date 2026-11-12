@@ -24,7 +24,7 @@ CreateEntityTypeAction;`). The `entity_type` input is described as "The identifi
 type, as list-entity-types gives it."
 
 **Model for every tool test**: `tests/Unit/Mcp/Tools/DeleteTemplateTest.php`:
-`EricaServer::actingAs($user)->tool(Tool::class, [...])->assertOk()->assertHasNoErrors()` or
+`MonicaServer::actingAs($user)->tool(Tool::class, [...])->assertOk()->assertHasNoErrors()` or
 `->assertHasErrors(['sentence'])`, plus `it_names_the_api_capability_it_mirrors`.
 
 ## Format: `[ID] [P?] [Story] Description`
@@ -61,7 +61,7 @@ back, change its colour only, and see names and slug unchanged.
 - [X] T005 [P] [US1] Create `app/Mcp/Tools/GetEntityType.php`: `#[IsReadOnly]`, `#[Description('Return one kind of record the account keeps besides contacts: its names, slug, icon, colour, position, whether new records can be added and how many exist.')]`, mirrors `api.v1.entityTypes.show`; validates `entity_type` required string; returns the resource of `$this->entityType($request, ...)`.
 - [X] T006 [P] [US1] Create `app/Mcp/Tools/CreateEntityType.php`: mirrors `api.v1.entityTypes.create`, description ends "The change is written to the account journal."; rules copied from `App\Http\Controllers\Api\EntityTypeController::create()` verbatim: `name_singular` and `name_plural` `['required', 'string', 'max:255']`, `description` `['nullable', 'string', 'max:65535']`, `icon` `['nullable', 'string', Rule::in(EntityType::ICONS)]`, `colour` `['nullable', 'string', Rule::in(EntityType::COLOURS)]`, `is_active` `['nullable', 'boolean']`, `slug` `['nullable', 'string', 'max:'.EntityType::SLUG_LENGTH, 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/', Rule::unique('entity_types', 'slug')->where('account_id', $user->account_id)]`. Calls `CreateEntityTypeAction` with `isActive: $validated['is_active'] ?? true`. Schema: the `icon` and `colour` descriptions list the allowed values with `implode(', ', EntityType::ICONS)` / `COLOURS` (research R6); `slug` says it is fixed once created and derived from the singular name when left out.
 - [X] T007 [P] [US1] Create `app/Mcp/Tools/UpdateEntityType.php`: mirrors `api.v1.entityTypes.update`; every attribute optional (research R2): `name_singular`, `name_plural` `['nullable', 'string', 'max:255']`, `description` `['nullable', 'string', 'max:65535']`, `icon` `['nullable', 'string', Rule::in(EntityType::ICONS)]`, `colour` `['nullable', 'string', Rule::in(EntityType::COLOURS)]`. Fills what is missing from the stored type (`$validated['name_singular'] ?? $entityType->name_singular`; `description` with `array_key_exists`, as `UpdateTemplate` does) and calls `UpdateEntityTypeAction`. Description says anything left out keeps its value and the slug cannot change. Returns the resource of `$entityType->refresh()`.
-- [X] T008 [US1] Register `GetEntityType`, `CreateEntityType` and `UpdateEntityType` in `$tools` in `app/Mcp/Servers/EricaServer.php`, next to `ListEntityTypes`, and import them.
+- [X] T008 [US1] Register `GetEntityType`, `CreateEntityType` and `UpdateEntityType` in `$tools` in `app/Mcp/Servers/MonicaServer.php`, next to `ListEntityTypes`, and import them.
 
 **Checkpoint**: T002 to T004 pass; `tests/Feature/Mcp/McpCatalogueTest.php` passes.
 
@@ -85,10 +85,10 @@ one, and be refused on one holding records.
 - [X] T012 [P] [US2] Create `app/Mcp/Tools/SetEntityTypeActivation.php`: mirrors `api.v1.entityTypes.activation.update`; validates `entity_type` required string, `is_active` `['required', 'boolean']`; returns early with the resource when `$validated['is_active'] === $entityType->is_active` (research R5, as `EntityTypeActivationController::settle()`); otherwise `ActivateEntityType` or `DeactivateEntityType`. Description: "Switch a kind of record on, so new records of it can be added, or off. Existing records stay. The change is written to the account journal."
 - [X] T013 [P] [US2] Create `app/Mcp/Tools/SetEntityTypePosition.php`: mirrors `api.v1.entityTypes.position.update`; validates `position` `['required', 'integer', 'min:1']`; calls `UpdateEntityTypePosition` with `(int) $validated['position']`; returns the resource of `$entityType->refresh()`.
 - [X] T014 [P] [US2] Create `app/Mcp/Tools/DeleteEntityType.php`: `#[IsDestructive]`, mirrors `api.v1.entityTypes.destroy`; calls `DestroyEntityType` inside `try`, `catch (AuthorizationException $e) { return Response::error($e->getMessage()); }` (research R4); answers `Response::text(__('The entity type is deleted.'))`. Description: "Delete a kind of record. A type still holding records is refused; switch it off instead. The change is written to the account journal."
-- [X] T015 [US2] Register `SetEntityTypeActivation`, `SetEntityTypePosition` and `DeleteEntityType` in `$tools` in `app/Mcp/Servers/EricaServer.php`.
+- [X] T015 [US2] Register `SetEntityTypeActivation`, `SetEntityTypePosition` and `DeleteEntityType` in `$tools` in `app/Mcp/Servers/MonicaServer.php`.
 - [X] T016 [US2] In `tests/Feature/Mcp/McpCompartmentTest.php`, add `it_does_not_delete_an_entity_type_of_another_account` (as `it_does_not_delete_a_template_of_another_account`: `EntityType::factory()->create()`, `assertHasErrors(['That entity type does not exist.'])`, `assertModelExists`).
 - [X] T017 [US2] In `tests/Feature/Mcp/McpChangelogTest.php`, add `it_records_an_entity_type_change_as_having_arrived_over_mcp` (as the template case: invoke `create-entity-type` with the key named `Dundie awards bot`, then `assertDatabaseHas('logs', ['source' => LogSourceEnum::Mcp->value, 'source_detail' => 'Dundie awards bot'])`).
-- [X] T018 [US2] Add one sentence to the `#[Instructions]` text in `app/Mcp/Servers/EricaServer.php`: an entity type is a kind of record besides contacts, its records follow a template created with create-template for that entity type, and a type still holding records can only be switched off, not deleted.
+- [X] T018 [US2] Add one sentence to the `#[Instructions]` text in `app/Mcp/Servers/MonicaServer.php`: an entity type is a kind of record besides contacts, its records follow a template created with create-template for that entity type, and a type still holding records can only be switched off, not deleted.
 
 **Checkpoint**: T009 to T011, T016 and T017 pass; `McpCatalogueTest` passes (it checks the
 `delete-` prefix carries `destructiveHint`).
@@ -121,7 +121,7 @@ one, and be refused on one holding records.
 ## Dependencies
 
 - T001 blocks every tool (T005 to T007, T012 to T014).
-- US1 and US2 are independent of each other once T001 is done; both edit `EricaServer.php` (T008,
+- US1 and US2 are independent of each other once T001 is done; both edit `MonicaServer.php` (T008,
   T015, T018), so those tasks run one after another.
 - US3 (T019 to T022) needs every tool registered, since `it_lists_exactly_the_tools_the_server_registers`
   compares against the server.

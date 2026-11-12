@@ -42,7 +42,7 @@ app/Http/Controllers/Api/ContactRelationshipController.php   index, create, show
 app/Http/Resources/RelationshipResource.php
 app/Mcp/Tools/MirrorsAnApiCapability.php              + relationship(Contact, string)
 app/Mcp/Tools/{List,Get,Create,Update,Delete}ContactRelationship(s).php
-app/Mcp/Servers/EricaServer.php                       register tools, one instructions paragraph
+app/Mcp/Servers/MonicaServer.php                       register tools, one instructions paragraph
 app/ViewModels/Docs/McpDocsViewModel.php              two groups: Relationships, reading / changing
 resources/docs/api/23-relationships.php               API reference page
 lang/*.json                                           via php artisan monica:localize
@@ -76,7 +76,7 @@ Following `.claude/rules/testing.md`, rules already proven in `CreateRelationshi
 
 - Contact slugs are unique per vault only; `other_contact` is always looked up inside the URL's
   vault, so no ambiguity (R4).
-- The unmerged web links branch touches `EricaServer` and the docs; expect a small merge (R10).
+- The unmerged web links branch touches `MonicaServer` and the docs; expect a small merge (R10).
 
 ## Complexity Tracking
 

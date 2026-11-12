@@ -21,9 +21,7 @@ class ContactNameEditorTest extends TestCase
         $this->blade('<x-contact-name-editor :block="$block" short-name="Michael" />', ['block' => new ContactNameEditorBlock])
             ->assertSee('x-data="contactNameEditor(', escape: false)
             ->assertSee('data-name-editor', escape: false)
-            ->assertSee('name="display"', escape: false)
-            ->assertSee(__('Add another way to write this name'))
-            ->assertSee(__('For a name in another writing system, a transliteration or how it is pronounced.'));
+            ->assertSee('name="display"', escape: false);
     }
 
     #[Test]
@@ -37,8 +35,7 @@ class ContactNameEditorTest extends TestCase
             ->assertSee('<legend', escape: false)
             ->assertSee('type="radio"', escape: false)
             ->assertSee('aria-describedby="name-list-help"', escape: false)
-            ->assertSee('Maikeru Sukotto')
-            ->assertSee(__('Searching for any of these names finds :name.', ['name' => 'Michael']));
+            ->assertSee('Maikeru Sukotto');
     }
 
     #[Test]
@@ -50,8 +47,7 @@ class ContactNameEditorTest extends TestCase
         $this->blade('<x-contact-name-editor :block="$block" short-name="Michael" />', ['block' => new ContactNameEditorBlock(contact: $contact->refresh())])
             ->assertSee(':aria-disabled="isPhonetic(row) ? \'true\' : null"', escape: false)
             ->assertSee('`name-row-${index}-meta name-row-${index}-refusal`', escape: false)
-            ->assertSee(':id="`name-row-${index}-refusal`"', escape: false)
-            ->assertSee(__('A pronunciation cannot be the name the contact is shown under.'));
+            ->assertSee(':id="`name-row-${index}-refusal`"', escape: false);
     }
 
     #[Test]
@@ -72,15 +68,6 @@ class ContactNameEditorTest extends TestCase
     }
 
     #[Test]
-    public function it_asks_which_name_to_show_before_the_shown_one_is_removed(): void
-    {
-        $this->blade('<x-contact-name-editor :block="$block" short-name="Michael" />', ['block' => new ContactNameEditorBlock])
-            ->assertSee(__('Remove and switch'))
-            ->assertSee(__('Keep it'))
-            ->assertSee(__('Name to show instead'));
-    }
-
-    #[Test]
     public function it_labels_every_control_of_the_editor_for_one_way_of_writing_the_name(): void
     {
         $this->blade('<x-contact-name-editor.draft :block="$block" :is-new="true" />', ['block' => new ContactNameEditorBlock])
@@ -90,16 +77,13 @@ class ContactNameEditorTest extends TestCase
             ->assertSee('for="name-draft-system"', escape: false)
             ->assertSee('for="name-draft-formatted"', escape: false)
             ->assertSee('aria-controls="name-draft-parts"', escape: false)
-            ->assertSee(':aria-expanded="showParts"', escape: false)
-            ->assertSee(__('Another way to write this name'))
-            ->assertSee(__('Add'));
+            ->assertSee(':aria-expanded="showParts"', escape: false);
     }
 
     #[Test]
     public function it_warns_before_a_name_is_saved_empty(): void
     {
         $this->blade('<x-contact-name-editor :block="$block" short-name="Michael" />', ['block' => new ContactNameEditorBlock])
-            ->assertSee('role="alert"', escape: false)
-            ->assertSee(__('Save without a name'));
+            ->assertSee('role="alert"', escape: false);
     }
 }

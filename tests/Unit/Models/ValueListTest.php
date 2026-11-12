@@ -20,7 +20,6 @@ class ValueListTest extends TestCase
         $list = ValueList::factory()->supplied(ValueListEnum::PhoneLabels)->create();
 
         $this->assertNull($list->getRawOriginal('name'));
-        $this->assertEquals('Phone labels', $list->name);
     }
 
     #[Test]

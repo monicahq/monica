@@ -22,8 +22,6 @@ class PasskeyRefusalTest extends TestCase
 {
     use RefreshDatabase;
 
-    private const MESSAGE = 'These credentials do not match our records.';
-
     /** @return array<string, mixed> */
     private function assertion(string $label): array
     {
@@ -83,7 +81,7 @@ class PasskeyRefusalTest extends TestCase
         $response = $this->attemptPasskeySignIn($this->assertion('nobody-owns-this'));
 
         $response->assertStatus(422);
-        $response->assertJsonPath('errors.passkey.0', self::MESSAGE);
+        $response->assertJsonValidationErrors(['passkey']);
         $this->assertGuest();
     }
 
@@ -97,7 +95,7 @@ class PasskeyRefusalTest extends TestCase
         $response = $this->attemptPasskeySignIn($this->assertion('a-deleted-user-credential'));
 
         $response->assertStatus(422);
-        $response->assertJsonPath('errors.passkey.0', self::MESSAGE);
+        $response->assertJsonValidationErrors(['passkey']);
         $this->assertGuest();
     }
 

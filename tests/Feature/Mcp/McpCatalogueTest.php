@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Mcp;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\MirrorsAnApiCapability;
 use App\Models\Administrator;
 use App\Models\User;
@@ -49,7 +49,7 @@ class McpCatalogueTest extends TestCase
         Administrator::factory()->create(['user_id' => $user->id]);
         $user->withAccessToken(PersonalAccessToken::findToken($user->createToken('Every scope', ['*', 'administration'])->plainTextToken));
 
-        $offered = EricaServer::actingAs($user)->tools();
+        $offered = MonicaServer::actingAs($user)->tools();
 
         $offered->assertRegistered($this->registeredTools());
     }
@@ -91,7 +91,7 @@ class McpCatalogueTest extends TestCase
     private function registeredTools(): array
     {
         /** @var array<int, class-string<Tool>> $tools */
-        $tools = new ReflectionClass(EricaServer::class)->getDefaultProperties()['tools'];
+        $tools = new ReflectionClass(MonicaServer::class)->getDefaultProperties()['tools'];
 
         return $tools;
     }

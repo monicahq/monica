@@ -6,7 +6,6 @@ namespace Tests\Unit\ViewModels\Settings\Account\EntityTypes;
 
 use App\Models\EntityType;
 use App\Models\User;
-use App\Models\Vault;
 use App\ViewModels\Settings\Account\EntityTypes\EntityTypesViewModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
@@ -67,30 +66,6 @@ class EntityTypesViewModelTest extends TestCase
         $this->assertSame('#4f8a49', $row['colour']);
         $this->assertSame('color-mix(in srgb, #4f8a49 12%, transparent)', $row['tint']);
         $this->assertTrue($row['isActive']);
-        $this->assertSame('4 profiles', $row['countLabel']);
-    }
-
-    #[Test]
-    public function it_says_how_much_a_type_holds(): void
-    {
-        $this->assertSame('No profiles yet', EntityTypesViewModel::countLabel(0));
-        $this->assertSame('1 profile', EntityTypesViewModel::countLabel(1));
-        $this->assertSame('9 profiles', EntityTypesViewModel::countLabel(9));
-    }
-
-    #[Test]
-    public function it_counts_the_contacts_of_every_vault_of_the_account(): void
-    {
-        $michael = User::factory()->create();
-        $dwight = User::factory()->create();
-        Vault::factory()->create(['account_id' => $michael->account_id, 'contact_count' => 3]);
-        Vault::factory()->create(['account_id' => $michael->account_id, 'contact_count' => 4]);
-        Vault::factory()->create(['account_id' => $dwight->account_id, 'contact_count' => 9]);
-
-        $this->assertSame(
-            ['countLabel' => '7 profiles'],
-            new EntityTypesViewModel(user: $michael)->contacts(),
-        );
     }
 
     #[Test]

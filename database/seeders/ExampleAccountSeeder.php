@@ -14,6 +14,13 @@ use App\Actions\CreateGroup;
 use App\Actions\CreateGroupMembership;
 use App\Actions\CreateLifeEvent;
 use App\Actions\CreateManualReminder;
+use App\Actions\CreatePossession;
+use App\Actions\CreatePossessionInsuranceRecord;
+use App\Actions\CreatePossessionLoan;
+use App\Actions\CreatePossessionMaintenanceRecord;
+use App\Actions\CreatePossessionProvenanceEvent;
+use App\Actions\CreatePossessionTransaction;
+use App\Actions\CreatePossessionValuation;
 use App\Actions\CreateRelationship;
 use App\Actions\CreateRelationshipType;
 use App\Actions\CreateReminder;
@@ -25,12 +32,16 @@ use App\Actions\SetFieldValue;
 use App\Actions\UpdateRelationship;
 use App\Enums\AddressLabelEnum;
 use App\Enums\ContactCategoryEnum;
+use App\Enums\CurrencyEnum;
 use App\Enums\DatePrecisionEnum;
 use App\Enums\DefaultFieldEnum;
 use App\Enums\EmailLabelEnum;
 use App\Enums\FieldTypeEnum;
 use App\Enums\GenderEnum;
 use App\Enums\PhoneLabelEnum;
+use App\Enums\PossessionLoanDirectionEnum;
+use App\Enums\PossessionLoanStatusEnum;
+use App\Enums\PossessionTransactionTypeEnum;
 use App\Enums\RelationshipCategoryEnum;
 use App\Enums\RelationshipStatusEnum;
 use App\Enums\ReminderAnswerEnum;
@@ -90,6 +101,7 @@ class ExampleAccountSeeder extends Seeder
         $this->createRelationships();
         $this->createLifeEvents();
         $this->createGroups();
+        $this->createPossessions();
         $this->createContactReminders();
         $this->grantAdministratorAccess();
         $this->createSupportRequests();
@@ -277,6 +289,143 @@ class ExampleAccountSeeder extends Seeder
                     joinedPrecision: $member['joined'] === null ? DatePrecisionEnum::Unknown : DatePrecisionEnum::Day,
                     leftOn: $member['left'] === null ? null : CarbonImmutable::parse($member['left']),
                     leftPrecision: $member['left'] === null ? DatePrecisionEnum::Unknown : DatePrecisionEnum::Day,
+                )->execute();
+            }
+        }
+    }
+
+    private function createPossessions(): void
+    {
+        $locale = $this->user->locale ?? config('app.locale');
+
+        $possessionTypes = $this->user->account->possessionTypes()->with('fields')->get()->keyBy('name');
+
+        $locations = $this->user->account->locations()->get()->keyBy('name');
+
+        $conditions = $this->user->account->possessionConditions()->get()->keyBy('name');
+
+        foreach (new ExamplePossessions()->all() as $example) {
+            $possessionType = $possessionTypes[__($example['type']->label(), [], $locale)];
+            $fields = $possessionType->fields->keyBy('name');
+            $values = [];
+
+            foreach ($example['values'] as $name => $value) {
+                $values[$fields[__($name, [], $locale)]->uuid] = $value;
+            }
+
+            $possession = new CreatePossession(
+                user: $this->user,
+                vault: $this->vault,
+                possessionType: $possessionType,
+                name: $example['name'],
+                description: $example['description'],
+                location: $example['location'] === null ? null : $locations[__($example['location']->label(), [], $locale)],
+                status: $example['status'],
+                quantity: $example['quantity'],
+                isFeatured: $example['featured'],
+                declaredValue: $example['declared_value'],
+                declaredValueCurrency: $example['declared_value'] === null ? null : CurrencyEnum::UsDollar,
+                values: $values,
+                tagNames: $example['tags'],
+            )->execute();
+
+            $purchase = null;
+
+            if ($example['purchase'] !== null) {
+                $purchase = new CreatePossessionTransaction(
+                    user: $this->user,
+                    possession: $possession,
+                    type: PossessionTransactionTypeEnum::Purchase,
+                    occurredOn: CarbonImmutable::parse($example['purchase']['date']),
+                    counterparty: $example['purchase']['counterparty'],
+                    amount: $example['purchase']['amount'],
+                    currency: CurrencyEnum::UsDollar,
+                )->execute();
+            }
+
+            $insurance = $example['insurance'];
+
+            if ($insurance !== null) {
+                new CreatePossessionInsuranceRecord(
+                    user: $this->user,
+                    possession: $possession,
+                    insurer: $insurance['insurer'],
+                    status: $insurance['status'],
+                    insuredValue: $insurance['insured_value'],
+                    currency: CurrencyEnum::UsDollar,
+                    policyNumber: $insurance['policy_number'],
+                    coverage: $insurance['coverage'],
+                    excess: $insurance['excess'],
+                    startsOn: CarbonImmutable::parse($insurance['starts_on']),
+                    endsOn: $insurance['ends_on'] === null ? null : CarbonImmutable::parse($insurance['ends_on']),
+                    isListedIndividually: $insurance['listed_individually'],
+                )->execute();
+            }
+
+            foreach ($example['maintenance'] as $maintenance) {
+                new CreatePossessionMaintenanceRecord(
+                    user: $this->user,
+                    possession: $possession,
+                    type: $maintenance['type'],
+                    title: $maintenance['title'],
+                    performedOn: CarbonImmutable::parse($maintenance['performed_on']),
+                    performedBy: $maintenance['performed_by'],
+                    cost: $maintenance['cost'],
+                    currency: $maintenance['cost'] === null ? null : CurrencyEnum::UsDollar,
+                    conditionBefore: $maintenance['condition_before'] === null ? null : $conditions[__($maintenance['condition_before']->label(), [], $locale)],
+                    conditionAfter: $maintenance['condition_after'] === null ? null : $conditions[__($maintenance['condition_after']->label(), [], $locale)],
+                    nextDueOn: $maintenance['next_due_on'] === null ? null : CarbonImmutable::parse($maintenance['next_due_on']),
+                    description: $maintenance['description'],
+                )->execute();
+            }
+
+            foreach ($example['valuations'] as $valuation) {
+                new CreatePossessionValuation(
+                    user: $this->user,
+                    possession: $possession,
+                    type: $valuation['type'],
+                    valuedOn: CarbonImmutable::parse($valuation['valued_on']),
+                    amount: $valuation['amount'],
+                    currency: CurrencyEnum::UsDollar,
+                    confidence: $valuation['confidence'],
+                    valuer: $valuation['valuer'],
+                    method: $valuation['method'],
+                    referenceNumber: $valuation['reference_number'],
+                    sourceUrl: $valuation['source_url'],
+                    note: $valuation['note'],
+                )->execute();
+            }
+
+            foreach ($example['provenance'] ?? [] as $event) {
+                new CreatePossessionProvenanceEvent(
+                    user: $this->user,
+                    possession: $possession,
+                    type: $event['type'],
+                    datePrecision: $event['date_precision'],
+                    occurredOn: $event['occurred_on'],
+                    title: $event['title'],
+                    from: $event['from'],
+                    to: $event['to'],
+                    location: $event['location'],
+                    description: $event['description'],
+                    transaction: $event['linked_to_purchase'] ? $purchase : null,
+                    isVerified: $event['verified'],
+                )->execute();
+            }
+
+            foreach ($example['loans'] ?? [] as $loan) {
+                new CreatePossessionLoan(
+                    user: $this->user,
+                    possession: $possession,
+                    direction: PossessionLoanDirectionEnum::Lent,
+                    status: PossessionLoanStatusEnum::Returned,
+                    startedOn: CarbonImmutable::parse($loan['started_on']),
+                    contact: $this->contacts[$loan['contact']],
+                    dueOn: $loan['due_on'] === null ? null : CarbonImmutable::parse($loan['due_on']),
+                    returnedOn: CarbonImmutable::parse($loan['returned_on']),
+                    conditionOut: $loan['condition_out'] === null ? null : $conditions[__($loan['condition_out']->label(), [], $locale)],
+                    conditionBack: $loan['condition_back'] === null ? null : $conditions[__($loan['condition_back']->label(), [], $locale)],
+                    purpose: $loan['purpose'],
                 )->execute();
             }
         }

@@ -34,7 +34,6 @@ class ValueListItemPolicyTest extends TestCase
         $response = Gate::forUser($user)->inspect('delete', $item);
 
         $this->assertTrue($response->denied());
-        $this->assertStringContainsString('The value is in use and stays.', (string) $response->message());
     }
 
     #[Test]

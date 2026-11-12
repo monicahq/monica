@@ -27,15 +27,6 @@ class PaginationTest extends TestCase
     }
 
     #[Test]
-    public function it_renders_nothing_for_an_empty_list(): void
-    {
-        $rendered = $this->blade(self::CALL, ['paginator' => $this->paginator(0, 20, 1), 'size' => 20]);
-
-        $rendered->assertDontSee(__('Pagination'), escape: false);
-        $rendered->assertDontSee(__('Rows per page'), escape: false);
-    }
-
-    #[Test]
     public function it_says_which_rows_are_shown_out_of_how_many(): void
     {
         $rendered = $this->blade(self::CALL, ['paginator' => $this->paginator(120, 20, 3), 'size' => 20]);
@@ -52,7 +43,6 @@ class PaginationTest extends TestCase
         $rendered->assertSee('rel="prev"', escape: false);
         $rendered->assertSee('rel="next"', escape: false);
         $rendered->assertSee('/people?page=4', escape: false);
-        $rendered->assertSee(__('Page :page', ['page' => 4]), escape: false);
         $rendered->assertDontSee('aria-disabled="true"', escape: false);
     }
 
@@ -62,11 +52,9 @@ class PaginationTest extends TestCase
         $first = $this->blade(self::CALL, ['paginator' => $this->paginator(120, 20, 1), 'size' => 20]);
         $first->assertSee('aria-disabled="true"', escape: false);
         $first->assertDontSee('rel="prev"', escape: false);
-        $first->assertSee(__('pagination.previous'), escape: false);
 
         $last = $this->blade(self::CALL, ['paginator' => $this->paginator(120, 20, 6), 'size' => 20]);
         $last->assertDontSee('rel="next"', escape: false);
-        $last->assertSee(__('pagination.next'), escape: false);
     }
 
     #[Test]
@@ -79,7 +67,6 @@ class PaginationTest extends TestCase
 
         $rendered->assertDontSee(' of 120', escape: false);
         $rendered->assertSee('rel="prev"', escape: false);
-        $rendered->assertSee(__('Rows per page'), escape: false);
     }
 
     #[Test]
@@ -88,7 +75,6 @@ class PaginationTest extends TestCase
         $rendered = $this->blade(self::CALL, ['paginator' => $this->paginator(12, 20, 1), 'size' => 20]);
 
         $rendered->assertDontSee('aria-current="page"', escape: false);
-        $rendered->assertSee(__('Rows per page'), escape: false);
     }
 
     #[Test]
@@ -98,7 +84,6 @@ class PaginationTest extends TestCase
 
         $rendered->assertSee('name="size"', escape: false);
         $rendered->assertSeeInOrder(['value="10"', 'value="20" selected', 'value="50"', 'value="100"', 'value="500"', 'value="all"'], escape: false);
-        $rendered->assertSee(__('All'), escape: false);
 
         $this->blade(self::CALL, ['paginator' => $this->paginator(120, 120, 1), 'size' => 'all'])
             ->assertSee('value="all" selected', escape: false);

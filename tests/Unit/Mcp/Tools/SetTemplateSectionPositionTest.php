@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\SetTemplateSectionPosition;
 use App\Models\SectionVersion;
 use App\Models\StructureVersion;
@@ -31,7 +31,7 @@ class SetTemplateSectionPositionTest extends TestCase
             'position' => $position,
         ]))->all();
 
-        EricaServer::actingAs($user)->tool(SetTemplateSectionPosition::class, [
+        MonicaServer::actingAs($user)->tool(SetTemplateSectionPosition::class, [
             'template' => $template->uuid,
             'version' => 1,
             'section' => (string) $second->id,

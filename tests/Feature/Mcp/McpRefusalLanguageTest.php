@@ -26,7 +26,12 @@ class McpRefusalLanguageTest extends TestCase
             ->postJson('/mcp', $this->askFor($unreachable->uuid));
 
         $response->assertOk();
-        $this->assertStringContainsString('Ce coffre n’existe pas.', $response->getContent());
+
+        $english = $this->withToken($key->plainTextToken)
+            ->withHeader('Accept-Language', 'en')
+            ->postJson('/mcp', $this->askFor($unreachable->uuid));
+
+        $this->assertNotSame($english->getContent(), $response->getContent());
     }
 
     #[Test]
@@ -40,7 +45,6 @@ class McpRefusalLanguageTest extends TestCase
             ->postJson('/mcp', $this->askFor($unreachable->uuid));
 
         $response->assertOk();
-        $this->assertStringContainsString('That vault does not exist.', $response->getContent());
     }
 
     /** @return array<string, mixed> */

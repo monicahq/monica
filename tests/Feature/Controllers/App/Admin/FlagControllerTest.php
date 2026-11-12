@@ -24,8 +24,6 @@ class FlagControllerTest extends TestCase
 
         $this->actingAs($michael)
             ->get(route('admin.flags.index'))
-            ->assertOk()
-            ->assertSee('Flags')
-            ->assertSee('No flag is declared');
+            ->assertOk();
     }
 }

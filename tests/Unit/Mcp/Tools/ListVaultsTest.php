@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\ListVaults;
 use App\Models\User;
 use App\Models\Vault;
@@ -22,7 +22,7 @@ class ListVaultsTest extends TestCase
         $user = User::factory()->create();
         Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Dunder Mifflin']);
 
-        EricaServer::actingAs($user)->tool(ListVaults::class)
+        MonicaServer::actingAs($user)->tool(ListVaults::class)
             ->assertOk()
             ->assertHasNoErrors()
             ->assertSee('Dunder Mifflin');

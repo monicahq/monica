@@ -617,7 +617,7 @@ class SetFieldValuesTest extends TestCase
             values: [$address->id => ['city' => 'Toronto', 'country' => (string) $canada->id]],
         )->execute();
 
-        $this->assertSame('Canada', FieldValue::query()->where('field_id', $address->id)->sole()->value_json['country']);
+        $this->assertSame($canada->label, FieldValue::query()->where('field_id', $address->id)->sole()->value_json['country']);
     }
 
     #[Test]

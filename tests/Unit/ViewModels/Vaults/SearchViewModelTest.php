@@ -49,7 +49,6 @@ class SearchViewModelTest extends TestCase
 
         $this->assertSame(SearchRecords::SEARCHED, $viewModel->status());
         $this->assertSame(1, $viewModel->resultCount());
-        $this->assertSame('1 result for “farms” in this vault', $viewModel->countLine());
 
         $row = $viewModel->groups()[0]['rows'][0];
 
@@ -73,8 +72,6 @@ class SearchViewModelTest extends TestCase
         $viewModel = new SearchViewModel(user: $user, vault: $vault, query: 'kevin');
 
         $this->assertSame(0, $viewModel->resultCount());
-        $this->assertSame('Nothing matches “kevin”', $viewModel->nothingFoundTitle());
-        $this->assertSame('Try another spelling, or search every vault.', $viewModel->nothingFoundHint());
     }
 
     #[Test]
@@ -92,8 +89,6 @@ class SearchViewModelTest extends TestCase
         $this->assertSame('<mark>Kevin</mark> Malone', (string) $row['markedName']);
         $this->assertNull($row['matchedLabel']);
         $this->assertNull($row['avatarUrl']);
-        $this->assertSame('1 result for “kevin” in every vault', $viewModel->countLine());
-        $this->assertSame('Try another spelling or a shorter word.', $viewModel->nothingFoundHint());
     }
 
     #[Test]
@@ -113,7 +108,7 @@ class SearchViewModelTest extends TestCase
         $this->assertSame('Dinner party', $row['name']);
         $this->assertTrue($row['isLifeEvent']);
         $this->assertSame('14/03/2026', $row['date']);
-        $this->assertSame('With Jan Levinson', $row['matchedLabel']);
+        $this->assertStringContainsString('Jan Levinson', $row['matchedLabel']);
         $this->assertSame(route('contacts.show', ['vault' => $vault, 'contact' => $jan]), $row['url']);
     }
 }

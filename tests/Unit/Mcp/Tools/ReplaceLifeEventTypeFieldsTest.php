@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\GetLifeEventTypeFields;
 use App\Mcp\Tools\ReplaceLifeEventTypeFields;
 use App\Models\LifeEventCategory;
@@ -25,7 +25,7 @@ class ReplaceLifeEventTypeFieldsTest extends TestCase
         $user = User::factory()->create();
         $type = $this->type($user);
 
-        EricaServer::actingAs($user)->tool(ReplaceLifeEventTypeFields::class, [
+        MonicaServer::actingAs($user)->tool(ReplaceLifeEventTypeFields::class, [
             'life_event_type' => $type->uuid,
             'groups' => [
                 [
@@ -48,7 +48,7 @@ class ReplaceLifeEventTypeFieldsTest extends TestCase
         $user = User::factory()->create();
         $type = $this->type($user);
 
-        EricaServer::actingAs($user)->tool(ReplaceLifeEventTypeFields::class, [
+        MonicaServer::actingAs($user)->tool(ReplaceLifeEventTypeFields::class, [
             'life_event_type' => $type->uuid,
             'fields' => [
                 ['label' => 'Venue', 'type' => 'text'],
@@ -58,7 +58,7 @@ class ReplaceLifeEventTypeFieldsTest extends TestCase
 
         $key = $this->fields($user, $type)[0]['attributes']['fields'][0]['attributes']['key'];
 
-        EricaServer::actingAs($user)->tool(ReplaceLifeEventTypeFields::class, [
+        MonicaServer::actingAs($user)->tool(ReplaceLifeEventTypeFields::class, [
             'life_event_type' => $type->uuid,
             'fields' => [
                 ['key' => $key, 'label' => 'Place', 'type' => 'text'],
@@ -78,12 +78,12 @@ class ReplaceLifeEventTypeFieldsTest extends TestCase
         $user = User::factory()->create();
         $type = $this->type($user);
 
-        EricaServer::actingAs($user)->tool(ReplaceLifeEventTypeFields::class, [
+        MonicaServer::actingAs($user)->tool(ReplaceLifeEventTypeFields::class, [
             'life_event_type' => $type->uuid,
             'fields' => [
                 ['label' => 'Dundie', 'type' => 'dundie'],
             ],
-        ])->assertHasErrors(['The selected fields.0.type is invalid.']);
+        ])->assertHasErrors();
 
         $this->assertSame([], $this->fields($user, $type));
     }

@@ -516,7 +516,7 @@ sentence naming that channel in the account's language.
 
 ## Assumptions
 
-- The account remains the unit of choice. Erica is mono-user, so an account is one person and one set
+- The account remains the unit of choice. Monica is mono-user, so an account is one person and one set
   of preferences, and no per-user or per-vault channel choice is introduced.
 - One destination per channel per account. Two rooms, two numbers or two addresses on one channel are
   out of scope, and adding them later does not invalidate anything here.

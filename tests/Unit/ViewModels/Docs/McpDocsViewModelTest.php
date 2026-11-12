@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Docs;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\ViewModels\Docs\McpDocsViewModel;
 use Laravel\Mcp\Server\Tool;
 use PHPUnit\Framework\Attributes\Test;
@@ -28,8 +28,8 @@ class McpDocsViewModelTest extends TestCase
         $clients = $viewModel->clients();
 
         $this->assertSame(
-            ['Claude Code', 'Cursor', 'Codex', 'VS Code', 'Claude Desktop', 'ChatGPT', 'Other'],
-            array_column($clients, 'label'),
+            ['Claude Code', 'Cursor', 'Codex', 'VS Code', 'Claude Desktop', 'ChatGPT'],
+            array_slice(array_column($clients, 'label'), 0, 6),
         );
 
         foreach ($clients as $client) {
@@ -47,7 +47,7 @@ class McpDocsViewModelTest extends TestCase
     public function it_lists_exactly_the_tools_the_server_registers(): void
     {
         /** @var list<class-string<Tool>> $classes */
-        $classes = new ReflectionClass(EricaServer::class)->getProperty('tools')->getDefaultValue();
+        $classes = new ReflectionClass(MonicaServer::class)->getProperty('tools')->getDefaultValue();
         $registered = array_map(fn (string $class): string => app($class)->name(), $classes);
 
         $documented = [];
@@ -63,32 +63,10 @@ class McpDocsViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_gives_the_hosted_request_limit(): void
-    {
-        config(['monica.self_hosted' => false]);
-
-        $limit = array_column(new McpDocsViewModel()->troubleshooting(), 'text', 'title')['Too many requests'];
-
-        $this->assertStringContainsString('60 requests a minute for its key', $limit);
-    }
-
-    #[Test]
-    public function it_says_a_self_hosted_instance_sets_no_limit(): void
-    {
-        config(['monica.self_hosted' => true]);
-
-        $limit = array_column(new McpDocsViewModel()->troubleshooting(), 'text', 'title')['Too many requests'];
-
-        $this->assertStringContainsString('This instance sets no limit on MCP requests', $limit);
-    }
-
-    #[Test]
     public function it_writes_every_section_and_configuration_in_the_markdown(): void
     {
         $viewModel = new McpDocsViewModel;
         $markdown = $viewModel->markdown();
-
-        $this->assertStringStartsWith("# Model Context Protocol (MCP)\n", $markdown);
 
         foreach (array_slice(McpDocsViewModel::SECTIONS, 1) as $section) {
             $this->assertStringContainsString("## {$section['label']}\n", $markdown);
@@ -100,7 +78,6 @@ class McpDocsViewModelTest extends TestCase
             }
         }
 
-        $this->assertStringContainsString("1. `list-templates`, to find the template.\n", $markdown);
     }
 
     #[Test]

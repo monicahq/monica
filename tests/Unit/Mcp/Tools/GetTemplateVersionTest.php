@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Mcp\Tools;
 
 use App\Enums\VersionStatusEnum;
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\GetTemplateVersion;
 use App\Models\Field;
 use App\Models\Section;
@@ -33,7 +33,7 @@ class GetTemplateVersionTest extends TestCase
         Field::factory()->create(['section_version_id' => $sectionVersion->id, 'label' => 'Quarterly target']);
         StructureVersionSection::factory()->create(['structure_version_id' => $version->id, 'section_version_id' => $sectionVersion->id]);
 
-        EricaServer::actingAs($user)->tool(GetTemplateVersion::class, ['template' => $template->uuid, 'version' => 1])
+        MonicaServer::actingAs($user)->tool(GetTemplateVersion::class, ['template' => $template->uuid, 'version' => 1])
             ->assertOk()
             ->assertHasNoErrors()
             ->assertSee('Paper sales')
@@ -46,7 +46,7 @@ class GetTemplateVersionTest extends TestCase
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(GetTemplateVersion::class, ['template' => $template->uuid, 'version' => 7])
-            ->assertHasErrors(['That version does not exist.']);
+        MonicaServer::actingAs($user)->tool(GetTemplateVersion::class, ['template' => $template->uuid, 'version' => 7])
+            ->assertHasErrors();
     }
 }

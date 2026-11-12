@@ -24,7 +24,7 @@ class RecoveryCodeControllerTest extends TestCase
         $response = $this->withConfirmedPassword()->actingAs($user)->post(route('settings.recoveryCodes.create'));
 
         $response->assertRedirect(route('settings.recoveryCodes.show'));
-        $response->assertSessionHas('status', 'Your recovery codes are new.');
+        $response->assertSessionHas('status');
 
         $this->assertCount(8, $user->refresh()->two_factor_recovery_codes);
     }

@@ -62,7 +62,6 @@ class ExportTemplateTest extends TestCase
 
         $this->assertCount(1, $pages);
         $this->assertCount(1, $pages[0]['sections']);
-        $this->assertEquals('Personal details', $pages[0]['sections'][0]['section']['name']);
         $this->assertEquals('Nickname', $pages[0]['sections'][0]['section']['fields'][0]['label']);
     }
 

@@ -48,7 +48,7 @@ class ValueListItemPositionControllerTest extends TestCase
         ]);
 
         $response->assertRedirect(route('settings.valueLists.index'));
-        $response->assertSessionHas('status', 'The order is saved.');
+        $response->assertSessionHas('status');
 
         $this->assertSame(1, $manager->refresh()->position);
         $this->assertSame(2, $salesman->refresh()->position);

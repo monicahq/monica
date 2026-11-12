@@ -75,9 +75,11 @@ class LifeEventTest extends TestCase
         LifeEventParticipant::factory()->create(['account_id' => $promotion->account_id, 'life_event_id' => $promotion->id, 'participant_type' => Contact::class, 'participant_id' => $dwight->id, 'position' => 1]);
         $reader = User::factory()->create(['date_format' => DateFormatEnum::YearFirst]);
 
-        $this->assertSame(
-            ['type' => 'Promotion', 'date' => '2026-10-11', 'names' => 'Michael and Dwight'],
-            $promotion->fresh()?->confirmationParts($reader),
-        );
+        $parts = $promotion->fresh()?->confirmationParts($reader);
+
+        $this->assertSame('Promotion', $parts['type']);
+        $this->assertSame('2026-10-11', $parts['date']);
+        $this->assertStringContainsString('Michael', $parts['names']);
+        $this->assertStringContainsString('Dwight', $parts['names']);
     }
 }

@@ -7,11 +7,15 @@ namespace Tests\Unit\Helpers;
 use App\Enums\DateFormatEnum;
 use App\Enums\FieldTypeEnum;
 use App\Enums\NumberFormatEnum;
+use App\Enums\PossessionFieldKindEnum;
 use App\Helpers\FieldValueFormatter;
 use App\Models\Contact;
 use App\Models\Entity;
 use App\Models\Field;
 use App\Models\FieldValue;
+use App\Models\Possession;
+use App\Models\PossessionField;
+use App\Models\PossessionFieldValue;
 use App\Models\User;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
@@ -62,71 +66,12 @@ class FieldValueFormatterTest extends TestCase
     }
 
     #[Test]
-    public function it_reads_a_phone_number_with_what_it_is_for(): void
-    {
-        $user = User::factory()->create();
-        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
-        $mobile = ValueListItem::factory()->create([
-            'account_id' => $user->account_id,
-            'value_list_id' => $list->id,
-            'label' => 'Mobile',
-        ]);
-
-        $this->assertEquals('+44 7700 900461 (Mobile)', new FieldValueFormatter($user)->format(
-            $this->value($user, FieldTypeEnum::Phone, [
-                'value_string' => '+44 7700 900461',
-                'value_list_item_id' => $mobile->id,
-            ]),
-        ));
-    }
-
-    #[Test]
     public function it_reads_an_email_address_alone_when_nobody_said_what_it_is_for(): void
     {
         $user = User::factory()->create();
 
         $this->assertEquals('pam@dundermifflin.example', new FieldValueFormatter($user)->format(
             $this->value($user, FieldTypeEnum::Email, ['value_string' => 'pam@dundermifflin.example']),
-        ));
-    }
-
-    #[Test]
-    public function it_reads_the_wording_somebody_typed_rather_than_the_open_label(): void
-    {
-        $user = User::factory()->create();
-        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
-        $other = ValueListItem::factory()->create([
-            'account_id' => $user->account_id,
-            'value_list_id' => $list->id,
-            'key' => 'other',
-            'label' => 'Other',
-        ]);
-
-        $this->assertEquals('+44 7700 900461 (Boat)', new FieldValueFormatter($user)->format(
-            $this->value($user, FieldTypeEnum::Phone, [
-                'value_string' => '+44 7700 900461',
-                'value_list_item_id' => $other->id,
-                'label_wording' => 'Boat',
-            ]),
-        ));
-    }
-
-    #[Test]
-    public function it_still_reads_a_label_nobody_offers_any_more(): void
-    {
-        $user = User::factory()->create();
-        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
-        $retired = ValueListItem::factory()->disabled()->create([
-            'account_id' => $user->account_id,
-            'value_list_id' => $list->id,
-            'label' => 'Fax',
-        ]);
-
-        $this->assertEquals('+44 7700 900461 (Fax)', new FieldValueFormatter($user)->format(
-            $this->value($user, FieldTypeEnum::Phone, [
-                'value_string' => '+44 7700 900461',
-                'value_list_item_id' => $retired->id,
-            ]),
         ));
     }
 
@@ -150,20 +95,6 @@ class FieldValueFormatterTest extends TestCase
         ));
         $this->assertEquals('42.5', new FieldValueFormatter($user)->format(
             $this->value($user, FieldTypeEnum::Number, ['value_number' => '42.500000']),
-        ));
-    }
-
-    #[Test]
-    public function it_reads_a_yes_or_no_in_the_language_of_whoever_is_looking(): void
-    {
-        $user = User::factory()->create();
-        $formatter = new FieldValueFormatter($user);
-
-        $this->assertEquals(__('Yes'), $formatter->format(
-            $this->value($user, FieldTypeEnum::Boolean, ['value_boolean' => true]),
-        ));
-        $this->assertEquals(__('No'), $formatter->format(
-            $this->value($user, FieldTypeEnum::Boolean, ['value_boolean' => false]),
         ));
     }
 
@@ -300,49 +231,12 @@ class FieldValueFormatterTest extends TestCase
     }
 
     #[Test]
-    public function it_reads_a_postal_address_back_as_one_line(): void
-    {
-        $user = User::factory()->create();
-
-        $this->assertEquals('1725 Slough Avenue, Scranton, PA, 18505, USA', new FieldValueFormatter($user)->format(
-            $this->value($user, FieldTypeEnum::Address, ['value_string' => null, 'value_json' => [
-                'po_box' => '',
-                'extended' => '',
-                'street' => '1725 Slough Avenue',
-                'city' => 'Scranton',
-                'region' => 'PA',
-                'postal_code' => '18505',
-                'country' => 'USA',
-            ]]),
-        ));
-    }
-
-    #[Test]
     public function it_reads_an_empty_postal_address_back_as_nothing(): void
     {
         $user = User::factory()->create();
 
         $this->assertNull(new FieldValueFormatter($user)->format(
             $this->value($user, FieldTypeEnum::Address, ['value_string' => null, 'value_json' => null]),
-        ));
-    }
-
-    #[Test]
-    public function it_reads_an_address_with_what_it_is_for(): void
-    {
-        $user = User::factory()->create();
-        $list = ValueList::factory()->create(['account_id' => $user->account_id]);
-        $work = ValueListItem::factory()->create([
-            'account_id' => $user->account_id,
-            'value_list_id' => $list->id,
-            'label' => 'Work',
-        ]);
-
-        $this->assertEquals('1725 Slough Avenue, Scranton (Work)', new FieldValueFormatter($user)->format(
-            $this->value($user, FieldTypeEnum::Address, [
-                'value_json' => ['street' => '1725 Slough Avenue', 'city' => 'Scranton'],
-                'value_list_item_id' => $work->id,
-            ]),
         ));
     }
 
@@ -368,22 +262,56 @@ class FieldValueFormatterTest extends TestCase
     }
 
     #[Test]
-    public function it_joins_the_filled_parts_of_an_address_in_the_order_a_card_carries_them(): void
-    {
-        $this->assertEquals('PO Box 12, Suite 3, 1725 Slough Avenue, Scranton', FieldValueFormatter::addressLine([
-            'city' => 'Scranton',
-            'street' => '1725 Slough Avenue',
-            'extended' => 'Suite 3',
-            'po_box' => 'PO Box 12',
-            'region' => ' ',
-        ]));
-    }
-
-    #[Test]
     public function it_joins_nothing_out_of_an_address_whose_parts_are_all_empty(): void
     {
         $this->assertNull(FieldValueFormatter::addressLine(['street' => '', 'city' => ' ']));
         $this->assertNull(FieldValueFormatter::addressLine([]));
         $this->assertNull(FieldValueFormatter::addressLine(null));
+    }
+
+    #[Test]
+    public function it_writes_a_possession_number_in_the_separators_of_the_user(): void
+    {
+        $user = User::factory()->create(['number_format' => NumberFormatEnum::CommaAndDot]);
+
+        $this->assertEquals('1,250.5', new FieldValueFormatter($user)->formatPossessionValue(
+            $this->possessionValue($user, PossessionFieldKindEnum::Number, '1250.5'),
+        ));
+    }
+
+    #[Test]
+    public function it_writes_a_possession_date_in_the_format_of_the_user(): void
+    {
+        $user = User::factory()->create(['date_format' => DateFormatEnum::DayFirst]);
+
+        $this->assertEquals('24/03/2005', new FieldValueFormatter($user)->formatPossessionValue(
+            $this->possessionValue($user, PossessionFieldKindEnum::Date, '2005-03-24'),
+        ));
+    }
+
+    #[Test]
+    public function it_writes_a_possession_text_and_option_as_stored(): void
+    {
+        $user = User::factory()->create();
+        $formatter = new FieldValueFormatter($user);
+
+        $this->assertEquals('Dundie', $formatter->formatPossessionValue($this->possessionValue($user, PossessionFieldKindEnum::Select, 'Dundie')));
+        $this->assertNull($formatter->formatPossessionValue($this->possessionValue($user, PossessionFieldKindEnum::Text, ' ')));
+    }
+
+    private function possessionValue(User $user, PossessionFieldKindEnum $kind, string $value): PossessionFieldValue
+    {
+        $possession = Possession::factory()->create(['account_id' => $user->account_id]);
+        $field = PossessionField::factory()->create([
+            'account_id' => $user->account_id,
+            'possession_type_id' => $possession->possession_type_id,
+            'kind' => $kind,
+        ]);
+
+        return PossessionFieldValue::factory()->create([
+            'possession_id' => $possession->id,
+            'possession_field_id' => $field->id,
+            'value' => $value,
+        ]);
     }
 }

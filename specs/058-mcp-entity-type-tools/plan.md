@@ -4,7 +4,7 @@
 
 ## Summary
 
-Six new tools on `EricaServer`, one class each under `app/Mcp/Tools`, each mirroring an existing
+Six new tools on `MonicaServer`, one class each under `app/Mcp/Tools`, each mirroring an existing
 `api.v1.entityTypes.*` route by calling the same action and returning `EntityTypeResource`
 ([contracts/mcp-tools.md](contracts/mcp-tools.md)). The API already covers everything
 ([R1](research.md#r1-every-capability-already-exists-in-the-api)), so no route or controller changes.
@@ -71,7 +71,7 @@ specs/058-mcp-entity-type-tools/
 app/Mcp/Tools/MirrorsAnApiCapability.php      # + entityType() lookup
 app/Mcp/Tools/{GetEntityType,CreateEntityType,UpdateEntityType,DeleteEntityType,
   SetEntityTypeActivation,SetEntityTypePosition}.php
-app/Mcp/Servers/EricaServer.php               # register 6 tools; one sentence of instructions
+app/Mcp/Servers/MonicaServer.php               # register 6 tools; one sentence of instructions
 app/ViewModels/Docs/McpDocsViewModel.php      # tool groups, ENTITY_TYPES paragraph, markdown
 resources/views/app/docs/mcp.blade.php        # draw the paragraph under its heading
 lang/*.json                                   # new sentences via monica:localize

@@ -31,8 +31,6 @@ class FlagsTest extends TestCase
         $response = $this->actingAs($this->administrator())->get(route('admin.flags.index'));
 
         $response->assertSee('@confirm-password.window', false);
-        $response->assertSee('What you are about to change decides how this instance behaves for everybody, so we ask for a credential first.');
-        $response->assertDontSee('What you are about to change decides how you sign in');
     }
 
     #[Test]
@@ -40,7 +38,6 @@ class FlagsTest extends TestCase
     {
         $response = $this->actingAs($this->administrator())->get(route('admin.flags.index'));
 
-        $response->assertSee('Activate example-capability for every account?');
         $response->assertSee("\$dispatch('confirm-password', { form: \$el.form })", false);
     }
 

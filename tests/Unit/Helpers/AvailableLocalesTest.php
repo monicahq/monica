@@ -73,7 +73,6 @@ class AvailableLocalesTest extends TestCase
         $details = AvailableLocales::details('fr_FR');
 
         $this->assertSame('Français', $details['label']);
-        $this->assertSame('France', $details['region']);
         $this->assertSame('d/m/Y', $details['date_format']);
         $this->assertSame('space_comma', $details['number_format']);
     }

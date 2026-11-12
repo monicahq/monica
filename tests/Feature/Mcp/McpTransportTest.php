@@ -35,6 +35,6 @@ class McpTransportTest extends TestCase
 
         $response->assertOk()
             ->assertJsonPath('jsonrpc', '2.0')
-            ->assertJsonPath('result.serverInfo.name', 'Erica');
+            ->assertJsonPath('result.serverInfo.name', 'Monica');
     }
 }

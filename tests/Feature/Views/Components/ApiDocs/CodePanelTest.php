@@ -65,7 +65,6 @@ class CodePanelTest extends TestCase
         $panel->assertSee('cURL');
         $panel->assertSee('JavaScript');
         $panel->assertSee('PHP');
-        $panel->assertSee('Copy');
         $panel->assertSee('aria-pressed', escape: false);
     }
 

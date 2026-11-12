@@ -40,7 +40,7 @@ Put Laravel's `password.confirm` middleware in front of the twelve sensitive rou
 | IX Accessible to everybody | The modal copies `modal/warning`: `role="dialog"`, `aria-modal`, `x-trap.noscroll.inert`, escape to close, focus returned. The refusal is announced through `aria-live`, and no state is carried by colour. |
 | X Everything goes through the API | FR-010 keeps the API exactly as it is. The step is a property of the interactive session, and no API request is refused for want of a proof. |
 | XI The written record is short | `data-model.md` omitted: no table, no column, no model. The session fact and the routes are one contract file. |
-| Product invariants | Erica is mono-user, and a proof is held against one session of one account. Nothing here reaches another account. |
+| Product invariants | Monica is mono-user, and a proof is held against one session of one account. Nothing here reaches another account. |
 
 ## Project Structure
 

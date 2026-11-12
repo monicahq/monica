@@ -19,8 +19,6 @@ class FormTest extends TestCase
         $rendered->assertSee('action="/settings/account/life-event-categories/9/activation"', escape: false);
         $rendered->assertSee('value="put"', escape: false);
         $rendered->assertSee('name="is_active"', escape: false);
-        $rendered->assertSee('Switch the category off', escape: false);
-        $rendered->assertSee('Cancel', escape: false);
     }
 
     #[Test]

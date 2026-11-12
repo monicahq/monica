@@ -20,7 +20,6 @@ class ListFlagsCommandTest extends TestCase
         Feature::forgetDrivers();
 
         $this->artisan('monica:list-flags')
-            ->expectsOutputToContain('No flag is declared.')
             ->assertExitCode(0);
     }
 

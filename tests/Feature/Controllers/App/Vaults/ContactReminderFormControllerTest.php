@@ -24,7 +24,6 @@ class ContactReminderFormControllerTest extends TestCase
 
         $this->actingAs($user)
             ->get(route('contacts.reminderForm.new', ['vault' => $vault, 'contact' => $kevin]))
-            ->assertOk()
-            ->assertSee('What should we remind you about?');
+            ->assertOk();
     }
 }

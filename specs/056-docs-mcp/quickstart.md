@@ -9,7 +9,7 @@ vendor/bin/phpstan analyse --no-progress
 vendor/bin/pint --dirty --format agent
 ```
 
-Expected: all pass. `McpDocsViewModelTest` fails if a tool is added to `EricaServer` without the
+Expected: all pass. `McpDocsViewModelTest` fails if a tool is added to `MonicaServer` without the
 table following ([research R5](research.md#r5)).
 
 ## By hand

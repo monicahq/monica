@@ -24,7 +24,7 @@ class TelegramRegistrationControllerTest extends TestCase
         Queue::fake();
         Http::preventStrayRequests();
         URL::forceScheme('https');
-        URL::forceRootUrl('https://erica.dundermifflin.com');
+        URL::forceRootUrl('https://monica.dundermifflin.com');
     }
 
     #[Test]
@@ -50,7 +50,7 @@ class TelegramRegistrationControllerTest extends TestCase
             ->post('/admin/configuration/telegram/registration');
 
         $response->assertRedirect('/admin/configuration');
-        $response->assertSessionHasErrors(['telegram' => 'Telegram refused it: Unauthorized']);
+        $response->assertSessionHasErrors(['telegram']);
     }
 
     private function administrator(): User

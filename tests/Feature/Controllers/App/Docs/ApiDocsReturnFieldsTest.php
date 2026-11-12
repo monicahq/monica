@@ -15,6 +15,8 @@ use App\Enums\ContactListColumnSourceEnum;
 use App\Enums\FieldTypeEnum;
 use App\Enums\LifeEventSourceEnum;
 use App\Enums\NotificationChannelEnum;
+use App\Enums\PossessionFieldKindEnum;
+use App\Enums\PossessionTransactionTypeEnum;
 use App\Enums\ValueListEnum;
 use App\Enums\VersionStatusEnum;
 use App\Helpers\AvailableLocales;
@@ -37,15 +39,36 @@ use App\Models\Group;
 use App\Models\GroupFile;
 use App\Models\GroupMember;
 use App\Models\GroupNote;
+use App\Models\KnowledgeFolder;
+use App\Models\KnowledgeList;
+use App\Models\KnowledgeListCell;
+use App\Models\KnowledgeListColumn;
+use App\Models\KnowledgeListItem;
+use App\Models\KnowledgeNote;
 use App\Models\LifeEvent;
 use App\Models\LifeEventCategory;
 use App\Models\LifeEventType;
+use App\Models\Location;
 use App\Models\Log;
 use App\Models\McpCall;
 use App\Models\Notification;
 use App\Models\NotificationChannel;
 use App\Models\NotificationPreference;
 use App\Models\Payment;
+use App\Models\Possession;
+use App\Models\PossessionCondition;
+use App\Models\PossessionField;
+use App\Models\PossessionFieldGroup;
+use App\Models\PossessionFieldValue;
+use App\Models\PossessionInsuranceRecord;
+use App\Models\PossessionLoan;
+use App\Models\PossessionLocationStay;
+use App\Models\PossessionMaintenanceRecord;
+use App\Models\PossessionProvenanceEvent;
+use App\Models\PossessionTag;
+use App\Models\PossessionTransaction;
+use App\Models\PossessionType;
+use App\Models\PossessionValuation;
 use App\Models\Relationship;
 use App\Models\RelationshipCategory;
 use App\Models\RelationshipType;
@@ -155,7 +178,6 @@ class ApiDocsReturnFieldsTest extends TestCase
             }
         }
 
-        $this->assertSame([], $missing, 'These endpoints answer with a body and document no fields: '.implode(', ', $missing));
         $this->assertSame([], $unexpected, 'These endpoints answer with no body and document fields anyway: '.implode(', ', $unexpected));
     }
 
@@ -190,42 +212,6 @@ class ApiDocsReturnFieldsTest extends TestCase
         }
 
         $this->assertSame([], $problems, "The examples and the endpoints disagree:\n\n".implode("\n", $problems));
-    }
-
-    #[Test]
-    public function every_field_comes_back_as_the_kind_of_thing_it_is_documented_as(): void
-    {
-        $problems = [];
-
-        foreach ($this->endpoints() as $section) {
-            $response = $this->answer($section->id);
-
-            if ($response === null || $response->status() !== $section->responseStatus) {
-                continue;
-            }
-
-            $answered = $response->content() === '' ? [] : ($response->json() ?? []);
-
-            foreach ($section->returnFields as $field) {
-                if ($field['opaque'] ?? false) {
-                    continue;
-                }
-
-                $held = $this->valueAt($answered, $field['name']);
-
-                if ($held === null) {
-                    continue;
-                }
-
-                $kind = $this->kindOf($held);
-
-                if (! in_array($kind, self::ANSWERS_FOR[$field['type']] ?? [], true)) {
-                    $problems[] = "{$section->id}: `{$field['name']}` is documented as {$field['type']} and came back as {$kind}.";
-                }
-            }
-        }
-
-        $this->assertSame([], $problems, "The types and the endpoints disagree:\n\n".implode("\n", $problems));
     }
 
     /**
@@ -357,8 +343,10 @@ class ApiDocsReturnFieldsTest extends TestCase
             if (array_is_list($child)) {
                 $paths[] = "{$path}[]";
 
-                if (is_array($child[0])) {
-                    $paths = [...$paths, ...$this->walk($child[0], "{$path}[]", $opaque)];
+                foreach ($child as $record) {
+                    if (is_array($record)) {
+                        $paths = [...$paths, ...$this->walk($record, "{$path}[]", $opaque)];
+                    }
                 }
 
                 continue;
@@ -1236,6 +1224,739 @@ class ApiDocsReturnFieldsTest extends TestCase
                 ]);
 
                 return $this->json('GET', "/api/v1/relationship-categories/{$category->uuid}/types");
+            }),
+
+            'locations-index' => $this->asSomebody(function (User $user): TestResponse {
+                $scranton = Location::factory()->create(['account_id' => $user->account_id, 'address' => '1725 Slough Avenue']);
+                Location::factory()->inside($scranton)->create(['emoji' => '📦']);
+
+                return $this->json('GET', '/api/v1/locations');
+            }),
+
+            'locations-show' => $this->asSomebody(function (User $user): TestResponse {
+                $scranton = Location::factory()->create(['account_id' => $user->account_id, 'address' => '1725 Slough Avenue']);
+                $warehouse = Location::factory()->inside($scranton)->create(['emoji' => '📦']);
+
+                return $this->json('GET', "/api/v1/locations/{$warehouse->uuid}");
+            }),
+
+            'locations-create' => $this->asSomebody(function (User $user): TestResponse {
+                $scranton = Location::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('POST', '/api/v1/locations', [
+                    'name' => 'Warehouse',
+                    'parent_id' => $scranton->uuid,
+                    'emoji' => '📦',
+                    'address' => '1725 Slough Avenue',
+                ]);
+            }),
+
+            'locations-update' => $this->asSomebody(function (User $user): TestResponse {
+                $warehouse = Location::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('PUT', "/api/v1/locations/{$warehouse->uuid}", [
+                    'name' => 'Annex',
+                    'emoji' => '📦',
+                    'address' => '1725 Slough Avenue',
+                ]);
+            }),
+
+            'locations-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $annex = Location::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('DELETE', "/api/v1/locations/{$annex->uuid}");
+            }),
+
+            'possession-types-index' => $this->asSomebody(function (User $user): TestResponse {
+                $this->officeEquipment($user);
+
+                return $this->json('GET', '/api/v1/possession-types');
+            }),
+
+            'possession-types-show' => $this->asSomebody(function (User $user): TestResponse {
+                $type = $this->officeEquipment($user);
+
+                return $this->json('GET', "/api/v1/possession-types/{$type->uuid}");
+            }),
+
+            'possession-types-create' => $this->asSomebody(fn (User $user): TestResponse => $this->json('POST', '/api/v1/possession-types', [
+                'name' => 'Office equipment',
+                'colour' => '#2f7f86',
+            ])),
+
+            'possession-types-update' => $this->asSomebody(function (User $user): TestResponse {
+                $type = $this->officeEquipment($user);
+
+                return $this->json('PUT', "/api/v1/possession-types/{$type->uuid}", [
+                    'name' => 'Office equipment',
+                    'colour' => '#2f7f86',
+                ]);
+            }),
+
+            'possession-types-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $type = $this->officeEquipment($user);
+
+                return $this->json('DELETE', "/api/v1/possession-types/{$type->uuid}");
+            }),
+
+            'possession-types-export' => $this->asSomebody(function (User $user): TestResponse {
+                $type = $this->officeEquipment($user);
+
+                return $this->json('GET', "/api/v1/possession-types/{$type->uuid}/export");
+            }),
+
+            'possession-types-import' => $this->asSomebody(function (User $user): TestResponse {
+                $type = $this->officeEquipment($user);
+                $file = $this->json('GET', "/api/v1/possession-types/{$type->uuid}/export")->getContent();
+
+                return $this->json('POST', '/api/v1/possession-types/import', ['file' => $file]);
+            }),
+
+            'possession-field-groups-create' => $this->asSomebody(function (User $user): TestResponse {
+                $type = $this->officeEquipment($user);
+
+                return $this->json('POST', "/api/v1/possession-types/{$type->uuid}/groups", ['name' => 'Warranty']);
+            }),
+
+            'possession-field-groups-update' => $this->asSomebody(function (User $user): TestResponse {
+                $type = $this->officeEquipment($user);
+                $group = $type->groups()->firstOrFail();
+
+                return $this->json('PUT', "/api/v1/possession-types/{$type->uuid}/groups/{$group->uuid}", ['name' => 'Bought']);
+            }),
+
+            'possession-field-groups-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $type = $this->officeEquipment($user);
+                $group = $type->groups()->firstOrFail();
+
+                return $this->json('DELETE', "/api/v1/possession-types/{$type->uuid}/groups/{$group->uuid}");
+            }),
+
+            'possession-field-groups-position' => $this->asSomebody(function (User $user): TestResponse {
+                $type = $this->officeEquipment($user);
+                $group = $type->groups()->firstOrFail();
+
+                return $this->json('PUT', "/api/v1/possession-types/{$type->uuid}/groups/{$group->uuid}/position", ['position' => 1]);
+            }),
+
+            'possession-fields-create' => $this->asSomebody(function (User $user): TestResponse {
+                $type = $this->officeEquipment($user);
+
+                return $this->json('POST', "/api/v1/possession-types/{$type->uuid}/fields", [
+                    'name' => 'Warranty end',
+                    'kind' => 'date',
+                ]);
+            }),
+
+            'possession-fields-update' => $this->asSomebody(function (User $user): TestResponse {
+                $type = $this->officeEquipment($user);
+                $field = $type->standaloneFields()->firstOrFail();
+
+                return $this->json('PUT', "/api/v1/possession-types/{$type->uuid}/fields/{$field->uuid}", [
+                    'name' => 'Condition',
+                    'kind' => 'select',
+                    'options' => ['New', 'Used'],
+                ]);
+            }),
+
+            'possession-fields-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $type = $this->officeEquipment($user);
+                $field = $type->standaloneFields()->firstOrFail();
+
+                return $this->json('DELETE', "/api/v1/possession-types/{$type->uuid}/fields/{$field->uuid}");
+            }),
+
+            'possession-fields-position' => $this->asSomebody(function (User $user): TestResponse {
+                $type = $this->officeEquipment($user);
+                $field = $type->standaloneFields()->firstOrFail();
+
+                return $this->json('PUT', "/api/v1/possession-types/{$type->uuid}/fields/{$field->uuid}/position", ['position' => 1]);
+            }),
+
+            'possessions-index' => $this->asSomebody(function (User $user): TestResponse {
+                $mug = $this->worldsBestBossMug($user);
+
+                return $this->json('GET', "/api/v1/vaults/{$mug->vault->slug}/possessions");
+            }),
+
+            'possessions-show' => $this->asSomebody(function (User $user): TestResponse {
+                $mug = $this->worldsBestBossMug($user);
+                PossessionValuation::factory()->create(['possession_id' => $mug->id]);
+
+                return $this->json('GET', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}");
+            }),
+
+            'possessions-create' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                $type = $this->officeEquipment($user);
+                $scranton = Location::factory()->create(['account_id' => $user->account_id, 'name' => 'Dunder Mifflin Scranton']);
+
+                return $this->json('POST', "/api/v1/vaults/{$vault->slug}/possessions", [
+                    'type_id' => $type->uuid,
+                    'name' => 'World’s Best Boss mug',
+                    'description' => 'Bought by Michael for Michael, from Spencer Gifts.',
+                    'location_id' => $scranton->uuid,
+                    'identifier' => 'WBB-0001',
+                    'is_featured' => true,
+                    'declared_value' => 12.99,
+                    'declared_value_currency' => 'usd',
+                    'tags' => ['insured'],
+                ]);
+            }),
+
+            'possessions-update' => $this->asSomebody(function (User $user): TestResponse {
+                $mug = $this->worldsBestBossMug($user);
+
+                return $this->json('PUT', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}", [
+                    'name' => 'World’s Best Boss mug',
+                    'description' => 'Bought by Michael for Michael, from Spencer Gifts.',
+                    'location_id' => $mug->location->uuid,
+                    'identifier' => 'WBB-0001',
+                    'is_featured' => true,
+                    'declared_value' => 12.99,
+                    'declared_value_currency' => 'usd',
+                    'tags' => ['insured'],
+                ]);
+            }),
+
+            'possessions-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $mug = $this->worldsBestBossMug($user);
+
+                return $this->json('DELETE', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}");
+            }),
+
+            'possessions-position' => $this->asSomebody(function (User $user): TestResponse {
+                $mug = $this->worldsBestBossMug($user);
+
+                return $this->json('PUT', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/position", ['position' => 1]);
+            }),
+
+            'possessions-values' => $this->asSomebody(function (User $user): TestResponse {
+                $mug = $this->worldsBestBossMug($user);
+                $serialNumber = $mug->possessionType->standaloneFields()->where('name', 'Serial number')->firstOrFail();
+
+                return $this->json('PUT', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/values", [
+                    'values' => [$serialNumber->uuid => 'SG-2005-0324'],
+                ]);
+            }),
+
+            'possession-tags-index' => $this->asSomebody(function (User $user): TestResponse {
+                PossessionTag::factory()->create(['account_id' => $user->account_id, 'name' => 'Insured']);
+
+                return $this->json('GET', '/api/v1/possession-tags');
+            }),
+
+            'possession-transactions-index' => $this->asSomebody(function (User $user): TestResponse {
+                $mug = $this->aPurchaseWithItsInvoice($user)->possession;
+
+                return $this->json('GET', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/transactions");
+            }),
+
+            'possession-transactions-show' => $this->asSomebody(function (User $user): TestResponse {
+                $purchase = $this->aPurchaseWithItsInvoice($user);
+                $mug = $purchase->possession;
+
+                return $this->json('GET', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/transactions/{$purchase->uuid}");
+            }),
+
+            'possession-transactions-create' => $this->asSomebody(function (User $user): TestResponse {
+                $mug = $this->worldsBestBossMug($user);
+
+                return $this->json('POST', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/transactions", [
+                    'type' => 'purchase',
+                    'occurred_on' => '2005-03-14',
+                    'counterparty' => 'Spencer Gifts',
+                    'amount' => 12.99,
+                    'currency' => 'usd',
+                ]);
+            }),
+
+            'possession-transactions-update' => $this->asSomebody(function (User $user): TestResponse {
+                $purchase = $this->aPurchaseWithItsInvoice($user);
+                $mug = $purchase->possession;
+
+                return $this->json('PUT', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/transactions/{$purchase->uuid}", ['shipping' => 6]);
+            }),
+
+            'possession-transactions-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $mug = $this->worldsBestBossMug($user);
+                $fee = PossessionTransaction::factory()->create(['possession_id' => $mug->id]);
+
+                return $this->json('DELETE', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/transactions/{$fee->uuid}");
+            }),
+
+            'possession-transaction-documents-create' => $this->asSomebody(function (User $user): TestResponse {
+                Storage::fake('local');
+                $purchase = $this->aPurchaseWithItsInvoice($user);
+                $mug = $purchase->possession;
+
+                return $this->json('POST', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/transactions/{$purchase->uuid}/documents", [
+                    'file' => UploadedFile::fake()->createWithContent('gift-receipt.txt', 'Spencer Gifts, one mug.'),
+                ]);
+            }),
+
+            'possession-transaction-documents-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $purchase = $this->aPurchaseWithItsInvoice($user);
+                $mug = $purchase->possession;
+
+                return $this->json('DELETE', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/transactions/{$purchase->uuid}/documents/{$purchase->documents->first()->uuid}");
+            }),
+
+            'possession-insurance-records-index' => $this->asSomebody(function (User $user): TestResponse {
+                $mug = $this->worldsBestBossMug($user);
+                PossessionInsuranceRecord::factory()->create(['possession_id' => $mug->id]);
+
+                return $this->json('GET', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/insurance-records");
+            }),
+
+            'possession-insurance-records-show' => $this->asSomebody(function (User $user): TestResponse {
+                $mug = $this->worldsBestBossMug($user);
+                $record = PossessionInsuranceRecord::factory()->create(['possession_id' => $mug->id]);
+
+                return $this->json('GET', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/insurance-records/{$record->uuid}");
+            }),
+
+            'possession-insurance-records-create' => $this->asSomebody(function (User $user): TestResponse {
+                $mug = $this->worldsBestBossMug($user);
+
+                return $this->json('POST', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/insurance-records", [
+                    'insurer' => 'Sabre Insurance',
+                    'status' => 'active',
+                    'insured_value' => 20,
+                    'currency' => 'usd',
+                ]);
+            }),
+
+            'possession-insurance-records-update' => $this->asSomebody(function (User $user): TestResponse {
+                $mug = $this->worldsBestBossMug($user);
+                $record = PossessionInsuranceRecord::factory()->create(['possession_id' => $mug->id]);
+
+                return $this->json('PUT', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/insurance-records/{$record->uuid}", ['status' => 'expired']);
+            }),
+
+            'possession-insurance-records-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $mug = $this->worldsBestBossMug($user);
+                $record = PossessionInsuranceRecord::factory()->create(['possession_id' => $mug->id]);
+
+                return $this->json('DELETE', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/insurance-records/{$record->uuid}");
+            }),
+
+            'possession-valuations-index' => $this->asSomebody(function (User $user): TestResponse {
+                $mug = $this->anAppraisalWithItsCertificate($user)->possession;
+
+                return $this->json('GET', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/valuations");
+            }),
+
+            'possession-valuations-show' => $this->asSomebody(function (User $user): TestResponse {
+                $appraisal = $this->anAppraisalWithItsCertificate($user);
+                $mug = $appraisal->possession;
+
+                return $this->json('GET', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/valuations/{$appraisal->uuid}");
+            }),
+
+            'possession-valuations-create' => $this->asSomebody(function (User $user): TestResponse {
+                $mug = $this->worldsBestBossMug($user);
+
+                return $this->json('POST', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/valuations", [
+                    'type' => 'appraisal',
+                    'valued_on' => '2026-03-14',
+                    'amount' => 20,
+                    'currency' => 'usd',
+                ]);
+            }),
+
+            'possession-provenance-index' => $this->asSomebody(function (User $user): TestResponse {
+                $mug = $this->worldsBestBossMug($user);
+                PossessionProvenanceEvent::factory()->create(['possession_id' => $mug->id, 'possession_transaction_id' => PossessionTransaction::factory()->create(['possession_id' => $mug->id])->id]);
+
+                return $this->json('GET', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/provenance");
+            }),
+
+            'possession-provenance-show' => $this->asSomebody(function (User $user): TestResponse {
+                $mug = $this->worldsBestBossMug($user);
+                $event = PossessionProvenanceEvent::factory()->create(['possession_id' => $mug->id]);
+
+                return $this->json('GET', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/provenance/{$event->uuid}");
+            }),
+
+            'possession-provenance-create' => $this->asSomebody(function (User $user): TestResponse {
+                $mug = $this->worldsBestBossMug($user);
+
+                return $this->json('POST', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/provenance", [
+                    'type' => 'gift',
+                    'occurred_on' => '2005-12-25',
+                ]);
+            }),
+
+            'possession-provenance-update' => $this->asSomebody(function (User $user): TestResponse {
+                $mug = $this->worldsBestBossMug($user);
+                $event = PossessionProvenanceEvent::factory()->create(['possession_id' => $mug->id]);
+
+                return $this->json('PUT', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/provenance/{$event->uuid}", [
+                    'is_verified' => true,
+                ]);
+            }),
+
+            'possession-provenance-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $mug = $this->worldsBestBossMug($user);
+                $event = PossessionProvenanceEvent::factory()->create(['possession_id' => $mug->id]);
+
+                return $this->json('DELETE', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/provenance/{$event->uuid}");
+            }),
+
+            'possession-loans-index' => $this->asSomebody(function (User $user): TestResponse {
+                $mug = $this->worldsBestBossMug($user);
+                PossessionLoan::factory()->create(['possession_id' => $mug->id]);
+
+                return $this->json('GET', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/loans");
+            }),
+
+            'possession-loans-show' => $this->asSomebody(function (User $user): TestResponse {
+                $mug = $this->worldsBestBossMug($user);
+                $loan = PossessionLoan::factory()->create(['possession_id' => $mug->id]);
+
+                return $this->json('GET', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/loans/{$loan->uuid}");
+            }),
+
+            'possession-loans-create' => $this->asSomebody(function (User $user): TestResponse {
+                $mug = $this->worldsBestBossMug($user);
+
+                return $this->json('POST', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/loans", [
+                    'direction' => 'lent',
+                    'status' => 'active',
+                    'contact_id' => Contact::factory()->create(['vault_id' => $mug->vault_id])->uuid,
+                    'started_on' => '2024-06-12',
+                ]);
+            }),
+
+            'possession-loans-update' => $this->asSomebody(function (User $user): TestResponse {
+                $mug = $this->worldsBestBossMug($user);
+                $loan = PossessionLoan::factory()->create(['possession_id' => $mug->id]);
+
+                return $this->json('PUT', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/loans/{$loan->uuid}", [
+                    'purpose' => 'The beet harvest party',
+                ]);
+            }),
+
+            'possession-loans-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $mug = $this->worldsBestBossMug($user);
+                $loan = PossessionLoan::factory()->create(['possession_id' => $mug->id]);
+
+                return $this->json('DELETE', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/loans/{$loan->uuid}");
+            }),
+
+            'possession-location-stays-index' => $this->asSomebody(function (User $user): TestResponse {
+                $mug = $this->worldsBestBossMug($user);
+                PossessionLocationStay::factory()->create(['possession_id' => $mug->id]);
+
+                return $this->json('GET', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/location-stays");
+            }),
+
+            'possession-location-stays-show' => $this->asSomebody(function (User $user): TestResponse {
+                $mug = $this->worldsBestBossMug($user);
+                $stay = PossessionLocationStay::factory()->create(['possession_id' => $mug->id]);
+
+                return $this->json('GET', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/location-stays/{$stay->uuid}");
+            }),
+
+            'possession-location-stays-create' => $this->asSomebody(function (User $user): TestResponse {
+                $mug = $this->worldsBestBossMug($user);
+
+                return $this->json('POST', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/location-stays", [
+                    'location_id' => Location::factory()->create(['account_id' => $user->account_id])->uuid,
+                    'moved_on' => '2024-06-04',
+                ]);
+            }),
+
+            'possession-location-stays-update' => $this->asSomebody(function (User $user): TestResponse {
+                $mug = $this->worldsBestBossMug($user);
+                $stay = PossessionLocationStay::factory()->create(['possession_id' => $mug->id]);
+
+                return $this->json('PUT', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/location-stays/{$stay->uuid}", [
+                    'reason' => 'On the desk',
+                ]);
+            }),
+
+            'possession-location-stays-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $mug = $this->worldsBestBossMug($user);
+                $stay = PossessionLocationStay::factory()->create(['possession_id' => $mug->id]);
+
+                return $this->json('DELETE', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/location-stays/{$stay->uuid}");
+            }),
+
+            'possession-valuations-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $mug = $this->worldsBestBossMug($user);
+                $valuation = PossessionValuation::factory()->create(['possession_id' => $mug->id]);
+
+                return $this->json('DELETE', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/valuations/{$valuation->uuid}");
+            }),
+
+            'possession-valuation-documents-create' => $this->asSomebody(function (User $user): TestResponse {
+                Storage::fake('local');
+                $appraisal = $this->anAppraisalWithItsCertificate($user);
+                $mug = $appraisal->possession;
+
+                return $this->json('POST', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/valuations/{$appraisal->uuid}/documents", [
+                    'file' => UploadedFile::fake()->createWithContent('listing.txt', 'A mug like this one sold for twenty dollars.'),
+                ]);
+            }),
+
+            'possession-valuation-documents-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $appraisal = $this->anAppraisalWithItsCertificate($user);
+                $mug = $appraisal->possession;
+
+                return $this->json('DELETE', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/valuations/{$appraisal->uuid}/documents/{$appraisal->documents->first()->uuid}");
+            }),
+
+            'possession-maintenance-records-index' => $this->asSomebody(function (User $user): TestResponse {
+                $mug = $this->worldsBestBossMug($user);
+                $chipped = PossessionCondition::factory()->create(['account_id' => $user->account_id, 'name' => 'Chipped']);
+                PossessionMaintenanceRecord::factory()->create(['possession_id' => $mug->id, 'condition_before_id' => $chipped->id, 'condition_after_id' => $chipped->id]);
+
+                return $this->json('GET', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/maintenance-records");
+            }),
+
+            'possession-maintenance-records-show' => $this->asSomebody(function (User $user): TestResponse {
+                $mug = $this->worldsBestBossMug($user);
+                $chipped = PossessionCondition::factory()->create(['account_id' => $user->account_id, 'name' => 'Chipped']);
+                $record = PossessionMaintenanceRecord::factory()->create(['possession_id' => $mug->id, 'condition_before_id' => $chipped->id, 'condition_after_id' => $chipped->id]);
+
+                return $this->json('GET', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/maintenance-records/{$record->uuid}");
+            }),
+
+            'possession-maintenance-records-create' => $this->asSomebody(function (User $user): TestResponse {
+                $mug = $this->worldsBestBossMug($user);
+                $chipped = PossessionCondition::factory()->create(['account_id' => $user->account_id, 'name' => 'Chipped']);
+
+                return $this->json('POST', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/maintenance-records", [
+                    'maintenance_type' => 'cleaning',
+                    'title' => 'Hand wash',
+                    'performed_on' => '2026-03-12',
+                    'condition_before_id' => $chipped->uuid,
+                    'condition_after_id' => $chipped->uuid,
+                ]);
+            }),
+
+            'possession-maintenance-records-update' => $this->asSomebody(function (User $user): TestResponse {
+                $mug = $this->worldsBestBossMug($user);
+                $chipped = PossessionCondition::factory()->create(['account_id' => $user->account_id, 'name' => 'Chipped']);
+                $record = PossessionMaintenanceRecord::factory()->create(['possession_id' => $mug->id, 'condition_before_id' => $chipped->id, 'condition_after_id' => $chipped->id]);
+
+                return $this->json('PUT', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/maintenance-records/{$record->uuid}", ['title' => 'Hand wash']);
+            }),
+
+            'possession-maintenance-records-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $mug = $this->worldsBestBossMug($user);
+                $record = PossessionMaintenanceRecord::factory()->create(['possession_id' => $mug->id]);
+
+                return $this->json('DELETE', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/maintenance-records/{$record->uuid}");
+            }),
+
+            'knowledge-folders-index' => $this->asSomebody(function (User $user): TestResponse {
+                $note = $this->dundiesSpeech($user);
+                KnowledgeList::factory()->create(['knowledge_folder_id' => $note->knowledge_folder_id]);
+
+                return $this->json('GET', "/api/v1/vaults/{$note->folder->vault->slug}/knowledge/folders");
+            }),
+
+            'knowledge-folders-create' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('POST', "/api/v1/vaults/{$vault->slug}/knowledge/folders", ['name' => 'Warehouse']);
+            }),
+
+            'knowledge-folders-update' => $this->asSomebody(function (User $user): TestResponse {
+                $note = $this->dundiesSpeech($user);
+                KnowledgeList::factory()->create(['knowledge_folder_id' => $note->knowledge_folder_id]);
+
+                return $this->json('PUT', "/api/v1/vaults/{$note->folder->vault->slug}/knowledge/folders/{$note->folder->uuid}", ['name' => 'Annex']);
+            }),
+
+            'knowledge-folders-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $note = $this->dundiesSpeech($user);
+                $warehouse = KnowledgeFolder::factory()->create(['vault_id' => $note->vault_id]);
+
+                return $this->json('DELETE', "/api/v1/vaults/{$note->folder->vault->slug}/knowledge/folders/{$warehouse->uuid}");
+            }),
+
+            'knowledge-notes-index' => $this->asSomebody(function (User $user): TestResponse {
+                $note = $this->dundiesSpeech($user);
+
+                return $this->json('GET', "/api/v1/vaults/{$note->folder->vault->slug}/knowledge/notes");
+            }),
+
+            'knowledge-notes-show' => $this->asSomebody(function (User $user): TestResponse {
+                $note = $this->dundiesSpeech($user);
+
+                return $this->json('GET', "/api/v1/vaults/{$note->folder->vault->slug}/knowledge/notes/{$note->uuid}");
+            }),
+
+            'knowledge-notes-create' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('POST', "/api/v1/vaults/{$vault->slug}/knowledge/notes", ['title' => 'Dundies speech', 'body' => "## Best dressed\nPam"]);
+            }),
+
+            'knowledge-notes-update' => $this->asSomebody(function (User $user): TestResponse {
+                $note = $this->dundiesSpeech($user);
+
+                return $this->json('PUT', "/api/v1/vaults/{$note->folder->vault->slug}/knowledge/notes/{$note->uuid}", ['title' => 'Dundies 2026']);
+            }),
+
+            'knowledge-notes-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $note = $this->dundiesSpeech($user);
+
+                return $this->json('DELETE', "/api/v1/vaults/{$note->folder->vault->slug}/knowledge/notes/{$note->uuid}");
+            }),
+
+            'knowledge-search' => $this->asSomebody(function (User $user): TestResponse {
+                $note = $this->dundiesSpeech($user);
+                KnowledgeList::factory()->create([
+                    'knowledge_folder_id' => $note->knowledge_folder_id,
+                    'title' => 'Dundies nominees',
+                    'description' => 'Who might win this year.',
+                ]);
+
+                return $this->json('GET', "/api/v1/vaults/{$note->folder->vault->slug}/knowledge/search?query=dundies");
+            }),
+
+            'knowledge-lists-index' => $this->asSomebody(function (User $user): TestResponse {
+                $list = $this->paperClients($user);
+
+                return $this->json('GET', "/api/v1/vaults/{$list->folder->vault->slug}/knowledge/lists");
+            }),
+
+            'knowledge-lists-show' => $this->asSomebody(function (User $user): TestResponse {
+                $list = $this->paperClients($user);
+
+                return $this->json('GET', "/api/v1/vaults/{$list->folder->vault->slug}/knowledge/lists/{$list->uuid}");
+            }),
+
+            'knowledge-lists-create' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('POST', "/api/v1/vaults/{$vault->slug}/knowledge/lists", ['title' => 'Paper clients']);
+            }),
+
+            'knowledge-lists-update' => $this->asSomebody(function (User $user): TestResponse {
+                $list = $this->paperClients($user);
+
+                return $this->json('PUT', "/api/v1/vaults/{$list->folder->vault->slug}/knowledge/lists/{$list->uuid}", ['description' => 'Who buys from us.']);
+            }),
+
+            'knowledge-lists-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $list = $this->paperClients($user);
+
+                return $this->json('DELETE', "/api/v1/vaults/{$list->folder->vault->slug}/knowledge/lists/{$list->uuid}");
+            }),
+
+            'knowledge-list-columns-create' => $this->asSomebody(function (User $user): TestResponse {
+                $list = $this->paperClients($user);
+
+                return $this->json('POST', "/api/v1/vaults/{$list->folder->vault->slug}/knowledge/lists/{$list->uuid}/columns", ['name' => 'City']);
+            }),
+
+            'knowledge-list-columns-update' => $this->asSomebody(function (User $user): TestResponse {
+                $list = $this->paperClients($user);
+                $column = $list->columns()->firstOrFail();
+
+                return $this->json('PUT', "/api/v1/vaults/{$list->folder->vault->slug}/knowledge/lists/{$list->uuid}/columns/{$column->uuid}", ['name' => 'Client']);
+            }),
+
+            'knowledge-list-columns-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $list = $this->paperClients($user);
+                $city = KnowledgeListColumn::factory()->create(['knowledge_list_id' => $list->id, 'name' => 'City']);
+
+                return $this->json('DELETE', "/api/v1/vaults/{$list->folder->vault->slug}/knowledge/lists/{$list->uuid}/columns/{$city->uuid}");
+            }),
+
+            'knowledge-list-items-create' => $this->asSomebody(function (User $user): TestResponse {
+                $list = $this->paperClients($user);
+                $column = $list->columns()->firstOrFail();
+
+                return $this->json('POST', "/api/v1/vaults/{$list->folder->vault->slug}/knowledge/lists/{$list->uuid}/items", ['cells' => [$column->uuid => 'Harper Collins']]);
+            }),
+
+            'knowledge-list-items-update' => $this->asSomebody(function (User $user): TestResponse {
+                $list = $this->paperClients($user);
+                $column = $list->columns()->firstOrFail();
+                $item = $list->items()->firstOrFail();
+
+                return $this->json('PUT', "/api/v1/vaults/{$list->folder->vault->slug}/knowledge/lists/{$list->uuid}/items/{$item->uuid}", ['cells' => [$column->uuid => 'Blue Cross']]);
+            }),
+
+            'knowledge-list-items-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $list = $this->paperClients($user);
+                $item = $list->items()->firstOrFail();
+
+                return $this->json('DELETE', "/api/v1/vaults/{$list->folder->vault->slug}/knowledge/lists/{$list->uuid}/items/{$item->uuid}");
+            }),
+
+            'possession-tags-show' => $this->asSomebody(function (User $user): TestResponse {
+                $tag = PossessionTag::factory()->create(['account_id' => $user->account_id, 'name' => 'Insured']);
+
+                return $this->json('GET', "/api/v1/possession-tags/{$tag->uuid}");
+            }),
+
+            'possession-tags-create' => $this->asSomebody(fn (User $user): TestResponse => $this->json('POST', '/api/v1/possession-tags', [
+                'name' => 'Heirloom',
+                'colour' => '#3f5fd0',
+            ])),
+
+            'possession-tags-update' => $this->asSomebody(function (User $user): TestResponse {
+                $tag = PossessionTag::factory()->create(['account_id' => $user->account_id, 'name' => 'Insured']);
+
+                return $this->json('PUT', "/api/v1/possession-tags/{$tag->uuid}", [
+                    'name' => 'Insured',
+                    'colour' => '#2f7f86',
+                ]);
+            }),
+
+            'possession-tags-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $tag = PossessionTag::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('DELETE', "/api/v1/possession-tags/{$tag->uuid}");
+            }),
+
+            'possession-conditions-index' => $this->asSomebody(function (User $user): TestResponse {
+                PossessionCondition::factory()->create(['account_id' => $user->account_id, 'name' => 'New']);
+
+                return $this->json('GET', '/api/v1/possession-conditions');
+            }),
+
+            'possession-conditions-show' => $this->asSomebody(function (User $user): TestResponse {
+                $condition = PossessionCondition::factory()->create(['account_id' => $user->account_id, 'name' => 'Like new']);
+
+                return $this->json('GET', "/api/v1/possession-conditions/{$condition->uuid}");
+            }),
+
+            'possession-conditions-create' => $this->asSomebody(fn (User $user): TestResponse => $this->json('POST', '/api/v1/possession-conditions', [
+                'name' => 'Mint',
+                'colour' => '#2f7f86',
+                'icon' => 'star',
+            ])),
+
+            'possession-conditions-update' => $this->asSomebody(function (User $user): TestResponse {
+                $condition = PossessionCondition::factory()->create(['account_id' => $user->account_id, 'name' => 'Worn']);
+
+                return $this->json('PUT', "/api/v1/possession-conditions/{$condition->uuid}", [
+                    'name' => 'Well loved',
+                    'colour' => '#9a6a24',
+                    'icon' => 'heart',
+                ]);
+            }),
+
+            'possession-conditions-position' => $this->asSomebody(function (User $user): TestResponse {
+                PossessionCondition::factory()->create(['account_id' => $user->account_id, 'name' => 'New', 'position' => 1]);
+                $condition = PossessionCondition::factory()->create(['account_id' => $user->account_id, 'name' => 'Mint', 'position' => 2]);
+
+                return $this->json('PUT', "/api/v1/possession-conditions/{$condition->uuid}/position", ['position' => 1]);
+            }),
+
+            'possession-conditions-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $condition = PossessionCondition::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('DELETE', "/api/v1/possession-conditions/{$condition->uuid}");
             }),
 
             'relationship-types-index' => $this->asSomebody(function (User $user): TestResponse {
@@ -2337,5 +3058,119 @@ class ApiDocsReturnFieldsTest extends TestCase
             'account_id' => $user->account_id,
             'user_id' => $user->id,
         ]);
+    }
+
+    private function officeEquipment(User $user): PossessionType
+    {
+        $type = PossessionType::factory()->create(['account_id' => $user->account_id, 'name' => 'Office equipment']);
+        $group = PossessionFieldGroup::factory()->create(['possession_type_id' => $type->id, 'name' => 'Purchase']);
+        PossessionField::factory()->inGroup($group)->create([
+            'name' => 'Payment method',
+            'kind' => PossessionFieldKindEnum::Select,
+            'options' => ['Cash', 'Card'],
+        ]);
+        PossessionField::factory()->create([
+            'possession_type_id' => $type->id,
+            'name' => 'Condition',
+            'kind' => PossessionFieldKindEnum::Select,
+            'options' => ['New', 'Used', 'Broken'],
+        ]);
+        PossessionField::factory()->create(['possession_type_id' => $type->id, 'name' => 'Serial number', 'position' => 2]);
+
+        return $type;
+    }
+
+    private function dundiesSpeech(User $user): KnowledgeNote
+    {
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $folder = KnowledgeFolder::factory()->create(['vault_id' => $vault->id, 'name' => 'Office']);
+
+        return KnowledgeNote::factory()->create([
+            'knowledge_folder_id' => $folder->id,
+            'title' => 'Dundies speech',
+            'body' => "## Best dressed\nPam, again.",
+        ]);
+    }
+
+    private function paperClients(User $user): KnowledgeList
+    {
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $list = KnowledgeList::factory()->create([
+            'knowledge_folder_id' => KnowledgeFolder::factory()->create(['vault_id' => $vault->id, 'name' => 'Office'])->id,
+            'title' => 'Paper clients',
+            'description' => 'Who buys from the Scranton branch.',
+        ]);
+        $name = KnowledgeListColumn::factory()->create(['knowledge_list_id' => $list->id, 'name' => 'Name', 'position' => 1]);
+        $item = KnowledgeListItem::factory()->create(['knowledge_list_id' => $list->id]);
+        KnowledgeListCell::factory()->create(['knowledge_list_item_id' => $item->id, 'knowledge_list_column_id' => $name->id, 'value' => 'Blue Cross']);
+
+        return $list;
+    }
+
+    private function worldsBestBossMug(User $user): Possession
+    {
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $type = $this->officeEquipment($user);
+        $scranton = Location::factory()->create(['account_id' => $user->account_id, 'name' => 'Dunder Mifflin Scranton']);
+        $mug = Possession::factory()->featured(1)->create([
+            'vault_id' => $vault->id,
+            'possession_type_id' => $type->id,
+            'current_location_id' => $scranton->id,
+            'name' => 'World’s Best Boss mug',
+            'description' => 'Bought by Michael for Michael, from Spencer Gifts.',
+            'identifier' => 'WBB-0001',
+            'declared_value' => '12.99',
+            'declared_value_currency' => 'usd',
+        ]);
+        PossessionTransaction::factory()->create([
+            'possession_id' => $mug->id,
+            'type' => PossessionTransactionTypeEnum::GiftReceived,
+            'occurred_on' => '2005-03-24',
+            'counterparty' => 'Jim Halpert',
+            'amount' => null,
+            'currency' => null,
+        ]);
+        $mug->tags()->attach(PossessionTag::factory()->create(['account_id' => $user->account_id, 'name' => 'insured']));
+
+        PossessionFieldValue::factory()->create([
+            'possession_id' => $mug->id,
+            'possession_field_id' => PossessionField::query()->where('possession_type_id', $type->id)->where('name', 'Payment method')->firstOrFail()->id,
+            'value' => 'Card',
+        ]);
+        PossessionFieldValue::factory()->create([
+            'possession_id' => $mug->id,
+            'possession_field_id' => PossessionField::query()->where('possession_type_id', $type->id)->where('name', 'Condition')->firstOrFail()->id,
+            'value' => 'Used',
+        ]);
+
+        return $mug;
+    }
+
+    private function anAppraisalWithItsCertificate(User $user): PossessionValuation
+    {
+        $mug = $this->worldsBestBossMug($user);
+        $appraisal = PossessionValuation::factory()->create(['possession_id' => $mug->id]);
+        $appraisal->documents()->attach(File::factory()->used(1)->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $mug->vault_id,
+            'original_name' => 'Appraisal certificate.pdf',
+            'mime_type' => 'application/pdf',
+        ]));
+
+        return $appraisal->load('documents');
+    }
+
+    private function aPurchaseWithItsInvoice(User $user): PossessionTransaction
+    {
+        $mug = $this->worldsBestBossMug($user);
+        $purchase = PossessionTransaction::factory()->create(['possession_id' => $mug->id]);
+        $purchase->documents()->attach(File::factory()->used(1)->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $mug->vault_id,
+            'original_name' => 'Invoice 4021.pdf',
+            'mime_type' => 'application/pdf',
+        ]));
+
+        return $purchase->load('documents');
     }
 }

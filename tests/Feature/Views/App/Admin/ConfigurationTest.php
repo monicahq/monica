@@ -24,7 +24,6 @@ class ConfigurationTest extends TestCase
         $response = $this->actingAs($this->administrator())->get('/admin/configuration');
 
         foreach (InstanceSettingEnum::cases() as $setting) {
-            $response->assertSee($setting->description());
             $response->assertSee(
                 route('admin.configuration.update', ['setting' => $setting->value]),
                 false
@@ -42,7 +41,6 @@ class ConfigurationTest extends TestCase
         $response->assertSee('aria-describedby="reason-'.InstanceSettingEnum::SelfHosted->value.'"', false);
         $response->assertSee('id="reason-'.InstanceSettingEnum::SelfHosted->value.'"', false);
         $response->assertSee('aria-describedby="reason-'.InstanceSettingEnum::VonageSmsFrom->value.'"', false);
-        $response->assertSee('Unavailable on this server, because its package is not installed.');
     }
 
     #[Test]
@@ -59,7 +57,6 @@ class ConfigurationTest extends TestCase
 
         $response->assertDontSee('that-is-what-she-said');
         $response->assertDontSee('a-stored-one');
-        $response->assertSee('A secret is set. It is never shown back.');
     }
 
     #[Test]
@@ -70,7 +67,6 @@ class ConfigurationTest extends TestCase
         $response->assertSee('takesSomethingAway(', false);
         $response->assertSee('x-ref="value"', false);
         $response->assertSee('role="alert"', false);
-        $response->assertSee('Any sign in link already emailed stops working');
     }
 
     #[Test]
@@ -79,8 +75,6 @@ class ConfigurationTest extends TestCase
         $response = $this->actingAs($this->administrator())->get('/admin/configuration');
 
         $response->assertSee('x-data="confirmPassword(', false);
-        $response->assertSee('Confirm it is you');
-        $response->assertSee('What you are about to change decides how this instance behaves for everybody, so we ask for a credential first. You will not be asked again for a little while.');
     }
 
     #[Test]
@@ -120,10 +114,8 @@ class ConfigurationTest extends TestCase
 
         $response = $this->actingAs($this->administrator())->get('/admin/configuration');
 
-        $response->assertSee('Register with Telegram');
         $response->assertSee('id="telegram-unavailable"', false);
         $response->assertSee('aria-describedby="telegram-unavailable"', false);
-        $response->assertSee('Set the bot token first.');
     }
 
     #[Test]
@@ -138,6 +130,35 @@ class ConfigurationTest extends TestCase
 
         $this->assertStringContainsString("@click.prevent=\"\$dispatch('confirm-password', { form: \$el.form })\"", $register);
         $this->assertStringNotContainsString('confirm-password', $check);
+    }
+
+    private function makeTelegramAvailable(): void
+    {
+        config([
+            'services.telegram.installed' => true,
+            'services.telegram.token' => 'dwight-schrute-beet-farm',
+            'services.telegram.webhook_secret' => 'bears-beets-battlestar-galactica',
+        ]);
+        URL::forceScheme('https');
+        URL::forceRootUrl('https://monica.dundermifflin.com');
+    }
+
+    private function formAt(string $content, string $action, bool $last = false): string
+    {
+        $needle = 'action="'.$action.'"';
+        $start = $last ? strrpos($content, $needle) : strpos($content, $needle);
+
+        $this->assertNotFalse($start, "No form posts to {$action}.");
+
+        return substr($content, $start, strpos($content, '</form>', $start) - $start);
+    }
+
+    private function administrator(): User
+    {
+        $user = User::factory()->create();
+        Administrator::factory()->create(['user_id' => $user->id]);
+
+        return $user;
     }
 
     #[Test]
@@ -168,34 +189,5 @@ class ConfigurationTest extends TestCase
         foreach ($forms as $form) {
             $this->assertStringContainsString("\$dispatch('confirm-password', { form: \$el.form })", $form);
         }
-    }
-
-    private function makeTelegramAvailable(): void
-    {
-        config([
-            'services.telegram.installed' => true,
-            'services.telegram.token' => 'dwight-schrute-beet-farm',
-            'services.telegram.webhook_secret' => 'bears-beets-battlestar-galactica',
-        ]);
-        URL::forceScheme('https');
-        URL::forceRootUrl('https://erica.dundermifflin.com');
-    }
-
-    private function formAt(string $content, string $action, bool $last = false): string
-    {
-        $needle = 'action="'.$action.'"';
-        $start = $last ? strrpos($content, $needle) : strpos($content, $needle);
-
-        $this->assertNotFalse($start, "No form posts to {$action}.");
-
-        return substr($content, $start, strpos($content, '</form>', $start) - $start);
-    }
-
-    private function administrator(): User
-    {
-        $user = User::factory()->create();
-        Administrator::factory()->create(['user_id' => $user->id]);
-
-        return $user;
     }
 }

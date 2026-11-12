@@ -127,7 +127,7 @@ as a string, like every other tool, because the resource gives `id` as a string.
   categories`; a `LOGS` constant of two paragraphs; a section `['id' => 'logs', 'label' => 'Read the
   logs']` before `troubleshooting`; the paragraphs in `markdown()` under `## Read the logs`.
 - `resources/views/app/docs/mcp.blade.php`: the section drawn the way `relationship-types` is.
-- `EricaServer` instructions: one paragraph saying the two list tools answer a page at a time, newest
+- `MonicaServer` instructions: one paragraph saying the two list tools answer a page at a time, newest
   first, with the total.
 - `resources/docs/api/09-emails-sent.php`: the `body` field description gains that links and web
   addresses are removed from the copy before it is kept. This corrects the API reference; no endpoint

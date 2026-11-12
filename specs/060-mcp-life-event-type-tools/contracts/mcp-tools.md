@@ -1,6 +1,6 @@
 # Contract: MCP tools for life event types
 
-Every tool is registered on `EricaServer`, uses `MirrorsAnApiCapability`, and returns the resource the
+Every tool is registered on `MonicaServer`, uses `MirrorsAnApiCapability`, and returns the resource the
 API returns under `data`: `LifeEventTypeResource`, `LifeEventCategoryResource`, or for fields a list
 of `StructureVersionSectionResource`. An identifier outside the key's account answers the validation
 error `That life event type does not exist.` or `That life event category does not exist.` Every

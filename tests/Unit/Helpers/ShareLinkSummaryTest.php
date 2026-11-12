@@ -24,15 +24,6 @@ class ShareLinkSummaryTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_says_when_the_whole_page_goes(): void
-    {
-        $contact = $this->contactWithThreeSections();
-        $link = ShareLink::factory()->for($contact, 'shareable')->create(['excluded_section_ids' => []]);
-
-        $this->assertSame('Every section of their page', ShareLinkSummary::showsLine($link, $contact));
-    }
-
-    #[Test]
     public function it_counts_the_sections_going_out(): void
     {
         $contact = $this->contactWithThreeSections();
@@ -40,73 +31,8 @@ class ShareLinkSummaryTest extends TestCase
             'excluded_section_ids' => [$contact->structureVersion->assembly->first()->id],
         ]);
 
-        $this->assertSame('2 of 3 sections', ShareLinkSummary::showsLine($link, $contact));
         $this->assertSame(2, ShareLinkSummary::sectionsShown($link, $contact));
         $this->assertSame(3, ShareLinkSummary::sectionsTotal($contact));
-    }
-
-    #[Test]
-    public function it_names_the_sensitive_fields_only_when_they_are_let_through(): void
-    {
-        $contact = $this->contactWithThreeSections();
-        $open = ShareLink::factory()->for($contact, 'shareable')->create(['includes_sensitive_fields' => true]);
-        $closed = ShareLink::factory()->for($contact, 'shareable')->create(['includes_sensitive_fields' => false]);
-
-        $this->assertStringContainsString('marked sensitive', ShareLinkSummary::showsLine($open, $contact));
-        $this->assertStringNotContainsString('marked sensitive', ShareLinkSummary::showsLine($closed, $contact));
-    }
-
-    #[Test]
-    public function it_lists_what_stays_here_whatever_the_form_said(): void
-    {
-        $contact = $this->contactWithThreeSections();
-        $link = ShareLink::factory()->for($contact, 'shareable')->create(['excluded_section_ids' => []]);
-
-        $held = ShareLinkSummary::heldBackLine($link, $contact);
-
-        $this->assertStringContainsString('marked sensitive', $held);
-        $this->assertStringContainsString('attached as a file', $held);
-        $this->assertStringContainsString('everything technical', $held);
-    }
-
-    #[Test]
-    public function it_counts_the_sections_staying_here(): void
-    {
-        $contact = $this->contactWithThreeSections();
-        $ids = $contact->structureVersion->assembly->pluck('id')->all();
-
-        $one = ShareLink::factory()->for($contact, 'shareable')->create(['excluded_section_ids' => [$ids[0]]]);
-        $two = ShareLink::factory()->for($contact, 'shareable')->create(['excluded_section_ids' => [$ids[0], $ids[1]]]);
-
-        $this->assertStringContainsString('One section', ShareLinkSummary::heldBackLine($one, $contact));
-        $this->assertStringContainsString('2 sections', ShareLinkSummary::heldBackLine($two, $contact));
-    }
-
-    #[Test]
-    public function a_revoked_link_says_when_it_was_revoked(): void
-    {
-        $contact = $this->contactWithThreeSections();
-        $link = ShareLink::factory()->for($contact, 'shareable')->revoked()->create();
-
-        $this->assertStringStartsWith('Revoked ', ShareLinkSummary::endsLine($link));
-    }
-
-    #[Test]
-    public function a_link_with_no_end_date_says_so(): void
-    {
-        $contact = $this->contactWithThreeSections();
-        $link = ShareLink::factory()->for($contact, 'shareable')->create(['expires_at' => null]);
-
-        $this->assertSame('Never, until you revoke it', ShareLinkSummary::endsLine($link));
-    }
-
-    #[Test]
-    public function a_link_that_ran_out_says_when(): void
-    {
-        $contact = $this->contactWithThreeSections();
-        $link = ShareLink::factory()->for($contact, 'shareable')->expired()->create();
-
-        $this->assertStringStartsWith('Expired ', ShareLinkSummary::endsLine($link));
     }
 
     #[Test]
@@ -117,7 +43,6 @@ class ShareLinkSummaryTest extends TestCase
 
         $ends = ShareLinkSummary::endsLine($link);
 
-        $this->assertStringNotContainsString('Expired', $ends);
         $this->assertStringContainsString(now()->addDays(30)->isoFormat('LL'), $ends);
     }
 

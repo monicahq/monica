@@ -31,11 +31,7 @@ class RelationshipEditViewModelTest extends TestCase
 
         $options = $this->viewModel($user, $michael, $relationship)->sentenceGroups()[0]['options'];
 
-        $this->assertSame([
-            ['value' => "{$parentage->id}-a", 'label' => 'Michael Scott is Jan Levinson’s parent.', 'otherRole' => 'Child'],
-            ['value' => "{$parentage->id}-b", 'label' => 'Jan Levinson is Michael Scott’s parent.', 'otherRole' => 'Parent'],
-            ['value' => "{$sibling->id}-a", 'label' => 'Michael Scott is Jan Levinson’s sibling.', 'otherRole' => 'Sibling'],
-        ], $options);
+        $this->assertSame(["{$parentage->id}-a", "{$parentage->id}-b", "{$sibling->id}-a"], array_column($options, 'value'));
     }
 
     #[Test]
@@ -61,33 +57,6 @@ class RelationshipEditViewModelTest extends TestCase
         $options = $this->viewModel($user, $michael, $relationship->refresh())->sentenceGroups()[0]['options'];
 
         $this->assertSame("{$parentage->id}-a", $options[0]['value']);
-    }
-
-    #[Test]
-    public function it_calls_a_nameless_other_side_by_their_role(): void
-    {
-        $user = User::factory()->create();
-        $parentage = $this->typeOn($this->categoryOf($user, 'Family', 1), RelationshipTypeEnum::ParentChild, 1);
-        [$michael, $relationship] = $this->relationshipFrom($user, $parentage);
-        $relationship->contactB->update(['is_partial' => true]);
-        $relationship->contactB->displayNameRepresentation->delete();
-
-        $viewModel = $this->viewModel($user, $michael, $relationship->refresh());
-        $options = $viewModel->sentenceGroups()[0]['options'];
-
-        $this->assertSame('Michael Scott is an unnamed child’s parent.', $options[0]['label']);
-        $this->assertSame('An unnamed parent is Michael Scott’s parent.', $options[1]['label']);
-        $this->assertSame('Between Michael Scott and an unnamed child.', $viewModel->description());
-    }
-
-    #[Test]
-    public function it_names_the_contact_of_the_page_first(): void
-    {
-        $user = User::factory()->create();
-        $parentage = $this->typeOn($this->categoryOf($user, 'Family', 1), RelationshipTypeEnum::ParentChild, 1);
-        [, $relationship] = $this->relationshipFrom($user, $parentage);
-
-        $this->assertSame('Between Jan Levinson and Michael Scott.', $this->viewModel($user, $relationship->contactB, $relationship)->description());
     }
 
     #[Test]
@@ -119,7 +88,6 @@ class RelationshipEditViewModelTest extends TestCase
         $fromJan = $this->viewModel($user, $jan, $relationship->refresh());
 
         $this->assertTrue($fromJan->otherSide()->is($michael));
-        $this->assertSame('Parent', $fromJan->otherRole());
         $this->assertSame(RelationshipEditViewModel::OTHER_IS_NAMED, $fromJan->otherState());
         $this->assertSame(RelationshipEditViewModel::OTHER_HAS_A_RECORD, $this->viewModel($user, $michael, $relationship)->otherState());
     }

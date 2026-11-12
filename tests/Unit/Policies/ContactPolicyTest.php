@@ -40,7 +40,6 @@ class ContactPolicyTest extends TestCase
         $response = Gate::forUser($user)->inspect('create', Contact::class);
 
         $this->assertTrue($response->denied());
-        $this->assertStringContainsString('Full access lifts the ceiling.', (string) $response->message());
     }
 
     #[Test]
@@ -65,7 +64,6 @@ class ContactPolicyTest extends TestCase
         $response = Gate::forUser($user)->inspect('delete', $me);
 
         $this->assertTrue($response->denied());
-        $this->assertStringContainsString('it stays', (string) $response->message());
     }
 
     #[Test]

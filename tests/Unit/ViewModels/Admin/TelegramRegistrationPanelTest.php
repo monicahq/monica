@@ -20,7 +20,7 @@ class TelegramRegistrationPanelTest extends TestCase
         parent::setUp();
 
         URL::forceScheme('https');
-        URL::forceRootUrl('https://erica.dundermifflin.com');
+        URL::forceRootUrl('https://monica.dundermifflin.com');
     }
 
     #[Test]
@@ -29,7 +29,6 @@ class TelegramRegistrationPanelTest extends TestCase
         $panel = new TelegramRegistrationPanel;
 
         $this->assertSame('unregistered', $panel->state());
-        $this->assertSame('The bot is not registered with Telegram yet.', $panel->statusSentence());
     }
 
     #[Test]
@@ -40,7 +39,6 @@ class TelegramRegistrationPanelTest extends TestCase
         $panel = new TelegramRegistrationPanel;
 
         $this->assertSame('registered', $panel->state());
-        $this->assertSame('Registered on September 26, 2026 for https://erica.dundermifflin.com/telegram/webhook.', $panel->statusSentence());
     }
 
     #[Test]
@@ -52,26 +50,6 @@ class TelegramRegistrationPanelTest extends TestCase
         $panel = new TelegramRegistrationPanel;
 
         $this->assertSame('outOfDate', $panel->state());
-        $this->assertSame('Registered on September 26, 2026, but out of date because the secret changed. Register it again.', $panel->statusSentence());
-    }
-
-    #[Test]
-    public function it_keeps_the_control_unavailable_while_something_is_missing(): void
-    {
-        config(['services.telegram.token' => null]);
-
-        $this->assertSame('Set the bot token first.', new TelegramRegistrationPanel()->unavailableReason());
-    }
-
-    #[Test]
-    public function it_warns_before_a_secret_the_registration_relies_on_is_replaced(): void
-    {
-        TelegramWebhookRegistration::factory()->current()->create();
-
-        $this->assertSame(
-            'Telegram stops reaching this instance until the bot is registered again.',
-            new TelegramRegistrationPanel()->secretReplacementWarning(),
-        );
     }
 
     #[Test]

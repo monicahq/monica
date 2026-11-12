@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\GetGroup;
 use App\Models\Group;
 use App\Models\User;
@@ -24,7 +24,7 @@ class GetGroupTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $group = Group::factory()->create(['vault_id' => $vault->id, 'name' => 'Schrute farm']);
 
-        EricaServer::actingAs($user)->tool(GetGroup::class, ['vault' => $vault->uuid, 'group' => $group->uuid])
+        MonicaServer::actingAs($user)->tool(GetGroup::class, ['vault' => $vault->uuid, 'group' => $group->uuid])
             ->assertOk()
             ->assertSee('Schrute farm');
     }
@@ -36,7 +36,7 @@ class GetGroupTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $group = Group::factory()->create(['vault_id' => Vault::factory()->create(['account_id' => $user->account_id])->id]);
 
-        EricaServer::actingAs($user)->tool(GetGroup::class, ['vault' => $vault->uuid, 'group' => $group->uuid])
+        MonicaServer::actingAs($user)->tool(GetGroup::class, ['vault' => $vault->uuid, 'group' => $group->uuid])
             ->assertHasErrors(['That group does not exist.']);
     }
 

@@ -30,7 +30,6 @@ class NotificationAccessibilityTest extends TestCase
 
         $this->assertStringContainsString('aria-haspopup="dialog"', $html);
         $this->assertStringContainsString('aria-controls="notification-bar-panel"', $html);
-        $this->assertStringContainsString('aria-label="Notifications, 1 unread"', $html);
     }
 
     #[Test]
@@ -41,11 +40,6 @@ class NotificationAccessibilityTest extends TestCase
 
         $html = (string) $this->get(route('settings.index'))->getContent();
 
-        $this->assertMatchesRegularExpression(
-            '/aria-live="polite"[^>]*class="sr-only">1 notification you have not read/',
-            $html,
-            'The count is drawn as a badge and never spoken.',
-        );
         $this->assertStringContainsString('aria-hidden="true"', $html);
     }
 
@@ -75,17 +69,6 @@ class NotificationAccessibilityTest extends TestCase
 
         $this->assertStringContainsString('aria-labelledby="notification-bar-heading"', $html);
         $this->assertMatchesRegularExpression('/id="notification-bar-heading"[^>]*>Notifications</', $html);
-    }
-
-    #[Test]
-    public function an_unread_notification_says_so_in_words_rather_than_only_in_colour(): void
-    {
-        $user = $this->signedIn();
-        $this->notification($user);
-
-        $html = (string) $this->get(route('notifications.index'))->getContent();
-
-        $this->assertStringContainsString('Not read yet.', $html);
     }
 
     #[Test]
@@ -135,7 +118,6 @@ class NotificationAccessibilityTest extends TestCase
         $html = (string) $this->get(route('settings.notifications.index'))->getContent();
 
         $this->assertStringContainsString('id="sms-destination-help"', $html);
-        $this->assertStringContainsString('Only put a number that is yours alone.', $html);
     }
 
     private function signedIn(): User

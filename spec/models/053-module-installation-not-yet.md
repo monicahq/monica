@@ -39,7 +39,7 @@ deleted_at                  datetime
 ## Rules
 
 - Permissions are granted explicitly and can be less than what the module asked for. A module that cannot run with what it was given says so and stays disabled, rather than reaching for more.
-- A module that becomes incompatible with the running version of Erica is disabled with a reason, not silently skipped (3.3).
+- A module that becomes incompatible with the running version of Monica is disabled with a reason, not silently skipped (3.3).
 - Repeated failures disable it, with the last error kept so the user can see what happened. Same pattern as a webhook subscription (14.4), and for the same reason: an extension that fails quietly is worse than one that fails loudly.
 - Uninstalling never destroys user data by itself. What happens to data a module created depends on the open question in [Module](052-module-not-yet.md) about whether modules may own tables, and until that is answered nothing may be deleted on uninstall.
 - Everything a module does is attributed to it in [Log](004-log-in-progress.md), through `source` and `source_detail` (12).

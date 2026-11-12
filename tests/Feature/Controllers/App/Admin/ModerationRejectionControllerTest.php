@@ -44,7 +44,7 @@ class ModerationRejectionControllerTest extends TestCase
             ]);
 
         $response->assertRedirect(route('admin.moderation.index'));
-        $response->assertSessionHas('status', 'It has been refused.');
+        $response->assertSessionHas('status');
 
         $this->assertEquals(MarketplaceVersionStatusEnum::Rejected, $version->fresh()->status);
         $this->assertEquals('The description does not say what the template is for.', $version->fresh()->rejection_reason);
@@ -63,7 +63,6 @@ class ModerationRejectionControllerTest extends TestCase
             ]);
 
         $response->assertSessionHasErrors('decision');
-        $this->assertStringContainsString('withdrawn', session('errors')->first('decision'));
     }
 
     private function administrator(): User

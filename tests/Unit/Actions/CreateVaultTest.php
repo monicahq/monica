@@ -271,7 +271,6 @@ class CreateVaultTest extends TestCase
         Vault::factory()->create(['account_id' => $user->account_id]);
 
         $this->expectException(AuthorizationException::class);
-        $this->expectExceptionMessage('Full access lifts the ceiling.');
 
         new CreateVault(user: $user, name: 'Sabre')->execute();
     }

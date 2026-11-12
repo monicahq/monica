@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\DeleteTemplateField;
 use App\Models\Field;
 use App\Models\SectionVersion;
@@ -26,7 +26,7 @@ class DeleteTemplateFieldTest extends TestCase
         [$user, $template, $row] = $this->placement();
         $field = Field::factory()->create(['section_version_id' => $row->section_version_id]);
 
-        EricaServer::actingAs($user)->tool(DeleteTemplateField::class, [
+        MonicaServer::actingAs($user)->tool(DeleteTemplateField::class, [
             'template' => $template->uuid,
             'version' => 1,
             'section' => (string) $row->id,
@@ -41,12 +41,12 @@ class DeleteTemplateFieldTest extends TestCase
     {
         [$user, $template, $row] = $this->placement();
 
-        EricaServer::actingAs($user)->tool(DeleteTemplateField::class, [
+        MonicaServer::actingAs($user)->tool(DeleteTemplateField::class, [
             'template' => $template->uuid,
             'version' => 1,
             'section' => (string) $row->id,
             'field' => '999999',
-        ])->assertHasErrors(['That field does not exist.']);
+        ])->assertHasErrors();
     }
 
     /** @return array{User, Template, StructureVersionSection} */

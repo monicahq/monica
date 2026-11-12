@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\ListContactReminders;
 use App\Models\Contact;
 use App\Models\Reminder;
@@ -26,7 +26,7 @@ class ListContactRemindersTest extends TestCase
         $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
         Reminder::factory()->manual($contact, now()->addWeek()->toDateString())->create(['name' => 'Ask about the art school']);
 
-        EricaServer::actingAs($user)->tool(ListContactReminders::class, [
+        MonicaServer::actingAs($user)->tool(ListContactReminders::class, [
             'vault' => $vault->uuid,
             'contact' => $contact->uuid,
         ])->assertOk()->assertHasNoErrors()->assertSee('Ask about the art school');

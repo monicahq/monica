@@ -44,6 +44,7 @@ class CreateTemplateField extends Tool
             ],
             'relation_target' => ['nullable', Rule::enum(RelationTargetEnum::class)],
             'relation_entity_type_id' => [
+                'bail',
                 'nullable',
                 'string',
                 'bail',

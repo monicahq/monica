@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\ListGroupFiles;
 use App\Models\Group;
 use App\Models\GroupFile;
@@ -27,7 +27,7 @@ class ListGroupFilesTest extends TestCase
         $group = Group::factory()->create(['vault_id' => $vault->id]);
         $attachment = GroupFile::factory()->create(['group_id' => $group->id]);
 
-        EricaServer::actingAs($user)->tool(ListGroupFiles::class, ['vault' => $vault->uuid, 'group' => $group->uuid])
+        MonicaServer::actingAs($user)->tool(ListGroupFiles::class, ['vault' => $vault->uuid, 'group' => $group->uuid])
             ->assertOk()
             ->assertSee($attachment->file->original_name);
     }
@@ -39,7 +39,7 @@ class ListGroupFilesTest extends TestCase
         $user->account->features()->deactivate('file-upload');
         Feature::flushCache();
 
-        EricaServer::actingAs($user)->tool(ListGroupFiles::class, ['vault' => 'x', 'group' => 'y'])
+        MonicaServer::actingAs($user)->tool(ListGroupFiles::class, ['vault' => 'x', 'group' => 'y'])
             ->assertHasErrors();
     }
 

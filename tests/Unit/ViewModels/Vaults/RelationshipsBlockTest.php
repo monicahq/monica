@@ -35,8 +35,6 @@ class RelationshipsBlockTest extends TestCase
         $this->assertTrue($block->holdsNothing());
         $this->assertSame(0, $block->total());
         $this->assertStringContainsString('Judy', $block->emptyLine());
-        $this->assertSame('Document relationships on Judy', $block->emptyTitle());
-        $this->assertStringStartsWith('Who Judy is to the people you know.', $block->emptyExplanation());
     }
 
     #[Test]
@@ -93,7 +91,6 @@ class RelationshipsBlockTest extends TestCase
 
         $this->assertSame('Ross Geller', $fromJudy['name']);
         $this->assertSame($type->role_b, $fromJudy['role']);
-        $this->assertSame('Judy Geller', $fromRoss['name']);
         $this->assertSame($type->role_a, $fromRoss['role']);
     }
 
@@ -112,7 +109,6 @@ class RelationshipsBlockTest extends TestCase
 
         $this->assertNull($row['url']);
         $this->assertNull($row['age']);
-        $this->assertSame('Name only, no profile yet', $row['note']);
     }
 
     #[Test]
@@ -217,7 +213,6 @@ class RelationshipsBlockTest extends TestCase
         $categories = new RelationshipsBlock(vault: $vault, contact: $michael)->emptyCategories();
 
         $this->assertSame(['Professional', 'Family', 'Dunder Mifflin'], array_column($categories, 'label'));
-        $this->assertSame('Add to Family', $categories[1]['addLabel']);
     }
 
     #[Test]
@@ -239,23 +234,6 @@ class RelationshipsBlockTest extends TestCase
         $categories = new RelationshipsBlock(vault: $vault, contact: $michael)->emptyCategories();
 
         $this->assertSame(['Family'], array_column($categories, 'label'));
-    }
-
-    #[Test]
-    public function it_names_up_to_four_types_under_a_category(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $michael = $this->contactOn($vault, 'Michael', 'Scott');
-        $family = $this->categoryOf($user, 'Family', 1);
-
-        foreach ([RelationshipTypeEnum::ParentChild, RelationshipTypeEnum::Sibling, RelationshipTypeEnum::Cousin, RelationshipTypeEnum::Spouse, RelationshipTypeEnum::Partner] as $position => $case) {
-            $this->typeOf($user, $case, $family)->update(['position' => $position + 1]);
-        }
-
-        $categories = new RelationshipsBlock(vault: $vault, contact: $michael)->emptyCategories();
-
-        $this->assertSame('Parent / Child, Sibling, Cousin, Spouse', $categories[0]['line']);
     }
 
     #[Test]

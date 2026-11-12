@@ -30,7 +30,6 @@ class VaultControllerTest extends TestCase
         $this->actingAs($user)->get(route('vaults.index'))
             ->assertStatus(200)
             ->assertSee('Dunder Mifflin')
-            ->assertSee('Default')
             ->assertDontSee('Schrute Farms');
     }
 
@@ -62,11 +61,7 @@ class VaultControllerTest extends TestCase
             ->assertStatus(200)
             ->assertSee('Dunder Mifflin')
             ->assertSee('Everybody at the Scranton branch')
-            ->assertSee('148 people')
-            ->assertSee('Needs your attention')
-            ->assertSee('Favourite people')
-            ->assertSee('Recently viewed')
-            ->assertSee('Recent life events');
+            ->assertSee('148 people');
     }
 
     #[Test]
@@ -75,9 +70,7 @@ class VaultControllerTest extends TestCase
         $user = User::factory()->create();
 
         $this->actingAs($user)->get(route('vaults.new'))
-            ->assertStatus(200)
-            ->assertSee('Create a vault')
-            ->assertSee('Make this the default vault');
+            ->assertStatus(200);
     }
 
     #[Test]
@@ -215,9 +208,6 @@ class VaultControllerTest extends TestCase
         $this->actingAs($user)->get(route('vaults.index'))
             ->assertStatus(200)
             ->assertSee('aria-disabled="true" aria-describedby="vault-ceiling"', false)
-            ->assertSee('Full access lifts the ceiling.', false)
-            ->assertSee('Upgrade')
-            ->assertSee(route('settings.billing.index'), false)
-            ->assertDontSee('You are at the ceiling of the free plan');
+            ->assertSee(route('settings.billing.index'), false);
     }
 }

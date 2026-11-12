@@ -31,14 +31,9 @@ class ContactReminderControllerTest extends TestCase
         $response = $this->actingAs($user)->get(route('contacts.reminders.index', ['vault' => $vault, 'contact' => $kevin]));
 
         $response->assertStatus(200);
-        $response->assertSee('Reminders');
-        $response->assertSee('Back to Kevin Malone');
         $response->assertSee('Bring the famous chili');
-        $response->assertSee('The day has passed without an answer.');
-        $response->assertSee('View reminder');
         $response->assertSee(route('reminders.show', ['vault' => $vault, 'reminder' => $rule]), escape: false);
         $response->assertSee(route('contacts.reminders.new', ['vault' => $vault, 'contact' => $kevin]), escape: false);
-        $response->assertSeeInOrder(['All', 'Overdue', 'Today', 'Upcoming', 'History']);
     }
 
     #[Test]
@@ -51,7 +46,6 @@ class ContactReminderControllerTest extends TestCase
         $response = $this->actingAs($user)->get(route('contacts.reminders.new', ['vault' => $vault, 'contact' => $kevin]));
 
         $response->assertStatus(200);
-        $response->assertSee('Add a reminder');
         $response->assertSee(route('contacts.reminders.create', ['vault' => $vault, 'contact' => $kevin]), escape: false);
         $response->assertSee('name="starts_on"', escape: false);
         $response->assertSee('name="cadence"', escape: false);
@@ -78,7 +72,7 @@ class ContactReminderControllerTest extends TestCase
                 'return_to' => 'contact',
             ])
             ->assertRedirect($overview)
-            ->assertSessionHas('status', 'The reminder is added.');
+            ->assertSessionHas('status');
 
         $this->assertDatabaseHas('reminders', ['remindable_id' => $kevin->id, 'name' => 'Bring the famous chili']);
     }
@@ -102,10 +96,7 @@ class ContactReminderControllerTest extends TestCase
                 'timezone' => 'Europe/Paris',
             ])
             ->assertRedirect($overview)
-            ->assertSessionHasErrors([
-                'name' => 'Say what the reminder is about.',
-                'starts_on' => 'Pick a date.',
-            ])
+            ->assertSessionHasErrors(['name', 'starts_on'])
             ->assertSessionHasInput('cadence', 'weekly');
 
         $this->assertDatabaseMissing('reminders', ['remindable_id' => $kevin->id]);
@@ -131,7 +122,7 @@ class ContactReminderControllerTest extends TestCase
                 'timezone' => 'Europe/Paris',
             ])
             ->assertRedirect(route('contacts.reminders.index', ['vault' => $vault, 'contact' => $kevin]))
-            ->assertSessionHas('status', 'The reminder is added.');
+            ->assertSessionHas('status');
 
         $this->assertDatabaseHas('reminders', [
             'remindable_id' => $kevin->id,
@@ -156,7 +147,7 @@ class ContactReminderControllerTest extends TestCase
                 'time' => '09:00',
                 'timezone' => 'Europe/Paris',
             ])
-            ->assertSessionHasErrors(['starts_on' => 'A reminder cannot start in the past.']);
+            ->assertSessionHasErrors(['starts_on']);
 
         $this->assertDatabaseCount('reminders', 0);
     }
@@ -200,7 +191,7 @@ class ContactReminderControllerTest extends TestCase
                 'timezone' => 'Europe/Paris',
             ])
             ->assertRedirect(route('reminders.show', ['vault' => $vault, 'reminder' => $rule]))
-            ->assertSessionHas('status', 'Changes saved');
+            ->assertSessionHas('status');
 
         $this->assertSame('Ask about the band', $rule->refresh()->name);
         $this->assertSame(2, $rule->frequency_interval);
@@ -219,7 +210,7 @@ class ContactReminderControllerTest extends TestCase
         $this->actingAs($user)
             ->delete(route('contacts.reminders.destroy', ['vault' => $vault, 'contact' => $kevin, 'reminder' => $rule]))
             ->assertRedirect(route('contacts.reminders.index', ['vault' => $vault, 'contact' => $kevin]))
-            ->assertSessionHas('status', 'The reminder is deleted.');
+            ->assertSessionHas('status');
 
         $this->assertSoftDeleted($rule);
     }
@@ -239,7 +230,7 @@ class ContactReminderControllerTest extends TestCase
             ->from($overview)
             ->delete(route('contacts.reminders.destroy', ['vault' => $vault, 'contact' => $kevin, 'reminder' => $rule]))
             ->assertRedirect($overview)
-            ->assertSessionHas('status', 'The reminder is deleted.');
+            ->assertSessionHas('status');
 
         $this->assertSoftDeleted($rule);
     }

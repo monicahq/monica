@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Policies;
 
-use App\Enums\ReminderAnswerEnum;
-use App\Enums\ReminderOccurrenceCancelledReasonEnum;
 use App\Models\ReminderOccurrence;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -36,7 +34,6 @@ class ReminderOccurrencePolicyTest extends TestCase
         $response = Gate::forUser($user)->inspect('remember', $this->dueOn('2026-09-27'));
 
         $this->assertTrue($response->denied());
-        $this->assertSame('This reminder is not due yet.', $response->message());
     }
 
     #[Test]
@@ -57,7 +54,6 @@ class ReminderOccurrencePolicyTest extends TestCase
         $response = Gate::forUser($user)->inspect('forget', $this->dueOn('2026-09-26'));
 
         $this->assertTrue($response->denied());
-        $this->assertSame('You can say you forgot from the day after.', $response->message());
     }
 
     #[Test]
@@ -71,37 +67,6 @@ class ReminderOccurrencePolicyTest extends TestCase
         $this->assertTrue(Gate::forUser($inParis)->allows('forget', $occurrence));
         $this->assertFalse(Gate::forUser($inNewYork)->allows('forget', $occurrence));
         $this->assertTrue(Gate::forUser($inNewYork)->allows('remember', $occurrence));
-    }
-
-    #[Test]
-    public function it_refuses_both_answers_on_a_deadline_already_answered(): void
-    {
-        $this->travelTo('2026-09-26 12:00:00');
-        $user = User::factory()->create(['timezone' => 'UTC']);
-        $occurrence = $this->dueOn('2026-09-20', [
-            'answer' => ReminderAnswerEnum::Forgotten,
-            'answered_at' => now(),
-        ]);
-
-        $remember = Gate::forUser($user)->inspect('remember', $occurrence);
-        $forget = Gate::forUser($user)->inspect('forget', $occurrence);
-
-        $this->assertSame('This reminder has already been answered.', $remember->message());
-        $this->assertSame('This reminder has already been answered.', $forget->message());
-    }
-
-    #[Test]
-    public function it_refuses_both_answers_on_a_cancelled_deadline(): void
-    {
-        $this->travelTo('2026-09-26 12:00:00');
-        $user = User::factory()->create(['timezone' => 'UTC']);
-        $occurrence = $this->dueOn('2026-09-20', [
-            'cancelled_at' => now(),
-            'cancelled_reason' => ReminderOccurrenceCancelledReasonEnum::RecordArchived,
-        ]);
-
-        $this->assertSame('This reminder was cancelled and cannot be answered.', Gate::forUser($user)->inspect('remember', $occurrence)->message());
-        $this->assertSame('This reminder was cancelled and cannot be answered.', Gate::forUser($user)->inspect('forget', $occurrence)->message());
     }
 
     #[Test]

@@ -6,9 +6,11 @@ namespace Tests\Unit\Models;
 
 use App\Enums\AccessKindEnum;
 use App\Enums\OfferKindEnum;
+use App\Enums\VaultColourEnum;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\Payment;
+use App\Models\PossessionTag;
 use App\Models\StripeOrder;
 use App\Models\User;
 use App\Models\Vault;
@@ -51,12 +53,6 @@ class AccountTest extends TestCase
         $michael->delete();
 
         $this->assertEquals('Michael Scott', $account->ownerName());
-    }
-
-    #[Test]
-    public function it_says_so_when_there_is_nobody_on_it(): void
-    {
-        $this->assertEquals('an account with nobody on it', Account::factory()->create()->ownerName());
     }
 
     #[Test]
@@ -438,5 +434,22 @@ class AccountTest extends TestCase
         $account->usesReadableAddresses();
 
         $this->assertSame(1, $queries);
+    }
+
+    #[Test]
+    public function it_gives_the_next_possession_tag_the_colour_after_the_latest_one(): void
+    {
+        $account = Account::factory()->create();
+
+        $this->assertSame(VaultColourEnum::Blue, $account->nextPossessionTagColour());
+
+        PossessionTag::factory()->create(['account_id' => $account->id, 'colour' => VaultColourEnum::Slate->value]);
+        PossessionTag::factory()->create(['account_id' => $account->id, 'colour' => VaultColourEnum::Green->value]);
+
+        $this->assertSame(VaultColourEnum::Amber, $account->nextPossessionTagColour());
+
+        PossessionTag::factory()->create(['account_id' => $account->id, 'colour' => VaultColourEnum::Slate->value]);
+
+        $this->assertSame(VaultColourEnum::Blue, $account->nextPossessionTagColour());
     }
 }

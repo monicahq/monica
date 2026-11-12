@@ -27,7 +27,7 @@ requires an amendment, and FR-006 asked for a Me contact the API does not carry,
 | --- | --- |
 | Language, dependencies | PHP 8.4, Laravel 13, Sanctum. One new required dependency, `laravel/mcp` v1.0.0, approved 2026-09-14. |
 | Storage | One column, `client` on `personal_access_tokens`, one migration, `up()` only. No table is created. |
-| Testing | PHPUnit, `php artisan test --compact`. The package ships `EricaServer::tools()` and `EricaServer::actingAs($user)->tool(...)`, so a tool is testable without HTTP. |
+| Testing | PHPUnit, `php artisan test --compact`. The package ships `MonicaServer::tools()` and `MonicaServer::actingAs($user)->tool(...)`, so a tool is testable without HTTP. |
 | Target, type | Linux server, hosted and self hosted alike. `POST /mcp`, registered in `routes/api.php`. |
 | Performance | A list is one query per tool, the same one the API runs. Nothing is added to the request path of any existing screen or endpoint. |
 | Constraints | `throttle:mcp`, per key, `Limit::none()` when `monica.self_hosted`. The number is configuration, which `spec/models/006` fixes deliberately. |
@@ -59,7 +59,7 @@ amendment merges.** Complexity Tracking carries it and the two other judgement c
 ## Project Structure
 
 ```text
-app/Mcp/Servers/EricaServer.php                     thirteen tools             new
+app/Mcp/Servers/MonicaServer.php                     thirteen tools             new
 app/Mcp/Tools/List{Vaults,Contacts,Templates}.php   and seven more reads       new
 app/Mcp/Tools/Get{Contact,MeContact}.php                                       new
 app/Mcp/Tools/{CreateContact,UpdateContactName,SetContactFavourite}.php        new
@@ -93,7 +93,7 @@ Sanctum come with it.
    mint screen, the resource and the view model, then `monica:localize`.
 2. `ContactMeController` and its route, with its test and its docs section. FR-013 before anything
    depends on it.
-3. `EricaServer`, `SetMcpLogSource` and the route in `routes/api.php`, with `McpAuthenticationTest`
+3. `MonicaServer`, `SetMcpLogSource` and the route in `routes/api.php`, with `McpAuthenticationTest`
    and `McpChangelogTest`. Nothing offered yet; the transport proven first.
 4. The ten reading tools, then the three writing tools, each with its test.
 5. `McpCatalogueTest`, `McpCompartmentTest`, `McpRateLimitTest`, `McpRefusalLanguageTest`.

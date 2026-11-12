@@ -16,7 +16,7 @@
   <div class="flex flex-col gap-6">
     <x-panel :title="__('The engine')" icon="search" :flush="true">
       <x-detail-list layout="stacked" label-style="caption">
-        <x-detail-list.row :label="__('Engine')">{{ $viewModel->engineName() }}</x-detail-list.row>
+        <x-detail-list.row :label="__('Search engine')">{{ $viewModel->engineName() }}</x-detail-list.row>
 
         <x-detail-list.row :label="__('Health')">
           <x-badge :tone="$viewModel->healthTone()">{{ $viewModel->healthLabel() }}</x-badge>

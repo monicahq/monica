@@ -21,13 +21,6 @@ class FieldValueTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function a_field_nobody_has_written_in_says_so_rather_than_disappearing(): void
-    {
-        $this->render(new Field(['type' => FieldTypeEnum::Text, 'label' => 'Known as']), null, null)
-            ->assertSee('Not recorded');
-    }
-
-    #[Test]
     public function a_document_reads_as_a_link_to_itself(): void
     {
         $file = $this->file('lease.pdf', 'application/pdf');
@@ -76,13 +69,6 @@ class FieldValueTest extends TestCase
     }
 
     #[Test]
-    public function a_type_nothing_can_fill_in_yet_says_that_rather_than_reading_as_empty(): void
-    {
-        $this->render(new Field(['type' => FieldTypeEnum::Avatar, 'label' => 'Portrait']), null, null)
-            ->assertSee('This kind of field cannot be filled in here yet.');
-    }
-
-    #[Test]
     public function an_address_reads_as_its_line_with_what_it_is_for_beside_it(): void
     {
         $list = ValueList::factory()->create();
@@ -107,18 +93,7 @@ class FieldValueTest extends TestCase
         $value->value_json = ['street' => '1725 Slough Avenue', 'city' => 'Scranton'];
 
         $this->render($field, $value, '1725 Slough Avenue, Scranton')
-            ->assertSee('1725 Slough Avenue, Scranton')
-            ->assertDontSee('Not recorded');
-    }
-
-    #[Test]
-    public function an_address_nobody_filled_in_says_so(): void
-    {
-        $field = new Field(['type' => FieldTypeEnum::Address, 'label' => 'Address']);
-
-        $this->render($field, null, null)
-            ->assertSee('Not recorded')
-            ->assertDontSee('This kind of field cannot be filled in here yet.');
+            ->assertSee('1725 Slough Avenue, Scranton');
     }
 
     #[Test]

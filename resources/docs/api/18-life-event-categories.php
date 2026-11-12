@@ -17,7 +17,7 @@ $category = [
         'is_active' => true,
         'life_event_type_count' => 0,
         'created_at' => 1756252800,
-        'updated_at' => null,
+        'updated_at' => 1756252800,
     ],
     'links' => [
         'self' => $base.'/life-event-categories/5f8b3c21-9d07-4a64-8e12-7b0a4d6c3e95',
@@ -54,7 +54,7 @@ $typeOfCategory = [
         'is_system' => true,
         'is_active' => true,
         'created_at' => 1756252800,
-        'updated_at' => null,
+        'updated_at' => 1756252800,
     ],
     'links' => [
         'self' => $base.'/life-event-types/c3f9a8d1-4e62-4b07-9a35-6d180b2fc74e',
@@ -77,7 +77,7 @@ $categoryAttributes = [
     ['name' => 'is_active', 'type' => 'boolean', 'description' => 'Whether the category and the natures under it are offered when a life event is recorded. False removes the whole group from that choice and touches nothing already written.'],
     ['name' => 'life_event_type_count', 'type' => 'integer', 'description' => 'How many life event natures are filed under the category, retired ones counted. It is what decides whether the category may be deleted.'],
     ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When the category was added, as a count of seconds since 1970 rather than a written date.'],
-    ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When it last changed, as a count of seconds, or null if it has not changed since it was added.'],
+    ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When it last changed, as a count of seconds. Equal to created_at until it first changes.'],
 ];
 
 return [

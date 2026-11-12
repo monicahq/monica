@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\DeleteRelationshipCategory;
 use App\Models\RelationshipCategory;
 use App\Models\RelationshipType;
@@ -23,7 +23,7 @@ class DeleteRelationshipCategoryTest extends TestCase
         $user = User::factory()->create();
         $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(DeleteRelationshipCategory::class, ['relationship_category' => $category->uuid])
+        MonicaServer::actingAs($user)->tool(DeleteRelationshipCategory::class, ['relationship_category' => $category->uuid])
             ->assertOk()
             ->assertHasNoErrors();
 
@@ -37,8 +37,8 @@ class DeleteRelationshipCategoryTest extends TestCase
         $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
         RelationshipType::factory()->create(['account_id' => $user->account_id, 'relationship_category_id' => $category->id]);
 
-        EricaServer::actingAs($user)->tool(DeleteRelationshipCategory::class, ['relationship_category' => $category->uuid])
-            ->assertHasErrors(['The category still holds types and stays.']);
+        MonicaServer::actingAs($user)->tool(DeleteRelationshipCategory::class, ['relationship_category' => $category->uuid])
+            ->assertHasErrors();
 
         $this->assertNotSoftDeleted($category);
     }

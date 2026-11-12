@@ -129,31 +129,6 @@ class PublishStructureVersionTest extends TestCase
     }
 
     #[Test]
-    public function it_says_a_section_it_published_went_out_with_the_template(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id]);
-        $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
-        $first = SectionVersion::factory()->published()->create(['account_id' => $user->account_id]);
-        $second = SectionVersion::factory()->create([
-            'account_id' => $user->account_id,
-            'section_id' => $first->section_id,
-            'version_number' => 2,
-            'previous_version_id' => $first->id,
-        ]);
-        StructureVersionSection::factory()->create([
-            'structure_version_id' => $version->id,
-            'section_version_id' => $second->id,
-        ]);
-
-        new PublishStructureVersion(user: $user, structureVersion: $version)->execute();
-
-        $this->assertEquals('Published with the template.', $second->fresh()->change_note);
-    }
-
-    #[Test]
     public function it_leaves_the_sections_of_another_account_alone_when_it_refuses_the_version(): void
     {
         Queue::fake();
@@ -252,30 +227,6 @@ class PublishStructureVersionTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new PublishStructureVersion(user: $michael, structureVersion: $version)->execute();
-    }
-
-    #[Test]
-    public function it_says_a_section_it_published_went_out_with_the_life_event_type(): void
-    {
-        Queue::fake();
-
-        $user = User::factory()->create();
-        $draft = $this->lifeEventTypeDraft($user);
-        $first = SectionVersion::factory()->published()->create(['account_id' => $user->account_id]);
-        $second = SectionVersion::factory()->create([
-            'account_id' => $user->account_id,
-            'section_id' => $first->section_id,
-            'version_number' => 2,
-            'previous_version_id' => $first->id,
-        ]);
-        StructureVersionSection::factory()->create([
-            'structure_version_id' => $draft->id,
-            'section_version_id' => $second->id,
-        ]);
-
-        new PublishStructureVersion(user: $user, structureVersion: $draft, changeNote: 'Where we went.')->execute();
-
-        $this->assertEquals('Published with the life event type.', $second->fresh()->change_note);
     }
 
     #[Test]

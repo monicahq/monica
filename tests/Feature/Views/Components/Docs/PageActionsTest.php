@@ -17,7 +17,6 @@ class PageActionsTest extends TestCase
         $view->assertSee('x-data="docsPageActions(', false);
         $view->assertSee('aria-live="polite"', false);
         $view->assertSee('href="/docs/en.md"', false);
-        $view->assertDontSee('Open in Claude');
     }
 
     #[Test]

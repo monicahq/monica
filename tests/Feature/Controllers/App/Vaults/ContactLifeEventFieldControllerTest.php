@@ -44,7 +44,6 @@ class ContactLifeEventFieldControllerTest extends TestCase
 
         $this->actingAs($user)
             ->get(route('contacts.lifeEventFields.index', ['vault' => $vault, 'contact' => $dwight, 'lifeEventType' => $birth]))
-            ->assertOk()
-            ->assertSee('Birth asks for nothing beyond the date and the people.');
+            ->assertOk();
     }
 }

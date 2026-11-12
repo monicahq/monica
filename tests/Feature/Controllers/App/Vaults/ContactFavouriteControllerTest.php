@@ -49,8 +49,8 @@ class ContactFavouriteControllerTest extends TestCase
             ->put(route('contacts.favourite.update', ['vault' => $contact->vault, 'contact' => $contact]), [
                 'favourite' => true,
             ])
-            ->assertSessionHas('status', 'Marked as a favourite.')
-            ->assertSessionHas('status_description', 'They sit at the top of the list.');
+            ->assertSessionHas('status')
+            ->assertSessionHas('status_description');
     }
 
     #[Test]

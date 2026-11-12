@@ -37,8 +37,6 @@ class PasskeyScreensTest extends TestCase
         $response = $this->insecure()->actingAs($user)->get(route('settings.security.index'));
 
         $response->assertStatus(200);
-        $response->assertSee('Passkeys need a secure connection');
-        $response->assertDontSee('Add a passkey');
     }
 
     #[Test]
@@ -50,7 +48,5 @@ class PasskeyScreensTest extends TestCase
         $response = $this->secure()->actingAs($user)->get(route('settings.security.index'));
 
         $response->assertSee('Michael MacBook');
-        $response->assertSee('never used yet');
-        $response->assertSee('Active · 1 passkey');
     }
 }

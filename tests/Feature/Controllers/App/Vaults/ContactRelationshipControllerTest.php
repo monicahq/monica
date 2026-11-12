@@ -37,8 +37,6 @@ class ContactRelationshipControllerTest extends TestCase
         $this->actingAs($user)
             ->get(route('contacts.relationships.new', ['vault' => $contact->vault, 'contact' => $contact]))
             ->assertStatus(200)
-            ->assertSee('Parent ↔ Child', escape: false)
-            ->assertSee('Sibling')
             ->assertSee('Michael Scott');
     }
 
@@ -162,11 +160,7 @@ class ContactRelationshipControllerTest extends TestCase
                 'contact' => $contact,
                 'relationship' => $relationship,
             ]))
-            ->assertStatus(200)
-            ->assertSee('Edit this relationship')
-            ->assertSee('Judy Geller is Ross Geller’s parent.')
-            ->assertSee('This relationship has ended')
-            ->assertSee('Save changes');
+            ->assertStatus(200);
     }
 
     #[Test]

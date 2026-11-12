@@ -44,7 +44,7 @@ deleted_at                  datetime
 
 - **Never all events by default** (14.3). The subscriber chooses what to receive. An empty selection subscribes to nothing.
 - **The scope matters** (14.3). A subscription confined to a vault never receives an event from another one. Vaults are the compartment and a webhook is one of the easiest ways to breach one by accident.
-- The secret lets the receiver verify the call came from Erica and was not altered. It is stored encrypted and shown once.
+- The secret lets the receiver verify the call came from Monica and was not altered. It is stored encrypted and shown once.
 - A test event can be sent on demand, so a wiring can be checked before anything depends on it (14.3).
 - **Repeated failures disable the subscription automatically, with a notification explaining why and a button to switch it back on** (14.4). It is disabled, never deleted, which is section 3.3 applied exactly.
 - The interface says plainly, at creation, that what goes out leaves our control, and says it more loudly for a vault holding fields marked sensitive (14.5).

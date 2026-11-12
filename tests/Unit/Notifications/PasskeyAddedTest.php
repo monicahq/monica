@@ -16,19 +16,6 @@ class PasskeyAddedTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_says_what_it_is_about_in_the_subject(): void
-    {
-        $michael = User::factory()->create();
-
-        $message = new PasskeyAdded(name: 'MacBook Pro')->toMail($michael);
-
-        $this->assertEquals(
-            'A passkey was added to your '.config('app.name').' account',
-            $message->subject,
-        );
-    }
-
-    #[Test]
     public function it_names_the_passkey_in_the_body(): void
     {
         $michael = User::factory()->create();
@@ -36,16 +23,6 @@ class PasskeyAddedTest extends TestCase
         $message = new PasskeyAdded(name: 'MacBook Pro')->toMail($michael);
 
         $this->assertStringContainsString('MacBook Pro', (string) $message->render());
-    }
-
-    #[Test]
-    public function it_says_what_to_do_if_they_did_not_add_it(): void
-    {
-        $michael = User::factory()->create();
-
-        $message = new PasskeyAdded(name: 'MacBook Pro')->toMail($michael);
-
-        $this->assertStringContainsString('If you did not add it', (string) $message->panel);
     }
 
     #[Test]

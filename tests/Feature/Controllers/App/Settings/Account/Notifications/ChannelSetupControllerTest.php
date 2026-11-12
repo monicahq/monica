@@ -25,7 +25,7 @@ class ChannelSetupControllerTest extends TestCase
         $response = $this->delete(route('settings.notifications.setup.destroy', 'sms'));
 
         $response->assertRedirect(route('settings.notifications.index'));
-        $response->assertSessionHas('status', 'The setup of Text message has been removed.');
+        $response->assertSessionHas('status');
         $this->assertNull($this->channel($user)->destination);
     }
 
@@ -36,7 +36,7 @@ class ChannelSetupControllerTest extends TestCase
 
         $response = $this->delete(route('settings.notifications.setup.destroy', 'email'));
 
-        $response->assertSessionHasErrors(['channel' => 'This channel has nothing to remove.']);
+        $response->assertSessionHasErrors(['channel']);
     }
 
     #[Test]

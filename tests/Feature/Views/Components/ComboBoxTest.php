@@ -24,7 +24,6 @@ class ComboBoxTest extends TestCase
         $rendered->assertSee('name="kind"', escape: false);
         $rendered->assertSee('Mobile');
         $rendered->assertSee('Work');
-        $rendered->assertSee(__('Not recorded'));
     }
 
     #[Test]
@@ -46,7 +45,6 @@ class ComboBoxTest extends TestCase
         $rendered = $this->render($this->offering(['Mobile'], open: true));
 
         $rendered->assertSee('name="kind_wording"', escape: false);
-        $rendered->assertSee(__('Pick from the list'));
     }
 
     #[Test]

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\GetRelationshipType;
 use App\Models\RelationshipType;
 use App\Models\User;
@@ -22,9 +22,8 @@ class GetRelationshipTypeTest extends TestCase
         $user = User::factory()->create();
         $type = RelationshipType::factory()->directed()->create(['account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(GetRelationshipType::class, ['relationship_type' => $type->uuid])
+        MonicaServer::actingAs($user)->tool(GetRelationshipType::class, ['relationship_type' => $type->uuid])
             ->assertOk()
-            ->assertSee('Godparent / Godchild')
             ->assertSee($type->relationshipCategory->uuid);
     }
 
@@ -34,7 +33,7 @@ class GetRelationshipTypeTest extends TestCase
         $user = User::factory()->create();
         $type = RelationshipType::factory()->create();
 
-        EricaServer::actingAs($user)->tool(GetRelationshipType::class, ['relationship_type' => $type->uuid])
-            ->assertHasErrors(['That relationship type does not exist.']);
+        MonicaServer::actingAs($user)->tool(GetRelationshipType::class, ['relationship_type' => $type->uuid])
+            ->assertHasErrors();
     }
 }

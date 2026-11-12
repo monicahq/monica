@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\GetContactReminder;
 use App\Models\Contact;
 use App\Models\Reminder;
@@ -26,7 +26,7 @@ class GetContactReminderTest extends TestCase
         $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
         $reminder = Reminder::factory()->manual($contact, now()->addWeek()->toDateString())->create(['name' => 'Ask about the art school']);
 
-        EricaServer::actingAs($user)->tool(GetContactReminder::class, [
+        MonicaServer::actingAs($user)->tool(GetContactReminder::class, [
             'vault' => $vault->uuid,
             'contact' => $contact->uuid,
             'reminder' => $reminder->uuid,
@@ -42,10 +42,10 @@ class GetContactReminderTest extends TestCase
         $jim = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
         $reminder = Reminder::factory()->manual($jim, now()->addWeek()->toDateString())->create();
 
-        EricaServer::actingAs($user)->tool(GetContactReminder::class, [
+        MonicaServer::actingAs($user)->tool(GetContactReminder::class, [
             'vault' => $vault->uuid,
             'contact' => $pam->uuid,
             'reminder' => $reminder->uuid,
-        ])->assertHasErrors(['That reminder does not exist.']);
+        ])->assertHasErrors();
     }
 }

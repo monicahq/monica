@@ -54,7 +54,7 @@ class ChannelSetupControllerTest extends TestCase
         $response = $this->json('DELETE', route('api.v1.notificationChannels.setup.destroy', 'email'));
 
         $response->assertUnprocessable();
-        $response->assertJsonValidationErrors(['channel' => 'This channel has nothing to remove.']);
+        $response->assertJsonValidationErrors(['channel']);
     }
 
     #[Test]

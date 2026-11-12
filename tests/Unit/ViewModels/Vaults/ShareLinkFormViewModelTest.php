@@ -110,8 +110,6 @@ class ShareLinkFormViewModelTest extends TestCase
 
         $this->assertFalse($making->isEditing());
         $this->assertSame('post', $making->method());
-        $this->assertSame('Share Michael Scott', $making->title());
-        $this->assertSame('Share', $making->breadcrumbLabel());
 
         $this->assertTrue($changing->isEditing());
         $this->assertSame('put', $changing->method());
@@ -140,7 +138,6 @@ class ShareLinkFormViewModelTest extends TestCase
 
         $never = new ShareLinkFormViewModel(user: $user, vault: $contact->vault, contact: $contact)->neverLine();
 
-        $this->assertStringContainsString('marked sensitive', $never);
         $this->assertStringContainsString('Michael', $never);
     }
 

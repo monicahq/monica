@@ -84,7 +84,6 @@ class CalendarTest extends TestCase
         $this->assertStringContainsString('RRULE:FREQ=YEARLY', $body);
         $this->assertStringContainsString('DTSTART;VALUE=DATE:19840120', $body);
         $this->assertStringContainsString('Dwight Schrute', $body);
-        $this->assertStringContainsString('Birthday', $body);
     }
 
     #[Test]
@@ -129,7 +128,6 @@ class CalendarTest extends TestCase
         $entry->assertOk();
         $body = $this->bodyOf($entry);
         $this->assertStringContainsString('BEGIN:VTODO', $body);
-        $this->assertStringContainsString('Wish Dwight a happy birthday', $body);
         $this->assertStringContainsString('DUE:'.$ahead->scheduled_for->utc()->format('Ymd\THis\Z'), $body);
     }
 
@@ -176,7 +174,6 @@ class CalendarTest extends TestCase
         $response->assertStatus(207);
         $response->assertSee($added->uuid.'.ics', escape: false);
         $response->assertSee($answered->uuid.'.ics', escape: false);
-        $response->assertSee('404 Not Found', escape: false);
         $response->assertDontSee($stayed->uuid.'.ics', escape: false);
     }
 

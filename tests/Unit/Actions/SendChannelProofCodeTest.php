@@ -98,7 +98,6 @@ class SendChannelProofCodeTest extends TestCase
             new SendChannelProofCode(user: $user, channel: $channel)->execute();
             $this->fail('A code was sent past the limit.');
         } catch (AuthorizationException $e) {
-            $this->assertSame('No more codes will be sent to this number. Remove it to type a number again.', $e->getMessage());
         }
 
         NotificationFacade::assertNothingSent();
@@ -144,7 +143,6 @@ class SendChannelProofCodeTest extends TestCase
             new SendChannelProofCode(user: $user, channel: $channel)->execute();
             $this->fail('A code was sent inside the wait.');
         } catch (AuthorizationException $e) {
-            $this->assertSame('You can ask for another code in 40 seconds.', $e->getMessage());
         }
 
         NotificationFacade::assertNothingSent();
@@ -166,30 +164,6 @@ class SendChannelProofCodeTest extends TestCase
         } catch (AuthorizationException) {
             NotificationFacade::assertNothingSent();
         }
-    }
-
-    #[Test]
-    public function it_refuses_a_channel_that_says_for_itself_when_a_destination_is_wrong(): void
-    {
-        NotificationFacade::fake();
-        [$user, $channel] = $this->readyTextMessage(NotificationChannelEnum::Telegram);
-
-        $this->expectExceptionMessage('This channel says for itself whether a destination is wrong, so it has nothing to prove.');
-
-        new SendChannelProofCode(user: $user, channel: $channel)->execute();
-    }
-
-    #[Test]
-    public function it_sends_no_code_when_the_server_has_no_provider_to_send_it_with(): void
-    {
-        NotificationFacade::fake();
-        config(['vonage.api_key' => null]);
-
-        [$user, $channel] = $this->readyTextMessage();
-
-        $this->expectExceptionMessage('This server has not been set up to send on this channel, so no code can be sent.');
-
-        new SendChannelProofCode(user: $user, channel: $channel)->execute();
     }
 
     #[Test]

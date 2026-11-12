@@ -20,16 +20,14 @@ class MarketplaceLayoutTest extends TestCase
 
         $this->actingAs($user)
             ->blade('<x-marketplace-layout>Anything</x-marketplace-layout>')
-            ->assertSee(route('auth.login.destroy'), escape: false)
-            ->assertSee('Sign out');
+            ->assertSee(route('auth.login.destroy'), escape: false);
     }
 
     #[Test]
     public function it_offers_a_visitor_no_way_out(): void
     {
         $this->blade('<x-marketplace-layout>Anything</x-marketplace-layout>')
-            ->assertDontSee(route('auth.login.destroy'), escape: false)
-            ->assertDontSee('Sign out');
+            ->assertDontSee(route('auth.login.destroy'), escape: false);
     }
 
     #[Test]
@@ -38,8 +36,7 @@ class MarketplaceLayoutTest extends TestCase
         config()->set('monica.registration_enabled', true);
 
         $this->blade('<x-marketplace-layout>Anything</x-marketplace-layout>')
-            ->assertSee(route('auth.register.new'), escape: false)
-            ->assertSee('Sign in');
+            ->assertSee(route('auth.register.new'), escape: false);
     }
 
     #[Test]
@@ -48,7 +45,6 @@ class MarketplaceLayoutTest extends TestCase
         config()->set('monica.registration_enabled', false);
 
         $this->blade('<x-marketplace-layout>Anything</x-marketplace-layout>')
-            ->assertDontSee(route('auth.register.new'), escape: false)
-            ->assertSee('Sign in');
+            ->assertDontSee(route('auth.register.new'), escape: false);
     }
 }

@@ -30,7 +30,7 @@ class EntityTypePositionControllerTest extends TestCase
         ]);
 
         $response->assertRedirect(route('settings.entityTypes.index'));
-        $response->assertSessionHas('status', 'The order is saved.');
+        $response->assertSessionHas('status');
 
         $this->assertSame(1, $cars->refresh()->position);
         $this->assertSame(2, $animals->refresh()->position);

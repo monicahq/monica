@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enums\AccessKindEnum;
 use App\Enums\OfferKindEnum;
+use App\Enums\VaultColourEnum;
 use App\Helpers\StripeCatalogue;
 use Carbon\CarbonImmutable;
 use Database\Factories\AccountFactory;
@@ -223,6 +224,73 @@ class Account extends Model
     public function contacts(): HasMany
     {
         return $this->hasMany(Contact::class);
+    }
+
+    /**
+     * Get the places the things of the account are kept in, at every level.
+     * They belong to the account rather than to a vault, since one house
+     * holds the things of every vault.
+     *
+     * @return HasMany<Location, $this>
+     */
+    public function locations(): HasMany
+    {
+        return $this->hasMany(Location::class);
+    }
+
+    /**
+     * Get the kinds of things the account owns, each with the fields a thing
+     * of that kind carries. Like locations, they belong to the account rather
+     * than to a vault.
+     *
+     * @return HasMany<PossessionType, $this>
+     */
+    public function possessionTypes(): HasMany
+    {
+        return $this->hasMany(PossessionType::class);
+    }
+
+    /**
+     * Get the words the account puts on its possessions to sort them across
+     * types and locations. Like possession types, they belong to the account
+     * rather than to a vault.
+     *
+     * @return HasMany<PossessionTag, $this>
+     */
+    public function possessionTags(): HasMany
+    {
+        return $this->hasMany(PossessionTag::class);
+    }
+
+    /**
+     * Get the colour a tag created from a possession's page takes: the vault
+     * colour after the colour of the account's latest tag, wrapping after the
+     * last one, so tags created in a row do not all look alike. An account
+     * without a tag starts at the first colour.
+     */
+    public function nextPossessionTagColour(): VaultColourEnum
+    {
+        $latest = $this->possessionTags()->latest('id')->value('colour');
+        $colours = VaultColourEnum::cases();
+        $position = array_search(VaultColourEnum::tryFrom((string) $latest), $colours, true);
+
+        if ($position === false) {
+            return $colours[0];
+        }
+
+        return $colours[($position + 1) % count($colours)];
+    }
+
+    /**
+     * Get the possession conditions of the account, in the order it keeps them,
+     * from best to worst. Like possession tags, they belong to the account
+     * rather than to a vault.
+     *
+     * @return HasMany<PossessionCondition, $this>
+     */
+    public function possessionConditions(): HasMany
+    {
+        return $this->hasMany(PossessionCondition::class)->orderBy('position')->orderBy('id');
     }
 
     /**

@@ -41,7 +41,6 @@ class StructureVersionHistoryViewModelTest extends TestCase
         $entries = new StructureVersionHistoryViewModel(user: $user, template: $template)->entries();
 
         $this->assertSame(['v3', 'v2', 'v1'], array_map(fn ($entry): string => $entry->label(), $entries));
-        $this->assertSame(['based on v2', 'based on v1', 'the first version'], array_map(fn ($entry): string => $entry->basedOn(), $entries));
     }
 
     #[Test]
@@ -55,7 +54,6 @@ class StructureVersionHistoryViewModelTest extends TestCase
         $entries = new StructureVersionHistoryViewModel(user: $user, template: $template)->entries();
 
         $this->assertCount(2, $entries);
-        $this->assertSame(['Published', 'Retired'], array_map(fn ($entry): string => $entry->statusLabel(), $entries));
     }
 
     #[Test]
@@ -99,8 +97,6 @@ class StructureVersionHistoryViewModelTest extends TestCase
         $viewModel = new StructureVersionHistoryViewModel(user: $user, template: $template);
 
         $this->assertSame(route('settings.templateBuilder.index', $template), $viewModel->backUrl());
-        $this->assertSame('Versions of Basic contact', $viewModel->title());
-        $this->assertSame('Back to Basic contact', $viewModel->backLabel());
     }
 
     #[Test]

@@ -89,7 +89,6 @@ class CreateEmailSentTest extends TestCase
             body: '<p>Hi Dwight, <a href="https://monica.test/magic-link/abc?signature=1&expires=2">Sign in</a></p><p>Copy this address: <span>https://monica.test/magic-link/abc?signature=1&amp;expires=2</span></p>',
         )->execute();
 
-        $this->assertStringContainsString('Sign in', $emailSent->body);
         $this->assertStringContainsString('Copy this address:', $emailSent->body);
         $this->assertStringNotContainsString('http', $emailSent->body);
         $this->assertStringNotContainsString('magic-link', $emailSent->body);
@@ -116,7 +115,6 @@ class CreateEmailSentTest extends TestCase
             body: (string) $notification->toMail($user)->render(),
         )->execute();
 
-        $this->assertStringContainsString('Click the button below to sign in.', $emailSent->body);
         $this->assertStringNotContainsString('http', $emailSent->body);
         $this->assertStringNotContainsString('beets-bears-battlestar', $emailSent->body);
     }

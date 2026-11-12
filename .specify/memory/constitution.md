@@ -1,17 +1,15 @@
 <!--
 Sync Impact Report
-Version change: 2.5.0 -> 2.5.1
-Rationale: the invariant said one Me contact per account, while spec/models/007 and 019 had already
-decided one per vault, and the API, the MCP server and CreateContact work that way. The invariant now
-says what the product does, and adds that the contact is created with its vault and cannot leave it.
-No practice is invalidated, so PATCH.
+Version change: 2.19.0 -> 2.20.0
+Rationale: a possession now holds loans (specs/118-possession-loans), the periods it is out of or into
+your hands with one contact, without a change of owner. One new fixed concept: materially expanded
+guidance, so MINOR.
 
-Modified: Product Invariants, the Me contact.
-Added: none.
+Modified: VII. A Stable Core, Unlimited Personalisation (twenty six concepts; the Possession sentence).
+Added: Possession loan as a fixed concept.
 Removed: none.
 
-Follow-up owed by the pull request that adopts this: none. spec/spec.md 4.3 changes in the same pull
-request.
+Follow-up owed by the pull request that adopts this: spec/models/077 describes the concept.
 -->
 # Monica Constitution
 
@@ -108,8 +106,50 @@ else editing your data.
 
 ### VII. A Stable Core, Unlimited Personalisation
 
-Nine concepts are fixed and MUST NOT be made personalisable in their nature: Account, Vault,
-Contact, Life event, Relationship, Group, the Me identity, Reminders and the Changelog. Fixed means
+Twenty six concepts are fixed and MUST NOT be made personalisable in their nature: Account, Vault,
+Contact, Life event, Relationship, Group, the Me identity, Reminders, the Changelog, Location,
+Possession type, Possession, Possession transaction, Possession insurance record, Possession maintenance
+record, Possession valuation, Possession provenance event, Possession location stay, Possession loan, Possession tag, Possession condition, Knowledge folder, Knowledge note, Knowledge list,
+Knowledge list column and Knowledge list item.
+A Location belongs to the account, not to a vault, and carries a name, an optional parent location,
+an emoji and an address, because the path of a place and the refusal of a cycle are computed from its
+parent. A Possession type belongs to the account and carries a name, a vault colour, an optional
+icon, and its own ordered groups and fields,
+each field with a kind and, for a choice, its options; it is the first place user defined fields live
+outside the Template, Page, Section, Field mechanism. A Possession belongs to a vault, is of
+one Possession type, sits at the Location of its open stay if it has one, holds one value for each field of its type, records
+what it would cost to replace, carries any of the account's possession tags, and holds its
+transactions, its insurance records, its maintenance records, its valuations, its provenance events, its location stays and its loans. A Possession transaction belongs to one possession and
+records money or ownership changing hands: a type from a fixed list, an optional date, a counterparty written as text, an
+amount, a tax, fees, shipping, an optional total and a currency. How, when and from whom a
+possession was acquired is read from its transactions and never stored a second time. A Possession
+insurance record belongs to one possession and records one policy period: an insurer written as text,
+a status from a fixed list, an insured value and its currency, an optional excess and optional dates. A
+Possession maintenance record belongs to one possession and records one job done on it: a type from a
+fixed list, a title, the date it was performed, an optional cost and its currency, optionally the
+account's possession conditions before and after, and an optional next due date. A Possession
+valuation belongs to one possession and records one estimate of what it is worth: a type and a
+confidence from fixed lists, a date, an amount and its currency, and an optional valuer written as
+text; it is never edited once recorded, and the latest by date is the possession's current value. A
+Possession provenance event belongs to one possession and records one moment of its origin, ownership,
+custody or authenticity: a type from a fixed list, a date with the precision it is known to, optional
+parties and a place written as text, and whether it is verified; it holds no money and may point at
+one transaction of the same possession, whose figures are read from there. A Possession location
+stay belongs to one possession and records one period spent at one Location of the account: an
+optional day it arrived, a day it left unless it is the open stay, and an optional reason; a
+possession has at most one open stay, and a Location any stay refers to cannot be deleted. A Possession loan belongs to one possession
+and records one period it is lent to or borrowed from one Contact of its vault, planned, active or
+returned, with its days, conditions, an optional deposit and purpose; it never changes the owner, a
+possession has at most one active loan, and the loan outlives its contact. A Possession tag
+belongs to the account, shared by every vault, and carries a name and a vault colour. A Possession
+condition belongs to the account, shared by every vault, and carries a name, a vault colour, an
+optional icon and a position in the account's order. A Knowledge folder belongs to a vault and carries
+a name and a position; folders are not nested, and a vault that holds Knowledge keeps at least one. A
+Knowledge note belongs to one folder and carries a title and Markdown text. A Knowledge list belongs
+to one folder and carries a title, a Markdown description, its ordered Knowledge list columns, each a
+name, and its ordered Knowledge list items, each holding one text per column. List columns are the
+second place user defined fields live outside the Template, Page, Section, Field mechanism: they are
+text only, stored as rows, never as schema. Fixed means
 the concept and not its content. A Life event is always something that happened on a date, possibly
 with people, while the list of natures and the fields each one carries is entirely configurable. A
 Contact always carries a structured name, in all its components, while gender, date of birth and
@@ -203,7 +243,7 @@ the ones that go stale first, so length costs accuracy as well as attention.
 These are facts about the shape of the product. A change MUST NOT bend them, and reversing one is
 an amendment.
 
-- Erica is mono-user. An account is one person and one sign in identity. There are no account roles,
+- Monica is mono-user. An account is one person and one sign in identity. There are no account roles,
   invitations, members, permissions between users, shared vaults or real time collaboration, and no
   change may reintroduce them. The instance administrator capacity is not a counterexample: it
   governs the instance, meaning moderation, accounts and storage, and never the contents of somebody
@@ -357,7 +397,7 @@ past pull request or an older document, this file wins. Where it conflicts with 
 demonstrably does, that is a defect in one of the two, and the pull request that discovers it MUST
 say which and fix it rather than leave both standing.
 
-`spec/` is the product's source of truth for what Erica is and what it does: `spec/spec.md` for the
+`spec/` is the product's source of truth for what Monica is and what it does: `spec/spec.md` for the
 product itself, and the numbered files in `spec/models/` for each object's rules. This file governs
 how the product is built and which of the spec's rules are non-negotiable. Where the two touch the
 same subject, the spec decides what the product does and this file decides how it is built, and
@@ -383,4 +423,4 @@ test and the translations for the change under review, and to say which of the e
 change had to satisfy. Complexity that steps outside these principles MUST be justified in the pull
 request or removed.
 
-**Version**: 2.5.1 | **Ratified**: 2026-08-20 | **Last Amended**: 2026-10-06
+**Version**: 2.20.0 | **Ratified**: 2026-08-20 | **Last Amended**: 2026-11-12

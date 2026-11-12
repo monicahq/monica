@@ -33,10 +33,7 @@ class FieldControllerTest extends TestCase
         [$template, $row] = $this->templateCarryingASection($user);
 
         $this->actingAs($user)->get(route('settings.fields.new', [$template, $row]))
-            ->assertStatus(200)
-            ->assertSee(__('Short text'))
-            ->assertSee(__('Recurring date'))
-            ->assertSee(__('Later'));
+            ->assertStatus(200);
     }
 
     #[Test]

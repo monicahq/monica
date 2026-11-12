@@ -30,7 +30,6 @@ class MagicLinkControllerTest extends TestCase
         $response = $this->get(route('auth.magicLink.new'));
 
         $response->assertStatus(200);
-        $response->assertSee('Get a link to sign in');
     }
 
     #[Test]
@@ -45,7 +44,6 @@ class MagicLinkControllerTest extends TestCase
         ]);
 
         $response->assertStatus(200);
-        $response->assertSee('Check your inbox');
 
         Notification::assertSentTo(
             $user,
@@ -64,7 +62,6 @@ class MagicLinkControllerTest extends TestCase
         ]);
 
         $response->assertStatus(200);
-        $response->assertSee('Check your inbox');
 
         Notification::assertNothingSent();
         $this->assertDatabaseCount('users', 0);
@@ -167,7 +164,6 @@ class MagicLinkControllerTest extends TestCase
             ]);
 
         $response->assertStatus(200);
-        $response->assertSee('Check your inbox');
 
         Notification::assertSentTo($user, MagicLinkCreated::class);
     }

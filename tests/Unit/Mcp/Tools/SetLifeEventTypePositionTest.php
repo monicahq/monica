@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\SetLifeEventTypePosition;
 use App\Models\LifeEventCategory;
 use App\Models\LifeEventType;
@@ -27,7 +27,7 @@ class SetLifeEventTypePositionTest extends TestCase
         $committee = LifeEventType::factory()->create([...$attributes, 'name' => 'Joined a committee', 'position' => 2]);
         $promotion = LifeEventType::factory()->create([...$attributes, 'name' => 'Got promoted', 'position' => 3]);
 
-        EricaServer::actingAs($user)->tool(SetLifeEventTypePosition::class, [
+        MonicaServer::actingAs($user)->tool(SetLifeEventTypePosition::class, [
             'life_event_type' => $promotion->uuid,
             'position' => 1,
         ])->assertOk()->assertHasNoErrors();

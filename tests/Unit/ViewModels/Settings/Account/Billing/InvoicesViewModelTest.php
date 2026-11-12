@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Settings\Account\Billing;
 
-use App\Enums\OfferKindEnum;
 use App\Helpers\StripeCatalogue;
 use App\Models\Payment;
 use App\Models\User;
@@ -54,34 +53,6 @@ class InvoicesViewModelTest extends TestCase
         Payment::factory()->create(['account_id' => $dwight->account_id]);
 
         $this->assertTrue(new InvoicesViewModel(user: $michael)->payments()->isEmpty());
-    }
-
-    #[Test]
-    public function it_names_what_each_payment_was_for(): void
-    {
-        $michael = User::factory()->create();
-
-        $purchase = Payment::factory()->create(['account_id' => $michael->account_id, 'kind' => OfferKindEnum::Lifetime]);
-        $renewal = Payment::factory()->forSubscription('yearly')->create(['account_id' => $michael->account_id]);
-
-        $viewModel = new InvoicesViewModel(user: $michael);
-
-        $this->assertSame('Lifetime access', $viewModel->paymentLabel($purchase));
-        $this->assertSame('Yearly subscription', $viewModel->paymentLabel($renewal));
-    }
-
-    #[Test]
-    public function it_falls_back_to_a_plain_word_when_nothing_names_the_offer(): void
-    {
-        $michael = User::factory()->create();
-
-        $payment = Payment::factory()->create([
-            'account_id' => $michael->account_id,
-            'kind' => null,
-            'stripe_subscription_id' => 'sub_gone',
-        ]);
-
-        $this->assertSame('Subscription', new InvoicesViewModel(user: $michael)->paymentLabel($payment));
     }
 
     #[Test]

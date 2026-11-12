@@ -86,7 +86,7 @@ class ScreenshotLinkControllerTest extends TestCase
         return [
             'localhost' => ['http://localhost'],
             'a loopback address' => ['http://127.0.0.1'],
-            'a parked site' => ['http://erica.test'],
+            'a parked site' => ['http://monica.test'],
         ];
     }
 

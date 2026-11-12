@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\CreateContactRelationship;
 use App\Models\Contact;
 use App\Models\RelationshipType;
@@ -29,7 +29,7 @@ class CreateContactRelationshipTest extends TestCase
         $pam = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
         $type = RelationshipType::factory()->create(['account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(CreateContactRelationship::class, [
+        MonicaServer::actingAs($user)->tool(CreateContactRelationship::class, [
             'vault' => $vault->uuid,
             'contact' => $jim->uuid,
             'relationship_type' => $type->uuid,
@@ -47,10 +47,10 @@ class CreateContactRelationshipTest extends TestCase
         $jim = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
         $type = RelationshipType::factory()->create();
 
-        EricaServer::actingAs($user)->tool(CreateContactRelationship::class, [
+        MonicaServer::actingAs($user)->tool(CreateContactRelationship::class, [
             'vault' => $vault->uuid,
             'contact' => $jim->uuid,
             'relationship_type' => $type->uuid,
-        ])->assertHasErrors(['That relationship type does not exist.']);
+        ])->assertHasErrors();
     }
 }

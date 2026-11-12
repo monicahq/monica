@@ -34,6 +34,7 @@ class TemplateSectionController extends Controller
             'icon' => ['nullable', 'string', Rule::in(Section::ICONS)],
             'colour' => ['nullable', 'string', Rule::in(VaultColourEnum::values())],
             'page' => [
+                'bail',
                 'nullable',
                 'string',
                 'bail',

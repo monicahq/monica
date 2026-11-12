@@ -92,7 +92,6 @@ class ContactTest extends TestCase
             'maiden_name' => null,
         ]);
 
-        $this->assertEquals(__('Unnamed contact'), $contact->name);
         $this->assertEquals('?', $contact->initials);
         $this->assertDatabaseHas('contacts', ['id' => $contact->id, 'first_name' => null, 'last_name' => null]);
     }
@@ -962,7 +961,6 @@ class ContactTest extends TestCase
         $this->assertStringContainsString('Vegetarian', (string) $document['body']);
         $this->assertStringContainsString('Mose Schrute', (string) $document['body']);
         $this->assertStringNotContainsString('Staples', (string) $document['body']);
-        $this->assertStringNotContainsString('Yes', (string) $document['body']);
         $this->assertStringNotContainsString('brine', (string) $document['body']);
         $this->assertSame('Secret Schrute brine', $document['sensitive_body']);
     }

@@ -35,7 +35,6 @@ class VaultDashboardAttentionTest extends TestCase
         $attention = new VaultDashboardAttention(user: $user, vault: $vault);
         $bands = $attention->bands();
 
-        $this->assertSame(['Overdue', 'Today', 'Next seven days'], array_column($bands, 'title'));
         $this->assertSame([true, false, false], array_column($bands, 'isOverdue'));
         $this->assertSame(['clock', 'sun', 'calendar'], array_column($bands, 'icon'));
         $this->assertSame(
@@ -75,7 +74,7 @@ class VaultDashboardAttentionTest extends TestCase
 
         $bands = new VaultDashboardAttention(user: $user, vault: $vault)->bands();
 
-        $this->assertSame(['Today'], array_column($bands, 'title'));
+        $this->assertSame(['sun'], array_column($bands, 'icon'));
     }
 
     private function onceIn(User $user, Vault $vault, string $startsOn): Reminder

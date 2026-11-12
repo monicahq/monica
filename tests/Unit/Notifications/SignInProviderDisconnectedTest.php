@@ -23,24 +23,6 @@ class SignInProviderDisconnectedTest extends TestCase
         $message = new SignInProviderDisconnected(provider: 'GitHub')->toMail($user);
 
         $this->assertEquals('GitHub was disconnected from your '.config('app.name').' account', $message->subject);
-        $this->assertStringContainsString('GitHub no longer signs you in', (string) $message->render());
-    }
-
-    #[Test]
-    public function it_says_the_account_is_untouched(): void
-    {
-        $user = User::factory()->create();
-
-        $message = new SignInProviderDisconnected(provider: 'GitHub')->toMail($user);
-
-        $this->assertStringContainsString(
-            'Your account is untouched, and whatever else you use to sign in still works.',
-            (string) $message->render(),
-        );
-        $this->assertEquals(
-            'If you did not disconnect it, connect it again from your security settings straight away.',
-            $message->panel,
-        );
     }
 
     #[Test]

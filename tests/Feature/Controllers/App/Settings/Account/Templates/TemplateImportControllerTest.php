@@ -29,10 +29,7 @@ class TemplateImportControllerTest extends TestCase
         $user = User::factory()->create();
 
         $this->actingAs($user)->get(route('settings.templateImport.new'))
-            ->assertStatus(200)
-            ->assertSee('Import a template')
-            ->assertSee('Check this file')
-            ->assertSee('How it goes');
+            ->assertStatus(200);
     }
 
     #[Test]

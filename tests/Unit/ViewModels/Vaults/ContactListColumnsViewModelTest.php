@@ -30,7 +30,6 @@ class ContactListColumnsViewModelTest extends TestCase
 
         $this->assertSame(['email', 'phone', 'last-spoke', 'template'], array_column($columns, 'source'));
         $this->assertSame([true, true, true, false], array_column($columns, 'isVisible'));
-        $this->assertSame('Phone number', $columns[1]['defaultHeading']);
     }
 
     #[Test]
@@ -44,9 +43,7 @@ class ContactListColumnsViewModelTest extends TestCase
 
         $groups = new ContactListColumnsViewModel(user: $user, vault: $vault)->additions();
 
-        $this->assertSame(['Shared by all templates', 'Unique to some templates'], array_column($groups, 'label'));
         $this->assertContains('How We Met', array_column($groups[0]['items'], 'label'));
-        $this->assertContains('Phone number', array_column($groups[0]['items'], 'label'));
         $this->assertSame(['Company'], array_column($groups[1]['items'], 'label'));
         $this->assertSame(['Professional'], $groups[1]['items'][0]['templates']);
     }
@@ -85,7 +82,6 @@ class ContactListColumnsViewModelTest extends TestCase
 
         $this->assertFalse($column['isSupplied']);
         $this->assertSame($section->uuid, $column['section']);
-        $this->assertSame('No template supplies this any more, so the list leaves it out.', $column['note']);
     }
 
     #[Test]

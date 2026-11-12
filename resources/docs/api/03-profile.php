@@ -57,7 +57,7 @@ $userAttributes = [
     ['name' => 'welcomed_at', 'type' => 'timestamp', 'description' => 'When the user dismissed the welcome screen, as a count of seconds, or null if they have not.'],
     ['name' => 'full_access_offer_dismissed_at', 'type' => 'timestamp', 'description' => 'When the user hid the banner offering full access, as a count of seconds, or null if they have not.'],
     ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When the account was opened, as a count of seconds since 1970 rather than a written date.'],
-    ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When the profile last changed, as a count of seconds, or null if it has not changed since it was opened.'],
+    ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When the profile last changed, as a count of seconds. Equal to created_at until it first changes.'],
 ];
 
 return [

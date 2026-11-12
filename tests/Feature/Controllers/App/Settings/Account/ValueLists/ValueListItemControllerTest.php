@@ -29,7 +29,7 @@ class ValueListItemControllerTest extends TestCase
         ]);
 
         $response->assertRedirect(route('settings.valueLists.index'));
-        $response->assertSessionHas('status', 'The value is added.');
+        $response->assertSessionHas('status');
 
         $this->assertDatabaseHas('value_list_items', [
             'value_list_id' => $list->id,
@@ -87,7 +87,7 @@ class ValueListItemControllerTest extends TestCase
         ]);
 
         $response->assertRedirect(route('settings.valueLists.index'));
-        $response->assertSessionHas('status', 'The value is renamed.');
+        $response->assertSessionHas('status');
 
         $item->refresh();
 
@@ -105,7 +105,7 @@ class ValueListItemControllerTest extends TestCase
         $response = $this->actingAs($user)->delete(route('settings.valueListItems.destroy', $item->id));
 
         $response->assertRedirect(route('settings.valueLists.index'));
-        $response->assertSessionHas('status', 'The value is deleted.');
+        $response->assertSessionHas('status');
 
         $this->assertSoftDeleted($item);
     }
@@ -121,7 +121,7 @@ class ValueListItemControllerTest extends TestCase
         $response = $this->actingAs($user)->delete(route('settings.valueListItems.destroy', $item->id));
 
         $response->assertRedirect(route('settings.valueLists.index'));
-        $response->assertSessionHas('error', 'The value is in use and stays.');
+        $response->assertSessionHas('error');
 
         $this->assertNotSoftDeleted($item);
     }

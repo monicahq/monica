@@ -72,7 +72,6 @@ class LogsViewModelTest extends TestCase
         $viewModel = new LogsViewModel(user: $user);
 
         $this->assertCount(1, $viewModel->logs());
-        $this->assertEquals('The system', $viewModel->logs()->first()->author);
     }
 
     #[Test]

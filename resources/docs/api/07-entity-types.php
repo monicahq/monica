@@ -42,7 +42,7 @@ $otherEntityType = [
         'is_active' => false,
         'entity_count' => 0,
         'created_at' => 1756166400,
-        'updated_at' => null,
+        'updated_at' => 1756166400,
     ],
     'links' => [
         'self' => $base.'/entity-types/e8a51d73-9c04-4b28-a6f5-31b7e0c4d925',
@@ -90,7 +90,7 @@ $entityTypeAttributes = [
     ['name' => 'is_active', 'type' => 'boolean', 'description' => 'Whether new records may still be filed under the type. False stops the button that adds another and touches nothing already filed: every record stays readable and stays editable.'],
     ['name' => 'entity_count', 'type' => 'integer', 'description' => 'How many records of this kind exist, across every vault of your account. It is a running count kept as records are written down and deleted, rather than something counted when you ask, and it is what decides whether the type may be deleted.'],
     ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When the type was declared, as a count of seconds since 1970 rather than a written date.'],
-    ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When it last changed, as a count of seconds, or null if it has not changed since it was declared.'],
+    ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When it last changed, as a count of seconds. Equal to created_at until it first changes.'],
 ];
 
 $entity = [

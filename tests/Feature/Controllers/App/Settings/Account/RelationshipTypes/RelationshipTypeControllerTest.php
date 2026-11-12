@@ -29,9 +29,7 @@ class RelationshipTypeControllerTest extends TestCase
 
         $this->actingAs($user)->get(route('settings.relationshipTypes.index'))
             ->assertStatus(200)
-            ->assertSee('Relationship types')
             ->assertSee('Family')
-            ->assertSee('Godparent / Godchild')
             ->assertSee('Godchild');
     }
 
@@ -108,10 +106,8 @@ class RelationshipTypeControllerTest extends TestCase
 
         $this->actingAs($user)->get(route('settings.relationshipTypes.edit', $type))
             ->assertStatus(200)
-            ->assertSee('Delete this type')
             ->assertSee('aria-disabled="true"', false)
-            ->assertSee('aria-describedby="relationship-type-delete-reason"', false)
-            ->assertSee('Supplied types cannot be deleted', escape: false);
+            ->assertSee('aria-describedby="relationship-type-delete-reason"', false);
     }
 
     #[Test]

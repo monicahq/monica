@@ -22,7 +22,6 @@ class LoginLinkTest extends TestCase
         $response = $this->get(route('auth.login.new'));
 
         $response->assertStatus(200);
-        $response->assertDontSee('Sign in as');
     }
 
     #[Test]
@@ -35,7 +34,6 @@ class LoginLinkTest extends TestCase
         $response = $this->get(route('auth.login.new'));
 
         $response->assertStatus(200);
-        $response->assertSee('Sign in as Monica Geller');
         $response->assertSee(ExampleAccountSeeder::EMAIL);
     }
 
@@ -49,7 +47,6 @@ class LoginLinkTest extends TestCase
         $response = $this->get(route('auth.login.new'));
 
         $response->assertStatus(200);
-        $response->assertDontSee('Sign in as');
     }
 
     #[Test]

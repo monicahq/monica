@@ -39,7 +39,7 @@ $relationship = [
         'started_on' => '2007-05-10',
         'ended_on' => null,
         'created_at' => 1790380800,
-        'updated_at' => null,
+        'updated_at' => 1790380800,
     ],
     'links' => [
         'self' => $base.'/vaults/'.$vaultSlug.'/contacts/'.$contactSlug.'/relationships/'.$relationshipId,
@@ -81,7 +81,7 @@ $relationshipAttributes = [
     ['name' => 'started_on', 'type' => 'string', 'description' => 'When it started, written as a year, a month and a day, or null.'],
     ['name' => 'ended_on', 'type' => 'string', 'description' => 'When it ended, or null. Always null while the relationship is current.'],
     ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When the relationship was recorded, as a count of seconds since 1970.'],
-    ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When it last changed, as a count of seconds, or null.'],
+    ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When it last changed, as a count of seconds. Equal to created_at until it first changes.'],
 ];
 
 $typeParam = ['name' => 'relationship_type', 'type' => 'uuid', 'description' => 'The identifier of a relationship type of your account. A type that is switched off answers 422.', 'example' => $typeId];

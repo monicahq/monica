@@ -17,6 +17,7 @@ use App\Models\FieldValue;
 use App\Models\FieldValueRow;
 use App\Models\Group;
 use App\Models\GroupMember;
+use App\Models\PossessionLoan;
 use App\Models\Reminder;
 use App\Models\ShareLink;
 use App\Models\User;
@@ -103,6 +104,7 @@ class UndoContactMerge
             'reminder_deactivated' => $this->wakeTheReminderUp($entry),
             'share_link_moved' => $this->giveTheShareLinkBack($entry),
             'membership_moved' => $this->giveTheMembershipBack($entry),
+            'loan_moved' => $this->giveTheLoanBack($entry),
             'membership_folded' => $this->unfoldTheMembership($entry),
             'avatar_replaced' => $this->putTheOldAvatarBack($entry),
             'name_representation_moved' => $this->giveTheNameBack($entry),
@@ -236,6 +238,14 @@ class UndoContactMerge
         $membership->save();
 
         $this->touchTheGroup($membership->group_id);
+    }
+
+    /** @param array<string, mixed> $entry */
+    private function giveTheLoanBack(array $entry): void
+    {
+        PossessionLoan::query()
+            ->whereKey($entry['id'])
+            ->update(['contact_id' => $this->absorbed->id]);
     }
 
     /** @param array<string, mixed> $entry */

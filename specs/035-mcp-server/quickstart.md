@@ -26,7 +26,7 @@ the column up. No other table changes shape.
 php artisan mcp:inspector
 ```
 
-   Choose the `erica` server, supply the key as a bearer token, and list tools. Thirteen appear.
+   Choose the `monica` server, supply the key as a bearer token, and list tools. Thirteen appear.
 4. **Read.** Call `list-vaults`. You get the account's vaults and no other account's. Call
    `get-me-contact` with one of them.
 5. **Write.** Call `create-contact` with a vault and a name. Open the contact in the browser: it is

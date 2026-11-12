@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\SetTemplateFieldPosition;
 use App\Models\Field;
 use App\Models\SectionVersion;
@@ -27,7 +27,7 @@ class SetTemplateFieldPositionTest extends TestCase
         $first = Field::factory()->create(['section_version_id' => $row->section_version_id, 'position' => 1]);
         $second = Field::factory()->create(['section_version_id' => $row->section_version_id, 'position' => 2]);
 
-        EricaServer::actingAs($user)->tool(SetTemplateFieldPosition::class, [
+        MonicaServer::actingAs($user)->tool(SetTemplateFieldPosition::class, [
             'template' => $template->uuid,
             'version' => 1,
             'section' => (string) $row->id,

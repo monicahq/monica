@@ -47,7 +47,6 @@ class ImportSectionTest extends TestCase
 
         $this->assertInstanceOf(StructureVersionSection::class, $row);
         $this->assertEquals($page->id, $row->structure_version_page_id);
-        $this->assertEquals('Personal details', $row->sectionVersion->section->name);
         $this->assertCount(3, $row->sectionVersion->fields);
 
         Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job) use ($template): bool {

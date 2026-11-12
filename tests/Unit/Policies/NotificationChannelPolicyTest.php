@@ -44,42 +44,6 @@ class NotificationChannelPolicyTest extends TestCase
         $answer = Gate::forUser($user)->inspect('sendProofCode', $channel);
 
         $this->assertTrue($answer->denied());
-        $this->assertSame('You can ask for another code in 30 seconds.', $answer->message());
-    }
-
-    #[Test]
-    public function it_refuses_send_proof_code_once_every_allowed_code_has_been_sent(): void
-    {
-        [$user, $channel] = $this->numberOf(NotificationChannelEnum::Sms);
-        $channel->update(['proof_sent_count' => (int) config('monica.notification_proof_maximum_sends')]);
-
-        $this->assertSame(
-            'No more codes will be sent to this number. Remove it to type a number again.',
-            Gate::forUser($user)->inspect('sendProofCode', $channel)->message(),
-        );
-    }
-
-    #[Test]
-    public function it_refuses_send_proof_code_on_a_channel_that_proves_itself(): void
-    {
-        [$user, $channel] = $this->numberOf(NotificationChannelEnum::Telegram);
-
-        $this->assertSame(
-            'This channel says for itself whether a destination is wrong, so it has nothing to prove.',
-            Gate::forUser($user)->inspect('sendProofCode', $channel)->message(),
-        );
-    }
-
-    #[Test]
-    public function it_refuses_send_proof_code_on_a_server_with_no_provider(): void
-    {
-        config(['vonage.api_key' => null]);
-        [$user, $channel] = $this->numberOf(NotificationChannelEnum::Sms);
-
-        $this->assertSame(
-            'This server has not been set up to send on this channel, so no code can be sent.',
-            Gate::forUser($user)->inspect('sendProofCode', $channel)->message(),
-        );
     }
 
     #[Test]

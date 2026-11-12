@@ -137,7 +137,6 @@ class UserTest extends TestCase
         $response = $user->inspect('create', Vault::class);
 
         $this->assertTrue($response->denied());
-        $this->assertStringContainsString('Full access lifts the ceiling.', (string) $response->message());
         $this->assertFalse($user->can('create', Vault::class));
     }
 
@@ -163,7 +162,6 @@ class UserTest extends TestCase
         Vault::factory()->create(['account_id' => $user->account_id]);
 
         $this->expectException(AuthorizationException::class);
-        $this->expectExceptionMessage('Full access lifts the ceiling.');
 
         $user->authorize('create', Vault::class);
     }

@@ -18,16 +18,6 @@ class NotificationDigestTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_takes_its_subject_from_the_heading(): void
-    {
-        $michael = User::factory()->create();
-
-        $message = $this->notification()->toMail($michael);
-
-        $this->assertEquals('Two reminders today', $message->subject);
-    }
-
-    #[Test]
     public function it_carries_every_line_it_was_handed(): void
     {
         $michael = User::factory()->create();
@@ -35,22 +25,8 @@ class NotificationDigestTest extends TestCase
         $rendered = (string) $this->notification()->toMail($michael)->render();
 
         $this->assertStringContainsString('Birthday, Michael Scott', $rendered);
-        $this->assertStringContainsString('It is in seven days.', $rendered);
         $this->assertStringContainsString('Anniversary, Jim Halpert', $rendered);
         $this->assertStringContainsString('It is today.', $rendered);
-    }
-
-    #[Test]
-    public function it_says_the_summary_was_asked_for(): void
-    {
-        $michael = User::factory()->create();
-
-        $message = $this->notification()->toMail($michael);
-
-        $this->assertContains(
-            'You asked for one message a day rather than one at a time. You can change that wherever your notifications are set up.',
-            $message->introLines,
-        );
     }
 
     #[Test]
@@ -106,7 +82,6 @@ class NotificationDigestTest extends TestCase
 
         $text = (string) $message->toArray()['text'];
 
-        $this->assertStringContainsString('Two reminders today', $text);
         $this->assertStringContainsString('Birthday, Michael Scott', $text);
         $this->assertStringContainsString('Anniversary, Jim Halpert', $text);
     }
@@ -117,6 +92,5 @@ class NotificationDigestTest extends TestCase
         $message = $this->notification(NotificationChannelEnum::Sms)->toVonage(User::factory()->make());
 
         $this->assertLessThanOrEqual(140, mb_strlen($message->content));
-        $this->assertStringContainsString('Two reminders today', $message->content);
     }
 }

@@ -1,6 +1,6 @@
 # Contract: MCP tools for entity types
 
-Every tool is registered on `EricaServer`, uses `MirrorsAnApiCapability`, and returns
+Every tool is registered on `MonicaServer`, uses `MirrorsAnApiCapability`, and returns
 `EntityTypeResource` resolved, the same shape the API returns under `data`. An identifier that is
 not an entity type of the key's account answers the validation error `That entity type does not
 exist.` Every change is journalled with the MCP source.

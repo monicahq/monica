@@ -31,7 +31,7 @@ list-life-event-types gives it."; `life_event_category` and `life_event_category
 identifier of the category, as list-life-event-categories gives it."
 
 **Model for every tool test**: `tests/Unit/Mcp/Tools/DeleteRelationshipTypeTest.php`:
-`EricaServer::actingAs($user)->tool(Tool::class, [...])`, `assertHasErrors(['sentence'])`, plus
+`MonicaServer::actingAs($user)->tool(Tool::class, [...])`, `assertHasErrors(['sentence'])`, plus
 `it_names_the_api_capability_it_mirrors`. Factory states: `LifeEventType::factory()->supplied()`,
 `->inactive()` (its `configure()` creates the structure); `LifeEventCategory::factory()->system()`,
 `->inactive()`; `LifeEvent::factory()->create(['vault_id' => $vault->id, 'life_event_type_id' => $type->id])`
@@ -74,7 +74,7 @@ its colour.
 - [X] T007 [P] [US1] Create `app/Mcp/Tools/GetLifeEventType.php`: `#[IsReadOnly]`, mirrors `api.v1.lifeEventTypes.show`, "Read one kind of life event: its name, description, icon, colour, category, position, whether it is offered and whether it came with the account."
 - [X] T008 [P] [US1] Create `app/Mcp/Tools/CreateLifeEventType.php`: mirrors `api.v1.lifeEventTypes.create`; rules `life_event_category_id` `['required', 'string']`, `name` `['required', 'string', 'max:255']`, `description` `['nullable', 'string', 'max:255']`, `icon` `['nullable', 'string', Rule::in(Section::ICONS)]`, `colour` `['nullable', 'string', Rule::in(VaultColourEnum::values())]`; category through `$this->lifeEventCategory()`; calls `CreateLifeEventTypeAction`. Schema lists icons and colours with `implode(', ', ...)` (research R6). Description: "Create a kind of life event, such as Ran a marathon, in one of the account’s categories. Give it fields of its own with replace-life-event-type-fields. The change is written to the account journal."
 - [X] T009 [P] [US1] Create `app/Mcp/Tools/UpdateLifeEventType.php`: mirrors `api.v1.lifeEventTypes.update`; `life_event_category_id` `['sometimes', 'required', 'string']`, `name` `['sometimes', 'required', 'string', 'max:255']`, `description` `['nullable', 'string', 'max:255']`, `icon` `['nullable', 'string', Rule::in(Section::ICONS)]`, `colour` `['nullable', 'string', Rule::in(VaultColourEnum::values())]`. Fills what is missing from the stored type; `description`, `icon`, `colour` use `array_key_exists` so `null` clears (research R3). Calls `UpdateLifeEventTypeAction`. Description says anything left out keeps its value, null clears description, icon or colour, and whether it is offered changes with set-life-event-type-activation.
-- [X] T010 [US1] Register `ListLifeEventTypes`, `GetLifeEventType`, `CreateLifeEventType`, `UpdateLifeEventType` in `$tools` in `app/Mcp/Servers/EricaServer.php`, next to `ListLifeEventCategories`, and import them.
+- [X] T010 [US1] Register `ListLifeEventTypes`, `GetLifeEventType`, `CreateLifeEventType`, `UpdateLifeEventType` in `$tools` in `app/Mcp/Servers/MonicaServer.php`, next to `ListLifeEventCategories`, and import them.
 
 **Checkpoint**: T002 to T005 pass; `tests/Feature/Mcp/McpCatalogueTest.php` passes.
 
@@ -98,7 +98,7 @@ supplied one and on one in use.
 - [X] T014 [P] [US2] Create `app/Mcp/Tools/SetLifeEventTypeActivation.php`: as `SetRelationshipTypeActivation` with `ActivateLifeEventType` / `DeactivateLifeEventType`, skipping when unchanged (research R9). "Offer a kind of life event when somebody records one, or stop offering it. Life events already recorded with it stay. The change is written to the account journal."
 - [X] T015 [P] [US2] Create `app/Mcp/Tools/SetLifeEventTypePosition.php`: as `SetRelationshipTypePosition` with `UpdateLifeEventTypePosition`; `position` "Where it goes within its category, counting from 1."
 - [X] T016 [P] [US2] Create `app/Mcp/Tools/DeleteLifeEventType.php`: `#[IsDestructive]`, `DestroyLifeEventType` inside `try`, `catch (AuthorizationException $e) { return Response::error($e->getMessage()); }`, success `Response::text(__('The life event type is deleted.'))`. "Delete a kind of life event the account created. One that came with the account, or that life events were recorded with, is refused; stop offering it instead. The change is written to the account journal."
-- [X] T017 [US2] Register the three tools in `app/Mcp/Servers/EricaServer.php`.
+- [X] T017 [US2] Register the three tools in `app/Mcp/Servers/MonicaServer.php`.
 
 **Checkpoint**: T011 to T013 pass.
 
@@ -125,7 +125,7 @@ delete it once empty; be refused on a supplied one and on one holding types.
 - [X] T023 [P] [US3] Create `app/Mcp/Tools/CreateLifeEventCategory.php` (`name` `['required', 'string', 'max:255']`, `CreateLifeEventCategoryAction`) and `app/Mcp/Tools/UpdateLifeEventCategory.php` (`name` required, `UpdateLifeEventCategoryAction`, no refusal of its own).
 - [X] T024 [P] [US3] Create `app/Mcp/Tools/DeleteLifeEventCategory.php`: `#[IsDestructive]`, `DestroyLifeEventCategory`, `catch (AuthorizationException $e)` relayed; success `__('The life event category is deleted.')`. "Delete a category the account created. One that came with the account, or that still holds types, is refused; move its types first. The change is written to the account journal."
 - [X] T025 [P] [US3] Create `app/Mcp/Tools/SetLifeEventCategoryActivation.php` (`ActivateLifeEventCategory` / `DeactivateLifeEventCategory`, skipping when unchanged) and `app/Mcp/Tools/SetLifeEventCategoryPosition.php` (`UpdateLifeEventCategoryPosition`, "Where it goes in the list of categories, counting from 1.").
-- [X] T026 [US3] Register the seven category tools in `app/Mcp/Servers/EricaServer.php`, next to `ListLifeEventCategories`.
+- [X] T026 [US3] Register the seven category tools in `app/Mcp/Servers/MonicaServer.php`, next to `ListLifeEventCategories`.
 
 **Checkpoint**: T018 to T021 pass.
 
@@ -144,7 +144,7 @@ replace again keeping one field's key.
 - [X] T030 [P] [US4] Write `tests/Unit/Mcp/Tools/ReplaceLifeEventTypeFieldsTest.php`: `it_writes_the_fields_of_a_type` (group Ceremony with Venue `text` required and Date `date`, plus an ungrouped Speech `textarea`; `assertSee(['Ceremony', 'Venue', 'Date', 'Speech'])`); `it_keeps_a_field_sent_back_under_its_key` (write Venue, read its key from `$type->refresh()->structure->publishedVersion` fields, replace with the same key labelled Place, assert the field with that key is now labelled Place and no other field exists); `it_refuses_a_kind_of_field_the_product_does_not_offer` (type `dundie`, `assertHasErrors()`, published version unchanged); `it_names_the_api_capability_it_mirrors` (`api.v1.lifeEventTypes.fields.update`).
 - [X] T031 [P] [US4] Create `app/Mcp/Tools/GetLifeEventTypeFields.php`: `#[IsReadOnly]`, mirrors `api.v1.lifeEventTypes.fields`; `$version = $type->structure?->publishedVersion`; answers `[]` when null, else `StructureVersionSectionResource::collection($version->assembly)->resolve()`. "Read the fields a kind of life event asks for, in their groups, with the key that identifies each field."
 - [X] T032 [P] [US4] Create `app/Mcp/Tools/ReplaceLifeEventTypeFields.php`: `#[IsDestructive]`, mirrors `api.v1.lifeEventTypes.fields.update`; validates `['life_event_type' => ['required', 'string'], ...LifeEventTypeFieldLayout::rules()]`; calls `ReplaceLifeEventTypeFieldsAction` with `groups: LifeEventTypeFieldLayout::groups((array) $request->get('groups', []))` and `fields: LifeEventTypeFieldLayout::fields((array) $request->get('groups', []), (array) $request->get('fields', []))`; `catch (ModelNotFoundException|AcceptedFileKindIsNotValid $e)` answers `Response::error($e->getMessage())` (research R2); answers the fields as T031 does from `$type->refresh()`. Schema: `groups` and `fields` as `$schema->array()` with descriptions covering the group shape (`placement_id` keeps an existing group, `name`, `fields`), the field shape (`key` keeps an existing field, `label`, `type` one of `implode(', ', FieldTypeEnum` values`)`, `is_required`, `help_text`, `settings`, `choices`), and that the set sent replaces the whole set while life events already recorded keep what they were written with. Check how `CreateTemplate` or another tool declares an array input, and follow it.
-- [X] T033 [US4] Register `GetLifeEventTypeFields` and `ReplaceLifeEventTypeFields` in `app/Mcp/Servers/EricaServer.php`.
+- [X] T033 [US4] Register `GetLifeEventTypeFields` and `ReplaceLifeEventTypeFields` in `app/Mcp/Servers/MonicaServer.php`.
 
 **Checkpoint**: T029, T030 and `LifeEventTypeFieldControllerTest` pass.
 
@@ -156,7 +156,7 @@ replace again keeping one field's key.
 - [X] T035 [US5] In the same file: add `['id' => 'life-event-types', 'label' => 'Manage life event types']` to `SECTIONS` after `relationship-types`; add `public const array LIFE_EVENT_TYPES` of two paragraphs: (1) a life event type is a kind of thing that happens to a contact, such as Moved house, filed under a category such as Work or Home, and it can ask for fields of its own with `replace-life-event-type-fields`, which never changes a life event already recorded; (2) types and categories that came with your account, and any that are in use, cannot be deleted; stop offering them with `set-life-event-type-activation` or `set-life-event-category-activation` instead. In `markdown()`, after the relationship types paragraphs, write `## Manage life event types`, a blank line and the paragraphs.
 - [X] T036 [US5] In `resources/views/app/docs/mcp.blade.php`, after the `relationship-types` section, add a `life-event-types` section copied from it (`aria-labelledby="life-event-types-heading"`, heading `Manage life event types`, `@foreach (McpDocsViewModel::LIFE_EVENT_TYPES as $paragraph)`).
 - [X] T037 [US5] In `tests/Unit/ViewModels/Docs/McpDocsViewModelTest.php`: `it_counts_the_tools_it_lists` to `MCP currently exposes 67 tools.`; `it_marks_only_the_groups_that_change_data` appends `'Life event vocabulary, changing'`. In `tests/Feature/Controllers/App/Docs/McpDocsControllerTest.php` add `$response->assertSee('Manage life event types');`.
-- [X] T038 [US5] Add a paragraph to the `#[Instructions]` text in `app/Mcp/Servers/EricaServer.php`, after the relationship paragraph: a life event type is a kind of thing that happens to a contact, filed under a category, and can ask for fields of its own; replace-life-event-type-fields replaces the whole set and never changes a life event already recorded; types and categories that came with the account, or that are in use, can only be switched off.
+- [X] T038 [US5] Add a paragraph to the `#[Instructions]` text in `app/Mcp/Servers/MonicaServer.php`, after the relationship paragraph: a life event type is a kind of thing that happens to a contact, filed under a category, and can ask for fields of its own; replace-life-event-type-fields replaces the whole set and never changes a life event already recorded; types and categories that came with the account, or that are in use, can only be switched off.
 
 **Checkpoint**: `tests/Unit/ViewModels/Docs` and `tests/Feature/Controllers/App/Docs` pass.
 
@@ -176,7 +176,7 @@ replace again keeping one field's key.
 
 - T001 blocks every tool.
 - US1, US2, US3 are independent once T001 is done; US4 needs T027 and T028 before T032.
-- Every story registers tools in `EricaServer.php` (T010, T017, T026, T033, then T038): those tasks
+- Every story registers tools in `MonicaServer.php` (T010, T017, T026, T033, then T038): those tasks
   run one after another.
 - US5 needs every tool registered, since `it_lists_exactly_the_tools_the_server_registers` compares
   against the server.

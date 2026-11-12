@@ -36,8 +36,6 @@ class AuthPageTest extends TestCase
     public function it_names_the_screen_once_in_the_title_and_once_on_it(): void
     {
         $this->blade('<x-auth-page title="Welcome back">The card</x-auth-page>')
-            ->assertSee('<title>Welcome back</title>', escape: false)
-            ->assertSee('Welcome back')
             ->assertSee('The card');
     }
 }

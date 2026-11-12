@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\ListGroupReminderOccurrences;
 use App\Models\Group;
 use App\Models\Reminder;
@@ -28,7 +28,7 @@ class ListGroupReminderOccurrencesTest extends TestCase
         $reminder = Reminder::factory()->manual($group, now()->addWeek()->toDateString())->create(['timezone' => 'UTC']);
         $answered = ReminderOccurrence::factory()->daysFromNow(-40)->forgotten()->create(['reminder_id' => $reminder->id]);
 
-        EricaServer::actingAs($user)->tool(ListGroupReminderOccurrences::class, ['vault' => $vault->uuid, 'group' => $group->uuid, 'category' => 'history'])
+        MonicaServer::actingAs($user)->tool(ListGroupReminderOccurrences::class, ['vault' => $vault->uuid, 'group' => $group->uuid, 'category' => 'history'])
             ->assertOk()
             ->assertSee([$answered->uuid, 'forgotten']);
     }

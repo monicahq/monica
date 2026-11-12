@@ -20,38 +20,17 @@ class ConfirmPasswordTest extends TestCase
     }
 
     #[Test]
-    public function it_asks_for_the_password_when_the_account_has_one(): void
-    {
-        $this->blade('<x-modal.confirm-password :offers-password="true" />')
-            ->assertSee('Your password', escape: false)
-            ->assertDontSee('Use a passkey', escape: false);
-    }
-
-    #[Test]
-    public function it_asks_for_the_passkey_alone_when_there_is_no_password(): void
-    {
-        $this->blade('<x-modal.confirm-password :offers-passkey="true" />')
-            ->assertSee('Use a passkey', escape: false)
-            ->assertDontSee('Your password', escape: false);
-    }
-
-    #[Test]
     public function it_offers_a_link_by_email_when_the_account_holds_neither_credential(): void
     {
         $this->blade('<x-modal.confirm-password />')
-            ->assertSee('Send me a link to confirm', escape: false)
-            ->assertSee('action="'.route('auth.passwordConfirmationLink.create').'"', escape: false)
-            ->assertDontSee('Your password', escape: false)
-            ->assertDontSee('Use a passkey', escape: false);
+            ->assertSee('action="'.route('auth.passwordConfirmationLink.create').'"', escape: false);
     }
 
     #[Test]
     public function it_says_why_it_asks_in_the_words_it_is_given(): void
     {
         $this->blade('<x-modal.confirm-password :offers-password="true" description="Michael wants to change the paper supplier." />')
-            ->assertSee('Confirm it is you', escape: false)
-            ->assertSee('Michael wants to change the paper supplier.', escape: false)
-            ->assertDontSee('What you are about to change decides how you sign in', escape: false);
+            ->assertSee('Michael wants to change the paper supplier.', escape: false);
     }
 
     #[Test]

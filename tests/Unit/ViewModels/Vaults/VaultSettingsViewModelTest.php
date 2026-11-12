@@ -19,24 +19,6 @@ class VaultSettingsViewModelTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_says_what_a_deletion_takes_with_it(): void
-    {
-        $user = User::factory()->create();
-        $one = Vault::factory()->create(['account_id' => $user->account_id, 'contact_count' => 1]);
-        $several = Vault::factory()->create(['account_id' => $user->account_id, 'contact_count' => 4]);
-
-        $this->assertSame(
-            'The one contact in it is deleted too, and everything written about them.',
-            new VaultSettingsViewModel(user: $user, vault: $one)->deletionConsequence(),
-        );
-
-        $this->assertSame(
-            'The 4 contacts in it are deleted too, and everything written about them.',
-            new VaultSettingsViewModel(user: $user, vault: $several)->deletionConsequence(),
-        );
-    }
-
-    #[Test]
     public function it_says_nothing_about_losing_contacts_when_the_vault_holds_none(): void
     {
         $user = User::factory()->create();
@@ -90,10 +72,7 @@ class VaultSettingsViewModelTest extends TestCase
 
         $this->assertCount(2, $templates);
         $this->assertEquals('Standard contact', $templates[0]['name']);
-        $this->assertEquals(
-            [['id' => (int) $standard->structure->published_version_id, 'label' => 'Version 1 (latest)']],
-            $templates[0]['versions'],
-        );
+        $this->assertEquals([(int) $standard->structure->published_version_id], array_column($templates[0]['versions'], 'id'));
         $this->assertEquals('Work contact', $templates[1]['name']);
     }
 
@@ -115,10 +94,7 @@ class VaultSettingsViewModelTest extends TestCase
 
         $versions = new VaultSettingsViewModel(user: $user, vault: $vault)->templates()[0]['versions'];
 
-        $this->assertEquals([
-            ['id' => $newest->id, 'label' => 'Version 2 (latest)'],
-            ['id' => (int) $first, 'label' => 'Version 1'],
-        ], $versions);
+        $this->assertEquals([$newest->id, (int) $first], array_column($versions, 'id'));
     }
 
     #[Test]

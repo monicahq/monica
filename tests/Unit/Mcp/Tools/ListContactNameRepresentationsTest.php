@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\ListContactNameRepresentations;
 use App\Models\Contact;
 use App\Models\ContactNameRepresentation;
@@ -26,7 +26,7 @@ class ListContactNameRepresentationsTest extends TestCase
         $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'first_name' => 'Michael', 'last_name' => 'Scott']);
         ContactNameRepresentation::factory()->transliteration()->create(['contact_id' => $contact->id, 'formatted_name' => 'マイケル・スコット']);
 
-        EricaServer::actingAs($user)->tool(ListContactNameRepresentations::class, [
+        MonicaServer::actingAs($user)->tool(ListContactNameRepresentations::class, [
             'vault' => $vault->uuid,
             'contact' => $contact->uuid,
         ])->assertOk()->assertSee('マイケル・スコット')->assertSee('Michael');

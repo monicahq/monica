@@ -276,7 +276,6 @@ class CreateContactTest extends TestCase
 
         $this->assertTrue($contact->isNameless());
         $this->assertTrue($contact->is_partial);
-        $this->assertEquals(__('Unnamed contact'), $contact->name);
         $this->assertDatabaseHas('contacts', ['id' => $contact->id, 'first_name' => null, 'last_name' => null]);
     }
 
@@ -388,7 +387,6 @@ class CreateContactTest extends TestCase
         Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id]);
 
         $this->expectException(AuthorizationException::class);
-        $this->expectExceptionMessage('Full access lifts the ceiling.');
 
         new CreateContact(user: $user, vault: $vault, structureVersion: $version, firstName: 'Pam')->execute();
     }

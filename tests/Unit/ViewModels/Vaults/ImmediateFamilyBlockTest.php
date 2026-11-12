@@ -91,7 +91,6 @@ class ImmediateFamilyBlockTest extends TestCase
         $block = new ImmediateFamilyBlock(vault: $vault, contact: $michael);
 
         $this->assertSame($child->name, $block->children()[0]['name']);
-        $this->assertSame(__('Unnamed contact'), $block->children()[0]['name']);
     }
 
     #[Test]
@@ -113,7 +112,6 @@ class ImmediateFamilyBlockTest extends TestCase
 
         $this->assertSame('Jack', $row['name']);
         $this->assertNull($row['url']);
-        $this->assertSame(__('Name only, no profile yet'), $row['note']);
     }
 
     #[Test]

@@ -89,6 +89,30 @@ class EntityTypeTest extends TestCase
         $this->assertFalse($this->isVisible($type, $stamford));
     }
 
+    #[Test]
+    public function it_counts_a_type_as_configured_only_when_the_vault_starts_its_records_from_it(): void
+    {
+        $vault = Vault::factory()->create();
+        $animals = $this->typeIn($vault);
+        VaultDefaultTemplate::factory()->forEntity($animals)->create(['vault_id' => $vault->id]);
+        $companies = $this->typeIn($vault);
+        Entity::factory()->create(['vault_id' => $vault->id, 'entity_type_id' => $companies->id]);
+
+        $this->assertTrue($this->isConfigured($animals, $vault));
+        $this->assertFalse($this->isConfigured($companies, $vault));
+        $this->assertTrue($this->isVisible($companies, $vault));
+    }
+
+    #[Test]
+    public function it_does_not_count_a_turned_off_type_as_configured(): void
+    {
+        $vault = Vault::factory()->create();
+        $type = $this->typeIn($vault, ['is_active' => false]);
+        VaultDefaultTemplate::factory()->forEntity($type)->create(['vault_id' => $vault->id]);
+
+        $this->assertFalse($this->isConfigured($type, $vault));
+    }
+
     /** @param  array<string, mixed>  $attributes */
     private function typeIn(Vault $vault, array $attributes = []): EntityType
     {
@@ -98,5 +122,10 @@ class EntityTypeTest extends TestCase
     private function isVisible(EntityType $type, Vault $vault): bool
     {
         return EntityType::query()->whereKey($type->id)->visibleInVault($vault)->exists();
+    }
+
+    private function isConfigured(EntityType $type, Vault $vault): bool
+    {
+        return EntityType::query()->whereKey($type->id)->configuredInVault($vault)->exists();
     }
 }

@@ -1,7 +1,7 @@
 # Phase 0 research: API foundations and the API docs portal
 
 Every unknown the Technical Context raised is resolved here. Three were settled by the maintainer
-during planning and are marked as such. The rest were settled by reading the constitution, the erica
+during planning and are marked as such. The rest were settled by reading the constitution, the monica
 codebase and the beaver reference implementation.
 
 ## R1. How the API is versioned
@@ -177,7 +177,7 @@ what actually happened rather than assuming.
 **Decision**: no new CSS. The portal is Tailwind utilities over the tokens already in
 `resources/css/app.css`.
 
-**Rationale**: the design file imports `monica-design-system-v2`, and erica's `app.css` already
+**Rationale**: the design file imports `monica-design-system-v2`, and monica's `app.css` already
 defines the same vocabulary, in both light and dark: `--page`, `--canvas`, `--sunken`, `--ink`,
 `--ink-soft`, `--body`, `--muted`, `--muted-soft`, `--hairline`, `--hairline-strong`,
 `--hairline-soft`, `--hover`, `--primary`, `--on-primary`, `--brand`, `--success`, `--warning`, and
@@ -188,7 +188,7 @@ tokens and the palette.
 
 Three names in the design map onto different names here, and the mapping is the whole of the work:
 
-| Design file | erica |
+| Design file | monica |
 |---|---|
 | `--error` | `--danger`, already exposed as the `error` colour utility |
 | `--duration-normal` | `--duration-standard` |
@@ -198,7 +198,7 @@ Method colours follow the design: GET `brand`, POST `success`, PUT and PATCH `wa
 `error`.
 
 **Alternatives considered**: importing the design system's `styles.css` wholesale, rejected because it
-would duplicate a palette erica already has and put two sources of truth in the tree.
+would duplicate a palette monica already has and put two sources of truth in the tree.
 
 ## R11. The page around the portal
 
@@ -206,7 +206,7 @@ would duplicate a palette erica already has and put two sources of truth in the 
 link, and the API subheader from the design. The design's marketing navigation (Features, Pricing,
 Docs, Self hosting, GitHub, Get started) is not built.
 
-**Rationale**: erica has no marketing site and the constitution says not to write as though the
+**Rationale**: monica has no marketing site and the constitution says not to write as though the
 `Marketing` namespace exists before it is built. Those links have nowhere to point. The design file is
 a template that assumes the marketing site around it; the parts of it specific to the API reference
 are what this feature implements. `x-logo` and `x-theme-toggle` already exist as components.

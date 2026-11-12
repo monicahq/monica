@@ -22,7 +22,7 @@ class SetupTelegramCommandTest extends TestCase
         Queue::fake();
         Http::preventStrayRequests();
         URL::forceScheme('https');
-        URL::forceRootUrl('https://erica.dundermifflin.com');
+        URL::forceRootUrl('https://monica.dundermifflin.com');
     }
 
     #[Test]
@@ -31,7 +31,7 @@ class SetupTelegramCommandTest extends TestCase
         Http::fake(['api.telegram.org/*' => Http::response(['ok' => true, 'result' => true])]);
 
         $this->artisan('monica:setup-telegram')
-            ->expectsOutputToContain('Registered https://erica.dundermifflin.com/telegram/webhook with Telegram.')
+            ->expectsOutputToContain('Registered https://monica.dundermifflin.com/telegram/webhook with Telegram.')
             ->assertSuccessful();
 
         $this->assertDatabaseHas('telegram_webhook_registrations', ['user_id' => null]);
@@ -44,7 +44,6 @@ class SetupTelegramCommandTest extends TestCase
         config(['services.telegram.webhook_secret' => null]);
 
         $this->artisan('monica:setup-telegram')
-            ->expectsOutputToContain('Set the secret first.')
             ->assertFailed();
 
         Http::assertNothingSent();

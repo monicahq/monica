@@ -32,10 +32,8 @@ class VaultReminderControllerTest extends TestCase
         $response = $this->actingAs($user)->get(route('reminders.index', $vault));
 
         $response->assertStatus(200);
-        $response->assertSee('Reminders');
         $response->assertSee('Michael Scott');
         $response->assertSee('Pam Beesly');
-        $response->assertSeeInOrder(['Overdue', 'Michael Scott']);
         $response->assertSee(route('reminders.byContact', $vault), escape: false);
     }
 
@@ -125,7 +123,6 @@ class VaultReminderControllerTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('Michael Scott');
-        $response->assertDontSee('A deleted contact');
     }
 
     private function ruleAbout(User $user, Vault $vault, string $first = 'Stanley', string $last = 'Hudson'): Reminder

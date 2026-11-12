@@ -5,7 +5,7 @@
 
 ## Summary
 
-Four read-only tools on `EricaServer`, one class each under `app/Mcp/Tools`: `list-logs`, `get-log`,
+Four read-only tools on `MonicaServer`, one class each under `app/Mcp/Tools`: `list-logs`, `get-log`,
 `list-emails-sent` and `get-email-sent`. Each mirrors an existing `api.v1.logs*` or `api.v1.emailsSent*`
 route by running the same query and returning the same resource
 ([contracts/mcp-tools.md](contracts/mcp-tools.md)). The two lists are the first paginated MCP tools
@@ -76,7 +76,7 @@ specs/061-mcp-account-log-tools/
 ```text
 app/Mcp/Tools/{ListLogs,GetLog,ListEmailsSent,GetEmailSent}.php
 app/Mcp/Tools/MirrorsAnApiCapability.php       # + log(), emailSent()
-app/Mcp/Servers/EricaServer.php                # register 4 tools; one paragraph of instructions
+app/Mcp/Servers/MonicaServer.php                # register 4 tools; one paragraph of instructions
 app/Http/Resources/EmailSentResource.php       # withBody constructor argument
 app/Http/Controllers/Api/EmailSentController.php  # show passes withBody: true
 app/Actions/CreateEmailSent.php                # remove web addresses after the Purify pass

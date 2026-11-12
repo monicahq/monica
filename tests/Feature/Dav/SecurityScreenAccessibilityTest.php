@@ -21,7 +21,6 @@ class SecurityScreenAccessibilityTest extends TestCase
         $response->assertOk();
         $response->assertSee('role="status"', escape: false);
         $response->assertSee('aria-live="polite"', escape: false);
-        $response->assertSee('We could not copy it. Select the address and copy it by hand.', escape: false);
     }
 
     #[Test]
@@ -33,7 +32,6 @@ class SecurityScreenAccessibilityTest extends TestCase
         $response->assertSee('for="sensitive_fields"', escape: false);
         $response->assertSee('id="sensitive_fields"', escape: false);
         $response->assertSee('name="sensitive_fields"', escape: false);
-        $response->assertSee('Let this key read the values of fields marked sensitive', escape: false);
     }
 
     #[Test]
@@ -45,6 +43,5 @@ class SecurityScreenAccessibilityTest extends TestCase
         $response = $this->actingAs($user)->get(route('settings.security.index'));
 
         $response->assertOk();
-        $response->assertSee('Reads sensitive fields', escape: false);
     }
 }

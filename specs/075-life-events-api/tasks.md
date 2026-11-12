@@ -32,7 +32,7 @@
 - [X] T012 [US1] Create resources/docs/api/22-life-events.php with group name "Life events" and the `lifeEvents-index` and `lifeEvents-show` sections (path, query params, `returns` saying another account's or vault's life event answers 404, response built from the contract's sample, `paginated()` for the list), no em dashes
 - [X] T013 [P] [US1] Write tests/Unit/Mcp/Tools/ListLifeEventsTest.php and tests/Unit/Mcp/Tools/GetLifeEventTest.php: happy path, narrowed by contact, a life event or vault out of reach answers the translated refusal, a sensitive value is never returned
 - [X] T014 [P] [US1] Create app/Mcp/Tools/ListLifeEvents.php (`#[IsReadOnly]`, mirrors `api.v1.lifeEvents`, args `vault`, `contact`, `page`, `per_page`) and app/Mcp/Tools/GetLifeEvent.php (`#[IsReadOnly]`, mirrors `api.v1.lifeEvents.show`, args `vault`, `life_event`), each with a one sentence `#[Description]`
-- [X] T015 [US1] Register both tools in app/Mcp/Servers/EricaServer.php and add the "Life events, reading" group (`changesData` false) with their two descriptions to `toolGroups()` in app/ViewModels/Docs/McpDocsViewModel.php
+- [X] T015 [US1] Register both tools in app/Mcp/Servers/MonicaServer.php and add the "Life events, reading" group (`changesData` false) with their two descriptions to `toolGroups()` in app/ViewModels/Docs/McpDocsViewModel.php
 - [X] T016 [US1] Run the US1 tests plus tests/Unit/Services/ApiDocumentationTest.php, tests/Unit/ViewModels/Docs/McpDocsViewModelTest.php and tests/Feature/Mcp/McpCatalogueTest.php
 
 ## Phase 4: User Story 2, write down, correct and delete from outside (P1)
@@ -47,7 +47,7 @@
 - [X] T022 [US2] Add the create (201), update, delete (204) and restore sections to resources/docs/api/22-life-events.php, with `bodyParams` from contracts/api.md, an example body holding one `fields` entry, and a paragraph on reading field ids from `GET /life-event-types/{lifeEventType}/fields`
 - [X] T023 [P] [US2] Write tests/Unit/Mcp/Tools/CreateLifeEventTest.php, UpdateLifeEventTest.php, DeleteLifeEventTest.php and RestoreLifeEventTest.php under tests/Unit/Mcp/Tools: happy path, `created_from` `mcp`, update keeping every argument left out, an inactive type answered as `Response::error`, a record out of reach refused
 - [X] T024 [US2] Create app/Mcp/Tools/CreateLifeEvent.php, UpdateLifeEvent.php, DeleteLifeEvent.php (`#[IsDestructive]`) and RestoreLifeEvent.php per contracts/mcp.md, importing each action with an `Action` suffix; the update tool fills every omitted argument from the stored life event
-- [X] T025 [US2] Register the four tools in app/Mcp/Servers/EricaServer.php and add the "Life events, changing" group (`changesData` true) to `toolGroups()` in app/ViewModels/Docs/McpDocsViewModel.php
+- [X] T025 [US2] Register the four tools in app/Mcp/Servers/MonicaServer.php and add the "Life events, changing" group (`changesData` true) to `toolGroups()` in app/ViewModels/Docs/McpDocsViewModel.php
 - [X] T026 [US2] Run the US2 tests plus the three docs and catalogue tests of T016
 
 ## Phase 5: User Story 3, find how to do it in the documentation (P2)
@@ -56,7 +56,7 @@
 
 - [X] T027 [US3] Prove the "Life events" group in the portal: covered by the sidebar list in tests/Unit/ViewModels/Docs/ApiDocsViewModelTest.php and the section count in tests/Feature/Controllers/App/Docs/ApiDocsControllerTest.php, so no second assertion
 - [X] T028 [US3] In `toolsSummary()` of app/ViewModels/Docs/McpDocsViewModel.php drop "or life events" from the sentence on what contact responses leave out, and add the paragraph of contracts/mcp.md on types, participants and restoring
-- [X] T029 [US3] Add the instructions paragraph of contracts/mcp.md to app/Mcp/Servers/EricaServer.php, after the one on life event types
+- [X] T029 [US3] Add the instructions paragraph of contracts/mcp.md to app/Mcp/Servers/MonicaServer.php, after the one on life event types
 - [X] T030 [US3] Read resources/docs/api/22-life-events.php against app/Http/Resources/LifeEventResource.php and the controller rules, and fix any drift in names, types or samples
 
 ## Phase 6: Polish

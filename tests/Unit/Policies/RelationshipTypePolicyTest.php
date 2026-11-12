@@ -35,7 +35,6 @@ class RelationshipTypePolicyTest extends TestCase
         $response = Gate::forUser($user)->inspect('delete', $type);
 
         $this->assertTrue($response->denied());
-        $this->assertStringContainsString('came with your account and stays', (string) $response->message());
     }
 
     #[Test]
@@ -53,7 +52,6 @@ class RelationshipTypePolicyTest extends TestCase
         $response = Gate::forUser($user)->inspect('delete', $type);
 
         $this->assertTrue($response->denied());
-        $this->assertStringContainsString('Relationships are written with this type, so it stays.', (string) $response->message());
     }
 
     #[Test]

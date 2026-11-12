@@ -5,6 +5,10 @@ declare(strict_types=1);
 namespace App\View\Components\Vault;
 
 use App\Models\EntityType;
+use App\Models\KnowledgeList;
+use App\Models\KnowledgeNote;
+use App\Models\Possession;
+use App\Models\PossessionType;
 use App\Models\ReminderOccurrence;
 use App\Models\User;
 use App\Models\Vault as VaultModel;
@@ -24,9 +28,14 @@ class Sidebar extends Component
     #[Override]
     public function render(): View
     {
+        $hasPossessionTypes = PossessionType::query()->where('account_id', $this->vault->account_id)->exists();
+
         return view('components.vault.sidebar', [
             'reminderCount' => $this->reminderCount(),
             'entityTypes' => $this->entityTypes(),
+            'hasPossessionTypes' => $hasPossessionTypes,
+            'possessionCount' => $hasPossessionTypes ? Possession::query()->where('vault_id', $this->vault->id)->count() : 0,
+            'knowledgeCount' => KnowledgeNote::query()->where('vault_id', $this->vault->id)->count() + KnowledgeList::query()->where('vault_id', $this->vault->id)->count(),
             'searchShortcut' => $this->searchShortcut(),
         ]);
     }
@@ -49,20 +58,21 @@ class Sidebar extends Component
         ];
     }
 
-    /** @return list<array{key: string, name: string, icon: string, colour: string, url: string}> */
+    /** @return list<array{key: string, label: string, icon: string, url: string, badge: null, colour: string}> */
     private function entityTypes(): array
     {
         return EntityType::query()
             ->where('account_id', $this->vault->account_id)
-            ->visibleInVault($this->vault)
+            ->configuredInVault($this->vault)
             ->orderBy('position')
             ->get()
             ->map(fn (EntityType $type): array => [
                 'key' => "entity-type-{$type->slug}",
-                'name' => $type->name_plural,
+                'label' => $type->name_plural,
                 'icon' => $type->icon ?? EntityType::DEFAULT_ICON,
-                'colour' => $type->colour,
                 'url' => route('entities.index', ['vault' => $this->vault, 'entityType' => $type]),
+                'badge' => null,
+                'colour' => $type->colour,
             ])
             ->all();
     }

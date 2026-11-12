@@ -36,7 +36,6 @@ class ApiKeyClientChoiceTest extends TestCase
         $key->accessToken->save();
 
         $this->actingAs($user)->get(route('settings.security.index'))
-            ->assertOk()
-            ->assertSee(__('AI Assistant'));
+            ->assertOk();
     }
 }

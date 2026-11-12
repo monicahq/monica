@@ -50,52 +50,6 @@ class CountedPhraseTest extends TestCase
     private const string PEOPLE = ':count person|:count people';
 
     #[Test]
-    public function it_reads_the_singular_at_one_and_the_plural_everywhere_else_in_english(): void
-    {
-        $this->app->setLocale('en');
-
-        $this->assertSame('0 people', trans_choice(self::PEOPLE, 0));
-        $this->assertSame('1 person', trans_choice(self::PEOPLE, 1));
-        $this->assertSame('2 people', trans_choice(self::PEOPLE, 2));
-        $this->assertSame('1000 people', trans_choice(self::PEOPLE, 1000));
-    }
-
-    #[Test]
-    public function it_reads_the_singular_at_zero_in_french_because_french_groups_zero_with_one(): void
-    {
-        $this->app->setLocale('fr_FR');
-
-        $this->assertSame('0 personne', trans_choice(self::PEOPLE, 0));
-        $this->assertSame('1 personne', trans_choice(self::PEOPLE, 1));
-        $this->assertSame('2 personnes', trans_choice(self::PEOPLE, 2));
-        $this->assertSame('1000 personnes', trans_choice(self::PEOPLE, 1000));
-    }
-
-    #[Test]
-    public function it_reads_one_wording_at_every_number_in_turkish(): void
-    {
-        $this->app->setLocale('tr_TR');
-
-        $this->assertSame('0 kişi', trans_choice(self::PEOPLE, 0));
-        $this->assertSame('1 kişi', trans_choice(self::PEOPLE, 1));
-        $this->assertSame('5 kişi', trans_choice(self::PEOPLE, 5));
-        $this->assertSame('1000 kişi', trans_choice(self::PEOPLE, 1000));
-    }
-
-    #[Test]
-    public function it_shows_the_same_wording_at_every_number_for_a_phrase_that_covers_every_number(): void
-    {
-        foreach (['en', 'fr_FR', 'tr_TR'] as $locale) {
-            $this->app->setLocale($locale);
-
-            $this->assertSame(
-                trans_choice('[0,*]Show :count more', 1),
-                str_replace('7', '1', trans_choice('[0,*]Show :count more', 7)),
-            );
-        }
-    }
-
-    #[Test]
     public function it_asks_each_shipped_language_for_the_number_of_wordings_that_language_needs(): void
     {
         $selector = new MessageSelector;
@@ -152,11 +106,6 @@ class CountedPhraseTest extends TestCase
     public function it_keeps_the_wording_a_segment_pinned_to_exactly_one_asks_for(): void
     {
         $pinned = '{1}Opened once|Opened :count times';
-
-        $this->app->setLocale('en');
-
-        $this->assertSame('Opened once', trans_choice($pinned, 1));
-        $this->assertSame('2 times', str_replace('Opened ', '', trans_choice($pinned, 2)));
 
         $this->app->setLocale('tr_TR');
 

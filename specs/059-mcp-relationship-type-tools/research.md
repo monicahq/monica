@@ -121,7 +121,7 @@ for a type and a category in `McpChangelogTest`.
 `get-relationship-type`, `get-relationship-category` and `list-relationship-category-types`. A new
 "Relationship vocabulary, changing" group (`changesData: true`) holds the ten changing tools. A new
 `RELATIONSHIP_TYPES` constant of two paragraphs is rendered in the page and the Markdown under its own
-heading after the entity types one. `EricaServer` instructions gain one sentence.
+heading after the entity types one. `MonicaServer` instructions gain one sentence.
 
 **Rationale**: FR-008, FR-009 and the grouping used for templates and entity types.
 `it_lists_exactly_the_tools_the_server_registers` fails until every tool is listed.

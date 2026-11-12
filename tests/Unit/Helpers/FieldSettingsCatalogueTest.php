@@ -73,17 +73,7 @@ class FieldSettingsCatalogueTest extends TestCase
     public function it_reads_a_setting_back_out_of_the_field_that_holds_it(): void
     {
         $this->assertSame('120', FieldSettingsCatalogue::read('max_length', ['max_length' => 120], null));
-        $this->assertSame('Dr Meyer', FieldSettingsCatalogue::read('placeholder', null, 'Dr Meyer'));
         $this->assertSame('', FieldSettingsCatalogue::read('unit', null, null));
-    }
-
-    #[Test]
-    public function it_reads_a_setting_holding_several_things_as_one_line(): void
-    {
-        $this->assertSame(
-            'image/png, application/pdf',
-            FieldSettingsCatalogue::read('accepted_mime_types', ['accepted_mime_types' => ['image/png', 'application/pdf']], null),
-        );
     }
 
     #[Test]

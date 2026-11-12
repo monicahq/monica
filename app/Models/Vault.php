@@ -247,6 +247,26 @@ class Vault extends Model
     }
 
     /**
+     * Get the things owned that are recorded in the vault.
+     *
+     * @return HasMany<Possession, $this>
+     */
+    public function possessions(): HasMany
+    {
+        return $this->hasMany(Possession::class);
+    }
+
+    /**
+     * Get the folders of the vault's Knowledge, in their order.
+     *
+     * @return HasMany<KnowledgeFolder, $this>
+     */
+    public function knowledgeFolders(): HasMany
+    {
+        return $this->hasMany(KnowledgeFolder::class)->orderBy('position')->orderBy('id');
+    }
+
+    /**
      * Get the structures a new record starts on here, one per kind of record.
      * They differ from vault to vault, since a work contact and a family
      * contact do not start from the same page.

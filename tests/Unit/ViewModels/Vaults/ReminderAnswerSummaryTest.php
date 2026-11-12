@@ -51,8 +51,6 @@ class ReminderAnswerSummaryTest extends TestCase
         $this->assertSame(50, $summary->rememberedPercentage());
         $this->assertSame(25, $summary->forgottenPercentage());
         $this->assertSame(25, $summary->waitingPercentage());
-        $this->assertSame('of 4 reminders in the last 12 months', $summary->totalLine());
-        $this->assertSame('50% remembered, 25% forgot, 25% waiting for an answer', $summary->chartLabel());
     }
 
     #[Test]

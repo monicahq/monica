@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\ListEmailsSent;
 use App\Models\EmailSent;
 use App\Models\User;
@@ -23,7 +23,7 @@ class ListEmailsSentTest extends TestCase
         EmailSent::factory()->create(['account_id' => $user->account_id, 'subject' => 'Your sign-in link', 'sent_at' => now()->subDay()]);
         EmailSent::factory()->create(['account_id' => $user->account_id, 'subject' => 'A new sign-in on your account', 'sent_at' => now()]);
 
-        EricaServer::actingAs($user)->tool(ListEmailsSent::class, ['per_page' => 1])
+        MonicaServer::actingAs($user)->tool(ListEmailsSent::class, ['per_page' => 1])
             ->assertOk()
             ->assertSee('A new sign-in on your account')
             ->assertDontSee('Your sign-in link')
@@ -36,7 +36,7 @@ class ListEmailsSentTest extends TestCase
         $user = User::factory()->create();
         EmailSent::factory()->create(['account_id' => $user->account_id, 'body' => 'Somebody just signed in to your account.']);
 
-        EricaServer::actingAs($user)->tool(ListEmailsSent::class)
+        MonicaServer::actingAs($user)->tool(ListEmailsSent::class)
             ->assertOk()
             ->assertDontSee('Somebody just signed in to your account.');
     }
@@ -48,7 +48,7 @@ class ListEmailsSentTest extends TestCase
         EmailSent::factory()->create(['account_id' => $user->account_id, 'email_address' => 'michael.scott@dundermifflin.com']);
         EmailSent::factory()->create(['email_address' => 'david.wallace@dundermifflin.com']);
 
-        EricaServer::actingAs($user)->tool(ListEmailsSent::class)
+        MonicaServer::actingAs($user)->tool(ListEmailsSent::class)
             ->assertOk()
             ->assertSee('michael.scott@dundermifflin.com')
             ->assertDontSee('david.wallace@dundermifflin.com');
@@ -62,7 +62,7 @@ class ListEmailsSentTest extends TestCase
         EmailSent::factory()->create(['account_id' => $user->account_id, 'subject' => 'Tuesday', 'sent_at' => now()->subDay()]);
         EmailSent::factory()->create(['account_id' => $user->account_id, 'subject' => 'Wednesday', 'sent_at' => now()]);
 
-        EricaServer::actingAs($user)->tool(ListEmailsSent::class, ['page' => 2, 'per_page' => 2])
+        MonicaServer::actingAs($user)->tool(ListEmailsSent::class, ['page' => 2, 'per_page' => 2])
             ->assertOk()
             ->assertSee('Monday')
             ->assertDontSee('Wednesday')

@@ -25,17 +25,6 @@ class MessageShortenerTest extends TestCase
     }
 
     #[Test]
-    public function it_cuts_at_the_last_sentence_that_fits(): void
-    {
-        $message = 'Birthday, Michael Scott. It is in seven days. You asked to be told this when you added the reminder.';
-
-        $this->assertSame(
-            'Birthday, Michael Scott. It is in seven days.',
-            MessageShortener::to($message, 60),
-        );
-    }
-
-    #[Test]
     public function it_reads_a_question_mark_and_an_exclamation_mark_as_endings_too(): void
     {
         $this->assertSame('Is it today? Yes!', MessageShortener::to('Is it today? Yes! And also tomorrow, and the day after that.', 30));

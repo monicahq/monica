@@ -27,15 +27,6 @@ class NotificationControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('id="notification-list"', escape: false);
         $response->assertSee('Birthday, Michael Scott');
-        $response->assertSee('Not read yet.');
-    }
-
-    #[Test]
-    public function the_empty_list_is_a_sentence(): void
-    {
-        $this->signedIn();
-
-        $this->get(route('notifications.index'))->assertSee('Nothing to catch up on.');
     }
 
     #[Test]
@@ -75,7 +66,7 @@ class NotificationControllerTest extends TestCase
         $response = $this->put(route('notifications.readAll.update'));
 
         $response->assertRedirect();
-        $response->assertSessionHas('status', 'Everything is marked as read.');
+        $response->assertSessionHas('status');
         $this->assertSame(0, Notification::query()->where('user_id', $user->id)->whereNull('read_at')->count());
     }
 

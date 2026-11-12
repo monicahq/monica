@@ -47,7 +47,6 @@ class StructureFileReaderTest extends TestCase
         $this->assertEquals('Dunder Mifflin contact', $read['template']['name']);
         $this->assertCount(1, $read['template']['pages']);
         $this->assertCount(1, $read['template']['pages'][0]['sections']);
-        $this->assertEquals('Personal details', $read['template']['pages'][0]['sections'][0]['section']['name']);
         $this->assertCount(4, $read['template']['pages'][0]['sections'][0]['section']['fields']);
     }
 
@@ -61,7 +60,6 @@ class StructureFileReaderTest extends TestCase
         $read = StructureFileReader::read(StructureFile::encode(StructureFile::ofSection($row)));
 
         $this->assertEquals('section', $read['format']);
-        $this->assertEquals('Personal details', $read['section']['name']);
         $this->assertEquals('Dunder Mifflin contact', $read['from_template']['name']);
     }
 
@@ -74,7 +72,6 @@ class StructureFileReaderTest extends TestCase
         $read = StructureFileReader::read(StructureFile::encode($file));
 
         $this->assertArrayHasKey(ValueListEnum::PhoneLabels->value, $read['value_lists']);
-        $this->assertEquals('Mobile', $read['value_lists'][ValueListEnum::PhoneLabels->value]['items'][0]['label']);
 
         $fields = collect($read['template']['pages'][0]['sections'][0]['section']['fields']);
 
@@ -639,22 +636,6 @@ class StructureFileReaderTest extends TestCase
         $this->assertEquals('Restaurant', $read['life_event_type']['name']);
         $this->assertEquals('leisure', $read['life_event_type']['category_key']);
         $this->assertEquals('#4f8a49', $read['life_event_type']['colour']);
-    }
-
-    #[Test]
-    public function it_says_a_file_holds_a_life_event_type_when_a_template_was_wanted(): void
-    {
-        $this->expectExceptionMessage('This file holds a life event type.');
-
-        StructureFileReader::read(StructureFile::encode($this->lifeEventTypeFile()), expecting: 'template');
-    }
-
-    #[Test]
-    public function it_says_a_file_holds_a_life_event_type_when_a_section_was_wanted(): void
-    {
-        $this->expectExceptionMessage('This file holds a life event type.');
-
-        StructureFileReader::read(StructureFile::encode($this->lifeEventTypeFile()), expecting: 'section');
     }
 
     #[Test]

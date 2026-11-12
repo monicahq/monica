@@ -13,6 +13,7 @@ use App\Models\AccountImport;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
+use App\Models\KnowledgeFolder;
 use App\Models\ShareLink;
 use App\Models\User;
 use App\Models\ValueList;
@@ -154,6 +155,17 @@ class VaultTest extends TestCase
         $vault->save();
 
         $this->assertSame('famille', $vault->fresh()->slug);
+    }
+
+    #[Test]
+    public function it_reads_its_knowledge_folders_in_their_order(): void
+    {
+        $vault = Vault::factory()->create();
+        $travel = KnowledgeFolder::factory()->create(['vault_id' => $vault->id, 'name' => 'Travel', 'position' => 2]);
+        $home = KnowledgeFolder::factory()->create(['vault_id' => $vault->id, 'name' => 'Home', 'position' => 1]);
+        KnowledgeFolder::factory()->create(['name' => 'Elsewhere']);
+
+        $this->assertEquals([$home->id, $travel->id], $vault->knowledgeFolders()->pluck('id')->all());
     }
 
     #[Test]

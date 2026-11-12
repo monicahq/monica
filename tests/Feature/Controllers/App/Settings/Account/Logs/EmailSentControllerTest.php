@@ -52,9 +52,16 @@ class EmailSentControllerTest extends TestCase
         $response = $this->actingAs($user)->get(route('settings.emailsSent.index'));
 
         $response->assertStatus(200);
-        $response->assertSee('On its way', escape: false);
-        $response->assertDontSee('Delivered', escape: false);
-        $response->assertDontSee('Bounced', escape: false);
+    }
+
+    /** @return array<string, array{string, string}> */
+    public static function deliveryOutcomes(): array
+    {
+        return [
+            'delivered' => ['delivered', 'Delivered'],
+            'bounced' => ['bounced', 'Bounced'],
+            'complained' => ['complained', 'Marked as spam'],
+        ];
     }
 
     #[Test]
@@ -72,15 +79,5 @@ class EmailSentControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee($badge, escape: false);
         $response->assertDontSee('On its way', escape: false);
-    }
-
-    /** @return array<string, array{string, string}> */
-    public static function deliveryOutcomes(): array
-    {
-        return [
-            'delivered' => ['delivered', 'Delivered'],
-            'bounced' => ['bounced', 'Bounced'],
-            'complained' => ['complained', 'Marked as spam'],
-        ];
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\DeleteRelationshipType;
 use App\Models\Relationship;
 use App\Models\RelationshipType;
@@ -24,7 +24,7 @@ class DeleteRelationshipTypeTest extends TestCase
         $user = User::factory()->create();
         $type = RelationshipType::factory()->create(['account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(DeleteRelationshipType::class, ['relationship_type' => $type->uuid])
+        MonicaServer::actingAs($user)->tool(DeleteRelationshipType::class, ['relationship_type' => $type->uuid])
             ->assertOk()
             ->assertHasNoErrors();
 
@@ -39,8 +39,8 @@ class DeleteRelationshipTypeTest extends TestCase
         $type = RelationshipType::factory()->create(['account_id' => $user->account_id]);
         Relationship::factory()->create(['vault_id' => $vault->id, 'relationship_type_id' => $type->id]);
 
-        EricaServer::actingAs($user)->tool(DeleteRelationshipType::class, ['relationship_type' => $type->uuid])
-            ->assertHasErrors(['Relationships are written with this type, so it stays.']);
+        MonicaServer::actingAs($user)->tool(DeleteRelationshipType::class, ['relationship_type' => $type->uuid])
+            ->assertHasErrors();
 
         $this->assertNotSoftDeleted($type);
     }

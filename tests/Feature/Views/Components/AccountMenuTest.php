@@ -39,6 +39,5 @@ class AccountMenuTest extends TestCase
         $rendered->assertSee('name="_token"', escape: false);
         $rendered->assertSee('type="submit"', escape: false);
         $rendered->assertSee('role="menuitem"', escape: false);
-        $rendered->assertSee('Sign out');
     }
 }

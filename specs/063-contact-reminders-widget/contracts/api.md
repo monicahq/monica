@@ -33,7 +33,7 @@ once answered or cancelled), `answer`, `answered_at`, `cancelled_reason`, plus `
 
 ## MCP tools
 
-Mirroring the endpoints one to one, in `app/Mcp/Tools`, registered on `EricaServer`:
+Mirroring the endpoints one to one, in `app/Mcp/Tools`, registered on `MonicaServer`:
 `list-contact-reminders`, `get-contact-reminder`, `create-contact-reminder`, `update-contact-reminder`,
 `delete-contact-reminder` (destructive), `list-contact-reminder-occurrences`, `answer-reminder-occurrence`. Two new resolvers on
 `MirrorsAnApiCapability`: `reminder()`, `reminderOccurrence()`. The server instructions gain a

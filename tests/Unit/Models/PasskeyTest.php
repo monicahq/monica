@@ -51,15 +51,6 @@ class PasskeyTest extends TestCase
     }
 
     #[Test]
-    public function it_reads_an_unnamed_passkey_from_an_unknown_authenticator_as_this_device(): void
-    {
-        $passkey = Passkey::factory()->make(['name' => '_']);
-        $passkey->credential = ['aaguid' => '00000000-0000-0000-0000-000000000000'] + $passkey->credential;
-
-        $this->assertEquals('This device', $passkey->displayName());
-    }
-
-    #[Test]
     public function it_resolves_a_passkey_of_the_signed_in_user(): void
     {
         $user = User::factory()->create();

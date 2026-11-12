@@ -52,6 +52,23 @@ enum VaultColourEnum: string implements Translatable
         };
     }
 
+    /**
+     * The colour alone, for an icon drawn on the page rather than on a tint: the text half of tint().
+     */
+    public function iconForeground(): string
+    {
+        return match ($this) {
+            self::Blue => 'text-[#3f5fd0] dark:text-[#93a7f0]',
+            self::Green => 'text-[#3f7239] dark:text-[#5faa6e]',
+            self::Amber => 'text-[#7f571d] dark:text-[#d9a441]',
+            self::Rust => 'text-[#8a3826] dark:text-[#dd7f66]',
+            self::Violet => 'text-[#5b4192] dark:text-[#b49ae4]',
+            self::Teal => 'text-[#26686e] dark:text-[#5fb3bb]',
+            self::Plum => 'text-[#8e3866] dark:text-[#e08ab8]',
+            self::Slate => 'text-[#4a4a52] dark:text-[#a9a9b3]',
+        };
+    }
+
     /** @return array{light: string, dark: string, hue: string, alpha: float} */
     public function measurable(): array
     {

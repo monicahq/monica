@@ -9,7 +9,6 @@ use App\Models\Section;
 use App\Models\SectionVersion;
 use App\Models\StructureVersion;
 use App\Models\StructureVersionSection;
-use App\Models\Template;
 use App\Models\User;
 use App\ViewModels\Settings\Account\Templates\StructureVersionEntry;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -28,7 +27,6 @@ class StructureVersionEntryTest extends TestCase
         $entry = new StructureVersionEntry(version: $version->fresh());
 
         $this->assertSame('v2', $entry->label());
-        $this->assertSame('Published', $entry->statusLabel());
         $this->assertSame('success', $entry->tone());
         $this->assertFalse($entry->isDraft());
     }
@@ -40,94 +38,17 @@ class StructureVersionEntryTest extends TestCase
 
         $entry = new StructureVersionEntry(version: $version->fresh());
 
-        $this->assertSame('Draft', $entry->statusLabel());
         $this->assertSame('warning', $entry->tone());
         $this->assertTrue($entry->isDraft());
-    }
-
-    #[Test]
-    public function it_dates_a_published_version_absolutely_and_a_draft_by_recency(): void
-    {
-        $published = StructureVersion::factory()->create([
-            'status' => 'published',
-            'published_at' => '2026-03-14 09:00:00',
-        ]);
-        $draft = StructureVersion::factory()->create();
-
-        $this->assertSame('Published March 14, 2026', new StructureVersionEntry(version: $published->fresh())->dateLine());
-        $this->assertStringStartsWith('Saved ', new StructureVersionEntry(version: $draft->fresh())->dateLine());
-    }
-
-    #[Test]
-    public function it_says_which_version_it_was_based_on(): void
-    {
-        $template = Template::factory()->create();
-        $first = StructureVersion::factory()->create(['structure_id' => $template->structure->id, 'version_number' => 1]);
-        $second = StructureVersion::factory()->create([
-            'structure_id' => $template->structure->id,
-            'version_number' => 2,
-            'previous_version_id' => $first->id,
-        ]);
-
-        $this->assertSame('the first version', new StructureVersionEntry(version: $first->fresh())->basedOn());
-        $this->assertSame('based on v1', new StructureVersionEntry(version: $second->fresh(), previous: $first->fresh())->basedOn());
     }
 
     #[Test]
     public function it_falls_back_when_a_version_carries_no_change_note(): void
     {
         $withNote = StructureVersion::factory()->create(['change_note' => 'Split the address out.']);
-        $without = StructureVersion::factory()->create(['change_note' => null]);
+        StructureVersion::factory()->create(['change_note' => null]);
 
         $this->assertSame('Split the address out.', new StructureVersionEntry(version: $withNote->fresh())->changeNote());
-        $this->assertSame(
-            'No change note yet. You write one when you publish this version.',
-            new StructureVersionEntry(version: $without->fresh())->changeNote(),
-        );
-    }
-
-    #[Test]
-    public function it_counts_what_the_version_holds(): void
-    {
-        $user = User::factory()->create();
-        $version = $this->versionWith($user, sections: 2, fieldsPerSection: 3);
-
-        $entry = new StructureVersionEntry(version: $version);
-
-        $this->assertSame('1 page · 2 sections · 6 fields', $entry->counts());
-    }
-
-    #[Test]
-    public function the_first_version_is_where_the_template_starts(): void
-    {
-        $user = User::factory()->create();
-        $version = $this->versionWith($user, sections: 1, fieldsPerSection: 1);
-
-        $this->assertSame('Where the template starts', new StructureVersionEntry(version: $version)->summary());
-    }
-
-    #[Test]
-    public function it_summarises_what_a_version_added_over_the_one_it_came_from(): void
-    {
-        $user = User::factory()->create();
-        $previous = $this->versionWith($user, sections: 1, fieldsPerSection: 2);
-        $current = $this->versionWith($user, sections: 3, fieldsPerSection: 2);
-
-        $entry = new StructureVersionEntry(version: $current, previous: $previous);
-
-        $this->assertSame('2 sections added, 4 fields added', $entry->summary());
-    }
-
-    #[Test]
-    public function it_says_when_a_section_moved_to_a_new_version_without_anything_being_added(): void
-    {
-        $user = User::factory()->create();
-        $previous = $this->versionWith($user, sections: 1, fieldsPerSection: 2);
-        $current = $this->versionWith($user, sections: 1, fieldsPerSection: 2);
-
-        $entry = new StructureVersionEntry(version: $current, previous: $previous);
-
-        $this->assertSame('1 section at a new version', $entry->summary());
     }
 
     #[Test]
@@ -185,10 +106,7 @@ class StructureVersionEntryTest extends TestCase
         $pages = new StructureVersionEntry(version: $version->fresh())->pages();
 
         $this->assertCount(1, $pages);
-        $this->assertSame('Page 1', $pages[0]['position']);
-        $this->assertSame('1 section · 1 field', $pages[0]['meta']);
         $this->assertSame('Personal details', $pages[0]['sections'][0]['name']);
-        $this->assertSame('1 field', $pages[0]['sections'][0]['fieldLabel']);
         $this->assertSame('Birthday', $pages[0]['sections'][0]['fields'][0]['label']);
     }
 

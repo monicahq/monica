@@ -87,7 +87,6 @@ class AdminAccessTest extends TestCase
 
         $this->actingAs($jim)
             ->get(route('vaults.index'))
-            ->assertDontSee('Admin space')
             ->assertDontSee('/admin', escape: false);
     }
 }

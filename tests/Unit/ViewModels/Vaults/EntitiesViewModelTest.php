@@ -56,14 +56,6 @@ class EntitiesViewModelTest extends TestCase
         $this->assertSame([false, true, false], array_column($entities, 'isArchived'));
     }
 
-    #[Test]
-    public function it_names_the_type_in_its_empty_state(): void
-    {
-        [$user, $vault, $type] = $this->vaultWithType();
-
-        $this->assertSame('No Animals in this vault yet', new EntitiesViewModel(user: $user, vault: $vault, entityType: $type)->emptyTitle());
-    }
-
     /** @return array{0: User, 1: Vault, 2: EntityType} */
     #[Test]
     public function it_offers_the_way_to_add_one(): void
@@ -75,18 +67,7 @@ class EntitiesViewModelTest extends TestCase
         $viewModel = new EntitiesViewModel(user: $user, vault: $vault, entityType: $type);
 
         $this->assertNull($viewModel->addRefusal());
-        $this->assertSame('Add Animal', $viewModel->addLabel());
         $this->assertSame(route('entities.new', ['vault' => $vault, 'entityType' => $type]), $viewModel->addUrl());
-    }
-
-    #[Test]
-    public function it_says_why_nothing_can_be_added(): void
-    {
-        [$user, $vault, $type] = $this->vaultWithType();
-
-        $refusal = new EntitiesViewModel(user: $user, vault: $vault, entityType: $type)->addRefusal();
-
-        $this->assertStringContainsString('Nothing can be added until this vault has a published template', (string) $refusal);
     }
 
     private function vaultWithType(): array

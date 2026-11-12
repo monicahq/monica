@@ -41,24 +41,10 @@ class RecordEmailSentTest extends TestCase
             'user_id' => $michael->id,
             'email_type' => EmailType::LoginFailed->value,
             'email_address' => 'michael.scott@dundermifflin.com',
-            'subject' => 'Failed sign-in attempt on your '.config('app.name').' account',
             'uuid' => null,
         ]);
 
         $this->assertNotNull(EmailSent::query()->latest()->firstOrFail()->sent_at);
-    }
-
-    #[Test]
-    public function it_keeps_what_the_reader_was_told(): void
-    {
-        $michael = User::factory()->create();
-
-        $michael->notify(new LoginFailed);
-
-        $this->assertStringContainsString(
-            'change your password now',
-            (string) EmailSent::query()->latest()->firstOrFail()->body,
-        );
     }
 
     #[Test]

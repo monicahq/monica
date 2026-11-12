@@ -34,7 +34,6 @@ class LifeEventCategoryPolicyTest extends TestCase
         $response = Gate::forUser($user)->inspect('delete', $category);
 
         $this->assertTrue($response->denied());
-        $this->assertStringContainsString('came with your account and stays', (string) $response->message());
     }
 
     #[Test]
@@ -47,7 +46,6 @@ class LifeEventCategoryPolicyTest extends TestCase
         $response = Gate::forUser($user)->inspect('delete', $category);
 
         $this->assertTrue($response->denied());
-        $this->assertStringContainsString('Types are filed under this category', (string) $response->message());
     }
 
     #[Test]

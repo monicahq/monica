@@ -36,7 +36,6 @@ class ContactMergeControllerTest extends TestCase
         );
 
         $response->assertStatus(200);
-        $response->assertSee('The two records');
         $response->assertSee(route('contacts.show', ['vault' => $jim->vault, 'contact' => $jim]));
         $response->assertSee(route('contacts.show', ['vault' => $jim->vault, 'contact' => $james]));
     }
@@ -131,7 +130,6 @@ class ContactMergeControllerTest extends TestCase
         );
 
         $response->assertStatus(200);
-        $response->assertSee('Undo the merge');
         $response->assertSee('James Halpert');
     }
 

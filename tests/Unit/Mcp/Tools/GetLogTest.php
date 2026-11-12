@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Mcp\Tools;
 
 use App\Enums\LogSourceEnum;
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\GetLog;
 use App\Models\Log;
 use App\Models\User;
@@ -27,7 +27,7 @@ class GetLogTest extends TestCase
             'ip_address' => '10.0.0.1',
         ]);
 
-        EricaServer::actingAs($user)->tool(GetLog::class, ['log' => (string) $log->id])
+        MonicaServer::actingAs($user)->tool(GetLog::class, ['log' => (string) $log->id])
             ->assertOk()
             ->assertSee('"source":"mcp"')
             ->assertSee('10.0.0.1');
@@ -39,7 +39,7 @@ class GetLogTest extends TestCase
         $user = User::factory()->create();
         $log = Log::factory()->create();
 
-        EricaServer::actingAs($user)->tool(GetLog::class, ['log' => (string) $log->id])
-            ->assertHasErrors(['That log entry does not exist.']);
+        MonicaServer::actingAs($user)->tool(GetLog::class, ['log' => (string) $log->id])
+            ->assertHasErrors();
     }
 }

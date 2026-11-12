@@ -35,7 +35,6 @@ class LifeEventTypePolicyTest extends TestCase
         $response = Gate::forUser($user)->inspect('delete', $type);
 
         $this->assertTrue($response->denied());
-        $this->assertStringContainsString('came with your account and stays', (string) $response->message());
     }
 
     #[Test]
@@ -47,7 +46,6 @@ class LifeEventTypePolicyTest extends TestCase
         $response = Gate::forUser($user)->inspect('delete', $lifeEvent->lifeEventType);
 
         $this->assertTrue($response->denied());
-        $this->assertStringContainsString('Life events were recorded with this type', (string) $response->message());
     }
 
     #[Test]

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\CreateGroupReminder;
 use App\Models\Group;
 use App\Models\User;
@@ -26,7 +26,7 @@ class CreateGroupReminderTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $group = Group::factory()->create(['vault_id' => $vault->id, 'name' => 'Finer things club']);
 
-        EricaServer::actingAs($user)->tool(CreateGroupReminder::class, [
+        MonicaServer::actingAs($user)->tool(CreateGroupReminder::class, [
             'vault' => $vault->uuid,
             'group' => $group->uuid,
             'name' => 'Book the room',
@@ -50,7 +50,7 @@ class CreateGroupReminderTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $group = Group::factory()->create(['vault_id' => $vault->id, 'name' => 'Finer things club']);
 
-        EricaServer::actingAs($user)->tool(CreateGroupReminder::class, [
+        MonicaServer::actingAs($user)->tool(CreateGroupReminder::class, [
             'vault' => $vault->uuid,
             'group' => $group->uuid,
             'name' => 'Book the room',

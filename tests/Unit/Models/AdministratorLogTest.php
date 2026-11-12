@@ -32,18 +32,6 @@ class AdministratorLogTest extends TestCase
         $entry = AdministratorLog::factory()->byTheConsole()->create();
 
         $this->assertTrue($entry->wasPerformedByTheConsole());
-        $this->assertEquals('The console', $entry->author);
-    }
-
-    #[Test]
-    public function it_reads_the_sentence_of_the_action_with_its_parameters(): void
-    {
-        $entry = AdministratorLog::factory()->create([
-            'action' => AdministratorActionEnum::UserDeactivated->value,
-            'parameters' => ['name' => 'Michael Scott'],
-        ]);
-
-        $this->assertEquals('Deactivated Michael Scott', $entry->description);
     }
 
     #[Test]

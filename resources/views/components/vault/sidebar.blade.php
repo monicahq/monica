@@ -4,24 +4,48 @@
   @var \App\Models\Vault $vault
   @var string $current
   @var int $reminderCount
-  @var list<array{key: string, name: string, icon: string, colour: string, url: string}> $entityTypes
+  @var list<array{key: string, label: string, icon: string, url: string, badge: null, colour: string}> $entityTypes
+  @var bool $hasPossessionTypes
+  @var int $possessionCount
+  @var int $knowledgeCount
   @var array{url: string, usesCommandKey: bool, keys: string, label: string} $searchShortcut
 --}}
 
 @php
   $item = 'flex min-h-8 items-center gap-2.5 rounded-md px-2 py-1.5 text-nav transition duration-(--duration-fast) ease-out max-lg:min-h-10';
 
-  $sections = [
-    ['key' => 'dashboard', 'label' => __('Dashboard'), 'icon' => 'heart', 'url' => route('vaults.show', $vault), 'badge' => null],
-    ['key' => 'contacts', 'label' => __('People'), 'icon' => 'people', 'url' => route('contacts.index', $vault), 'badge' => $vault->contact_count > 0 ? (string) $vault->contact_count : null],
-    ['key' => 'groups', 'label' => __('Groups'), 'icon' => 'family', 'url' => route('groups.index', $vault), 'badge' => null],
-    ['key' => 'reminders', 'label' => __('Reminders'), 'icon' => 'reminder', 'url' => route('reminders.index', $vault), 'badge' => $reminderCount > 0 ? (string) $reminderCount : null],
-    ['key' => 'vault-settings', 'label' => __('Vault settings'), 'icon' => 'vault', 'url' => route('vaults.settings.index', $vault), 'badge' => null],
+  $groups = [
+    [
+      'title' => __('This vault'),
+      'entries' => [
+        ['key' => 'dashboard', 'label' => __('Dashboard'), 'icon' => 'heart', 'url' => route('vaults.show', $vault), 'badge' => null, 'colour' => null],
+        ['key' => 'reminders', 'label' => __('Reminders'), 'icon' => 'reminder', 'url' => route('reminders.index', $vault), 'badge' => $reminderCount > 0 ? (string) $reminderCount : null, 'colour' => null],
+        ['key' => 'vault-settings', 'label' => __('Vault settings'), 'icon' => 'vault', 'url' => route('vaults.settings.index', $vault), 'badge' => null, 'colour' => null],
+      ],
+    ],
+    [
+      'title' => __('People'),
+      'entries' => [
+        ['key' => 'contacts', 'label' => __('People'), 'icon' => 'people', 'url' => route('contacts.index', $vault), 'badge' => $vault->contact_count > 0 ? (string) $vault->contact_count : null, 'colour' => null],
+        ...$entityTypes,
+        ...(\App\Helpers\FlagState::isOn('groups', $user->account) ? [
+          ['key' => 'groups', 'label' => __('Groups'), 'icon' => 'family', 'url' => route('groups.index', $vault), 'badge' => null, 'colour' => null],
+        ] : []),
+      ],
+    ],
+    ...($hasPossessionTypes ? [[
+      'title' => __('Things'),
+      'entries' => [
+        ['key' => 'possessions', 'label' => __('All possessions'), 'icon' => 'key', 'url' => route('possessions.index', $vault), 'badge' => $possessionCount > 0 ? (string) $possessionCount : null, 'colour' => null],
+      ],
+    ]] : []),
+    [
+      'title' => __('Knowledge'),
+      'entries' => [
+        ['key' => 'knowledge', 'label' => __('Knowledge'), 'icon' => 'journal', 'url' => route('knowledge.index', $vault), 'badge' => $knowledgeCount > 0 ? (string) $knowledgeCount : null, 'colour' => null],
+      ],
+    ],
   ];
-
-  if (! \App\Helpers\FlagState::isOn('groups', $user->account)) {
-    $sections = array_values(array_filter($sections, fn (array $section): bool => $section['key'] !== 'groups'));
-  }
 @endphp
 
 <aside
@@ -58,55 +82,34 @@
     </a>
   </div>
 
-  <nav aria-label="{{ __('This vault') }}" class="min-h-0 flex-1 space-y-px overflow-y-auto px-2 pt-1.5 pb-3">
-    <h2 class="px-2 pt-4 pb-2.5 text-2xs font-medium tracking-caption text-muted-soft uppercase first:pt-1">{{ __('This vault') }}</h2>
+  <nav aria-label="{{ __('This vault') }}" class="flex min-h-0 flex-1 flex-col overflow-y-auto px-2 pt-1.5 pb-3">
+    @foreach ($groups as $group)
+      <div class="space-y-px">
+        <h2 class="px-2 {{ $loop->first ? 'pt-1' : 'pt-4' }} pb-2.5 text-2xs font-medium tracking-caption text-muted-soft uppercase">{{ $group['title'] }}</h2>
 
-    @foreach ($sections as $section)
-      @if ($section['url'])
-        <a
-          href="{{ $section['url'] }}"
-          data-turbo="true"
-          @if ($current === $section['key']) aria-current="page" @endif
-          class="{{ $item }} {{ $current === $section['key'] ? 'bg-canvas font-medium text-ink shadow-nav-active' : 'text-body hover:bg-hover hover:text-ink' }} focus-ring"
-        >
-          <x-icon :name="$section['icon']" :size="16" :stroke-width="1.5" />
-          {{ $section['label'] }}
-
-          @if ($section['badge'])
-            <span class="ml-auto text-xs text-muted">{{ $section['badge'] }}</span>
-          @endif
-        </a>
-      @else
-        <span
-          aria-disabled="true"
-          @if ($current === $section['key']) aria-current="page" @endif
-          class="{{ $item }} {{ $current === $section['key'] ? 'bg-canvas font-medium text-ink shadow-nav-active' : 'text-muted' }}"
-        >
-          <x-icon :name="$section['icon']" :size="16" :stroke-width="1.5" />
-          {{ $section['label'] }}
-
-          @if ($section['badge'])
-            <span class="ml-auto text-xs text-muted">{{ $section['badge'] }}</span>
-          @endif
-        </span>
-      @endif
-
-      @if ($section['key'] === 'contacts')
-        @foreach ($entityTypes as $type)
+        @foreach ($group['entries'] as $link)
           <a
-            href="{{ $type['url'] }}"
+            href="{{ $link['url'] }}"
             data-turbo="true"
-            @if ($current === $type['key']) aria-current="page" @endif
-            class="{{ $item }} {{ $current === $type['key'] ? 'bg-canvas font-medium text-ink shadow-nav-active' : 'text-body hover:bg-hover hover:text-ink' }} focus-ring"
+            @if ($current === $link['key']) aria-current="page" @endif
+            class="{{ $item }} {{ $current === $link['key'] ? 'bg-canvas font-medium text-ink shadow-nav-active' : 'text-body hover:bg-hover hover:text-ink' }} focus-ring"
           >
-            <span class="flex shrink-0" style="color: {{ $type['colour'] }}">
-              <x-entity-icon :name="$type['icon']" :size="16" />
-            </span>
+            @if ($link['colour'])
+              <span class="flex shrink-0" style="color: {{ $link['colour'] }}">
+                <x-entity-icon :name="$link['icon']" :size="16" />
+              </span>
+            @else
+              <x-icon :name="$link['icon']" :size="16" :stroke-width="1.5" />
+            @endif
 
-            <span class="min-w-0 truncate">{{ $type['name'] }}</span>
+            <span class="min-w-0 truncate leading-normal">{{ $link['label'] }}</span>
+
+            @if ($link['badge'])
+              <span class="ml-auto text-xs text-muted">{{ $link['badge'] }}</span>
+            @endif
           </a>
         @endforeach
-      @endif
+      </div>
     @endforeach
   </nav>
 </aside>

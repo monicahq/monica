@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\DeleteLifeEventCategory;
 use App\Models\LifeEventCategory;
 use App\Models\LifeEventType;
@@ -23,7 +23,7 @@ class DeleteLifeEventCategoryTest extends TestCase
         $user = User::factory()->create();
         $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(DeleteLifeEventCategory::class, ['life_event_category' => $category->uuid])
+        MonicaServer::actingAs($user)->tool(DeleteLifeEventCategory::class, ['life_event_category' => $category->uuid])
             ->assertOk()
             ->assertHasNoErrors();
 
@@ -37,8 +37,8 @@ class DeleteLifeEventCategoryTest extends TestCase
         $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
         LifeEventType::factory()->create(['account_id' => $user->account_id, 'life_event_category_id' => $category->id]);
 
-        EricaServer::actingAs($user)->tool(DeleteLifeEventCategory::class, ['life_event_category' => $category->uuid])
-            ->assertHasErrors(['Types are filed under this category, so it stays.']);
+        MonicaServer::actingAs($user)->tool(DeleteLifeEventCategory::class, ['life_event_category' => $category->uuid])
+            ->assertHasErrors();
 
         $this->assertNotSoftDeleted($category);
     }

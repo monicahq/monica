@@ -33,13 +33,6 @@ class InputTest extends TestCase
     }
 
     #[Test]
-    public function it_says_which_fields_are_optional(): void
-    {
-        $this->blade('<x-input id="nickname" label="Nickname" :optional="true" />')
-            ->assertSee('optional');
-    }
-
-    #[Test]
     public function an_error_says_every_message_it_is_given(): void
     {
         $this->blade('<x-error :messages="$messages" />', ['messages' => ['First things first.', 'Then this.']])

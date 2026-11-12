@@ -105,6 +105,52 @@ A chronological list of every feature and improvement shipped during development
 * Settings and vaults: Kept a deletion that is refused in its red box, its button dimmed with the reason beside it.
 * Settings and vaults: Showed every delete button in a list or inside a section in red text, where most of them had been drawn in black.
 * UI: Made the label of solid red buttons readable in the dark theme.
+* Settings/account/locations: Added the places of the account (a house, a room, a shelf, a box), each optionally inside another, with an emoji and an address.
+* Settings/account/locations: Refused to delete a location that still holds other locations, saying how many must be moved first.
+* API: Added endpoints to list, read, add, change and delete the locations of the account, each answered with its full path and the address it falls back on.
+* MCP: Added tools that let an assistant list, read, add, change and delete the locations of the account.
+* Settings: Renamed the Personalisation group of the sidebar to Contacts and types, and moved Locations into a Possessions group of its own below it.
+* Settings/account/possession types: Added the kinds of things an account owns, each with its fields standalone or in named groups, edited in place, reordered, and exported or imported as a JSON file.
+* API: Added endpoints to list, read, add, change, delete, export and import possession types, and to manage their groups and fields.
+* MCP: Added tools that let an assistant manage possession types, their groups and their fields, and export or import them.
+* Settings/account/possession types: New accounts start with 25 possession types, from comics and wine to cars and homes, each with its own fields.
+* Settings/account/possession types: Existing accounts receive the same possession types when the release is deployed.
+* Vaults: Split the vault sidebar into sections, listed a kind of profile only in a vault set up for it, and offered All possessions.
+* API: Added endpoints to list, read, record, change and delete possessions in a vault, to order the featured ones, and to write the values of their fields.
+* MCP: Added tools that let an assistant manage possessions, their order and the values of their fields.
+* Settings/account/possession types: Deleting a possession type now deletes its possessions, and says how many.
+* Settings/account/possession tags: Added possession tags, words with a colour that the account will put on its possessions, managed from the settings, the API and MCP.
+* Settings/account/possession conditions: Added possession conditions, the states a possession can be in from best to worst, with a colour and an optional icon. Every account starts with six (New to Broken), and they are managed, reordered and deleted from the settings, the API and MCP.
+* Vaults/possessions: Added the Add a possession screen: a name, a searchable type with its fields, where it is kept, how it was acquired, its tags and whether it is featured, with a place kept for photos.
+* Possessions: A possession records how it was acquired, from whom, when and for what declared value, and carries any of the account's tags, through the screen, the API and MCP.
+* Settings/account/possession tags: Deleting a tag says how many possessions carry it, and takes it off them.
+* Vaults/possessions: All possessions explains possessions while the vault holds none, offers the account's types as a way into the form, and names the account's locations.
+* Possessions: A possession type carries an icon, set on the 25 defaults and chosen in the settings, through the API, MCP, export and import.
+* Vaults/possessions: All possessions lists the vault's possessions, featured ones first, and browses them by location through a tree of the account's locations, with counts, declared values per currency and a split by place.
+* Vaults: The sidebar counts the possessions of the vault beside All possessions.
+* Possessions: The API and MCP list the possessions kept at a location or anywhere inside it.
+* Settings/locations: A new account starts with a house and five rooms inside it, named in the language chosen at sign up, and accounts that had no location receive them too.
+* Vaults/possessions: Each possession has a page with its type, location, tags and an Overview of its description, field values, declared value and facts, lists the sections still to come, and lets somebody feature, unfeature or delete it.
+* Vaults/possessions: The Transactions section of a possession records purchases, sales, exchanges, gifts, inheritances, refunds, fees, taxes and shipping, with their figures, currency, counterparty, reference, link and note.
+* Vaults/possessions: The Transactions section reads the acquisition date, acquisition price and costs since from the transactions, and filters ownership changes from money only ones.
+* Vaults/possessions: A transaction can be edited and deleted, with a warning naming the transaction that becomes the acquisition.
+* Vaults/possessions: Each section of a possession page takes a colour of its own, and the page uses the full width.
+* App-wide: A currency picker lists every currency by flag and code, in the transaction form and the Add a possession form.
+* Possessions: How a possession was acquired is read from its transactions, and every acquisition recorded before became a transaction.
+* Possessions: The API and MCP list, show, record, change and delete the transactions of a possession.
+* Vaults/possessions: Tags are added, created and removed from the page of a possession, and removing one asks first.
+* Vaults/possessions: An Insurance section, under Transactions, records how a possession is insured, one record per policy period, compares the insured value with the declared value and warns when it is lower.
+* Possessions: The API and MCP list, show, record, change and delete the insurance records of a possession.
+* Vaults: The vault column groups its destinations under People, Things and Knowledge, the last one empty for now.
+* Vaults/possessions: A Maintenance section, under Provenance, records the work done on a possession, one record per job, with the condition before and after, and marks the latest job overdue when its next due date has passed.
+* Possessions: The API and MCP list, show, record, change and delete the maintenance records of a possession.
+* Vaults/knowledge: Knowledge keeps what is worth remembering that is not a person or a possession, in folders of notes and lists, and the vault column counts its notes and lists.
+* Vaults/knowledge: Folders group notes and lists, and can be added, renamed, reordered and deleted, their contents moved to another folder or deleted with them, the last folder always staying.
+* Vaults/knowledge: Notes hold Markdown text with headings, bullets, quotes, bold and web links, and their tasks can be ticked while reading.
+* Vaults/knowledge: Lists hold items with columns their owner names, adds, renames, reorders and removes, each cell holding text.
+* Vaults/knowledge: Search finds a note or a list holding every word typed in its title, text, description or cells, and Contents lists every folder, note and list with the headings of each note.
+* Knowledge: The API and MCP list, search, read, write, change and delete folders, notes, lists, columns and items.
+* Docs: The guide explains Knowledge, its folders, notes and lists, and how to find what was written.
 * Settings/account/security: Listed every device signed in to the account, with the one in hand marked.
 * Settings/account/security: Let somebody sign out any other device, which also ends remembered sign in on every device.
 * Settings/account/security: Let somebody with a password sign out every device but the one in hand at once, remembered ones included.
@@ -183,3 +229,16 @@ A chronological list of every feature and improvement shipped during development
 * Admin/configuration: Added the Apple settings to the instance settings, with a notice when its package is missing.
 * Admin/search: Added a screen showing which search engine the instance uses, whether it answers, how many documents each index holds beside the records the instance holds, and the total size of the indexes where the engine reports it.
 * Admin/search: Let an administrator rebuild one search index, after a warning and a credential, written down in the administrator record.
+* Possessions: Let somebody edit a possession from its page, with the values of its fields, all saved together or not at all.
+* Vaults/possessions: A Valuations section records what a possession is worth over the years, never edited once recorded; the latest by date is its current value, read by the Overview and the Insurance section in place of the declared value.
+* Possessions: The API and MCP list, show, record and delete the valuations of a possession, and the API attaches and removes their documents.
+* Possessions: The API and MCP give each possession its current value, and list possessions compactly (name, status, type, location and current value) for a quick look at everything a vault holds.
+* Vaults/possessions: A Provenance section records where a possession comes from, who has owned or held it and what proves it, oldest first, each date as precise as it is known; an event holds no money and may point at the transaction recording what it cost.
+* Possessions: The API and MCP list, show, record, change and delete the provenance events of a possession.
+* Vaults/possessions: A Locations section records where a possession is kept now and every stay since, newest first, with how long each lasted and the gaps between them; moving it closes the current stay and opens the next on the same day, and the location chosen on the possession form follows the same rule.
+* Settings/locations: A location any stay of a possession refers to cannot be deleted, so the history of a possession is never lost.
+* Possessions: The API and MCP list, show, correct and delete the stays of a possession, and move it elsewhere.
+* Vaults/possessions: A Loans section records a possession lent to or borrowed from a contact of the vault, who has it now and when it is due back, with overdue loans flagged; a loan never changes the owner, only one can be active, and it can write two change of custody events into the provenance.
+* Vaults/possessions: The contact of a loan is chosen from the vault's contacts, or written down with the loan in one step.
+* Vaults/contacts: A contact's page lists the possessions they have had or lent; merging contacts carries their loans, and undoing the merge gives them back.
+* Possessions: The API and MCP list, show, record, change and delete the loans of a possession.

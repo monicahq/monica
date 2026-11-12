@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\UpdateLifeEventType;
 use App\Models\LifeEventCategory;
 use App\Models\LifeEventType;
@@ -29,7 +29,7 @@ class UpdateLifeEventTypeTest extends TestCase
             'icon' => 'briefcase',
         ]);
 
-        EricaServer::actingAs($user)->tool(UpdateLifeEventType::class, [
+        MonicaServer::actingAs($user)->tool(UpdateLifeEventType::class, [
             'life_event_type' => $type->uuid,
             'colour' => '#4f8a49',
         ])->assertOk()->assertHasNoErrors();
@@ -55,7 +55,7 @@ class UpdateLifeEventTypeTest extends TestCase
             'description' => 'An award handed out at Chili’s.',
         ]);
 
-        EricaServer::actingAs($user)->tool(UpdateLifeEventType::class, [
+        MonicaServer::actingAs($user)->tool(UpdateLifeEventType::class, [
             'life_event_type' => $type->uuid,
             'description' => null,
         ])->assertOk()->assertHasNoErrors();
@@ -70,7 +70,7 @@ class UpdateLifeEventTypeTest extends TestCase
         $type = LifeEventType::factory()->create(['account_id' => $user->account_id]);
         $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(UpdateLifeEventType::class, [
+        MonicaServer::actingAs($user)->tool(UpdateLifeEventType::class, [
             'life_event_type' => $type->uuid,
             'life_event_category_id' => $category->uuid,
         ])->assertOk()->assertHasNoErrors();

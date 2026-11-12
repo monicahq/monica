@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\ListTemplates;
 use App\Models\Template;
 use App\Models\User;
@@ -22,7 +22,7 @@ class ListTemplatesTest extends TestCase
         $user = User::factory()->create();
         $mine = Template::factory()->create(['account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(ListTemplates::class)
+        MonicaServer::actingAs($user)->tool(ListTemplates::class)
             ->assertOk()
             ->assertHasNoErrors()
             ->assertSee($mine->uuid);
@@ -34,7 +34,7 @@ class ListTemplatesTest extends TestCase
         $user = User::factory()->create();
         $theirs = Template::factory()->create();
 
-        EricaServer::actingAs($user)->tool(ListTemplates::class)
+        MonicaServer::actingAs($user)->tool(ListTemplates::class)
             ->assertOk()
             ->assertDontSee($theirs->uuid);
     }

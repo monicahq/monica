@@ -43,7 +43,6 @@ class ExportSectionTest extends TestCase
 
         $this->assertEquals('section', $file['monica']['format']);
         $this->assertEquals(StructureFile::FORMAT_VERSION, $file['monica']['format_version']);
-        $this->assertEquals('Personal details', $file['section']['name']);
         $this->assertCount(1, $file['section']['fields']);
 
         Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {

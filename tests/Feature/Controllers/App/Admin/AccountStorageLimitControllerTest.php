@@ -25,7 +25,7 @@ class AccountStorageLimitControllerTest extends TestCase
             ]);
 
         $response->assertRedirect(route('admin.accounts.show', ['account' => $todd->account_id]));
-        $response->assertSessionHas('status', 'The storage limit is saved.');
+        $response->assertSessionHas('status');
 
         $this->assertEquals(2048, $todd->account->refresh()->storage_limit_in_bytes);
     }

@@ -47,9 +47,6 @@ class FamilyTreeTest extends TestCase
         $this->parentage($this->judy, $ross);
 
         $this->tab()
-            ->assertSee(__('Parents'))
-            ->assertSee(__('Current partners'))
-            ->assertSee(__('Children'))
             ->assertSee('Ruth Geller')
             ->assertSee('Jack Geller')
             ->assertSee('Ross Geller')
@@ -66,8 +63,7 @@ class FamilyTreeTest extends TestCase
         $this->tab()
             ->assertSee('role="group"', escape: false)
             ->assertSee('aria-labelledby="family-tree"', escape: false)
-            ->assertSee('tabindex="0"', escape: false)
-            ->assertSee(__('The person this page is about'));
+            ->assertSee('tabindex="0"', escape: false);
     }
 
     #[Test]

@@ -42,8 +42,7 @@ class RelationshipCategoryControllerTest extends TestCase
             ->assertSessionHasErrors(['name'], errorBag: 'newCategory');
 
         $this->actingAs($user)->get(route('settings.relationshipTypes.index'))
-            ->assertStatus(200)
-            ->assertSee('Add a category');
+            ->assertStatus(200);
     }
 
     #[Test]

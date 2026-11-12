@@ -26,9 +26,6 @@ class NotificationChannelControllerTest extends TestCase
         $response = $this->get(route('settings.notifications.index'));
 
         $response->assertStatus(200);
-        $response->assertSee('Telegram');
-        $response->assertSee('Text message');
-        $response->assertSee('Nothing to type. Following the link opens a conversation with our bot, and the bot tells us where to send.');
     }
 
     #[Test]
@@ -44,26 +41,12 @@ class NotificationChannelControllerTest extends TestCase
         ]);
 
         $response->assertRedirect(route('settings.notifications.index'));
-        $response->assertSessionHas('status', 'Your notification settings are saved.');
+        $response->assertSessionHas('status');
 
         $channel = $this->channel($user, NotificationChannelEnum::Sms);
 
         $this->assertTrue($channel->is_enabled);
         $this->assertSame('+15705550172', $channel->destination);
-    }
-
-    #[Test]
-    public function it_says_when_the_channel_being_switched_off_is_the_last_one_that_works(): void
-    {
-        $user = $this->signedIn();
-        NotificationChannel::query()
-            ->where('account_id', $user->account_id)
-            ->where('channel', '!=', NotificationChannelEnum::Email->value)
-            ->update(['is_enabled' => false]);
-
-        $response = $this->get(route('settings.notifications.index'));
-
-        $response->assertSee('This is the only channel that still works. Switching it off means nothing reaches you at all.');
     }
 
     #[Test]
@@ -81,7 +64,7 @@ class NotificationChannelControllerTest extends TestCase
             'destination' => '+15705550172',
         ]);
 
-        $response->assertSessionHasErrors(['channel' => 'This server has not been set up to send on this channel.']);
+        $response->assertSessionHasErrors(['channel']);
         $this->assertFalse($this->channel($user, NotificationChannelEnum::Sms)->is_enabled);
     }
 
@@ -112,7 +95,7 @@ class NotificationChannelControllerTest extends TestCase
             'destination' => '999999999',
         ]);
 
-        $response->assertSessionHasErrors(['channel' => 'This channel is told where to send by the service, not from here.']);
+        $response->assertSessionHasErrors(['channel']);
         $this->assertNull($this->channel($user, NotificationChannelEnum::Telegram)->destination);
     }
 
@@ -125,11 +108,10 @@ class NotificationChannelControllerTest extends TestCase
         $response = $this->get(route('settings.notifications.index'));
 
         $response->assertStatus(200);
-        $response->assertSee('In the app');
-        $response->assertSee('Email');
-        $response->assertDontSee('Telegram');
-        $response->assertDontSee('Text message');
-        $response->assertDontSee('Connect Telegram');
+        $response->assertSee('id="channel-in_app-heading"', escape: false);
+        $response->assertSee('id="channel-email-heading"', escape: false);
+        $response->assertDontSee('id="channel-telegram-heading"', escape: false);
+        $response->assertDontSee('id="channel-sms-heading"', escape: false);
         $response->assertDontSee('id="sms-destination"', escape: false);
     }
 

@@ -21,7 +21,7 @@ server. Copy `ContactReminderController`, the `*ContactReminder` tools and `reso
 - [X] T006 [US1] Add `POST vaults/{vault}/contacts/{contact}/relationships` named `contacts.relationships.create` after the reminder block in routes/api.php
 - [X] T007 [US1] Document the create endpoint, its fields and its 422 refusals in resources/docs/api/23-relationships.php
 - [X] T008 [P] [US1] Create `CreateContactRelationship` mirroring `api.v1.contacts.relationships.create`, its schema explaining `role_a`/`role_b` and `holds_role_a` (FR-007), refusals through `Response::error()`, in app/Mcp/Tools/CreateContactRelationship.php
-- [X] T009 [US1] Register the tool in app/Mcp/Servers/EricaServer.php and add a "Relationships, changing" group with it in app/ViewModels/Docs/McpDocsViewModel.php
+- [X] T009 [US1] Register the tool in app/Mcp/Servers/MonicaServer.php and add a "Relationships, changing" group with it in app/ViewModels/Docs/McpDocsViewModel.php
 - [X] T010 [P] [US1] Test create: 201 and shape, symmetric and directed roles, `holds_role_a` false, one action refusal as 422, unknown `relationship_type`, `other_contact` of another vault 404, in tests/Feature/Controllers/Api/ContactRelationshipControllerTest.php
 - [X] T011 [P] [US1] Test the tool: links two contacts, returns the shape, relays one refusal, not found wording, in tests/Unit/Mcp/Tools/CreateContactRelationshipTest.php
 
@@ -31,7 +31,7 @@ server. Copy `ContactReminderController`, the `*ContactReminder` tools and `reso
 - [X] T013 [US2] Add the `GET` list route `contacts.relationships` and the `GET` show route `contacts.relationships.show` with the UUID `where` in routes/api.php
 - [X] T014 [US2] Document both endpoints in resources/docs/api/23-relationships.php
 - [X] T015 [P] [US2] Create `ListContactRelationships` and `GetContactRelationship`, both `#[IsReadOnly]`, in app/Mcp/Tools/ListContactRelationships.php and app/Mcp/Tools/GetContactRelationship.php
-- [X] T016 [US2] Register both and add a "Relationships, reading" group in app/Mcp/Servers/EricaServer.php and app/ViewModels/Docs/McpDocsViewModel.php
+- [X] T016 [US2] Register both and add a "Relationships, reading" group in app/Mcp/Servers/MonicaServer.php and app/ViewModels/Docs/McpDocsViewModel.php
 - [X] T017 [P] [US2] Test index (both sides listed, other contacts' relationships left out, empty list) and show (404 through a non-involved contact and through the wrong vault) in tests/Feature/Controllers/Api/ContactRelationshipControllerTest.php
 - [X] T018 [P] [US2] Test both tools in tests/Unit/Mcp/Tools/ListContactRelationshipsTest.php and tests/Unit/Mcp/Tools/GetContactRelationshipTest.php
 
@@ -54,7 +54,7 @@ server. Copy `ContactReminderController`, the `*ContactReminder` tools and `reso
 
 - [X] T028 [US5] Add `destroy()` calling `DestroyRelationship`, answering 204, and the `DELETE` route `contacts.relationships.destroy`, in the controller and routes/api.php
 - [X] T029 [P] [US5] Create `DeleteContactRelationship`, `#[IsDestructive]`, answering "The relationship is removed.", in app/Mcp/Tools/DeleteContactRelationship.php; register it and list it saying it deletes
-- [X] T030 [US5] Document the delete endpoint in resources/docs/api/23-relationships.php and add one paragraph on relationships to the `#[Instructions]` of app/Mcp/Servers/EricaServer.php
+- [X] T030 [US5] Document the delete endpoint in resources/docs/api/23-relationships.php and add one paragraph on relationships to the `#[Instructions]` of app/Mcp/Servers/MonicaServer.php
 - [X] T031 [P] [US5] Test destroy (204, both contacts kept) in the controller test and the tool in tests/Unit/Mcp/Tools/DeleteContactRelationshipTest.php
 
 ## Phase 7: Polish
@@ -69,4 +69,4 @@ server. Copy `ContactReminderController`, the `*ContactReminder` tools and `reso
 - Phase 1 blocks everything. US1 and US2 are independent once it is done.
 - US3 needs US2's `show` only for its own tests. US4 extends the files of US1 and US3, so it comes after both.
 - US5 is independent of US3 and US4. Polish comes last.
-- Tasks touching the controller, routes/api.php, EricaServer or the docs page run one after another; tool files and test files marked [P] run in parallel.
+- Tasks touching the controller, routes/api.php, MonicaServer or the docs page run one after another; tool files and test files marked [P] run in parallel.

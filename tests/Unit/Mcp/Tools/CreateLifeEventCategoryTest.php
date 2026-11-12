@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\CreateLifeEventCategory;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -20,7 +20,7 @@ class CreateLifeEventCategoryTest extends TestCase
     {
         $user = User::factory()->create();
 
-        EricaServer::actingAs($user)->tool(CreateLifeEventCategory::class, ['name' => 'Sales'])
+        MonicaServer::actingAs($user)->tool(CreateLifeEventCategory::class, ['name' => 'Sales'])
             ->assertOk()
             ->assertHasNoErrors();
 

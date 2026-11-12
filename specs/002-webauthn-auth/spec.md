@@ -10,7 +10,7 @@
 
 ## User Scenarios & Testing *(mandatory)*
 
-Today somebody signs in to Erica in one of three ways: an email address and a password, a link sent
+Today somebody signs in to Monica in one of three ways: an email address and a password, a link sent
 to their email address, or an identity provider. The first is the common one, and it is the weakest.
 A password can be guessed, reused across sites, phished on a convincing copy of the sign in screen,
 or read out of somebody else's breach. The two factor code that can sit behind it helps against
@@ -22,7 +22,7 @@ their fingerprint, their face or their device PIN. It never leaves that device, 
 every site, and it refuses to answer a site that is not the one it was created for. There is nothing
 to type, nothing to remember, and nothing a convincing copy of our sign in screen can collect.
 
-This feature adds passkeys to Erica as a way to sign in on their own, standing where the email
+This feature adds passkeys to Monica as a way to sign in on their own, standing where the email
 address and the password stand rather than behind them, and a place to manage them beside the
 password, the two factor setting and the API keys on the account security screen. No existing way in
 is taken away. What does change is that somebody holding a passkey may choose to remove their own
@@ -30,12 +30,12 @@ password, which is the only way this feature makes the phishable secret go away 
 offering an alternative beside it. The link sent by email always remains, and it is what makes that
 choice safe to offer.
 
-Erica stays mono-user: a passkey belongs to the single person on an account, and an account may hold
+Monica stays mono-user: a passkey belongs to the single person on an account, and an account may hold
 several of them, one per device.
 
 ### User Story 1 - Add a passkey and sign in with it (Priority: P1)
 
-Somebody signed in to Erica opens their account security screen, chooses to add a passkey, and their
+Somebody signed in to Monica opens their account security screen, chooses to add a passkey, and their
 browser asks them to confirm with their fingerprint, their face, their device PIN or their security
 key. The passkey is created and appears on the screen with a name they can recognise. They sign out.
 On the sign in screen they choose to sign in with a passkey, confirm the same way, and they are in,
@@ -162,11 +162,11 @@ confirm the reason is stated and another way in is offered.
 
 Somebody is on a borrowed laptop. Their passkey is on their phone. Their operating system and their
 browser can bridge the two, showing a code to scan with the phone, and the phone does the
-confirming. Erica's job is to not get in the way: offer the passkey option, let the platform run the
+confirming. Monica's job is to not get in the way: offer the passkey option, let the platform run the
 bridge, and accept the result.
 
 **Why this priority**: it is a real and increasingly common case, and it needs nothing built beyond
-what Story 1 already does, as long as Erica does not assume the credential lives on the machine in
+what Story 1 already does, as long as Monica does not assume the credential lives on the machine in
 front of the person. It sits last because it is the platform's flow, not ours.
 
 **Independent Test**: with a passkey registered on a phone, sign in on a separate computer that has
@@ -338,7 +338,7 @@ alone.
   held on a separate device or a security key, without preferring or requiring either.
 - **FR-008**: The system MUST NOT verify or record the make and model of the authenticator, and MUST
   NOT restrict which authenticators are allowed. A self-hosted instance cannot maintain a list of
-  approved hardware, and Erica MUST behave identically on both deployments.
+  approved hardware, and Monica MUST behave identically on both deployments.
 
 **Signing in with a passkey**
 
@@ -466,7 +466,7 @@ alone.
   ordinary refusal. The browser-side client raises `InvalidDomainError` for the same case, which is
   where an explanation would go if one is wanted again.
 - **FR-042**: The system MUST NOT expose any passkey material to the user, to another account, or
-  through any export, and MUST NOT provide a way to copy a passkey out of Erica.
+  through any export, and MUST NOT provide a way to copy a passkey out of Monica.
 
 **Across the whole feature**
 
@@ -537,7 +537,7 @@ alone.
 
 ## Assumptions
 
-- A passkey belongs to the single person on an account, because Erica is mono-user. One account may
+- A passkey belongs to the single person on an account, because Monica is mono-user. One account may
   hold several passkeys, typically one per device. There is no notion of a passkey shared between
   people.
 - Passkeys are added from the account security screen by somebody already signed in, and at
@@ -552,7 +552,7 @@ alone.
 - The passkey list lives on the existing account security screen, beside the password, the two
   factor setting and the API keys, rather than on a screen of its own.
 - Cross-device sign in, meaning using a phone's passkey on a computer, is provided by the operating
-  system and the browser. Erica allows it and accepts the result. It does not build a flow of its
+  system and the browser. Monica allows it and accepts the result. It does not build a flow of its
   own for it.
 - Authenticator attestation is not verified and no hardware is allowlisted. A self-hosted instance
   cannot maintain a hardware metadata service, and the product must behave identically on hosted and
@@ -599,5 +599,5 @@ alone.
 - The existing email delivery used for sign in notifications, which carries the new passkey added
   and passkey removed messages.
 - The existing rate limiting applied to failed sign in attempts, extended to cover passkey attempts.
-- Browser and operating system support for passkeys on the device in front of the person. Erica
+- Browser and operating system support for passkeys on the device in front of the person. Monica
   cannot supply it and has to detect its absence.

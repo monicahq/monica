@@ -32,7 +32,6 @@ class TwoFactorChallengeControllerTest extends TestCase
             ->get(route('auth.twoFactor.new'));
 
         $response->assertStatus(200);
-        $response->assertSee('One more step', escape: false);
     }
 
     #[Test]

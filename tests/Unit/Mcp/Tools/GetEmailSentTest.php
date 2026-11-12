@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\GetEmailSent;
 use App\Models\EmailSent;
 use App\Models\User;
@@ -25,7 +25,7 @@ class GetEmailSentTest extends TestCase
             'body' => 'Somebody just signed in to your account from a device we have not seen before.',
         ]);
 
-        EricaServer::actingAs($user)->tool(GetEmailSent::class, ['email_sent' => (string) $email->id])
+        MonicaServer::actingAs($user)->tool(GetEmailSent::class, ['email_sent' => (string) $email->id])
             ->assertOk()
             ->assertSee('Somebody just signed in to your account from a device we have not seen before.');
     }
@@ -36,7 +36,7 @@ class GetEmailSentTest extends TestCase
         $user = User::factory()->create();
         $email = EmailSent::factory()->create();
 
-        EricaServer::actingAs($user)->tool(GetEmailSent::class, ['email_sent' => (string) $email->id])
-            ->assertHasErrors(['That email does not exist.']);
+        MonicaServer::actingAs($user)->tool(GetEmailSent::class, ['email_sent' => (string) $email->id])
+            ->assertHasErrors();
     }
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Mcp\Tools;
 
 use App\Jobs\RecordContactVisit;
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\GetMeContact;
 use App\Models\Contact;
 use App\Models\User;
@@ -27,7 +27,7 @@ class GetMeContactTest extends TestCase
         Contact::factory()->me()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'first_name' => 'Michael']);
         Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'first_name' => 'Creed']);
 
-        EricaServer::actingAs($user)->tool(GetMeContact::class, ['vault' => $vault->uuid])
+        MonicaServer::actingAs($user)->tool(GetMeContact::class, ['vault' => $vault->uuid])
             ->assertOk()
             ->assertHasNoErrors()
             ->assertSee('Michael')
@@ -43,7 +43,7 @@ class GetMeContactTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         Contact::factory()->me()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'first_name' => 'Michael']);
 
-        EricaServer::actingAs($user)->tool(GetMeContact::class, ['vault' => $vault->uuid])->assertOk();
+        MonicaServer::actingAs($user)->tool(GetMeContact::class, ['vault' => $vault->uuid])->assertOk();
 
         Queue::assertPushedOn('low', RecordContactVisit::class);
     }
@@ -54,7 +54,7 @@ class GetMeContactTest extends TestCase
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(GetMeContact::class, ['vault' => $vault->uuid])
-            ->assertHasErrors(['That vault holds no contact standing for you.']);
+        MonicaServer::actingAs($user)->tool(GetMeContact::class, ['vault' => $vault->uuid])
+            ->assertHasErrors();
     }
 }

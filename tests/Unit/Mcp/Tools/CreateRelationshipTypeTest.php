@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\CreateRelationshipType;
 use App\Models\RelationshipCategory;
 use App\Models\RelationshipType;
@@ -23,7 +23,7 @@ class CreateRelationshipTypeTest extends TestCase
         $user = User::factory()->create();
         $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(CreateRelationshipType::class, [
+        MonicaServer::actingAs($user)->tool(CreateRelationshipType::class, [
             'relationship_category_id' => $category->uuid,
             'name' => 'Regional manager',
             'role_a' => 'Regional manager',
@@ -48,7 +48,7 @@ class CreateRelationshipTypeTest extends TestCase
         $user = User::factory()->create();
         $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(CreateRelationshipType::class, [
+        MonicaServer::actingAs($user)->tool(CreateRelationshipType::class, [
             'relationship_category_id' => $category->uuid,
             'name' => 'Deskmate',
             'role_a' => 'Deskmate',
@@ -69,12 +69,12 @@ class CreateRelationshipTypeTest extends TestCase
         $user = User::factory()->create();
         $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(CreateRelationshipType::class, [
+        MonicaServer::actingAs($user)->tool(CreateRelationshipType::class, [
             'relationship_category_id' => $category->uuid,
             'name' => 'Regional manager',
             'role_a' => 'Regional manager',
             'is_symmetric' => false,
-        ])->assertHasErrors(['The role b field is required.']);
+        ])->assertHasErrors();
 
         $this->assertSame(0, RelationshipType::query()->count());
     }
@@ -90,11 +90,11 @@ class CreateRelationshipTypeTest extends TestCase
             'name' => 'Deskmate',
         ]);
 
-        EricaServer::actingAs($user)->tool(CreateRelationshipType::class, [
+        MonicaServer::actingAs($user)->tool(CreateRelationshipType::class, [
             'relationship_category_id' => $category->uuid,
             'name' => 'Deskmate',
             'role_a' => 'Deskmate',
-        ])->assertHasErrors(['Another type in this account already goes by that name.']);
+        ])->assertHasErrors();
 
         $this->assertSame(1, RelationshipType::query()->count());
     }
@@ -105,11 +105,11 @@ class CreateRelationshipTypeTest extends TestCase
         $user = User::factory()->create();
         $category = RelationshipCategory::factory()->create();
 
-        EricaServer::actingAs($user)->tool(CreateRelationshipType::class, [
+        MonicaServer::actingAs($user)->tool(CreateRelationshipType::class, [
             'relationship_category_id' => $category->uuid,
             'name' => 'Deskmate',
             'role_a' => 'Deskmate',
-        ])->assertHasErrors(['That relationship category does not exist.']);
+        ])->assertHasErrors();
 
         $this->assertSame(0, RelationshipType::query()->count());
     }

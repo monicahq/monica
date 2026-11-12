@@ -43,38 +43,6 @@ class LifeEventFormBlockTest extends TestCase
     }
 
     #[Test]
-    public function it_says_how_many_custom_fields_each_type_asks_for(): void
-    {
-        Queue::fake();
-
-        [$user, $vault, $jim] = $this->jim();
-        $this->lifeEventTypeAsking($user, 'Birth');
-        $this->lifeEventTypeAsking($user, 'Call', ['Channel' => FieldTypeEnum::Text]);
-        $this->lifeEventTypeAsking($user, 'Sale', [
-            'Client' => FieldTypeEnum::Text,
-            'Reams' => FieldTypeEnum::Number,
-            'Notes' => FieldTypeEnum::Textarea,
-        ]);
-
-        $labels = collect($this->block($user, $vault, $jim)->categories())
-            ->flatMap(fn (array $category): array => $category['types'])
-            ->pluck('fieldCountLabel', 'name')
-            ->all();
-
-        $this->assertEquals(['Birth' => 'No extra fields', 'Call' => '1 field', 'Sale' => '3 fields'], $labels);
-    }
-
-    #[Test]
-    public function it_words_the_search_heading_for_every_number_of_results(): void
-    {
-        [$user, $vault, $jim] = $this->jim();
-        $this->lifeEventTypeAsking($user, 'Birth');
-        $this->lifeEventTypeAsking($user, 'Wedding');
-
-        $this->assertEquals([1 => '1 type', 2 => '2 types'], $this->block($user, $vault, $jim)->resultHeadings());
-    }
-
-    #[Test]
     public function it_leaves_the_catalogue_of_types_to_the_page_that_asks_for_the_panel(): void
     {
         [$user, $vault, $jim] = $this->jim();
@@ -161,8 +129,6 @@ class LifeEventFormBlockTest extends TestCase
         $block = new LifeEventFormBlock(user: $user, vault: $vault, contact: $jim, lifeEvent: $lifeEvent);
         $projection = $block->projection();
 
-        $this->assertEquals('Edit life event', $block->title());
-        $this->assertEquals('Save changes', $block->submitLabel());
         $this->assertEquals('put', $block->method());
         $this->assertEquals('details', $projection['step']);
         $this->assertEquals('2026-08-30', $projection['date']);

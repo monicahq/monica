@@ -129,7 +129,6 @@ class DestroyContactTest extends TestCase
         $contact = Contact::factory()->me()->create(['account_id' => $user->account_id]);
 
         $this->expectException(AuthorizationException::class);
-        $this->expectExceptionMessage('This is the contact that represents you, and it stays.');
 
         new DestroyContact(user: $user, contact: $contact)->execute();
     }

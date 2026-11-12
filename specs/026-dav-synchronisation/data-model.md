@@ -6,7 +6,7 @@ Schema changes are two columns and one behaviour. Everything else here is derive
 
 | Where | Change | Why |
 | --- | --- | --- |
-| `contacts.dav_uri` | `string(255)` nullable, unique with `vault_id` | The `.vcf` name a client chose when it created the card keeps resolving to the contact. Null for every contact made in Erica, whose card is `{uuid}.vcf`. |
+| `contacts.dav_uri` | `string(255)` nullable, unique with `vault_id` | The `.vcf` name a client chose when it created the card keeps resolving to the contact. Null for every contact made in Monica, whose card is `{uuid}.vcf`. |
 | `contacts.vcard` | `longText` nullable | The card as a device last sent it, vCard 4.0, without `PHOTO`. Null until a device writes the contact. Never read by anything but the merge. |
 | `FieldValue::$touches`, `FieldValueRow::$touches` | `['valuable']` | A value saved, moved or deleted moves the record's `updated_at`, which the sync token and ETag are built from. |
 | `personal_access_tokens.abilities` | Written as the chosen scopes, `[]` or `['sensitive-fields']` | First enforced scope. Existing `['*']` keys do not reach sensitive fields, checked by membership. |

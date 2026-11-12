@@ -1,6 +1,6 @@
 # Contract: MCP tools for reading the account logs
 
-Every tool is registered on `EricaServer`, uses `MirrorsAnApiCapability`, is marked `#[IsReadOnly]`,
+Every tool is registered on `MonicaServer`, uses `MirrorsAnApiCapability`, is marked `#[IsReadOnly]`,
 and returns what the API returns: `LogResource` or `EmailSentResource` resolved, and for the lists the
 API's envelope. An identifier outside the key's account, or not a positive whole number, answers the
 validation error `That log entry does not exist.` or `That email does not exist.`

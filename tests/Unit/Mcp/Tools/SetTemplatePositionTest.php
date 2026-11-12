@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\SetTemplatePosition;
 use App\Models\Template;
 use App\Models\User;
@@ -23,7 +23,7 @@ class SetTemplatePositionTest extends TestCase
         $first = Template::factory()->create(['account_id' => $user->account_id, 'position' => 1]);
         $second = Template::factory()->create(['account_id' => $user->account_id, 'position' => 2]);
 
-        EricaServer::actingAs($user)->tool(SetTemplatePosition::class, ['template' => $second->uuid, 'position' => 1])
+        MonicaServer::actingAs($user)->tool(SetTemplatePosition::class, ['template' => $second->uuid, 'position' => 1])
             ->assertOk()
             ->assertHasNoErrors();
 

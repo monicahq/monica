@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Mcp\Tools;
 
 use App\Enums\VersionStatusEnum;
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\CreateTemplateDraft;
 use App\Models\StructureVersion;
 use App\Models\Template;
@@ -26,7 +26,7 @@ class CreateTemplateDraftTest extends TestCase
         $published = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
         $template->structure->update(['published_version_id' => $published->id]);
 
-        EricaServer::actingAs($user)->tool(CreateTemplateDraft::class, ['template' => $template->uuid])
+        MonicaServer::actingAs($user)->tool(CreateTemplateDraft::class, ['template' => $template->uuid])
             ->assertOk()
             ->assertHasNoErrors();
 

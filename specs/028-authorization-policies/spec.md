@@ -10,7 +10,7 @@
 
 ## Starting point
 
-The application holds no policy and no gate. Permission is decided in three unrelated places: route model binding scopes every lookup to the account and to the vault the address names, controllers repeat state checks in 61 places, and actions refuse in 227 places. Screens ask none of the three, so a template deciding whether to offer a control reads the rule a second time from a view model with nothing keeping the two in step. The vault ceiling is the worked example: one copy in `CreateVault`, another in `VaultFormViewModel`. Erica is mono user, so this is not about who may reach whose data. That is settled and stays settled. It is about giving each ability one name, one answer, and every surface the same way to ask it.
+The application holds no policy and no gate. Permission is decided in three unrelated places: route model binding scopes every lookup to the account and to the vault the address names, controllers repeat state checks in 61 places, and actions refuse in 227 places. Screens ask none of the three, so a template deciding whether to offer a control reads the rule a second time from a view model with nothing keeping the two in step. The vault ceiling is the worked example: one copy in `CreateVault`, another in `VaultFormViewModel`. Monica is mono user, so this is not about who may reach whose data. That is settled and stays settled. It is about giving each ability one name, one answer, and every surface the same way to ask it.
 
 ## Clarifications
 

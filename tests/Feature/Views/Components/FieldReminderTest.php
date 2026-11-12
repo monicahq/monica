@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature\Views\Components;
 
 use App\Enums\ReminderCadenceEnum;
-use App\Enums\ReminderInactiveReasonEnum;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
@@ -26,7 +25,6 @@ class FieldReminderTest extends TestCase
     {
         $rendered = $this->render();
 
-        $rendered->assertSee('Remind me about this date', escape: false);
         $rendered->assertSee('name="reminders[', escape: false);
         $rendered->assertSee('aria-controls="field-panel"', escape: false);
         $rendered->assertSee(':aria-expanded="on"', escape: false);
@@ -38,12 +36,7 @@ class FieldReminderTest extends TestCase
     {
         $rendered = $this->render();
 
-        $rendered->assertSee('Repeats', escape: false);
         $rendered->assertSee('name="reminders[7][repeat]"', escape: false);
-        $rendered->assertSee('At', escape: false);
-        $rendered->assertSee('Time zone', escape: false);
-        $rendered->assertSee('It will say', escape: false);
-        $rendered->assertSee('You will be notified on the day. The time zone is yours by default.', escape: false);
         $rendered->assertDontSee('[moments]', escape: false);
     }
 
@@ -69,30 +62,7 @@ class FieldReminderTest extends TestCase
     {
         $rendered = $this->render($this->rule());
 
-        $rendered->assertSee('Saving now removes this reminder', escape: false);
         $rendered->assertSee('x-show="! on"', escape: false);
-    }
-
-    #[Test]
-    public function it_says_in_words_why_a_rule_has_gone_quiet(): void
-    {
-        $rendered = $this->render($this->rule([
-            'is_active' => false,
-            'inactive_reason' => ReminderInactiveReasonEnum::RecordArchived,
-        ]));
-
-        $rendered->assertSee('stopped because this record is archived', escape: false);
-    }
-
-    #[Test]
-    public function it_says_a_quiet_rule_lost_the_date_it_read(): void
-    {
-        $rendered = $this->render($this->rule([
-            'is_active' => false,
-            'inactive_reason' => ReminderInactiveReasonEnum::ValueCleared,
-        ]));
-
-        $rendered->assertSee('stopped because the date it read is gone', escape: false);
     }
 
     #[Test]

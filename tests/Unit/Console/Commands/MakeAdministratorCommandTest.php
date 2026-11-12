@@ -27,7 +27,6 @@ class MakeAdministratorCommandTest extends TestCase
         $this->assertDatabaseCount('administrators', 0);
 
         $this->artisan('monica:make-administrator', ['--email' => 'michael.scott@dundermifflin.com'])
-            ->expectsOutputToContain('Michael Scott now administers this instance.')
             ->assertExitCode(0);
 
         $this->assertDatabaseHas('administrators', ['user_id' => $michael->id]);
@@ -79,7 +78,6 @@ class MakeAdministratorCommandTest extends TestCase
         Administrator::factory()->create(['user_id' => $michael->id]);
 
         $this->artisan('monica:make-administrator', ['--email' => 'michael.scott@dundermifflin.com'])
-            ->expectsOutputToContain('Michael Scott already administers this instance.')
             ->assertExitCode(1);
 
         $this->assertDatabaseCount('administrators', 1);

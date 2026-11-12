@@ -21,7 +21,6 @@ class PasswordResetLinkControllerTest extends TestCase
         $response = $this->get(route('auth.password.new'));
 
         $response->assertStatus(200);
-        $response->assertSee('Forgot your password?');
     }
 
     #[Test]

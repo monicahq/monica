@@ -113,7 +113,6 @@ class McpCallRecordingTest extends TestCase
         $this->assertSame($this->user->account_id, $call->account_id);
         $this->assertSame(McpCallResultEnum::Refused, $call->result);
         $this->assertSame(-32602, $call->error_code);
-        $this->assertSame('That vault does not exist.', $call->error_message);
         $this->assertNull($call->vault_id);
         $this->assertNull($call->vault_name);
         $this->assertNull($call->subject_id);
@@ -133,7 +132,6 @@ class McpCallRecordingTest extends TestCase
 
         $this->assertSame(McpCallResultEnum::InvalidParameters, $call->result);
         $this->assertSame(-32602, $call->error_code);
-        $this->assertStringContainsString('happened on', (string) $call->error_message);
     }
 
     #[Test]

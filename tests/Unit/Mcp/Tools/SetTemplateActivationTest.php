@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\SetTemplateActivation;
 use App\Models\Template;
 use App\Models\User;
@@ -22,10 +22,10 @@ class SetTemplateActivationTest extends TestCase
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(SetTemplateActivation::class, ['template' => $template->uuid, 'is_active' => false])->assertOk();
+        MonicaServer::actingAs($user)->tool(SetTemplateActivation::class, ['template' => $template->uuid, 'is_active' => false])->assertOk();
         $this->assertFalse($template->refresh()->is_active);
 
-        EricaServer::actingAs($user)->tool(SetTemplateActivation::class, ['template' => $template->uuid, 'is_active' => true])->assertOk();
+        MonicaServer::actingAs($user)->tool(SetTemplateActivation::class, ['template' => $template->uuid, 'is_active' => true])->assertOk();
         $this->assertTrue($template->refresh()->is_active);
     }
 }

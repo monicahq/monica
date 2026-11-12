@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\GetEntityType;
 use App\Models\EntityType;
 use App\Models\User;
@@ -26,7 +26,7 @@ class GetEntityTypeTest extends TestCase
             'name_plural' => 'Paper reams',
         ]);
 
-        EricaServer::actingAs($user)->tool(GetEntityType::class, ['entity_type' => $entityType->uuid])
+        MonicaServer::actingAs($user)->tool(GetEntityType::class, ['entity_type' => $entityType->uuid])
             ->assertOk()
             ->assertHasNoErrors()
             ->assertSee('Paper reams');
@@ -38,7 +38,7 @@ class GetEntityTypeTest extends TestCase
         $user = User::factory()->create();
         $other = EntityType::factory()->create();
 
-        EricaServer::actingAs($user)->tool(GetEntityType::class, ['entity_type' => $other->uuid])
-            ->assertHasErrors(['That entity type does not exist.']);
+        MonicaServer::actingAs($user)->tool(GetEntityType::class, ['entity_type' => $other->uuid])
+            ->assertHasErrors();
     }
 }

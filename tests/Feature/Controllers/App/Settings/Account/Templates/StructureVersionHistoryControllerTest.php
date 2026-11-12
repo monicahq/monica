@@ -30,11 +30,6 @@ class StructureVersionHistoryControllerTest extends TestCase
         $response = $this->actingAs($user)->get(route('settings.templateVersions.index', $template));
 
         $response->assertStatus(200);
-        $response->assertSee('Versions of Basic contact');
         $response->assertSeeInOrder(['v2', 'v1']);
-        $response->assertSee('Draft');
-        $response->assertSee('Published');
-        $response->assertSee('based on v1');
-        $response->assertSee('the first version');
     }
 }

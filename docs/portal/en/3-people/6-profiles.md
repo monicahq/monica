@@ -4,7 +4,7 @@ title: Keep a record of a pet or anything else
 description: Record a pet or anything else that is not a person as a profile, and see how it differs from a contact.
 slug: keep-a-record-of-a-pet
 section: people
-last_updated: 2026-09-29
+last_updated: 2026-10-26
 ---
 
 # Keep a record of a pet or anything else
@@ -24,7 +24,7 @@ A profile differs from a contact in two ways:
 
 ## Add a pet
 
-Each kind of profile has its own entry in the vault’s sidebar, under **People**.
+Each kind of profile has its own entry in the vault’s sidebar, under **Your relationships**, after **People**. A kind appears only in a vault that is set up for it: the kind is turned on, and the vault has a published template for it.
 
 ::::steps
 :::step title="Open the list of animals"
@@ -59,6 +59,10 @@ A profile has no page of its own yet. Once saved, it appears in its list, but yo
 :::
 
 Write down everything you know before you choose **Save**. The information stays safe, and becomes reachable as soon as profiles get a page.
+
+## When a kind of profile is missing from the sidebar
+
+The kind is turned off in your account settings, or the vault has no published template for it. Turn it on again under **Kinds of profile**, and check that its template, **Basic animal** for animals, is published and turned on. Profiles already written down are kept either way, and search still finds them.
 
 ## When Add is unavailable
 

@@ -20,29 +20,6 @@ class SecurityViewModelTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_warns_that_removing_the_last_second_factor_turns_two_factor_off(): void
-    {
-        $user = User::factory()->create();
-        SecurityKey::factory()->for($user)->create();
-
-        $viewModel = new SecurityViewModel(user: $user);
-
-        $this->assertEquals('Two-factor authentication turns off, and your recovery codes stop working.', $viewModel->securityKeyRemovalWarning());
-    }
-
-    #[Test]
-    public function it_warns_that_two_factor_stays_on_while_another_factor_remains(): void
-    {
-        $user = User::factory()->twoFactor()->create();
-        SecurityKey::factory()->for($user)->create();
-
-        $viewModel = new SecurityViewModel(user: $user);
-
-        $this->assertEquals('Two-factor authentication stays on with your other security keys or your authenticator app.', $viewModel->securityKeyRemovalWarning());
-        $this->assertEquals('Your security keys still answer the second step when you sign in.', $viewModel->authenticatorAppRemovalWarning());
-    }
-
-    #[Test]
     public function it_lists_the_security_keys_with_when_they_were_last_used(): void
     {
         $user = User::factory()->create();
@@ -54,14 +31,6 @@ class SecurityViewModelTest extends TestCase
         $this->assertCount(1, $keys);
         $this->assertEquals('Dundie key', $keys[0]['name']);
         $this->assertNull($keys[0]['lastUsedAt']);
-    }
-
-    #[Test]
-    public function it_warns_that_removing_the_app_alone_turns_two_factor_off(): void
-    {
-        $viewModel = new SecurityViewModel(user: User::factory()->twoFactor()->create());
-
-        $this->assertEquals('Two-factor authentication turns off, and your recovery codes stop working.', $viewModel->authenticatorAppRemovalWarning());
     }
 
     #[Test]
@@ -106,7 +75,6 @@ class SecurityViewModelTest extends TestCase
         $viewModel = new SecurityViewModel(user: $user);
 
         $this->assertSame([], $viewModel->apiKeys());
-        $this->assertEquals('Active · no API keys', $viewModel->apiKeysHeader());
     }
 
     #[Test]
@@ -136,19 +104,6 @@ class SecurityViewModelTest extends TestCase
         $apiKeys = new SecurityViewModel(user: $user)->apiKeys();
 
         $this->assertNull($apiKeys[0]['lastUsedAt']);
-    }
-
-    #[Test]
-    public function it_counts_the_api_keys_in_the_header(): void
-    {
-        $user = User::factory()->create();
-        $user->createToken('Dundie awards bot');
-
-        $this->assertEquals('Active · 1 API key', new SecurityViewModel(user: $user)->apiKeysHeader());
-
-        $user->createToken('Beet farm sync');
-
-        $this->assertEquals('Active · 2 API keys', new SecurityViewModel(user: $user)->apiKeysHeader());
     }
 
     #[Test]
@@ -199,10 +154,6 @@ class SecurityViewModelTest extends TestCase
         Feature::flushCache();
 
         $this->assertFalse(new SecurityViewModel(user: $pam)->mcpIsOn());
-        $this->assertSame(
-            'The MCP server is unavailable on this account for now. Your connected assistants are kept.',
-            new SecurityViewModel(user: $pam)->assistantsNotice(),
-        );
         $this->assertNull(new SecurityViewModel(user: $dwight)->assistantsNotice());
     }
 

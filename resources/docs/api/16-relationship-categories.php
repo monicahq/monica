@@ -17,7 +17,7 @@ $category = [
         'is_active' => true,
         'type_count' => 5,
         'created_at' => 1756252800,
-        'updated_at' => null,
+        'updated_at' => 1756252800,
     ],
     'links' => [
         'self' => $base.'/relationship-categories/7d1f4a83-2c06-4e59-9b27-8f3a5d0e6c14',
@@ -57,7 +57,7 @@ $categoryAttributes = [
     ['name' => 'is_active', 'type' => 'boolean', 'description' => 'Whether the category and the types under it are offered when a new relationship is written. False removes the whole group from that choice and touches nothing already written: every relationship stays readable.'],
     ['name' => 'type_count', 'type' => 'integer', 'description' => 'How many relationship types sit under the category, retired ones counted. It is what decides whether the category may be deleted, since one still holding a type cannot go.'],
     ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When the category was added, as a count of seconds since 1970 rather than a written date.'],
-    ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When it last changed, as a count of seconds, or null if it has not changed since it was added.'],
+    ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When it last changed, as a count of seconds. Equal to created_at until it first changes.'],
 ];
 
 return [

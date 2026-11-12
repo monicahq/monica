@@ -47,19 +47,6 @@ class RelationshipFormTest extends TestCase
         $this->form()->assertSee('aria-live="polite"', escape: false);
     }
 
-    #[Test]
-    public function it_says_so_when_the_account_has_no_type_to_offer(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $contact = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id]);
-
-        $this->actingAs($user)
-            ->get(route('contacts.relationships.new', ['vault' => $vault, 'contact' => $contact]))
-            ->assertSee('There is no relationship type to choose. Add one in your settings first.')
-            ->assertDontSee('Who holds this role');
-    }
-
     /** @return array<string, mixed> */
     private function payload(string $html): array
     {

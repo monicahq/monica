@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\DeleteTemplateDraft;
 use App\Models\StructureVersion;
 use App\Models\Template;
@@ -30,7 +30,7 @@ class DeleteTemplateDraftTest extends TestCase
             'previous_version_id' => $published->id,
         ]);
 
-        EricaServer::actingAs($user)->tool(DeleteTemplateDraft::class, ['template' => $template->uuid, 'version' => 2])
+        MonicaServer::actingAs($user)->tool(DeleteTemplateDraft::class, ['template' => $template->uuid, 'version' => 2])
             ->assertOk()
             ->assertHasNoErrors();
 
@@ -44,7 +44,7 @@ class DeleteTemplateDraftTest extends TestCase
         $template = Template::factory()->create(['account_id' => $user->account_id]);
         $published = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
 
-        EricaServer::actingAs($user)->tool(DeleteTemplateDraft::class, ['template' => $template->uuid, 'version' => 1])
+        MonicaServer::actingAs($user)->tool(DeleteTemplateDraft::class, ['template' => $template->uuid, 'version' => 1])
             ->assertHasErrors(['has been published and cannot be deleted']);
 
         $this->assertModelExists($published);

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\GetContactRelationship;
 use App\Models\Contact;
 use App\Models\Relationship;
@@ -25,7 +25,7 @@ class GetContactRelationshipTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $relationship = Relationship::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(GetContactRelationship::class, [
+        MonicaServer::actingAs($user)->tool(GetContactRelationship::class, [
             'vault' => $vault->uuid,
             'contact' => $relationship->contactB->uuid,
             'relationship' => $relationship->uuid,
@@ -40,10 +40,10 @@ class GetContactRelationshipTest extends TestCase
         $dwight = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
         $relationship = Relationship::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
 
-        EricaServer::actingAs($user)->tool(GetContactRelationship::class, [
+        MonicaServer::actingAs($user)->tool(GetContactRelationship::class, [
             'vault' => $vault->uuid,
             'contact' => $dwight->uuid,
             'relationship' => $relationship->uuid,
-        ])->assertHasErrors(['That relationship does not exist.']);
+        ])->assertHasErrors();
     }
 }

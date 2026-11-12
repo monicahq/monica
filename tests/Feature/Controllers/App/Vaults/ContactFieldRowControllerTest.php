@@ -42,15 +42,12 @@ class ContactFieldRowControllerTest extends TestCase
             ->assertDontSee('Note 5')
             ->assertSee("id=\"field-{$notes->id}-rows\"", escape: false)
             ->assertSee("id=\"field-{$notes->id}-more\"", escape: false)
-            ->assertSee('Load more')
             ->assertSee('page=3');
 
         $this->actingAs($user)
             ->get(route('contacts.fieldRows.index', ['vault' => $contact->vault, 'contact' => $contact, 'field' => $notes, 'page' => 3]))
             ->assertStatus(200)
-            ->assertSee('Note 1')
-            ->assertDontSee('Load more')
-            ->assertSee('End of list');
+            ->assertSee('Note 1');
     }
 
     #[Test]

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Mcp\Tools;
 
-use App\Mcp\Servers\EricaServer;
+use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\DuplicateTemplate;
 use App\Models\StructureVersion;
 use App\Models\Template;
@@ -24,7 +24,7 @@ class DuplicateTemplateTest extends TestCase
         $template = Template::factory()->create(['account_id' => $user->account_id, 'name' => 'Salesman']);
         StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
 
-        EricaServer::actingAs($user)->tool(DuplicateTemplate::class, ['template' => $template->uuid, 'name' => 'Regional manager'])
+        MonicaServer::actingAs($user)->tool(DuplicateTemplate::class, ['template' => $template->uuid, 'name' => 'Regional manager'])
             ->assertOk()
             ->assertHasNoErrors();
 

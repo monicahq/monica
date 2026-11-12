@@ -110,6 +110,7 @@ use Override;
  * @property-read ContactNameRepresentation|null $displayNameRepresentation
  * @property-read Collection<int, ContactNameRepresentation> $nameRepresentations
  * @property-read Collection<int, GroupMember> $groupMembers
+ * @property-read Collection<int, PossessionLoan> $possessionLoans
  * @property-read string $name
  * @property-read string $initials
  */
@@ -466,6 +467,18 @@ class Contact extends Model
     public function groupMembers(): HasMany
     {
         return $this->hasMany(GroupMember::class);
+    }
+
+    /**
+     * Get the loans of possessions this contact has had or lent, newest first.
+     *
+     * @return HasMany<PossessionLoan, $this>
+     */
+    public function possessionLoans(): HasMany
+    {
+        return $this->hasMany(PossessionLoan::class)
+            ->orderByDesc('started_on')
+            ->orderByDesc('id');
     }
 
     /**

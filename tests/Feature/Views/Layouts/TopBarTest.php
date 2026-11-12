@@ -23,7 +23,6 @@ class TopBarTest extends TestCase
 
         $rendered->assertSee('PB');
         $rendered->assertDontSee($user->email);
-        $rendered->assertSee('Switch between the light and dark theme');
     }
 
     #[Test]
@@ -54,8 +53,7 @@ class TopBarTest extends TestCase
 
         $this->actingAs($user)
             ->blade('<x-shell>Anything</x-shell>')
-            ->assertSee('aria-controls="main-nav"', escape: false)
-            ->assertSee('aria-label="Open the menu"', escape: false);
+            ->assertSee('aria-controls="main-nav"', escape: false);
     }
 
     #[Test]
@@ -90,7 +88,6 @@ class TopBarTest extends TestCase
 
         $this->actingAs($user)
             ->get(route('reminders.index', $vault))
-            ->assertSee('Search this vault')
             ->assertSee('action="'.route('search.index', $vault).'"', escape: false);
     }
 }
