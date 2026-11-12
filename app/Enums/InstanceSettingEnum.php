@@ -36,6 +36,11 @@ enum InstanceSettingEnum: string implements Translatable
     case GithubClientSecret = 'github_client_secret';
     case GoogleClientId = 'google_client_id';
     case GoogleClientSecret = 'google_client_secret';
+    case AppleClientId = 'apple_client_id';
+    case AppleTeamId = 'apple_team_id';
+    case AppleKeyId = 'apple_key_id';
+    case ApplePrivateKey = 'apple_private_key';
+    case AppleClientSecret = 'apple_client_secret';
     case EntraClientId = 'entra_client_id';
     case EntraClientSecret = 'entra_client_secret';
     case FacebookClientId = 'facebook_client_id';
@@ -87,6 +92,11 @@ enum InstanceSettingEnum: string implements Translatable
             self::GithubClientSecret => 'services.github.client_secret',
             self::GoogleClientId => 'services.google.client_id',
             self::GoogleClientSecret => 'services.google.client_secret',
+            self::AppleClientId => 'services.apple.client_id',
+            self::AppleTeamId => 'services.apple.team_id',
+            self::AppleKeyId => 'services.apple.key_id',
+            self::ApplePrivateKey => 'services.apple.private_key',
+            self::AppleClientSecret => 'services.apple.client_secret',
             self::EntraClientId => 'services.entra.client_id',
             self::EntraClientSecret => 'services.entra.client_secret',
             self::FacebookClientId => 'services.facebook.client_id',
@@ -144,6 +154,11 @@ enum InstanceSettingEnum: string implements Translatable
             self::GithubClientSecret => 'GITHUB_CLIENT_SECRET',
             self::GoogleClientId => 'GOOGLE_CLIENT_ID',
             self::GoogleClientSecret => 'GOOGLE_CLIENT_SECRET',
+            self::AppleClientId => 'APPLE_CLIENT_ID',
+            self::AppleTeamId => 'APPLE_TEAM_ID',
+            self::AppleKeyId => 'APPLE_KEY_ID',
+            self::ApplePrivateKey => 'APPLE_PRIVATE_KEY',
+            self::AppleClientSecret => 'APPLE_CLIENT_SECRET',
             self::EntraClientId => 'ENTRA_CLIENT_ID',
             self::EntraClientSecret => 'ENTRA_CLIENT_SECRET',
             self::FacebookClientId => 'FACEBOOK_CLIENT_ID',
@@ -197,7 +212,8 @@ enum InstanceSettingEnum: string implements Translatable
             self::MagicLinkDurationMinutes, self::RegistrationEnabled => InstanceSettingGroupEnum::SigningIn,
 
             self::GithubClientId, self::GithubClientSecret, self::GoogleClientId,
-            self::GoogleClientSecret, self::EntraClientId, self::EntraClientSecret,
+            self::GoogleClientSecret, self::AppleClientId, self::AppleTeamId, self::AppleKeyId,
+            self::ApplePrivateKey, self::AppleClientSecret, self::EntraClientId, self::EntraClientSecret,
             self::FacebookClientId, self::FacebookClientSecret, self::EntraTenant,
             self::KeycloakServerUrl, self::KeycloakRealm, self::KeycloakClientId, self::KeycloakClientSecret,
             self::Auth0Domain, self::Auth0ClientId, self::Auth0ClientSecret,
@@ -227,13 +243,14 @@ enum InstanceSettingEnum: string implements Translatable
 
             self::MailPassword, self::ResendApiKey, self::ResendWebhookSecret, self::VonageSecret,
             self::TelegramBotToken, self::TelegramBotWebhookSecret, self::GithubClientSecret,
-            self::GoogleClientSecret, self::EntraClientSecret,
+            self::GoogleClientSecret, self::ApplePrivateKey, self::AppleClientSecret, self::EntraClientSecret,
             self::FacebookClientSecret, self::KeycloakClientSecret, self::Auth0ClientSecret,
             self::OktaClientSecret, self::OpenIdConnectClientSecret => InstanceSettingKindEnum::Secret,
 
             self::MailMailer, self::MailScheme, self::MailHost, self::MailUsername,
             self::MailFromAddress, self::MailFromName, self::VonageKey, self::VonageSmsFrom,
             self::CashierCurrency, self::GithubClientId, self::GoogleClientId,
+            self::AppleClientId, self::AppleTeamId, self::AppleKeyId,
             self::EntraClientId, self::FacebookClientId, self::EntraTenant,
             self::KeycloakRealm, self::KeycloakClientId, self::Auth0Domain, self::Auth0ClientId,
             self::OktaDomain, self::OktaAuthServer, self::OktaClientId, self::OpenIdConnectName,
@@ -273,6 +290,8 @@ enum InstanceSettingEnum: string implements Translatable
 
             self::GithubClientId, self::GithubClientSecret => self::signInProviderIsInstalled('github'),
             self::GoogleClientId, self::GoogleClientSecret => self::signInProviderIsInstalled('google'),
+            self::AppleClientId, self::AppleTeamId, self::AppleKeyId,
+            self::ApplePrivateKey, self::AppleClientSecret => self::signInProviderIsInstalled('apple'),
             self::EntraClientId, self::EntraClientSecret,
             self::EntraTenant => self::signInProviderIsInstalled('entra'),
             self::KeycloakServerUrl, self::KeycloakRealm, self::KeycloakClientId,
@@ -352,6 +371,11 @@ enum InstanceSettingEnum: string implements Translatable
             self::GithubClientSecret => 'The secret this instance proves itself to GitHub with.',
             self::GoogleClientId => 'The identifier Google knows this instance by.',
             self::GoogleClientSecret => 'The secret this instance proves itself to Google with.',
+            self::AppleClientId => 'The Services ID Apple knows this instance by.',
+            self::AppleTeamId => 'The identifier of the Apple developer team that owns the Services ID.',
+            self::AppleKeyId => 'The identifier of the key this instance signs its requests to Apple with.',
+            self::ApplePrivateKey => 'The key this instance signs its requests to Apple with, as the text of its file or the path to it.',
+            self::AppleClientSecret => 'A secret generated in advance, used only when no key is supplied. Apple accepts one for six months at most.',
             self::EntraClientId => 'The identifier Microsoft knows this instance by.',
             self::EntraClientSecret => 'The secret this instance proves itself to Microsoft with.',
             self::FacebookClientId => 'The identifier Facebook knows this instance by.',

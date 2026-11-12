@@ -174,3 +174,5 @@ A chronological list of every feature and improvement shipped during development
 * Auth: Carried Microsoft sign in through OpenID Connect, and let an operator restrict it to one organisation.
 * Auth: Sent somebody back with an explanation when a provider cannot be reached, instead of an error page.
 * Admin/configuration: Added the settings of the new sign in providers to the instance settings.
+* Auth: Let an instance offer Apple as a way to sign in, once its package is installed.
+* Admin/configuration: Added the Apple settings to the instance settings, with a notice when its package is missing.

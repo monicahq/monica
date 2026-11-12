@@ -1073,7 +1073,7 @@ default.
 - **Links:** related `security.passkeys`. **Evidence:** `laravel/passkeys` routes, `HandlePasskeyLogin`; `tests/Feature/Auth/Passkey*`.
 - **Examples:** none. **Acceptance:** the two factor statement matches D22 resolution. **Delivery:** P0, ready.
 
-#### `signin.provider` Sign in with GitHub, Google, Microsoft or Facebook
+#### `signin.provider` Sign in with GitHub, Google, Apple, Microsoft or Facebook
 - **Identity:** `…/5-sign-in-with-a-provider.md`. How-to. Users.
 - **Need and success:** the reader signs in through a provider, or connects one to an existing account.
 - **Applicability:** only providers the instance configured appear.

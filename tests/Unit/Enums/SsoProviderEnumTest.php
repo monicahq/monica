@@ -14,7 +14,7 @@ class SsoProviderEnumTest extends TestCase
     public function it_lists_its_values_in_the_order_the_screens_offer_them(): void
     {
         $this->assertEquals(
-            ['github', 'google', 'entra', 'facebook', 'keycloak', 'auth0', 'okta', 'openidconnect'],
+            ['github', 'google', 'apple', 'entra', 'facebook', 'keycloak', 'auth0', 'okta', 'openidconnect'],
             SsoProviderEnum::values(),
         );
     }
@@ -24,6 +24,7 @@ class SsoProviderEnumTest extends TestCase
     {
         $this->assertEquals('GitHub', SsoProviderEnum::GitHub->brandName());
         $this->assertEquals('Google', SsoProviderEnum::Google->brandName());
+        $this->assertEquals('Apple', SsoProviderEnum::Apple->brandName());
         $this->assertEquals('Microsoft', SsoProviderEnum::Entra->brandName());
         $this->assertEquals('Facebook', SsoProviderEnum::Facebook->brandName());
         $this->assertEquals('Keycloak', SsoProviderEnum::Keycloak->brandName());
@@ -60,5 +61,24 @@ class SsoProviderEnumTest extends TestCase
         $this->assertEquals([...$credentials, 'domain'], SsoProviderEnum::Auth0->requiredSettings());
         $this->assertEquals([...$credentials, 'domain'], SsoProviderEnum::Okta->requiredSettings());
         $this->assertEquals([...$credentials, 'base_url'], SsoProviderEnum::OpenIdConnect->requiredSettings());
+    }
+
+    #[Test]
+    public function it_requires_what_signs_with_the_apple_key_once_a_key_is_supplied(): void
+    {
+        config(['services.apple.private_key' => '/etc/monica/AuthKey_SCRANTON12.p8']);
+
+        $this->assertEquals(
+            ['client_id', 'team_id', 'key_id', 'private_key', 'redirect'],
+            SsoProviderEnum::Apple->requiredSettings(),
+        );
+    }
+
+    #[Test]
+    public function it_requires_a_secret_generated_in_advance_of_apple_when_no_key_is_supplied(): void
+    {
+        config(['services.apple.private_key' => null]);
+
+        $this->assertEquals(['client_id', 'client_secret', 'redirect'], SsoProviderEnum::Apple->requiredSettings());
     }
 }

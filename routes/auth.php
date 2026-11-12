@@ -93,6 +93,17 @@ Route::get('sso/{provider}/callback', [SsoController::class, 'callback'])
     ->whereIn('provider', SsoProviderEnum::values())
     ->name('auth.sso.callback');
 
+/*
+ * Apple answers with a POST from its own site, which carries no session cookie. This turns it into
+ * the visit above, which does, outside the web group so that no session is started here to replace
+ * the one the reader already has.
+ */
+Route::post('sso/{provider}/callback', [SsoController::class, 'relay'])
+    ->withoutMiddleware('web')
+    ->middleware(['sso', 'throttle:6,1'])
+    ->whereIn('provider', [SsoProviderEnum::Apple->value])
+    ->name('auth.sso.relay');
+
 Route::middleware(['auth'])->group(function (): void {
     Route::get('register/passkey', [RegistrationPasskeyController::class, 'new'])->name('auth.registerPasskey.new');
 

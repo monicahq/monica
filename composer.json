@@ -71,9 +71,11 @@
         "monicahq/laradb": "^1.1",
         "nunomaduro/collision": "^8.6",
         "phpunit/phpunit": "^13.4.3",
+        "socialiteproviders/apple": "^6.1",
         "typesense/typesense-php": "^6.0"
     },
     "suggest": {
+        "socialiteproviders/apple": "Required to sign in with Apple. Without it Apple is not offered.",
         "laravel-notification-channels/telegram": "Required to send notifications over Telegram. Without it the channel is listed and reports itself unavailable.",
         "algolia/algoliasearch-client-php": "Required to search with Algolia. Search needs one typo tolerant engine: Algolia, Meilisearch or Typesense.",
         "laravel/vonage-notification-channel": "Required to send notifications by text message. Without it the channel is listed and reports itself unavailable.",

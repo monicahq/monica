@@ -8,6 +8,7 @@ enum SsoProviderEnum: string
 {
     case GitHub = 'github';
     case Google = 'google';
+    case Apple = 'apple';
     case Entra = 'entra';
     case Facebook = 'facebook';
     case Keycloak = 'keycloak';
@@ -25,6 +26,7 @@ enum SsoProviderEnum: string
         return match ($this) {
             self::GitHub => 'GitHub',
             self::Google => 'Google',
+            self::Apple => 'Apple',
             self::Entra => 'Microsoft',
             self::Facebook => 'Facebook',
             self::Keycloak => 'Keycloak',
@@ -42,6 +44,9 @@ enum SsoProviderEnum: string
     public function requiredSettings(): array
     {
         return match ($this) {
+            self::Apple => filled(config('services.apple.private_key'))
+                ? ['client_id', 'team_id', 'key_id', 'private_key', 'redirect']
+                : ['client_id', 'client_secret', 'redirect'],
             self::Keycloak => ['client_id', 'client_secret', 'redirect', 'server_url', 'realm'],
             self::Auth0, self::Okta => ['client_id', 'client_secret', 'redirect', 'domain'],
             self::OpenIdConnect => ['client_id', 'client_secret', 'redirect', 'base_url'],

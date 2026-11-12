@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Actions\VerifyPasskey;
+use App\Enums\SsoProviderEnum;
 use App\Helpers\FlagState;
 use App\Helpers\InstanceSettings;
 use App\Helpers\LocaleCollation;
@@ -67,6 +68,8 @@ use Laravel\Scout\Scout;
 use Monicahq\Cloudflare\Facades\CloudflareProxies;
 use Monicahq\Cloudflare\LaravelCloudflare;
 use Override;
+use SocialiteProviders\Apple\Provider as AppleProvider;
+use SocialiteProviders\Manager\SocialiteWasCalled;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -129,7 +132,38 @@ class AppServiceProvider extends ServiceProvider
         $this->configureAssets();
         $this->configureHead();
         $this->configureNightwatch();
+        $this->configureSignInWithApple();
         $this->refuseDeactivatedUsers();
+    }
+
+    /**
+     * Apple's package is suggested rather than required, so it is told about only
+     * when present. Its key is a PEM file of several lines, and an environment
+     * variable or a field of the admin space holds one: the key is put back in
+     * shape before the package reads it.
+     */
+    private function configureSignInWithApple(): void
+    {
+        if (! in_array(SsoProviderEnum::Apple->value, config('monica.sso_installed', []), true)) {
+            return;
+        }
+
+        Event::listen(function (SocialiteWasCalled $event): void {
+            config()->set('services.apple.private_key', $this->applePrivateKeyAsPem((string) config('services.apple.private_key')));
+
+            $event->extendSocialite(SsoProviderEnum::Apple->value, AppleProvider::class);
+        });
+    }
+
+    private function applePrivateKeyAsPem(string $key): string
+    {
+        if ($key === '' || is_file($key)) {
+            return $key;
+        }
+
+        $body = (string) preg_replace('/-----[A-Z ]+-----|\\\\n|\s/', '', $key);
+
+        return "-----BEGIN PRIVATE KEY-----\n".chunk_split($body, 64, "\n")."-----END PRIVATE KEY-----\n";
     }
 
     /**

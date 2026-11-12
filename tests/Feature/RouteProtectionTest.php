@@ -58,6 +58,7 @@ class RouteProtectionTest extends TestCase
         'share.show',
         'share.password.create',
         'auth.sso.callback',
+        'auth.sso.relay',
         'auth.screenshotLink.show',
         'api.v1.status',
         'api.v1.register',

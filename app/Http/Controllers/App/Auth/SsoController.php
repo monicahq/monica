@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Validation\ValidationException;
 use Laravel\Socialite\Facades\Socialite;
 use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirectResponse;
@@ -26,6 +27,13 @@ class SsoController extends Controller
      */
     public const string CONNECT_INTENT = 'sso.connect';
 
+    /**
+     * What the relay puts in front of the name it encrypts, so that the callback
+     * accepts no ciphertext but its own, and the relay, which encrypts whatever
+     * it is sent, cannot be used to encrypt a value for anything else.
+     */
+    private const string RELAYED_NAME = 'sso.relay.name|';
+
     public function redirect(Request $request): SymfonyRedirectResponse
     {
         $request->session()->forget(self::CONNECT_INTENT);
@@ -37,9 +45,33 @@ class SsoController extends Controller
         }
     }
 
+    /**
+     * What Apple posts, carried into the callback as a visit. The name Apple
+     * shares travels encrypted, so it stays out of the address bar and the logs.
+     */
+    public function relay(Request $request): RedirectResponse
+    {
+        $fields = array_filter($request->only(['code', 'state', 'error']), is_string(...));
+        $name = $request->input('user');
+
+        if (is_string($name) && $name !== '') {
+            $fields['user'] = Crypt::encryptString(self::RELAYED_NAME.$name);
+        }
+
+        return redirect()->route('auth.sso.callback', ['provider' => $this->provider($request)->value, ...$fields], 303);
+    }
+
     public function callback(Request $request): RedirectResponse
     {
         $provider = $this->provider($request);
+        $relayedName = $request->query('user');
+        $request->query->remove('user');
+
+        if (is_string($relayedName)) {
+            $decrypted = (string) rescue(fn (): string => Crypt::decryptString($relayedName), '', report: false);
+            $request->query->set('user', str_starts_with($decrypted, self::RELAYED_NAME) ? substr($decrypted, strlen(self::RELAYED_NAME)) : null);
+        }
+
         $connecting = $request->session()->pull(self::CONNECT_INTENT) === true;
 
         try {

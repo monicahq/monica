@@ -97,6 +97,38 @@ class InstanceSettingEnumTest extends TestCase
     }
 
     #[Test]
+    public function it_lets_an_administrator_supply_apple(): void
+    {
+        $settings = [
+            [InstanceSettingEnum::AppleClientId, 'services.apple.client_id', 'APPLE_CLIENT_ID', InstanceSettingKindEnum::Text],
+            [InstanceSettingEnum::AppleTeamId, 'services.apple.team_id', 'APPLE_TEAM_ID', InstanceSettingKindEnum::Text],
+            [InstanceSettingEnum::AppleKeyId, 'services.apple.key_id', 'APPLE_KEY_ID', InstanceSettingKindEnum::Text],
+            [InstanceSettingEnum::ApplePrivateKey, 'services.apple.private_key', 'APPLE_PRIVATE_KEY', InstanceSettingKindEnum::Secret],
+            [InstanceSettingEnum::AppleClientSecret, 'services.apple.client_secret', 'APPLE_CLIENT_SECRET', InstanceSettingKindEnum::Secret],
+        ];
+
+        foreach ($settings as [$setting, $configKey, $environmentVariable, $kind]) {
+            $this->assertEquals($configKey, $setting->configKey());
+            $this->assertEquals($environmentVariable, $setting->environmentVariable());
+            $this->assertEquals($kind, $setting->kind());
+            $this->assertEquals(InstanceSettingGroupEnum::SingleSignOn, $setting->group());
+        }
+    }
+
+    #[Test]
+    public function it_says_the_apple_settings_have_no_provider_when_its_package_is_absent(): void
+    {
+        config(['monica.sso_installed' => ['github', 'google']]);
+
+        $this->assertFalse(InstanceSettingEnum::ApplePrivateKey->providerIsInstalled());
+        $this->assertTrue(InstanceSettingEnum::GoogleClientId->providerIsInstalled());
+
+        config(['monica.sso_installed' => ['github', 'google', 'apple']]);
+
+        $this->assertTrue(InstanceSettingEnum::ApplePrivateKey->providerIsInstalled());
+    }
+
+    #[Test]
     public function it_never_points_two_settings_at_one_environment_variable(): void
     {
         $variables = array_map(

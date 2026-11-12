@@ -113,6 +113,44 @@ class SsoProviderAvailabilityTest extends TestCase
         $this->assertFalse(SsoProviderAvailability::isAvailable($provider));
     }
 
+    #[Test]
+    public function it_offers_apple_with_no_secret_since_its_key_signs_one(): void
+    {
+        $this->install(['apple']);
+        config([
+            'services.apple.client_id' => 'com.dundermifflin.monica',
+            'services.apple.client_secret' => null,
+            'services.apple.team_id' => 'DUNDER1234',
+            'services.apple.key_id' => 'SCRANTON12',
+            'services.apple.private_key' => '/etc/monica/AuthKey_SCRANTON12.p8',
+            'services.apple.redirect' => 'https://monica.test/sso/apple/callback',
+        ]);
+
+        $this->assertTrue(SsoProviderAvailability::isAvailable(SsoProviderEnum::Apple));
+
+        config(['services.apple.team_id' => null]);
+
+        $this->assertFalse(SsoProviderAvailability::isAvailable(SsoProviderEnum::Apple));
+    }
+
+    #[Test]
+    public function it_offers_apple_with_a_secret_generated_in_advance_and_no_key(): void
+    {
+        $this->install(['apple']);
+        config([
+            'services.apple.client_id' => 'com.dundermifflin.monica',
+            'services.apple.client_secret' => 'eyJhbGciOiJFUzI1NiJ9.scranton.branch',
+            'services.apple.private_key' => null,
+            'services.apple.redirect' => 'https://monica.test/sso/apple/callback',
+        ]);
+
+        $this->assertTrue(SsoProviderAvailability::isAvailable(SsoProviderEnum::Apple));
+
+        config(['services.apple.client_secret' => null]);
+
+        $this->assertFalse(SsoProviderAvailability::isAvailable(SsoProviderEnum::Apple));
+    }
+
     /** @return array<string, array{SsoProviderEnum, string}> */
     public static function settingsThatLocateAProvider(): array
     {

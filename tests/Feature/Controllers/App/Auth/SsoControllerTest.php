@@ -8,7 +8,10 @@ use App\Enums\SsoProviderEnum;
 use App\Models\ProviderConnection;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Routing\Router;
+use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
 use Laravel\Socialite\Facades\Socialite;
@@ -237,6 +240,126 @@ class SsoControllerTest extends TestCase
         ));
     }
 
+    #[Test]
+    public function it_relays_what_apple_posts_to_the_callback_as_a_visit_of_its_own(): void
+    {
+        $this->offerApple();
+
+        $response = $this->post(route('auth.sso.relay', ['provider' => 'apple']), [
+            'code' => 'c0de',
+            'state' => 'st4te',
+            'user' => '{"name":{"firstName":"Michael","lastName":"Scott"},"email":"michael.scott@dundermifflin.com"}',
+        ]);
+
+        $response->assertStatus(303);
+        $location = (string) $response->headers->get('Location');
+        parse_str((string) parse_url($location, PHP_URL_QUERY), $query);
+
+        $this->assertStringStartsWith(route('auth.sso.callback', ['provider' => 'apple']), $location);
+        $this->assertSame('c0de', $query['code']);
+        $this->assertSame('st4te', $query['state']);
+        $this->assertStringNotContainsString('Michael', $location);
+        $this->assertStringNotContainsString('dundermifflin', $location);
+    }
+
+    #[Test]
+    public function it_relays_what_apple_posts_without_starting_a_session(): void
+    {
+        $this->offerApple();
+
+        $route = app(Router::class)->getRoutes()->getByName('auth.sso.relay');
+
+        $this->assertNotContains(StartSession::class, app(Router::class)->gatherRouteMiddleware($route));
+        $this->post(route('auth.sso.relay', ['provider' => 'apple']), ['code' => 'c0de', 'state' => 'st4te'])
+            ->assertCookieMissing(config('session.cookie'));
+    }
+
+    #[Test]
+    public function it_hands_apple_back_the_name_it_relayed(): void
+    {
+        Queue::fake();
+        Notification::fake();
+        $this->offerApple();
+        $name = '{"name":{"firstName":"Michael","lastName":"Scott"}}';
+
+        $this->mockUser('apple', expectedName: $name);
+
+        $location = (string) $this->post(route('auth.sso.relay', ['provider' => 'apple']), ['code' => 'c0de', 'state' => 'st4te', 'user' => $name])
+            ->headers->get('Location');
+
+        $this->get($location)->assertRedirect(route('home.index'));
+    }
+
+    #[Test]
+    public function it_drops_a_name_encrypted_for_anything_but_the_relay(): void
+    {
+        Queue::fake();
+        Notification::fake();
+        $this->offerApple();
+
+        $this->mockUser('apple', expectedName: null);
+
+        $this->get(route('auth.sso.callback', ['provider' => 'apple', 'code' => 'c0de', 'user' => Crypt::encryptString('{"name":{"firstName":"Todd","lastName":"Packer"}}')]))
+            ->assertRedirect(route('home.index'));
+    }
+
+    #[Test]
+    public function it_relays_only_the_fields_apple_sends_as_text(): void
+    {
+        $this->offerApple();
+
+        $location = (string) $this->post(route('auth.sso.relay', ['provider' => 'apple']), ['code' => ['c0de'], 'state' => 'st4te'])
+            ->assertStatus(303)
+            ->headers->get('Location');
+        parse_str((string) parse_url($location, PHP_URL_QUERY), $query);
+
+        $this->assertArrayNotHasKey('code', $query);
+        $this->assertSame('st4te', $query['state']);
+    }
+
+    #[Test]
+    public function it_drops_a_name_it_did_not_relay_itself(): void
+    {
+        Queue::fake();
+        Notification::fake();
+        $this->offerApple();
+
+        $this->mockUser('apple', expectedName: null);
+
+        $this->get(route('auth.sso.callback', ['provider' => 'apple', 'code' => 'c0de', 'user' => '{"name":{"firstName":"Todd","lastName":"Packer"}}']))
+            ->assertRedirect(route('home.index'));
+    }
+
+    #[Test]
+    public function it_is_not_found_on_apple_when_its_package_is_absent(): void
+    {
+        $this->offerApple();
+        config(['monica.sso_installed' => array_values(array_diff(SsoProviderEnum::values(), ['apple']))]);
+
+        $this->get(route('auth.sso.redirect', ['provider' => 'apple']))->assertNotFound();
+        $this->post(route('auth.sso.relay', ['provider' => 'apple']), ['code' => 'c0de'])->assertNotFound();
+    }
+
+    #[Test]
+    public function it_relays_nothing_for_a_provider_that_answers_with_a_visit(): void
+    {
+        $this->offer('github');
+
+        $this->post('/sso/github/callback', ['code' => 'c0de'])->assertStatus(405);
+    }
+
+    private function offerApple(): void
+    {
+        config([
+            'monica.sso_installed' => SsoProviderEnum::values(),
+            'services.apple.client_id' => 'com.dundermifflin.monica',
+            'services.apple.team_id' => 'DUNDER1234',
+            'services.apple.key_id' => 'SCRANTON12',
+            'services.apple.private_key' => '/etc/monica/AuthKey_SCRANTON12.p8',
+            'services.apple.redirect' => 'https://monica.test/sso/apple/callback',
+        ]);
+    }
+
     private function offer(string $provider): void
     {
         $this->credentials($provider);
@@ -259,7 +382,7 @@ class SsoControllerTest extends TestCase
         Socialite::shouldReceive('driver')->with($provider)->andReturn($driver);
     }
 
-    private function mockUser(string $provider): void
+    private function mockUser(string $provider, ?string $expectedName = null): void
     {
         $providerUser = new ProviderUser()->map([
             'id' => '108120124',
@@ -269,7 +392,11 @@ class SsoControllerTest extends TestCase
         ]);
 
         $driver = Mockery::mock();
-        $driver->shouldReceive('user')->andReturn($providerUser);
+        $driver->shouldReceive('user')->andReturnUsing(function () use ($expectedName, $providerUser): ProviderUser {
+            $this->assertSame($expectedName, request()->input('user'));
+
+            return $providerUser;
+        });
         Socialite::shouldReceive('driver')->with($provider)->andReturn($driver);
     }
 }
