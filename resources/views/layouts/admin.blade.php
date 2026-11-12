@@ -49,6 +49,7 @@
             ...(\App\Helpers\SupportAvailability::isEnabled() ? [['label' => __('Support'), 'route' => 'admin.support.index', 'section' => 'admin.support.*', 'icon' => 'mail', 'count' => $navigation->supportToHandleCount()]] : []),
             ['label' => __('Accounts'), 'route' => 'admin.accounts.index', 'section' => 'admin.accounts.*', 'icon' => 'people'],
             ['label' => __('Configuration'), 'route' => 'admin.configuration.index', 'section' => 'admin.configuration.*', 'icon' => 'settings'],
+            ['label' => __('Search'), 'route' => 'admin.search.index', 'section' => 'admin.search.*', 'icon' => 'search'],
             ['label' => __('Flags'), 'route' => 'admin.flags.index', 'section' => 'admin.flags.*', 'icon' => 'tag'],
             ['label' => __('Administrators'), 'route' => 'admin.administrators.index', 'section' => 'admin.administrators.*', 'icon' => 'key'],
             ['label' => __('Record'), 'route' => 'admin.logs.index', 'section' => 'admin.logs.*', 'icon' => 'timeline'],

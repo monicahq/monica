@@ -27,6 +27,7 @@ class AdminAccessTest extends TestCase
             'the administrators' => ['admin/administrators'],
             'the configuration' => ['admin/configuration'],
             'the flags' => ['admin/flags'],
+            'the search engine' => ['admin/search'],
         ];
     }
 

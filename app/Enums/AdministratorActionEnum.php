@@ -28,6 +28,7 @@ enum AdministratorActionEnum: string implements Translatable
     case SupportReplySent = 'support_reply_sent';
     case SupportNoteAdded = 'support_note_added';
     case SupportRequestStatusChanged = 'support_request_status_changed';
+    case SearchIndexRebuildStarted = 'search_index_rebuild_started';
 
     public function description(): string
     {
@@ -51,6 +52,7 @@ enum AdministratorActionEnum: string implements Translatable
             self::SupportReplySent => 'Replied to the support request :reference of :name',
             self::SupportNoteAdded => 'Left an internal note on the support request :reference of :name',
             self::SupportRequestStatusChanged => 'Moved the support request :reference of :name to :status',
+            self::SearchIndexRebuildStarted => 'Started the rebuild of the search index :index',
         };
     }
 
@@ -65,6 +67,7 @@ enum AdministratorActionEnum: string implements Translatable
             self::InstanceSettingUpdated, self::InstanceSettingReverted, self::TelegramWebhookRegistered => 'settings',
             self::FlagActivated, self::FlagDeactivated, self::FlagActivatedForEveryAccount, self::FlagDeactivatedForEveryAccount => 'tag',
             self::SupportReplySent, self::SupportNoteAdded, self::SupportRequestStatusChanged => 'mail',
+            self::SearchIndexRebuildStarted => 'search',
         };
     }
 
@@ -89,7 +92,8 @@ enum AdministratorActionEnum: string implements Translatable
             self::InstanceSettingReverted,
             self::TelegramWebhookRegistered,
             self::FlagActivatedForEveryAccount,
-            self::FlagDeactivatedForEveryAccount => false,
+            self::FlagDeactivatedForEveryAccount,
+            self::SearchIndexRebuildStarted => false,
         };
     }
 

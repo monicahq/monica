@@ -181,3 +181,5 @@ A chronological list of every feature and improvement shipped during development
 * MCP: Added tools to open and follow support requests, and tools for administrators to work the support queue.
 * Auth: Let an instance offer Apple as a way to sign in, once its package is installed.
 * Admin/configuration: Added the Apple settings to the instance settings, with a notice when its package is missing.
+* Admin/search: Added a screen showing which search engine the instance uses, whether it answers, how many documents each index holds beside the records the instance holds, and the total size of the indexes where the engine reports it.
+* Admin/search: Let an administrator rebuild one search index, after a warning and a credential, written down in the administrator record.

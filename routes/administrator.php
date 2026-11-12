@@ -15,6 +15,8 @@ use App\Http\Controllers\App\Admin\ModerationApprovalController;
 use App\Http\Controllers\App\Admin\ModerationController;
 use App\Http\Controllers\App\Admin\ModerationRejectionController;
 use App\Http\Controllers\App\Admin\OverviewController;
+use App\Http\Controllers\App\Admin\SearchEngineController;
+use App\Http\Controllers\App\Admin\SearchIndexRebuildController;
 use App\Http\Controllers\App\Admin\SupportAttachmentController;
 use App\Http\Controllers\App\Admin\SupportController;
 use App\Http\Controllers\App\Admin\SupportNoteController;
@@ -59,6 +61,8 @@ Route::middleware(['administrator', Sample::always()])->group(function (): void 
 
     Route::get('admin/flags', [FlagController::class, 'index'])->name('admin.flags.index');
 
+    Route::get('admin/search', [SearchEngineController::class, 'index'])->name('admin.search.index');
+
     Route::get('admin/configuration', [InstanceSettingController::class, 'index'])->name('admin.configuration.index');
     Route::post('admin/configuration/telegram/check', [TelegramRegistrationCheckController::class, 'create'])->name('admin.configuration.telegram.check.create');
 
@@ -75,6 +79,7 @@ Route::middleware(['administrator', Sample::always()])->group(function (): void 
         Route::post('admin/configuration/telegram/secret', [TelegramWebhookSecretController::class, 'create'])->name('admin.configuration.telegram.secret.create');
         Route::post('admin/flags/{flag}/activation', [FlagActivationController::class, 'create'])->where('flag', '[a-z0-9-]+')->name('admin.flags.activation.create');
         Route::delete('admin/flags/{flag}/activation', [FlagActivationController::class, 'destroy'])->where('flag', '[a-z0-9-]+')->name('admin.flags.activation.destroy');
+        Route::post('admin/search/{kind}/rebuild', [SearchIndexRebuildController::class, 'create'])->where('kind', '[a-z-]+')->name('admin.search.rebuild.create');
     });
 
     Route::get('admin/administrators', [AdministratorController::class, 'index'])->name('admin.administrators.index');
