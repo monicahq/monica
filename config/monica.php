@@ -66,6 +66,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Support
+    |--------------------------------------------------------------------------
+    |
+    | Whether people may ask the administrators of this instance for help from inside the
+    | application. Off by default. Switching it off takes every support screen, the queue of the
+    | administrators, the API endpoints, the MCP tools and their documentation out of the
+    | instance rather than merely hiding the offer. Requests already written are kept.
+    |
+    */
+    'support_enabled' => (bool) env('MONICA_SUPPORT_ENABLED', false),
+
+    /*
+    |--------------------------------------------------------------------------
     | Search engine indexing
     |--------------------------------------------------------------------------
     |

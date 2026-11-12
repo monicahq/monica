@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Seeders;
 
 use App\Actions\ActivateFlag;
+use App\Actions\AddSupportNote;
 use App\Actions\ArchiveContact;
 use App\Actions\CreateAccount;
 use App\Actions\CreateContact;
@@ -18,6 +19,8 @@ use App\Actions\CreateRelationshipType;
 use App\Actions\CreateReminder;
 use App\Actions\GenerateReminderOccurrences;
 use App\Actions\GrantAdministratorAccess;
+use App\Actions\OpenSupportRequest;
+use App\Actions\SendSupportReply;
 use App\Actions\SetFieldValue;
 use App\Actions\UpdateRelationship;
 use App\Enums\AddressLabelEnum;
@@ -32,6 +35,8 @@ use App\Enums\RelationshipCategoryEnum;
 use App\Enums\RelationshipStatusEnum;
 use App\Enums\ReminderAnswerEnum;
 use App\Enums\ReminderCadenceEnum;
+use App\Enums\SupportCategoryEnum;
+use App\Enums\SupportRequestStatusEnum;
 use App\Enums\ValueListEnum;
 use App\Models\Contact;
 use App\Models\Field;
@@ -87,6 +92,7 @@ class ExampleAccountSeeder extends Seeder
         $this->createGroups();
         $this->createContactReminders();
         $this->grantAdministratorAccess();
+        $this->createSupportRequests();
         $this->activateFlags();
 
         $this->command?->info('Signed in as '.self::EMAIL.' with the password '.self::PASSWORD.'.');
@@ -109,6 +115,31 @@ class ExampleAccountSeeder extends Seeder
     private function grantAdministratorAccess(): void
     {
         new GrantAdministratorAccess($this->user)->execute();
+    }
+
+    private function createSupportRequests(): void
+    {
+        foreach (new ExampleSupportRequests()->all() as $example) {
+            $supportRequest = new OpenSupportRequest(
+                user: $this->user,
+                category: SupportCategoryEnum::from($example['category']),
+                subject: $example['subject'],
+                body: $example['body'],
+            )->execute();
+
+            if ($example['note'] !== null) {
+                new AddSupportNote(administrator: $this->user, supportRequest: $supportRequest, body: $example['note'])->execute();
+            }
+
+            if ($example['reply'] !== null) {
+                new SendSupportReply(
+                    administrator: $this->user,
+                    supportRequest: $supportRequest,
+                    body: $example['reply'],
+                    statusAfter: SupportRequestStatusEnum::from($example['after']),
+                )->execute();
+            }
+        }
     }
 
     private function activateFlags(): void

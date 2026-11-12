@@ -33,4 +33,6 @@ enum EmailType: string
     case AccountExportReady = 'account_export_ready';
     case AccountExportFailed = 'account_export_failed';
     case AccountImportEnded = 'account_import_ended';
+    case SupportRequestReceived = 'support_request_received';
+    case SupportReplySent = 'support_reply_sent';
 }

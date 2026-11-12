@@ -13,6 +13,9 @@ use App\Models\EmailSent;
 use App\Models\Log;
 use App\Models\MagicLink;
 use App\Models\Payment;
+use App\Models\SupportAttachment;
+use App\Models\SupportMessage;
+use App\Models\SupportRequest;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -131,6 +134,31 @@ class DestroyAccountTest extends TestCase
         Storage::disk('s3')->assertMissing($export->path);
         Storage::disk('local')->assertMissing($import->path);
         Storage::disk('s3')->assertExists($stamford->path);
+    }
+
+    #[Test]
+    public function it_deletes_the_files_sent_to_the_support_team_from_the_disk(): void
+    {
+        Storage::fake('local');
+
+        $account = Account::factory()->create();
+        $user = User::factory()->create(['account_id' => $account->id]);
+        $message = SupportMessage::factory()->create([
+            'support_request_id' => SupportRequest::factory()->create(['account_id' => $account->id])->id,
+        ]);
+        $screenshot = SupportAttachment::factory()->create(['support_message_id' => $message->id, 'disk' => 'local']);
+        $stamford = SupportAttachment::factory()->create(['disk' => 'local']);
+        Storage::disk('local')->put($screenshot->path, 'png');
+        Storage::disk('local')->put($stamford->path, 'png');
+
+        new DestroyAccount(
+            user: $user,
+            account: $account,
+        )->execute();
+
+        Storage::disk('local')->assertMissing($screenshot->path);
+        Storage::disk('local')->assertExists($stamford->path);
+        $this->assertModelMissing($screenshot);
     }
 
     #[Test]

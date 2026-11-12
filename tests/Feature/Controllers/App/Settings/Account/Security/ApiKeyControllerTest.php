@@ -205,4 +205,20 @@ class ApiKeyControllerTest extends TestCase
 
         $this->assertNotContains('sensitive-fields', $user->tokens()->first()->abilities);
     }
+
+    #[Test]
+    public function it_refuses_the_administration_scope_to_somebody_who_does_not_administer_the_instance(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+
+        $response = $this->withConfirmedPassword()->actingAs($user)->post(route('settings.apiKeys.create'), [
+            'name' => 'Dwight’s queue bot',
+            'administration' => '1',
+        ]);
+
+        $response->assertSessionHasErrors('administration');
+        $this->assertSame(0, $user->tokens()->count());
+    }
 }

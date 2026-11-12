@@ -24,6 +24,7 @@ class ApiKeyResource extends JsonResource
                 'name' => $this->name,
                 'client' => $this->client,
                 'sensitive_fields' => in_array(ApiKeyScopeEnum::SensitiveFields->value, $this->abilities ?? [], true),
+                'administration' => in_array(ApiKeyScopeEnum::Administration->value, $this->abilities ?? [], true),
                 'last_used_at' => $this->last_used_at?->timestamp,
                 'expires_at' => $this->expires_at?->timestamp,
                 'created_at' => $this->created_at->timestamp,

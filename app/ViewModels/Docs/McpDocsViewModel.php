@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Docs;
 
+use App\Helpers\SupportAvailability;
 use Carbon\CarbonImmutable;
 
 class McpDocsViewModel
@@ -217,7 +218,7 @@ class McpDocsViewModel
     /** @return list<array{name: string, changesData: bool, tools: list<array{name: string, description: string}>}> */
     public function toolGroups(): array
     {
-        return [
+        $groups = [
             ['name' => 'Vaults', 'changesData' => false, 'tools' => [
                 ['name' => 'list-vaults', 'description' => 'Lists the vaults of your account.'],
             ]],
@@ -384,6 +385,32 @@ class McpDocsViewModel
                 ['name' => 'get-log', 'description' => 'Returns one entry of the activity: who, what, from where and when.'],
                 ['name' => 'list-emails-sent', 'description' => 'Lists the emails sent to your account and whether each arrived, a page at a time.'],
                 ['name' => 'get-email-sent', 'description' => 'Returns one email, including what it said with links and web addresses removed.'],
+            ]],
+        ];
+
+        if (! SupportAvailability::isEnabled()) {
+            return $groups;
+        }
+
+        return [
+            ...$groups,
+            ['name' => 'Support', 'changesData' => false, 'tools' => [
+                ['name' => 'list-support-requests', 'description' => 'Lists what you have asked the people running this instance, the latest activity first.'],
+                ['name' => 'get-support-request', 'description' => 'Returns one request with your messages, the replies of the support team and the names of the files sent.'],
+            ]],
+            ['name' => 'Support, changing', 'changesData' => true, 'tools' => [
+                ['name' => 'create-support-request', 'description' => 'Asks the people running this instance for help. A person reads it and replies by email and in the request.'],
+                ['name' => 'add-support-message', 'description' => 'Writes in a request already opened, which goes back to the support team. A solved request reopens.'],
+                ['name' => 'solve-support-request', 'description' => 'Tells the support team a request needs nothing more.'],
+            ]],
+            ['name' => 'Support queue, for administrators', 'changesData' => false, 'tools' => [
+                ['name' => 'list-support-queue', 'description' => 'Lists the requests of every account, oldest first, with the count in each view. Only with a key of an administrator holding the administration scope.'],
+                ['name' => 'get-support-queue-request', 'description' => 'Returns one request of any account with its internal notes, a few facts about the account and its status history.'],
+            ]],
+            ['name' => 'Support queue, changing', 'changesData' => true, 'tools' => [
+                ['name' => 'send-support-reply', 'description' => 'Answers a request: the user is emailed and the request moves to the status you choose.'],
+                ['name' => 'add-support-note', 'description' => 'Leaves a note only administrators read. The user is never told it exists.'],
+                ['name' => 'change-support-request-status', 'description' => 'Moves a request to another status, written to its history.'],
             ]],
         ];
     }

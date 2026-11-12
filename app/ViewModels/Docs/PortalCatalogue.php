@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Docs;
 
+use App\Helpers\SupportAvailability;
 use Symfony\Component\Finder\Finder;
 
 class PortalCatalogue
@@ -28,7 +29,7 @@ class PortalCatalogue
         return array_map(basename(...), $directories);
     }
 
-    /** @return array{id: string, title: string, description: string, slug: string, section: string, last_updated: ?string}|null */
+    /** @return array{id: string, title: string, description: string, slug: string, section: string, last_updated: ?string, requires: ?string}|null */
     public static function frontmatter(string $contents): ?array
     {
         if (! preg_match('/^---\n(.*?)\n---\n/s', $contents, $matches)) {
@@ -59,6 +60,7 @@ class PortalCatalogue
             'slug' => $values['slug'],
             'section' => $values['section'],
             'last_updated' => ($values['last_updated'] ?? '') === '' ? null : $values['last_updated'],
+            'requires' => ($values['requires'] ?? '') === '' ? null : $values['requires'],
         ];
     }
 
@@ -90,6 +92,10 @@ class PortalCatalogue
             $frontmatter = self::frontmatter($file->getContents());
 
             if ($frontmatter === null) {
+                continue;
+            }
+
+            if ($frontmatter['requires'] === 'support' && ! SupportAvailability::isEnabled()) {
                 continue;
             }
 

@@ -19,7 +19,7 @@ class PortalCatalogueTest extends TestCase
         $contents = "---\nid: office.tour\ntitle: \"Tour: the office\"\ndescription: Michael shows the camera crew around.\nslug: tour\nsection: office\n---\n\n# Tour: the office\n";
 
         $this->assertSame(
-            ['id' => 'office.tour', 'title' => 'Tour: the office', 'description' => 'Michael shows the camera crew around.', 'slug' => 'tour', 'section' => 'office', 'last_updated' => null],
+            ['id' => 'office.tour', 'title' => 'Tour: the office', 'description' => 'Michael shows the camera crew around.', 'slug' => 'tour', 'section' => 'office', 'last_updated' => null, 'requires' => null],
             PortalCatalogue::frontmatter($contents),
         );
     }
@@ -110,6 +110,7 @@ class PortalCatalogueTest extends TestCase
                 'account.logs',
                 'account.delete',
                 'concepts.privacy',
+                'account.support',
                 'troubleshoot.introduction',
                 'troubleshoot.cannot-sign-in',
                 'troubleshoot.no-email',
@@ -317,5 +318,15 @@ class PortalCatalogueTest extends TestCase
         }
 
         return $files;
+    }
+
+    #[Test]
+    public function it_leaves_out_a_page_about_support_while_support_is_switched_off(): void
+    {
+        $this->assertNotNull(new PortalCatalogue(locale: 'en')->page('account.support'));
+
+        config(['monica.support_enabled' => false]);
+
+        $this->assertNull(new PortalCatalogue(locale: 'en')->page('account.support'));
     }
 }

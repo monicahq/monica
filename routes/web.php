@@ -102,6 +102,11 @@ use App\Http\Controllers\App\Settings\Account\ValueLists\ValueListItemPositionCo
 use App\Http\Controllers\App\Settings\SettingsController;
 use App\Http\Controllers\App\SharedContactController;
 use App\Http\Controllers\App\SharedContactPasswordController;
+use App\Http\Controllers\App\Support\SupportAttachmentController;
+use App\Http\Controllers\App\Support\SupportMessageController;
+use App\Http\Controllers\App\Support\SupportRequestConfirmationController;
+use App\Http\Controllers\App\Support\SupportRequestController;
+use App\Http\Controllers\App\Support\SupportSolutionController;
 use App\Http\Controllers\App\Vaults\AbsorbedContactController;
 use App\Http\Controllers\App\Vaults\ContactAvatarController;
 use App\Http\Controllers\App\Vaults\ContactController;
@@ -495,6 +500,17 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::get('notifications', [NotificationController::class, 'index'])->name('notifications.index');
     Route::put('notifications/read', [NotificationReadController::class, 'updateAll'])->name('notifications.readAll.update');
     Route::put('notifications/{notification}/read', [NotificationReadController::class, 'update'])->whereUuid('notification')->name('notifications.read.update');
+
+    Route::middleware(['support'])->group(function (): void {
+        Route::get('support/requests/{view?}', [SupportRequestController::class, 'index'])->whereIn('view', ['solved'])->name('support.requests.index');
+        Route::get('support/requests/new', [SupportRequestController::class, 'new'])->name('support.requests.new');
+        Route::post('support/requests', [SupportRequestController::class, 'create'])->middleware('throttle:support')->name('support.requests.create');
+        Route::get('support/requests/{supportRequest}', [SupportRequestController::class, 'show'])->whereUuid('supportRequest')->name('support.requests.show');
+        Route::get('support/requests/{supportRequest}/confirmation', [SupportRequestConfirmationController::class, 'show'])->whereUuid('supportRequest')->name('support.requests.confirmation.show');
+        Route::post('support/requests/{supportRequest}/messages', [SupportMessageController::class, 'create'])->middleware('throttle:support')->whereUuid('supportRequest')->name('support.requests.messages.create');
+        Route::post('support/requests/{supportRequest}/solution', [SupportSolutionController::class, 'create'])->whereUuid('supportRequest')->name('support.requests.solution.create');
+        Route::get('support/attachments/{supportAttachment}', [SupportAttachmentController::class, 'show'])->whereUuid('supportAttachment')->name('support.attachments.show');
+    });
 
     Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
 

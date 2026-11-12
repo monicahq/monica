@@ -8,6 +8,7 @@ use App\Exceptions\ProviderUnreachable;
 use App\Models\Account;
 use App\Models\AccountExport;
 use App\Models\AccountImport;
+use App\Models\SupportAttachment;
 use App\Models\User;
 use Exception;
 use Illuminate\Contracts\Filesystem\Filesystem;
@@ -37,6 +38,7 @@ class DestroyAccount
         $this->destroyApiKeys();
         $this->forgetFlags();
         $this->destroyTransferFiles();
+        $this->destroySupportFiles();
         $this->destroy();
     }
 
@@ -93,6 +95,18 @@ class DestroyAccount
 
         foreach ($disks as $disk) {
             Storage::disk($disk)->deleteDirectory($this->account->transfersDirectory());
+        }
+    }
+
+    private function destroySupportFiles(): void
+    {
+        $disks = SupportAttachment::query()
+            ->where('account_id', $this->account->id)
+            ->distinct()
+            ->pluck('disk');
+
+        foreach ($disks as $disk) {
+            Storage::disk($disk)->deleteDirectory(SupportAttachment::directoryFor($this->account->id));
         }
     }
 

@@ -1,5 +1,8 @@
 {{-- The shell of the admin space, which is the area for whoever runs the instance. --}}
-{{-- @var string|null $title --}}
+{{--
+  @var string|null $title
+  @var \App\ViewModels\Admin\AdminNavigationViewModel $navigation
+--}}
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-pt-32">
   <head>
@@ -43,6 +46,7 @@
           @foreach ([
             ['label' => __('Overview'), 'route' => 'admin.overview.index', 'section' => 'admin.overview.*', 'icon' => 'activity'],
             ['label' => __('Moderation'), 'route' => 'admin.moderation.index', 'section' => 'admin.moderation.*', 'icon' => 'tasks'],
+            ...(\App\Helpers\SupportAvailability::isEnabled() ? [['label' => __('Support'), 'route' => 'admin.support.index', 'section' => 'admin.support.*', 'icon' => 'mail', 'count' => $navigation->supportToHandleCount()]] : []),
             ['label' => __('Accounts'), 'route' => 'admin.accounts.index', 'section' => 'admin.accounts.*', 'icon' => 'people'],
             ['label' => __('Configuration'), 'route' => 'admin.configuration.index', 'section' => 'admin.configuration.*', 'icon' => 'settings'],
             ['label' => __('Flags'), 'route' => 'admin.flags.index', 'section' => 'admin.flags.*', 'icon' => 'tag'],
@@ -65,6 +69,11 @@
             >
               <x-icon :name="$item['icon']" :size="16" class="max-sm:hidden" />
               {{ $item['label'] }}
+
+              @if (($item['count'] ?? 0) > 0)
+                <span class="flex h-4.5 min-w-4.5 items-center justify-center rounded-full bg-admin-signal px-1.25 text-2xs font-semibold text-admin-bar" aria-hidden="true">{{ $item['count'] }}</span>
+                <span class="sr-only">{{ trans_choice(':count request to handle|:count requests to handle', $item['count']) }}</span>
+              @endif
             </a>
           @endforeach
         </nav>

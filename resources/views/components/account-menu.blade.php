@@ -23,6 +23,16 @@
     {{ __('Account settings') }}
   </x-actions-menu.item>
 
+  @if (\App\Helpers\SupportAvailability::isOffered())
+    <x-actions-menu.item :href="route('support.requests.new')" data-turbo="true">
+      <x-slot:icon>
+        <x-icon name="mail" :size="16" :stroke-width="1.5" />
+      </x-slot:icon>
+
+      {{ __('Help and support') }}
+    </x-actions-menu.item>
+  @endif
+
   <form action="{{ route('auth.login.destroy') }}" method="post">
     @csrf
 

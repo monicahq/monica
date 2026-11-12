@@ -321,6 +321,10 @@ class AppServiceProvider extends ServiceProvider
             return Limit::perMinute(60)
                 ->by($token instanceof PersonalAccessToken ? "key:{$token->getKey()}" : (string) $request->ip());
         });
+        RateLimiter::for('support', fn (Request $request): array => [
+            Limit::perMinute(5)->by("support-minute:{$request->user()?->id}"),
+            Limit::perDay(50)->by("support-day:{$request->user()?->id}"),
+        ]);
         RateLimiter::for('passkey', fn (Request $request): Limit => Limit::perMinute(self::MAX_LOGIN_ATTEMPTS)
             ->by($request->string('credential.id')->lower()->toString().'|'.$request->ip()));
         RateLimiter::for('confirm-password', fn (Request $request): Limit => Limit::perMinute(self::MAX_LOGIN_ATTEMPTS)

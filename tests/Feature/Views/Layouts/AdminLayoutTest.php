@@ -91,4 +91,18 @@ class AdminLayoutTest extends TestCase
 
         return $michael;
     }
+
+    #[Test]
+    public function it_offers_the_support_queue_only_while_support_is_switched_on(): void
+    {
+        $administrator = $this->administrator();
+
+        $this->actingAs($administrator)->get(route('admin.accounts.index'))
+            ->assertSee('href="'.route('admin.support.index').'"', escape: false);
+
+        config(['monica.support_enabled' => false]);
+
+        $this->actingAs($administrator)->get(route('admin.accounts.index'))
+            ->assertDontSee('href="'.route('admin.support.index').'"', escape: false);
+    }
 }

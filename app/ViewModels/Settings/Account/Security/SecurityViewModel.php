@@ -11,6 +11,7 @@ use App\Helpers\FlagState;
 use App\Helpers\PasskeyAvailability;
 use App\Helpers\PasswordRequirements;
 use App\Helpers\SsoProviderAvailability;
+use App\Helpers\SupportAvailability;
 use App\Models\ProviderConnection;
 use App\Models\SecurityKey;
 use App\Models\User;
@@ -95,7 +96,16 @@ class SecurityViewModel
         return count($this->user->two_factor_recovery_codes ?? []);
     }
 
-    /** @return array<int, array{id: int, name: string, createdAt: string, lastUsedAt: ?string, reachesSensitiveFields: bool}> */
+    public function offersAdministrationScope(): bool
+    {
+        if (! SupportAvailability::isEnabled()) {
+            return false;
+        }
+
+        return $this->user->isAdministrator();
+    }
+
+    /** @return array<int, array{id: int, name: string, createdAt: string, lastUsedAt: ?string, reachesSensitiveFields: bool, administers: bool}> */
     public function apiKeys(): array
     {
         return $this->user->tokens()
@@ -108,6 +118,7 @@ class SecurityViewModel
                 'createdAt' => $apiKey->created_at->diffForHumans(),
                 'lastUsedAt' => $apiKey->last_used_at?->diffForHumans(),
                 'reachesSensitiveFields' => in_array(ApiKeyScopeEnum::SensitiveFields->value, $apiKey->abilities ?? [], true),
+                'administers' => in_array(ApiKeyScopeEnum::Administration->value, $apiKey->abilities ?? [], true),
             ])
             ->all();
     }

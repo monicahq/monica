@@ -7,6 +7,10 @@ use App\Http\Controllers\Api\AccountExportDownloadController;
 use App\Http\Controllers\Api\AccountImportContactController;
 use App\Http\Controllers\Api\AccountImportController;
 use App\Http\Controllers\Api\AccountImportReportController;
+use App\Http\Controllers\Api\Admin\SupportNoteController as AdminSupportNoteController;
+use App\Http\Controllers\Api\Admin\SupportReplyController as AdminSupportReplyController;
+use App\Http\Controllers\Api\Admin\SupportRequestController as AdminSupportRequestController;
+use App\Http\Controllers\Api\Admin\SupportStatusController as AdminSupportStatusController;
 use App\Http\Controllers\Api\ApiKeyController;
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\RegistrationController;
@@ -92,6 +96,10 @@ use App\Http\Controllers\Api\StructureVersionSectionPageController;
 use App\Http\Controllers\Api\StructureVersionSectionPositionController;
 use App\Http\Controllers\Api\SubscriptionCancellationController;
 use App\Http\Controllers\Api\SubscriptionController;
+use App\Http\Controllers\Api\SupportAttachmentContentController;
+use App\Http\Controllers\Api\SupportMessageController;
+use App\Http\Controllers\Api\SupportRequestController;
+use App\Http\Controllers\Api\SupportSolutionController;
 use App\Http\Controllers\Api\TemplateActivationController;
 use App\Http\Controllers\Api\TemplateController;
 use App\Http\Controllers\Api\TemplateDuplicateController;
@@ -124,6 +132,23 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::delete('billing/subscription', [SubscriptionController::class, 'destroy'])->name('billing.subscription.destroy');
         Route::delete('billing/subscription/cancellation', [SubscriptionCancellationController::class, 'destroy'])->name('billing.subscription.cancellation.destroy');
         Route::post('billing/portal-sessions', [PortalSessionController::class, 'store'])->name('billing.portalSessions.create');
+
+        Route::middleware(['support'])->group(function (): void {
+            Route::get('support-requests', [SupportRequestController::class, 'index'])->name('supportRequests');
+            Route::post('support-requests', [SupportRequestController::class, 'create'])->middleware('throttle:support')->name('supportRequests.create');
+            Route::get('support-requests/{supportRequest}', [SupportRequestController::class, 'show'])->where('supportRequest', '[0-9a-fA-F-]{36}')->name('supportRequests.show');
+            Route::post('support-requests/{supportRequest}/messages', [SupportMessageController::class, 'create'])->middleware('throttle:support')->where('supportRequest', '[0-9a-fA-F-]{36}')->name('supportRequests.messages.create');
+            Route::post('support-requests/{supportRequest}/solution', [SupportSolutionController::class, 'create'])->where('supportRequest', '[0-9a-fA-F-]{36}')->name('supportRequests.solution.create');
+            Route::get('support-requests/{supportRequest}/attachments/{attachment}/content', [SupportAttachmentContentController::class, 'show'])->where(['supportRequest' => '[0-9a-fA-F-]{36}', 'attachment' => '[0-9a-fA-F-]{36}'])->name('supportRequests.attachments.content.show');
+        });
+
+        Route::middleware(['support', 'administrator', 'administration'])->group(function (): void {
+            Route::get('admin/support-requests', [AdminSupportRequestController::class, 'index'])->name('admin.supportRequests');
+            Route::get('admin/support-requests/{supportRequest}', [AdminSupportRequestController::class, 'show'])->where('supportRequest', '[0-9a-fA-F-]{36}')->name('admin.supportRequests.show');
+            Route::post('admin/support-requests/{supportRequest}/replies', [AdminSupportReplyController::class, 'create'])->where('supportRequest', '[0-9a-fA-F-]{36}')->name('admin.supportRequests.replies.create');
+            Route::post('admin/support-requests/{supportRequest}/notes', [AdminSupportNoteController::class, 'create'])->where('supportRequest', '[0-9a-fA-F-]{36}')->name('admin.supportRequests.notes.create');
+            Route::put('admin/support-requests/{supportRequest}/status', [AdminSupportStatusController::class, 'update'])->where('supportRequest', '[0-9a-fA-F-]{36}')->name('admin.supportRequests.status.update');
+        });
 
         Route::get('api-keys', [ApiKeyController::class, 'index'])->name('apiKeys');
         Route::get('api-keys/{apiKey}', [ApiKeyController::class, 'show'])->where('apiKey', '[1-9][0-9]*')->name('apiKeys.show');

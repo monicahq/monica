@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Mcp\Tools;
 
 use App\Enums\ApiKeyScopeEnum;
+use App\Helpers\SupportAvailability;
 use App\Http\Resources\GroupFileResource;
 use App\Http\Resources\GroupMembershipResource;
 use App\Http\Resources\GroupNoteResource;
@@ -30,6 +31,7 @@ use App\Models\SectionVersion;
 use App\Models\StructureVersion;
 use App\Models\StructureVersionPage;
 use App\Models\StructureVersionSection;
+use App\Models\SupportRequest;
 use App\Models\Template;
 use App\Models\User;
 use App\Models\Vault;
@@ -455,6 +457,47 @@ trait MirrorsAnApiCapability
         }
 
         return $this->found($occurrence);
+    }
+
+    protected function supportRequest(Request $request, string $address, bool $acrossAccounts = false): SupportRequest
+    {
+        if (! Str::isUuid($address)) {
+            throw $this->doesNotExist(__('That support request does not exist.'));
+        }
+
+        $supportRequest = SupportRequest::query()
+            ->where('uuid', $address)
+            ->when(! $acrossAccounts, fn (Builder $query): Builder => $query->where('account_id', $this->user($request)->account_id))
+            ->first();
+
+        if ($supportRequest === null) {
+            throw $this->doesNotExist(__('That support request does not exist.'));
+        }
+
+        return $this->found($supportRequest);
+    }
+
+    /**
+     * Whether the presented key may use the administrators' support tools: support is switched on,
+     * the key belongs to an administrator and carries the administration scope by name, which a
+     * connected assistant never does.
+     */
+    protected function administers(Request $request): bool
+    {
+        if (! SupportAvailability::isEnabled()) {
+            return false;
+        }
+
+        $user = $request->user();
+
+        if (! $user instanceof User || ! $user->isAdministrator()) {
+            return false;
+        }
+
+        $token = $user->currentAccessToken();
+
+        return $token instanceof PersonalAccessToken
+            && in_array(ApiKeyScopeEnum::Administration->value, $token->abilities ?? [], true);
     }
 
     /**

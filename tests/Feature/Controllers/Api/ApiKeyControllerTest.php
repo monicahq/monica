@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Api;
 
+use App\Models\Administrator;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -328,5 +329,43 @@ class ApiKeyControllerTest extends TestCase
         $this->json('POST', '/api/v1/api-keys', ['name' => 'Dundie awards bot', 'client' => 'toaster'])
             ->assertUnprocessable()
             ->assertJsonValidationErrors(['client']);
+    }
+
+    #[Test]
+    public function it_creates_a_key_that_administers_the_instance_for_an_administrator(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        Administrator::factory()->create(['user_id' => $user->id]);
+        $presentedKey = $user->createToken('Support desk', ['*', 'administration'])->plainTextToken;
+
+        $response = $this->withToken($presentedKey)->json('POST', '/api/v1/api-keys', [
+            'name' => 'Support queue bot',
+            'administration' => true,
+        ]);
+
+        $response->assertCreated();
+        $response->assertJsonPath('data.attributes.administration', true);
+        $this->assertContains('administration', $user->tokens()->where('name', 'Support queue bot')->first()->abilities);
+    }
+
+    #[Test]
+    public function it_refuses_the_administration_scope_to_somebody_who_does_not_administer_the_instance(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('POST', '/api/v1/api-keys', [
+            'name' => 'Support queue bot',
+            'administration' => true,
+        ]);
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors('administration');
+        $this->assertSame(0, $user->tokens()->count());
     }
 }

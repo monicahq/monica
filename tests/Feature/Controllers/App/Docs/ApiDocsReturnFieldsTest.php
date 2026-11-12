@@ -23,6 +23,7 @@ use App\Jobs\CreateDefaultTemplate;
 use App\Models\AccountExport;
 use App\Models\AccountImport;
 use App\Models\AccountImportItem;
+use App\Models\Administrator;
 use App\Models\Contact;
 use App\Models\ContactDuplicateCandidate;
 use App\Models\ContactListColumn;
@@ -56,6 +57,10 @@ use App\Models\StripeOrder;
 use App\Models\StructureVersion;
 use App\Models\StructureVersionPage;
 use App\Models\StructureVersionSection;
+use App\Models\SupportAttachment;
+use App\Models\SupportMessage;
+use App\Models\SupportRequest;
+use App\Models\SupportStatusChange;
 use App\Models\Template;
 use App\Models\User;
 use App\Models\ValueList;
@@ -1851,6 +1856,82 @@ class ApiDocsReturnFieldsTest extends TestCase
                 return $this->json('DELETE', "/api/v1/vaults/{$attachment->group->vault->uuid}/groups/{$attachment->group->uuid}/files/{$attachment->uuid}");
             }),
 
+            'support-requests-index' => $this->asSomebody(function (User $user): TestResponse {
+                $this->aSupportRequest($user);
+
+                return $this->json('GET', '/api/v1/support-requests');
+            }),
+
+            'support-requests-show' => $this->asSomebody(function (User $user): TestResponse {
+                $supportRequest = $this->aSupportRequest($user);
+
+                return $this->json('GET', "/api/v1/support-requests/{$supportRequest->uuid}");
+            }),
+
+            'support-requests-create' => $this->asSomebody(function (User $user): TestResponse {
+                Storage::fake('local');
+                Administrator::factory()->create();
+
+                return $this->json('POST', '/api/v1/support-requests', [
+                    'category' => 'question',
+                    'subject' => 'My conference room reminder never arrived',
+                    'body' => 'I booked the conference room for the quarterly meeting, but the reminder never arrived.',
+                    'files' => [UploadedFile::fake()->create('conference-room-booking.png', 10, 'image/png')],
+                ]);
+            }),
+
+            'support-request-messages-create' => $this->asSomebody(function (User $user): TestResponse {
+                Storage::fake('local');
+                $supportRequest = $this->aSupportRequest($user);
+
+                return $this->json('POST', "/api/v1/support-requests/{$supportRequest->uuid}/messages", [
+                    'body' => 'Thank you, Jim. Could you also move the one for the Scranton Business Park meeting?',
+                    'files' => [UploadedFile::fake()->create('conference-room-booking.png', 10, 'image/png')],
+                ]);
+            }),
+
+            'support-request-solution-create' => $this->asSomebody(function (User $user): TestResponse {
+                $supportRequest = $this->aSupportRequest($user);
+
+                return $this->json('POST', "/api/v1/support-requests/{$supportRequest->uuid}/solution");
+            }),
+
+            'admin-support-requests-index' => $this->asAnAdministrator(function (User $administrator, string $token): TestResponse {
+                $this->aSupportRequest(User::factory()->create());
+
+                return $this->withToken($token)->json('GET', '/api/v1/admin/support-requests');
+            }),
+
+            'admin-support-requests-show' => $this->asAnAdministrator(function (User $administrator, string $token): TestResponse {
+                $supportRequest = $this->aSupportRequest(User::factory()->create());
+
+                return $this->withToken($token)->json('GET', "/api/v1/admin/support-requests/{$supportRequest->uuid}");
+            }),
+
+            'admin-support-request-replies-create' => $this->asAnAdministrator(function (User $administrator, string $token): TestResponse {
+                $supportRequest = $this->aSupportRequest(User::factory()->create());
+
+                return $this->withToken($token)->json('POST', "/api/v1/admin/support-requests/{$supportRequest->uuid}/replies", [
+                    'body' => 'Hi Michael. We have moved the reminder to tomorrow at nine.',
+                ]);
+            }),
+
+            'admin-support-request-notes-create' => $this->asAnAdministrator(function (User $administrator, string $token): TestResponse {
+                $supportRequest = $this->aSupportRequest(User::factory()->create());
+
+                return $this->withToken($token)->json('POST', "/api/v1/admin/support-requests/{$supportRequest->uuid}/notes", [
+                    'body' => 'Check with Pam before closing.',
+                ]);
+            }),
+
+            'admin-support-request-status-update' => $this->asAnAdministrator(function (User $administrator, string $token): TestResponse {
+                $supportRequest = $this->aSupportRequest(User::factory()->create());
+
+                return $this->withToken($token)->json('PUT', "/api/v1/admin/support-requests/{$supportRequest->uuid}/status", [
+                    'status' => 'solved',
+                ]);
+            }),
+
             'contact-groups-index' => $this->asSomebody(function (User $user): TestResponse {
                 $membership = $this->aGroupMembership($user);
 
@@ -2197,6 +2278,39 @@ class ApiDocsReturnFieldsTest extends TestCase
         Sanctum::actingAs($user);
 
         return $call($user);
+    }
+
+    private function asAnAdministrator(callable $call): TestResponse
+    {
+        $user = User::factory()->create();
+
+        Administrator::factory()->create(['user_id' => $user->id]);
+
+        $this->app['auth']->forgetGuards();
+
+        return $call($user, $user->createToken('Dundie awards bot', ['*', 'administration'])->plainTextToken);
+    }
+
+    private function aSupportRequest(User $user): SupportRequest
+    {
+        $supportRequest = SupportRequest::factory()->waitingOnUser()->create([
+            'account_id' => $user->account_id,
+            'user_id' => $user->id,
+        ]);
+
+        SupportMessage::factory()->create([
+            'support_request_id' => $supportRequest->id,
+            'author_user_id' => $user->id,
+            'author_name' => $user->name,
+        ]);
+        SupportStatusChange::factory()->create(['support_request_id' => $supportRequest->id]);
+        SupportMessage::factory()->reply()->create(['support_request_id' => $supportRequest->id]);
+        SupportMessage::factory()->note()->create(['support_request_id' => $supportRequest->id]);
+        SupportAttachment::factory()->create([
+            'support_message_id' => $supportRequest->messages()->oldest('id')->firstOrFail()->id,
+        ]);
+
+        return $supportRequest;
     }
 
     private function loggingIn(): TestResponse

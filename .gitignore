@@ -39,3 +39,7 @@ app/Scratch.php
 .php-version
 .env.before_lerd
 .claude/settings.local.json
+
+# Spec Kit Companion writes these for the local GUI and its doctor
+specs/**/.spec-context.json
+specs/**/.trace.jsonl

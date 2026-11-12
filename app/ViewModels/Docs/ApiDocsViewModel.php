@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\ViewModels\Docs;
 
 use App\Helpers\FlagState;
+use App\Helpers\SupportAvailability;
 use Illuminate\Support\Facades\Route;
 
 class ApiDocsViewModel
@@ -19,7 +20,8 @@ class ApiDocsViewModel
 
     /**
      * The sections a visitor may read: one naming a flag, or several, is described only while every
-     * flag it names is on for every account, since the reference is public.
+     * flag it names is on for every account, since the reference is public. One marked as support is
+     * described only while support is switched on for the instance.
      *
      * @param  list<array<string, mixed>>  $sections
      * @return list<array<string, mixed>>
@@ -28,8 +30,8 @@ class ApiDocsViewModel
     {
         return array_values(array_filter(
             $sections,
-            fn (array $section): bool => collect((array) ($section['flag'] ?? []))
-                ->every(fn (string $flag): bool => FlagState::isOn($flag, null)),
+            fn (array $section): bool => (! ($section['support'] ?? false) || SupportAvailability::isEnabled())
+                && collect((array) ($section['flag'] ?? []))->every(fn (string $flag): bool => FlagState::isOn($flag, null)),
         ));
     }
 

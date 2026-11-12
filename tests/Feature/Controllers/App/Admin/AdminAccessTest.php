@@ -22,6 +22,7 @@ class AdminAccessTest extends TestCase
             'the front door' => ['admin'],
             'the record' => ['admin/logs'],
             'the moderation queue' => ['admin/moderation'],
+            'the support queue' => ['admin/support'],
             'the account lookup' => ['admin/accounts'],
             'the administrators' => ['admin/administrators'],
             'the configuration' => ['admin/configuration'],

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\ViewModels\Settings\Account\Security;
 
 use App\Enums\SsoProviderEnum;
+use App\Models\Administrator;
 use App\Models\ProviderConnection;
 use App\Models\SecurityKey;
 use App\Models\User;
@@ -367,5 +368,19 @@ class SecurityViewModelTest extends TestCase
             "services.{$provider}.client_secret" => 'that-is-what-she-said',
             "services.{$provider}.redirect" => "https://monica.test/sso/{$provider}/callback",
         ]);
+    }
+
+    #[Test]
+    public function it_offers_the_administration_scope_to_an_administrator_only_while_support_is_switched_on(): void
+    {
+        $michael = User::factory()->create();
+        Administrator::factory()->create(['user_id' => $michael->id]);
+
+        $this->assertTrue(new SecurityViewModel(user: $michael)->offersAdministrationScope());
+        $this->assertFalse(new SecurityViewModel(user: User::factory()->create())->offersAdministrationScope());
+
+        config(['monica.support_enabled' => false]);
+
+        $this->assertFalse(new SecurityViewModel(user: $michael)->offersAdministrationScope());
     }
 }

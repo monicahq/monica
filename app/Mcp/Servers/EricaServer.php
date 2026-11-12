@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace App\Mcp\Servers;
 
 use App\Mcp\Tools\AddGroupMember;
+use App\Mcp\Tools\AddSupportMessage;
+use App\Mcp\Tools\AddSupportNote;
 use App\Mcp\Tools\AddTemplateSection;
 use App\Mcp\Tools\AnswerGroupReminderOccurrence;
 use App\Mcp\Tools\AnswerReminderOccurrence;
+use App\Mcp\Tools\ChangeSupportRequestStatus;
 use App\Mcp\Tools\CreateContact;
 use App\Mcp\Tools\CreateContactRelationship;
 use App\Mcp\Tools\CreateContactReminder;
@@ -21,6 +24,7 @@ use App\Mcp\Tools\CreateLifeEventCategory;
 use App\Mcp\Tools\CreateLifeEventType;
 use App\Mcp\Tools\CreateRelationshipCategory;
 use App\Mcp\Tools\CreateRelationshipType;
+use App\Mcp\Tools\CreateSupportRequest;
 use App\Mcp\Tools\CreateTemplate;
 use App\Mcp\Tools\CreateTemplateDraft;
 use App\Mcp\Tools\CreateTemplateField;
@@ -55,6 +59,8 @@ use App\Mcp\Tools\GetLog;
 use App\Mcp\Tools\GetMeContact;
 use App\Mcp\Tools\GetRelationshipCategory;
 use App\Mcp\Tools\GetRelationshipType;
+use App\Mcp\Tools\GetSupportQueueRequest;
+use App\Mcp\Tools\GetSupportRequest;
 use App\Mcp\Tools\GetTemplate;
 use App\Mcp\Tools\GetTemplateVersion;
 use App\Mcp\Tools\ListContactGroups;
@@ -80,6 +86,8 @@ use App\Mcp\Tools\ListLogs;
 use App\Mcp\Tools\ListRelationshipCategories;
 use App\Mcp\Tools\ListRelationshipCategoryTypes;
 use App\Mcp\Tools\ListRelationshipTypes;
+use App\Mcp\Tools\ListSupportQueue;
+use App\Mcp\Tools\ListSupportRequests;
 use App\Mcp\Tools\ListTemplates;
 use App\Mcp\Tools\ListTemplateVersions;
 use App\Mcp\Tools\ListVaults;
@@ -91,6 +99,7 @@ use App\Mcp\Tools\ReplaceLifeEventTypeFields;
 use App\Mcp\Tools\RestoreGroup;
 use App\Mcp\Tools\RestoreLifeEvent;
 use App\Mcp\Tools\SearchRecords;
+use App\Mcp\Tools\SendSupportReply;
 use App\Mcp\Tools\SetContactFavourite;
 use App\Mcp\Tools\SetEntityTypeActivation;
 use App\Mcp\Tools\SetEntityTypePosition;
@@ -106,6 +115,7 @@ use App\Mcp\Tools\SetTemplateActivation;
 use App\Mcp\Tools\SetTemplateFieldPosition;
 use App\Mcp\Tools\SetTemplatePosition;
 use App\Mcp\Tools\SetTemplateSectionPosition;
+use App\Mcp\Tools\SolveSupportRequest;
 use App\Mcp\Tools\UpdateContactName;
 use App\Mcp\Tools\UpdateContactNameRepresentations;
 use App\Mcp\Tools\UpdateContactRelationship;
@@ -310,6 +320,16 @@ class EricaServer extends Server
         UpdateTemplateField::class,
         DeleteTemplateField::class,
         SetTemplateFieldPosition::class,
+        ListSupportRequests::class,
+        GetSupportRequest::class,
+        CreateSupportRequest::class,
+        AddSupportMessage::class,
+        SolveSupportRequest::class,
+        ListSupportQueue::class,
+        GetSupportQueueRequest::class,
+        SendSupportReply::class,
+        AddSupportNote::class,
+        ChangeSupportRequestStatus::class,
     ];
 
     #[Override]

@@ -15,6 +15,11 @@ use App\Http\Controllers\App\Admin\ModerationApprovalController;
 use App\Http\Controllers\App\Admin\ModerationController;
 use App\Http\Controllers\App\Admin\ModerationRejectionController;
 use App\Http\Controllers\App\Admin\OverviewController;
+use App\Http\Controllers\App\Admin\SupportAttachmentController;
+use App\Http\Controllers\App\Admin\SupportController;
+use App\Http\Controllers\App\Admin\SupportNoteController;
+use App\Http\Controllers\App\Admin\SupportReplyController;
+use App\Http\Controllers\App\Admin\SupportStatusController;
 use App\Http\Controllers\App\Admin\TelegramRegistrationCheckController;
 use App\Http\Controllers\App\Admin\TelegramRegistrationController;
 use App\Http\Controllers\App\Admin\TelegramWebhookSecretController;
@@ -31,6 +36,15 @@ Route::middleware(['administrator', Sample::always()])->group(function (): void 
     Route::get('admin/moderation/{version}', [ModerationController::class, 'show'])->whereNumber('version')->name('admin.moderation.show');
     Route::post('admin/moderation/{version}/approval', [ModerationApprovalController::class, 'create'])->whereNumber('version')->name('admin.moderation.approval.create');
     Route::post('admin/moderation/{version}/rejection', [ModerationRejectionController::class, 'create'])->whereNumber('version')->name('admin.moderation.rejection.create');
+
+    Route::middleware(['support'])->group(function (): void {
+        Route::get('admin/support', [SupportController::class, 'index'])->name('admin.support.index');
+        Route::get('admin/support/attachments/{supportAttachment}', [SupportAttachmentController::class, 'show'])->whereUuid('supportAttachment')->name('admin.support.attachments.show');
+        Route::get('admin/support/{supportRequest}', [SupportController::class, 'show'])->whereUuid('supportRequest')->name('admin.support.show');
+        Route::post('admin/support/{supportRequest}/replies', [SupportReplyController::class, 'create'])->whereUuid('supportRequest')->name('admin.support.replies.create');
+        Route::post('admin/support/{supportRequest}/notes', [SupportNoteController::class, 'create'])->whereUuid('supportRequest')->name('admin.support.notes.create');
+        Route::put('admin/support/{supportRequest}/status', [SupportStatusController::class, 'update'])->whereUuid('supportRequest')->name('admin.support.status.update');
+    });
 
     Route::get('admin/accounts', [AccountController::class, 'index'])->name('admin.accounts.index');
     Route::get('admin/accounts/{account}', [AccountController::class, 'show'])->whereNumber('account')->name('admin.accounts.show');

@@ -75,6 +75,14 @@
         >{{ __('Leave this off unless a device needs them. An address book on a phone can be read by the other applications on it.') }}</x-help>
       </div>
 
+      @if ($viewModel->offersAdministrationScope())
+        <div class="flex flex-col gap-1">
+          <x-checkbox id="administration" :checked="false" :error="$errors->get('administration')">
+            {{ __('Let this key answer support requests for the whole instance. Only a tool you trust should hold it: it reaches every account’s requests.') }}
+          </x-checkbox>
+        </div>
+      @endif
+
       <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
         <x-button.secondary size="small" type="button" @click="creating = false">{{ __('Cancel') }}</x-button.secondary>
 
@@ -97,6 +105,10 @@
 
           @if ($apiKey['reachesSensitiveFields'])
             <x-badge tone="warning">{{ __('Reads sensitive fields') }}</x-badge>
+          @endif
+
+          @if ($apiKey['administers'])
+            <x-badge tone="signal">{{ __('Administration') }}</x-badge>
           @endif
 
           <x-button.secondary size="small" type="button" x-show="! confirming" @click="confirming = true">{{ __('Revoke') }}</x-button.secondary>

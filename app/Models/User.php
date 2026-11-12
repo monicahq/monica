@@ -195,6 +195,16 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     }
 
     /**
+     * Get the support requests the user opened.
+     *
+     * @return HasMany<SupportRequest, $this>
+     */
+    public function supportRequests(): HasMany
+    {
+        return $this->hasMany(SupportRequest::class);
+    }
+
+    /**
      * Get the OAuth access tokens the user granted to assistants. The API keys are the Sanctum
      * tokens behind tokens(); Passport's own trait cannot sit next to Sanctum's, so this relation
      * is declared here instead.

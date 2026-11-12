@@ -65,7 +65,7 @@ class McpDocsViewModelTest extends TestCase
     #[Test]
     public function it_counts_the_tools_it_lists(): void
     {
-        $this->assertStringStartsWith('MCP currently exposes 119 tools.', new McpDocsViewModel()->toolsSummary()[0]);
+        $this->assertStringStartsWith('MCP currently exposes 129 tools.', new McpDocsViewModel()->toolsSummary()[0]);
     }
 
     #[Test]
@@ -74,7 +74,7 @@ class McpDocsViewModelTest extends TestCase
         $changing = array_filter(new McpDocsViewModel()->toolGroups(), fn (array $group): bool => $group['changesData']);
 
         $this->assertSame(
-            ['Contacts, changing', 'Reminders, changing', 'Relationships, changing', 'Life events, changing', 'Groups, changing', 'Templates, changing', 'Template drafts', 'Sections', 'Fields', 'Entity types, changing', 'Relationship vocabulary, changing', 'Life event vocabulary, changing'],
+            ['Contacts, changing', 'Reminders, changing', 'Relationships, changing', 'Life events, changing', 'Groups, changing', 'Templates, changing', 'Template drafts', 'Sections', 'Fields', 'Entity types, changing', 'Relationship vocabulary, changing', 'Life event vocabulary, changing', 'Support, changing', 'Support queue, changing'],
             array_values(array_column($changing, 'name')),
         );
     }
@@ -135,5 +135,14 @@ class McpDocsViewModelTest extends TestCase
         foreach (new McpDocsViewModel()->assistantLinks() as $link) {
             $this->assertStringContainsString($address, $link);
         }
+    }
+
+    #[Test]
+    public function it_leaves_out_the_support_tools_while_support_is_switched_off(): void
+    {
+        config(['monica.support_enabled' => false]);
+
+        $this->assertNotContains('Support', array_column(new McpDocsViewModel()->toolGroups(), 'name'));
+        $this->assertNotContains('Support queue, for administrators', array_column(new McpDocsViewModel()->toolGroups(), 'name'));
     }
 }

@@ -8,8 +8,10 @@ use App\Actions\CreateApiKey;
 use App\Enums\ApiKeyClientEnum;
 use App\Enums\ApiKeyScopeEnum;
 use App\Enums\UserActionEnum;
+use App\Exceptions\ScopeIsNotGrantable;
 use App\Jobs\LogUserAction;
 use App\Models\Account;
+use App\Models\Administrator;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -158,5 +160,48 @@ class CreateApiKeyTest extends TestCase
             'id' => $key->accessToken->id,
             'client' => ApiKeyClientEnum::Script->value,
         ]);
+    }
+
+    #[Test]
+    public function it_lets_an_administrator_mint_a_key_that_answers_support_requests(): void
+    {
+        $user = User::factory()->create();
+        Administrator::factory()->create(['user_id' => $user->id]);
+
+        $key = new CreateApiKey(user: $user, name: 'Support desk', scopes: ['*', 'administration'])->execute();
+
+        $this->assertEquals(['*', 'administration'], $key->accessToken->abilities);
+    }
+
+    #[Test]
+    public function it_refuses_the_administration_scope_to_somebody_who_does_not_run_the_instance(): void
+    {
+        $this->expectException(ScopeIsNotGrantable::class);
+
+        new CreateApiKey(user: User::factory()->create(), name: 'Dwight’s backdoor', scopes: ['*', 'administration'])->execute();
+    }
+
+    #[Test]
+    public function it_refuses_the_administration_scope_to_a_key_that_does_not_hold_it(): void
+    {
+        $user = User::factory()->create();
+        Administrator::factory()->create(['user_id' => $user->id]);
+        $user->withAccessToken($user->createToken('Michael’s phone', ['*'])->accessToken);
+
+        $this->expectException(ScopeIsNotGrantable::class);
+
+        new CreateApiKey(user: $user, name: 'Support desk', scopes: ['*', 'administration'])->execute();
+    }
+
+    #[Test]
+    public function it_lets_a_key_holding_the_administration_scope_give_it_to_another_key(): void
+    {
+        $user = User::factory()->create();
+        Administrator::factory()->create(['user_id' => $user->id]);
+        $user->withAccessToken($user->createToken('Support desk', ['*', 'administration'])->accessToken);
+
+        $key = new CreateApiKey(user: $user, name: 'Second support desk', scopes: ['*', 'administration'])->execute();
+
+        $this->assertEquals(['*', 'administration'], $key->accessToken->abilities);
     }
 }

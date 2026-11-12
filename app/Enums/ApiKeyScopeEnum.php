@@ -10,11 +10,13 @@ use Override;
 enum ApiKeyScopeEnum: string implements Translatable
 {
     case SensitiveFields = 'sensitive-fields';
+    case Administration = 'administration';
 
     public function label(): string
     {
         return match ($this) {
             self::SensitiveFields => 'Sensitive fields',
+            self::Administration => 'Administration',
         };
     }
 
@@ -22,6 +24,7 @@ enum ApiKeyScopeEnum: string implements Translatable
     {
         return match ($this) {
             self::SensitiveFields => 'Leave this off unless a device needs them. An address book on a phone can be read by the other applications on it.',
+            self::Administration => 'Lets this key answer support requests for the whole instance. Only administrators can give it, and only a tool you trust should hold it.',
         };
     }
 

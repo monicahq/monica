@@ -69,7 +69,7 @@ class ApiDocsViewModelTest extends TestCase
         );
 
         $this->assertEquals(
-            ['Authentication', 'Your profile', 'API keys', 'Vaults', 'Contacts', 'Kinds of record', 'Logs', 'Emails sent', 'Health', 'Templates', 'Billing', 'Duplicates and merges', 'Notifications', 'Notification channels', 'Relationship categories', 'Relationship types', 'Life event categories', 'Life event types', 'Reminders', 'Search', 'Life events', 'Relationships', 'MCP history', 'Imports', 'Exports', 'Groups', 'Group notes', 'Group activities', 'Group reminders', 'Group files'],
+            ['Authentication', 'Your profile', 'API keys', 'Vaults', 'Contacts', 'Kinds of record', 'Logs', 'Emails sent', 'Health', 'Templates', 'Billing', 'Duplicates and merges', 'Notifications', 'Notification channels', 'Relationship categories', 'Relationship types', 'Life event categories', 'Life event types', 'Reminders', 'Search', 'Life events', 'Relationships', 'MCP history', 'Imports', 'Exports', 'Groups', 'Group notes', 'Group activities', 'Group reminders', 'Group files', 'Support requests', 'Support administration'],
             array_column($navigation['resources'], 'name'),
         );
     }
@@ -243,5 +243,16 @@ class ApiDocsViewModelTest extends TestCase
     public function it_points_the_base_url_at_the_versioned_api(): void
     {
         $this->assertStringEndsWith('/api/v1', ApiDocsViewModel::baseUrl());
+    }
+
+    #[Test]
+    public function it_leaves_out_support_while_support_is_switched_off(): void
+    {
+        $this->assertNotNull(new ApiDocsViewModel()->section('support-requests-index'));
+
+        config(['monica.support_enabled' => false]);
+
+        $this->assertNull(new ApiDocsViewModel()->section('support-requests-index'));
+        $this->assertNotContains('Support requests', array_column(new ApiDocsViewModel()->navigation()['resources'], 'name'));
     }
 }

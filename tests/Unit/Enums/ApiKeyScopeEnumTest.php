@@ -12,10 +12,10 @@ use Tests\TestCase;
 class ApiKeyScopeEnumTest extends TestCase
 {
     #[Test]
-    public function it_names_the_one_scope_a_key_can_carry(): void
+    public function it_names_the_scopes_a_key_can_carry(): void
     {
         $this->assertEquals(
-            ['sensitive-fields'],
+            ['sensitive-fields', 'administration'],
             ApiKeyScopeEnum::values(),
         );
     }

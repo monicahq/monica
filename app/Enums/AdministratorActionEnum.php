@@ -25,6 +25,9 @@ enum AdministratorActionEnum: string implements Translatable
     case FlagDeactivated = 'flag_deactivated';
     case FlagActivatedForEveryAccount = 'flag_activated_for_every_account';
     case FlagDeactivatedForEveryAccount = 'flag_deactivated_for_every_account';
+    case SupportReplySent = 'support_reply_sent';
+    case SupportNoteAdded = 'support_note_added';
+    case SupportRequestStatusChanged = 'support_request_status_changed';
 
     public function description(): string
     {
@@ -45,6 +48,9 @@ enum AdministratorActionEnum: string implements Translatable
             self::FlagDeactivated => 'Switched off :flag for :name',
             self::FlagActivatedForEveryAccount => 'Switched on :flag for every account',
             self::FlagDeactivatedForEveryAccount => 'Switched off :flag for every account',
+            self::SupportReplySent => 'Replied to the support request :reference of :name',
+            self::SupportNoteAdded => 'Left an internal note on the support request :reference of :name',
+            self::SupportRequestStatusChanged => 'Moved the support request :reference of :name to :status',
         };
     }
 
@@ -58,6 +64,7 @@ enum AdministratorActionEnum: string implements Translatable
             self::AdministratorAccessGranted, self::AdministratorAccessWithdrawn => 'key',
             self::InstanceSettingUpdated, self::InstanceSettingReverted, self::TelegramWebhookRegistered => 'settings',
             self::FlagActivated, self::FlagDeactivated, self::FlagActivatedForEveryAccount, self::FlagDeactivatedForEveryAccount => 'tag',
+            self::SupportReplySent, self::SupportNoteAdded, self::SupportRequestStatusChanged => 'mail',
         };
     }
 
@@ -72,7 +79,10 @@ enum AdministratorActionEnum: string implements Translatable
             self::AdministratorAccessGranted,
             self::AdministratorAccessWithdrawn,
             self::FlagActivated,
-            self::FlagDeactivated => true,
+            self::FlagDeactivated,
+            self::SupportReplySent,
+            self::SupportNoteAdded,
+            self::SupportRequestStatusChanged => true,
             self::MarketplaceVersionApproved,
             self::MarketplaceVersionRejected,
             self::InstanceSettingUpdated,

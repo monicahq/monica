@@ -8,6 +8,7 @@ use App\Actions\CreateApiKey;
 use App\Actions\DestroyApiKey;
 use App\Enums\ApiKeyClientEnum;
 use App\Enums\ApiKeyScopeEnum;
+use App\Exceptions\ScopeIsNotGrantable;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -20,6 +21,7 @@ class ApiKeyController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'min:3', 'max:255'],
             'sensitive_fields' => ['sometimes', 'boolean'],
+            'administration' => ['sometimes', 'boolean'],
             'client' => ['sometimes', Rule::enum(ApiKeyClientEnum::class)],
         ]);
 
@@ -29,12 +31,20 @@ class ApiKeyController extends Controller
             $scopes[] = ApiKeyScopeEnum::SensitiveFields->value;
         }
 
-        $apiKey = new CreateApiKey(
-            user: $request->user(),
-            name: $validated['name'],
-            scopes: $scopes,
-            client: ApiKeyClientEnum::tryFrom((string) ($validated['client'] ?? '')) ?? ApiKeyClientEnum::Script,
-        )->execute()->plainTextToken;
+        if ((bool) ($validated['administration'] ?? false)) {
+            $scopes[] = ApiKeyScopeEnum::Administration->value;
+        }
+
+        try {
+            $apiKey = new CreateApiKey(
+                user: $request->user(),
+                name: $validated['name'],
+                scopes: $scopes,
+                client: ApiKeyClientEnum::tryFrom((string) ($validated['client'] ?? '')) ?? ApiKeyClientEnum::Script,
+            )->execute()->plainTextToken;
+        } catch (ScopeIsNotGrantable $e) {
+            return back()->withErrors(['administration' => $e->getMessage()])->withInput();
+        }
 
         return redirect()->route('settings.security.index')
             ->with('apiKey', $apiKey)

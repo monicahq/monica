@@ -76,6 +76,31 @@ ajax.configure({ mergeStrategy: 'morph' });
 window.oversizedFiles = (fileList, maxKilobytes) =>
     Array.from(fileList ?? []).filter((file) => file.size > maxKilobytes * 1024);
 
+window.keepAcceptedFiles = (input, maxKilobytes, maxCount) => {
+    const kept = new DataTransfer();
+    const refused = [];
+
+    Array.from(input.files ?? []).forEach((file) => {
+        if (file.size > maxKilobytes * 1024) {
+            refused.push({ name: file.name, reason: 'size' });
+
+            return;
+        }
+
+        if (kept.files.length >= maxCount) {
+            refused.push({ name: file.name, reason: 'count' });
+
+            return;
+        }
+
+        kept.items.add(file);
+    });
+
+    input.files = kept.files;
+
+    return refused;
+};
+
 window.slugify = (value) =>
     (value ?? '')
         .normalize('NFD')

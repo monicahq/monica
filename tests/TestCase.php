@@ -70,6 +70,9 @@ abstract class TestCase extends BaseTestCase
         foreach (['carddav', 'file-upload', 'groups', 'sms-notifications', 'vcard-export'] as $flag) {
             Feature::define($flag, true);
         }
+
+        // Support ships switched off. The suite exercises it switched on; a test of the switch turns it off.
+        config(['monica.support_enabled' => true]);
     }
 
     #[Override]

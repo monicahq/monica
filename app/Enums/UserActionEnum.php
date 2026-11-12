@@ -129,6 +129,9 @@ enum UserActionEnum: string implements Translatable
     case GroupNoteDeletion = 'group_note_deleted';
     case GroupFileAddition = 'group_file_added';
     case GroupFileRemoval = 'group_file_removed';
+    case SupportRequestOpened = 'support_request_opened';
+    case SupportMessageAdded = 'support_message_added';
+    case SupportRequestSolved = 'support_request_solved';
     case DefaultTemplateSeeded = 'default_template_seeded';
     case TemplateCreation = 'template_created';
     case TemplateUpdate = 'template_updated';
@@ -351,6 +354,9 @@ enum UserActionEnum: string implements Translatable
             self::GroupNoteDeletion => 'Deleted a note on the group :name',
             self::GroupFileAddition => 'Added the file :file to the group :name',
             self::GroupFileRemoval => 'Removed the file :file from the group :name',
+            self::SupportRequestOpened => 'Asked the support team about :subject',
+            self::SupportMessageAdded => 'Wrote to the support team about :subject',
+            self::SupportRequestSolved => 'Marked the support request :subject as solved',
             self::DefaultTemplateSeeded => 'Set up the template :name the account starts with',
             self::TemplateCreation => 'Created the template :name',
             self::TemplateUpdate => 'Updated the template :name',

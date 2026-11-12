@@ -3,9 +3,11 @@
 declare(strict_types=1);
 
 use App\Http\Middleware\EnsureFlagIsOn;
+use App\Http\Middleware\EnsureKeyCanAdminister;
 use App\Http\Middleware\EnsureMagicLinkIsEnabled;
 use App\Http\Middleware\EnsureRegistrationIsEnabled;
 use App\Http\Middleware\EnsureSsoProviderIsAvailable;
+use App\Http\Middleware\EnsureSupportIsEnabled;
 use App\Http\Middleware\EnsureUserIsActive;
 use App\Http\Middleware\EnsureUserIsAdministrator;
 use App\Http\Middleware\InsertServerGenerationTime;
@@ -51,6 +53,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->replace(TrustProxies::class, CloudflareTrustProxies::class);
         $middleware->alias([
             'active' => EnsureUserIsActive::class,
+            'administration' => EnsureKeyCanAdminister::class,
             'administrator' => EnsureUserIsAdministrator::class,
             'flag' => EnsureFlagIsOn::class,
             'magic.link' => EnsureMagicLinkIsEnabled::class,
@@ -58,6 +61,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'registration' => EnsureRegistrationIsEnabled::class,
             'searchable' => MarkPageSearchable::class,
             'sso' => EnsureSsoProviderIsAvailable::class,
+            'support' => EnsureSupportIsEnabled::class,
         ]);
         $middleware->api(prepend: [
             EnsureFrontendRequestsAreStateful::class,

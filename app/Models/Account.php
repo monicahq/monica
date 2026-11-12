@@ -206,6 +206,16 @@ class Account extends Model
     }
 
     /**
+     * Get the support requests opened from the account.
+     *
+     * @return HasMany<SupportRequest, $this>
+     */
+    public function supportRequests(): HasMany
+    {
+        return $this->hasMany(SupportRequest::class);
+    }
+
+    /**
      * Get the contacts documented in the account, across every vault.
      *
      * @return HasMany<Contact, $this>

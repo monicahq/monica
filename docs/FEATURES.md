@@ -174,5 +174,10 @@ A chronological list of every feature and improvement shipped during development
 * Auth: Carried Microsoft sign in through OpenID Connect, and let an operator restrict it to one organisation.
 * Auth: Sent somebody back with an explanation when a provider cannot be reached, instead of an error page.
 * Admin/configuration: Added the settings of the new sign in providers to the instance settings.
+* Support: Let somebody ask the people running the instance for help from inside the application, in one of five categories, with files that do not count against their storage.
+* Support: Let somebody follow their requests, reply in them, mark them solved and reopen them under the same number.
+* Admin/support: Added a support queue to the admin space, with views by status, filters, the account behind each request, internal notes and a status history.
+* API: Added endpoints to open, list, read, answer and close support requests, and endpoints for administrators to work the queue with a key holding the administration scope.
+* MCP: Added tools to open and follow support requests, and tools for administrators to work the support queue.
 * Auth: Let an instance offer Apple as a way to sign in, once its package is installed.
 * Admin/configuration: Added the Apple settings to the instance settings, with a notice when its package is missing.

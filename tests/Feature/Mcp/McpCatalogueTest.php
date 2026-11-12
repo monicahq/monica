@@ -6,10 +6,12 @@ namespace Tests\Feature\Mcp;
 
 use App\Mcp\Servers\EricaServer;
 use App\Mcp\Tools\MirrorsAnApiCapability;
+use App\Models\Administrator;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Route;
 use Laravel\Mcp\Server\Tool;
+use Laravel\Sanctum\PersonalAccessToken;
 use PHPUnit\Framework\Attributes\Test;
 use ReflectionClass;
 use Tests\TestCase;
@@ -44,6 +46,8 @@ class McpCatalogueTest extends TestCase
     public function every_capability_is_a_tool_the_server_offers(): void
     {
         $user = User::factory()->create();
+        Administrator::factory()->create(['user_id' => $user->id]);
+        $user->withAccessToken(PersonalAccessToken::findToken($user->createToken('Every scope', ['*', 'administration'])->plainTextToken));
 
         $offered = EricaServer::actingAs($user)->tools();
 
