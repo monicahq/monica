@@ -12,6 +12,11 @@ use App\Actions\CreateContact;
 use App\Actions\CreateFieldValueRow;
 use App\Actions\CreateGroup;
 use App\Actions\CreateGroupMembership;
+use App\Actions\CreateKnowledgeFolder;
+use App\Actions\CreateKnowledgeList;
+use App\Actions\CreateKnowledgeListColumn;
+use App\Actions\CreateKnowledgeListItem;
+use App\Actions\CreateKnowledgeNote;
 use App\Actions\CreateLifeEvent;
 use App\Actions\CreateManualReminder;
 use App\Actions\CreatePossession;
@@ -29,6 +34,7 @@ use App\Actions\GrantAdministratorAccess;
 use App\Actions\OpenSupportRequest;
 use App\Actions\SendSupportReply;
 use App\Actions\SetFieldValue;
+use App\Actions\UpdateKnowledgeListColumn;
 use App\Actions\UpdateRelationship;
 use App\Enums\AddressLabelEnum;
 use App\Enums\ContactCategoryEnum;
@@ -102,6 +108,7 @@ class ExampleAccountSeeder extends Seeder
         $this->createLifeEvents();
         $this->createGroups();
         $this->createPossessions();
+        $this->createKnowledge();
         $this->createContactReminders();
         $this->grantAdministratorAccess();
         $this->createSupportRequests();
@@ -435,6 +442,59 @@ class ExampleAccountSeeder extends Seeder
      * Three reminders written by hand about Chandler, and the answers given on their past dates, so
      * the screen listing his reminders has something in every group.
      */
+    private function createKnowledge(): void
+    {
+        foreach (new ExampleKnowledge()->all() as $example) {
+            $folder = new CreateKnowledgeFolder(
+                user: $this->user,
+                vault: $this->vault,
+                name: $example['name'],
+            )->execute();
+
+            foreach ($example['notes'] as $note) {
+                new CreateKnowledgeNote(
+                    user: $this->user,
+                    vault: $this->vault,
+                    folder: $folder,
+                    title: $note['title'],
+                    body: $note['body'],
+                )->execute();
+            }
+
+            foreach ($example['lists'] as $exampleList) {
+                $list = new CreateKnowledgeList(
+                    user: $this->user,
+                    vault: $this->vault,
+                    folder: $folder,
+                    title: $exampleList['title'],
+                    description: $exampleList['description'],
+                )->execute();
+
+                $columns = $list->columns()->get()->all();
+
+                foreach ($exampleList['columns'] as $index => $name) {
+                    $columns[$index] = isset($columns[$index])
+                        ? new UpdateKnowledgeListColumn(user: $this->user, column: $columns[$index], name: $name)->execute()
+                        : new CreateKnowledgeListColumn(user: $this->user, list: $list, name: $name)->execute();
+                }
+
+                foreach ($exampleList['items'] as $values) {
+                    $cells = [];
+
+                    foreach ($values as $index => $value) {
+                        $cells[$columns[$index]->uuid] = $value;
+                    }
+
+                    new CreateKnowledgeListItem(
+                        user: $this->user,
+                        list: $list,
+                        cells: $cells,
+                    )->execute();
+                }
+            }
+        }
+    }
+
     private function createContactReminders(): void
     {
         $chandler = $this->contacts['Chandler Bing'];
