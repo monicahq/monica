@@ -172,6 +172,11 @@ class ContactViewModel
         return route('contacts.vcard.show', ['vault' => $this->vault, 'contact' => $this->contact]);
     }
 
+    public function markdownUrl(): string
+    {
+        return route('contacts.markdown.show', ['vault' => $this->vault, 'contact' => $this->contact]);
+    }
+
     public function versionHistoryUrl(): string
     {
         return $this->urlTo(self::PAGE_VERSION_HISTORY);

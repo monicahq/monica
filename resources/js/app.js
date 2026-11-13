@@ -11,6 +11,7 @@ import apiChangelog from './api-changelog';
 import apiDocsSidebarScroll from './api-docs-sidebar-scroll';
 import confirmPassword from './confirm-password';
 import contactListColumns from './contact-list-columns';
+import contactMarkdownCopy from './contact-markdown-copy';
 import contactNameEditor from './contact-name-editor';
 import docsPageActions from './docs-page-actions';
 import fieldReminder from './field-reminder';
@@ -55,6 +56,7 @@ Alpine.data('carddavDocs', (options) => mcpDocs({ ...options, endpoint: '/dav' }
 Alpine.data('confirmPassword', confirmPassword);
 Alpine.data('contactNameEditor', contactNameEditor);
 Alpine.data('contactListColumns', contactListColumns);
+Alpine.data('contactMarkdownCopy', contactMarkdownCopy);
 Alpine.data('docsPageActions', docsPageActions);
 Alpine.data('fieldReminder', fieldReminder);
 Alpine.data('knowledgeNoteEditor', knowledgeNoteEditor);

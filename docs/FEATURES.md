@@ -247,3 +247,4 @@ A chronological list of every feature and improvement shipped during development
 * Reminders: The API and MCP list the dates of a whole vault (overdue, today, upcoming or history), the same ones as the vault dashboard.
 * Reminders: The API and MCP list a vault's birthdays only, including those nobody asked to be reminded of, with the age each person turns.
 * Example account: Filled the vault's Knowledge with eight folders of notes and lists.
+* Contacts: Let somebody download or copy a contact as one Markdown document, to keep it or hand it to an assistant, with the same document over the API and the MCP server.

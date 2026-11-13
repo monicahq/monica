@@ -6,6 +6,17 @@ return [
     'date' => '2026-11-13',
     'entries' => [
         [
+            'id' => 'contact-markdown',
+            'kind' => 'Added',
+            'group' => 'Contacts',
+            'title' => 'Adds a contact as one Markdown document',
+            'summary' => 'Get everything recorded about a contact (names, fields, relationships, life events, groups, reminders and loans) as one Markdown document, the same text the contact page downloads. Sensitive values need the sensitive fields scope.',
+            'why' => 'Reading a whole contact took one request per kind of data, and an assistant had to put the answers back together itself.',
+            'changes' => [
+                ['field' => 'markdown', 'change' => 'Added', 'endpoints' => ['GET /vaults/{vault}/contacts/{contact}/markdown']],
+            ],
+        ],
+        [
             'id' => 'vault-reminder-occurrences',
             'kind' => 'Added',
             'group' => 'Reminders',

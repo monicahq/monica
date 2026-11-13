@@ -82,6 +82,7 @@ use App\Mcp\Tools\DeleteTemplateField;
 use App\Mcp\Tools\DuplicateTemplate;
 use App\Mcp\Tools\ExportPossessionType;
 use App\Mcp\Tools\GetContact;
+use App\Mcp\Tools\GetContactMarkdown;
 use App\Mcp\Tools\GetContactRelationship;
 use App\Mcp\Tools\GetContactReminder;
 use App\Mcp\Tools\GetEmailSent;
@@ -303,6 +304,7 @@ class MonicaServer extends Server
     /** @var array<int, class-string<Tool>> */
     protected array $tools = [
         GetContact::class,
+        GetContactMarkdown::class,
         ListContactNameRepresentations::class,
         GetMeContact::class,
         ListLifeEventCategories::class,

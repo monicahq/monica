@@ -228,6 +228,7 @@ class McpDocsViewModel
             ['name' => 'Contacts, reading', 'changesData' => false, 'tools' => [
                 ['name' => 'list-contacts', 'description' => 'Lists the contacts in a vault, a page at a time. Can search, narrow to a grouping, and sort.'],
                 ['name' => 'get-contact', 'description' => 'Returns one contact: their names, their template, and whether they are a favourite or archived.'],
+                ['name' => 'get-contact-markdown', 'description' => 'Returns everything recorded about one contact as a single Markdown document, the same text the contact page downloads.'],
                 ['name' => 'get-me-contact', 'description' => 'Returns the contact that represents you in a vault.'],
                 ['name' => 'list-contact-name-representations', 'description' => 'Returns every way a contact’s name is written, and which one it is shown under.'],
             ]],

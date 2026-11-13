@@ -136,6 +136,7 @@ use App\Http\Controllers\App\Vaults\ContactLifeEventController;
 use App\Http\Controllers\App\Vaults\ContactLifeEventFieldController;
 use App\Http\Controllers\App\Vaults\ContactLifeEventRestorationController;
 use App\Http\Controllers\App\Vaults\ContactListColumnController;
+use App\Http\Controllers\App\Vaults\ContactMarkdownController;
 use App\Http\Controllers\App\Vaults\ContactMergeController;
 use App\Http\Controllers\App\Vaults\ContactNameController;
 use App\Http\Controllers\App\Vaults\ContactRelationshipController;
@@ -513,6 +514,8 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::get('vaults/{vault}/contacts/{contact}/vcard', [ContactVCardController::class, 'show'])
         ->middleware(['flag:vcard-export'])
         ->name('contacts.vcard.show');
+    Route::get('vaults/{vault}/contacts/{contact}/markdown', [ContactMarkdownController::class, 'show'])
+        ->name('contacts.markdown.show');
 
     Route::get('vaults/{vault}/contacts/{contact}/{page?}', [ContactController::class, 'show'])
         ->missing(fn (Request $request): Response => new AbsorbedContactController()->show($request))

@@ -912,7 +912,7 @@ last two exist only when the instance configured them.
 - **Examples:** none. **Acceptance:** the "sensitive fields included" warning is present. **Delivery:** P1, ready.
 
 #### `integrations.overview` Connect Monica to other tools
-- **Identity:** `8-sharing-export-and-sync/5-connect-other-tools.md`. Explanation. Users and developers.
+- **Identity:** `8-sharing-export-and-sync/6-connect-other-tools.md`. Explanation. Users and developers.
 - **Conceptual question:** which of CardDAV, the API or MCP fits my goal, and what access does each give?
 - **Scope:** phone and computer sync (CardDAV and CalDAV, two way address book per vault, read only
   calendars); scripts (API keys, optional sensitive fields scope); assistants (MCP with a key or OAuth);

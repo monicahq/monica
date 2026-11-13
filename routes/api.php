@@ -27,6 +27,7 @@ use App\Http\Controllers\Api\ContactDuplicateDismissalController;
 use App\Http\Controllers\Api\ContactFavouriteController;
 use App\Http\Controllers\Api\ContactGroupController;
 use App\Http\Controllers\Api\ContactListColumnController;
+use App\Http\Controllers\Api\ContactMarkdownController;
 use App\Http\Controllers\Api\ContactMeController;
 use App\Http\Controllers\Api\ContactMergeController;
 use App\Http\Controllers\Api\ContactNameController;
@@ -416,6 +417,7 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::get('vaults/{vault}/contacts/me', [ContactMeController::class, 'show'])->name('contacts.me');
         Route::get('vaults/{vault}/contacts/{contact}', [ContactController::class, 'show'])->name('contacts.show');
         Route::get('vaults/{vault}/contacts/{contact}/vcard', [ContactVCardController::class, 'show'])->middleware('flag:vcard-export')->name('contacts.vcard.show');
+        Route::get('vaults/{vault}/contacts/{contact}/markdown', [ContactMarkdownController::class, 'show'])->name('contacts.markdown.show');
         Route::post('vaults/{vault}/contacts', [ContactController::class, 'create'])->name('contacts.create');
         Route::delete('vaults/{vault}/contacts/{contact}', [ContactController::class, 'destroy'])->name('contacts.destroy');
 

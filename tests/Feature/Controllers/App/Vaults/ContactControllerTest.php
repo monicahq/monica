@@ -448,6 +448,24 @@ class ContactControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_offers_to_download_and_to_copy_the_contact_as_markdown(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        $this->actingAs($user)->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael]))
+            ->assertStatus(200)
+            ->assertSee('href="'.route('contacts.markdown.show', ['vault' => $vault, 'contact' => $michael]).'"', false)
+            ->assertSee('x-data="contactMarkdownCopy(', false)
+            ->assertSee('Export as Markdown')
+            ->assertSee('Copy as Markdown')
+            ->assertSee('role="status"', false);
+    }
+
+    #[Test]
     public function it_writes_down_that_the_contact_was_opened(): void
     {
         Queue::fake();

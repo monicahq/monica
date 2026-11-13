@@ -42,27 +42,39 @@
         {{ __('Edit contact') }}
       </x-button>
 
-      <x-actions-menu :label="__('More actions for :name', ['name' => $viewModel->contact()->name])">
-        <x-actions-menu.item :href="$viewModel->shareLinksUrl()" data-turbo="true">
-          {{ $viewModel->shareLine() }}
-        </x-actions-menu.item>
-
-        <x-actions-menu.item :href="$viewModel->mergeUrl()" data-turbo="true">
-          {{ __('Merge') }}
-        </x-actions-menu.item>
-
-        <div role="separator" class="-mx-1 my-1 h-px bg-hairline"></div>
-
-        @if ($viewModel->vCardUrl() !== null)
-          <x-actions-menu.item :href="$viewModel->vCardUrl()" download data-no-instant>
-            {{ __('Export as vCard') }}
+      <div x-data="contactMarkdownCopy({ url: @js($viewModel->markdownUrl()), copied: @js(__('Copied')), failed: @js(__('Could not copy. Download the file instead.')) })" class="contents">
+        <x-actions-menu :label="__('More actions for :name', ['name' => $viewModel->contact()->name])">
+          <x-actions-menu.item :href="$viewModel->shareLinksUrl()" data-turbo="true">
+            {{ $viewModel->shareLine() }}
           </x-actions-menu.item>
-        @endif
 
-        <x-actions-menu.item :href="$viewModel->versionHistoryUrl()" data-turbo="true">
-          {{ __('Version history') }}
-        </x-actions-menu.item>
-      </x-actions-menu>
+          <x-actions-menu.item :href="$viewModel->mergeUrl()" data-turbo="true">
+            {{ __('Merge') }}
+          </x-actions-menu.item>
+
+          <div role="separator" class="-mx-1 my-1 h-px bg-hairline"></div>
+
+          <x-actions-menu.item :href="$viewModel->markdownUrl()" download data-no-instant>
+            {{ __('Export as Markdown') }}
+          </x-actions-menu.item>
+
+          <button type="button" role="menuitem" @click="menuOpen = false; $refs.menuTrigger.focus(); copyMarkdown()" class="flex w-full cursor-pointer items-center gap-2.5 min-h-8 rounded-md px-2.5 text-left font-sans text-base text-ink transition-colors hover:bg-hover focus-ring-inset">
+            {{ __('Copy as Markdown') }}
+          </button>
+
+          @if ($viewModel->vCardUrl() !== null)
+            <x-actions-menu.item :href="$viewModel->vCardUrl()" download data-no-instant>
+              {{ __('Export as vCard') }}
+            </x-actions-menu.item>
+          @endif
+
+          <x-actions-menu.item :href="$viewModel->versionHistoryUrl()" data-turbo="true">
+            {{ __('Version history') }}
+          </x-actions-menu.item>
+        </x-actions-menu>
+
+        <p role="status" class="text-sm text-muted" x-text="message"></p>
+      </div>
     </div>
 
   </header>
