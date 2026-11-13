@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\URL;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -38,6 +39,30 @@ class RegistrationControllerTest extends TestCase
         $response = $this->get(route('auth.register.new'));
 
         $response->assertStatus(200);
+        $response->assertSee('Create your account');
+        $response->assertSee('Next step: validate your email address');
+    }
+
+    #[Test]
+    public function it_offers_a_passkey_over_a_secure_connection(): void
+    {
+        URL::forceScheme('https');
+
+        $response = $this->get(route('auth.register.new'));
+
+        $response->assertSee('Use a passkey instead');
+        $response->assertSee('Set a password instead');
+    }
+
+    #[Test]
+    public function it_says_nothing_about_passkeys_over_a_connection_that_is_not_secure(): void
+    {
+        URL::forceScheme('http');
+
+        $response = $this->get(route('auth.register.new'));
+
+        $response->assertDontSee('Use a passkey instead');
+        $response->assertDontSee('You will sign in with a passkey');
     }
 
     #[Test]

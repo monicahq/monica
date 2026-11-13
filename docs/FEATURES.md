@@ -242,3 +242,5 @@ A chronological list of every feature and improvement shipped during development
 * Vaults/possessions: The contact of a loan is chosen from the vault's contacts, or written down with the loan in one step.
 * Vaults/contacts: A contact's page lists the possessions they have had or lent; merging contacts carries their loans, and undoing the merge gives them back.
 * Possessions: The API and MCP list, show, record, change and delete the loans of a possession.
+* Auth: Registration opens on a password, and a passkey is offered under the button as "Use a passkey instead" wherever the connection and the browser can create one.
+* Auth: The registration screen no longer warns about passkeys over a connection that is not secure.
