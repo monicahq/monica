@@ -14,6 +14,7 @@ use App\Models\PossessionFieldGroup;
 use App\Models\PossessionFieldValue;
 use App\Models\PossessionTransaction;
 use App\Models\PossessionType;
+use App\Models\PossessionValuation;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -119,5 +120,27 @@ class DestroyPossessionTypeTest extends TestCase
 
         $this->assertModelMissing($transaction);
         $this->assertSame(0, $receipt->refresh()->reference_count);
+    }
+
+    #[Test]
+    public function it_detaches_the_documents_of_the_valuations_of_its_possessions(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $type = PossessionType::factory()->create(['account_id' => $user->account_id]);
+        $possession = Possession::factory()->create([
+            'vault_id' => Vault::factory()->create(['account_id' => $user->account_id])->id,
+            'possession_type_id' => $type->id,
+        ]);
+        $valuation = PossessionValuation::factory()->create(['possession_id' => $possession->id]);
+        $appraisal = File::factory()->used(1)->create(['account_id' => $user->account_id]);
+        $valuation->documents()->attach($appraisal);
+
+        new DestroyPossessionType(user: $user, possessionType: $type)->execute();
+
+        $this->assertModelMissing($valuation);
+        $this->assertSame(0, $appraisal->refresh()->reference_count);
+        $this->assertNotNull($appraisal->orphaned_at);
     }
 }

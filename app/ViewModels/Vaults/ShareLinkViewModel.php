@@ -137,7 +137,7 @@ class ShareLinkViewModel
             ['label' => __('Password'), 'value' => $this->shareLink->isProtectedByAPassword()
                 ? __('Asked for before the page opens')
                 : __('None. Anybody holding the address can open it')],
-            ['label' => __('Ends'), 'value' => ShareLinkSummary::endsLine($this->shareLink)],
+            ['label' => __('Ends'), 'value' => ShareLinkSummary::endsLine($this->shareLink, $this->user)],
             ['label' => __('For'), 'value' => $this->shareLink->recipient_hint ?? __('Nobody in particular')],
             ['label' => __('Made'), 'value' => $this->madeLine()],
         ];
@@ -178,7 +178,7 @@ class ShareLinkViewModel
     {
         return PageSize::paginate($this->shareLink->visits(), $this->size)
             ->through(fn (ShareLinkVisit $visit): array => [
-                'when' => $visit->viewed_at->isoFormat('LL, LT'),
+                'when' => $visit->viewed_at->setTimezone($this->user->timezone)->isoFormat('LL, LT'),
                 'where' => $this->whereFrom($visit),
                 'agent' => $this->agentOf($visit),
                 'failed' => $visit->password_failed,

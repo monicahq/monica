@@ -72,6 +72,16 @@ class ContactShareLinksViewModelTest extends TestCase
     }
 
     #[Test]
+    public function it_says_when_a_link_was_made_on_the_day_of_the_reader(): void
+    {
+        $user = User::factory()->create(['timezone' => 'America/New_York']);
+        $contact = $this->contactOf($user);
+        ShareLink::factory()->for($contact, 'shareable')->create(['recipient_hint' => null, 'created_at' => '2026-01-15 02:00:00']);
+
+        $this->assertSame('Made January 14, 2026', $this->only($user, $contact)['meta']);
+    }
+
+    #[Test]
     public function it_leaves_out_a_link_onto_somebody_else(): void
     {
         $user = User::factory()->create();

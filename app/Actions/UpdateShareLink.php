@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Hash;
 class UpdateShareLink
 {
     /**
-     * @param  list<int>  $excludedSectionIds
+     * @param  list<int>  $includedSectionIds
      * @param  list<int>  $excludedLifeEventIds
      */
     public function __construct(
@@ -38,7 +38,7 @@ class UpdateShareLink
         private readonly bool $includesRelationships = false,
         private readonly bool $includesGroups = false,
         private readonly bool $includesSensitiveFields = false,
-        private readonly array $excludedSectionIds = [],
+        private readonly array $includedSectionIds = [],
         private readonly array $excludedLifeEventIds = [],
     ) {}
 
@@ -81,7 +81,7 @@ class UpdateShareLink
         $this->shareLink->includes_relationships = $this->includesRelationships;
         $this->shareLink->includes_groups = $this->includesGroups;
         $this->shareLink->includes_sensitive_fields = $this->includesSensitiveFields;
-        $this->shareLink->excluded_section_ids = $this->excludedSectionIds;
+        $this->shareLink->included_section_ids = $this->includedSectionIds;
         $this->shareLink->excluded_life_event_ids = $this->excludedLifeEventIds;
         $this->shareLink->password_hash = $this->passwordHash();
         $this->shareLink->save();

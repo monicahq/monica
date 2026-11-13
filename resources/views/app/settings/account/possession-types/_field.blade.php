@@ -68,7 +68,7 @@
                 @endforeach
               </x-slot:fields>
 
-              <p>{{ __('This cannot be undone.') }}</p>
+              <p>{{ $field['choiceWarnings'][$option] }}</p>
             </x-modal.warning>
           </div>
         @endforeach

@@ -10,6 +10,7 @@ use App\Jobs\LogUserAction;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
+use App\Models\Group;
 use App\Models\Reminder;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -73,6 +74,21 @@ class DestroyReminderTest extends TestCase
         new DestroyReminder(user: $user, reminder: $reminder)->execute();
 
         $this->assertFalse($reminder->fieldValue->reminder()->exists());
+    }
+
+    #[Test]
+    public function it_destroys_a_reminder_whose_group_was_force_deleted(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $group = Group::factory()->create(['account_id' => $user->account_id, 'name' => 'Scranton branch']);
+        $reminder = Reminder::factory()->manual($group, '2027-05-10')->create();
+        $group->forceDelete();
+
+        new DestroyReminder(user: $user, reminder: $reminder->refresh())->execute();
+
+        $this->assertSoftDeleted($reminder);
     }
 
     #[Test]

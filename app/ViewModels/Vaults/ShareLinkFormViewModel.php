@@ -205,7 +205,7 @@ class ShareLinkFormViewModel
      */
     public function pages(): array
     {
-        $excluded = $this->shareLink === null ? [] : $this->shareLink->excluded_section_ids;
+        $included = $this->shareLink?->included_section_ids;
 
         return $this->contact->structureVersion->pages
             ->map(fn (StructureVersionPage $page): array => [
@@ -216,7 +216,7 @@ class ShareLinkFormViewModel
                     ->map(fn (StructureVersionSection $row): array => [
                         'id' => $row->id,
                         'name' => $row->title_override ?? $row->sectionVersion->section->name,
-                        'isIncluded' => ! in_array($row->id, $excluded, true),
+                        'isIncluded' => $included === null || in_array($row->sectionVersion->section_id, $included, true),
                     ])
                     ->values()
                     ->all(),

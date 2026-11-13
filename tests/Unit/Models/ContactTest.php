@@ -11,6 +11,7 @@ use App\Enums\FieldTypeEnum;
 use App\Enums\NameOrderEnum;
 use App\Enums\RelationshipTypeEnum;
 use App\Enums\SortDirectionEnum;
+use App\Enums\ValueListEnum;
 use App\Helpers\LocaleCollation;
 use App\Models\Account;
 use App\Models\Contact;
@@ -23,6 +24,7 @@ use App\Models\Relationship;
 use App\Models\RelationshipType;
 use App\Models\Reminder;
 use App\Models\User;
+use App\Models\ValueList;
 use App\Models\ValueListItem;
 use App\Models\Vault;
 use Carbon\CarbonImmutable;
@@ -1216,8 +1218,43 @@ class ContactTest extends TestCase
 
         $this->assertEqualsCanonicalizing(
             [$jim->id, $pam->id],
-            Contact::query()->holdingAnyCategory([$sales->id, $finerThings->id])->pluck('id')->all(),
+            Contact::query()->holdingAnyCategory([$sales->id, $finerThings->id], true)->pluck('id')->all(),
         );
+    }
+
+    #[Test]
+    public function it_does_not_narrow_to_a_category_held_in_a_sensitive_field_for_a_caller_that_does_not_reach_sensitive_fields(): void
+    {
+        $vault = Vault::factory()->create();
+        $therapy = ValueListItem::factory()->create(['account_id' => $vault->account_id]);
+        $field = Field::factory()->create(['type' => FieldTypeEnum::Multiselect, 'value_list_id' => $therapy->value_list_id]);
+        $sensitiveField = Field::factory()->create(['type' => FieldTypeEnum::Multiselect, 'value_list_id' => $therapy->value_list_id, 'is_sensitive' => true]);
+
+        $jim = Contact::factory()->create(['vault_id' => $vault->id]);
+        $michael = Contact::factory()->create(['vault_id' => $vault->id]);
+        $this->hold($jim, $field, [$therapy->id]);
+        $this->hold($michael, $sensitiveField, [$therapy->id]);
+
+        $this->assertSame([$jim->id], Contact::query()->holdingAnyCategory([$therapy->id], false)->pluck('id')->all());
+        $this->assertEqualsCanonicalizing([$jim->id, $michael->id], Contact::query()->holdingAnyCategory([$therapy->id], true)->pluck('id')->all());
+    }
+
+    #[Test]
+    public function it_leaves_out_a_category_held_in_a_sensitive_field_for_a_caller_that_does_not_reach_sensitive_fields(): void
+    {
+        $vault = Vault::factory()->create();
+        $list = ValueList::factory()->supplied(ValueListEnum::ContactCategories)->create(['account_id' => $vault->account_id]);
+        $sales = ValueListItem::factory()->create(['account_id' => $vault->account_id, 'value_list_id' => $list->id, 'position' => 1]);
+        $therapy = ValueListItem::factory()->create(['account_id' => $vault->account_id, 'value_list_id' => $list->id, 'position' => 2]);
+        $field = Field::factory()->create(['type' => FieldTypeEnum::Multiselect, 'value_list_id' => $list->id]);
+        $sensitiveField = Field::factory()->create(['type' => FieldTypeEnum::Multiselect, 'value_list_id' => $list->id, 'is_sensitive' => true]);
+
+        $michael = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $vault->account_id]);
+        $this->hold($michael, $field, [$sales->id]);
+        $this->hold($michael, $sensitiveField, [$therapy->id]);
+
+        $this->assertSame([$sales->id], $michael->heldCategories(false)->pluck('id')->all());
+        $this->assertSame([$sales->id, $therapy->id], $michael->heldCategories(true)->pluck('id')->all());
     }
 
     /**

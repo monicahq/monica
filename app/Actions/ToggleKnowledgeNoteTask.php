@@ -54,7 +54,7 @@ class ToggleKnowledgeNoteTask
     private function toggle(): void
     {
         $line = KnowledgeMarkdown::taskLine($this->note->body, $this->task);
-        $parts = preg_split('/(\R)/', (string) $this->note->body, -1, PREG_SPLIT_DELIM_CAPTURE) ?: [];
+        $parts = preg_split('/(\r\n|\n|\r)/', (string) $this->note->body, -1, PREG_SPLIT_DELIM_CAPTURE) ?: [];
         $index = $line === null ? null : ($line - 1) * 2;
 
         if ($index === null || ! isset($parts[$index])) {

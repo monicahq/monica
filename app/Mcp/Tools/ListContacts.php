@@ -61,7 +61,7 @@ class ListContacts extends Tool
             ->where('vault_id', $vault->id)
             ->inGrouping(ContactGroupingEnum::fromValueOrEveryone($validated['filter'] ?? null))
             ->matchingSearch($validated['query'] ?? '')
-            ->when($categoryIds !== [], fn (Builder $query): Builder => $query->holdingAnyCategory($categoryIds))
+            ->when($categoryIds !== [], fn (Builder $query): Builder => $query->holdingAnyCategory($categoryIds, $this->reachesSensitiveFields($request)))
             ->sortedBy(
                 ContactSortEnum::fromValueOrName($validated['sort'] ?? null),
                 SortDirectionEnum::fromValueOrAscending($validated['direction'] ?? null),

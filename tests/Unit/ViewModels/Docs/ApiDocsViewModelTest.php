@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Docs;
 
+use App\Models\Administrator;
+use App\Models\User;
 use App\ViewModels\Docs\ApiDocsCodeSamples;
 use App\ViewModels\Docs\ApiDocsSection;
 use App\ViewModels\Docs\ApiDocsViewModel;
@@ -208,11 +210,23 @@ class ApiDocsViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_gives_the_support_page_only_while_support_is_switched_on(): void
+    public function it_gives_the_support_page_while_an_active_administrator_can_answer(): void
     {
+        Administrator::factory()->create(['user_id' => User::factory()->create()->id]);
+
         $this->assertEquals(route('support.requests.new'), new ApiDocsViewModel()->supportUrl());
 
         config(['monica.support_enabled' => false]);
+
+        $this->assertNull(new ApiDocsViewModel()->supportUrl());
+    }
+
+    #[Test]
+    public function it_gives_no_support_page_while_no_active_administrator_can_answer(): void
+    {
+        $this->assertNull(new ApiDocsViewModel()->supportUrl());
+
+        Administrator::factory()->create(['user_id' => User::factory()->inactive()->create()->id]);
 
         $this->assertNull(new ApiDocsViewModel()->supportUrl());
     }

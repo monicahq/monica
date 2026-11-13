@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Helpers;
 
+use App\Enums\ReminderCadenceEnum;
 use App\Enums\ReminderSourceEnum;
 use App\Models\Reminder;
 use Carbon\CarbonImmutable;
@@ -143,17 +144,44 @@ class ReminderSchedule
             return $date;
         }
 
-        $year = ($from ?? self::today($reminder))->year;
-
-        if (! $reminder->cadence->recurs()) {
-            return $date->setDate($year, $date->month, min($date->day, CarbonImmutable::create($year, $date->month, 1)->daysInMonth));
+        if ($reminder->cadence === ReminderCadenceEnum::Yearly) {
+            return self::inAYearHoldingTheDay($date, ($from ?? self::today($reminder))->year);
         }
 
+        $reference = self::scheduleChangedOn($reminder);
+
+        if ($reminder->cadence->recurs()) {
+            return self::inAYearHoldingTheDay($date, $reference->year);
+        }
+
+        $once = self::onDayOf($date, $reference->year);
+
+        return $once->lessThan($reference) ? self::onDayOf($date, $reference->year + 1) : $once;
+    }
+
+    private static function inAYearHoldingTheDay(CarbonImmutable $date, int $year): CarbonImmutable
+    {
         while (! checkdate($date->month, $date->day, $year)) {
             $year--;
         }
 
         return $date->setDate($year, $date->month, $date->day);
+    }
+
+    private static function onDayOf(CarbonImmutable $date, int $year): CarbonImmutable
+    {
+        return $date->setDate($year, $date->month, min($date->day, CarbonImmutable::create($year, $date->month, 1)->daysInMonth));
+    }
+
+    private static function scheduleChangedOn(Reminder $reminder): CarbonImmutable
+    {
+        $changedAt = $reminder->schedule_changed_at ?? $reminder->created_at;
+
+        if ($changedAt === null) {
+            return self::today($reminder);
+        }
+
+        return $changedAt->setTimezone($reminder->timezone)->startOfDay();
     }
 
     private static function today(Reminder $reminder): CarbonImmutable

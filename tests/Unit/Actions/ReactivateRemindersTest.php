@@ -56,6 +56,7 @@ class ReactivateRemindersTest extends TestCase
             'inactive_reason' => null,
             'deactivated_at' => null,
         ]);
+        $this->assertNotNull($reminder->refresh()->schedule_changed_at);
 
         Queue::assertPushedOn(
             queue: 'low',

@@ -30,8 +30,11 @@ use Override;
  * built on this may ever lead to a write.
  *
  * Everything sensitive is out until the owner says otherwise. Every inclusion
- * here is false to begin with, and the two exclusion lists tighten the result
- * further, section by section and life event by life event.
+ * here is false to begin with. A section is shown only when its id is in
+ * `included_section_ids`, which names sections rather than their placements in
+ * one template version, so a section added later, or brought by a merge, stays
+ * hidden until the owner ticks it. Life events are tightened one by one with
+ * `excluded_life_event_ids`.
  *
  * Only the hash of the token is kept, as for a magic link, so a database dump
  * yields no working link. The plain token exists for the length of the request
@@ -56,7 +59,7 @@ use Override;
  * @property bool $includes_relationships
  * @property bool $includes_groups
  * @property bool $includes_sensitive_fields
- * @property array<array-key, mixed> $excluded_section_ids
+ * @property array<array-key, mixed> $included_section_ids
  * @property array<array-key, mixed> $excluded_life_event_ids
  * @property int $view_count
  * @property CarbonImmutable|null $last_viewed_at
@@ -87,7 +90,7 @@ use Override;
     'includes_relationships',
     'includes_groups',
     'includes_sensitive_fields',
-    'excluded_section_ids',
+    'included_section_ids',
     'excluded_life_event_ids',
     'view_count',
     'last_viewed_at',
@@ -133,7 +136,7 @@ class ShareLink extends Model
             'includes_relationships' => 'boolean',
             'includes_groups' => 'boolean',
             'includes_sensitive_fields' => 'boolean',
-            'excluded_section_ids' => 'array',
+            'included_section_ids' => 'array',
             'excluded_life_event_ids' => 'array',
             'view_count' => 'integer',
             'last_viewed_at' => 'datetime',

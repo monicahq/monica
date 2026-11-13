@@ -7,6 +7,7 @@ namespace App\Helpers;
 use App\Models\Contact;
 use App\Models\ShareLink;
 use App\Models\StructureVersionSection;
+use App\Models\User;
 
 class ShareLinkSummary
 {
@@ -46,10 +47,10 @@ class ShareLinkSummary
         return implode(' · ', $held);
     }
 
-    public static function endsLine(ShareLink $link): string
+    public static function endsLine(ShareLink $link, User $user): string
     {
         if ($link->revoked_at !== null) {
-            return __('Revoked :when', ['when' => $link->revoked_at->isoFormat('LL')]);
+            return __('Revoked :when', ['when' => $link->revoked_at->setTimezone($user->timezone)->isoFormat('LL')]);
         }
 
         if ($link->expires_at === null) {
@@ -57,21 +58,21 @@ class ShareLinkSummary
         }
 
         if ($link->expires_at->isPast()) {
-            return __('Expired :when', ['when' => $link->expires_at->isoFormat('LL')]);
+            return __('Expired :when', ['when' => $link->expires_at->setTimezone($user->timezone)->isoFormat('LL')]);
         }
 
         return __(':date, :relative', [
-            'date' => $link->expires_at->isoFormat('LL'),
+            'date' => $link->expires_at->setTimezone($user->timezone)->isoFormat('LL'),
             'relative' => $link->expires_at->diffForHumans(),
         ]);
     }
 
     public static function sectionsShown(ShareLink $link, Contact $contact): int
     {
-        $excluded = $link->excluded_section_ids;
+        $included = $link->included_section_ids;
 
         return $contact->structureVersion->assembly
-            ->reject(fn (StructureVersionSection $row): bool => in_array($row->id, $excluded, true))
+            ->filter(fn (StructureVersionSection $row): bool => in_array($row->sectionVersion->section_id, $included, true))
             ->count();
     }
 

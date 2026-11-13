@@ -136,6 +136,7 @@ class RollBackAccountImport
     {
         Reminder::withTrashed()->whereIn('id', $this->recordsOf(Reminder::class))->forceDelete();
         Relationship::withTrashed()->whereIn('id', $this->recordsOf(Relationship::class))->forceDelete();
+        Reminder::withTrashed()->where('remindable_type', new Group()->getMorphClass())->whereIn('remindable_id', $this->recordsOf(Group::class))->forceDelete();
         Group::withTrashed()->whereIn('id', $this->recordsOf(Group::class))->forceDelete();
 
         $rows = $this->recordsOf(FieldValueRow::class);

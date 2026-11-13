@@ -66,6 +66,7 @@ class ReactivateReminders
 
                 $rule->refresh();
                 $rule->schedule_revision++;
+                $rule->schedule_changed_at = now();
                 $rule->save();
 
                 new GenerateReminderOccurrences(reminder: $rule)->execute();

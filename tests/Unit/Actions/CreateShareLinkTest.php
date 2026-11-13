@@ -118,7 +118,7 @@ class CreateShareLinkTest extends TestCase
         $this->assertFalse($shareLink->includes_relationships);
         $this->assertFalse($shareLink->includes_groups);
         $this->assertFalse($shareLink->includes_sensitive_fields);
-        $this->assertEquals([], $shareLink->excluded_section_ids);
+        $this->assertEquals([], $shareLink->included_section_ids);
         $this->assertEquals([], $shareLink->excluded_life_event_ids);
     }
 
@@ -135,12 +135,12 @@ class CreateShareLinkTest extends TestCase
             label: 'For Michael',
             includesFiles: true,
             includesRelationships: true,
-            excludedSectionIds: [12, 34],
+            includedSectionIds: [12, 34],
         )->execute();
 
         $this->assertTrue($shareLink->includes_files);
         $this->assertTrue($shareLink->includes_relationships);
-        $this->assertEquals([12, 34], $shareLink->excluded_section_ids);
+        $this->assertEquals([12, 34], $shareLink->included_section_ids);
     }
 
     #[Test]

@@ -33,7 +33,7 @@ includes_day_narrative      boolean                         whether the account 
 includes_relationships      boolean                         whether relationships appear
 includes_groups             boolean                         whether group memberships appear
 includes_sensitive_fields   boolean                         whether fields marked sensitive appear, false by default
-excluded_section_ids        json                            sections held back from the shared page
+included_section_ids        json                            ids of the sections shown on the shared page, whatever template version the contact is on
 excluded_life_event_ids       json                            life events held back individually, tightening the general setting
 view_count                  int                             how many times it was opened
 last_viewed_at              datetime                        when it was last opened
@@ -69,7 +69,7 @@ updated_at                  datetime
 
 ## What renders it
 
-`s/{token}/{page?}` sits outside the auth group and is the only place a link is opened, which is what makes it the only place a visit is written. `App\ViewModels\Shared\SharedContactViewModel` is where the exclusions stop being a stored intention: a section the link excludes is never read, a page whose every section is excluded is not a tab, one page left means no tab list, and a field marked sensitive is dropped unless the link says otherwise. The screens that make and manage a link are `ContactShareLinkController` under `vaults/{vault}/contacts/{contact}/share-links`, addressed by uuid so the token is never in the address of the screen managing it.
+`s/{token}/{page?}` sits outside the auth group and is the only place a link is opened, which is what makes it the only place a visit is written. `App\ViewModels\Shared\SharedContactViewModel` is where the exclusions stop being a stored intention: a section the link does not include is never read, a page whose every section is excluded is not a tab, one page left means no tab list, and a field marked sensitive is dropped unless the link says otherwise. The screens that make and manage a link are `ContactShareLinkController` under `vaults/{vault}/contacts/{contact}/share-links`, addressed by uuid so the token is never in the address of the screen managing it.
 
 ## Decisions taken while building it
 
@@ -82,10 +82,11 @@ updated_at                  datetime
 - **An unknown, an expired and a revoked token answer the same not found**, so trying tokens teaches nothing.
 - **A field holding a file is dropped from a shared page whatever `includes_files` says.** Handing the file over would need a public route onto it carrying the link's authority, and the screen has none. Repeated blocks go with them, since what they hold lives on rows of its own.
 - **A password that opened a link is kept in the visitor's session**, keyed by the hash of the token so the session holds no working address. Without it, walking between two tabs would ask again; the alternatives were re-posting the form on every refresh, or a second way into the record that skips the password and would one day be reached by something that should not have skipped it.
-- **The form only asks about what the product can honour.** Sensitive fields and section exclusions are the two questions on it. The five inclusions with no model behind them are named instead, in the list of what stays here, so nothing on screen promises something the page does not do.
+- **A link names the sections it shows, not the ones it holds back, and names them by section.** It first stored the placements it held back, which are rows of one template version. Moving the contact to another version, or merging it into a contact on another template, gave every section a placement the link did not name, and the shared page then showed all of them (issue 489). A section is now shown only when the owner ticked it, so a section a new version adds, or one a merge brings, stays hidden until the owner ticks it.
+- **The form only asks about what the product can honour.** Sensitive fields and the sections shown are the two questions on it. The five inclusions with no model behind them are named instead, in the list of what stays here, so nothing on screen promises something the page does not do.
 - **Live, expired and revoked are read rather than stored.** They are three readings of two nullable dates, and only a screen needs the reading, so there is no status column and no enum.
 
 ## Open questions
 
-- **What granularity a link should offer** (16): the whole record, chosen pages or sections, a saved view, or a frozen snapshot. The columns here cover the whole record with section exclusions. Page visibility is derived from the sections that remain, rather than stored as a second exclusion mechanism that could disagree.
+- **What granularity a link should offer** (16): the whole record, chosen pages or sections, a saved view, or a frozen snapshot. The columns here cover the whole record with the sections the owner ticked. Page visibility is derived from the sections that remain, rather than stored as a second exclusion mechanism that could disagree.
 - **Whether a vault link always reflects current data or can publish a frozen snapshot** (16). This file assumes live data. A snapshot would need its own storage and is a different feature.

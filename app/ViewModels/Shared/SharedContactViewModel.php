@@ -185,11 +185,11 @@ class SharedContactViewModel
     /** @return Collection<int, StructureVersionSection> */
     private function includedSectionsOn(StructureVersionPage $page): Collection
     {
-        $excluded = $this->shareLink->excluded_section_ids;
+        $included = $this->shareLink->included_section_ids;
 
         return $this->contact->structureVersion->assembly
             ->where('structure_version_page_id', $page->id)
-            ->reject(fn (StructureVersionSection $row): bool => in_array($row->id, $excluded, true))
+            ->filter(fn (StructureVersionSection $row): bool => in_array($row->sectionVersion->section_id, $included, true))
             ->values();
     }
 

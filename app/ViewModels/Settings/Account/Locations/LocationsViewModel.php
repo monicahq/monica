@@ -220,7 +220,7 @@ class LocationsViewModel
 
     private function oneLine(string $address): string
     {
-        return (string) preg_replace('/\s*\R\s*/', ', ', mb_trim($address));
+        return (string) preg_replace('/\s*\R\s*/u', ', ', mb_trim($address));
     }
 
     private function locationTree(): LocationTree

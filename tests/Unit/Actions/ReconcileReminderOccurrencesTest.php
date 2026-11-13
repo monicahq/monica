@@ -45,6 +45,7 @@ class ReconcileReminderOccurrencesTest extends TestCase
             'cancelled_reason' => ReminderOccurrenceCancelledReasonEnum::RuleChanged->value,
         ]);
         $this->assertSame(2, $reminder->refresh()->schedule_revision);
+        $this->assertEqualsWithDelta(now()->timestamp, $reminder->schedule_changed_at->timestamp, 5);
         $this->assertDatabaseHas('reminder_occurrences', [
             'generation_key' => '2:2027-05-12',
             'cancelled_at' => null,
@@ -67,6 +68,7 @@ class ReconcileReminderOccurrencesTest extends TestCase
         )->execute();
 
         $this->assertSame(1, $reminder->refresh()->schedule_revision);
+        $this->assertNull($reminder->schedule_changed_at);
         $this->assertSame($before, ReminderOccurrence::query()->where('reminder_id', $reminder->id)->count());
         $this->assertSame(0, ReminderOccurrence::query()->whereNotNull('cancelled_at')->count());
     }

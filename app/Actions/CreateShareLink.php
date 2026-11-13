@@ -26,7 +26,7 @@ class CreateShareLink
     private string $token;
 
     /**
-     * @param  list<int>  $excludedSectionIds
+     * @param  list<int>  $includedSectionIds
      * @param  list<int>  $excludedLifeEventIds
      */
     public function __construct(
@@ -43,7 +43,7 @@ class CreateShareLink
         private readonly bool $includesRelationships = false,
         private readonly bool $includesGroups = false,
         private readonly bool $includesSensitiveFields = false,
-        private readonly array $excludedSectionIds = [],
+        private readonly array $includedSectionIds = [],
         private readonly array $excludedLifeEventIds = [],
     ) {}
 
@@ -91,7 +91,7 @@ class CreateShareLink
             'includes_relationships' => $this->includesRelationships,
             'includes_groups' => $this->includesGroups,
             'includes_sensitive_fields' => $this->includesSensitiveFields,
-            'excluded_section_ids' => $this->excludedSectionIds,
+            'included_section_ids' => $this->includedSectionIds,
             'excluded_life_event_ids' => $this->excludedLifeEventIds,
             'view_count' => 0,
             'created_by_user_id' => $this->user->id,

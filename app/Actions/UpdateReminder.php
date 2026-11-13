@@ -83,6 +83,7 @@ class UpdateReminder
         $rule->time_of_day = $this->timeOfDay;
         $rule->timezone = $this->timezone ?? $this->reminder->timezone;
         $rule->starts_on = $this->startsOn ?? $this->reminder->starts_on;
+        $rule->schedule_changed_at = null;
 
         return $rule->setRelation('fieldValue', $this->reminder->fieldValue);
     }
@@ -104,6 +105,7 @@ class UpdateReminder
     private function rebuildTheDeadlines(): void
     {
         $this->reminder->schedule_revision++;
+        $this->reminder->schedule_changed_at = now();
         $this->reminder->save();
 
         new GenerateReminderOccurrences(reminder: $this->reminder->refresh())->execute();
@@ -117,7 +119,7 @@ class UpdateReminder
             ? $this->reminder->name
             : __(':label — :name', [
                 'label' => $this->reminder->field->label,
-                'name' => $this->reminder->remindable->name,
+                'name' => $this->reminder->remindable?->name,
             ]));
     }
 
@@ -179,7 +181,7 @@ class UpdateReminder
             user: $this->user,
             action: UserActionEnum::ReminderUpdate,
             vault: $this->reminder->vault,
-            parameters: ['label' => $this->reminder->field->label ?? $this->reminder->name, 'name' => $this->reminder->remindable->name],
+            parameters: ['label' => $this->reminder->field->label ?? $this->reminder->name, 'name' => $this->reminder->remindable?->name],
             loggable: $this->reminder,
         );
     }

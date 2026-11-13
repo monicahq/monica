@@ -18,7 +18,8 @@ use Illuminate\Validation\ValidationException;
 /**
  * Rename a field of a possession type, change its kind, and set its choices. A field that stops
  * being a select field loses its choices, and a field changing kind loses the values possessions
- * held for it, since they were written for the old kind.
+ * held for it, since they were written for the old kind. A select field losing a choice loses the
+ * values that held it, since an edit form cannot offer them again.
  */
 class UpdatePossessionField
 {
@@ -75,6 +76,12 @@ class UpdatePossessionField
 
             if ($kindChanges) {
                 $this->field->values()->delete();
+
+                return;
+            }
+
+            if ($this->kind === PossessionFieldKindEnum::Select) {
+                $this->field->values()->whereNotIn('value', $this->options ?? [])->delete();
             }
         });
     }

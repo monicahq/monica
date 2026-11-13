@@ -8,6 +8,7 @@ use App\Actions\DestroyUserPassword;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Passkey;
+use App\Models\ProviderConnection;
 use App\Models\User;
 use App\Notifications\PasswordRemoved;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -121,6 +122,24 @@ class DestroyUserPasswordTest extends TestCase
         $this->expectException(ValidationException::class);
 
         new DestroyUserPassword(user: User::factory()->singleSignOn()->create())->execute();
+    }
+
+    #[Test]
+    public function it_refuses_an_account_that_has_a_password_and_a_connected_provider_but_no_passkey(): void
+    {
+        Queue::fake();
+        $this->overASecureConnection();
+
+        $user = User::factory()->create();
+        ProviderConnection::factory()->create(['user_id' => $user->id]);
+
+        $this->expectException(ValidationException::class);
+
+        try {
+            new DestroyUserPassword(user: $user)->execute();
+        } finally {
+            $this->assertNotNull($user->refresh()->password);
+        }
     }
 
     #[Test]

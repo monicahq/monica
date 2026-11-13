@@ -80,4 +80,28 @@ class ContactCategoryControllerTest extends TestCase
         $this->json('GET', '/api/v1/vaults/'.Vault::factory()->create()->uuid.'/contact-categories')
             ->assertNotFound();
     }
+
+    #[Test]
+    public function it_lists_a_category_held_in_a_sensitive_field_only_to_a_key_reaching_sensitive_fields(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $list = ValueList::factory()->supplied(ValueListEnum::ContactCategories)->create(['account_id' => $user->account_id]);
+        $therapy = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'label' => 'In therapy']);
+        $field = Field::factory()->create(['type' => FieldTypeEnum::Multiselect, 'value_list_id' => $list->id, 'is_sensitive' => true]);
+        $michael = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'first_name' => 'Michael']);
+        FieldValue::factory()->create(['valuable_id' => $michael->id, 'field_id' => $field->id, 'value_string' => null, 'value_list_item_ids' => [$therapy->id]]);
+
+        $this->withToken($user->createToken('Dwight’s script')->plainTextToken)
+            ->json('GET', "/api/v1/vaults/{$vault->uuid}/contact-categories")
+            ->assertOk()
+            ->assertJsonCount(0, 'data');
+
+        $this->app['auth']->forgetGuards();
+
+        $this->withToken($user->createToken('Dwight’s trusted script', ['sensitive-fields'])->plainTextToken)
+            ->json('GET', "/api/v1/vaults/{$vault->uuid}/contact-categories")
+            ->assertOk()
+            ->assertJsonPath('data.0.attributes.label', 'In therapy');
+    }
 }

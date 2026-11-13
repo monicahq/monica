@@ -731,11 +731,12 @@ class Contact extends Model
      *
      * A category is a choice of the account's "Contact categories" list, held in any multiple
      * choice field of the structure drawing on that list. A value whose field has left the
-     * structure is set aside and counts for nothing.
+     * structure is set aside and counts for nothing, and so is a value in a sensitive field for a
+     * caller that does not reach sensitive fields.
      *
      * @return Collection<int, ValueListItem>
      */
-    public function heldCategories(): Collection
+    public function heldCategories(bool $reachesSensitiveFields): Collection
     {
         $categories = ValueList::query()
             ->where('account_id', $this->account_id)
@@ -746,7 +747,10 @@ class Contact extends Model
             ->where('valuable_type', $this->getMorphClass())
             ->where('valuable_id', $this->id)
             ->where('is_detached', false)
-            ->whereIn('field_id', Field::query()->whereIn('value_list_id', $categories)->select('id'))
+            ->whereIn('field_id', Field::query()
+                ->whereIn('value_list_id', $categories)
+                ->when(! $reachesSensitiveFields, fn (Builder $fields): Builder => $fields->where('is_sensitive', false))
+                ->select('id'))
             ->pluck('value_list_item_ids')
             ->flatten()
             ->map(intval(...))
@@ -763,18 +767,21 @@ class Contact extends Model
      *
      * A category is a choice of the account's "Contact categories" list, held in whichever
      * multiple choice field of the person's structure draws on that list. A value whose field
-     * has left the structure is set aside, so it no longer files the person anywhere.
+     * has left the structure is set aside, so it no longer files the person anywhere. For a
+     * caller that does not reach sensitive fields, neither does a value in a sensitive field.
      *
      * @param  Builder<$this>  $query
      * @param  array<int, int>  $itemIds
      */
-    public function scopeHoldingAnyCategory(Builder $query, array $itemIds): void
+    public function scopeHoldingAnyCategory(Builder $query, array $itemIds, bool $reachesSensitiveFields): void
     {
         $query->whereExists(fn (QueryBuilder $values): QueryBuilder => $values
             ->from('field_values')
             ->whereColumn('field_values.valuable_id', 'contacts.id')
             ->where('field_values.valuable_type', $this->getMorphClass())
             ->where('field_values.is_detached', false)
+            ->when(! $reachesSensitiveFields, fn (QueryBuilder $chosen): QueryBuilder => $chosen
+                ->whereNotIn('field_values.field_id', Field::query()->where('is_sensitive', true)->select('id')))
             ->where(function (QueryBuilder $chosen) use ($itemIds): void {
                 foreach ($itemIds as $itemId) {
                     $chosen->orWhereJsonContains('field_values.value_list_item_ids', $itemId);

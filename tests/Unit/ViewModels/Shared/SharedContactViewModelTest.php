@@ -70,9 +70,53 @@ class SharedContactViewModelTest extends TestCase
     public function it_never_reads_a_section_the_link_holds_back(): void
     {
         $contact = $this->sharedContact();
-        $link = $this->linkOnto($contact, ['excluded_section_ids' => [$this->sectionNamed($contact, 'Doctors')->id]]);
+        $link = $this->linkOnto($contact, $this->holdingBack($contact, ['Doctors']));
 
         $this->assertSame(['Facts'], array_column($this->viewModel($link, $contact)->sections(), 'name'));
+    }
+
+    #[Test]
+    public function a_section_held_back_stays_held_back_once_the_contact_moves_to_another_version(): void
+    {
+        $contact = $this->sharedContact();
+        $link = $this->linkOnto($contact, $this->holdingBack($contact, ['Doctors']));
+
+        $newVersion = StructureVersion::factory()->create(['structure_id' => $contact->structureVersion->structure_id, 'version_number' => $contact->structureVersion->version_number + 1]);
+        $newVersion->pages()->delete();
+
+        foreach ($contact->structureVersion->pages as $page) {
+            $copy = StructureVersionPage::factory()->create([
+                'structure_version_id' => $newVersion->id,
+                'account_id' => $newVersion->account_id,
+                'key' => $page->key,
+                'label' => $page->label,
+            ]);
+
+            foreach ($contact->structureVersion->assembly->where('structure_version_page_id', $page->id) as $row) {
+                StructureVersionSection::factory()->create([
+                    'structure_version_id' => $newVersion->id,
+                    'structure_version_page_id' => $copy->id,
+                    'section_version_id' => $row->section_version_id,
+                    'position' => $row->position,
+                ]);
+            }
+        }
+
+        $contact->update(['structure_version_id' => $newVersion->id]);
+
+        $this->assertSame(['Facts'], array_column($this->viewModel($link->refresh(), $contact->refresh())->sections(), 'name'));
+    }
+
+    #[Test]
+    public function a_link_moved_onto_a_contact_of_another_template_shows_none_of_its_sections(): void
+    {
+        $michael = $this->sharedContact();
+        $link = $this->linkOnto($michael);
+        $jim = $this->sharedContact();
+
+        $link->update(['shareable_id' => $jim->id]);
+
+        $this->assertSame([], $this->viewModel($link->refresh(), $jim)->sections());
     }
 
     #[Test]
@@ -110,7 +154,7 @@ class SharedContactViewModelTest extends TestCase
     public function a_page_whose_every_section_is_held_back_is_not_a_tab(): void
     {
         $contact = $this->sharedContact();
-        $link = $this->linkOnto($contact, ['excluded_section_ids' => [$this->sectionNamed($contact, 'Where they worked')->id]]);
+        $link = $this->linkOnto($contact, $this->holdingBack($contact, ['Where they worked']));
 
         $this->assertSame([], $this->viewModel($link, $contact)->tabs());
     }
@@ -119,12 +163,7 @@ class SharedContactViewModelTest extends TestCase
     public function one_page_left_means_no_tab_list(): void
     {
         $contact = $this->sharedContact();
-        $link = $this->linkOnto($contact, [
-            'excluded_section_ids' => [
-                $this->sectionNamed($contact, 'Facts')->id,
-                $this->sectionNamed($contact, 'Doctors')->id,
-            ],
-        ]);
+        $link = $this->linkOnto($contact, $this->holdingBack($contact, ['Facts', 'Doctors']));
 
         $viewModel = $this->viewModel($link, $contact);
 
@@ -136,7 +175,7 @@ class SharedContactViewModelTest extends TestCase
     public function an_address_naming_a_page_that_is_held_back_falls_back_to_one_that_is_not(): void
     {
         $contact = $this->sharedContact();
-        $link = $this->linkOnto($contact, ['excluded_section_ids' => [$this->sectionNamed($contact, 'Where they worked')->id]]);
+        $link = $this->linkOnto($contact, $this->holdingBack($contact, ['Where they worked']));
 
         $this->assertSame(['Facts', 'Doctors'], array_column($this->viewModel($link, $contact, 'work')->sections(), 'name'));
     }
@@ -184,7 +223,7 @@ class SharedContactViewModelTest extends TestCase
     {
         $contact = $this->sharedContact();
         Field::query()->where('label', 'Lives')->update(['is_highlighted' => true]);
-        $link = $this->linkOnto($contact, ['excluded_section_ids' => [$this->sectionNamed($contact, 'Facts')->id]]);
+        $link = $this->linkOnto($contact, $this->holdingBack($contact, ['Facts']));
 
         $this->assertSame([], $this->viewModel($link->refresh(), $contact->refresh())->headerFacts());
     }
@@ -304,9 +343,18 @@ class SharedContactViewModelTest extends TestCase
         ]);
     }
 
-    private function sectionNamed(Contact $contact, string $name): StructureVersionSection
+    /**
+     * @param  list<string>  $names
+     * @return array{included_section_ids: list<int>}
+     */
+    private function holdingBack(Contact $contact, array $names): array
     {
-        return $contact->structureVersion->assembly
-            ->first(fn (StructureVersionSection $row): bool => $row->sectionVersion->section->name === $name);
+        return [
+            'included_section_ids' => $contact->structureVersion->assembly
+                ->reject(fn (StructureVersionSection $row): bool => in_array($row->sectionVersion->section->name, $names, true))
+                ->map(fn (StructureVersionSection $row): int => $row->sectionVersion->section_id)
+                ->values()
+                ->all(),
+        ];
     }
 }

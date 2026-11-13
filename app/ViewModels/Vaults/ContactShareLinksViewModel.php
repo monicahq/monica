@@ -93,7 +93,7 @@ class ContactShareLinksViewModel
                 'shows' => ShareLinkSummary::showsLine($link, $this->contact),
                 'opened' => $this->openedLine($link),
                 'lastSeen' => $this->lastSeenLine($link),
-                'ends' => ShareLinkSummary::endsLine($link),
+                'ends' => ShareLinkSummary::endsLine($link, $this->user),
                 'isLive' => $link->isUsable(),
                 'showUrl' => route('contacts.shareLinks.show', ['vault' => $this->vault, 'contact' => $this->contact, 'shareLink' => $link]),
                 'editUrl' => route('contacts.shareLinks.edit', ['vault' => $this->vault, 'contact' => $this->contact, 'shareLink' => $link]),
@@ -105,12 +105,12 @@ class ContactShareLinksViewModel
     private function metaOf(ShareLink $link): string
     {
         if ($link->recipient_hint === null) {
-            return __('Made :when', ['when' => $link->created_at->isoFormat('LL')]);
+            return __('Made :when', ['when' => $link->created_at->setTimezone($this->user->timezone)->isoFormat('LL')]);
         }
 
         return __(':who · made :when', [
             'who' => $link->recipient_hint,
-            'when' => $link->created_at->isoFormat('LL'),
+            'when' => $link->created_at->setTimezone($this->user->timezone)->isoFormat('LL'),
         ]);
     }
 

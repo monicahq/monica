@@ -38,7 +38,7 @@ class UpdateShareLinkTest extends TestCase
             recipientHint: 'Michael Scott',
             includesFiles: true,
             includesRelationships: true,
-            excludedSectionIds: [12],
+            includedSectionIds: [12],
         )->execute();
 
         $this->assertDatabaseHas('share_links', [
@@ -48,7 +48,7 @@ class UpdateShareLinkTest extends TestCase
             'includes_files' => true,
             'includes_relationships' => true,
         ]);
-        $this->assertEquals([12], $shareLink->refresh()->excluded_section_ids);
+        $this->assertEquals([12], $shareLink->refresh()->included_section_ids);
 
         Queue::assertPushedOn('low', LogUserAction::class, function (LogUserAction $job): bool {
             return $job->action === UserActionEnum::ShareLinkUpdate

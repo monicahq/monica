@@ -12,6 +12,7 @@ use App\Actions\CreateLifeEvent;
 use App\Actions\CreateRelationship;
 use App\Actions\CreateStructureVersionDraft;
 use App\Actions\CreateVault;
+use App\Actions\GenerateReminderOccurrences;
 use App\Actions\PublishStructureVersion;
 use App\Actions\ReadMonicaFile;
 use App\Actions\ReadMonicaFourFile;
@@ -43,6 +44,8 @@ use App\Models\LifeEventType;
 use App\Models\Log;
 use App\Models\Relationship;
 use App\Models\RelationshipType;
+use App\Models\Reminder;
+use App\Models\ReminderOccurrence;
 use App\Models\Section;
 use App\Models\SectionVersion;
 use App\Models\Structure;
@@ -176,6 +179,7 @@ class RollBackAccountImportTest extends TestCase
         $jim = new CreateContact(user: $this->michael, vault: $scranton, firstName: 'Jim', lastName: 'Halpert')->execute();
         $branch = Group::factory()->create(['vault_id' => $scranton->id, 'name' => 'Scranton branch']);
         GroupMember::factory()->create(['group_id' => $branch->id, 'contact_id' => $jim->id]);
+        Reminder::factory()->manual($branch, now()->addDays(10)->format('Y-m-d'))->create(['name' => 'Branch anniversary']);
 
         $pam = $this->accountHolder('Pam', 'Beesly');
         $stamford = new CreateVault(user: $pam, name: 'Stamford')->execute();
@@ -186,10 +190,15 @@ class RollBackAccountImportTest extends TestCase
         new StartAccountImport(user: $pam, import: $import, vault: $stamford)->execute();
 
         $this->assertSame(1, Group::query()->where('vault_id', $stamford->id)->count());
+        $this->assertSame(1, Reminder::query()->where('vault_id', $stamford->id)->count());
+        new GenerateReminderOccurrences(reminder: Reminder::query()->where('vault_id', $stamford->id)->firstOrFail())->execute();
+        $this->assertGreaterThan(0, ReminderOccurrence::query()->where('vault_id', $stamford->id)->count());
 
         new RollBackAccountImport(import: $import->refresh())->execute();
 
         $this->assertSame(0, Group::withTrashed()->where('vault_id', $stamford->id)->count());
+        $this->assertSame(0, Reminder::withTrashed()->where('vault_id', $stamford->id)->count());
+        $this->assertSame(0, ReminderOccurrence::query()->where('vault_id', $stamford->id)->count());
     }
 
     #[Test]

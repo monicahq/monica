@@ -355,7 +355,7 @@ return [
             'path' => '/possession-types/{possessionType}/fields/{field}',
             'examplePath' => "/possession-types/{$typeId}/fields/{$conditionId}",
             'description' => 'Rename a field, change its kind and set its choices.',
-            'body' => ['The body describes the whole field. Options left out are cleared, and a field that stops being a select field loses its choices.'],
+            'body' => ['The body describes the whole field. Options left out are cleared, and a field that stops being a select field loses its choices. A choice removed from a select field is also removed from every possession that held it, and those possessions then hold no value for the field. The deletion is final.'],
             'rateLimit' => $rateLimit,
             'pathParams' => [$typeParam, $fieldParam],
             'bodyParams' => $fieldBody,

@@ -47,9 +47,8 @@ class ShareLinkFormViewModelTest extends TestCase
     {
         $user = User::factory()->create();
         $contact = $this->contactOf($user);
-        $doctors = $this->sectionNamed($contact, 'Doctors');
         $link = ShareLink::factory()->for($contact, 'shareable')->create([
-            'excluded_section_ids' => [$doctors->id],
+            'included_section_ids' => [$this->sectionNamed($contact, 'Facts')->sectionVersion->section_id],
         ]);
 
         $pages = new ShareLinkFormViewModel(user: $user, vault: $contact->vault, contact: $contact, shareLink: $link)->pages();

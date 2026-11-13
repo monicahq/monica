@@ -168,7 +168,7 @@ class PossessionTypeViewModel
 
     /**
      * @param  Collection<int, PossessionField>  $fields
-     * @return list<array{uuid: string, name: string, kind: string, kindLabel: string, isSelect: bool, options: list<string>, needsOptions: bool, updateAction: string, destroyAction: string, positionAction: string, position: int, isFirst: bool, isLast: bool}>
+     * @return list<array{uuid: string, name: string, kind: string, kindLabel: string, isSelect: bool, options: list<string>, choiceWarnings: array<string, string>, needsOptions: bool, updateAction: string, destroyAction: string, positionAction: string, position: int, isFirst: bool, isLast: bool}>
      */
     private function fields(Collection $fields): array
     {
@@ -181,6 +181,7 @@ class PossessionTypeViewModel
                 'kindLabel' => __($field->kind->label()),
                 'isSelect' => $field->kind === PossessionFieldKindEnum::Select,
                 'options' => $field->options ?? [],
+                'choiceWarnings' => $this->choiceWarnings($field),
                 'needsOptions' => $field->kind === PossessionFieldKindEnum::Select && ($field->options ?? []) === [],
                 'updateAction' => route('settings.possessionFields.update', [$this->possessionType, $field]),
                 'destroyAction' => route('settings.possessionFields.destroy', [$this->possessionType, $field]),
@@ -190,5 +191,30 @@ class PossessionTypeViewModel
                 'isLast' => $index === $fields->count() - 1,
             ])
             ->all();
+    }
+
+    /** @return array<string, string> */
+    private function choiceWarnings(PossessionField $field): array
+    {
+        if ($field->kind !== PossessionFieldKindEnum::Select) {
+            return [];
+        }
+
+        $holders = $field->values()
+            ->selectRaw('value, count(*) as holder_count')
+            ->groupBy('value')
+            ->pluck('holder_count', 'value');
+
+        $warnings = [];
+
+        foreach ($field->options ?? [] as $option) {
+            $holderCount = (int) ($holders[$option] ?? 0);
+
+            $warnings[$option] = $holderCount === 0
+                ? __('This cannot be undone.')
+                : trans_choice(':count possession holds this choice and will lose it. This cannot be undone.|:count possessions hold this choice and will lose it. This cannot be undone.', $holderCount);
+        }
+
+        return $warnings;
     }
 }

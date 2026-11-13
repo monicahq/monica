@@ -50,8 +50,6 @@ class ContactShareLinkControllerTest extends TestCase
         $user = User::factory()->create();
         $contact = $this->contactOf($user);
         $facts = $this->sectionNamed($contact, 'Facts');
-        $doctors = $this->sectionNamed($contact, 'Doctors');
-        $work = $this->sectionNamed($contact, 'Where they worked');
 
         $response = $this->actingAs($user)
             ->post(route('contacts.shareLinks.create', ['vault' => $contact->vault, 'contact' => $contact]), [
@@ -78,7 +76,7 @@ class ContactShareLinkControllerTest extends TestCase
             'shareable_id' => $contact->id,
             'created_by_user_id' => $user->id,
         ]);
-        $this->assertSame([$doctors->id, $work->id], $link->excluded_section_ids);
+        $this->assertSame([$facts->sectionVersion->section_id], $link->included_section_ids);
         $this->assertFalse($link->includes_sensitive_fields);
         $this->assertNull($link->password_hash);
         $this->assertTrue($link->expires_at->isSameDay(now()->addDays(30)));
@@ -99,7 +97,7 @@ class ContactShareLinkControllerTest extends TestCase
 
         $link = ShareLink::query()->sole();
 
-        $this->assertCount(3, $link->excluded_section_ids);
+        $this->assertSame([], $link->included_section_ids);
         $this->assertNull($link->expires_at);
     }
 
@@ -138,7 +136,6 @@ class ContactShareLinkControllerTest extends TestCase
         $facts = $this->sectionNamed($contact, 'Facts');
         $link = ShareLink::factory()->for($contact, 'shareable')->create([
             'label' => 'For the family doctor',
-            'excluded_section_ids' => [],
         ]);
 
         $this->actingAs($user)
@@ -158,8 +155,32 @@ class ContactShareLinkControllerTest extends TestCase
         $link->refresh();
 
         $this->assertTrue($link->includes_sensitive_fields);
-        $this->assertCount(2, $link->excluded_section_ids);
-        $this->assertNotContains($facts->id, $link->excluded_section_ids);
+        $this->assertSame([$facts->sectionVersion->section_id], $link->included_section_ids);
+    }
+
+    #[Test]
+    public function it_holds_back_a_section_placed_twice_unless_both_places_are_ticked(): void
+    {
+        Queue::fake();
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $facts = $this->sectionNamed($contact, 'Facts');
+        $secondVersionOfFacts = SectionVersion::factory()->create(['section_id' => $facts->sectionVersion->section_id, 'version_number' => 2]);
+        StructureVersionSection::withoutEvents(fn () => StructureVersionSection::factory()->create([
+            'structure_version_id' => $contact->structure_version_id,
+            'structure_version_page_id' => $this->sectionNamed($contact, 'Where they worked')->structure_version_page_id,
+            'section_version_id' => $secondVersionOfFacts->id,
+            'position' => 2,
+        ]));
+
+        $this->actingAs($user)
+            ->post(route('contacts.shareLinks.create', ['vault' => $contact->vault, 'contact' => $contact]), [
+                'label' => 'For the family doctor',
+                'expiry' => 'never',
+                'sections' => [$facts->id],
+            ]);
+
+        $this->assertSame([], ShareLink::query()->sole()->included_section_ids);
     }
 
     #[Test]

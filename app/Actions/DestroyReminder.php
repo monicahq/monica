@@ -52,7 +52,7 @@ class DestroyReminder
             user: $this->user,
             action: UserActionEnum::ReminderRemoval,
             vault: $this->reminder->vault,
-            parameters: ['label' => $this->reminder->field->label ?? $this->reminder->name, 'name' => $this->reminder->remindable->name],
+            parameters: ['label' => $this->reminder->field->label ?? $this->reminder->name, 'name' => $this->reminder->remindable?->name],
             loggable: $this->reminder,
         );
     }

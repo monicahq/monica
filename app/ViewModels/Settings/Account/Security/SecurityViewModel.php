@@ -227,10 +227,6 @@ class SecurityViewModel
             return false;
         }
 
-        if ($this->user->usesSingleSignOn()) {
-            return true;
-        }
-
         return $this->user->hasPasskeys() && $this->passkeysAreAvailable();
     }
 

@@ -115,21 +115,62 @@ class ReminderScheduleTest extends TestCase
     }
 
     #[Test]
-    public function it_fires_once_this_year_on_the_twenty_ninth_of_february_when_nobody_knows_the_year(): void
+    public function it_fires_once_on_the_twenty_ninth_of_february_or_the_twenty_eighth_when_nobody_knows_the_year(): void
     {
-        $value = FieldValue::factory()->recurringDateWithoutAYear()->create([
-            'value_date' => FieldValue::PLACEHOLDER_YEAR.'-02-29',
-        ]);
-        $reminder = Reminder::factory()->for($value, 'fieldValue')->create([
-            'account_id' => $value->account_id,
-            'vault_id' => $value->vault_id,
-            'field_id' => $value->field_id,
-            'remindable_id' => $value->valuable_id,
-            'cadence' => ReminderCadenceEnum::Once,
-        ]);
+        $commonYear = $this->ruleWithoutAYear('02-29', ReminderCadenceEnum::Once, scheduleChangedAt: '2027-01-01');
+        $leapYear = $this->ruleWithoutAYear('02-29', ReminderCadenceEnum::Once, scheduleChangedAt: '2028-01-01');
 
-        $this->assertEquals('2027-02-28', $this->next($reminder, '2027-01-01'));
-        $this->assertEquals('2028-02-29', $this->next($reminder, '2028-01-01'));
+        $this->assertEquals('2027-02-28', $this->next($commonYear, '2027-01-01'));
+        $this->assertEquals('2028-02-29', $this->next($leapYear, '2028-01-01'));
+    }
+
+    #[Test]
+    public function it_fires_once_and_never_again_when_nobody_knows_the_year(): void
+    {
+        $reminder = $this->ruleWithoutAYear('12-20', ReminderCadenceEnum::Once, scheduleChangedAt: '2026-11-12');
+
+        $this->assertSame(['2026-12-20 08:00'], $this->between($reminder, '2026-11-12', '2026-12-31'));
+        $this->assertSame([], $this->between($reminder, '2027-01-01', '2027-12-31'));
+    }
+
+    #[Test]
+    public function it_fires_once_next_year_when_the_day_has_gone_by_the_time_the_rule_is_set(): void
+    {
+        $reminder = $this->ruleWithoutAYear('12-20', ReminderCadenceEnum::Once, scheduleChangedAt: '2026-12-25');
+
+        $this->assertEquals('2027-12-20', $this->next($reminder, '2026-12-25'));
+        $this->assertEquals('2027-12-20', $this->next($reminder, '2027-06-01'));
+    }
+
+    #[Test]
+    public function it_counts_a_date_without_a_year_from_the_last_change_of_the_schedule_rather_than_from_the_rule(): void
+    {
+        $reminder = $this->ruleWithoutAYear('03-15', ReminderCadenceEnum::Once, scheduleChangedAt: '2026-06-01');
+        $reminder->forceFill(['created_at' => '2025-01-10 10:00:00'])->save();
+
+        $this->assertEquals('2027-03-15', $this->next($reminder->refresh(), '2026-06-01'));
+    }
+
+    #[Test]
+    public function it_keeps_a_monthly_rhythm_across_the_new_year_when_nobody_knows_the_year(): void
+    {
+        $reminder = $this->ruleWithoutAYear('12-20', ReminderCadenceEnum::Monthly, scheduleChangedAt: '2026-11-12');
+
+        $this->assertSame(
+            ['2027-02-20 08:00', '2027-03-20 08:00', '2027-04-20 07:00'],
+            $this->between($reminder, '2027-02-01', '2027-04-30'),
+        );
+    }
+
+    #[Test]
+    public function it_keeps_a_weekly_rhythm_and_its_weekday_across_the_new_year_when_nobody_knows_the_year(): void
+    {
+        $reminder = $this->ruleWithoutAYear('12-20', ReminderCadenceEnum::Weekly, scheduleChangedAt: '2026-11-12');
+
+        $this->assertSame(
+            ['2027-02-14 08:00', '2027-02-21 08:00', '2027-02-28 08:00'],
+            $this->between($reminder, '2027-02-10', '2027-03-01'),
+        );
     }
 
     #[Test]
@@ -278,6 +319,22 @@ class ReminderScheduleTest extends TestCase
             'remindable_id' => $value->valuable_id,
             'cadence' => $cadence,
             'frequency_interval' => $interval,
+        ]);
+    }
+
+    private function ruleWithoutAYear(string $monthAndDay, ReminderCadenceEnum $cadence, string $scheduleChangedAt): Reminder
+    {
+        $value = FieldValue::factory()->recurringDateWithoutAYear()->create([
+            'value_date' => FieldValue::PLACEHOLDER_YEAR."-{$monthAndDay}",
+        ]);
+
+        return Reminder::factory()->for($value, 'fieldValue')->create([
+            'account_id' => $value->account_id,
+            'vault_id' => $value->vault_id,
+            'field_id' => $value->field_id,
+            'remindable_id' => $value->valuable_id,
+            'cadence' => $cadence,
+            'schedule_changed_at' => CarbonImmutable::parse("{$scheduleChangedAt} 10:00", 'Europe/Paris'),
         ]);
     }
 

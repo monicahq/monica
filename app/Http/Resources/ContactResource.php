@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
+use App\Enums\ApiKeyScopeEnum;
 use App\Models\Contact;
 use App\Models\ValueListItem;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Laravel\Sanctum\PersonalAccessToken;
 use Override;
 
 /** @mixin Contact */
@@ -42,7 +44,7 @@ class ContactResource extends JsonResource
                 'is_me' => $this->is_me,
                 'structure_version_id' => $this->structure_version_id,
                 'template_name' => $this->structureVersion->structure->owner->name,
-                'categories' => $this->resource->heldCategories()
+                'categories' => $this->resource->heldCategories($this->reachesSensitiveFields($request))
                     ->map(fn (ValueListItem $item): array => ['id' => $item->id, 'label' => $item->label])
                     ->values()
                     ->all(),
@@ -57,6 +59,17 @@ class ContactResource extends JsonResource
                 'web' => route('contacts.show', [$this->vault, $this->resource]),
             ],
         ];
+    }
+
+    private function reachesSensitiveFields(Request $request): bool
+    {
+        $token = $request->user()?->currentAccessToken();
+
+        if (! $token instanceof PersonalAccessToken) {
+            return false;
+        }
+
+        return in_array(ApiKeyScopeEnum::SensitiveFields->value, $token->abilities ?? [], true);
     }
 
     /** @return array{id: string, url: string}|null */

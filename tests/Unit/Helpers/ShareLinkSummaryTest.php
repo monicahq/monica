@@ -28,7 +28,7 @@ class ShareLinkSummaryTest extends TestCase
     {
         $contact = $this->contactWithThreeSections();
         $link = ShareLink::factory()->for($contact, 'shareable')->create([
-            'excluded_section_ids' => [$contact->structureVersion->assembly->first()->id],
+            'included_section_ids' => $contact->structureVersion->assembly->skip(1)->map(fn (StructureVersionSection $row): int => $row->sectionVersion->section_id)->values()->all(),
         ]);
 
         $this->assertSame(2, ShareLinkSummary::sectionsShown($link, $contact));
@@ -41,9 +41,31 @@ class ShareLinkSummaryTest extends TestCase
         $contact = $this->contactWithThreeSections();
         $link = ShareLink::factory()->for($contact, 'shareable')->create(['expires_at' => now()->addDays(30)]);
 
-        $ends = ShareLinkSummary::endsLine($link);
+        $ends = ShareLinkSummary::endsLine($link, User::factory()->create());
 
         $this->assertStringContainsString(now()->addDays(30)->isoFormat('LL'), $ends);
+    }
+
+    #[Test]
+    public function an_expired_link_gives_the_date_in_the_time_zone_of_the_reader(): void
+    {
+        $contact = $this->contactWithThreeSections();
+        $link = ShareLink::factory()->for($contact, 'shareable')->create(['expires_at' => '2026-01-15 02:00:00']);
+
+        $ends = ShareLinkSummary::endsLine($link, User::factory()->create(['timezone' => 'America/New_York']));
+
+        $this->assertSame('Expired January 14, 2026', $ends);
+    }
+
+    #[Test]
+    public function a_revoked_link_gives_the_date_in_the_time_zone_of_the_reader(): void
+    {
+        $contact = $this->contactWithThreeSections();
+        $link = ShareLink::factory()->for($contact, 'shareable')->create(['revoked_at' => '2026-01-15 02:00:00']);
+
+        $ends = ShareLinkSummary::endsLine($link, User::factory()->create(['timezone' => 'America/New_York']));
+
+        $this->assertSame('Revoked January 14, 2026', $ends);
     }
 
     private function contactWithThreeSections(): Contact

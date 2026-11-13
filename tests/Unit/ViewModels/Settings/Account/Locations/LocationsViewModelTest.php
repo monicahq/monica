@@ -33,6 +33,17 @@ class LocationsViewModelTest extends TestCase
     }
 
     #[Test]
+    public function it_writes_an_address_holding_non_ascii_characters_on_one_line(): void
+    {
+        $user = User::factory()->create();
+        Location::factory()->create(['account_id' => $user->account_id, 'name' => 'Branch', 'address' => "ul. Długa 1\nŁódź ą"]);
+
+        $tree = new LocationsViewModel(user: $user)->tree();
+
+        $this->assertSame('ul. Długa 1, Łódź ą', $tree[0]['line']);
+    }
+
+    #[Test]
     public function it_names_the_locations_offered_as_a_parent_by_their_path(): void
     {
         $user = User::factory()->create();

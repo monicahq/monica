@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\ApiKeyScopeEnum;
 use App\Enums\ContactGroupingEnum;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class ContactCategoryController extends Controller
 {
@@ -20,7 +23,10 @@ class ContactCategoryController extends Controller
             'filter' => ['nullable', 'string', Rule::in(ContactGroupingEnum::values())],
         ]);
 
-        $held = $vault->categoriesHeldByContacts(ContactGroupingEnum::fromValueOrEveryone($validated['filter'] ?? null));
+        $held = $vault->categoriesHeldByContacts(
+            ContactGroupingEnum::fromValueOrEveryone($validated['filter'] ?? null),
+            $this->reachesSensitiveFields($request->user()),
+        );
 
         return response()->json([
             'data' => array_map(fn (array $category): array => [
@@ -33,5 +39,16 @@ class ContactCategoryController extends Controller
                 ],
             ], $held),
         ]);
+    }
+
+    private function reachesSensitiveFields(User $user): bool
+    {
+        $token = $user->currentAccessToken();
+
+        if (! $token instanceof PersonalAccessToken) {
+            return false;
+        }
+
+        return in_array(ApiKeyScopeEnum::SensitiveFields->value, $token->abilities ?? [], true);
     }
 }

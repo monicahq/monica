@@ -15,7 +15,7 @@ use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 
-#[Description('Rename a field of a possession type, change its kind, or set its choices. What you leave out keeps its value. A field that stops being a choice field loses its choices. The change is written to the account journal.')]
+#[Description('Rename a field of a possession type, change its kind, or set its choices. What you leave out keeps its value. A field that stops being a choice field loses its choices. A choice you remove is also removed from every possession that held it, and cannot be recovered. The change is written to the account journal.')]
 class UpdatePossessionField extends Tool
 {
     use MirrorsAnApiCapability;

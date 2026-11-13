@@ -137,6 +137,27 @@ class UpdatePossessionFieldTest extends TestCase
     }
 
     #[Test]
+    public function it_deletes_the_values_holding_a_removed_choice_and_keeps_the_others(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $type = PossessionType::factory()->create(['account_id' => $user->account_id]);
+        $colour = PossessionField::factory()->create([
+            'possession_type_id' => $type->id,
+            'kind' => PossessionFieldKindEnum::Select,
+            'options' => ['Red', 'Blue'],
+        ]);
+        $transAm = PossessionFieldValue::factory()->create(['possession_field_id' => $colour->id, 'value' => 'Red']);
+        $dundie = PossessionFieldValue::factory()->create(['possession_field_id' => $colour->id, 'value' => 'Blue']);
+
+        new UpdatePossessionField(user: $user, field: $colour, name: 'Colour', kind: PossessionFieldKindEnum::Select, options: ['Crimson', 'Blue'])->execute();
+
+        $this->assertModelMissing($transAm);
+        $this->assertModelExists($dundie);
+    }
+
+    #[Test]
     public function it_refuses_an_empty_name(): void
     {
         $user = User::factory()->create();

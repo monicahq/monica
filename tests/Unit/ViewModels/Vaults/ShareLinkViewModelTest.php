@@ -93,6 +93,23 @@ class ShareLinkViewModelTest extends TestCase
     }
 
     #[Test]
+    public function a_visit_reads_at_the_time_of_the_reader(): void
+    {
+        $user = User::factory()->create(['timezone' => 'America/New_York']);
+        $contact = $this->contactOf($user);
+        $link = ShareLink::factory()->for($contact, 'shareable')->create();
+
+        ShareLinkVisit::factory()->for($link)->create([
+            'account_id' => $link->account_id,
+            'viewed_at' => '2026-01-15 02:30:00',
+        ]);
+
+        $visits = $this->viewModel($user, $contact, $link)->visits();
+
+        $this->assertSame('January 14, 2026, 9:30 PM', $visits[0]['when']);
+    }
+
+    #[Test]
     public function a_failed_password_is_marked_in_the_list(): void
     {
         $user = User::factory()->create();

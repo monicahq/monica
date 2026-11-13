@@ -320,10 +320,11 @@ class Vault extends Model
      * A category is a choice of the account's "Contact categories" list. Only the people of the
      * grouping count, a choice no longer offered is still listed while somebody holds it, and a
      * person holding a category in two fields counts once. The list is in the order of the list.
+     * A caller that does not reach sensitive fields neither sees nor counts what one of them holds.
      *
      * @return list<array{item: ValueListItem, contacts: int}>
      */
-    public function categoriesHeldByContacts(ContactGroupingEnum $grouping): array
+    public function categoriesHeldByContacts(ContactGroupingEnum $grouping, bool $reachesSensitiveFields): array
     {
         $list = ValueList::query()
             ->where('account_id', $this->account_id)
@@ -338,7 +339,10 @@ class Vault extends Model
             ->where('vault_id', $this->id)
             ->where('valuable_type', new Contact()->getMorphClass())
             ->whereIn('valuable_id', $this->contacts()->inGrouping($grouping)->select('id'))
-            ->whereIn('field_id', Field::query()->where('value_list_id', $list->id)->select('id'))
+            ->whereIn('field_id', Field::query()
+                ->where('value_list_id', $list->id)
+                ->when(! $reachesSensitiveFields, fn (Builder $fields): Builder => $fields->where('is_sensitive', false))
+                ->select('id'))
             ->where('is_detached', false)
             ->whereNotNull('value_list_item_ids')
             ->get(['valuable_id', 'value_list_item_ids'])

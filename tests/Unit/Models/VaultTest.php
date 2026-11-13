@@ -191,7 +191,7 @@ class VaultTest extends TestCase
         $otherVault = Vault::factory()->create(['account_id' => $vault->account_id]);
         $this->hold(Contact::factory()->create(['vault_id' => $otherVault->id]), $field, [$scranton->id]);
 
-        $held = $vault->categoriesHeldByContacts(ContactGroupingEnum::Everyone);
+        $held = $vault->categoriesHeldByContacts(ContactGroupingEnum::Everyone, reachesSensitiveFields: true);
 
         $this->assertSame(
             [[$sales->id, 2], [$finerThings->id, 1], [$partyPlanning->id, 1]],
@@ -204,7 +204,30 @@ class VaultTest extends TestCase
     {
         $vault = Vault::factory()->create();
 
-        $this->assertSame([], $vault->categoriesHeldByContacts(ContactGroupingEnum::Everyone));
+        $this->assertSame([], $vault->categoriesHeldByContacts(ContactGroupingEnum::Everyone, reachesSensitiveFields: true));
+    }
+
+    #[Test]
+    public function it_leaves_out_what_a_sensitive_field_holds_for_a_caller_that_does_not_reach_sensitive_fields(): void
+    {
+        $vault = Vault::factory()->create();
+        $list = ValueList::factory()->supplied(ValueListEnum::ContactCategories)->create(['account_id' => $vault->account_id]);
+        $sales = $this->categoryOf($list, 'Sales', 1);
+        $therapy = $this->categoryOf($list, 'In therapy', 2);
+        $field = Field::factory()->create(['type' => FieldTypeEnum::Multiselect, 'value_list_id' => $list->id]);
+        $sensitiveField = Field::factory()->create(['type' => FieldTypeEnum::Multiselect, 'value_list_id' => $list->id, 'is_sensitive' => true]);
+
+        $jim = Contact::factory()->create(['vault_id' => $vault->id]);
+        $this->hold($jim, $field, [$sales->id]);
+        $this->hold($jim, $sensitiveField, [$sales->id, $therapy->id]);
+
+        $count = fn (bool $reachesSensitiveFields): array => array_map(
+            fn (array $category): array => [$category['item']->id, $category['contacts']],
+            $vault->categoriesHeldByContacts(ContactGroupingEnum::Everyone, $reachesSensitiveFields),
+        );
+
+        $this->assertSame([[$sales->id, 1]], $count(false));
+        $this->assertSame([[$sales->id, 1], [$therapy->id, 1]], $count(true));
     }
 
     #[Test]

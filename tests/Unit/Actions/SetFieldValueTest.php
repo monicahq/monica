@@ -1126,6 +1126,7 @@ class SetFieldValueTest extends TestCase
             'local_date' => '2027-05-20',
             'cancelled_at' => null,
         ]);
+        $this->assertSame('2027-05-01 06:00:00', $reminder->refresh()->schedule_changed_at->format('Y-m-d H:i:s'));
     }
 
     private function contactOf(User $user): Contact

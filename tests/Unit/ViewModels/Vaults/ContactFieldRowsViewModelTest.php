@@ -98,6 +98,20 @@ class ContactFieldRowsViewModelTest extends TestCase
         $this->assertSame(['World’s best boss.'], $viewModel->noteEntries()[0]['shown']);
     }
 
+    #[Test]
+    public function it_splits_a_note_into_paragraphs_only_at_blank_lines_whatever_its_characters(): void
+    {
+        $user = User::factory()->create();
+        $notes = $this->repeater($user, 'Notes', [FieldTypeEnum::Textarea]);
+        $contact = $this->contact($user, $notes);
+
+        $this->writeRow($contact, $notes, "Zakupy ą\nmleko\n\nchleb", CarbonImmutable::parse('2026-01-01'));
+
+        $viewModel = new ContactFieldRowsViewModel(user: $user, vault: $contact->vault, contact: $contact, field: $notes);
+
+        $this->assertSame(["Zakupy ą\nmleko", 'chleb'], $viewModel->noteEntries()[0]['shown']);
+    }
+
     /** @param  array<int, FieldTypeEnum>  $childTypes */
     private function repeater(User $user, string $label, array $childTypes): Field
     {

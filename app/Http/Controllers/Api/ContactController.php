@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Actions\CreateContact;
 use App\Actions\DestroyContact;
+use App\Enums\ApiKeyScopeEnum;
 use App\Enums\ContactGroupingEnum;
 use App\Enums\ContactSortEnum;
 use App\Enums\NameOrderEnum;
@@ -19,6 +20,7 @@ use App\Jobs\RecordContactVisit;
 use App\Models\Contact;
 use App\Models\ContactListColumn;
 use App\Models\StructureVersion;
+use App\Models\User;
 use App\Models\ValueList;
 use App\Models\Vault;
 use App\Rules\PublishedContactStructureVersion;
@@ -29,6 +31,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class ContactController extends Controller
 {
@@ -61,7 +64,7 @@ class ContactController extends Controller
             ->where('vault_id', $vault->id)
             ->inGrouping(ContactGroupingEnum::fromValueOrEveryone($validated['filter'] ?? null))
             ->matchingSearch($validated['query'] ?? '')
-            ->when($categoryIds !== [], fn (Builder $query): Builder => $query->holdingAnyCategory($categoryIds))
+            ->when($categoryIds !== [], fn (Builder $query): Builder => $query->holdingAnyCategory($categoryIds, $this->reachesSensitiveFields($request->user())))
             ->sortedBy(
                 ContactSortEnum::fromValueOrName($validated['sort'] ?? null),
                 SortDirectionEnum::fromValueOrAscending($validated['direction'] ?? null),
@@ -182,5 +185,16 @@ class ContactController extends Controller
             ->addressedBy($address)
             ->with(['vault', 'structureVersion.structure.owner', 'avatar'])
             ->firstOrFail();
+    }
+
+    private function reachesSensitiveFields(User $user): bool
+    {
+        $token = $user->currentAccessToken();
+
+        if (! $token instanceof PersonalAccessToken) {
+            return false;
+        }
+
+        return in_array(ApiKeyScopeEnum::SensitiveFields->value, $token->abilities ?? [], true);
     }
 }

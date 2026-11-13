@@ -6,6 +6,7 @@ namespace Tests\Unit\ViewModels\Settings\Account\Security;
 
 use App\Enums\SsoProviderEnum;
 use App\Models\Administrator;
+use App\Models\Passkey;
 use App\Models\ProviderConnection;
 use App\Models\SecurityKey;
 use App\Models\User;
@@ -278,5 +279,27 @@ class SecurityViewModelTest extends TestCase
         config(['monica.support_enabled' => false]);
 
         $this->assertFalse(new SecurityViewModel(user: $michael)->offersAdministrationScope());
+    }
+
+    #[Test]
+    public function it_does_not_offer_to_remove_the_password_for_a_connected_provider_without_a_passkey(): void
+    {
+        $this->app['request']->server->set('HTTPS', 'on');
+
+        $user = User::factory()->create();
+        ProviderConnection::factory()->create(['user_id' => $user->id]);
+
+        $this->assertFalse(new SecurityViewModel(user: $user)->canRemoveThePassword());
+    }
+
+    #[Test]
+    public function it_offers_to_remove_the_password_when_a_passkey_can_be_used(): void
+    {
+        $this->app['request']->server->set('HTTPS', 'on');
+
+        $user = User::factory()->create();
+        Passkey::factory()->create(['user_id' => $user->id]);
+
+        $this->assertTrue(new SecurityViewModel(user: $user)->canRemoveThePassword());
     }
 }

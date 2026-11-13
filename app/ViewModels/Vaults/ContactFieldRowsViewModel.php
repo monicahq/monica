@@ -120,7 +120,7 @@ class ContactFieldRowsViewModel
             return null;
         }
 
-        $paragraphs = preg_split('/\R\s*\R/', $text) ?: [$text];
+        $paragraphs = preg_split('/\R\s*\R/u', $text) ?: [$text];
 
         return [
             'id' => $row->id,

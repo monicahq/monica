@@ -227,7 +227,7 @@ class ContactsViewModel
             'label' => $held['item']->label,
             'count' => $held['contacts'],
             'isChosen' => in_array($held['item']->id, $this->categoryIds, true),
-        ], $this->vault->categoriesHeldByContacts($this->grouping));
+        ], $this->vault->categoriesHeldByContacts($this->grouping, reachesSensitiveFields: true));
     }
 
     /** @return list<int> */
@@ -341,7 +341,7 @@ class ContactsViewModel
             ->where('vault_id', $this->vault->id)
             ->inGrouping($this->grouping)
             ->matchingSearch($this->query)
-            ->when($this->categoryIds !== [], fn (Builder $query): Builder => $query->holdingAnyCategory($this->categoryIds));
+            ->when($this->categoryIds !== [], fn (Builder $query): Builder => $query->holdingAnyCategory($this->categoryIds, true));
     }
 
     private function searchTerm(): string

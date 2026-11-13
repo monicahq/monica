@@ -244,6 +244,7 @@ class SetFieldValue
         )->execute();
 
         $rule->schedule_revision++;
+        $rule->schedule_changed_at = now();
         $rule->save();
 
         new GenerateReminderOccurrences(reminder: $rule->refresh())->execute();

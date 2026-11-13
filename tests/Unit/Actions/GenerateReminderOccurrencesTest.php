@@ -196,6 +196,29 @@ class GenerateReminderOccurrencesTest extends TestCase
     }
 
     #[Test]
+    public function it_writes_one_deadline_for_a_rule_that_fires_once_on_a_date_without_a_year_across_the_new_year(): void
+    {
+        CarbonImmutable::setTestNow('2026-11-12 08:00:00');
+        config(['monica.reminder_generation_window_in_days' => 90]);
+        $value = FieldValue::factory()->recurringDateWithoutAYear()->create(['value_date' => FieldValue::PLACEHOLDER_YEAR.'-12-20']);
+        $reminder = Reminder::factory()->for($value, 'fieldValue')->create([
+            'account_id' => $value->account_id,
+            'vault_id' => $value->vault_id,
+            'field_id' => $value->field_id,
+            'remindable_id' => $value->valuable_id,
+            'cadence' => ReminderCadenceEnum::Once,
+        ]);
+
+        $this->assertSame(1, new GenerateReminderOccurrences(reminder: $reminder)->execute());
+        $this->assertNull($reminder->refresh()->generate_from);
+
+        CarbonImmutable::setTestNow('2027-09-22 08:00:00');
+
+        $this->assertSame(0, new GenerateReminderOccurrences(reminder: $reminder)->execute());
+        $this->assertSame(['2026-12-20'], ReminderOccurrence::query()->where('reminder_id', $reminder->id)->pluck('local_date')->map->format('Y-m-d')->all());
+    }
+
+    #[Test]
     public function it_stops_at_the_far_end_of_the_window(): void
     {
         CarbonImmutable::setTestNow('2027-01-01 06:00:00');

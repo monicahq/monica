@@ -68,7 +68,7 @@ class ContactShareLinkController extends Controller
             expiresAt: $this->expiresAt($request, null),
             includesGroups: FlagState::isOn('groups', $request->user()->account) && $request->boolean('includes_groups'),
             includesSensitiveFields: $request->boolean('includes_sensitive_fields'),
-            excludedSectionIds: $this->excludedSectionIds($request, $contact),
+            includedSectionIds: $this->includedSectionIds($request, $contact),
         )->execute();
 
         return redirect()->route('contacts.shareLinks.show', [
@@ -136,7 +136,7 @@ class ContactShareLinkController extends Controller
                 includesRelationships: $shareLink->includes_relationships,
                 includesGroups: FlagState::isOn('groups', $request->user()->account) ? $request->boolean('includes_groups') : $shareLink->includes_groups,
                 includesSensitiveFields: $request->boolean('includes_sensitive_fields'),
-                excludedSectionIds: $this->excludedSectionIds($request, $contact),
+                includedSectionIds: $this->includedSectionIds($request, $contact),
                 excludedLifeEventIds: $shareLink->excluded_life_event_ids,
             )->execute();
         } catch (ShareLinkIsRevoked) {
@@ -205,13 +205,15 @@ class ContactShareLinkController extends Controller
     }
 
     /** @return list<int> */
-    private function excludedSectionIds(Request $request, Contact $contact): array
+    private function includedSectionIds(Request $request, Contact $contact): array
     {
-        $included = array_map('intval', $request->input('sections', []));
+        $ticked = array_map('intval', $request->input('sections', []));
+        [$included, $excluded] = $contact->structureVersion->assembly
+            ->partition(fn (StructureVersionSection $row): bool => in_array($row->id, $ticked, true));
 
-        return $contact->structureVersion->assembly
-            ->reject(fn (StructureVersionSection $row): bool => in_array($row->id, $included, true))
-            ->pluck('id')
+        return $included->pluck('sectionVersion.section_id')
+            ->diff($excluded->pluck('sectionVersion.section_id'))
+            ->unique()
             ->values()
             ->all();
     }

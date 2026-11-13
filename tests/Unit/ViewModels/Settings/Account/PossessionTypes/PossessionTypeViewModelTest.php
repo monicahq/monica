@@ -8,6 +8,7 @@ use App\Enums\PossessionFieldKindEnum;
 use App\Enums\VaultColourEnum;
 use App\Models\PossessionField;
 use App\Models\PossessionFieldGroup;
+use App\Models\PossessionFieldValue;
 use App\Models\PossessionType;
 use App\Models\User;
 use App\ViewModels\Settings\Account\PossessionTypes\PossessionTypeViewModel;
@@ -91,6 +92,29 @@ class PossessionTypeViewModelTest extends TestCase
         $this->assertSame([true, false, false], array_column($fields, 'needsOptions'));
         $this->assertSame([true, true, false], array_column($fields, 'isSelect'));
         $this->assertSame(['New', 'Used'], $fields[1]['options']);
+    }
+
+    #[Test]
+    public function it_warns_how_many_possessions_lose_a_choice_when_it_is_removed(): void
+    {
+        $user = User::factory()->create();
+        $possessionType = PossessionType::factory()->create(['account_id' => $user->account_id]);
+        $field = PossessionField::factory()->create([
+            'possession_type_id' => $possessionType->id,
+            'name' => 'Colour',
+            'kind' => PossessionFieldKindEnum::Select,
+            'options' => ['Red', 'Blue', 'Green'],
+        ]);
+        PossessionFieldValue::factory()->count(2)->create(['possession_field_id' => $field->id, 'value' => 'Red']);
+        PossessionFieldValue::factory()->create(['possession_field_id' => $field->id, 'value' => 'Blue']);
+
+        $fields = new PossessionTypeViewModel(user: $user, possessionType: $possessionType)->standaloneFields();
+
+        $this->assertSame([
+            'Red' => '2 possessions hold this choice and will lose it. This cannot be undone.',
+            'Blue' => '1 possession holds this choice and will lose it. This cannot be undone.',
+            'Green' => 'This cannot be undone.',
+        ], $fields[0]['choiceWarnings']);
     }
 
     #[Test]

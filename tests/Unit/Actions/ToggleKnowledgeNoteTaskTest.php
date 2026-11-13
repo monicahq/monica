@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -107,6 +108,30 @@ class ToggleKnowledgeNoteTaskTest extends TestCase
         new ToggleKnowledgeNoteTask(user: $user, note: $note, task: 2, bodyHash: ToggleKnowledgeNoteTask::hash($note->body))->execute();
 
         $this->assertEquals("Party planning\r\n\r\n> - [ ] Streamers\r\n> - [x] Cake", $note->refresh()->body);
+    }
+
+    /** @return array<string, array{0: string}> */
+    public static function linesHoldingNonAsciiCharacters(): array
+    {
+        return [
+            'Polish' => ['Zakupy na środę ą'],
+            'Russian' => ['Сделать хорошо'],
+            'an emoji' => ['Party 😅'],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('linesHoldingNonAsciiCharacters')]
+    public function it_ticks_the_task_asked_for_below_a_line_of_non_ascii_text(string $firstLine): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $note = $this->noteFor($user, "{$firstLine}\n- [ ] Streamers\n- [ ] Cake");
+
+        new ToggleKnowledgeNoteTask(user: $user, note: $note, task: 2, bodyHash: ToggleKnowledgeNoteTask::hash($note->body))->execute();
+
+        $this->assertEquals("{$firstLine}\n- [ ] Streamers\n- [x] Cake", $note->refresh()->body);
     }
 
     #[Test]

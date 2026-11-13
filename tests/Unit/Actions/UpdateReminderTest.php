@@ -14,6 +14,7 @@ use App\Jobs\LogUserAction;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
+use App\Models\Group;
 use App\Models\Reminder;
 use App\Models\User;
 use Carbon\CarbonImmutable;
@@ -248,6 +249,28 @@ class UpdateReminderTest extends TestCase
             'local_date' => '2027-05-20',
             'cancelled_at' => null,
         ]);
+    }
+
+    #[Test]
+    public function it_updates_a_reminder_whose_group_was_force_deleted(): void
+    {
+        Queue::fake();
+        CarbonImmutable::setTestNow('2027-05-01 06:00:00');
+
+        $user = User::factory()->create();
+        $group = Group::factory()->create(['account_id' => $user->account_id, 'name' => 'Scranton branch']);
+        $reminder = Reminder::factory()->manual($group, '2027-05-10')->once()->create(['timezone' => 'UTC']);
+        $group->forceDelete();
+
+        new UpdateReminder(
+            user: $user,
+            reminder: $reminder->refresh(),
+            cadence: ReminderCadenceEnum::Once,
+            timeOfDay: '09:00',
+            name: 'Ask about the branch',
+        )->execute();
+
+        $this->assertSame('Ask about the branch', $reminder->refresh()->name);
     }
 
     #[Test]

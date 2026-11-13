@@ -23,7 +23,7 @@ class DocsViewModel
                 'icon' => 'journal',
                 'kind' => __('Guide'),
                 'title' => __('Using Monica'),
-                'description' => __('What each part of the product is for, from your first contact to reminders, journals and sharing a vault with someone.'),
+                'description' => __('What each part of the product is for, from your first contact to reminders, templates and sharing a contact with someone.'),
                 'url' => route('docs.portal.index', ['locale' => 'en']),
                 'hue' => 255,
             ],

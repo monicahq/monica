@@ -1,9 +1,11 @@
 ---
 name: translations
-description: Keep the lang/*.json files in step with the code using the monica:localize command. Use when UI copy changes, new strings are added, or locale files are out of sync. Trigger whenever translation keys, lang files, i18n, or __() / @lang() strings are mentioned.
+description: Keep the lang/*.json files in step with the code using the monica:localize command. Use when UI copy changes, new strings are added, or locale files are out of sync. Trigger whenever translation keys, lang files, i18n, or __() / @lang() strings are mentioned. Every translation MUST be written by subagents launched with model sonnet.
 ---
 
 # Translations
+
+**You MUST always use subagents running on Sonnet (`model: "sonnet"`) to translate.** Never write a translated value yourself, not even one string. See [Who writes the translation](#who-writes-the-translation).
 
 The strings themselves are the keys, in one JSON file per locale under `lang/`. A key missing from a locale falls back to the key, which is the English sentence, so a missing translation reads as English rather than as a blank.
 
@@ -22,8 +24,20 @@ The strings themselves are the keys, in one JSON file per locale under `lang/`. 
 1. Write the string in the code as usual. A string in an enum belongs in `translationKeys()`, and the enum MUST implement `Translatable`.
 2. Run `php artisan monica:localize`. Read what it says it added and removed.
 3. Translate every string it reports as missing, in every locale of `App\Helpers\AvailableLocales`,
-   which is every `lang/*.json` file.
+   which is every `lang/*.json` file, using subagents launched with `model: "sonnet"`, as the next
+   section says.
 4. Run `php artisan monica:localize --check` and confirm it passes.
+
+## Who writes the translation
+
+You MUST always use subagents to translate, and every one of them MUST be launched with
+`model: "sonnet"`, whatever model the session runs on and however few strings there are. The
+session MUST NOT write a translated value itself. This applies to `lang/*.json`, to documentation
+and to anything else put into another language. Several subagents, one per group of locales, each get `model: "sonnet"`.
+
+The session's part is to brief the subagent (the strings, the locales, the rules in this skill and
+in `.claude/rules/translations.md`, the glossary), then check what comes back: placeholders kept,
+the right number of wordings for each locale, and `php artisan monica:localize --check` passing.
 
 ## Writing a translation
 

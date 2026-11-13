@@ -39,7 +39,9 @@ class ShareLinkFactory extends Factory
             'includes_relationships' => false,
             'includes_groups' => false,
             'includes_sensitive_fields' => false,
-            'excluded_section_ids' => [],
+            'included_section_ids' => fn (array $attributes): array => $attributes['shareable_type'] === Contact::class
+                ? Contact::query()->findOrFail($attributes['shareable_id'])->structureVersion?->assembly->pluck('sectionVersion.section_id')->unique()->values()->all() ?? []
+                : [],
             'excluded_life_event_ids' => [],
             'view_count' => 0,
             'last_viewed_at' => null,

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Docs;
 
+use App\Models\Administrator;
+use App\Models\User;
 use App\ViewModels\Docs\ApiDocsSection;
 use App\ViewModels\Docs\ApiDocsViewModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -78,6 +80,8 @@ class ApiDocsControllerTest extends TestCase
     #[Test]
     public function a_page_ends_with_its_neighbours_and_the_footer(): void
     {
+        Administrator::factory()->create(['user_id' => User::factory()->create()->id]);
+
         $response = $this->get(route('docs.api.show', ['section' => 'rate-limits']));
 
         $response->assertSee('Authentication');
@@ -88,6 +92,6 @@ class ApiDocsControllerTest extends TestCase
         $response->assertSee(route('docs.api.changelog.index'), escape: false);
         $response->assertSee('Read the changelog');
         $response->assertSee(route('support.requests.new'), escape: false);
-        $response->assertSee('datetime="2026-11-12"', escape: false);
+        $response->assertSee('datetime="2026-11-13"', escape: false);
     }
 }

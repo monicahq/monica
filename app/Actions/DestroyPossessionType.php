@@ -10,15 +10,18 @@ use App\Jobs\LogUserAction;
 use App\Models\File;
 use App\Models\PossessionTransaction;
 use App\Models\PossessionType;
+use App\Models\PossessionValuation;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Delete a possession type with its groups, its fields, and every possession of that type with the
- * values it held and their transactions, whose documents are detached so they wait out the grace
- * period. How many possessions went is written to the log and returned, so that the deletion
- * is never silent, and the featured order of every vault that held one closes behind them.
+ * values it held, their transactions and their valuations, whose documents are detached so they
+ * wait out the grace period. How many possessions went is written to the log and returned, so that
+ * the deletion is never silent, and the featured order of every vault that held one closes behind
+ * them.
  */
 class DestroyPossessionType
 {
@@ -60,14 +63,23 @@ class DestroyPossessionType
             ->pluck('vault_id')
             ->all();
 
-        PossessionTransaction::query()
-            ->whereIn('possession_id', $this->possessionType->possessions()->select('id'))
-            ->with('documents')
-            ->get()
-            ->flatMap(fn (PossessionTransaction $transaction): Collection => $transaction->documents)
-            ->each(fn (File $file) => new DetachFile(user: $this->user, file: $file)->execute());
+        DB::transaction(function (): void {
+            PossessionTransaction::query()
+                ->whereIn('possession_id', $this->possessionType->possessions()->select('id'))
+                ->with('documents')
+                ->get()
+                ->flatMap(fn (PossessionTransaction $transaction): Collection => $transaction->documents)
+                ->each(fn (File $file) => new DetachFile(user: $this->user, file: $file)->execute());
 
-        $this->possessionType->delete();
+            PossessionValuation::query()
+                ->whereIn('possession_id', $this->possessionType->possessions()->select('id'))
+                ->with('documents')
+                ->get()
+                ->flatMap(fn (PossessionValuation $valuation): Collection => $valuation->documents)
+                ->each(fn (File $file) => new DetachFile(user: $this->user, file: $file)->execute());
+
+            $this->possessionType->delete();
+        });
 
         foreach ($this->vaultIds as $vaultId) {
             FeaturedPossessionOrder::arrange(vaultId: $vaultId);
