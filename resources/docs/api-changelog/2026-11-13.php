@@ -6,6 +6,17 @@ return [
     'date' => '2026-11-13',
     'entries' => [
         [
+            'id' => 'vault-reminder-occurrences',
+            'kind' => 'Added',
+            'group' => 'Reminders',
+            'title' => 'Adds the reminder dates of a whole vault',
+            'summary' => 'List what is overdue, due today and coming up across every contact, group and record of a vault, filtered by category, by kind (every reminder or birthdays only) and by how many days ahead. Birthdays come with the age being reached, and the birthdays nobody asked to be reminded of are listed too.',
+            'why' => 'The dates of a vault could only be read one contact or one group at a time, so the question the vault dashboard answers took one request per person.',
+            'changes' => [
+                ['field' => 'reminder-occurrences', 'change' => 'Added', 'endpoints' => ['GET /vaults/{vault}/reminder-occurrences']],
+            ],
+        ],
+        [
             'id' => 'possession-field-removed-choice-values',
             'kind' => 'Changed',
             'group' => 'Possession types',

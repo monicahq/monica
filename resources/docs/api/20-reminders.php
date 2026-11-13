@@ -54,6 +54,23 @@ $occurrence = [
     ],
 ];
 
+$vaultOccurrence = [
+    'type' => 'reminder_occurrence',
+    'id' => $occurrenceId,
+    'attributes' => [
+        ...$occurrence['attributes'],
+        'category' => 'overdue',
+        'answer' => null,
+        'answered_at' => null,
+        'subject' => ['type' => 'contact', 'id' => '0b6d2f4e-8a13-4c57-9e02-6f3a1d8b7c45', 'name' => 'Pam Beesly'],
+        'age' => null,
+    ],
+    'links' => [
+        'reminder' => $base.'/vaults/'.$vaultSlug.'/contacts/'.$contactSlug.'/reminders/'.$reminderId,
+        'answer' => $base.'/vaults/'.$vaultSlug.'/contacts/'.$contactSlug.'/reminder-occurrences/'.$occurrenceId.'/answer',
+    ],
+];
+
 $identifier = [
     ['name' => 'vault', 'type' => 'string', 'required' => true, 'description' => 'The vault the contact lives in, named either by the readable name it reports as slug or by the identifier it reports as id.'],
     ['name' => 'contact', 'type' => 'string', 'required' => true, 'description' => 'The contact the reminders are about, named either by its slug or by its id. A contact addressed through the wrong vault answers 404.'],
@@ -99,7 +116,7 @@ $occurrenceAttributes = [
 
 return [
     'name' => 'Reminders',
-    'description' => 'The reminders about a contact, the dates they produce, and what you answered for each date.',
+    'description' => 'The reminders about a contact, the dates they produce, the dates of a whole vault, and what you answered for each date.',
     'sections' => [
         [
             'id' => 'reminders-index',
@@ -268,6 +285,49 @@ return [
             ],
             'returns' => 'The reminder date object, with its answer.',
             'response' => ['data' => $occurrence],
+        ],
+        [
+            'id' => 'vault-reminder-occurrences-index',
+            'returnFields' => [
+                ...ApiDocsFields::page('reminder_occurrence', 'date', 'dates', [
+                    ...array_map(fn (array $field): array => $field['name'] === 'group' ? [...$field, 'description' => 'The group the reminder is about, as an object holding id and name, or null for a reminder about anything else.'] : $field, $occurrenceAttributes),
+                    ['name' => 'subject', 'type' => 'object', 'description' => 'Who or what the date is about, or null once that record is gone.'],
+                    ['name' => 'subject.type', 'type' => 'string', 'description' => 'contact, group or entity, an entity being a record of a type you invented.'],
+                    ['name' => 'subject.id', 'type' => 'uuid', 'description' => 'Its identifier.'],
+                    ['name' => 'subject.name', 'type' => 'string', 'description' => 'Its name.'],
+                    ['name' => 'age', 'type' => 'integer', 'description' => 'For a birthday, the age reached on that day. Null when the year of birth is unknown, for any other date, and for a birthday held in a sensitive field your key may not read.'],
+                ], withLinks: false),
+                ['name' => 'data[].links', 'type' => 'object', 'description' => 'Where to find what this date belongs to, and how to answer it.'],
+                ['name' => 'data[].links.reminder', 'type' => 'string', 'description' => 'The absolute address of the reminder, or null once the reminder was deleted.'],
+                ['name' => 'data[].links.answer', 'type' => 'string', 'description' => 'The absolute address to answer this date at, or null when it cannot be answered: not generated yet, already answered, cancelled, or about a record of a type you invented.'],
+            ],
+            'title' => 'List a vault\'s reminder dates',
+            'label' => 'List a vault\'s dates',
+            'method' => 'GET',
+            'path' => '/vaults/{vault}/reminder-occurrences',
+            'examplePath' => '/vaults/'.$vaultSlug.'/reminder-occurrences?kind=birthdays&days=30',
+            'description' => 'List the dates of a whole vault, for every contact, group and record in it: what is overdue, what falls today and what comes next. The same dates as the vault dashboard.',
+            'body' => [
+                'Without a category, the dates overdue, today and upcoming are listed together, earliest first, as the vault dashboard lists them. This differs from the dates of one contact, which list every date newest first.',
+                'upcoming lists the next date of each active reminder up to days ahead. A date too far off to have been generated yet comes back with a null id, and cannot be answered.',
+                'history lists the answered dates, the latest answer first, including those of reminders deleted since.',
+                'kind=birthdays keeps the birthdays only. It also lists the birthdays nobody asked to be reminded of, falling today or within days: those come back with the type birthday, a null id, the attributes date, category, subject and age, and a links.contact pointing at the contact. They are never overdue and never in the history, since there is nothing to answer. A birthday held in a sensitive field is left out unless your key may read sensitive fields.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
+            'pathParams' => [
+                ['name' => 'vault', 'type' => 'string', 'required' => true, 'description' => 'The vault, named either by the readable name it reports as slug or by the identifier it reports as id.'],
+            ],
+            'queryParams' => [
+                ['name' => 'category', 'type' => 'string', 'required' => false, 'description' => 'One of overdue, today, upcoming or history.'],
+                ['name' => 'kind', 'type' => 'string', 'required' => false, 'description' => 'all for every reminder, birthdays for birthdays only.', 'default' => 'all'],
+                ['name' => 'days', 'type' => 'integer', 'required' => false, 'description' => 'How many days ahead upcoming reaches, between 1 and 365.', 'default' => '7'],
+                ...$pageParams,
+            ],
+            'returns' => 'A page of reminder date objects, and of birthdays when they are asked for, and how many there are in all.',
+            'response' => [
+                'data' => [$vaultOccurrence],
+                'meta' => ['page' => 1, 'per_page' => 25, 'total' => 1],
+            ],
         ],
     ],
 ];

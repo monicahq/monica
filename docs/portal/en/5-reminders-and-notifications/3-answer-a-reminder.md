@@ -4,7 +4,7 @@ title: Answer a reminder
 description: Tell Monica whether you remembered or forgot when a reminder’s day comes, and find what is overdue or coming up.
 slug: answer-a-reminder
 section: reminders-and-notifications
-last_updated: 2026-09-29
+last_updated: 2026-11-13
 ---
 
 # Answer a reminder
@@ -22,6 +22,14 @@ Each date a reminder falls on waits for your answer in three places:
 ::screenshot{label="The vault’s Reminders screen on the Coming up tab, with one overdue reminder about Chandler Bing showing I remembered and I forgot, then the upcoming reminders" src="1-reminders.index.webp"}
 
 The vault’s **Reminders** also has two other tabs. **Sent** lists the reminders already delivered, and on which channel. **History** lists the answers you gave.
+
+## Ask an assistant what is coming up
+
+An assistant connected to Monica can answer the same question as the vault’s dashboard in one go: “What do I have to remember today and this week in my Friends vault?” It lists what is overdue, what falls today and what comes in the next seven days, for every contact and group of the vault. Ask for a longer stretch, up to a year, and it looks further ahead.
+
+To ask about birthdays only, say so: “Whose birthday is it today, and whose is coming up?” The assistant then also finds the birthdays nobody asked to be reminded of, and tells you the age each person turns when the year of birth is known. A birthday written in a field marked sensitive stays hidden from an assistant.
+
+Read @doc(integrations.overview) to connect an assistant. A script can ask the same through the [API](/docs/api).
 
 ## Answer a date
 

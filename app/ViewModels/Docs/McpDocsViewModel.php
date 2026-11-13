@@ -244,6 +244,7 @@ class McpDocsViewModel
                 ['name' => 'list-group-reminders', 'description' => 'Lists the reminders about a group as a whole.'],
                 ['name' => 'get-group-reminder', 'description' => 'Returns one reminder about a group: what it says, how often it comes back and its next date.'],
                 ['name' => 'list-group-reminder-occurrences', 'description' => 'Lists the dates the reminders about a group produced, with what was answered for each.'],
+                ['name' => 'list-vault-reminder-occurrences', 'description' => 'Lists what is overdue, due today and coming up in a whole vault, or only the birthdays, with the age being reached.'],
             ]],
             ['name' => 'Reminders, changing', 'changesData' => true, 'tools' => [
                 ['name' => 'create-contact-reminder', 'description' => 'Writes a reminder about a contact with a date of its own.'],

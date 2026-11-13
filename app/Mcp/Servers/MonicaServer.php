@@ -156,6 +156,7 @@ use App\Mcp\Tools\ListSupportQueue;
 use App\Mcp\Tools\ListSupportRequests;
 use App\Mcp\Tools\ListTemplates;
 use App\Mcp\Tools\ListTemplateVersions;
+use App\Mcp\Tools\ListVaultReminderOccurrences;
 use App\Mcp\Tools\ListVaults;
 use App\Mcp\Tools\MovePossession;
 use App\Mcp\Tools\PublishTemplateVersion;
@@ -454,6 +455,7 @@ class MonicaServer extends Server
         UpdateContactReminder::class,
         DeleteContactReminder::class,
         ListContactReminderOccurrences::class,
+        ListVaultReminderOccurrences::class,
         AnswerReminderOccurrence::class,
         ListGroupReminders::class,
         GetGroupReminder::class,

@@ -244,3 +244,5 @@ A chronological list of every feature and improvement shipped during development
 * Possessions: The API and MCP list, show, record, change and delete the loans of a possession.
 * Auth: Registration opens on a password, and a passkey is offered under the button as "Use a passkey instead" wherever the connection and the browser can create one.
 * Auth: The registration screen no longer warns about passkeys over a connection that is not secure.
+* Reminders: The API and MCP list the dates of a whole vault (overdue, today, upcoming or history), the same ones as the vault dashboard.
+* Reminders: The API and MCP list a vault's birthdays only, including those nobody asked to be reminded of, with the age each person turns.

@@ -2280,6 +2280,13 @@ class ApiDocsReturnFieldsTest extends TestCase
                 return $this->json('GET', "/api/v1/vaults/{$reminder->vault->uuid}/contacts/{$reminder->remindable->uuid}/reminder-occurrences?category=history");
             }),
 
+            'vault-reminder-occurrences-index' => $this->asSomebody(function (User $user): TestResponse {
+                $reminder = $this->aManualReminder($user);
+                ReminderOccurrence::factory()->past()->create(['reminder_id' => $reminder->id]);
+
+                return $this->json('GET', "/api/v1/vaults/{$reminder->vault->uuid}/reminder-occurrences");
+            }),
+
             'reminder-occurrences-answer' => $this->asSomebody(function (User $user): TestResponse {
                 $reminder = $this->aManualReminder($user);
                 $occurrence = ReminderOccurrence::factory()->past()->create(['reminder_id' => $reminder->id]);

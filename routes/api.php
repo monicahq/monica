@@ -134,6 +134,7 @@ use App\Http\Controllers\Api\TemplateController;
 use App\Http\Controllers\Api\TemplateDuplicateController;
 use App\Http\Controllers\Api\TemplatePositionController;
 use App\Http\Controllers\Api\VaultController;
+use App\Http\Controllers\Api\VaultReminderOccurrenceController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Nightwatch\Http\Middleware\Sample;
 
@@ -410,6 +411,7 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
 
         Route::get('vaults/{vault}/contacts', [ContactController::class, 'index'])->name('contacts');
         Route::get('vaults/{vault}/contact-categories', [ContactCategoryController::class, 'index'])->name('contactCategories');
+        Route::get('vaults/{vault}/reminder-occurrences', [VaultReminderOccurrenceController::class, 'index'])->name('reminderOccurrences');
         Route::get('vaults/{vault}/search', [SearchController::class, 'index'])->name('search');
         Route::get('vaults/{vault}/contacts/me', [ContactMeController::class, 'show'])->name('contacts.me');
         Route::get('vaults/{vault}/contacts/{contact}', [ContactController::class, 'show'])->name('contacts.show');
