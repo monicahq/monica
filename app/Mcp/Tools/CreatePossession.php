@@ -16,7 +16,7 @@ use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 
-#[Description('Record something owned in a vault, of one possession type, optionally at one location, with what it would cost to replace and its tags. Record how it was acquired with create-possession-transaction. It is owned, counts one and is not featured unless said otherwise. Write the values of its fields with set-possession-values. The change is written to the account journal.')]
+#[Description('Record an object somebody owns in a vault, of one possession type, optionally at one location, with what it would cost to replace and its tags. Record how it was acquired with create-possession-transaction. It is owned, counts one and is not featured unless said otherwise. Write the values of its fields with set-possession-values. The change is written to the account journal.')]
 class CreatePossession extends Tool
 {
     use MirrorsAnApiCapability;

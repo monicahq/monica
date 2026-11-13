@@ -55,6 +55,24 @@ class McpCatalogueTest extends TestCase
     }
 
     #[Test]
+    public function it_lists_every_capability_on_one_page(): void
+    {
+        $user = User::factory()->create();
+        Administrator::factory()->create(['user_id' => $user->id]);
+        $key = $user->createToken('Every scope', ['*', 'administration']);
+
+        $response = $this->withToken($key->plainTextToken)->postJson('/mcp', [
+            'jsonrpc' => '2.0',
+            'id' => 1,
+            'method' => 'tools/list',
+        ]);
+
+        $response->assertOk();
+        $response->assertJsonCount(count($this->registeredTools()), 'result.tools');
+        $response->assertJsonMissingPath('result.nextCursor');
+    }
+
+    #[Test]
     public function the_catalogue_covers_every_tool_class_that_exists(): void
     {
         $onDisk = collect(glob(app_path('Mcp/Tools/*.php')))

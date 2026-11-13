@@ -264,11 +264,14 @@ A relationship type gives each of two linked contacts a role and is filed under 
 categories that came with the account, or that are in use, cannot be deleted, only switched off with
 set-relationship-type-activation or set-relationship-category-activation.
 
-A relationship links two contacts of one vault with a relationship type, and one record holds both
-sides. Find the type with list-relationship-types and both people with list-contacts or
-search-records before calling create-contact-relationship, and list-contact-relationships first to
-avoid recording the same link twice. holds_role_a says which person holds role_a of a type that is
-not symmetric. The other person can also be somebody not written down yet, named or not.
+A relationship links a contact to somebody else of the same vault: a partner, a parent, a child, a
+colleague. Find the type with list-relationship-types and the contact with list-contacts or
+search-records, and call list-contact-relationships first to avoid recording the same link twice.
+The other person can be an existing contact, or somebody named only in the call with first_name,
+or somebody whose name is unknown. Somebody named in the call gets no record of their own unless
+creates_record is true: they exist only through the relationship, which is how to add a wife, a
+child or a cousin the person mentions without filling the vault. holds_role_a says which person
+holds role_a of a type that is not symmetric; for parent and child, true makes the contact the parent.
 
 A location is a place of the account, such as a house, a room or a shelf, and it can sit inside
 another. Two places can share a name, so tell them apart by their path, and find the place a new one
@@ -278,6 +281,11 @@ deleted until they are moved with update-location.
 A possession type is a kind of thing the account owns, such as office equipment or a vehicle, with the
 fields a thing of that kind carries, standalone or in named groups. Read one with get-possession-type
 to find the identifiers of its groups and fields before changing them.
+
+A possession is an object somebody owns, recorded in one vault: a bicycle, a painting, a car.
+Record one with create-possession, giving it a type from list-possession-types; when no type fits
+what the person described, ask them rather than picking one. Write the values of its type's fields
+afterwards with set-possession-values, and how it was acquired with create-possession-transaction.
 
 A life event type is a kind of thing that happens to a contact, filed under a category, and it can ask
 for fields of its own. replace-life-event-type-fields replaces the whole set and never changes a life
@@ -301,6 +309,11 @@ There is no pause: delete-contact-reminder is the only way to stop a reminder, a
 TEXT)]
 class MonicaServer extends Server
 {
+    // An assistant that reads only the first page of tools/list must still see every tool.
+    public int $defaultPaginationLength = 500;
+
+    public int $maxPaginationLength = 500;
+
     /** @var array<int, class-string<Tool>> */
     protected array $tools = [
         GetContact::class,

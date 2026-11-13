@@ -66,6 +66,10 @@ Parents, children and partners also appear outside the **Relationships** tab. Th
 - **Both people have to be in the same vault.** A relationship links two people of one vault. Monica cannot link people across vaults.
 - **Somebody cannot be in a relationship with themselves.** You picked the person whose page you are on.
 
+## From the API or an assistant
+
+Everything on this screen can also be done through the [API reference](/docs/api) and by an assistant connected as the [MCP guide](/docs/mcp) explains. Ask it to add Kevin’s wife, or a child whose name you do not know, and it records them as partial contacts unless you ask for a record of their own.
+
 ## Next steps
 
 - @doc(relationships.edit, "Record when a relationship ended"), or change its type.

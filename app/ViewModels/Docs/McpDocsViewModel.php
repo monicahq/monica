@@ -262,7 +262,7 @@ class McpDocsViewModel
                 ['name' => 'get-contact-relationship', 'description' => 'Returns one relationship: its type, both people, whether it is current or ended, and its dates.'],
             ]],
             ['name' => 'Relationships, changing', 'changesData' => true, 'tools' => [
-                ['name' => 'create-contact-relationship', 'description' => 'Links a contact to somebody else, such as a partner or a parent. The other person can be somebody not written down yet.'],
+                ['name' => 'create-contact-relationship', 'description' => 'Adds a partner, a family member or any other relative to a contact, with or without a record of their own.'],
                 ['name' => 'update-contact-relationship', 'description' => 'Changes a relationship’s type, roles, dates or whether it ended. What you leave out keeps its value.'],
                 ['name' => 'delete-contact-relationship', 'description' => 'Deletes a relationship. Both people stay.'],
             ]],
@@ -427,7 +427,7 @@ class McpDocsViewModel
                 ['name' => 'get-possession-location-stay', 'description' => 'Returns one stay of a possession: the location, when it arrived and left, and whether it is there now.'],
             ]],
             ['name' => 'Possessions, changing', 'changesData' => true, 'tools' => [
-                ['name' => 'create-possession', 'description' => 'Records something owned in a vault, of one possession type.'],
+                ['name' => 'create-possession', 'description' => 'Records an object somebody owns in a vault, of one possession type.'],
                 ['name' => 'update-possession', 'description' => 'Changes the name, description, location, identifier, status, quantity or featured state of a possession. What you leave out keeps its value.'],
                 ['name' => 'delete-possession', 'description' => 'Deletes a possession and the values of its fields.'],
                 ['name' => 'set-possession-position', 'description' => 'Moves a featured possession to another place among the featured ones.'],
