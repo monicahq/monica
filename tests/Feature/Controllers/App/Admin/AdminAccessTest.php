@@ -26,6 +26,7 @@ class AdminAccessTest extends TestCase
             'the account lookup' => ['admin/accounts'],
             'the administrators' => ['admin/administrators'],
             'the configuration' => ['admin/configuration'],
+            'the waiting list' => ['admin/preview-list'],
             'the flags' => ['admin/flags'],
             'the search engine' => ['admin/search'],
         ];

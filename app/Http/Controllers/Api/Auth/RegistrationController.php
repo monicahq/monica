@@ -8,6 +8,7 @@ use App\Actions\CreateAccount;
 use App\Actions\CreateApiKey;
 use App\Helpers\TextSanitizer;
 use App\Http\Controllers\Controller;
+use App\Models\PreviewListEntry;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -17,7 +18,12 @@ class RegistrationController extends Controller
 {
     public function store(Request $request): JsonResponse
     {
-        $request->merge(['email' => mb_strtolower(trim((string) $request->input('email')))]);
+        $previewListEntry = PreviewListEntry::findByAdmissionToken((string) $request->input('admission'));
+
+        // The middleware saw the link, and a concurrent sign up may have used it since.
+        abort_if($previewListEntry === null && ! config('monica.registration_enabled'), 404);
+
+        $request->merge(['email' => $previewListEntry->email ?? mb_strtolower(trim((string) $request->input('email')))]);
 
         $validated = $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
@@ -37,6 +43,7 @@ class RegistrationController extends Controller
             email: $validated['email'],
             password: $validated['password'],
             timezone: $validated['timezone'] ?? null,
+            previewListEntry: $previewListEntry,
         )->execute();
 
         $token = new CreateApiKey(

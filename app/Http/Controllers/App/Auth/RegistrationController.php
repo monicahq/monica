@@ -6,6 +6,7 @@ namespace App\Http\Controllers\App\Auth;
 
 use App\Actions\CreateAccount;
 use App\Http\Controllers\Controller;
+use App\Models\PreviewListEntry;
 use App\Models\User;
 use App\Rules\Turnstile;
 use App\ViewModels\Auth\RegisterViewModel;
@@ -27,7 +28,12 @@ class RegistrationController extends Controller
 
     public function create(Request $request): RedirectResponse
     {
-        $request->merge(['email' => mb_strtolower(trim((string) $request->input('email')))]);
+        $previewListEntry = PreviewListEntry::findByAdmissionToken((string) $request->input('admission'));
+
+        // The middleware saw the link, and a concurrent sign up may have used it since.
+        abort_if($previewListEntry === null && ! config('monica.registration_enabled'), 404);
+
+        $request->merge(['email' => $previewListEntry->email ?? mb_strtolower(trim((string) $request->input('email')))]);
 
         $rules = [
             'first_name' => ['required', 'string', 'max:255'],
@@ -53,6 +59,7 @@ class RegistrationController extends Controller
             password: $validated['password'],
             timezone: $validated['timezone'] ?? null,
             locale: App::currentLocale(),
+            previewListEntry: $previewListEntry,
         )->execute();
 
         Auth::login($user, remember: true);

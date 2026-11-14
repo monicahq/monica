@@ -18,10 +18,13 @@ use App\Jobs\SeedPossessionTypes;
 use App\Jobs\SeedRelationshipTypes;
 use App\Models\Field;
 use App\Models\LifeEventType;
+use App\Models\PreviewListEntry;
 use App\Models\Template;
 use App\Models\User;
+use App\Notifications\VerifyEmail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -250,5 +253,51 @@ class CreateAccountTest extends TestCase
         $this->assertTrue($user->usesPasswordlessSignIn());
         $this->assertFalse($user->usesSingleSignOn());
         $this->assertDatabaseHas('users', ['email' => 'michael.scott@dundermifflin.com', 'password' => null]);
+    }
+
+    #[Test]
+    public function it_creates_the_account_an_admission_was_given_for_with_its_address_already_verified(): void
+    {
+        Queue::fake();
+        Notification::fake();
+
+        $entry = PreviewListEntry::factory()->admitted('ryan-howard-token')->create([
+            'email' => 'ryan.howard@dundermifflin.com',
+        ]);
+
+        $user = new CreateAccount(
+            firstName: 'Ryan',
+            lastName: 'Howard',
+            email: 'somebody.else@dundermifflin.com',
+            password: 'wuphf.com',
+            previewListEntry: $entry,
+        )->execute();
+
+        $this->assertEquals('ryan.howard@dundermifflin.com', $user->email);
+        $this->assertTrue($user->hasVerifiedEmail());
+
+        $entry->refresh();
+        $this->assertNotNull($entry->registered_at);
+        $this->assertNull($entry->token);
+        $this->assertNull($entry->token_expires_at);
+
+        Notification::assertNotSentTo($user, VerifyEmail::class);
+    }
+
+    #[Test]
+    public function it_asks_an_account_created_without_an_admission_to_verify_its_address(): void
+    {
+        Queue::fake();
+        Notification::fake();
+
+        $user = new CreateAccount(
+            firstName: 'Ryan',
+            lastName: 'Howard',
+            email: 'ryan.howard@dundermifflin.com',
+            password: 'wuphf.com',
+        )->execute();
+
+        $this->assertFalse($user->hasVerifiedEmail());
+        Notification::assertSentTo($user, VerifyEmail::class);
     }
 }

@@ -14,6 +14,10 @@ class HomeController extends Controller
     {
         $user = $request->user();
 
+        if ($user === null && config('monica.preview_list_enabled') && ! config('monica.registration_enabled')) {
+            return redirect()->route('auth.previewList.new');
+        }
+
         if ($user === null) {
             return redirect()->route('auth.login.new');
         }

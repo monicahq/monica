@@ -12,6 +12,8 @@ use App\Http\Controllers\App\Auth\NewPasswordController;
 use App\Http\Controllers\App\Auth\PasswordConfirmationLinkController;
 use App\Http\Controllers\App\Auth\PasswordConfirmationStatusController;
 use App\Http\Controllers\App\Auth\PasswordResetLinkController;
+use App\Http\Controllers\App\Auth\PreviewAdmissionController;
+use App\Http\Controllers\App\Auth\PreviewListEntryController;
 use App\Http\Controllers\App\Auth\RegistrationController;
 use App\Http\Controllers\App\Auth\RegistrationPasskeyController;
 use App\Http\Controllers\App\Auth\ScreenshotLinkController;
@@ -31,6 +33,18 @@ Route::middleware(['guest'])->group(function (): void {
 
         Route::post('register/passkey', [RegistrationPasskeyController::class, 'create'])->name('auth.registerPasskey.create');
     });
+
+    /*
+     * The preview list, while registration is closed. Joining answers 404 unless the list is on,
+     * and the admission link answers 404 unless its token still opens sign up.
+     */
+    Route::get('preview', [PreviewListEntryController::class, 'new'])->name('auth.previewList.new');
+    Route::post('preview', [PreviewListEntryController::class, 'create'])
+        ->middleware('throttle:6,1')
+        ->name('auth.previewList.create');
+    Route::get('register/admission/{token}', [PreviewAdmissionController::class, 'show'])
+        ->middleware('throttle:6,1')
+        ->name('auth.previewAdmission.show');
 
     Route::put('locale', [LocaleController::class, 'update'])
         ->name('auth.locale.update');

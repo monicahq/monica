@@ -251,3 +251,8 @@ A chronological list of every feature and improvement shipped during development
 * MCP: A connected assistant now receives every capability in one listing, so a client that reads only the first page no longer misses most of them.
 * MCP: The server tells an assistant how to add a relative without a record of their own, named or not.
 * MCP: The server tells an assistant how to record an object somebody owns as a possession.
+* Home: While registration is closed and the waiting list is switched on, a visitor can leave an email address at the root address to wait for an account.
+* Admin/waiting list: An administrator can admit a waiting address, which emails a link that lets that person alone create an account while registration stays closed.
+* Admin/waiting list: An administrator can admit a given number of the oldest waiting addresses at once.
+* Admin/waiting list: An administrator can remove an address from the waiting list, which ends the link it was sent.
+* API: The register endpoint accepts an admission from the waiting list while the instance refuses new accounts.

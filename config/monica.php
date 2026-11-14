@@ -66,6 +66,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Preview list
+    |--------------------------------------------------------------------------
+    |
+    | Whether a visitor may leave an email address to wait for an account while registration is
+    | closed. The root address then shows a card taking that address, and an administrator admits
+    | people from the admin space. It does nothing while registration is open.
+    |
+    */
+    'preview_list_enabled' => (bool) env('MONICA_PREVIEW_LIST_ENABLED', false),
+
+    /*
+    |--------------------------------------------------------------------------
     | Support
     |--------------------------------------------------------------------------
     |

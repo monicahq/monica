@@ -17,6 +17,7 @@ use App\Jobs\SeedPossessionConditions;
 use App\Jobs\SeedPossessionTypes;
 use App\Jobs\SeedRelationshipTypes;
 use App\Models\Account;
+use App\Models\PreviewListEntry;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Bus;
@@ -42,6 +43,7 @@ class CreateAccount
         private readonly ?string $locale = null,
         private readonly ?SsoProviderEnum $ssoProvider = null,
         private readonly ?string $ssoId = null,
+        private readonly ?PreviewListEntry $previewListEntry = null,
     ) {}
 
     public function execute(): User
@@ -49,6 +51,7 @@ class CreateAccount
         DB::transaction(function (): void {
             $this->createAccount();
             $this->createUser();
+            $this->closeTheAdmission();
             $this->createTheContactTemplate();
             $this->createFirstVault();
         });
@@ -75,13 +78,28 @@ class CreateAccount
             account: $this->account,
             firstName: $this->firstName,
             lastName: $this->lastName,
-            email: $this->email,
+            email: $this->previewListEntry->email ?? $this->email,
             password: $this->password,
             timezone: $this->timezone,
             locale: $this->locale,
             ssoProvider: $this->ssoProvider,
             ssoId: $this->ssoId,
         )->execute();
+    }
+
+    private function closeTheAdmission(): void
+    {
+        if ($this->previewListEntry === null) {
+            return;
+        }
+
+        $this->user->markEmailAsVerified();
+
+        $this->previewListEntry->update([
+            'registered_at' => now(),
+            'token' => null,
+            'token_expires_at' => null,
+        ]);
     }
 
     private function createTheContactTemplate(): void

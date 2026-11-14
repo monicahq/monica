@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Auth;
 
+use App\Http\Middleware\EnsureRegistrationIsEnabled;
 use App\Models\Account;
+use App\Models\PreviewListEntry;
 use App\Models\User;
 use App\Notifications\VerifyEmail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -13,6 +15,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\URL;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -167,5 +170,70 @@ class RegistrationControllerTest extends TestCase
 
         $this->assertDatabaseMissing('users', ['email' => 'michael.scott@dundermifflin.com']);
         $this->assertGuest();
+    }
+
+    #[Test]
+    public function it_creates_the_account_of_somebody_admitted_while_registration_is_closed(): void
+    {
+        Queue::fake();
+        Notification::fake();
+        config()->set('monica.registration_enabled', false);
+
+        $entry = PreviewListEntry::factory()->admitted('creed-bratton-token')->create(['email' => 'creed.bratton@dundermifflin.com']);
+
+        $response = $this->post(route('auth.register.create'), $this->validPayload([
+            'email' => 'somebody.else@dundermifflin.com',
+            'admission' => 'creed-bratton-token',
+        ]));
+
+        $response->assertRedirect(route('auth.verification.notice'));
+
+        $user = User::query()->where('email', 'creed.bratton@dundermifflin.com')->firstOrFail();
+        $this->assertTrue($user->hasVerifiedEmail());
+        $this->assertNotNull($entry->refresh()->registered_at);
+        $this->assertDatabaseMissing('users', ['email' => 'somebody.else@dundermifflin.com']);
+        Notification::assertNotSentTo($user, VerifyEmail::class);
+    }
+
+    /** @return array<string, array{string}> */
+    public static function unusableAdmissions(): array
+    {
+        return [
+            'an unknown token' => ['unknown'],
+            'an expired link' => ['expired'],
+            'a used link' => ['used'],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('unusableAdmissions')]
+    public function it_answers_not_found_for_an_admission_that_no_longer_opens_sign_up(string $state): void
+    {
+        config()->set('monica.registration_enabled', false);
+
+        PreviewListEntry::factory()->admitted('creed-bratton-token')->create([
+            'email' => 'creed.bratton@dundermifflin.com',
+            'token_expires_at' => $state === 'expired' ? now()->subMinute() : now()->addDay(),
+            'registered_at' => $state === 'used' ? now() : null,
+        ]);
+
+        $admission = $state === 'unknown' ? 'kevin-malone-token' : 'creed-bratton-token';
+
+        $this->post(route('auth.register.create'), $this->validPayload(['admission' => $admission]))
+            ->assertNotFound();
+
+        $this->assertDatabaseMissing('users', ['email' => 'creed.bratton@dundermifflin.com']);
+    }
+
+    #[Test]
+    public function it_answers_not_found_for_an_admission_a_concurrent_sign_up_used(): void
+    {
+        config()->set('monica.registration_enabled', false);
+
+        $this->withoutMiddleware(EnsureRegistrationIsEnabled::class)
+            ->post(route('auth.register.create'), $this->validPayload(['admission' => 'creed-bratton-token']))
+            ->assertNotFound();
+
+        $this->assertDatabaseMissing('users', ['email' => 'michael.scott@dundermifflin.com']);
     }
 }

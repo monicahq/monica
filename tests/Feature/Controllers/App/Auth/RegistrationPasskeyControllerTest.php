@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Auth;
 
+use App\Http\Middleware\EnsureRegistrationIsEnabled;
+use App\Models\PreviewListEntry;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
@@ -102,5 +104,47 @@ class RegistrationPasskeyControllerTest extends TestCase
 
         $this->assertDatabaseMissing('users', ['email' => 'michael.scott@dundermifflin.com']);
         $this->assertGuest();
+    }
+
+    #[Test]
+    public function it_creates_the_account_of_somebody_admitted_while_registration_is_closed(): void
+    {
+        Queue::fake();
+        config()->set('monica.registration_enabled', false);
+
+        $entry = PreviewListEntry::factory()->admitted('creed-bratton-token')->create(['email' => 'creed.bratton@dundermifflin.com']);
+
+        $response = $this->post(route('auth.registerPasskey.create'), $this->payload(['admission' => 'creed-bratton-token']));
+
+        $response->assertRedirect(route('auth.registerPasskey.new'));
+
+        $user = User::query()->where('email', 'creed.bratton@dundermifflin.com')->firstOrFail();
+        $this->assertTrue($user->hasVerifiedEmail());
+        $this->assertNotNull($entry->refresh()->registered_at);
+    }
+
+    #[Test]
+    public function it_answers_not_found_for_an_admission_that_was_already_used(): void
+    {
+        config()->set('monica.registration_enabled', false);
+
+        PreviewListEntry::factory()->admitted('creed-bratton-token')->registered()->create();
+
+        $this->post(route('auth.registerPasskey.create'), $this->payload(['admission' => 'creed-bratton-token']))
+            ->assertNotFound();
+
+        $this->assertGuest();
+    }
+
+    #[Test]
+    public function it_answers_not_found_for_an_admission_a_concurrent_sign_up_used(): void
+    {
+        config()->set('monica.registration_enabled', false);
+
+        $this->withoutMiddleware(EnsureRegistrationIsEnabled::class)
+            ->post(route('auth.registerPasskey.create'), $this->payload(['admission' => 'creed-bratton-token']))
+            ->assertNotFound();
+
+        $this->assertDatabaseMissing('users', ['email' => 'michael.scott@dundermifflin.com']);
     }
 }

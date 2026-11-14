@@ -21,6 +21,7 @@ return [
             'body' => [
                 'The account this builds is the account the sign up screen builds, down to the first vault and the lists it starts with. The terms are asked for here too, because a second way in that skipped them would be a way around them.',
                 'An instance can stop accepting new accounts. While it does, this endpoint answers 404 whatever the body holds, before anything is validated, exactly as the sign up screen does.',
+                'The one exception is somebody an administrator admitted from the waiting list. Their email holds a link ending in a token, and sending that token as admission opens the account while new accounts are refused. The account then takes the admitted address whatever email holds, that address is already verified, and the token stops working. A token that is unknown, used, replaced or expired is ignored while the instance accepts new accounts, and answers 404 while it does not.',
             ],
             'rateLimit' => 'Six requests per minute, per address.',
             'bodyParams' => [
@@ -58,6 +59,13 @@ return [
                     'required' => true,
                     'description' => 'The password again, exactly as above.',
                     'example' => 'a-very-strong-password',
+                ],
+                [
+                    'name' => 'admission',
+                    'type' => 'string',
+                    'required' => false,
+                    'description' => 'The token at the end of the link an administrator sent from the waiting list, 64 characters. Only needed while the instance refuses new accounts.',
+                    'example' => 'aaaabbbbccccddddeeeeffffgggghhhhiiiijjjjkkkkllllmmmmnnnnoooopppp',
                 ],
                 [
                     'name' => 'terms',

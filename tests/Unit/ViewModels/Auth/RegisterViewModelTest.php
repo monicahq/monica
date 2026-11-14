@@ -6,6 +6,7 @@ namespace Tests\Unit\ViewModels\Auth;
 
 use App\Helpers\AvailableLocales;
 use App\Helpers\LocaleCollation;
+use App\Models\PreviewListEntry;
 use App\ViewModels\Auth\RegisterViewModel;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -65,5 +66,26 @@ class RegisterViewModelTest extends TestCase
         request()->setLaravelSession($session);
 
         $this->assertEquals('password', new RegisterViewModel()->registrationMethod());
+    }
+
+    #[Test]
+    public function it_gives_the_admitted_address_and_the_token_of_an_admission(): void
+    {
+        $viewModel = new RegisterViewModel(
+            previewListEntry: PreviewListEntry::factory()->make(['email' => 'oscar.martinez@dundermifflin.com']),
+            admission: 'oscar-martinez-token',
+        );
+
+        $this->assertEquals('oscar.martinez@dundermifflin.com', $viewModel->admittedEmail());
+        $this->assertEquals('oscar-martinez-token', $viewModel->admission());
+    }
+
+    #[Test]
+    public function it_gives_no_address_without_an_admission(): void
+    {
+        $viewModel = new RegisterViewModel;
+
+        $this->assertNull($viewModel->admittedEmail());
+        $this->assertNull($viewModel->admission());
     }
 }

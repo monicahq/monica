@@ -21,6 +21,7 @@ enum InstanceSettingEnum: string implements Translatable
     case MagicLinkEnabled = 'magic_link_enabled';
     case MagicLinkDurationMinutes = 'magic_link_duration_minutes';
     case RegistrationEnabled = 'registration_enabled';
+    case PreviewListEnabled = 'preview_list_enabled';
 
     case ReminderGenerationWindowInDays = 'reminder_generation_window_in_days';
     case NotificationMaximumAttempts = 'notification_maximum_attempts';
@@ -209,7 +210,8 @@ enum InstanceSettingEnum: string implements Translatable
             self::PaidStorageLimitInBytes, self::MaxFileSizeInKilobytes => InstanceSettingGroupEnum::Accounts,
 
             self::RememberDurationDays, self::MagicLinkEnabled,
-            self::MagicLinkDurationMinutes, self::RegistrationEnabled => InstanceSettingGroupEnum::SigningIn,
+            self::MagicLinkDurationMinutes, self::RegistrationEnabled,
+            self::PreviewListEnabled => InstanceSettingGroupEnum::SigningIn,
 
             self::GithubClientId, self::GithubClientSecret, self::GoogleClientId,
             self::GoogleClientSecret, self::AppleClientId, self::AppleTeamId, self::AppleKeyId,
@@ -236,7 +238,7 @@ enum InstanceSettingEnum: string implements Translatable
     public function kind(): InstanceSettingKindEnum
     {
         return match ($this) {
-            self::MagicLinkEnabled, self::RegistrationEnabled, self::SelfHosted => InstanceSettingKindEnum::Boolean,
+            self::MagicLinkEnabled, self::RegistrationEnabled, self::PreviewListEnabled, self::SelfHosted => InstanceSettingKindEnum::Boolean,
 
             self::TelegramBotUrl, self::KeycloakServerUrl,
             self::OpenIdConnectBaseUrl => InstanceSettingKindEnum::Url,
@@ -360,6 +362,7 @@ enum InstanceSettingEnum: string implements Translatable
             self::MagicLinkEnabled => 'Whether somebody may sign in with a link emailed to them.',
             self::MagicLinkDurationMinutes => 'How long a sign in link stays usable.',
             self::RegistrationEnabled => 'Whether somebody may create an account on this instance.',
+            self::PreviewListEnabled => 'Whether a visitor may leave an email address to wait for an account while registration is closed.',
             self::ReminderGenerationWindowInDays => 'How far ahead reminder deadlines are generated.',
             self::NotificationMaximumAttempts => 'How many times a refused notification is attempted again.',
             self::NotificationRetentionMonths => 'How long a notification is kept before it is swept.',

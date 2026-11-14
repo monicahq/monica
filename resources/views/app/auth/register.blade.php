@@ -49,18 +49,34 @@
           />
         </div>
 
-        <x-input
-          type="email"
-          id="email"
-          :label="__('Email address')"
-          :value="old('email')"
-          placeholder="john@doe.com"
-          autocomplete="username"
-          :help="__('We never send marketing emails.')"
-          :error="$errors->get('email')"
-          allowPasswordManager
-          required
-        />
+        @if ($viewModel->admittedEmail() !== null)
+          <x-input
+            type="email"
+            id="email"
+            :label="__('Email address')"
+            :value="$viewModel->admittedEmail()"
+            autocomplete="username"
+            :help="__('You were admitted with this address, so it cannot be changed here.')"
+            :error="$errors->get('email')"
+            allowPasswordManager
+            readonly
+          />
+
+          <input type="hidden" name="admission" value="{{ $viewModel->admission() }}">
+        @else
+          <x-input
+            type="email"
+            id="email"
+            :label="__('Email address')"
+            :value="old('email')"
+            placeholder="john@doe.com"
+            autocomplete="username"
+            :help="__('We never send marketing emails.')"
+            :error="$errors->get('email')"
+            allowPasswordManager
+            required
+          />
+        @endif
 
         @if ($viewModel->passkeysAreAvailable())
           <p class="text-sm text-pretty text-muted" @if ($method === 'password') x-cloak @endif x-show="mode === 'passkey'">{{ __('You will sign in with a passkey, unlocked by your fingerprint, your face or your device PIN. Nothing to remember, nothing to type.') }}</p>
@@ -108,7 +124,7 @@
 
         <x-button class="w-full" x-bind:disabled="! terms">
           <span @if ($method === 'password') x-cloak @endif x-show="mode === 'passkey'">{{ __('Create a passkey') }}</span>
-          <span @if ($method === 'passkey') x-cloak @endif x-show="mode === 'password'">{{ __('Next step: validate your email address') }}</span>
+          <span @if ($method === 'passkey') x-cloak @endif x-show="mode === 'password'">{{ $viewModel->admittedEmail() !== null ? __('Create my account') : __('Next step: validate your email address') }}</span>
         </x-button>
 
         @if ($viewModel->passkeysAreAvailable())

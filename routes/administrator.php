@@ -15,6 +15,9 @@ use App\Http\Controllers\App\Admin\ModerationApprovalController;
 use App\Http\Controllers\App\Admin\ModerationController;
 use App\Http\Controllers\App\Admin\ModerationRejectionController;
 use App\Http\Controllers\App\Admin\OverviewController;
+use App\Http\Controllers\App\Admin\PreviewListAdmissionController;
+use App\Http\Controllers\App\Admin\PreviewListEntryController;
+use App\Http\Controllers\App\Admin\PreviewListOldestAdmissionController;
 use App\Http\Controllers\App\Admin\SearchEngineController;
 use App\Http\Controllers\App\Admin\SearchIndexRebuildController;
 use App\Http\Controllers\App\Admin\SupportAttachmentController;
@@ -58,6 +61,11 @@ Route::middleware(['administrator', Sample::always()])->group(function (): void 
     Route::delete('admin/accounts/{account}/activation', [UserActivationController::class, 'destroy'])->whereNumber('account')->name('admin.accounts.activation.destroy');
     Route::post('admin/accounts/{account}/flags/{flag}/activation', [AccountFlagActivationController::class, 'create'])->whereNumber('account')->where('flag', '[a-z0-9-]+')->name('admin.accounts.flags.activation.create');
     Route::delete('admin/accounts/{account}/flags/{flag}/activation', [AccountFlagActivationController::class, 'destroy'])->whereNumber('account')->where('flag', '[a-z0-9-]+')->name('admin.accounts.flags.activation.destroy');
+
+    Route::get('admin/preview-list', [PreviewListEntryController::class, 'index'])->name('admin.previewList.index');
+    Route::delete('admin/preview-list/{previewListEntry}', [PreviewListEntryController::class, 'destroy'])->whereNumber('previewListEntry')->name('admin.previewList.destroy');
+    Route::post('admin/preview-list/{previewListEntry}/admission', [PreviewListAdmissionController::class, 'create'])->whereNumber('previewListEntry')->name('admin.previewList.admission.create');
+    Route::post('admin/preview-list/oldest-admissions', [PreviewListOldestAdmissionController::class, 'create'])->name('admin.previewList.oldestAdmissions.create');
 
     Route::get('admin/flags', [FlagController::class, 'index'])->name('admin.flags.index');
 
