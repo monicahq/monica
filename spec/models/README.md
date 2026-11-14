@@ -185,5 +185,5 @@ These appear in the specification but are explicitly out of the first version (s
 - Not every table has one. It is carried by the objects a user can open, link to or address as a resource. Joins, pivots, value rows and log tables stay on integer keys alone, because nothing outside the product ever names one of those rows directly.
 - Every table that holds user data carries an `account_id`, even when it could be reached through a parent. Scoping a query to an account must never depend on a join being written correctly.
 - Every table that holds data belonging to a compartment also carries a `vault_id`, for the same reason.
-- Foreign keys are declared at the bottom of a migration and never with `constrained()`, per `.claude/skills/migrations`.
+- A foreign key is declared with `foreignIdFor(Model::class)` followed by `constrained()`, column and constraint on one line, and never with `$table->foreign()`, per `.claude/skills/migrations`.
 - Deletion is soft wherever the specification says a thing can come back (section 3.3). Where it is not soft, the file says why.
