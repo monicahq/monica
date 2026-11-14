@@ -9,27 +9,15 @@ $ARGUMENTS
 ```
 
 <!-- speckit-companion:part step-start -->
-## Record this step's start: before anything else runs
+## Record this step's start, before anything else runs
 
-A step's recorded window has to contain the work it claims. Stamping the start partway down the body leaves the extension hooks, and any node above the stamp, outside the window the step later reports. So this is the first instruction in the command, ahead of the hooks.
-
-Let `<step>` be this command's phase and `<status>` its in-progress status: `specify`/`specifying`, `plan`/`planning`, `tasks`/`tasking`, `implement`/`implementing`.
-
-**Which feature directory this step stamps against decides when it stamps.**
-
-- **A step that mints its own feature directory**, meaning any fresh-spec entry point such as `specify` or `auto`, has nothing to stamp against yet. `.specify/feature.json` is this step's *output*: it still points at the **previous** spec, so stamping now would write this run's status onto finished work. Resolve the directory first, then stamp the instant it exists, before any other work in the step.
-- **Every other step** reads the feature directory it was given, from the invocation or from `.specify/feature.json`, which by then points at this spec. Stamp immediately, before the extension hooks and before any node.
-
-In both cases the call is the same:
+Let `<step>`/`<status>` be this command's phase and in-progress status: `specify`/`specifying`, `plan`/`planning`, `tasks`/`tasking`, `implement`/`implementing`. A step that mints its own feature directory (`specify`, `auto`) resolves it first, because `.specify/feature.json` still points at the previous spec; every other step stamps at once, before any hook or node:
 
 ```bash
 python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <feature_directory> --step <step> --status <status> --kind start --by extension
 ```
 
-Add `--at "<dispatch time>"` when the dispatcher printed one; otherwise the script stamps now. Two things keep this honest:
-
-- **Run it, never hand-write it.** The script stamps the real clock and writes atomically. A hand-authored entry in `.spec-context.json` is what corrupts the file.
-- **A second start is refused, not reconciled.** History is append-only, so if the extension already seeded this step's start, this call appends nothing and the earlier timestamp stands. Running it is always safe; skipping it loses the window.
+Add `--at "<dispatch time>"` when the dispatcher printed one. Run it, never hand-write it. A second start is refused, so running it is always safe.
 <!-- /speckit-companion:part step-start -->
 
 <!-- speckit-companion:part command-spelling -->
@@ -79,12 +67,12 @@ Run the full Companion pipeline by **invoking each per-step command for real**, 
    - `speckit.companion.plan` — runs the real plan command: the slim plan **plus** `research.md`, `data-model.md`, and `contracts/` (right-sized by the recorded size).
    - `speckit.companion.tasks` — runs the real tasks command: the wave-structured, dependency-ordered task list.
    - `speckit.companion.implement` — runs the real implement command: executes the tasks and journals each finish.
-   - `speckit.converge` — the stock converge command: it checks the build against the spec and either completes the spec or appends the unbuilt work as new tasks.
+   - `speckit.converge` — the stock converge command: it checks the build against the spec and either completes the spec or appends the unbuilt work as new tasks. Before each converge, run `python3 .specify/extensions/companion/scripts/write-context.py --hook start --step converge` yourself, so the pass is on record even when the host skips the before hook; it never opens a second pass.
    If your host has no way to invoke another command mid-session, fall back to following each command's body faithfully (read it and do exactly what it specifies — same artifacts, same sizing, same structure); never substitute a quicker improvised version.
 
 3. **Do not pause at review gates.** Where the manual flow would stop and wait for a person at a `gate` (review-spec, review-plan, …), auto instead **records the checkpoint and continues**. Background hooks still fire and review/PR hooks still run — only the human pause is skipped. This is the one behavioral difference from a manual run.
 
-4. **End when converge completes the spec.** After converge, read `<feature_directory>/.spec-context.json`. If `status` is `completed`, the run is done. If converge appended tasks and the status is still `implemented`, dispatch implement and then converge again. Stop after three converge passes, record one concern naming the open tasks, and end at `implemented`. Do not dispatch `speckit.companion.mark-complete`. There is exactly one writer of `completed`: the after-converge hook; never introduce a second.
+4. **End when converge completes the spec.** After converge, read `<feature_directory>/.spec-context.json`. If `status` is `completed`, the run is done. If converge appended tasks and the status is still `implemented`, build them yourself once, following the implement instructions already in this session (do not invoke the implement command again, which reloads them), close each wave as implement does, then converge once more, checking only the tasks it appended. That is the one correction round: if the second converge still leaves open tasks, record one concern naming them and end at `implemented`. Never start a third pass. Do not dispatch `speckit.companion.mark-complete`. There is exactly one writer of `completed`: the after-converge hook; never introduce a second.
 
 5. **Degrade gracefully on a one-shot environment.** Auto needs an agent that keeps acting after each step finishes. If your environment runs one command and then stops (a plain / one-shot terminal), you cannot chain the steps yourself: run the first step, record its progress, and stop. The run stays valid and resumable — the remaining steps are triggered the normal one-step-at-a-time way (by the developer or the companion panel). No error; auto simply behaves like the manual flow there.
 <!-- /speckit-companion:node orchestrate -->
@@ -94,39 +82,33 @@ Run the full Companion pipeline by **invoking each per-step command for real**, 
 <!-- speckit-companion:part timing -->
 ## Timing: keep `.spec-context.json` honest
 
-Record every boundary by **running the writer script**. Never edit `.spec-context.json` yourself; a hand-authored edit is what corrupts the file. The model is **finish-only**: one finish per task and per substep, its duration the gap back to the previous finish. Never a `start`+`complete` pair for either, which stamps a `0s` tick and measures nothing.
+Record every boundary by **running the writer script**, never by editing `.spec-context.json`. The model is **finish-only**: one finish per task and per substep, timed from the previous one; never a `start`+`complete` pair. **One shell call per moment**: writes that happen together go in one call chained with `&&`, because every separate call is a turn that re-reads the whole session. **In a single-quoted `--batch '{…}'`, write an apostrophe as `'`**, or pass `--batch -` with the JSON on stdin; never debug the quoting by reading the script.
 
-- **Close your own step**, as the last thing you do, after emitting any mandatory after-hook block:
+- **Close your own step** as your last action, after any mandatory after-hook block. Specify already closed itself in its wrap-up; clarify and analyze use `--finish` instead. Implement ends at `implemented`; converge completes the spec.
 
   ```bash
   python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <feature_dir> --step <this step> --advance --by ai
   ```
 
-  `--advance` appends the step's complete and flips `status` in one atomic write. It is idempotent and first-writer-wins, so it changes nothing when the after-hook already closed the step, and it is the only thing that closes the step when that hook was printed rather than dispatched. Run it every time, with one exception: **clarify** and **analyze** use `--finish`, which records a boundary without owning a status. **Implement** closes with `--advance` like the other steps and ends at `implemented`; converge completes the spec.
-
-- **One finish per substep, the moment it ends.** Plan records `research` and `design`, tasks records `generate`, implement records `living-review` and `living-fold` when living specs are on. Never two in one batch, never a separate start: a finish measures the gap back to the previous boundary, so several stamped together at the close of a step read as `0s` each and record nothing.
+- **One finish per substep, the moment it ends, when the step runs on its own**; inside an auto run, skip them. Plan records `research` and `design`, tasks `generate`.
 
   ```bash
   python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <feature_dir> --step <step> --substep <name> --finish --by ai
   ```
 
-- **Closing a task is that task's last action, not a bookkeeping pass you batch later.** Feature dir from `.specify/feature.json`:
+- **Close each wave the moment its last task is done**, in one call listing its tasks. It checks their boxes and times the wave as one unit. Never hand-edit a box; closing several waves at once is a defect the doctor reports.
 
   ```bash
-  python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <feature_dir> --close-task <TaskID> --by ai --did "<one line>" --files "<files>"
+  python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <feature_dir> --close-task <T001,T002,…> --by ai --did "<one line>" --files "<files>"
   ```
 
-  One call appends the finish with its own real clock, folds it into the panel, and flips that task's box in `tasks.md`. Never hand-edit that box or hand-author per-task JSON, and never write a per-task start. Re-closing is safe. **Batching is a defect the doctor catches**: it names any cluster of finishes stamped seconds apart, because those timestamps record when the batch was written, and history is append-only so it cannot be repaired afterwards. Trust the per-task summaries and their order; the timestamps are best-effort.
-
-  **A fanned-out worker appends only**, because folding is a read-modify-write and two folders contend:
+  **A fanned-out worker appends only**, because two folders contend; the main agent folds each returned result with `--materialize`, one at a time:
 
   ```bash
   python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <feature_dir> --task <TaskID> --kind complete --by ai --did "<one line>" --files "<files>" --append
   ```
 
-  The MAIN agent folds each returned result with `--materialize`, one at a time, and once more at a wave join as a backstop.
-
-- **Never write the next step's start.** The next command owns it. Writing it here renders a phantom "Generating <next>…".
+- **Never write the next step's start.** The next command owns it.
 <!-- /speckit-companion:part timing -->
 
 <!-- speckit-companion:part unattended -->
@@ -146,19 +128,7 @@ If a project has no checkpoint hooks, `unattended: true` has nothing to act on. 
 <!-- /speckit-companion:phase wrap-up -->
 
 <!-- speckit-companion:part orchestrator -->
-## Node hooks: run the project's `before`/`after` inserts
+## Node hooks
 
-This command is assembled from ordered **nodes**. A project attaches its own work around any node in `.specify/companion.yml`, and you are the runtime. Like the rest of the pipeline it must **never fail the host command**: degrade and continue.
-
-**Find the hooks.** Look up `commands.<this-command>.hooks`, whose `before` and `after` anchors are keyed by a node id from this command's order. Run a node's `before` hooks immediately before its work and its `after` hooks immediately after, several at one anchor in declared order. An absent, empty, malformed or unparseable file means no hooks: run the shipped command unchanged, silently when it is absent and with one short warning when it is broken.
-
-**Hook types:**
-
-- `{ type: command, run: "<shell>" }`: run it with your terminal tool, then continue. Without a terminal tool, report the command you would have run rather than pretending.
-- `{ type: prompt, text: "<instruction>" }`: act on the text before moving on.
-- `{ type: node, ref: <id> }`: carry out `.specify/companion/nodes/<id>.md` as part of this command. A missing `ref` file is a real misconfiguration: report it and stop rather than silently skipping.
-
-**Background hooks.** Any hook may add `background: true`: start it and continue without waiting, detaching a `command` (`&`, `nohup … &`) and not blocking on a `node` or `prompt`. Report its result whenever it lands. Never background anything that writes `.spec-context.json`, meaning the timing and capture calls: they read-modify-write a shared file, so two at once lose an update. Background is for slow side-effects like a test run or a build, not for bookkeeping.
-
-A hook anchored to a node this run does not include, because a recipe dropped it, warns once and is skipped. A hook whose own work fails is reported and the pipeline continues, unless the failure clearly makes the rest unsafe.
+A project can attach its own work around this command's nodes in `.specify/companion.yml`. **Only if that file declares `commands.<this-command>.hooks`**, read `.specify/extensions/companion/commands/reference/node-hooks.md` and follow it. Otherwise there are no hooks: skip this and run the command as written.
 <!-- /speckit-companion:part orchestrator -->

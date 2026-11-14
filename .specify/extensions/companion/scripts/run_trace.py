@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""The run self-trace — one line per handled capture or drift call.
+"""The run self-trace — one line per handled capture call.
 
 Every script in the capture runtime returns 0 on failure by design, printing the
 reason to stderr and discarding it. That contract is what keeps a capture defect
@@ -45,8 +45,6 @@ OPS = (
     "materialize",
     "mark-complete",
     "converge-finish",
-    "fold-living-spec",
-    "drift-compute",
     "dispatch-checkin",
     "dispatch-offer",
     "unknown",

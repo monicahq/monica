@@ -39,7 +39,7 @@
       {
         "artifact": "checklists/requirements.md",
         "node": "quality-checklist",
-        "conditional": false
+        "conditional": true
       }
     ],
     "tasks": [

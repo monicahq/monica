@@ -150,7 +150,7 @@ def _gc_events_log(feature_dir: Path) -> None:
 
 def _upsert_task_summary(
     ctx: dict, task_id: str, did: str | None, files: list[str] | None,
-    status: str = "DONE",
+    status: str = "DONE", wave: str | None = None,
 ) -> None:
     """Upsert `ctx["task_summaries"][task_id]` to the shape the Activity panel reads.
 
@@ -177,6 +177,8 @@ def _upsert_task_summary(
         entry["did"] = did
     if files:
         entry["files"] = files
+    if wave:
+        entry["wave"] = wave
     summaries[task_id] = entry
     ctx["task_summaries"] = summaries
 
@@ -191,7 +193,7 @@ def _tasks_at_100(markers: tuple[list[str], list[str]]) -> bool:
 def _fold_task_finish(
     ctx: dict, log: list, feature_dir: Path, task_id: str, by: str,
     did: str | None, files: list[str] | None, at: str,
-    markers: tuple[list[str], list[str]],
+    markers: tuple[list[str], list[str]], wave: str | None = None,
 ) -> None:
     """Fold one task's finish into ctx+log in place (no I/O). Shared by the live
     read-modify-write path and the append-log materializer, so both produce an
@@ -205,7 +207,7 @@ def _fold_task_finish(
     if ctx.get("status") not in ("implemented", "completed", "archived"):
         ctx["status"] = "implemented" if _tasks_at_100(markers) else "implementing"
     append_complete(log, "implement", task=task_id, by=by, at=at)
-    _upsert_task_summary(ctx, task_id, did, files)
+    _upsert_task_summary(ctx, task_id, did, files, wave=wave)
 
 
 def _maybe_close_implement(
@@ -272,7 +274,7 @@ def journal_task_finish(
 
 def append_task_log(
     feature_dir: Path, task_id: str, by: str,
-    did: str | None = None, files: list[str] | None = None,
+    did: str | None = None, files: list[str] | None = None, wave: str | None = None,
 ) -> Path | None:
     """Append ONE task-finish line to `.spec-context.events.jsonl`. The only WRITE
     is the append, so concurrent workers (subagents) each record themselves without
@@ -306,6 +308,8 @@ def append_task_log(
         entry["did"] = did
     if files:
         entry["files"] = files
+    if wave:
+        entry["wave"] = wave
     line = json.dumps(entry, ensure_ascii=False) + "\n"
     with open(log_path, "a", encoding="utf-8") as fh:
         fh.write(line)
@@ -346,7 +350,7 @@ def materialize_log(feature_dir: Path, by: str, quiet: bool = False) -> Path | N
         _fold_task_finish(
             ctx, log, feature_dir, tid, e.get("by", by),
             e.get("did"), e.get("files"), e.get("at") or _now_iso(),
-            markers=markers,
+            markers=markers, wave=e.get("wave"),
         )
         folded += 1
     # The script owns the checkboxes: flip tasks.md `[ ]` → `[x]` for every
@@ -470,6 +474,27 @@ def sync_tasks(feature_dir: Path, tasks_md: Path, final_status: str, by: str) ->
     return target
 
 
+_WAVE_BREAK = re.compile(r"^\s*(#{2,}\s|\*\*Wave\b|\*\*⟶|⟶)")
+_TASK_ID = re.compile(r"\*\*(T\d+)\*\*|\b(T\d{3,})\b")
+
+
+def _wave_segment_of(tasks_md: Path, task_id: str) -> int | None:
+    """Index of the wave block in tasks.md that holds `task_id`: a heading or a join line starts a new block."""
+    try:
+        lines = tasks_md.read_text(encoding="utf-8").splitlines()
+    except OSError:
+        return None
+    segment = 0
+    for line in lines:
+        if _WAVE_BREAK.match(line):
+            segment += 1
+            continue
+        m = _TASK_ID.search(line) if re.match(r"^\s*-\s*\[", line) else None
+        if m and (m.group(1) or m.group(2)) == task_id:
+            return segment
+    return None
+
+
 def close_task(
     feature_dir: Path, task_id: str, by: str,
     did: str | None = None, files: list[str] | None = None,
@@ -485,7 +510,17 @@ def close_task(
     Byte-equivalent to `--task … --append` followed by `--materialize`, and
     idempotent for the same reason the fold is.
     """
-    appended = append_task_log(feature_dir, task_id, by, did, files)
+    # A comma list closes one wave in one call; each task records the wave it ran in. Only tasks
+    # that share a wave in tasks.md earn the label, so a whole list dumped at the end still reads as a batch.
+    ids = [t.strip() for t in task_id.split(",") if t.strip()]
+    wave = None
+    if len(ids) > 1:
+        segments = {_wave_segment_of(feature_dir / "tasks.md", t) for t in ids}
+        if len(segments) == 1 and None not in segments:
+            wave = f"{ids[0]}-{ids[-1]}"
+    appended = None
+    for tid in ids:
+        appended = append_task_log(feature_dir, tid, by, did, files, wave=wave) or appended
     folded = materialize_log(feature_dir, by, quiet=True)
     # A fold that finds nothing to do returns None; returning that would discard
     # the fact that the append itself landed, leaving the call reported as a

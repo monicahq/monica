@@ -157,12 +157,6 @@ def analyze(entries: list) -> dict:
 def _contradictions(ctx: dict, report) -> list:
     """Claims the run recorded that the doctor's own recomputation contradicts."""
     out = []
-    for flag in (getattr(report, "drift", None) or []):
-        if flag.get("claim"):
-            out.append({
-                "claim": flag["claim"]["text"],
-                "recomputed": f"{flag['capability']} is {flag['class']} drift",
-            })
     completion = getattr(report, "completion", None)
     if completion and completion.get("outcome") == "never-arrived":
         out.append({

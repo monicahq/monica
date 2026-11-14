@@ -306,6 +306,17 @@ def _print_summary(res: dict, plain: bool = False) -> None:
         print(f"RESOLUTION: {json.dumps(res, ensure_ascii=True)}")
 
 
+def _print_size(feature_dir) -> int:
+    """Print the recorded size and nothing else; any gap prints nothing, so the engine takes its default route."""
+    try:
+        size = json.loads((feature_dir / ".spec-context.json").read_text(encoding="utf-8")).get("size")
+    except (OSError, ValueError, TypeError, AttributeError):
+        return 0
+    if size in ("simple", "normal", "oversized"):
+        print(size)
+    return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="Resolve a feature's pipeline position and next action."
@@ -313,11 +324,15 @@ def main() -> int:
     parser.add_argument("--feature-dir", default=None)
     parser.add_argument("--plain", action="store_true",
                         help="only the lines a person reads: no RESOLUTION line, and a missing spec said on stdout")
+    parser.add_argument("--size", action="store_true",
+                        help="print only the recorded size (simple|normal|oversized), or nothing; for the workflow engine's route step")
     args = parser.parse_args()
     _console_safe()
 
     root = wc._repo_root()
     feature_dir = wc.resolve_feature_dir(root, args.feature_dir)
+    if args.size:
+        return _print_size(feature_dir)
     if feature_dir is None or not feature_dir.is_dir():
         print(
             "[companion] Could not resolve the active feature directory "

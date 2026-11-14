@@ -114,6 +114,11 @@ def receipts(feature_dir: Path) -> str:
                if isinstance(e, dict) and isinstance(e.get("assumes"), str) and e["assumes"].strip() and not e.get("tests")]
     if assumed:
         lines += ["", "**Assumed, not tested:** " + "; ".join(f"{cell(req)} {cell(text)}" for req, text in assumed) + "."]
+    concerns = ctx.get("concerns") if isinstance(ctx.get("concerns"), list) else []
+    lowered = [c["note"].removeprefix("Lowered the bar: ") for c in concerns
+               if isinstance(c, dict) and c.get("source") == "scan" and isinstance(c.get("note"), str)]
+    if lowered:
+        lines += ["", "**Lowered the bar:** " + "; ".join(cell(n) for n in lowered) + "."]
     return "\n".join(lines) + "\n"
 
 

@@ -32,8 +32,8 @@ from spec_context import (  # noqa: E402
     resolve_feature_dir,
 )
 
-CHECKS = ("record", "triage", "bleed", "drift", "completion", "verification", "artifact",
-          "template", "built", "agents", "numbering", "briefed", "dispatch", "trace", "chat")
+CHECKS = ("record", "triage", "bleed", "completion", "verification", "artifact",
+          "template", "built", "agents", "workflow", "numbering", "retired_living", "persistence_model", "dispatch", "trace", "chat")
 
 SEVERITIES = ("problem", "warning", "note")
 _SEVERITY_RANK = {s: i for i, s in enumerate(SEVERITIES)}
@@ -192,7 +192,6 @@ class Report:
         self.spec = spec
         self.statuses: dict[str, CheckStatus] = {}
         self.findings: list[Finding] = []
-        self.drift: list[dict] = []
         self.bleed: list[dict] = []
         self.completion: dict | None = None
         self.chat: dict | None = None
@@ -294,7 +293,6 @@ def render_json(report: Report, generated_at: str) -> str:
             "checks": [report.statuses[c].as_dict() for c in CHECKS if c in report.statuses],
             "findings": [f.as_dict() for f in report.ordered()],
             "bleed": report.bleed,
-            "drift": report.drift,
             "completion": report.completion,
             "chat": report.chat,
         },
@@ -324,15 +322,16 @@ def examine(feature_dir: Path, root: Path, chat: bool) -> Report:
     run_check(report, "record", lambda: _via("doctor_checks", "check_record", feature_dir, ctx))
     run_check(report, "triage", lambda: _via("doctor_checks", "check_triage", feature_dir, ctx))
     run_check(report, "bleed", lambda: _via("doctor_bleed", "check_bleed", root, feature_dir, ctx, report))
-    run_check(report, "drift", lambda: _via("doctor_drift", "check_drift", root, feature_dir, ctx, report))
     run_check(report, "completion", lambda: _via("doctor_checks", "check_completion", feature_dir, ctx, report))
     run_check(report, "verification", lambda: _via("doctor_checks", "check_verification", feature_dir, ctx))
     run_check(report, "artifact", lambda: _via("doctor_checks", "check_artifact", feature_dir, ctx))
     run_check(report, "template", lambda: _via("doctor_checks", "check_template", feature_dir))
     run_check(report, "built", lambda: _via("doctor_checks", "check_built", feature_dir, ctx, root))
     run_check(report, "agents", lambda: _via("doctor_checks", "check_agents", root))
+    run_check(report, "workflow", lambda: _via("doctor_checks", "check_workflow", root))
     run_check(report, "numbering", lambda: _via("doctor_checks", "check_numbering", feature_dir))
-    run_check(report, "briefed", lambda: _via("doctor_checks", "check_briefed", feature_dir, ctx))
+    run_check(report, "retired_living", lambda: _via("doctor_checks", "check_retired_living", root))
+    run_check(report, "persistence_model", lambda: _via("doctor_checks", "check_persistence_model", root))
     run_check(report, "dispatch", lambda: _via("doctor_checks", "check_dispatch", feature_dir, ctx))
     run_check(report, "trace", lambda: _via("doctor_checks", "check_trace", feature_dir, ctx))
     if chat:
@@ -376,9 +375,13 @@ def main(argv=None) -> int:
                              "succeeds, which is the default and stays the default.")
     parser.add_argument("--traceback", action="store_true",
                         help="Print a traceback for a check that raised (debugging the doctor).")
+    parser.add_argument("--fix", action="store_true",
+                        help="Register the shipped Companion workflow with spec-kit's workflow engine, then exit.")
     args = parser.parse_args(argv)
 
     root = _repo_root()
+    if args.fix:
+        return _via("doctor_checks", "register_workflow", root)
     if args.all:
         targets = _spec_dirs(root)
         if not targets:
@@ -398,7 +401,7 @@ def main(argv=None) -> int:
 
     at = _now_iso()
     # Resolve each spec's OWN repository. Reading the root from the cwd made a
-    # --feature-dir outside it run drift, git, and bleed against whatever repo the
+    # --feature-dir outside it run git and bleed against whatever repo the
     # shell happened to be in — which is exactly how the bench invokes it.
     reports = [examine(d, _repo_root_for(d), args.chat) for d in targets]
     if args.as_json:

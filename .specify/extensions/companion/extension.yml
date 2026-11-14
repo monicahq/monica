@@ -3,7 +3,7 @@ schema_version: "1.0"
 extension:
   id: companion
   name: "SpecKit Companion"
-  version: "0.26.0"
+  version: "0.27.0"
   description: "Records your spec-kit runs live: status, resume, and a health check for what actually happened."
   author: alfredoperez
   repository: https://github.com/alfredoperez/speckit-companion
@@ -75,28 +75,7 @@ provides:
       description: "Companion auto — run the whole pipeline hands-off (specify → plan → tasks → implement → converge), no pauses"
     - name: speckit.companion.doctor
       file: commands/speckit.companion.doctor.md
-      description: "Report on a spec's run health — unfinished steps, unjournaled tasks, step bleed, drift you can judge, a step that closed having verified nothing, a step that closed without the file it promised, and why completion did not land (read-only, retroactive, never halts)"
-    - name: speckit.companion.living-adopt
-      file: commands/speckit.companion.living-adopt.md
-      description: "Brownfield adoption wizard — draft living specs for the code areas you name, central or colocated, and register them (opt-in, surface-first, [DRAFT])"
-    - name: speckit.companion.living-move
-      file: commands/speckit.companion.living-move.md
-      description: "Move a living spec between central and colocated storage — file, tiers, and registry together (opt-in, reversible)"
-    - name: speckit.companion.living-drift
-      file: commands/speckit.companion.living-drift.md
-      description: "Report living-spec drift — per capability, the source files changed since the spec was last committed (opt-in, never halts)"
-    - name: speckit.companion.living-show
-      file: commands/speckit.companion.living-show.md
-      description: "Print one slice of a living spec — a capability's requirement headings, one requirement in full, or the requirements that describe one file (opt-in, read-only, never halts)"
-    - name: speckit.companion.living-validate
-      file: commands/speckit.companion.living-validate.md
-      description: "Check the shape of living specs and a feature spec's deltas — a requirement with no scenario, a scenario missing WHEN or THEN, a duplicate heading, a delta pointing at nothing (opt-in, read-only, never halts)"
-    - name: speckit.companion.living-coverage
-      file: commands/speckit.companion.living-coverage.md
-      description: "Report living-spec requirement→test coverage — per requirement, whether its coverage tier maps a test (opt-in, read-only, never halts)"
-    - name: speckit.companion.living-sync
-      file: commands/speckit.companion.living-sync.md
-      description: "Sync living specs from your current changes — group working-tree changes (uncommitted included) by capability and update every affected spec in one pass (opt-in, update-not-regenerate, never halts)"
+      description: "Report on a spec's run health — unfinished steps, unjournaled tasks, step bleed, a step that closed having verified nothing, a step that closed without the file it promised, and why completion did not land (read-only, retroactive, never halts)"
     - name: speckit.companion.on-prompt
       file: commands/speckit.companion.on-prompt.md
       description: "Record a step's start from spec-kit's prompt-submitted event"
@@ -159,6 +138,4 @@ events:
 tags:
   - "vscode"
   - "progress"
-  - "living-specs"
-  - "drift"
   - "hooks"

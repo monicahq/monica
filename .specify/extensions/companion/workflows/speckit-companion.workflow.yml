@@ -32,34 +32,38 @@ inputs:
     type: string
     default: "auto"
     prompt: "Integration to use (e.g. claude, copilot, gemini; 'auto' uses the project's initialized integration)"
-  scope:
+  # Gate verdicts for a run with no terminal: `specify workflow resume <run id>
+  # --input review_spec=approve`. Empty pauses the gate. Each gate has its own
+  # input, because a gate keeps an approved input and would pass the next one too.
+  review_spec:
     type: string
-    default: "full"
-    enum: ["full", "backend-only", "frontend-only"]
+    default: ""
+    enum: ["", "approve", "reject"]
+  review_plan:
+    type: string
+    default: ""
+    enum: ["", "approve", "reject"]
 
 steps:
   - id: specify
     command: speckit.companion.specify
     integration: "{{ inputs.integration }}"
     input:
-      args: "{{ inputs.spec }}"
+      args: "{{ inputs.spec }} (workflow engine step: run this step only, the engine runs the next one)"
 
-  - id: classify
-    command: speckit.companion.classify
-    integration: "{{ inputs.integration }}"
-    input:
-      args: "{{ inputs.spec }}"
+  # Read-only: prints the size specify recorded in the spec's .spec-context.json
+  # (found through .specify/feature.json), or nothing when there is none.
+  - id: size
+    type: shell
+    run: "python3 .specify/extensions/companion/scripts/status-context.py --size"
 
-  # Routing step — right-sizes the pipeline on the classify signal. It reads the
-  # size from `classify` and never re-derives the 5-files / 10-tasks bar: that
-  # threshold is authored once in presets/_parts/sizing.md (the same block the
-  # classify and specify commands embed). The case structure below is the single
-  # source of the routing rule (also stated in presets/_parts/routing.md). The
-  # safe default (`default:`) is the FULL pipeline, so an unmatched or unresolved
-  # size value never skips a phase (FR-004). `normal` falls through to default.
+  # Routes on the recorded size; the cases are the verdicts in
+  # nodes/specify/_order.yml that fold or warn. `normal`, a missing size and any
+  # unknown value take `default:`, the full pipeline with review gates, so doubt
+  # never skips a phase.
   - id: route
     type: switch
-    expression: "{{ steps.classify.output.size }}"
+    expression: "{{ steps.size.output.stdout }}"
     cases:
       # `simple` is the verdict the classifier emits (presets/_parts/routing.md:
       # "`small` names the *bar*, never the verdict"). This key read `small`
@@ -75,7 +79,7 @@ steps:
           command: speckit.companion.implement
           integration: "{{ inputs.integration }}"
           input:
-            args: "{{ inputs.spec }}"
+            args: "{{ inputs.spec }} (workflow engine step: run this step only, the engine runs the next one)"
       oversized:
         # Visible warning, then the SAME full pipeline — never a silent skip.
         - id: oversized-warn
@@ -86,26 +90,28 @@ steps:
           message: "Oversized change. Review the generated spec before planning."
           options: [approve, reject]
           on_reject: abort
+          verdict_input: review_spec
         - id: oversized-plan
           command: speckit.companion.plan
           integration: "{{ inputs.integration }}"
           input:
-            args: "{{ inputs.spec }}"
+            args: "{{ inputs.spec }} (workflow engine step: run this step only, the engine runs the next one)"
         - id: oversized-review-plan
           type: gate
           message: "Review the plan before generating tasks."
           options: [approve, reject]
           on_reject: abort
+          verdict_input: review_plan
         - id: oversized-tasks
           command: speckit.companion.tasks
           integration: "{{ inputs.integration }}"
           input:
-            args: "{{ inputs.spec }}"
+            args: "{{ inputs.spec }} (workflow engine step: run this step only, the engine runs the next one)"
         - id: oversized-implement
           command: speckit.companion.implement
           integration: "{{ inputs.integration }}"
           input:
-            args: "{{ inputs.spec }}"
+            args: "{{ inputs.spec }} (workflow engine step: run this step only, the engine runs the next one)"
     # normal (and any unresolved value) → full pipeline with review gates.
     default:
       - id: review-spec
@@ -113,30 +119,32 @@ steps:
         message: "Review the generated spec before planning."
         options: [approve, reject]
         on_reject: abort
+        verdict_input: review_spec
       - id: plan
         command: speckit.companion.plan
         integration: "{{ inputs.integration }}"
         input:
-          args: "{{ inputs.spec }}"
+          args: "{{ inputs.spec }} (workflow engine step: run this step only, the engine runs the next one)"
       - id: review-plan
         type: gate
         message: "Review the plan before generating tasks."
         options: [approve, reject]
         on_reject: abort
+        verdict_input: review_plan
       - id: tasks
         command: speckit.companion.tasks
         integration: "{{ inputs.integration }}"
         input:
-          args: "{{ inputs.spec }}"
+          args: "{{ inputs.spec }} (workflow engine step: run this step only, the engine runs the next one)"
       - id: implement
         command: speckit.companion.implement
         integration: "{{ inputs.integration }}"
         input:
-          args: "{{ inputs.spec }}"
+          args: "{{ inputs.spec }} (workflow engine step: run this step only, the engine runs the next one)"
 
   # Terminal step — stock converge; its after-converge hook completes a clean spec.
   - id: converge
     command: speckit.converge
     integration: "{{ inputs.integration }}"
     input:
-      args: "{{ inputs.spec }}"
+      args: "{{ inputs.spec }} (workflow engine step: run this step only, the engine runs the next one)"

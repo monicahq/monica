@@ -9,27 +9,15 @@ $ARGUMENTS
 ```
 
 <!-- speckit-companion:part step-start -->
-## Record this step's start: before anything else runs
+## Record this step's start, before anything else runs
 
-A step's recorded window has to contain the work it claims. Stamping the start partway down the body leaves the extension hooks, and any node above the stamp, outside the window the step later reports. So this is the first instruction in the command, ahead of the hooks.
-
-Let `<step>` be this command's phase and `<status>` its in-progress status: `specify`/`specifying`, `plan`/`planning`, `tasks`/`tasking`, `implement`/`implementing`.
-
-**Which feature directory this step stamps against decides when it stamps.**
-
-- **A step that mints its own feature directory**, meaning any fresh-spec entry point such as `specify` or `auto`, has nothing to stamp against yet. `.specify/feature.json` is this step's *output*: it still points at the **previous** spec, so stamping now would write this run's status onto finished work. Resolve the directory first, then stamp the instant it exists, before any other work in the step.
-- **Every other step** reads the feature directory it was given, from the invocation or from `.specify/feature.json`, which by then points at this spec. Stamp immediately, before the extension hooks and before any node.
-
-In both cases the call is the same:
+Let `<step>`/`<status>` be this command's phase and in-progress status: `specify`/`specifying`, `plan`/`planning`, `tasks`/`tasking`, `implement`/`implementing`. A step that mints its own feature directory (`specify`, `auto`) resolves it first, because `.specify/feature.json` still points at the previous spec; every other step stamps at once, before any hook or node:
 
 ```bash
 python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <feature_directory> --step <step> --status <status> --kind start --by extension
 ```
 
-Add `--at "<dispatch time>"` when the dispatcher printed one; otherwise the script stamps now. Two things keep this honest:
-
-- **Run it, never hand-write it.** The script stamps the real clock and writes atomically. A hand-authored entry in `.spec-context.json` is what corrupts the file.
-- **A second start is refused, not reconciled.** History is append-only, so if the extension already seeded this step's start, this call appends nothing and the earlier timestamp stands. Running it is always safe; skipping it loses the window.
+Add `--at "<dispatch time>"` when the dispatcher printed one. Run it, never hand-write it. A second start is refused, so running it is always safe.
 <!-- /speckit-companion:part step-start -->
 
 <!-- speckit-companion:part command-spelling -->
@@ -39,51 +27,17 @@ Commands are named in dot form throughout this body, `speckit.companion.plan`, b
 <!-- /speckit-companion:part command-spelling -->
 
 <!-- speckit-companion:part speckit-hooks -->
-## Pre-Execution Checks: stock spec-kit extension hooks
+## Stock spec-kit extension hooks
 
-Companion runs **on top of** stock spec-kit, so a project's installed spec-kit **extensions** (git, and any others in `.specify/extensions.yml`) must fire on a Companion run exactly as on a stock `/speckit.*` run. That is separate from Companion's own node-hooks in `.specify/companion.yml`; both fire. Like the rest of the pipeline this must **never fail the host command**: a missing file or an anchor with no entries is skipped silently, and an unreadable file is reported once, then the run continues.
-
-Let `<step>` be this command's phase: `specify`, `plan`, `tasks`, or `implement`. Run the pass twice: `hooks.before_<step>` **now, before any of the work below**, and `hooks.after_<step>` once this command's work is fully reported, before handing off.
-
-- **Read `.specify/extensions.yml`.** Absent, or carrying no entries for that anchor: skip silently. If the YAML cannot be parsed or is invalid, do not skip silently: tell the user that `.specify/extensions.yml` could not be read (include the parser error) and that no hooks were checked, including any mandatory (`optional: false`) hooks registered there, then continue normally. Skip a hook that is `enabled: false` (no `enabled` field means enabled), and any hook whose `extension` is `companion`: those record a stock run's lifecycle, which this command records in its own body, so dispatching them would rewrite what this step just wrote. A hook with a non-empty `condition` is left to the HookExecutor and never evaluated by you; no condition, or a null or empty one, is executable.
-- **Emit one block per executable hook.** An optional hook (`optional: true`):
-
-  ```
-  ## Extension Hooks
-
-  **Optional Pre-Hook**: {extension}
-  Command: `/{command}`
-  Description: {description}
-
-  Prompt: {prompt}
-  To execute: `/{command}`
-  ```
-
-  A mandatory hook (`optional: false`) instead:
-
-  ```
-  ## Extension Hooks
-
-  **Automatic Pre-Hook**: {extension}
-  Executing: `/{command}`
-  EXECUTE_COMMAND: {command}
-
-  Wait for the result of the hook command before proceeding to the Outline.
-  ```
-
-  Those labels are the **before** pass's. In the **after** pass drop `Pre-` from the label and drop the closing wait line.
-
-For `specify`, branch creation is normally one of these `before_specify` hooks (the git extension); the spec directory and its files are always created by the command body itself.
+Only if `.specify/extensions.yml` lists entries under `hooks.before_<step>` or `hooks.after_<step>`, where `<step>` is this command's phase, read `.specify/extensions/companion/commands/reference/speckit-hooks.md` and follow it: the `before_` pass now, before any work below, and the `after_` pass once this command's work is reported. Otherwise skip this.
 <!-- /speckit-companion:part speckit-hooks -->
 
 <!-- speckit-companion:part concise -->
 ## The smallest thing that works
 
-**Before building anything, stop at the first rung that holds:** does it need to exist at all; does this codebase already have it; does the standard library, the platform, or an installed dependency do it; can it be one line; only then, the minimum code that works. Fix the cause where every caller passes through, not the symptom one caller reported. Delete rather than add, boring rather than clever: no interface with one implementation, no factory for one product, no scaffolding for later. Lean governs what you build and write, not how the work is split: sending work to a worker where a step says to is not extra.
+**Stop at the first rung that holds:** does it need to exist; does this codebase already have it; does the platform or an installed dependency do it; can it be one line; only then, the minimum code. Fix the cause where every caller passes through. No interface with one implementation, no factory for one product, no scaffolding for later. Lean governs what you build, not how work is split.
 
-**Write it the way you would say it.** One idea per sentence. No em-dashes: a full stop, a comma or a colon says it. Say what happens, not what the system "shall be capable of". Never a section that exists to say "N/A": remove it instead.
-
-**The same test governs what you write, and again once it is written.** A section nobody acts on is removed, not filled in. No requirement for what a type or a test already enforces. A third scenario has to cover a failure the first two miss. Then reread and cut: the sentence restating the one before it, the example longer than its rule, the clause defending a choice nobody challenged, the prose repeating a table. Each reads as thoroughness and is what makes a body too long to follow.
+**Write it the way you would say it.** One idea per sentence, no em-dashes, no "shall be capable of", no section that says "N/A". Then reread and cut: the sentence that restates the one before, the example longer than its rule, the clause defending a choice nobody challenged.
 
 **Never simplify away** validation at a trust boundary, error handling that prevents data loss, security, accessibility, or anything the spec asks for. **A corner cut on purpose** carries `// simplified: <ceiling>, <what to do when it binds>` in the code and one `concerns` entry in this step's capture.
 <!-- /speckit-companion:part concise -->
@@ -97,30 +51,14 @@ Execute `tasks.md` phase by phase in dependency order. Each phase is laid out as
 
 2. Work `tasks.md` **phase by phase, in dependency order**: **Setup**, then **Foundational** (which blocks every story), then each **user-story** phase in priority order (P1 first), then **Polish**. `tasks.md` lays each phase out as ordered **waves** separated by `**⟶ Wait …**` join lines. The waves are a **dependency map**: tasks inside one wave are independent of each other, so any order is safe, and a `⟶ Wait` line marks where the next tasks depend on everything above it. **Execute wave by wave, in order, and stop at each `⟶ Wait` line until the wave above is done.** Halt on a failed task and report the cause.
 
-3. **Dispatch one worker per user-story phase that owns five or more files. If you have a subagent tool, Claude Code's `Agent`/`Task` tool or your host's equivalent, you use it there.** Setup and Polish stay with you: Setup is trivial, Polish is cross-cutting. **In Foundational, before each wave, run `python3 .specify/extensions/companion/scripts/dispatch-briefs.py --feature-dir <feature_directory> --waves` and do exactly what it prints:** that wave's worker briefs, dispatched together and unedited, or the tasks to build yourself. Start nothing after that wave until its workers return and pass step 5's check. Never split a story phase per task: the startup costs more than the task.
+3. **Dispatch one worker per user-story phase that owns five or more files**, when you have a subagent tool (Claude Code's `Agent`/`Task` tool or your host's equivalent): read `.specify/extensions/companion/commands/reference/fan-out.md` first and follow it, including the check at each join line. Count the phase's own `Files:` line, and that alone decides it. It holds in an auto run too. Every other phase, Setup, Polish, and everything without a subagent tool, you build yourself. **In Foundational, before each wave, run `python3 .specify/extensions/companion/scripts/dispatch-briefs.py --feature-dir <feature_directory> --waves` and do exactly what it prints.** Setup and Polish stay with you.
 
-   **Count the phase's own files line, and that alone decides it.** It holds in an auto run too: specify, plan and tasks having run in this same session is not a reason to build inline. Below five files a worker's startup is the whole cost, so build a phase under the threshold inline, in phase order, and say which phases you dispatched and which you kept.
-
-   **Read each story phase's files line, `Files:` or `Files owned by this phase:`. That is its ownership.** The tasks step gave every file one owner, so the story phases are disjoint by construction and you dispatch them all together. Two phases naming the same file is a task-list defect: say so, and run those two one after another. Give each worker its phase's task lines, that user story from `spec.md`, the plan's Structure Decision, and **its own living-spec slice**, `resolve-spec-paths.py --changed <that phase's files> --requirements-for --follow-aligns --json`, so it carries the requirements about the files it touches and none of yours. The flag adds rules from other capabilities that constrain the code the worker writes. Then ask it to read what it needs, write the code **and that story's tests**, run **only the test files its phase owns** (the full suite runs once, at the end), and return a distilled result only: what it built, the files it touched, and any test still failing. A worker must never return file contents.
-
+4. **What you build yourself** (Setup, Polish, small phases and waves, or everything without a subagent tool), **close each wave with one call the moment its last task is done**, listing its tasks:
    ```bash
-   # the worker, per task it finishes: append only, never fold
-   python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <feature_directory> --task <TaskID> --kind complete --by ai --did "<one line>" --files "<files>" --append
-   # you, the moment each worker's result returns
-   python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <feature_directory> --materialize
+   python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <feature_directory> --close-task <T001,T002,…> --by ai --did "<one line for the wave>" --files "<files>"
    ```
+   One call folds the finishes, checks the boxes and times the wave as one unit. Never hand-edit a checkbox.
 
-   Folding is a read-modify-write on the shared file, so two folders at once race. **Workers only ever append, and you do every fold**, in the foreground, one at a time.
-
-4. **What you build yourself** (Setup, Polish, small phases and waves, or everything without a subagent tool), **close each task as you finish it**, never batched at the end of a wave:
-   ```bash
-   python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <feature_directory> --close-task <TaskID> --by ai --did "<one line>" --files "<files>"
-   ```
-   `--close-task` appends the finish and folds it in one call: the panel updates and the task's `tasks.md` box is checked. Never hand-edit the checkbox.
-
-5. **At each join line, check the workers' claims before crossing it.** A worker's report names files it touched and tests it ran; confirm the files exist and the test files are on disk before its result becomes the next phase's input. A claim that does not check out gets one re-run with the specific correction, and a second failure stops the step rather than building on it.
-
-   Then reconcile. Hand the type-check, and the lint only if the project actually has one in its `package.json` scripts, to one worker and take back only the verdict and the failing names. A lint nothing defines is not a check you can run. Fix any seam drift between workers. Then run `--materialize` once more as a backstop: it is idempotent, and it catches any finish whose fold was missed. `tasks.md` is owned only through `--materialize`.
 
 6. **Run the project's own checks before you call this done.** Validating against the spec's **Functional Requirements** and **Success Criteria** by reading is not validation. Run the suite and the type-check or build the project actually uses, read from its `package.json` scripts, `Makefile`, or the repo's own instructions, and do not invent a command: a test you wrote and never executed is a guess about your own code.
 
@@ -134,39 +72,30 @@ Execute `tasks.md` phase by phase in dependency order. Each phase is laid out as
 **Output**: working changes per `tasks.md`, with completed tasks checked off.
 <!-- /speckit-companion:node implement-exec -->
 <!-- speckit-companion:node record-verified -->
-7. **Capture what was verified and decided** the moment validation ends (best-effort; JSON when you can, bare text when not; skip silently if `python3` is unavailable):
+6b. **Prove each requested rule where a reader meets it, before you call it verified.** For every requirement, at least one test drives the app's public surface (the rendered screen, the CLI, the API) in the exact condition the rule names, and none passes by reading internal state such as storage, a store or a private module. "Survives a reload" means building the app again from what storage kept and reading the screen; "sends in order" means counting the calls the app makes. A rule with no such test gets one now; if it fails, the code changes.
+
+   Then name the risk in one line of your summary, `Risk: <item> (<why>)` or `Risk: none`, against these items: stored data or a stored format, security, a contract others consume, concurrency or ordering, delivery or dependencies, or behavior no test would catch. Before writing `Risk: none`, check whether your change edits code that behavior the request did not mention also uses.
+
+7. **Capture what was verified and decided in one call** the moment validation ends (best-effort; skip silently if `python3` is unavailable). Include only the keys you have; on a clean run `concerns` is absent:
    ```bash
    python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <feature_directory> --step implement --batch '{
-     "verified":   [{"what": "<check>", "command": "<cmd>", "result": "<outcome>", "warnings": ["<seen-and-dismissed>"]}],
+     "verified":   [{"what": "<judgement>", "result": "<outcome>"}],
      "decisions":  [{"decision": "<implementation choice>", "why": "<why>", "rejected": "<alternative>"}],
-     "concerns":   [{"note": "<friction, residual risk, or a `// simplified:` ceiling you left in the code>", "step": "implement"}],
-     "coverage":   [{"req": "FR-001", "tests": "<path.test.ts::case,other.test.ts>"}, {"req": "FR-004", "assumes": "<what it relies on without a test>"}],
+     "concerns":   [{"note": "<friction, residual risk, or a `// simplified:` ceiling>", "step": "implement"}],
+     "coverage":   [{"req": "FR-001", "tests": "<path.test.ts::case>"}, {"req": "FR-004", "assumes": "<what it relies on without a test>"}],
      "step_summary": {"summary": "<what shipped in one line>"},
-     "last_action": "<final breadcrumb, e.g. all tasks done, 18/18 tests pass>"
-   }'
+     "last_action": "<final breadcrumb>"
+   }'; python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <feature_directory> --verify-run "<what>::<command>" --verify-run "<what>::<command>"
    ```
+   Every suite, build and lint goes through `--verify-run`, which runs the command and keeps its exit code. `verified` is only for what cannot be run, a manual pass or a judgement. A check you could not run is a `concerns` entry naming what was skipped; do **not** record a `--verified` for it.
 
-   **One call, not one per item.** `--batch` takes the whole volley as a single JSON object and applies each writer additively, so the shared context file is read and rewritten once instead of once per entry. Emit one `--batch`. Include only the keys you actually have: an empty list is not the same as an absent one, and on a clean run `concerns` is genuinely absent.
-
-   Record a check that can be run with `--verify-run "<what>::<command>"`: it runs the command and keeps the exit code, rather than taking your word for it. Every suite, build, lint and script goes that way. `--verified` stays for what genuinely cannot be run — a manual pass, a judgement — and reads in the viewer as your account rather than as evidence, which is what it is. Never write a `--verified` describing a command you ran: that is the case `--verify-run` exists for, and a typed result is indistinguishable from an imagined one. If a check could not be run at all, record that as a `--concern` naming what was skipped and why, and do **not** record a `--verified` for it.
-
-   One `--verify-run` per runnable check and one `--verified` per judgement (a manual pass, a warning you saw and judged benign), one `--coverage-req … --tests …` per requirement a test covers, one `--assumes <req> "<what>"` per requirement the code relies on something no test checks (a library, the clock, the database), one `--decision` per genuine implementation choice. Record `--concern` only for real friction; on a clean run record none.
-
-8. **Set the review depth from the risk tier**, once validation ends:
+8. **Set the review depth from the risk tier** in the same breath:
    ```bash
    python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <feature_directory> --risk
    ```
-   It prints the tier the changed files call for. If you know something the files do not show, raise it with `--risk-raise <normal|high> "<reason>"`; it never goes down. Review the work before it is committed at that depth: low is your own careful read of the diff, normal is one independent review, high is two independent reviewers.
-   When the work becomes a pull request, put the receipts in its body, unedited, so a reviewer sees what was run and what was only claimed:
-   ```bash
-   python3 .specify/extensions/companion/scripts/receipts.py --feature-dir <feature_directory>
-   ```
+   It prints the tier the changed files call for; raise it with `--risk-raise <normal|high> "<reason>"` if you know more, never lower. Review the diff before it is committed at that depth: low is your own careful read, normal one independent review, high two. When the work becomes a pull request, paste `python3 .specify/extensions/companion/scripts/receipts.py --feature-dir <feature_directory>` into its body unedited.
 
-9. **Run the mutation check, only when the project turned it on.** If `.specify/companion.yml` sets `mutation: { enabled: true }`, run the project's mutation tool on the files this change touched (Stryker for JavaScript and TypeScript with the JSON reporter, mutmut for Python, then `mutmut export-cicd-stats`), and hand the report to the writer:
-   ```bash
-   python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <feature_directory> --mutation-report <reports/mutation/mutation.json or mutants/mutmut-cicd-stats.json>
-   ```
-   It records the caught count and marks weak each requirement whose tests caught no planted bug. Without the setting, skip this step.
+9. **Mutation check, only when the project turned it on.** If `.specify/companion.yml` sets `mutation: { enabled: true }`, read `.specify/extensions/companion/commands/reference/mutation-check.md` and follow it. Otherwise skip this.
 <!-- /speckit-companion:node record-verified -->
 <!-- /speckit-companion:phase execute -->
 <!-- speckit-companion:phase wrap-up -->
@@ -178,104 +107,52 @@ Execute `tasks.md` phase by phase in dependency order. Each phase is laid out as
    python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <feature_directory> --step implement --advance --by ai --set workflow=companion
    ```
    The `--set` pins which workflow ran the spec in the same write, so a mid-run join keeps Companion dispatch. This closes the implement step and leaves the spec at `implemented`; it never writes `completed`. Best-effort and idempotent: if `python3` is unavailable, warn and skip without failing the host command.
-
-   - **Account for every loaded capability first: a delta or an explicit skip, never silence.** Before folding, read `livingSpecs.loaded` in this feature's `.spec-context.json`. An absent key or an empty list means nothing was loaded and there is nothing to account for; skip to the fold. Go through **every** name in that list, and give each exactly one of two outcomes. For a loaded capability whose *behavior* this feature actually changed, append a delta block to this feature's `spec.md` capturing the real new or changed requirement, marked with that capability's name so the fold routes it to the right spec:
-     ```markdown
-     ## ADDED Requirements
-     <!-- capability: <name> -->
-
-     ### <the new capability requirement, as a testable statement>
-
-     #### Scenario: <name>
-     - **WHEN** <trigger>
-     - **THEN** <observable outcome>
-     ```
-     **A file no loaded capability claims belongs to a capability that does not exist yet.** Before writing any block, run the resolver on the files you changed: `python3 .specify/extensions/companion/scripts/resolve-spec-paths.py --changed <files> --json`. A file with no match is not yet a reason to write anything. Ask one question: **would someone planning a change here need to know this?** A file that only supports behaviour a spec already states needs no block: say so in your summary and move on. New code is never squeezed into a requirement to give it a home. When the file does add something a person can now do, that is new behaviour with no home. Do not route it to the nearest capability you happened to load. Give it a block of its own with a new name, `<!-- capability: <name> -->`, where the name is a thing a person can now do, said out loud, never a directory. Register it before the fold, with the directories you touched as its match: `python3 .specify/extensions/companion/scripts/register-capability.py --name <name> --match '<dir>/**'`. The fold then creates the spec from your block. Say in your summary that a capability appeared and why.
-
-     Pick the verb by whether the requirement heading already exists in the capability's living spec (`capabilities/<name>/<name>.spec.md`). A requirement that is **not already there** goes under `## ADDED Requirements`, even if it revises the same behavior area. Reserve `## MODIFIED Requirements` for changing the body of a requirement whose heading is already in the living spec; the heading must match an existing one for the edit to replace it in place. **Read the existing headings before choosing:** a new heading that says what an existing one says in other words is that requirement, changed, and belongs under MODIFIED with the existing heading. A `// simplified:` ceiling you left in the code is **not** a delta entry: inside a delta block every `###` is a requirement heading, so a "Known limits" heading there folds into the capability as a requirement. Record ceilings as `concerns` in this step's capture instead, and let `living-sync` place them. Use `## REMOVED Requirements` when you deleted one, and `## RENAMED Requirements` (`### Old heading -> New heading`) for a rename. Write one block per changed capability, each with its own `<!-- capability: <name> -->` marker: several marked blocks fan out, each capability spec receiving only its own requirements. Never invent requirements to pad the list, and add a third scenario to an existing requirement only when it covers a failure the first two miss, saying which in the scenario name.
-
-     For a loaded capability whose behavior this feature did **not** change, one you merely read for context, record an explicit skip. One call per untouched capability:
-     ```bash
-     python3 .specify/extensions/companion/scripts/write-context.py --living-spec-skip "<name>: <one-line reason it wasn't changed>"
-     ```
-     By the end, every name in `livingSpecs.loaded` is accounted for by a delta block or a recorded skip. A capability that is neither is a hole the fold flags.
-
-   - **Have the deltas reviewed before they fold.** A living spec is context every later run loads, so what folds into it is read by someone other than its author. Run `python3 .specify/extensions/companion/scripts/dispatch-briefs.py --feature-dir <feature_directory> --living` and do exactly what it prints.
-
-   - **Fold living-spec deltas (opt-in, best-effort).** After the close, fold the deltas you just authored into the durable living spec, OpenSpec's "archive" step:
-     ```bash
-     python3 .specify/extensions/companion/scripts/write-context.py --fold-living-spec --by ai
-     ```
-     It parses the feature spec for `## ADDED / MODIFIED / REMOVED / RENAMED Requirements` blocks and applies each to the resolved `capabilities/<name>/<name>.spec.md`: the changed-files-matched capability for unmarked blocks, and every `<!-- capability: <name> -->`-marked capability for the rest. Opt-in (it only acts when `livingSpecs.enabled: true`), a clean no-op when there is no delta block, idempotent on re-run, and it records the synced names onto `livingSpecs.synced`. Never fails the host command.
 <!-- /speckit-companion:node complete -->
 <!-- speckit-companion:node handoff -->
 <!-- speckit-companion:part timing -->
 ## Timing: keep `.spec-context.json` honest
 
-Record every boundary by **running the writer script**. Never edit `.spec-context.json` yourself; a hand-authored edit is what corrupts the file. The model is **finish-only**: one finish per task and per substep, its duration the gap back to the previous finish. Never a `start`+`complete` pair for either, which stamps a `0s` tick and measures nothing.
+Record every boundary by **running the writer script**, never by editing `.spec-context.json`. The model is **finish-only**: one finish per task and per substep, timed from the previous one; never a `start`+`complete` pair. **One shell call per moment**: writes that happen together go in one call chained with `&&`, because every separate call is a turn that re-reads the whole session. **In a single-quoted `--batch '{…}'`, write an apostrophe as `'`**, or pass `--batch -` with the JSON on stdin; never debug the quoting by reading the script.
 
-- **Close your own step**, as the last thing you do, after emitting any mandatory after-hook block:
+- **Close your own step** as your last action, after any mandatory after-hook block. Specify already closed itself in its wrap-up; clarify and analyze use `--finish` instead. Implement ends at `implemented`; converge completes the spec.
 
   ```bash
   python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <feature_dir> --step <this step> --advance --by ai
   ```
 
-  `--advance` appends the step's complete and flips `status` in one atomic write. It is idempotent and first-writer-wins, so it changes nothing when the after-hook already closed the step, and it is the only thing that closes the step when that hook was printed rather than dispatched. Run it every time, with one exception: **clarify** and **analyze** use `--finish`, which records a boundary without owning a status. **Implement** closes with `--advance` like the other steps and ends at `implemented`; converge completes the spec.
-
-- **One finish per substep, the moment it ends.** Plan records `research` and `design`, tasks records `generate`, implement records `living-review` and `living-fold` when living specs are on. Never two in one batch, never a separate start: a finish measures the gap back to the previous boundary, so several stamped together at the close of a step read as `0s` each and record nothing.
+- **One finish per substep, the moment it ends, when the step runs on its own**; inside an auto run, skip them. Plan records `research` and `design`, tasks `generate`.
 
   ```bash
   python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <feature_dir> --step <step> --substep <name> --finish --by ai
   ```
 
-- **Closing a task is that task's last action, not a bookkeeping pass you batch later.** Feature dir from `.specify/feature.json`:
+- **Close each wave the moment its last task is done**, in one call listing its tasks. It checks their boxes and times the wave as one unit. Never hand-edit a box; closing several waves at once is a defect the doctor reports.
 
   ```bash
-  python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <feature_dir> --close-task <TaskID> --by ai --did "<one line>" --files "<files>"
+  python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <feature_dir> --close-task <T001,T002,…> --by ai --did "<one line>" --files "<files>"
   ```
 
-  One call appends the finish with its own real clock, folds it into the panel, and flips that task's box in `tasks.md`. Never hand-edit that box or hand-author per-task JSON, and never write a per-task start. Re-closing is safe. **Batching is a defect the doctor catches**: it names any cluster of finishes stamped seconds apart, because those timestamps record when the batch was written, and history is append-only so it cannot be repaired afterwards. Trust the per-task summaries and their order; the timestamps are best-effort.
-
-  **A fanned-out worker appends only**, because folding is a read-modify-write and two folders contend:
+  **A fanned-out worker appends only**, because two folders contend; the main agent folds each returned result with `--materialize`, one at a time:
 
   ```bash
   python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <feature_dir> --task <TaskID> --kind complete --by ai --did "<one line>" --files "<files>" --append
   ```
 
-  The MAIN agent folds each returned result with `--materialize`, one at a time, and once more at a wave join as a backstop.
-
-- **Never write the next step's start.** The next command owns it. Writing it here renders a phantom "Generating <next>…".
+- **Never write the next step's start.** The next command owns it.
 <!-- /speckit-companion:part timing -->
 
 **The next step is `converge`.** Dispatch `speckit.converge <feature_dir>`.
 
 <!-- speckit-companion:part self-advance -->
-## Self-advance: hand off to the next step
+## After this step
 
-This is one step in the Companion pipeline. How the run continues depends on the environment you are running in; do not invoke a separate headless/deterministic run command for the everyday flow.
-
-- **On an agentic CLI that keeps acting after a step finishes:** once this step's work is complete, dispatch the next step's `speckit.companion.*` command and keep going. The order is fixed and this step's own handoff names its successor, so there is no file to open to find out.
-- **Pause at every review gate, and name the command that continues.** Where the workflow marks a `gate` (e.g. review-spec, review-plan), stop and wait for approval rather than running past it. When you stop, **name the next command literally**: "approve and run `speckit.companion.plan <feature_dir>`", not "approve to move to plan". Only continue once the gate is approved.
-- **Converge follows implement; a clean converge completes the spec.** Implement ends at `implemented`. Dispatch `speckit.converge` next: its after-converge hook writes `completed` when nothing is left to build. Do not dispatch `speckit.companion.mark-complete`: it is the manual command, not a step a run adds for itself. There is exactly one writer of `completed`; never introduce a second.
-- **Degrade gracefully on a one-shot environment.** If your environment runs one step and then stops, the handoff simply does not fire: finish this step, record its progress, and stop. The run stays valid and resumable, and the next step is triggered manually, by the developer or the companion panel. Completion likewise stays a manual action there.
+Inside a Companion auto run, or when the input says `workflow engine step`, the orchestrator decides what runs next: skip this. Otherwise, once this step's work is done, read `.specify/extensions/companion/commands/reference/self-advance.md` and follow it.
 <!-- /speckit-companion:part self-advance -->
 <!-- /speckit-companion:node handoff -->
 <!-- /speckit-companion:phase wrap-up -->
 
 <!-- speckit-companion:part orchestrator -->
-## Node hooks: run the project's `before`/`after` inserts
+## Node hooks
 
-This command is assembled from ordered **nodes**. A project attaches its own work around any node in `.specify/companion.yml`, and you are the runtime. Like the rest of the pipeline it must **never fail the host command**: degrade and continue.
-
-**Find the hooks.** Look up `commands.<this-command>.hooks`, whose `before` and `after` anchors are keyed by a node id from this command's order. Run a node's `before` hooks immediately before its work and its `after` hooks immediately after, several at one anchor in declared order. An absent, empty, malformed or unparseable file means no hooks: run the shipped command unchanged, silently when it is absent and with one short warning when it is broken.
-
-**Hook types:**
-
-- `{ type: command, run: "<shell>" }`: run it with your terminal tool, then continue. Without a terminal tool, report the command you would have run rather than pretending.
-- `{ type: prompt, text: "<instruction>" }`: act on the text before moving on.
-- `{ type: node, ref: <id> }`: carry out `.specify/companion/nodes/<id>.md` as part of this command. A missing `ref` file is a real misconfiguration: report it and stop rather than silently skipping.
-
-**Background hooks.** Any hook may add `background: true`: start it and continue without waiting, detaching a `command` (`&`, `nohup … &`) and not blocking on a `node` or `prompt`. Report its result whenever it lands. Never background anything that writes `.spec-context.json`, meaning the timing and capture calls: they read-modify-write a shared file, so two at once lose an update. Background is for slow side-effects like a test run or a build, not for bookkeeping.
-
-A hook anchored to a node this run does not include, because a recipe dropped it, warns once and is skipped. A hook whose own work fails is reported and the pipeline continues, unless the failure clearly makes the rest unsafe.
+A project can attach its own work around this command's nodes in `.specify/companion.yml`. **Only if that file declares `commands.<this-command>.hooks`**, read `.specify/extensions/companion/commands/reference/node-hooks.md` and follow it. Otherwise there are no hooks: skip this and run the command as written.
 <!-- /speckit-companion:part orchestrator -->

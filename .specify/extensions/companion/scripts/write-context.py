@@ -15,9 +15,8 @@ canonical .spec-context.json:
 
 This module owns the command line, the step lifecycle, the journal, terminal
 promotion, and the no-regress guard. The rest lives in siblings — `spec_context`
-(the store), `spec_deltas` (the delta grammar), `capture` (the additive capture
-writers), `task_sync` (task markers and the per-task journal), and
-`living_spec_fold` (the fold-back). Every name they hold is re-exported here, so
+(the store), `capture` (the additive capture writers), and `task_sync` (task
+markers and the per-task journal). Every name they hold is re-exported here, so
 anything that imports this module keeps reaching them by their original path.
 
 Stdlib only. Safe to run anywhere `python3` is available.
@@ -73,15 +72,6 @@ from spec_context import (  # noqa: E402,F401
     read_ctx,
     resolve_feature_dir,
 )
-from spec_deltas import (  # noqa: E402,F401
-    _CAP_MARKER_RE,
-    _DELTA_HEADER_RE,
-    _RENAME_RE,
-    _REQ_HEADING_RE,
-    _has_deltas,
-    _split_requirements,
-    parse_spec_deltas,
-)
 from capture import (  # noqa: E402,F401
     CLASSIFICATION_VERDICTS,
     PROTECTED_SET_KEYS,
@@ -102,9 +92,6 @@ from capture import (  # noqa: E402,F401
     set_risk,
     raise_risk,
     apply_mutation_report,
-    set_living_specs_loaded,
-    set_living_specs_skipped,
-    set_living_specs_synced,
     upsert_coverage,
     upsert_step_summary,
 )
@@ -125,18 +112,6 @@ from task_sync import (  # noqa: E402,F401
     parse_task_markers,
     sync_tasks,
 )
-from living_spec_fold import (  # noqa: E402,F401
-    _git_changed_files,
-    _initial_living_spec,
-    _living_requirement_span,
-    _load_resolver,
-    _rename_map,
-    _resolve_fold_targets,
-    _resolve_rename,
-    _retitle,
-    apply_deltas,
-    fold_living_spec,
-)
 
 
 def _pointer_resolved(args) -> bool:
@@ -153,8 +128,7 @@ def _plain_step_write(args, capture_mode: bool) -> bool:
     """True for the bare `--step <s> [--status] [--kind]` write, the branch nothing
     else in the invocation claims."""
     return not (
-        capture_mode or args.set_pairs or args.living_specs or args.living_spec_skips
-        or args.fold_living_spec or args.tasks_file or args.task or args.close_task
+        capture_mode or args.set_pairs or args.tasks_file or args.task or args.close_task
         or args.mark_complete or args.finish or args.advance or args.materialize or args.fold
     )
 
@@ -562,17 +536,13 @@ def fold_plan_tasks(feature_dir: Path, by: str) -> Path | None:
     return target
 
 
-def _complete_after_clean_converge(feature_dir: Path, by: str, added: list[str] | None = None) -> Path | None:
-    """Complete a spec whose converge added no task and left every task checked."""
-    ctx = read_ctx(feature_dir / ".spec-context.json")
+def _complete_after_clean_converge(feature_dir: Path, by: str) -> Path | None:
+    """Complete a spec once converge leaves every task checked, including any task it added and built.
+
+    Auto allows one correction round, so a pass that appends work and builds it is the last pass:
+    waiting for a second clean pass would strand the spec at `implemented`. An appended task left
+    open still blocks, because then the spec is not 100%."""
     if not _feature_tasks_at_100(feature_dir):
-        return None
-    if added is not None:
-        return mark_spec_complete(feature_dir, by) if not added else None
-    starts = [e for e in canonical_log(ctx)
-              if e.get("step") == "converge" and _is_step_level(e) and _entry_kind(e) == "start"]
-    at = _utc_stamp(str(ctx.get("convergeStartedAt") or (starts[-1].get("at") if starts else "")))
-    if at is None or (feature_dir / "tasks.md").stat().st_mtime > _epoch(at):
         return None
     return mark_spec_complete(feature_dir, by)
 
@@ -616,7 +586,41 @@ def _record_converge_finish(feature_dir: Path, added: list[str] | None, complete
     return target
 
 
+INFERRED_CONVERGE_START_MAX_SECONDS = 15 * 60
+
+
+def _open_pass_from_implement_close(feature_dir: Path, by: str) -> None:
+    """Open the converge pass at implement's close when no start was recorded, so the pass still has a duration."""
+    target = feature_dir / ".spec-context.json"
+    ctx = read_ctx(target)
+    if _open_converge_pass(ctx) is not None:
+        return
+    closes = [e for e in canonical_log(ctx)
+              if e.get("step") == "implement" and _is_step_level(e) and _entry_kind(e) == "complete"]
+    at = str(closes[-1].get("at") or "") if closes else ""
+    if not at:
+        return
+    # Only an auto run goes straight from implement into converge; a gap longer than this is
+    # someone pausing between steps, and back-dating would charge that pause to converge.
+    closed = _utc_stamp(at)
+    if closed is None or (datetime.now(timezone.utc).timestamp() - _epoch(closed)) > INFERRED_CONVERGE_START_MAX_SECONDS:
+        return
+    passes = ctx.get("convergePasses")
+    # A pass already finished after that close is this converge: a second close must not invent another.
+    if isinstance(passes, list) and any(
+            isinstance(p, dict) and str(p.get("finishedAt") or "") >= at for p in passes):
+        return
+    ctx["convergePasses"] = (list(passes) if isinstance(passes, list) else []) + [
+        {"startedAt": at, "by": by, "startInferred": True}
+    ]
+    atomic_write(target, ctx)
+
+
 def _after_converge(feature_dir: Path, by: str) -> None:
+    try:
+        _open_pass_from_implement_close(feature_dir, by)
+    except Exception as exc:  # noqa: BLE001 - timing is best effort
+        print(f"[companion] Warning: could not infer the converge start: {exc}", file=sys.stderr)
     ctx = read_ctx(feature_dir / ".spec-context.json")
     open_pass = _open_converge_pass(ctx)
     added: list[str] | None = None
@@ -627,7 +631,7 @@ def _after_converge(feature_dir: Path, by: str) -> None:
     completed = False
     try:
         if ctx.get("status") != "completed":
-            completed = _complete_after_clean_converge(feature_dir, by, added) is not None
+            completed = _complete_after_clean_converge(feature_dir, by) is not None
         else:
             all_ids, done_ids = parse_task_markers(feature_dir / "tasks.md")
             open_count = len(all_ids) - len(done_ids)
@@ -811,28 +815,6 @@ def _main() -> int:
              "Repeatable. Lifecycle keys (history/status/currentStep) are refused.",
     )
     parser.add_argument(
-        "--living-specs", dest="living_specs", action="append", default=None, metavar="NAME",
-        help="Record a loaded living-specs capability name onto livingSpecs.loaded "
-             "(most-specific-first order, de-duped). Repeatable. Additive metadata; "
-             "never a lifecycle key.",
-    )
-    parser.add_argument(
-        "--living-spec-skip", dest="living_spec_skips", action="append", default=None,
-        metavar="NAME: REASON",
-        help="Record a loaded living-specs capability completion deliberately did NOT "
-             "fold, with a reason (onto livingSpecs.skipped as {name, reason}). This is "
-             "how completion accounts for a loaded capability the change didn't alter — "
-             "'correctly nothing' instead of 'silently nothing'. Additive metadata; "
-             "never a lifecycle key. Repeatable. Format: \"<name>: <reason>\".",
-    )
-    parser.add_argument(
-        "--fold-living-spec", dest="fold_living_spec", action="store_true",
-        help="Fold this feature spec's ADDED/MODIFIED/REMOVED/RENAMED requirement "
-             "deltas into the resolved capability's living spec (LS·3 archive-as-merge). "
-             "Opt-in (livingSpecs.enabled), best-effort, no-op without a delta block, "
-             "idempotent. Records synced names onto livingSpecs.synced.",
-    )
-    parser.add_argument(
         "--decision", dest="decisions", action="append", default=None, metavar="JSON|TEXT",
         help="Append a decision to decisions[], stamped with who answered (by, default "
              "agent) and when (at). JSON object with a 'decision' key (plus why/rejected/id/by/at), "
@@ -867,7 +849,7 @@ def _main() -> int:
     parser.add_argument(
         "--context", dest="context_entries", action="append", default=None, metavar="TEXT",
         help="Append a context entry to context[] — what the run worked from (a loaded "
-             "living spec, an investigated area, a constraint). De-duped. Repeatable.",
+             "investigated area, a constraint). De-duped. Repeatable.",
     )
     parser.add_argument(
         "--coverage-req", dest="coverage_req", default=None, metavar="REQ_ID",
@@ -932,6 +914,9 @@ def _main() -> int:
              "scopeSignal, verdict}; verdict (simple|normal|oversized) is required.",
     )
     args = parser.parse_args()
+    # `--batch -` reads the JSON from stdin, so a quoted heredoc carries apostrophes safely.
+    if args.batch == "-":
+        args.batch = "" if sys.stdin is None or sys.stdin.isatty() else sys.stdin.read()
 
     if args.event:
         handled = _apply_event(args)
@@ -959,7 +944,7 @@ def _main() -> int:
     # `--feature-dir` if it was given; the resolved one is not bound until later,
     # and a project's own steps are discoverable from either.
     steps_here = known_steps(args.feature_dir)
-    if not args.tasks_file and not args.task and not args.close_task and not args.mark_complete and not args.set_pairs and not args.living_specs and not args.living_spec_skips and not args.fold_living_spec and not args.materialize and not args.finish and not args.advance and not args.fold and not capture_mode and (args.step == "done" or args.step not in steps_here):
+    if not args.tasks_file and not args.task and not args.close_task and not args.mark_complete and not args.set_pairs and not args.materialize and not args.finish and not args.advance and not args.fold and not capture_mode and (args.step == "done" or args.step not in steps_here):
         msg = (f"Skipping: '{args.step}' is not a step this project has "
                f"({', '.join(sorted(steps_here))}).")
         print(f"[companion] {msg}", file=sys.stderr)
@@ -1154,41 +1139,10 @@ def _main() -> int:
         if args.step_summary:
             target = upsert_step_summary(feature_dir, args.step, args.step_summary)
             captured.append(f"[companion] Recorded {args.step} step summary in {target}")
-        if args.living_specs:
-            target = set_living_specs_loaded(feature_dir, args.living_specs)
-            captured.append(
-                f"[companion] Recorded loaded living specs ({', '.join(args.living_specs)}) in {target}")
-        if args.living_spec_skips:
-            entries = []
-            for raw in args.living_spec_skips:
-                name, sep, reason = str(raw).partition(":")
-                if name.strip() and not (sep and reason.strip()):
-                    print(
-                        f"[companion] Warning: --living-spec-skip \"{raw}\" has no reason and "
-                        "was NOT recorded — an unexplained skip isn't accountability. Use "
-                        "\"<name>: <reason>\"; the capability stays unaccounted until you fold a "
-                        "delta or record a reasoned skip.",
-                        file=sys.stderr,
-                    )
-                entries.append({"name": name.strip(), "reason": reason.strip()})
-            target = set_living_specs_skipped(feature_dir, entries)
-            if target is not None:
-                names = ", ".join(e["name"] for e in entries if e["name"])
-                captured.append(f"[companion] Recorded living-spec skip note(s) ({names}) in {target}")
-        if args.fold_living_spec:
-            target = fold_living_spec(feature_dir, args.by)
-            if target is not None:
-                ctx = read_ctx(target)
-                synced = ((ctx.get("livingSpecs") or {}).get("synced")) or []
-                captured.append(
-                    f"[companion] Folded feature deltas into living spec(s): {', '.join(synced)} ({target})")
     except Exception as exc:  # noqa: BLE001 - best-effort, swallow + report
         print(f"[companion] Warning: skipped .spec-context.json write: {exc}", file=sys.stderr)
         _record_outcome(False, f"skipped .spec-context.json write: {exc}")
         return 0
-
-    # A no-op fold already named its own exact reason on stderr (from
-    # fold_living_spec) — don't paper over it with a generic OR-string.
 
     # `--set` writes a plain field: no history entry, no status change, so it
     # cannot conflict with a lifecycle flag. Letting the two ride together is what
@@ -1197,13 +1151,12 @@ def _main() -> int:
     # wins, because those do write history and then the ordering would matter.
     lifecycle = args.advance or args.finish or args.fold or args.mark_complete
     set_only = bool(args.set_pairs) and not (
-        capture_mode or args.living_specs
-        or args.living_spec_skips or args.fold_living_spec
+        capture_mode
     )
     if lifecycle and set_only:
         for line in captured:
             print(line)
-    elif captured or capture_mode or args.set_pairs or args.living_specs or args.living_spec_skips or args.fold_living_spec:
+    elif captured or capture_mode or args.set_pairs:
         for line in captured:
             print(line)
         skipped = [
@@ -1315,7 +1268,12 @@ def _main() -> int:
             _record_converge_start(feature_dir, args.by)
         except Exception as exc:  # noqa: BLE001 - the converge start already landed
             print(f"[companion] Warning: skipped noting this converge run's start: {exc}", file=sys.stderr)
-    if target is not None and args.hook == "finish" and args.step == "converge":
+    # A model that closes converge itself (--advance, --finish, a complete) must complete the spec too,
+    # or a run whose after-converge hook never fires is stranded at `implemented`.
+    closes_converge = args.step == "converge" and not args.substep and (
+        args.hook == "finish" or args.advance or args.finish
+        or (args.kind == "complete" and not (args.task or args.close_task or args.tasks_file)))
+    if target is not None and closes_converge:
         try:
             _after_converge(feature_dir, args.by)
         except Exception as exc:  # noqa: BLE001 - the converge close already landed
@@ -1364,7 +1322,6 @@ _OP_FLAGS = (
     ("--mark-complete", "mark-complete"),
     ("--materialize", "materialize"),
     ("--tasks-file", "tasks-sync"),
-    ("--fold-living-spec", "fold-living-spec"),
     ("--finish", "finish"),
     ("--advance", "advance"),
     ("--fold", "fold"),
@@ -1375,8 +1332,8 @@ _OP_FLAGS = (
 _CAPTURE_FLAGS = (
     "--batch",
     "--decision", "--verified", "--concern", "--expectation", "--context",
-    "--coverage-req", "--step-summary", "--classification", "--living-specs",
-    "--living-spec-skip", "--request", "--assumes", "--risk", "--risk-raise", "--mutation-report",
+    "--coverage-req", "--step-summary", "--classification",
+    "--request", "--assumes", "--risk", "--risk-raise", "--mutation-report",
 )
 
 _OP_FILE = {

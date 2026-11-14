@@ -261,7 +261,10 @@ def check_record(feature_dir: Path, ctx: dict, now: datetime | None = None) -> t
     # run journaling four tasks at the identical millisecond, three times over,
     # scored a 60s span and warned about nothing. Cluster first, then judge each
     # cluster on its own span.
-    finishes = _agent_task_finish_times(ctx)
+    # A wave closed in one call is one unit on purpose; only its total is timed.
+    summaries = ctx.get("task_summaries") if isinstance(ctx.get("task_summaries"), dict) else {}
+    waved = {t for t, s in summaries.items() if isinstance(s, dict) and s.get("wave")}
+    finishes = [f for f in _agent_task_finish_times(ctx) if f[0] not in waved]
     clusters, current = [], []
     for entry in finishes:
         if current and (entry[1] - current[0][1]).total_seconds() > BURST_WINDOW_SECONDS:
@@ -479,8 +482,7 @@ def check_verification(feature_dir: Path, ctx: dict) -> tuple:
     Running the project's own checks is prompt text, and prompt text has no
     observer. `verified[]` is already written whenever a run records a check it
     executed, so a completed implement with an empty list is a run that shipped
-    code nothing was ever run against. Judged only as empty-or-not: interpreting
-    entry contents is drift's job, not this check's.
+    code nothing was ever run against. Judged only as empty-or-not.
     """
     skip = _no_record("verification", feature_dir, ctx)
     if skip is not None:
@@ -512,48 +514,36 @@ def check_verification(feature_dir: Path, ctx: dict) -> tuple:
     )]
 
 
-def check_briefed(feature_dir: Path, ctx: dict) -> tuple:
-    """Did a run with living specs turned on actually read any?
+def check_retired_living(root: Path) -> tuple:
+    """A leftover `livingSpecs:` block in the config is dead weight; say so once."""
+    cfg = Path(root) / ".specify" / "companion.yml"
+    try:
+        text = cfg.read_text(encoding="utf-8", errors="replace")
+    except OSError:
+        return CheckStatus("retired_living", "skipped", "no .specify/companion.yml"), []
+    if not re.search(r"^livingSpecs\s*:", text, re.MULTILINE):
+        return CheckStatus("retired_living", "skipped", "no livingSpecs block in the config"), []
+    return CheckStatus("retired_living", "ran"), [Finding(
+        "retired_living", "note", "livingSpecs is retired; safe to delete",
+        "the `livingSpecs:` block in .specify/companion.yml is ignored; nothing reads it.",
+    )]
 
-    Loading them is best-effort and never fails, so a run that skipped the load
-    looks exactly like one with nothing to load: `livingSpecs.loaded` is empty
-    either way, no step reports a miss, and the run proceeds unbriefed. The two
-    cases are told apart by the registry — a project with capabilities and the
-    feature on had something to load, and an empty `loaded` there means the
-    briefing did not happen rather than that it was not wanted.
-    """
-    skip = _no_record("briefed", feature_dir, ctx)
-    if skip is not None:
-        return skip, []
 
-    living = ctx.get("livingSpecs") or {}
-    loaded = living.get("loaded") or []
-    if loaded:
-        return CheckStatus("briefed", "ran"), []
-
-    registry = None
-    for name in ("living-specs.yml", "living-specs.yaml"):
-        candidate = feature_dir.parent.parent / name
-        if candidate.exists():
-            registry = candidate
-            break
-    if registry is None:
-        return CheckStatus("briefed", "skipped", "no living-spec registry — nothing to load"), []
-
-    text = registry.read_text(encoding="utf-8", errors="replace")
-    if "enabled: true" not in text:
-        return CheckStatus("briefed", "skipped", "living specs are off for this project"), []
-    if "- name:" not in text:
-        return CheckStatus("briefed", "skipped", "registry holds no capabilities"), []
-
-    return CheckStatus("briefed", "ran"), [Finding(
-        "briefed", "problem",
-        "The run was never briefed",
-        "living specs are enabled and the registry holds capabilities, but `livingSpecs.loaded` "
-        "is empty: the load step was skipped, so this run drafted and implemented without the "
-        "context every other run in this project gets. Nothing failed, which is why it went "
-        "unnoticed — the load never fails by design.",
-        {"registry": registry.name, "loaded": 0},
+def check_persistence_model(root: Path) -> tuple:
+    """A constitution written around flow-back or living specs gets one pointer to the model Companion keeps."""
+    constitution = Path(root) / ".specify" / "memory" / "constitution.md"
+    try:
+        text = constitution.read_text(encoding="utf-8", errors="replace")
+    except OSError:
+        return CheckStatus("persistence_model", "skipped", "no constitution"), []
+    if not re.search(r"flow[- ]?back|fold[- ]?back|living[- ]specs?", text, re.IGNORECASE):
+        return CheckStatus("persistence_model", "skipped", "constitution names no flow-back or living specs"), []
+    return CheckStatus("persistence_model", "ran"), [Finding(
+        "persistence_model", "note",
+        "The constitution mentions flow-back or living specs",
+        "Companion keeps specs flow-forward: one folder per change, completed is final, and lineage "
+        "links connect related changes. See \"How Companion keeps specs\" at "
+        "https://speckit-companion.dev/docs/steps#how-companion-keeps-specs",
     )]
 
 
@@ -567,8 +557,7 @@ def check_dispatch(feature_dir: Path, ctx: dict) -> tuple:
     and the same holds for the design docs when the size budget kept both. A
     `simple` run folds plan, so plan is not judged there. A closed implement whose
     Foundational phase had waves of four or more tasks and no wave check-ins built
-    them inline, and one offered a living-spec reviewer that never checked in folded
-    its deltas unreviewed.
+    them inline,.
     """
     skip = _no_record("dispatch", feature_dir, ctx)
     if skip is not None:
@@ -627,14 +616,6 @@ def check_dispatch(feature_dir: Path, ctx: dict) -> tuple:
                 "one checked in — dispatch the printed briefs as written",
                 {"waves": skipped},
             ))
-    if "implement" in closed and "living" in offered and not any(l.startswith("living:") for l in labels):
-        findings.append(Finding(
-            "dispatch", "warning",
-            "implement folded its living-spec deltas without dispatching their reviewer",
-            "`dispatch-briefs.py --living` printed a reviewer brief for this run and no reviewer checked in "
-            "— dispatch the printed brief before the fold",
-            {"expected": 1, "checked_in": 0},
-        ))
     return CheckStatus("dispatch", "ran"), findings
 
 
@@ -888,6 +869,45 @@ def check_agents(root: Path) -> tuple:
             "agents", "note", "The specify CLI is not on this shell's PATH",
             "Headless dispatch and Spec Kit's hooks call `specify`; if they fail, install it or add it to their PATH."))
     return CheckStatus("agents", "ran"), findings
+
+
+_WORKFLOW_REPORTED: set = set()
+_SHIPPED_WORKFLOW = Path(".specify/extensions/companion/workflows/speckit-companion.workflow.yml")
+_REGISTERED_WORKFLOW = Path(".specify/workflows/speckit-companion/workflow.yml")
+
+
+def check_workflow(root: Path) -> tuple:
+    """Can `specify workflow run speckit-companion` find the workflow Companion ships, at its current version?"""
+    root = Path(root).resolve()
+    if root in _WORKFLOW_REPORTED:
+        return CheckStatus("workflow", "skipped", "reported with the first spec of this run"), []
+    shipped = root / _SHIPPED_WORKFLOW
+    if not shipped.is_file():
+        return CheckStatus("workflow", "not-applicable", "Companion ships no workflow here"), []
+    _WORKFLOW_REPORTED.add(root)
+    registered = root / _REGISTERED_WORKFLOW
+    fix = (f"Run `specify workflow add {_SHIPPED_WORKFLOW.as_posix()}`, or "
+           f"`python3 .specify/extensions/companion/scripts/doctor.py --fix`.")
+    if not registered.is_file():
+        title = "The Companion workflow is not registered with spec-kit's workflow engine"
+        detail = f"`specify workflow list` does not show it, so `specify workflow run speckit-companion` fails. {fix}"
+    elif registered.read_bytes() != shipped.read_bytes():
+        title = "The registered Companion workflow is out of date"
+        detail = f"The engine runs an older copy than the one this Companion version ships. {fix}"
+    else:
+        return CheckStatus("workflow", "ran"), []
+    return CheckStatus("workflow", "ran"), [Finding("workflow", "warning", title, detail)]
+
+
+def register_workflow(root: Path) -> int:
+    """Register the shipped workflow with the engine; without the CLI, say the command to run."""
+    import shutil
+    import subprocess
+    command = ["specify", "workflow", "add", _SHIPPED_WORKFLOW.as_posix()]
+    if shutil.which("specify") is None:
+        print(f"[doctor] The specify CLI is not on PATH. Run this from the project: {' '.join(command)}")
+        return 1
+    return subprocess.run(command, cwd=root).returncode
 
 
 def check_template(feature_dir: Path) -> tuple:

@@ -4,7 +4,6 @@
   dispatch-briefs.py --feature-dir <dir>                   one read-only reader per recorded `area:`
   dispatch-briefs.py --feature-dir <dir> --docs            one writer per Phase 1 design document
   dispatch-briefs.py --feature-dir <dir> --waves           workers for each Foundational wave of 4+ tasks
-  dispatch-briefs.py --feature-dir <dir> --living          one reviewer for the living-spec deltas before they fold
   dispatch-briefs.py --feature-dir <dir> --checkin <label> a dispatched worker says it started
 
 The decision lives here, not in the prompt: prose that says "dispatch when…" gets
@@ -27,6 +26,7 @@ sys.path.insert(0, str(HERE))
 SCRIPT = ".specify/extensions/companion/scripts/dispatch-briefs.py"
 #: Past this many, areas share a reader: specify often records single files as areas.
 MAX_READERS = 4
+MIN_READER_AREAS = 3
 #: A Foundational wave this big goes to workers; smaller ones cost more to start than to build.
 MIN_WAVE = 4
 _FOUNDATIONAL = re.compile(r"^##\s+Phase\s+\d+\s*:\s*Foundational", re.IGNORECASE)
@@ -77,46 +77,6 @@ def doc_briefs(feature_dir: Path, ctx: dict) -> list:
              f"`{feature_dir}/{name}`: {what}. Work from `{spec}`, `{feature_dir}/plan.md` and "
              f"`{feature_dir}/research.md`. Return only the path you wrote.")
             for name, what in DOCS.items()]
-
-
-LIVING_RUBRIC = """\
-- Every requirement earns its place: it names behaviour a user or caller relies on and a change could break. One that narrates what a helper does, or restates another spec, is deleted.
-- One rule per requirement. Several SHALL/MUST sentences about different things are split, each with its own heading and scenario.
-- The heading is the rule as a sentence someone could check ("Draft specs stay out of the sidebar"), never a topic ("Sidebar behaviour").
-- Behaviour, not implementation: what a user or caller can observe. File names, function names and how it is built belong in the code and the `touches` marker. Keep a "because" only when it stops someone breaking the rule.
-- Nothing a type, a test name or the code already says plainly.
-- Every scenario is checkable: a concrete WHEN and an observable THEN. A third scenario only for a failure the first two miss.
-- No filler: no body that restates the heading, no hedges ("generally", "where possible"), no em dashes.
-- A heading that says what an existing heading in the target living spec says is that requirement changed: MODIFIED, with the existing heading."""
-
-
-def living_brief(feature_dir: Path):
-    """One reviewer brief for the feature spec's delta blocks, or None when it has none."""
-    import living_validate as lv
-
-    spec = spec_file(feature_dir)
-    try:
-        text = Path(spec).read_text(encoding="utf-8")
-    except (OSError, ValueError):
-        return None
-    blocks = lv._delta_blocks(text)
-    if not blocks:
-        return None
-    lines = text.splitlines()
-    flagged = []
-    for b in blocks:
-        if b["verb"] in ("ADDED", "MODIFIED"):
-            body = "\n".join(lines[b["start"]:b["end"]])
-            flagged += lv.check_living_spec(body, spec, root=None, offset=b["start"])
-    caps = sorted({b["capability"] for b in blocks if b["capability"]})
-    found = "".join(f"\n- line {f['line']}: {f['message']} {f['fix']}" for f in flagged) or " none."
-    return (f"First run `{checkin_line(feature_dir, 'living: review')}`. Then review the "
-            f"`## ADDED / MODIFIED / REMOVED / RENAMED Requirements` blocks in `{spec}`, which fold into the "
-            f"living specs of {', '.join(caps) or 'the capability its changed files resolve to'} once you return. "
-            "Read each target's living spec for its existing headings, then edit the blocks in place against this rubric:\n"
-            f"{LIVING_RUBRIC}\n\nThe shape checker already flags:{found}\n\n"
-            "Keep every `<!-- capability: … -->` marker and never add a requirement the change did not make. "
-            "Return one line per edit and anything you left alone on purpose, never file contents.")
 
 
 def _waves(tasks_text: str) -> list:
@@ -181,7 +141,6 @@ def main() -> int:
     ap.add_argument("--feature-dir", required=True, type=Path)
     ap.add_argument("--docs", action="store_true")
     ap.add_argument("--waves", action="store_true")
-    ap.add_argument("--living", action="store_true")
     ap.add_argument("--checkin")
     args = ap.parse_args()
     feature_dir = args.feature_dir
@@ -196,17 +155,6 @@ def main() -> int:
         ctx = json.loads((feature_dir / ".spec-context.json").read_text(encoding="utf-8"))
     except (OSError, ValueError):
         ctx = {}
-    if args.living:
-        brief = living_brief(feature_dir)
-        if brief is None:
-            print("No living-spec delta in this spec: nothing to review.")
-            return 0
-        _offer(feature_dir, "living")
-        print("Dispatch this reviewer now, brief as written, and fold only after it returns. "
-              "If you have no subagent tool, review the blocks yourself against the same rubric and then run "
-              f"`{checkin_line(feature_dir, 'living: inline')}`.\n")
-        print(f"=== living: review ===\n{brief}\n")
-        return 0
     if args.waves:
         from task_sync import materialize_log
         materialize_log(feature_dir, by="ai", quiet=True)
@@ -235,8 +183,10 @@ def main() -> int:
     briefs = doc_briefs(feature_dir, ctx) if args.docs else reader_briefs(feature_dir, ctx)
     what = "design docs" if args.docs else "readers"
 
-    if len(briefs) < 2:
-        why = "simple size keeps at most one" if args.docs else f"{len(briefs)} area recorded"
+    # Specify already read the areas it recorded; readers pay a cold start each, so two areas read inline.
+    floor = 2 if args.docs else MIN_READER_AREAS
+    if len(briefs) < floor:
+        why = "simple size keeps at most one" if args.docs else f"{len(briefs)} area(s) recorded, read inline"
         print(f"Working inline: {why}. No {what} to dispatch.")
         return 0
 

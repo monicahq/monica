@@ -2,7 +2,7 @@
 """The additive capture writers — what a run decided, verified, worried about, and covered.
 
 Everything here merges onto .spec-context.json without touching the lifecycle log:
-free-form fields, loaded/synced living-spec names, decisions, verifications,
+free-form fields, decisions, verifications,
 concerns, expectations, context entries, requirement coverage, step summaries,
 and the size classification. All de-duped, so a re-run never doubles up.
 
@@ -75,185 +75,6 @@ def set_fields(feature_dir: Path, pairs: list[str]) -> Path | None:
     return target
 
 
-def set_living_specs_loaded(feature_dir: Path, names: list[str]) -> Path | None:
-    """Record the capability names whose living specs were loaded into context.
-
-    Merges onto ctx["livingSpecs"]["loaded"] preserving the resolver's
-    most-specific-first order and de-duplicating, never rebuilding the record and
-    never touching lifecycle keys (livingSpecs is additive metadata the strict
-    schema already permits). With no names it is a no-op — opt-out writes nothing."""
-    cleaned = [n.strip() for n in names if n and n.strip()]
-    if not cleaned:
-        return None
-    target = feature_dir / ".spec-context.json"
-    branch = _git_branch(_repo_root_for(feature_dir)) or "main"
-    ctx = read_ctx(target)
-    fill_required(ctx, feature_dir, branch)
-    block = ctx.get("livingSpecs")
-    if not isinstance(block, dict):
-        block = {}
-    prior = block.get("loaded")
-    # De-dupe the FULL list (prior + new), preserving first-occurrence order, so a
-    # record carrying pre-existing duplicates is normalized too (truly idempotent).
-    merged: list = []
-    for n in (list(prior) if isinstance(prior, list) else []) + list(cleaned):
-        if n not in merged:
-            merged.append(n)
-    block["loaded"] = merged
-    ctx["livingSpecs"] = block
-    atomic_write(target, ctx)
-    return target
-
-
-def set_living_specs_loaded_requirements(feature_dir: Path, per_cap: dict) -> Path | None:
-    """Record which REQUIREMENTS a run read, per capability.
-
-    A sibling of `livingSpecs.loaded`, never a change to it: that list is a plain
-    list of names several readers already consume — including the completion
-    accounting that requires every loaded capability to end with a delta or a
-    recorded skip — so widening its element type would break each of them for a
-    feature none of them care about.
-
-    Written only for a capability read by requirement. A capability read whole
-    gets no entry, because naming all of its requirements would say nothing.
-    Merges per capability, de-duping while preserving order, so a re-run is a
-    no-op."""
-    # An empty list is meaningful: the capability was consulted and its markers
-    # all missed, which is a different fact from being read whole (no entry).
-    cleaned = {
-        str(cap).strip(): [str(h) for h in heads if str(h).strip()]
-        for cap, heads in (per_cap or {}).items()
-        if str(cap).strip() and heads is not None
-    }
-    if not cleaned:
-        return None
-    target = feature_dir / ".spec-context.json"
-    branch = _git_branch(_repo_root_for(feature_dir)) or "main"
-    ctx = read_ctx(target)
-    fill_required(ctx, feature_dir, branch)
-    block = ctx.get("livingSpecs")
-    if not isinstance(block, dict):
-        block = {}
-    prior = block.get("loadedRequirements")
-    merged = dict(prior) if isinstance(prior, dict) else {}
-    for cap, heads in cleaned.items():
-        seen: list = []
-        for h in list(merged.get(cap) or []) + heads:
-            if h not in seen:
-                seen.append(h)
-        merged[cap] = seen
-    block["loadedRequirements"] = merged
-    ctx["livingSpecs"] = block
-    atomic_write(target, ctx)
-    return target
-
-
-def set_living_specs_rules(feature_dir: Path, rules: dict) -> Path | None:
-    """Record the authored guidance a run was given, per step.
-
-    A sibling of `livingSpecs.loaded` for the same reason as
-    `loadedRequirements`: a reader asking "what was this run told?" should get
-    the guidance beside the capabilities, and neither list changes shape for the
-    other. A project with no rules writes nothing, so absence stays absence."""
-    cleaned = {
-        str(step).strip(): [str(line) for line in lines if str(line).strip()]
-        for step, lines in (rules or {}).items()
-        if str(step).strip() and lines
-    }
-    if not cleaned:
-        return None
-    target = feature_dir / ".spec-context.json"
-    branch = _git_branch(_repo_root_for(feature_dir)) or "main"
-    ctx = read_ctx(target)
-    fill_required(ctx, feature_dir, branch)
-    block = ctx.get("livingSpecs")
-    if not isinstance(block, dict):
-        block = {}
-    prior = block.get("rules")
-    merged = dict(prior) if isinstance(prior, dict) else {}
-    for step, lines in cleaned.items():
-        # The prior side was read off disk: coerce it, or a hand-corrupted
-        # non-string entry raises inside a writer that must never fail a run.
-        kept = [str(line) for line in (merged.get(step) or [])]
-        merged[step] = list(dict.fromkeys(kept + lines))
-    block["rules"] = merged
-    ctx["livingSpecs"] = block
-    atomic_write(target, ctx)
-    return target
-
-
-def set_living_specs_synced(feature_dir: Path, names: list[str]) -> Path | None:
-    """Record the capability names whose living specs were folded into on completion.
-
-    Mirrors set_living_specs_loaded: merges onto ctx["livingSpecs"]["synced"]
-    de-duplicating and preserving first-seen order, never rebuilding the record
-    and never touching lifecycle keys (livingSpecs is additive metadata kept OUT
-    of the strict capture schema). With no names it is a no-op — opt-out and the
-    no-delta case write nothing."""
-    cleaned = [n.strip() for n in names if n and n.strip()]
-    if not cleaned:
-        return None
-    target = feature_dir / ".spec-context.json"
-    branch = _git_branch(_repo_root_for(feature_dir)) or "main"
-    ctx = read_ctx(target)
-    fill_required(ctx, feature_dir, branch)
-    block = ctx.get("livingSpecs")
-    if not isinstance(block, dict):
-        block = {}
-    prior = block.get("synced")
-    merged: list = []
-    for n in (list(prior) if isinstance(prior, list) else []) + list(cleaned):
-        if n not in merged:
-            merged.append(n)
-    block["synced"] = merged
-    ctx["livingSpecs"] = block
-    atomic_write(target, ctx)
-    return target
-
-
-def set_living_specs_skipped(feature_dir: Path, entries: list[dict]) -> Path | None:
-    """Record capabilities completion deliberately did NOT fold, with a reason.
-
-    Mirrors set_living_specs_synced: merges onto ctx["livingSpecs"]["skipped"]
-    (a list of {name, reason}), de-duped on the stripped name (first reason
-    wins), never touching lifecycle keys. This is what turns "silently nothing"
-    into "correctly nothing" — a loaded capability the change didn't alter records
-    an explicit skip note here instead of leaving the fold to guess. A skip must
-    both name a capability AND justify it: an entry with a blank reason is
-    dropped, so an unexplained skip never counts as accountability (the capability
-    stays unaccounted and the fold's backstop keeps nagging). With no valid
-    entries it is a no-op."""
-    cleaned: list[dict] = []
-    for e in entries:
-        if not isinstance(e, dict):
-            continue
-        name = str(e.get("name", "")).strip()
-        reason = str(e.get("reason", "")).strip()
-        if not name or not reason:
-            continue
-        cleaned.append({"name": name, "reason": reason})
-    if not cleaned:
-        return None
-    target = feature_dir / ".spec-context.json"
-    branch = _git_branch(_repo_root_for(feature_dir)) or "main"
-    ctx = read_ctx(target)
-    fill_required(ctx, feature_dir, branch)
-    block = ctx.get("livingSpecs")
-    if not isinstance(block, dict):
-        block = {}
-    prior = block.get("skipped")
-    merged: list = list(prior) if isinstance(prior, list) else []
-    seen = {str(e.get("name", "")).strip() for e in merged if isinstance(e, dict)}
-    for e in cleaned:
-        if e["name"] not in seen:
-            merged.append(e)
-            seen.add(e["name"])
-    block["skipped"] = merged
-    ctx["livingSpecs"] = block
-    atomic_write(target, ctx)
-    return target
-
-
 # --- Reasoning-trail capture --------------------------------------------------
 #
 # Additive, de-duped, best-effort writers for the run's reasoning trail:
@@ -306,7 +127,7 @@ def _code_at(path: Path) -> dict:
         with tempfile.TemporaryDirectory() as tmp:
             scratch = Path(tmp) / "index"
             if index.is_file():
-                shutil.copyfile(index, scratch)
+                shutil.copy2(index, scratch)  # keeps the mtime git's racy-clean check compares against
             env = {**os.environ, "GIT_INDEX_FILE": str(scratch), "GIT_OPTIONAL_LOCKS": "0"}
             git("add", "-A", env=env)
             found["tree"] = git("write-tree", env=env)
@@ -368,7 +189,34 @@ def append_verification_runs(feature_dir: Path, specs: list[str]) -> tuple[Path 
             continue
         entries.append(json.dumps(run_verification(what.strip(), command.strip(), at=feature_dir)))
     target = append_capture_entries(feature_dir, "verified", "what", entries, replace=True) if entries else None
+    if entries:
+        import subprocess
+
+        try:
+            record_lowered_bar(feature_dir)
+        except subprocess.CalledProcessError:
+            pass  # not a git project: nothing to scan
+        except Exception as err:  # noqa: BLE001
+            print(f"[companion] Lowered-bar scan skipped: {err}", file=sys.stderr)
     return target, skipped
+
+
+def record_lowered_bar(feature_dir: Path) -> Path | None:
+    """Replace the previous scan's concerns with what the change adds now; other concerns stay."""
+    import lowered_bar
+
+    found = lowered_bar.concerns(lowered_bar.scan(_repo_root_for(feature_dir)))
+    target = feature_dir / ".spec-context.json"
+    ctx = read_ctx(target)
+    prior = ctx.get("concerns") if isinstance(ctx.get("concerns"), list) else []
+    kept = [c for c in prior if not (isinstance(c, dict) and c.get("source") == "scan")]
+    if not found and len(kept) == len(prior):
+        return None
+    ctx["concerns"] = kept + found
+    atomic_write(target, ctx)
+    for concern in found:
+        print(f"[companion] {concern['note']}", file=sys.stderr)
+    return target
 
 
 PLAN_CHECK_WHAT = "plan blocks check out"
@@ -455,8 +303,8 @@ def append_capture_entries(
     With `replace`, a new entry takes the place of an earlier one with the same
     identity: a check that was run again reports its latest result.
 
-    Mirrors set_living_specs_loaded: preserves first-seen order, normalizes
-    pre-existing duplicates, never touches lifecycle keys. Bare strings already
+    Preserves first-seen order, normalizes pre-existing duplicates, never
+    touches lifecycle keys. Bare strings already
     stored (hand-authored) participate in de-dup via their text."""
     entries = [e for e in (_coerce_entry(r, identity_key) for r in raws) if e]
     if not entries:
@@ -554,13 +402,19 @@ def append_decisions(feature_dir: Path, raws: list[str]) -> Path | None:
     return target
 
 
+#: What the Companion workflow appends to each step's input on spec-kit's engine;
+#: an instruction to the step, never part of what the person asked for.
+ENGINE_STEP_MARKER = "(workflow engine step: run this step only, the engine runs the next one)"
+
+
 def set_request(feature_dir: Path, text: str) -> tuple[Path | None, bool]:
     """Store the request the run started from, word for word, once.
 
-    Only outer blank space is trimmed. A stored request is never replaced, so the
-    first entry point to record it wins and later steps cannot paraphrase it.
-    Returns the record and whether this call wrote it; a blank request is (None, False)."""
-    request = text.strip()
+    Only outer blank space and the engine step marker are trimmed. A stored request
+    is never replaced, so the first entry point to record it wins and later steps
+    cannot paraphrase it. Returns the record and whether this call wrote it; a blank
+    request is (None, False)."""
+    request = text.replace(ENGINE_STEP_MARKER, "").strip()
     if not request:
         return None, False
     target = feature_dir / ".spec-context.json"
@@ -745,19 +599,39 @@ def _risk_globs(root: Path) -> tuple[list[str], list[str]]:
     return high, low
 
 
-_GLOB_MATCHES = None
+def _glob_to_regex(pat: str) -> str:
+    """POSIX-path glob: `**` any depth (a trailing `/**` also the dir itself), `*` one segment, `?` one char."""
+    out = ["^"]
+    i, n = 0, len(pat)
+    while i < n:
+        c = pat[i]
+        if c == "*" and i + 1 < n and pat[i + 1] == "*":
+            if i + 2 == n and out and out[-1].endswith("/"):
+                out[-1] = out[-1][:-1]
+                out.append("(?:/.*)?")
+                i += 2
+            elif i + 2 < n and pat[i + 2] == "/":
+                out.append("(?:.*/)?")
+                i += 3
+            else:
+                out.append(".*")
+                i += 2
+        elif c == "*":
+            out.append("[^/]*")
+            i += 1
+        elif c == "?":
+            out.append("[^/]")
+            i += 1
+        else:
+            out.append(re.escape(c))
+            i += 1
+    return "".join(out) + "$"
 
 
-def _glob_matcher():
-    """The resolver's `**`-aware matcher, loaded once and compared case-insensitively."""
-    global _GLOB_MATCHES
-    if _GLOB_MATCHES is None:
-        import importlib.util
-        spec = importlib.util.spec_from_file_location("resolve_spec_paths", Path(__file__).with_name("resolve-spec-paths.py"))
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
-        _GLOB_MATCHES = lambda pattern, path: module._glob_matches(pattern.lower(), path.lower())  # noqa: E731
-    return _GLOB_MATCHES
+def glob_matches(pattern: str, path: str) -> bool:
+    """Case-insensitive glob match on POSIX paths."""
+    pattern, path = pattern.replace("\\", "/").lower(), path.replace("\\", "/").lower()
+    return re.match(_glob_to_regex(pattern), path) is not None
 
 
 def compute_risk(feature_dir: Path) -> tuple[str, list[str]]:
@@ -769,10 +643,7 @@ def compute_risk(feature_dir: Path) -> tuple[str, list[str]]:
     if not files:
         return "normal", ["no changes against the base branch"]
     high, low = _risk_globs(root)
-    try:
-        matches = _glob_matcher()
-    except Exception:  # noqa: BLE001
-        return "normal", ["the risk rules could not be loaded"]
+    matches = glob_matches
     risky = [f for f in files if any(matches(g, f) for g in high)]
     if risky:
         shown = ", ".join(risky[:3]) + (f" and {len(risky) - 3} more" if len(risky) > 3 else "")
@@ -981,7 +852,7 @@ def set_classification(feature_dir: Path, raw: str) -> Path:
 # --------------------------------------------------------------------------- #
 
 BATCH_KEYS = ("verified", "decisions", "concerns", "expectations", "context",
-              "coverage", "step_summary", "last_action", "set")
+              "coverage", "step_summary", "last_action", "classification", "set")
 
 
 def _parsed_batch(raw: str) -> dict:
@@ -1073,6 +944,10 @@ def apply_batch(feature_dir: Path, raw: str, step: str) -> tuple:
     # each on — intent, approach, workflow, size, unattended. They are ordinary
     # `--set` pairs; batching them changes nothing about what lands, only how
     # many times the file is opened to land it.
+    classification = doc.get("classification")
+    if isinstance(classification, dict) and classification:
+        note(set_classification(feature_dir, json.dumps(classification, ensure_ascii=False)),
+             "classification")
     pairs = doc.get("set")
     if isinstance(pairs, dict) and pairs:
         note(set_fields(feature_dir, [f"{k}={v}" for k, v in pairs.items()

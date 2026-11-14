@@ -2,16 +2,16 @@
 # then "Start from". Nothing here is final: everything it sets can be changed
 # afterwards, one node or one section at a time.
 preset: Brownfield
-summary: For changing a system that already exists. The spec says only what changes, the task list gets attacked before it runs, and a person opens the thing before it is called done.
+summary: For changing a system that already exists. The task list gets attacked before it runs, and a person opens the thing before it is called done.
 
 commands:
   specify:
-    nodes: [resolve-dir-git, load-living-specs, draft-spec-delta, quality-checklist, classify-size, persist-size, branch, finalize, handoff]
+    nodes: [resolve-dir-git, draft-spec, quality-checklist, classify-size, persist-size, branch, finalize, handoff]
     phases:
       - name: gather
-        nodes: [resolve-dir-git, load-living-specs]
+        nodes: [resolve-dir-git]
       - name: author
-        nodes: [draft-spec-delta, quality-checklist]
+        nodes: [draft-spec, quality-checklist]
       - name: classify
         nodes: [classify-size, persist-size]
       - name: wrap-up
