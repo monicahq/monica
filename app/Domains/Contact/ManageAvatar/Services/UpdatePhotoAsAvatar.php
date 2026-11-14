@@ -71,6 +71,8 @@ class UpdatePhotoAsAvatar extends BaseService implements ServiceInterface
     {
         if ($this->contact->file) {
             $this->contact->file->delete();
+        } else {
+            abort(404);
         }
     }
 
