@@ -74,7 +74,7 @@
 
 ## Controller tests (Feature)
 
-- Place controller tests under `Tests\Feature\Controllers`, mirroring the `App` controller structure and future `Api` and `Marketing` controllers.
+- Place controller tests under `Tests\Feature\Controllers`, mirroring the `App` and `Api` controller structure.
 - Authenticate web requests with `actingAs($user)` and make calls with `get()`, `post()`, `put()` and `delete()`.
 - Authenticate API requests with `Sanctum::actingAs($user)` and make calls with `$this->json(METHOD, url, payload)`.
 - Assert web responses with `assertStatus()`, `assertRedirect()` and `assertSessionHas('status', ...)`.

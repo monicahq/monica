@@ -5,7 +5,7 @@ description: Create and maintain a single Markdown file that contains a chronolo
 
 # Skill: Feature Bullet List
 
-Create and maintain a single Markdown file that contains a chronological list of every feature and improvement implemented during development.
+Maintain `docs/FEATURES.md`, the chronological list of every feature and improvement implemented during development.
 
 Rules:
 

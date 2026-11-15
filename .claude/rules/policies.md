@@ -31,7 +31,7 @@ Do not type it `?User`.
 ## The wording belongs to the reader, not to the old exception
 
 When you move a rule into a policy, take the wording **the reader already sees**, which is usually the
-controller's flash copy, not the message the action's exception carried. In 033 the two differed on all
+controller's flash copy, not the message the action's exception carried. In `specs/033-more-authorization-policies` the two differed on all
 five capabilities: the controllers wrote their own translated copy and never used the exception's
 message at all. Copying the exception's wording would have silently changed five shipped strings.
 

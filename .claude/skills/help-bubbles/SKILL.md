@@ -7,7 +7,7 @@ description: When and how to add a help bubble (x-help) to a screen, and the hel
 
 A help bubble is a small question mark beside something on a screen. Opened, it explains in a few
 sentences how that thing works, then offers the full guide in the help centre (`docs/portal`).
-Specification 101 has the reasoning.
+`specs/101-help-bubbles` has the reasoning.
 
 ## When a screen needs one
 

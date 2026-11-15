@@ -54,32 +54,23 @@ Member::query()->firstWhere('id', 42);
 Member::firstWhere('id', 42);
 ```
 
-- You SHOULD avoid mass assignment:
+- You MUST NOT use `forceFill()` to write fields declared in `#[Fillable]`. Write them with
+  `create([...])` or `fill([...])`.
+- `forceFill()` is allowed, as an exception, for a field that is not fillable and has to stay so
+  (a timestamp kept from an import, a column a package owns). Name that field and its value
+  explicitly, and never pass request data to it.
 
 ```
-// PREFERRED
-$member = new Member();
-$member->name = $request->input('name');
-$member->email = $request->input('email');
-
-// AVOID
-$member->forceFill([
-    'name' => $request->input('name'),
-    'email' => $request->input('email'),
+// GOOD
+$contact = Contact::query()->create([
+    'first_name' => $this->firstName,
+    'last_name' => $this->lastName,
 ]);
 
+// GOOD, by exception: created_at is not fillable
+$note->forceFill(['created_at' => $createdAt])->saveQuietly();
+
 // NEVER DO
+$member->forceFill(['name' => $this->name]); // name is fillable
 $member->forceFill($request->all());
 ```
-
-- You MUST eager load relationships to avoid N+1 queries (`$users = User::query()->with(['posts'])->get();`).
-- You MUST use chunking for large datasets:
-```
-User::query()->chunk(100, function (Collection $users) {
-    foreach ($users as $user) {
-        // Process user
-    }
-});
-```
-- You MUST index frequently queried columns.
-- You SHOULD use query caching for expensive, frequently run queries.

@@ -8,16 +8,15 @@ description: Conventions for defining views. Use when the user wants to create o
 ## General
 
 - View names MUST be kebab-case, and views MUST be stored in the `resources/views` folder.
-- Views MUST be grouped by major domains of the application (`admin`, `auth`, `marketplace`, `settings`, `vaults`), and they MUST match the controller folder structure.
+- Views of the logged in app live under `resources/views/app`. They MUST be grouped by major domains of the application (`admin`, `auth`, `marketplace`, `settings`, `vaults` and so on), and they MUST match the controller folder structure.
 - View partials MUST be prefixed with an underscore, and MUST be stored in the same folder as the view that uses them.
 - You MUST NOT put domain logic in a view.
 - You MUST NOT compute data in a view. The controller builds a view model and hands it to the view,
   and the view only reads it.
 - A `@php` block is for presentation and nothing else: naming a set of classes, aliasing a view model
   call into a local variable, building a route, mapping a state to a tone and a label. It MUST NOT
-  query the database, call an Action, or decide anything the product cares about. 30 views and 23
-  components hold one, and every one of them turns a value that was already computed into what the
-  screen shows. The same rule applies inside a component.
+  query the database, call an Action, or decide anything the product cares about. It turns a value
+  that was already computed into what the screen shows. The same rule applies inside a component.
 - Every view and component opens with the `{{-- --}}` line and `@var` block described in
   [code-style.md](../../rules/code-style.md).
 - When passing variables to a partial using `@include`, you MUST explicitly pass all required variables. Relying on the parent scope is not enough, even though Blade makes those variables reachable, because a partial that names what it needs can be read on its own.
@@ -37,7 +36,7 @@ description: Conventions for defining views. Use when the user wants to create o
 
 ## Accessibility
 
-- You MUST make sure that your views are accessible following the best practices.
+- Every screen a change touches MUST meet WCAG 2.2 AA. The constitution makes that a delivery condition (principle IX).
 - You MUST use semantic HTML elements when possible.
 - You MUST NOT use a clickable <div> or <span>. Use a <button> for actions and an <a> for navigation.
 - Placeholder text MUST NOT be used as the only label for a form control.
@@ -55,8 +54,10 @@ description: Conventions for defining views. Use when the user wants to create o
 
 - Components are anonymous. You MUST write the blade file in `resources/views/components`, declare
   what it takes with `@props([...])`, and document it in a `{{-- --}}` block at the top with one
-  `@var` per prop. A component class belongs in `app/View/Components`
-  only for a layout (`Shell`, `AccountLayout`, `AdminLayout`, `GuestLayout`, `MarketplaceLayout`).
+  `@var` per prop. A component class in `app/View/Components` is
+  written only when an anonymous component is not enough: a layout (`Shell`, `AccountLayout`,
+  `AdminLayout`, `GuestLayout`, `MarketplaceLayout`), or a component that needs logic of its own
+  (`NotificationBar`, `Breadcrumb\Vault`, `Vault\Sidebar`).
 - Every template, a component included, MUST open with a one line `{{-- --}}` comment saying what the
   view is, before the `@var` block. The rule and its examples are in
   [code-style.md](../../rules/code-style.md).

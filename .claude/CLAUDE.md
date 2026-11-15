@@ -1,8 +1,7 @@
 ## General
 
-- Do not tell me I am right all the time. Be critical. We're equals. Be neutral and objective.
-- Do not excessively use emojis.
-- Remove all mannered prose.
+- Talk to me as an equal: neutral, objective and critical. Say so when you disagree, and skip the praise.
+- Write plain prose, with no ornamental phrasing and few or no emojis.
 - Add quiet flags to noisy commands
 
 ## When to keep going and when to stop
@@ -73,17 +72,17 @@ the rule.
 
 - `app/Actions`: one class per user action, holding the business logic. Controllers stay thin and delegate here. Most of the app lives in this folder.
 - `app/Models`: Eloquent models.
-- `app/Http/Controllers`: everything under `App` (the logged in app), grouped by domain (`Vaults`, `Settings`, `Marketplace`, `Admin`, `Auth`), plus the base `Controller.php`.
-- `app/Http/Middleware`: route middleware. Fourteen classes, eight of them aliased in
-  `bootstrap/app.php`: `active`, `administrator`, `flag`, `magic.link`, `portal.timing`,
-  `registration`, `searchable` and `sso`. `SetLocale` is appended to the web
-  group and `SetApiLocale` prepended to the api group instead. An account carries no role: a record
+- `app/Http/Controllers`: `App` (the logged in app), grouped by domain (`Vaults`, `Settings`, `Marketplace`, `Admin`, `Auth`, `Docs`, `Support`), `Api` (the JSON API), plus the base `Controller.php`.
+- `app/Http/Middleware`: route middleware. The aliases are declared in
+  `bootstrap/app.php`: `active`, `administration`, `administrator`, `flag`, `magic.link`,
+  `portal.timing`, `registration`, `searchable`, `sso` and `support`. `SetLocale` is appended to the web
+  group and `SetApiLocale` to the api group instead. An account carries no role: a record
   is reached when its account matches, which `resolveRouteBinding()` enforces, and when the vault in
   the URL matches, which the controller enforces with `abort_unless(..., 404)`. The one capacity is
   instance wide, the administrator, held through the `administrators` table and guarding the `admin`
   route group.
-- `app/Http/Requests`: form requests. There is one, `SaveFieldValuesRequest`; validation is inline
-  everywhere else.
+- `app/Http/Requests`: form requests. There are two, `SaveFieldValuesRequest` and
+  `SaveLifeEventRequest`; validation is inline everywhere else.
 - `app/Contracts`: the interfaces the application defines. `app/Rules`: validation rules.
 - `app/Jobs`: queued jobs. `app/Enums`: enums. `app/Helpers`: helpers.
 - `app/Notifications`: every email the application sends, one class per email, sent with
@@ -96,13 +95,13 @@ the rule.
   grouped like the controllers (`Vaults`, `Settings`, `Marketplace`, `Admin`, `Auth`). A rich page
   keeps one main view model and delegates its blocks to small objects next to it
   (`MarketplaceStatistics`).
-- `app/View/Components`: the five layout classes (`Shell`, `AccountLayout`, `AdminLayout`, `GuestLayout`, `MarketplaceLayout`). The components under `resources/views/components` are anonymous, with `@props`.
+- `app/View/Components`: the five layout classes (`Shell`, `AccountLayout`, `AdminLayout`, `GuestLayout`, `MarketplaceLayout`), and `NotificationBar`, `Breadcrumb\Vault` and `Vault\Sidebar`. Every other component under `resources/views/components` is anonymous, with `@props`.
 - `resources/views`: `app` for the logged in screens, `components` for shared UI, `layouts` and `partials` for the shell, `shared` for what a private link opens, `vendor` for the views a package publishes, which is where the email templates live.
 - `resources/css` and `resources/js`: the Tailwind theme and the Alpine setup.
-- `routes`: `web.php` (logged in), `api.php` (the JSON API), `administrator.php`, `auth.php`, `console.php`.
+- `routes`: `web.php` (logged in), `api.php` (the JSON API), `ai.php` (the MCP server), `administrator.php`, `auth.php`, `console.php`.
 - `database`: `migrations`, `factories`, `seeders`.
 - `lang`: one JSON file per locale.
-- `tests`: `Unit` (models, actions, jobs, mails, helpers, view models, enums), `Feature` (controllers and views), `Fixtures` (the classes a test needs). PHPUnit only.
+- `tests`: `Unit` (models, actions, jobs, notifications, helpers, view models, enums), `Feature` (controllers and views), `Fixtures` (the classes a test needs). PHPUnit only.
 
 > **TODO (rules, 2026-09-08)**: this section describes the repository tree a second time, which the
 > constitution's Governance forbids: it says this file must point at `.specify/memory/constitution.md`
@@ -307,10 +306,6 @@ This project has domain-specific skills available in `**/skills/**`. You MUST ac
 
 </laravel-boost-guidelines>
 
-## MCP server
-
-- Always start the MCP server before running any commands that depend on it. Use `.mcp.json` file to configure the server.
-
 # Laravel best practices
 
 **IMPORTANT: This project overrides parts of the skill `.claude/skills/laravel-best-practices/SKILL.md`.**
@@ -321,8 +316,8 @@ Read `.claude/rules/code-style.md`, `.claude/rules/testing.md` and the project s
 | Actions expose `handle(array $data)` and take services in the constructor | Constructor takes the promoted `readonly` inputs, one public `execute()`, no `handle()` |
 | `Route::resource()` and `apiResource()` | One named route per line. Zero `Route::resource` |
 | Route names in `snake_case` with dots | camelCase segments: `contacts.shareLinks.create` |
-| Form Request classes for validation | Inline `$request->validate()`. One Form Request in the application |
+| Form Request classes for validation | Inline `$request->validate()`. Two Form Requests in the application |
 | `foreignId()->constrained()`, reversible `down()`, never touch a shipped migration | `foreignIdFor(Model::class)->constrained()` and never `$table->foreign()`, `up()` only, and a migration already in `main` is never edited, since the application is in production |
-| `LazilyRefreshDatabase`, `assertModelExists()` | `RefreshDatabase` (297 files), `assertDatabaseHas()` for values |
+| `LazilyRefreshDatabase`, `assertModelExists()` | `RefreshDatabase`, `assertDatabaseHas()` for values |
 | Blade components over `@include`, view composers, `compact()` | `@include` with every variable named, view models, zero `compact()` |
 | `Str`, `Arr` and shorter syntax such as `$request->name` | Fine, except `Model::query()` is always spelled out, and request input is read with `$request->string(...)` |

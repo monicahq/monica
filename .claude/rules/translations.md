@@ -148,8 +148,7 @@ Quotation is `“…”`.
 
 A product noun is translated once per language and then never again. The same English word must reach
 the reader as the same word on every screen, which is what ASD-STE100 calls one word for one meaning,
-and what a reader notices immediately when it is broken. Twenty-seven nouns carry the product, and around
-800 of the 2,206 strings hold at least one of them.
+and what a reader notices immediately when it is broken. Twenty-seven nouns carry the product.
 
 Fill a column when you translate a language. A blank cell is a language nobody has fixed the words
 for yet, and the first person to translate it decides.

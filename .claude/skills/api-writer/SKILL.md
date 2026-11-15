@@ -30,7 +30,7 @@ You MUST create `app/Http/Resources/{Resource}Resource.php`, using `ContactResou
 
 ## Step 3 — Create the API controller
 
-You MUST follow the [controllers skill](../controllers/SKILL.md), then create `app/Http/Controllers/Api/{Resource}Controller.php`, mirroring the web controller's location under `Api` instead of `App` (auth lives in `Api/Auth`, user-scoped administration in `Api/Administration`).
+You MUST follow the [controllers skill](../controllers/SKILL.md), then create `app/Http/Controllers/Api/{Resource}Controller.php`, mirroring the web controller's location under `Api` instead of `App` (auth lives in `Api/Auth`, administration in `Api/Admin`).
 
 - You MUST only use these methods: `index`, `show`, `create`, `update`, `destroy`. You MUST extract extra actions to their own controller (e.g. `ContactVCardController` for the vCard endpoint).
 - You MUST NOT put domain logic in the controller. You MUST call the Actions and pass `user: $request->user()` with named arguments.
@@ -38,7 +38,7 @@ You MUST follow the [controllers skill](../controllers/SKILL.md), then create `a
 - Scope every lookup to the account and let it throw with `findOrFail()` (no try/catch, the framework returns 404), as `ContactController` does.
 - You MUST type-hint the return: `AnonymousResourceCollection` from `index`, `JsonResponse` from `show`/`create`/`update`, `Response` from `destroy`.
 - You MUST set the status codes explicitly: `200` for `show`/`update`, `201` for `create` via `->response()->setStatusCode(...)`, and `response()->noContent(204)` for `destroy`.
-- `index` MUST return `{Resource}::collection($paginated)`, ordered, and paginated with `per_page` clamped to `config('app.maximum_items_per_page')`.
+- `index` MUST return `{Resource}::collection($paginated)`, ordered, and paginated with `per_page` clamped to `config('monica.api_maximum_items_per_page')`.
 
 ## Step 4 — Register routes
 
@@ -52,7 +52,7 @@ You MUST follow the [controllers skill](../controllers/SKILL.md), then create `a
 
 You MUST create `tests/Feature/Controllers/Api/{Resource}ControllerTest.php`, and you MUST follow the conventions of the existing files there (e.g. `ContactControllerTest.php`) and the rules in `.claude/rules/testing.md`: PHPUnit classes, `#[Test]` methods named in snake_case, `use RefreshDatabase;`, and a shared `$jsonStructure` property.
 
-- You MUST authenticate with `Sanctum::actingAs($user)`. `User::factory()` creates an account owner.
+- You MUST authenticate with `Sanctum::actingAs($user)`. `User::factory()` creates a user and the account it belongs to.
 - You MUST make requests with `$this->json('METHOD', '/api/…', $data)`.
 - You MUST fake the queue with `Queue::fake()` in tests that hit an Action (Actions dispatch `LogUserAction`).
 - You MUST set up data with explicit `['key' => $value]` arrays on factories, and you MUST NOT use `for()`.
@@ -61,21 +61,18 @@ You MUST create `tests/Feature/Controllers/Api/{Resource}ControllerTest.php`, an
   user in an account a test has already built. It takes no role: an account carries none, and holds
   exactly one user. The permission cases are therefore cross-account cases.
 
-You MUST cover these cases (cross-account and missing-permission both surface as 404):
+You MUST cover these cases (a record of another account surfaces as 404):
 1. `it_lists_the_{resources}_of_the_account…` — 200 + count + ordering
 2. `it_does_not_list_{resources}_from_another_account` — 200 + empty list
 3. `it_shows_a_{resource}` — 200 + structure
 4. `it_returns_not_found_for_a_{resource}_from_another_account` — 404
 5. `it_creates_a_{resource}` — 201 + structure
 6. `it_validates_the_…_when_creating_a_{resource}` — 422 + `assertJsonValidationErrors`
-7. `it_restricts_{resource}_creation_to_owners_and_editors` — viewer gets 404
-8. `it_updates_a_{resource}` — 200 + structure
-9. `it_restricts_{resource}_updates_to_owners_and_editors` — 404
-10. `it_deletes_a_{resource}` — 204 + `assertModelMissing` (or `assertSoftDeleted` for soft-deleting models)
-11. `it_restricts_{resource}_deletion_to_owners_and_editors` — 404
+7. `it_updates_a_{resource}` — 200 + structure
+8. `it_deletes_a_{resource}` — 204 + `assertModelMissing` (or `assertSoftDeleted` for soft-deleting models)
 
 ## Step 6 — Document the endpoints
 
-You MUST load and follow the **`api-docs-writer`** skill: add the endpoints to a definition file in `resources/docs/api`, which feeds the docs portal at `/docs`.
+You MUST load and follow the **`api-docs-writer`** skill: add the endpoints to a definition file in `resources/docs/api`, which feeds the API reference at `/docs/api`.
 
-This step is not optional. `Tests\Unit\Services\ApiDocumentationTest` asserts that every route in `routes/api.php` is documented, so the suite fails until the new endpoints have documentation.
+This step is not optional. `Tests\Unit\ViewModels\Docs\ApiDocsViewModelTest` asserts that every route in `routes/api.php` is documented, so the suite fails until the new endpoints have documentation.

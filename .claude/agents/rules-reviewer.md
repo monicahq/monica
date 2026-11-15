@@ -10,7 +10,7 @@ Generic Laravel advice is not your job: where the project has a rule, the projec
 
 ## Before you review
 
-Read, in full: `CLAUDE.md`, every file in `.claude/rules/`, and the project skill under
+Read, in full: `.claude/CLAUDE.md`, every file in `.claude/rules/`, and the project skill under
 `.claude/skills/` that matches each kind of file changed (`actions`, `controllers`, `models`,
 `view-models`, `views`, `routes`, `migrations`, `middlewares`, `components`, `tests`).
 

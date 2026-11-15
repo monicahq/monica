@@ -7,129 +7,20 @@ description: Conventions for defining view models. Use when the user wants to cr
 
 - View models are classes responsible for preparing data for the view. They MUST NOT contain any business logic, but they MAY contain presentation logic.
 - You MUST create a view model for every view that needs data to be displayed, except when the data is really minimal.
-- View models MUST be stored in the `app/ViewModels` folder, and MUST be grouped by major domains of the application (`Admin`, `Auth`, `Marketplace`, `Settings`, `Shared`, `Vaults`), like controllers and views. They MUST match the controller folder structure.
-- View models MUST be named after the view they are used for, with the suffix `ViewModel`. For example, the view model for the `account/profile.blade.php` view is `Account/ProfileViewModel`.
-- Note that examples in this file are written for a different application, and the names of the models and relationships are not correct for this project. Read them with the real domain in mind: `Account`, `Vault`, `Contact`, and `$request->user()` for the user. The structure they show is right, the names are not. Rewrite them against a real screen, for instance `ContactsViewModel` and `MarketplaceViewModel` with its `MarketplaceStatistics` block.
+- View models MUST be stored in the `app/ViewModels` folder, and MUST be grouped by major domains of the application (`Admin`, `Auth`, `Marketplace`, `Settings`, `Shared`, `Vaults` and so on), like controllers and views. They MUST match the controller folder structure.
+- View models MUST be named after the view they are used for, with the suffix `ViewModel`. For example, the list of contacts of a vault is drawn from `Vaults/ContactsViewModel`.
 
 ## Structure for simple pages
 
-You MUST write a single view model per page, in a single file.
-
-```
-app/
-└── ViewModels/
-    └── Employees/
-        └── EmployeeIndexViewModel.php
-```
-
-Viewmodel:
-```
-class EmployeeIndexViewModel
-{
-    public function __construct(
-        private Company $company,
-    ) {
-    }
-
-    public function employees(): Collection
-    {
-        return $this->company
-            ->employees()
-            ->with(['team', 'jobTitle'])
-            ->orderBy('last_name')
-            ->get();
-    }
-
-    public function activeCount(): int
-    {
-        return $this->company
-            ->employees()
-            ->active()
-            ->count();
-    }
-}
-```
-
-Controller:
-```
-public function index(): View
-{
-    return view('employees.index', [
-        'viewModel' => new EmployeeIndexViewModel(
-            company: currentCompany(),
-        ),
-    ]);
-}
-```
-
-View:
-```
-<p>{{ $viewModel->activeCount() }} employees</p>
-
-@foreach ($viewModel->employees() as $employee)
-    ...
-@endforeach
-```
+You MUST write a single view model per page, in a single file. Read
+`app/ViewModels/Vaults/ContactsViewModel.php` before writing one: the constructor takes what the
+screen needs as promoted `private readonly` properties, and each public method returns one thing the
+view prints. The controller builds it and passes it to the view as `viewModel`, as
+`App\Vaults\ContactController` does, and the view reads it and nothing else.
 
 ## Structure for complex pages
 
-For a rich page such as a dashboard, you MUST write one main view model for the page, and you MUST delegate the complex blocks to small dedicated objects.
-
-```
-app/
-└── ViewModels/
-    └── Dashboard/
-        ├── DashboardViewModel.php
-        ├── EmployeeSummary.php
-        ├── UpcomingEvents.php
-        ├── PendingTasks.php
-        └── CompanyMetrics.php
-```
-
-The controller MUST only know about the main view model:
-```
-return view('dashboard.show', [
-    'viewModel' => new DashboardViewModel(
-        company: currentCompany(),
-        user: auth()->user(),
-    ),
-]);
-```
-
-Main view model:
-```
-class DashboardViewModel
-{
-    public function __construct(
-        private Company $company,
-        private User $user,
-    ) {
-    }
-
-    public function employeeSummary(): EmployeeSummary
-    {
-        return new EmployeeSummary($this->company);
-    }
-
-    public function upcomingEvents(): UpcomingEvents
-    {
-        return new UpcomingEvents(
-            company: $this->company,
-            user: $this->user,
-        );
-    }
-
-    public function pendingTasks(): PendingTasks
-    {
-        return new PendingTasks(
-            company: $this->company,
-            user: $this->user,
-        );
-    }
-
-    public function companyMetrics(): CompanyMetrics
-    {
-        return new CompanyMetrics($this->company);
-    }
-}
-```
+For a rich page such as a dashboard, you MUST write one main view model for the page, and you MUST
+delegate the complex blocks to small dedicated objects next to it, the way `MarketplaceViewModel`
+returns a `MarketplaceStatistics` from `statistics()`. The controller MUST only know about the main
+view model.

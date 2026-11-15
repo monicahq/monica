@@ -5,14 +5,14 @@ description: Conventions for defining middlewares. Use when the user wants to cr
 
 # Middlewares
 
-- A middleware is for something that applies to a whole route group. Five are aliased in
-  `bootstrap/app.php`: `active` on the signed in groups, `administrator` on the admin group, which
+- A middleware is for something that applies to a whole route group. The aliases are declared in
+  `bootstrap/app.php`, among them `active` on the signed in groups, `administrator` on the admin group, which
   refuses with a 404 anybody who does not run the instance, `magic.link` on the magic link
   routes, which refuses with a 404 while the instance has that way of signing in switched off,
   `sso` on the outside provider routes, which refuses with a 404 unless the provider named in the
   route is both installed and configured, and `portal.timing` on the HTML pages of the product guide,
-  which writes how long the server took into the page and a `Server-Timing` header. The other two classes in the folder, `SetLocale` and
-  `SetApiLocale`, are appended to the web group and prepended to the api group instead of being
+  which writes how long the server took into the page and a `Server-Timing` header. `SetLocale` and
+  `SetApiLocale` are appended to the web group and to the api group instead of being
   aliased.
 - You MUST register a new middleware in `bootstrap/app.php`, alias it in dotted lower case
   (`magic.link`), and apply it to a group in the routes file rather than to single routes.

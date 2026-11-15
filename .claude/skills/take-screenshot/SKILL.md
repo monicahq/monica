@@ -85,8 +85,9 @@ php artisan monica:screenshot-link monica.geller@centralperk.example --to=/setti
 iris --scale 1 --size 1440x1420 '<the link>' -o /tmp/relationship-types.png
 ```
 
-The signature covers the host, so `APP_URL` has to name the host you are opening. Herd serves the
-project directory, `http://erica.test`, and a link minted for any other host answers
+The signature covers the host, so `APP_URL` in `.env` has to name the host you are opening. That
+host differs from one setup to the next: Herd, for example, serves the project directory as
+`http://erica.test`. Read `APP_URL` rather than guessing it. A link minted for any other host answers
 `403 Invalid signature`.
 
 The link expires in five minutes, so mint a new one when it goes stale. It only works on a

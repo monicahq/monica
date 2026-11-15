@@ -1,7 +1,7 @@
 # Flags
 
 A flag keeps a capability that is still being built out of sight, account by account, until it is
-released to everybody. Laravel Pennant stores the answers. Specification 068 has the reasoning.
+released to everybody. Laravel Pennant stores the answers. `specs/068-laravel-pennant-feature-flags` has the reasoning.
 
 ## One class per flag, in `app/Features`
 
