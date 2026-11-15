@@ -3034,7 +3034,7 @@
     "Only :count file can be sent at once, so “:name” was left out.|Only :count files can be sent at once, so “:name” was left out.": "ส่งได้ครั้งละไม่เกิน :count ไฟล์ จึงไม่ได้ใส่ “:name”",
     "Only a draft can be deleted.": "ลบได้เฉพาะฉบับร่าง",
     "Only a featured possession has a place in the order.": "เฉพาะทรัพย์สินที่แนะนำเท่านั้นที่มีตำแหน่งในลำดับ",
-    "Only a key holding the administration scope can give it to another key. Create this key from the security settings instead.": "เฉพาะคีย์ที่มีขอบเขตการดูแลระบบเท่านั้นที่ให้ขอบเขตนี้แก่คีย์อื่นได้ ให้สร้างคีย์นี้จากการตั้งค่าความปลอดภัยแทน",
+    "Only a key holding the `:scope` scope can give it to another key. Create this key from the security settings instead.": "เฉพาะคีย์ที่มีขอบเขต `:scope`เท่านั้นที่ให้ขอบเขตนี้แก่คีย์อื่นได้ ให้สร้างคีย์นี้จากการตั้งค่าความปลอดภัยแทน",
     "Only a pronunciation has a pronunciation system.": "มีเพียงการออกเสียงที่มีระบบการออกเสียง",
     "Only administrators see this": "เฉพาะผู้ดูแลระบบที่เห็นสิ่งนี้",
     "Only administrators see this note. :name is never told it exists.": "เฉพาะผู้ดูแลระบบที่เห็นบันทึกนี้ :name จะไม่ได้รับแจ้งว่ามีบันทึกนี้อยู่",

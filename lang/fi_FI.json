@@ -3034,7 +3034,7 @@
     "Only :count file can be sent at once, so “:name” was left out.|Only :count files can be sent at once, so “:name” was left out.": "Kerralla voi lähettää vain :count tiedoston, joten ”:name” jätettiin pois.|Kerralla voi lähettää vain :count tiedostoa, joten ”:name” jätettiin pois.",
     "Only a draft can be deleted.": "Vain luonnoksen voi poistaa.",
     "Only a featured possession has a place in the order.": "Vain korostetulla omaisuuserällä on paikka järjestyksessä.",
-    "Only a key holding the administration scope can give it to another key. Create this key from the security settings instead.": "Vain avain, jolla on ylläpidon oikeus, voi antaa sen toiselle avaimelle. Luo tämä avain sen sijaan suojausasetuksista.",
+    "Only a key holding the `:scope` scope can give it to another key. Create this key from the security settings instead.": "Vain avain, jolla on oikeus `:scope`, voi antaa sen toiselle avaimelle. Luo tämä avain sen sijaan suojausasetuksista.",
     "Only a pronunciation has a pronunciation system.": "Vain ääntämisellä on ääntämisjärjestelmä.",
     "Only administrators see this": "Vain ylläpitäjät näkevät tämän",
     "Only administrators see this note. :name is never told it exists.": "Vain ylläpitäjät näkevät tämän muistiinpanon. :name ei koskaan saa tietää, että se on olemassa.",

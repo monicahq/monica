@@ -3034,7 +3034,7 @@
     "Only :count file can be sent at once, so “:name” was left out.|Only :count files can be sent at once, so “:name” was left out.": "Vienu metu galima siųsti tik :count failą, todėl „:name“ praleistas.|Vienu metu galima siųsti tik :count failus, todėl „:name“ praleistas.|Vienu metu galima siųsti tik :count failų, todėl „:name“ praleistas.",
     "Only a draft can be deleted.": "Ištrinti galima tik juodraštį.",
     "Only a featured possession has a place in the order.": "Vietą eilės tvarkoje turi tik išskirtinis turto objektas.",
-    "Only a key holding the administration scope can give it to another key. Create this key from the security settings instead.": "Tik raktas, turintis administravimo teisę, gali ją suteikti kitam raktui. Verčiau sukurkite šį raktą saugos nustatymuose.",
+    "Only a key holding the `:scope` scope can give it to another key. Create this key from the security settings instead.": "Tik raktas, turintis teisę `:scope`, gali ją suteikti kitam raktui. Verčiau sukurkite šį raktą saugos nustatymuose.",
     "Only a pronunciation has a pronunciation system.": "Tik tarimas turi tarimo sistemą.",
     "Only administrators see this": "Tai mato tik administratoriai",
     "Only administrators see this note. :name is never told it exists.": "Šią pastabą mato tik administratoriai. :name niekada nesužino, kad ji yra.",

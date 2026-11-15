@@ -3034,7 +3034,7 @@
     "Only :count file can be sent at once, so “:name” was left out.|Only :count files can be sent at once, so “:name” was left out.": "Tek seferde en fazla :count dosya gönderilebilir, bu yüzden “:name” dışarıda bırakıldı.",
     "Only a draft can be deleted.": "Yalnızca bir taslak silinebilir.",
     "Only a featured possession has a place in the order.": "Sıralamada yalnızca öne çıkan bir eşyanın yeri vardır.",
-    "Only a key holding the administration scope can give it to another key. Create this key from the security settings instead.": "Yönetim kapsamını başka bir anahtara yalnızca bu kapsama sahip bir anahtar verebilir. Bunun yerine bu anahtarı güvenlik ayarlarından oluşturun.",
+    "Only a key holding the `:scope` scope can give it to another key. Create this key from the security settings instead.": "`:scope` kapsamını başka bir anahtara yalnızca bu kapsama sahip bir anahtar verebilir. Bunun yerine bu anahtarı güvenlik ayarlarından oluşturun.",
     "Only a pronunciation has a pronunciation system.": "Yalnızca telaffuzun telaffuz sistemi olur.",
     "Only administrators see this": "Bunu yalnızca yöneticiler görür",
     "Only administrators see this note. :name is never told it exists.": "Bu notu yalnızca yöneticiler görür. :name bunun var olduğunu asla öğrenmez.",

@@ -3034,7 +3034,7 @@
     "Only :count file can be sent at once, so “:name” was left out.|Only :count files can be sent at once, so “:name” was left out.": "Ní féidir ach :count comhad a sheoladh ag an am céanna, mar sin fágadh “:name” ar lár.|Ní féidir ach :count chomhad a sheoladh ag an am céanna, mar sin fágadh “:name” ar lár.|Ní féidir ach :count comhad a sheoladh ag an am céanna, mar sin fágadh “:name” ar lár.",
     "Only a draft can be deleted.": "Ní féidir ach dréacht a scriosadh.",
     "Only a featured possession has a place in the order.": "Níl áit san ord ach ag sealúchas faoi thrácht.",
-    "Only a key holding the administration scope can give it to another key. Create this key from the security settings instead.": "Ní féidir ach le heochair a bhfuil scóip an riaracháin aici í a thabhairt d’eochair eile. Cruthaigh an eochair seo ó na socruithe slándála ina ionad sin.",
+    "Only a key holding the `:scope` scope can give it to another key. Create this key from the security settings instead.": "Ní féidir ach le heochair a bhfuil scóip `:scope` aici í a thabhairt d’eochair eile. Cruthaigh an eochair seo ó na socruithe slándála ina ionad sin.",
     "Only a pronunciation has a pronunciation system.": "Níl córas fuaimnithe ach ag fuaimniú.",
     "Only administrators see this": "Ní fheiceann ach riarthóirí é seo",
     "Only administrators see this note. :name is never told it exists.": "Ní fheiceann ach riarthóirí an nóta seo. Ní insítear do :name riamh go bhfuil sé ann.",

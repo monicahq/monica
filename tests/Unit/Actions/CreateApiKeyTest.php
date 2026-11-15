@@ -175,4 +175,34 @@ class CreateApiKeyTest extends TestCase
 
         $this->assertEquals(['*', 'administration'], $key->accessToken->abilities);
     }
+
+    #[Test]
+    public function it_refuses_the_sensitive_fields_scope_to_a_key_that_does_not_hold_it(): void
+    {
+        $user = User::factory()->create();
+        $user->withAccessToken($user->createToken('Dwight’s phone', ['*'])->accessToken);
+
+        try {
+            new CreateApiKey(user: $user, name: 'Schrute Farms export', scopes: ['*', 'sensitive-fields'])->execute();
+
+            $this->fail('A key without the sensitive fields scope gave it to another key.');
+        } catch (ScopeIsNotGrantable $e) {
+            $this->assertSame('sensitive-fields', $e->scope);
+        }
+
+        $this->assertSame(1, $user->tokens()->count());
+    }
+
+    #[Test]
+    public function it_lets_a_key_holding_the_sensitive_fields_scope_give_it_to_another_key(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $user->withAccessToken($user->createToken('Dwight’s phone', ['*', 'sensitive-fields'])->accessToken);
+
+        $key = new CreateApiKey(user: $user, name: 'Schrute Farms export', scopes: ['*', 'sensitive-fields'])->execute();
+
+        $this->assertEquals(['*', 'sensitive-fields'], $key->accessToken->abilities);
+    }
 }

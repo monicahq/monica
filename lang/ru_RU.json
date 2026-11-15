@@ -3034,7 +3034,7 @@
     "Only :count file can be sent at once, so “:name” was left out.|Only :count files can be sent at once, so “:name” was left out.": "За один раз можно отправить не больше :count файла, поэтому «:name» не добавлен.|За один раз можно отправить не больше :count файлов, поэтому «:name» не добавлен.|За один раз можно отправить не больше :count файлов, поэтому «:name» не добавлен.",
     "Only a draft can be deleted.": "Удалить можно только черновик.",
     "Only a featured possession has a place in the order.": "Место в порядке есть только у избранного предмета.",
-    "Only a key holding the administration scope can give it to another key. Create this key from the security settings instead.": "Только ключ с областью доступа «администрирование» может дать её другому ключу. Вместо этого создайте этот ключ в настройках безопасности.",
+    "Only a key holding the `:scope` scope can give it to another key. Create this key from the security settings instead.": "Только ключ с областью доступа `:scope` может дать её другому ключу. Вместо этого создайте этот ключ в настройках безопасности.",
     "Only a pronunciation has a pronunciation system.": "Система транскрипции есть только у произношения.",
     "Only administrators see this": "Это видят только администраторы",
     "Only administrators see this note. :name is never told it exists.": "Эту заметку видят только администраторы. :name никогда не узнает, что она существует.",

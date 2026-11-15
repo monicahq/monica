@@ -3034,7 +3034,7 @@
     "Only :count file can be sent at once, so “:name” was left out.|Only :count files can be sent at once, so “:name” was left out.": "একবারে সর্বোচ্চ :count টি ফাইল পাঠানো যায়, তাই “:name” বাদ দেওয়া হয়েছে।|একবারে সর্বোচ্চ :count টি ফাইল পাঠানো যায়, তাই “:name” বাদ দেওয়া হয়েছে।",
     "Only a draft can be deleted.": "কেবল খসড়াই মোছা যায়।",
     "Only a featured possession has a place in the order.": "শুধু বিশেষ সম্পত্তিরই ক্রমে জায়গা আছে।",
-    "Only a key holding the administration scope can give it to another key. Create this key from the security settings instead.": "কেবল প্রশাসন স্কোপ থাকা কোনো কী-ই অন্য কী-কে তা দিতে পারে। এর বদলে নিরাপত্তা সেটিংস থেকে এই কী তৈরি করুন।",
+    "Only a key holding the `:scope` scope can give it to another key. Create this key from the security settings instead.": "কেবল `:scope` স্কোপ থাকা কোনো কী-ই অন্য কী-কে তা দিতে পারে। এর বদলে নিরাপত্তা সেটিংস থেকে এই কী তৈরি করুন।",
     "Only a pronunciation has a pronunciation system.": "কেবল উচ্চারণেরই উচ্চারণ পদ্ধতি থাকে।",
     "Only administrators see this": "শুধু প্রশাসকেরা এটি দেখতে পান",
     "Only administrators see this note. :name is never told it exists.": "শুধু প্রশাসকেরা এই নোট দেখতে পান। :name-কে এর অস্তিত্ব কখনও জানানো হয় না।",

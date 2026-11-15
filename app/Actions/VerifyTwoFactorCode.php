@@ -41,14 +41,12 @@ class VerifyTwoFactorCode
             return true;
         }
 
-        RateLimiter::hit($this->throttleKey(), self::DECAY_SECONDS);
-
         return false;
     }
 
     private function validate(): void
     {
-        if (! RateLimiter::tooManyAttempts($this->throttleKey(), self::MAX_ATTEMPTS)) {
+        if (RateLimiter::hit($this->throttleKey(), self::DECAY_SECONDS) <= self::MAX_ATTEMPTS) {
             return;
         }
 

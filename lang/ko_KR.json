@@ -3034,7 +3034,7 @@
     "Only :count file can be sent at once, so “:name” was left out.|Only :count files can be sent at once, so “:name” was left out.": "한 번에 최대 :count개 파일만 보낼 수 있어 “:name”은(는) 제외되었습니다.",
     "Only a draft can be deleted.": "초안만 삭제할 수 있습니다.",
     "Only a featured possession has a place in the order.": "추천 소유물만 순서를 가질 수 있습니다.",
-    "Only a key holding the administration scope can give it to another key. Create this key from the security settings instead.": "관리 범위를 다른 키에 부여할 수 있는 것은 관리 범위를 가진 키뿐입니다. 대신 보안 설정에서 이 키를 만드세요.",
+    "Only a key holding the `:scope` scope can give it to another key. Create this key from the security settings instead.": "`:scope` 범위를 다른 키에 부여할 수 있는 것은 해당 범위를 가진 키뿐입니다. 대신 보안 설정에서 이 키를 만드세요.",
     "Only a pronunciation has a pronunciation system.": "발음 표기법은 발음에만 있습니다.",
     "Only administrators see this": "관리자만 볼 수 있습니다",
     "Only administrators see this note. :name is never told it exists.": "이 메모는 관리자만 볼 수 있습니다. :name님에게는 메모가 있다는 사실이 전달되지 않습니다.",

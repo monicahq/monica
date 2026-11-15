@@ -83,9 +83,9 @@ return [
             'label' => 'Update your profile',
             'method' => 'PUT',
             'path' => '/me',
-            'description' => 'Update the name and the address of the user the token belongs to.',
+            'description' => 'Update the name of the user the token belongs to.',
             'body' => [
-                'Changing the address unconfirms it, because nobody has proved yet that the new one reaches you. Preferences such as the locale, the time zone and the clock are not changed here.',
+                'The address the user signs in with is not changed here. Changing it asks for the password again, which only the security settings can do, so an `email` sent here is ignored. Preferences such as the locale, the time zone and the clock are not changed here either.',
             ],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'bodyParams' => [
@@ -102,13 +102,6 @@ return [
                     'required' => true,
                     'description' => 'The last name of the user. Maximum 255 characters.',
                     'example' => 'Scott',
-                ],
-                [
-                    'name' => 'email',
-                    'type' => 'string',
-                    'required' => true,
-                    'description' => 'The address the user signs in with. Lowercase, and held by nobody else.',
-                    'example' => 'michael.scott@dundermifflin.com',
                 ],
             ],
             'returns' => 'The updated user object.',

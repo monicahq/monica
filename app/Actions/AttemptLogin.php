@@ -50,7 +50,7 @@ class AttemptLogin
 
     private function validate(): void
     {
-        if (! RateLimiter::tooManyAttempts($this->throttleKey(), self::MAX_ATTEMPTS)) {
+        if (RateLimiter::hit($this->throttleKey()) <= self::MAX_ATTEMPTS) {
             return;
         }
 
@@ -98,8 +98,6 @@ class AttemptLogin
 
     private function fail(?User $candidate): void
     {
-        RateLimiter::hit($this->throttleKey());
-
         if ($candidate !== null) {
             $candidate->notify(new LoginFailed);
         }

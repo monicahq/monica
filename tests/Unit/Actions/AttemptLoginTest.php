@@ -12,7 +12,9 @@ use App\Jobs\LogUserAction;
 use App\Models\ProviderConnection;
 use App\Models\User;
 use App\Notifications\LoginFailed;
+use Illuminate\Auth\Events\Attempting;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\RateLimiter;
@@ -349,5 +351,32 @@ class AttemptLoginTest extends TestCase
             email: 'michael.scott@dundermifflin.com',
             password: 'password',
         )->execute();
+    }
+
+    #[Test]
+    public function it_counts_the_attempt_before_checking_the_password(): void
+    {
+        Queue::fake();
+        Notification::fake();
+
+        User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
+
+        $attemptsWhileChecking = null;
+
+        Event::listen(Attempting::class, function () use (&$attemptsWhileChecking): void {
+            $attemptsWhileChecking = RateLimiter::attempts('michael.scott@dundermifflin.com|10.0.0.1');
+        });
+
+        try {
+            new AttemptLogin(
+                email: 'michael.scott@dundermifflin.com',
+                password: 'wrong',
+                ip: '10.0.0.1',
+            )->execute();
+        } catch (ValidationException) {
+        }
+
+        $this->assertSame(1, $attemptsWhileChecking);
+        $this->assertSame(1, RateLimiter::attempts('michael.scott@dundermifflin.com|10.0.0.1'));
     }
 }

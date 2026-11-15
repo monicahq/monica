@@ -3034,7 +3034,7 @@
     "Only :count file can be sent at once, so “:name” was left out.|Only :count files can be sent at once, so “:name” was left out.": "Només es pot enviar :count fitxer alhora, així que «:name» s’ha deixat fora.|Només es poden enviar :count fitxers alhora, així que «:name» s’ha deixat fora.",
     "Only a draft can be deleted.": "Només es pot esborrar un esborrany.",
     "Only a featured possession has a place in the order.": "Només un bé destacat té un lloc en l’ordre.",
-    "Only a key holding the administration scope can give it to another key. Create this key from the security settings instead.": "Només una clau que té l’àmbit d’administració el pot donar a una altra clau. Creeu aquesta clau des de la configuració de seguretat.",
+    "Only a key holding the `:scope` scope can give it to another key. Create this key from the security settings instead.": "Només una clau que té l’àmbit `:scope` el pot donar a una altra clau. Creeu aquesta clau des de la configuració de seguretat.",
     "Only a pronunciation has a pronunciation system.": "Només una pronunciació té sistema de pronunciació.",
     "Only administrators see this": "Només els administradors ho veuen",
     "Only administrators see this note. :name is never told it exists.": "Només els administradors veuen aquesta nota. :name no sap mai que existeix.",

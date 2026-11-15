@@ -3034,7 +3034,7 @@
     "Only :count file can be sent at once, so “:name” was left out.|Only :count files can be sent at once, so “:name” was left out.": "Mỗi lần chỉ gửi được tối đa :count tệp, nên “:name” đã bị bỏ qua.",
     "Only a draft can be deleted.": "Chỉ bản nháp mới xóa được.",
     "Only a featured possession has a place in the order.": "Chỉ tài sản nổi bật mới có vị trí trong thứ tự.",
-    "Only a key holding the administration scope can give it to another key. Create this key from the security settings instead.": "Chỉ khóa có phạm vi quản trị mới có thể cấp phạm vi này cho khóa khác. Thay vào đó, hãy tạo khóa này từ cài đặt bảo mật.",
+    "Only a key holding the `:scope` scope can give it to another key. Create this key from the security settings instead.": "Chỉ khóa có phạm vi `:scope` mới có thể cấp phạm vi này cho khóa khác. Thay vào đó, hãy tạo khóa này từ cài đặt bảo mật.",
     "Only a pronunciation has a pronunciation system.": "Chỉ cách phát âm mới có hệ phiên âm.",
     "Only administrators see this": "Chỉ quản trị viên thấy nội dung này",
     "Only administrators see this note. :name is never told it exists.": "Chỉ quản trị viên thấy ghi chú này. :name không bao giờ được cho biết ghi chú tồn tại.",

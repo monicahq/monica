@@ -3034,7 +3034,7 @@
     "Only :count file can be sent at once, so “:name” was left out.|Only :count files can be sent at once, so “:name” was left out.": "Er kan maar :count bestand tegelijk worden verstuurd, dus “:name” is weggelaten.|Er kunnen maar :count bestanden tegelijk worden verstuurd, dus “:name” is weggelaten.",
     "Only a draft can be deleted.": "Alleen een concept kan verwijderd worden.",
     "Only a featured possession has a place in the order.": "Alleen een uitgelichte bezitting heeft een plaats in de volgorde.",
-    "Only a key holding the administration scope can give it to another key. Create this key from the security settings instead.": "Alleen een sleutel met het bereik beheer kan het aan een andere sleutel geven. Maak deze sleutel in plaats daarvan aan via de beveiligingsinstellingen.",
+    "Only a key holding the `:scope` scope can give it to another key. Create this key from the security settings instead.": "Alleen een sleutel met het bereik `:scope` kan het aan een andere sleutel geven. Maak deze sleutel in plaats daarvan aan via de beveiligingsinstellingen.",
     "Only a pronunciation has a pronunciation system.": "Alleen een uitspraak heeft een uitspraaksysteem.",
     "Only administrators see this": "Alleen beheerders zien dit",
     "Only administrators see this note. :name is never told it exists.": "Alleen beheerders zien deze notitie. :name hoort nooit dat ze bestaat.",

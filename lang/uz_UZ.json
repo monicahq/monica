@@ -3034,7 +3034,7 @@
     "Only :count file can be sent at once, so “:name” was left out.|Only :count files can be sent at once, so “:name” was left out.": "Bir martada faqat :count tagacha fayl yuborish mumkin, shuning uchun “:name” qoldirildi.",
     "Only a draft can be deleted.": "Faqat qoralamani oʻchirish mumkin.",
     "Only a featured possession has a place in the order.": "Tartibda faqat tanlangan mulk oʻrin egallaydi.",
-    "Only a key holding the administration scope can give it to another key. Create this key from the security settings instead.": "Administratsiya doirasini boshqa kalitga faqat shu doiraga ega kalit bera oladi. Buning oʻrniga bu kalitni xavfsizlik sozlamalaridan yarating.",
+    "Only a key holding the `:scope` scope can give it to another key. Create this key from the security settings instead.": "`:scope` doirasini boshqa kalitga faqat shu doiraga ega kalit bera oladi. Buning oʻrniga bu kalitni xavfsizlik sozlamalaridan yarating.",
     "Only a pronunciation has a pronunciation system.": "Faqat talaffuzda talaffuz tizimi boʻladi.",
     "Only administrators see this": "Buni faqat administratorlar koʻradi",
     "Only administrators see this note. :name is never told it exists.": "Bu qaydni faqat administratorlar koʻradi. :name unda qayd borligini hech qachon bilmaydi.",

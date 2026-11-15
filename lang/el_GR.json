@@ -3034,7 +3034,7 @@
     "Only :count file can be sent at once, so “:name” was left out.|Only :count files can be sent at once, so “:name” was left out.": "Μπορεί να σταλεί μόνο :count αρχείο τη φορά, οπότε το «:name» παραλείφθηκε.|Μπορούν να σταλούν μόνο :count αρχεία τη φορά, οπότε το «:name» παραλείφθηκε.",
     "Only a draft can be deleted.": "Μόνο ένα πρόχειρο μπορεί να διαγραφεί.",
     "Only a featured possession has a place in the order.": "Μόνο ένα προβεβλημένο απόκτημα έχει θέση στη σειρά.",
-    "Only a key holding the administration scope can give it to another key. Create this key from the security settings instead.": "Μόνο ένα κλειδί με το εύρος διαχείρισης μπορεί να το δώσει σε άλλο κλειδί. Δημιουργήστε αυτό το κλειδί από τις ρυθμίσεις ασφαλείας.",
+    "Only a key holding the `:scope` scope can give it to another key. Create this key from the security settings instead.": "Μόνο ένα κλειδί με το εύρος `:scope` μπορεί να το δώσει σε άλλο κλειδί. Δημιουργήστε αυτό το κλειδί από τις ρυθμίσεις ασφαλείας.",
     "Only a pronunciation has a pronunciation system.": "Μόνο μια προφορά έχει σύστημα προφοράς.",
     "Only administrators see this": "Μόνο οι διαχειριστές το βλέπουν",
     "Only administrators see this note. :name is never told it exists.": "Μόνο οι διαχειριστές βλέπουν αυτή τη σημείωση. Ο/Η :name δεν μαθαίνει ποτέ ότι υπάρχει.",

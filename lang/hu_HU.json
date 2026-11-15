@@ -3034,7 +3034,7 @@
     "Only :count file can be sent at once, so “:name” was left out.|Only :count files can be sent at once, so “:name” was left out.": "Egyszerre legfeljebb :count fájl küldhető, ezért a(z) „:name” kimaradt.|Egyszerre legfeljebb :count fájl küldhető, ezért a(z) „:name” kimaradt.",
     "Only a draft can be deleted.": "Csak piszkozat törölhető.",
     "Only a featured possession has a place in the order.": "Csak kiemelt vagyontárgynak van helye a sorrendben.",
-    "Only a key holding the administration scope can give it to another key. Create this key from the security settings instead.": "Csak az adminisztrációs jogosultsággal rendelkező kulcs adhatja meg azt egy másik kulcsnak. Hozza létre inkább ezt a kulcsot a biztonsági beállításokban.",
+    "Only a key holding the `:scope` scope can give it to another key. Create this key from the security settings instead.": "Csak a `:scope` jogosultsággal rendelkező kulcs adhatja meg azt egy másik kulcsnak. Hozza létre inkább ezt a kulcsot a biztonsági beállításokban.",
     "Only a pronunciation has a pronunciation system.": "Csak a kiejtésnek van kiejtési rendszere.",
     "Only administrators see this": "Csak az adminisztrátorok látják",
     "Only administrators see this note. :name is never told it exists.": "Ezt a jegyzetet csak az adminisztrátorok látják. :name sosem tudja meg, hogy létezik.",

@@ -49,18 +49,26 @@ class CreateApiKey
 
     private function validate(): void
     {
-        if (! in_array(ApiKeyScopeEnum::Administration->value, $this->scopes, true)) {
-            return;
-        }
-
-        if (! $this->user->isAdministrator()) {
-            throw new ScopeIsNotGrantable(__('Only an administrator of this instance can give a key the administration scope.'));
+        if (in_array(ApiKeyScopeEnum::Administration->value, $this->scopes, true) && ! $this->user->isAdministrator()) {
+            throw new ScopeIsNotGrantable(
+                message: __('Only an administrator of this instance can give a key the administration scope.'),
+                scope: ApiKeyScopeEnum::Administration->value,
+            );
         }
 
         $presentedKey = $this->user->currentAccessToken();
 
-        if ($presentedKey instanceof PersonalAccessToken && ! in_array(ApiKeyScopeEnum::Administration->value, (array) $presentedKey->abilities, true)) {
-            throw new ScopeIsNotGrantable(__('Only a key holding the administration scope can give it to another key. Create this key from the security settings instead.'));
+        if (! $presentedKey instanceof PersonalAccessToken) {
+            return;
+        }
+
+        foreach ($this->scopes as $scope) {
+            if (! in_array($scope, (array) $presentedKey->abilities, true)) {
+                throw new ScopeIsNotGrantable(
+                    message: __('Only a key holding the `:scope` scope can give it to another key. Create this key from the security settings instead.', ['scope' => $scope]),
+                    scope: $scope,
+                );
+            }
         }
     }
 

@@ -3034,7 +3034,7 @@
     "Only :count file can be sent at once, so “:name” was left out.|Only :count files can be sent at once, so “:name” was left out.": "一度に送れるファイルは:count件までのため、「:name」は除外されました。",
     "Only a draft can be deleted.": "削除できるのは下書きだけです。",
     "Only a featured possession has a place in the order.": "順番を持てるのは、注目の所有物だけです。",
-    "Only a key holding the administration scope can give it to another key. Create this key from the security settings instead.": "管理スコープを別のキーに付与できるのは、管理スコープを持つキーだけです。このキーはセキュリティ設定から作成してください。",
+    "Only a key holding the `:scope` scope can give it to another key. Create this key from the security settings instead.": "スコープ `:scope` を別のキーに付与できるのは、そのスコープを持つキーだけです。このキーはセキュリティ設定から作成してください。",
     "Only a pronunciation has a pronunciation system.": "発音の表記法を持てるのは読み方だけです。",
     "Only administrators see this": "管理者だけが見られます",
     "Only administrators see this note. :name is never told it exists.": "このメモは管理者だけが見られます。:nameには、メモがあることは伝わりません。",

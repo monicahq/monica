@@ -3034,7 +3034,7 @@
     "Only :count file can be sent at once, so “:name” was left out.|Only :count files can be sent at once, so “:name” was left out.": "Seul :count fichier peut être envoyé à la fois, donc « :name » a été laissé de côté.|Seuls :count fichiers peuvent être envoyés à la fois, donc « :name » a été laissé de côté.",
     "Only a draft can be deleted.": "Seul un brouillon peut être supprimé.",
     "Only a featured possession has a place in the order.": "Seul un bien mis en avant a une place dans l’ordre.",
-    "Only a key holding the administration scope can give it to another key. Create this key from the security settings instead.": "Seule une clé ayant la portée administration peut la donner à une autre clé. Créez plutôt cette clé depuis les paramètres de sécurité.",
+    "Only a key holding the `:scope` scope can give it to another key. Create this key from the security settings instead.": "Seule une clé ayant la portée `:scope` peut la donner à une autre clé. Créez plutôt cette clé depuis les paramètres de sécurité.",
     "Only a pronunciation has a pronunciation system.": "Seule une prononciation a un système de prononciation.",
     "Only administrators see this": "Seuls les administrateurs voient ceci",
     "Only administrators see this note. :name is never told it exists.": "Seuls les administrateurs voient cette note. :name n’est jamais informé de son existence.",

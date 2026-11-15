@@ -3034,7 +3034,7 @@
     "Only :count file can be sent at once, so “:name” was left out.|Only :count files can be sent at once, so “:name” was left out.": "ஒரே நேரத்தில் :count கோப்பை மட்டுமே அனுப்ப முடியும், எனவே “:name” விடப்பட்டது.|ஒரே நேரத்தில் :count கோப்புகளை மட்டுமே அனுப்ப முடியும், எனவே “:name” விடப்பட்டது.",
     "Only a draft can be deleted.": "வரைவை மட்டுமே நீக்க முடியும்.",
     "Only a featured possession has a place in the order.": "சிறப்பு உடைமைக்கு மட்டுமே வரிசையில் இடம் உண்டு.",
-    "Only a key holding the administration scope can give it to another key. Create this key from the security settings instead.": "நிர்வாக நோக்கெல்லை உள்ள சாவி மட்டுமே அதை வேறொரு சாவிக்கு வழங்க முடியும். அதற்குப் பதிலாக இந்தச் சாவியைப் பாதுகாப்பு அமைப்புகளிலிருந்து உருவாக்கவும்.",
+    "Only a key holding the `:scope` scope can give it to another key. Create this key from the security settings instead.": "`:scope` நோக்கெல்லை உள்ள சாவி மட்டுமே அதை வேறொரு சாவிக்கு வழங்க முடியும். அதற்குப் பதிலாக இந்தச் சாவியைப் பாதுகாப்பு அமைப்புகளிலிருந்து உருவாக்கவும்.",
     "Only a pronunciation has a pronunciation system.": "உச்சரிப்புக்கு மட்டுமே உச்சரிப்பு முறைமை உண்டு.",
     "Only administrators see this": "நிர்வாகிகள் மட்டுமே இதைப் பார்க்கிறார்கள்",
     "Only administrators see this note. :name is never told it exists.": "இந்தக் குறிப்பை நிர்வாகிகள் மட்டுமே பார்க்கிறார்கள். இது இருப்பது :name-க்கு ஒருபோதும் தெரிவிக்கப்படாது.",

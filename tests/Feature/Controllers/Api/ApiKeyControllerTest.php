@@ -115,6 +115,7 @@ class ApiKeyControllerTest extends TestCase
         $user = User::factory()->create();
 
         Sanctum::actingAs($user);
+        $user->withAccessToken($user->tokens()->make(['abilities' => ['*']]));
 
         $response = $this->json('POST', '/api/v1/api-keys', ['name' => 'Dundie awards bot']);
 
@@ -137,6 +138,7 @@ class ApiKeyControllerTest extends TestCase
         $user = User::factory()->create();
 
         Sanctum::actingAs($user);
+        $user->withAccessToken($user->tokens()->make(['abilities' => ['*']]));
 
         $this->json('POST', '/api/v1/api-keys', [])
             ->assertUnprocessable()
@@ -189,6 +191,7 @@ class ApiKeyControllerTest extends TestCase
         $user = User::factory()->create();
 
         Sanctum::actingAs($user);
+        $user->withAccessToken($user->tokens()->make(['abilities' => ['*']]));
 
         $created = $this->json('POST', '/api/v1/api-keys', ['name' => 'Dundie awards bot']);
         $token = $created->json('token');
@@ -232,6 +235,7 @@ class ApiKeyControllerTest extends TestCase
         $user = User::factory()->create();
 
         Sanctum::actingAs($user);
+        $user->withAccessToken($user->tokens()->make(['abilities' => ['*', 'sensitive-fields']]));
 
         $response = $this->json('POST', '/api/v1/api-keys', [
             'name' => 'Dwight’s phone',
@@ -251,6 +255,7 @@ class ApiKeyControllerTest extends TestCase
         $user = User::factory()->create();
 
         Sanctum::actingAs($user);
+        $user->withAccessToken($user->tokens()->make(['abilities' => ['*']]));
 
         $response = $this->json('POST', '/api/v1/api-keys', ['name' => 'Deployment script']);
 
@@ -264,6 +269,7 @@ class ApiKeyControllerTest extends TestCase
     {
         $user = User::factory()->create();
         Sanctum::actingAs($user);
+        $user->withAccessToken($user->tokens()->make(['abilities' => ['*']]));
 
         $response = $this->json('POST', '/api/v1/api-keys', [
             'name' => 'Dundie awards bot',
@@ -278,6 +284,7 @@ class ApiKeyControllerTest extends TestCase
     {
         $user = User::factory()->create();
         Sanctum::actingAs($user);
+        $user->withAccessToken($user->tokens()->make(['abilities' => ['*']]));
 
         $this->json('POST', '/api/v1/api-keys', ['name' => 'Deployment script'])
             ->assertCreated()
@@ -289,6 +296,7 @@ class ApiKeyControllerTest extends TestCase
     {
         $user = User::factory()->create();
         Sanctum::actingAs($user);
+        $user->withAccessToken($user->tokens()->make(['abilities' => ['*']]));
 
         $this->json('POST', '/api/v1/api-keys', ['name' => 'Dundie awards bot', 'client' => 'toaster'])
             ->assertUnprocessable()
@@ -322,6 +330,7 @@ class ApiKeyControllerTest extends TestCase
         $user = User::factory()->create();
 
         Sanctum::actingAs($user);
+        $user->withAccessToken($user->tokens()->make(['abilities' => ['*']]));
 
         $response = $this->json('POST', '/api/v1/api-keys', [
             'name' => 'Support queue bot',
@@ -331,5 +340,21 @@ class ApiKeyControllerTest extends TestCase
         $response->assertUnprocessable();
         $response->assertJsonValidationErrors('administration');
         $this->assertSame(0, $user->tokens()->count());
+    }
+
+    #[Test]
+    public function it_refuses_the_sensitive_fields_scope_to_a_key_that_does_not_hold_it(): void
+    {
+        $user = User::factory()->create();
+        $presentedKey = $user->createToken('Dwight’s phone', ['*'])->plainTextToken;
+
+        $response = $this->withToken($presentedKey)->json('POST', '/api/v1/api-keys', [
+            'name' => 'Schrute Farms export',
+            'sensitive_fields' => true,
+        ]);
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors('sensitive_fields');
+        $this->assertSame(1, $user->tokens()->count());
     }
 }

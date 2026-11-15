@@ -3034,7 +3034,7 @@
     "Only :count file can be sent at once, so “:name” was left out.|Only :count files can be sent at once, so “:name” was left out.": "Only :count file can be sent at once, so “:name” was left out.|Only :count files can be sent at once, so “:name” was left out.",
     "Only a draft can be deleted.": "Only a draft can be deleted.",
     "Only a featured possession has a place in the order.": "Only a featured possession has a place in the order.",
-    "Only a key holding the administration scope can give it to another key. Create this key from the security settings instead.": "Only a key holding the administration scope can give it to another key. Create this key from the security settings instead.",
+    "Only a key holding the `:scope` scope can give it to another key. Create this key from the security settings instead.": "Only a key holding the `:scope` scope can give it to another key. Create this key from the security settings instead.",
     "Only a pronunciation has a pronunciation system.": "Only a pronunciation has a pronunciation system.",
     "Only administrators see this": "Only administrators see this",
     "Only administrators see this note. :name is never told it exists.": "Only administrators see this note. :name is never told it exists.",

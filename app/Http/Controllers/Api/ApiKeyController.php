@@ -64,7 +64,9 @@ class ApiKeyController extends Controller
                 client: ApiKeyClientEnum::tryFrom((string) ($validated['client'] ?? '')) ?? ApiKeyClientEnum::Script,
             )->execute();
         } catch (ScopeIsNotGrantable $e) {
-            throw ValidationException::withMessages(['administration' => $e->getMessage()]);
+            $field = $e->scope === ApiKeyScopeEnum::SensitiveFields->value ? 'sensitive_fields' : 'administration';
+
+            throw ValidationException::withMessages([$field => $e->getMessage()]);
         }
 
         return new ApiKeyResource($key->accessToken)

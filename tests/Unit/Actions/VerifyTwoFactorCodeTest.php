@@ -8,6 +8,8 @@ use App\Actions\VerifyTwoFactorCode;
 use App\Models\SecurityKey;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
 use PHPUnit\Framework\Attributes\Test;
 use PragmaRX\Google2FA\Google2FA;
@@ -181,5 +183,23 @@ class VerifyTwoFactorCodeTest extends TestCase
         $this->assertTrue($first);
         $this->assertFalse($second);
         $this->assertEquals(['scranton-2'], $user->refresh()->two_factor_recovery_codes);
+    }
+
+    #[Test]
+    public function it_counts_the_attempt_before_checking_the_code(): void
+    {
+        $user = User::factory()->twoFactor()->create();
+
+        $attemptsWhileChecking = [];
+
+        DB::listen(function () use (&$attemptsWhileChecking, $user): void {
+            $attemptsWhileChecking[] = RateLimiter::attempts("two-factor:{$user->id}");
+        });
+
+        new VerifyTwoFactorCode(user: $user, code: '000000')->execute();
+
+        $this->assertNotEmpty($attemptsWhileChecking);
+        $this->assertSame(1, $attemptsWhileChecking[0]);
+        $this->assertSame(1, RateLimiter::attempts("two-factor:{$user->id}"));
     }
 }

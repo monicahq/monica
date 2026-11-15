@@ -3034,7 +3034,7 @@
     "Only :count file can be sent at once, so “:name” was left out.|Only :count files can be sent at once, so “:name” was left out.": "一次最多只能发送 :count 个文件，因此未包含“:name”。",
     "Only a draft can be deleted.": "只有草稿才能删除。",
     "Only a featured possession has a place in the order.": "只有精选物品才有排列位置。",
-    "Only a key holding the administration scope can give it to another key. Create this key from the security settings instead.": "只有拥有管理范围的密钥才能将其授予另一个密钥。请改为在安全设置中创建此密钥。",
+    "Only a key holding the `:scope` scope can give it to another key. Create this key from the security settings instead.": "只有拥有`:scope` 范围的密钥才能将其授予另一个密钥。请改为在安全设置中创建此密钥。",
     "Only a pronunciation has a pronunciation system.": "只有读音才有注音系统。",
     "Only administrators see this": "只有管理员能看到",
     "Only administrators see this note. :name is never told it exists.": "只有管理员能看到这条备注。:name 永远不会知道它的存在。",

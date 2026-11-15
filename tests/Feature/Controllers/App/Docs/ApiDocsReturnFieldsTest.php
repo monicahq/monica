@@ -589,9 +589,13 @@ class ApiDocsReturnFieldsTest extends TestCase
                 return $this->json('GET', "/api/v1/api-keys/{$key->accessToken->id}");
             }),
 
-            'api-keys-create' => $this->asSomebody(fn (): TestResponse => $this->json('POST', '/api/v1/api-keys', [
-                'name' => 'Dundie awards bot',
-            ])),
+            'api-keys-create' => $this->asSomebody(function (User $user): TestResponse {
+                $user->withAccessToken($user->tokens()->make(['abilities' => ['*']]));
+
+                return $this->json('POST', '/api/v1/api-keys', [
+                    'name' => 'Dundie awards bot',
+                ]);
+            }),
 
             'api-keys-destroy' => $this->asSomebody(function (User $user): TestResponse {
                 $key = $user->createToken('Dundie awards bot');

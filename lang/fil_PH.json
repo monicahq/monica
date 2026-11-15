@@ -3034,7 +3034,7 @@
     "Only :count file can be sent at once, so “:name” was left out.|Only :count files can be sent at once, so “:name” was left out.": "Hanggang :count file lang ang maipapadala nang sabay, kaya hindi isinama ang “:name”.|Hanggang :count file lang ang maipapadala nang sabay, kaya hindi isinama ang “:name”.",
     "Only a draft can be deleted.": "Draft lamang ang maaaring burahin.",
     "Only a featured possession has a place in the order.": "Ang itinatampok na ari-arian lamang ang may puwesto sa pagkakasunod-sunod.",
-    "Only a key holding the administration scope can give it to another key. Create this key from the security settings instead.": "Isang key lang na may saklaw na administrasyon ang makapagbibigay nito sa ibang key. Gawin na lang ang key na ito mula sa mga setting ng seguridad.",
+    "Only a key holding the `:scope` scope can give it to another key. Create this key from the security settings instead.": "Isang key lang na may saklaw na `:scope` ang makapagbibigay nito sa ibang key. Gawin na lang ang key na ito mula sa mga setting ng seguridad.",
     "Only a pronunciation has a pronunciation system.": "Ang pagbigkas lang ang may sistema ng pagbigkas.",
     "Only administrators see this": "Mga administrator lang ang nakakakita nito",
     "Only administrators see this note. :name is never told it exists.": "Mga administrator lang ang nakakakita ng talang ito. Hindi kailanman sasabihin kay :name na may ganito.",

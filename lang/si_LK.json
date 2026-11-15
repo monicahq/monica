@@ -3034,7 +3034,7 @@
     "Only :count file can be sent at once, so “:name” was left out.|Only :count files can be sent at once, so “:name” was left out.": "එකවර යැවිය හැක්කේ ෆයිල් :count ක් පමණි, එබැවින් “:name” ඉවත් කළා.",
     "Only a draft can be deleted.": "මැකිය හැක්කේ කටුපිටපතක් පමණි.",
     "Only a featured possession has a place in the order.": "අනුපිළිවෙළේ ස්ථානයක් ඇත්තේ විශේෂාංගගත සන්තකයකට පමණි.",
-    "Only a key holding the administration scope can give it to another key. Create this key from the security settings instead.": "පරිපාලන විෂය පථය ඇති යතුරකට පමණක් එය වෙනත් යතුරකට දිය හැක. ඒ වෙනුවට මෙම යතුර ආරක්ෂක සැකසුම් වලින් සාදන්න.",
+    "Only a key holding the `:scope` scope can give it to another key. Create this key from the security settings instead.": "`:scope` විෂය පථය ඇති යතුරකට පමණක් එය වෙනත් යතුරකට දිය හැක. ඒ වෙනුවට මෙම යතුර ආරක්ෂක සැකසුම් වලින් සාදන්න.",
     "Only a pronunciation has a pronunciation system.": "උච්චාරණ ක්‍රමයක් ඇත්තේ උච්චාරණයකට පමණි.",
     "Only administrators see this": "පරිපාලකයන්ට පමණක් මෙය පෙනේ",
     "Only administrators see this note. :name is never told it exists.": "පරිපාලකයන්ට පමණක් මෙම සටහන පෙනේ. එය ඇති බව :name ට කිසිදා නොකියනු ලැබේ.",

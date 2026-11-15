@@ -134,7 +134,6 @@ class MeControllerTest extends TestCase
         $response = $this->json('PUT', '/api/v1/me', [
             'first_name' => 'Michael',
             'last_name' => 'Scarn',
-            'email' => 'michael.scott@dundermifflin.com',
         ]);
 
         $response->assertOk();
@@ -157,6 +156,39 @@ class MeControllerTest extends TestCase
         $response = $this->json('PUT', '/api/v1/me', []);
 
         $response->assertUnprocessable();
-        $response->assertJsonValidationErrors(['first_name', 'last_name', 'email']);
+        $response->assertJsonValidationErrors(['first_name', 'last_name']);
+    }
+
+    #[Test]
+    public function it_leaves_the_sign_in_address_alone(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create(['email' => 'michael.scott@dundermifflin.com']);
+
+        Sanctum::actingAs($user, ['*']);
+
+        $response = $this->json('PUT', '/api/v1/me', [
+            'first_name' => 'Michael',
+            'last_name' => 'Scott',
+            'email' => 'prison.mike@dundermifflin.com',
+        ]);
+
+        $response->assertOk();
+        $response->assertJsonPath('data.attributes.email', 'michael.scott@dundermifflin.com');
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'email' => 'michael.scott@dundermifflin.com',
+        ]);
+    }
+
+    #[Test]
+    public function it_opens_no_browser_session_for_a_request_coming_from_the_interface(): void
+    {
+        $response = $this->withHeader('Referer', config('app.url'))->json('GET', '/api/v1/me');
+
+        $response->assertUnauthorized();
+        $response->assertCookieMissing(config('session.cookie'));
     }
 }

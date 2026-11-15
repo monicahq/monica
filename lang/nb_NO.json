@@ -3034,7 +3034,7 @@
     "Only :count file can be sent at once, so “:name” was left out.|Only :count files can be sent at once, so “:name” was left out.": "Bare :count fil kan sendes om gangen, så «:name» ble utelatt.|Bare :count filer kan sendes om gangen, så «:name» ble utelatt.",
     "Only a draft can be deleted.": "Bare et utkast kan slettes.",
     "Only a featured possession has a place in the order.": "Bare en fremhevet eiendel har en plass i rekkefølgen.",
-    "Only a key holding the administration scope can give it to another key. Create this key from the security settings instead.": "Bare en nøkkel med administrasjonstilgangen kan gi den til en annen nøkkel. Opprett heller denne nøkkelen fra sikkerhetsinnstillingene.",
+    "Only a key holding the `:scope` scope can give it to another key. Create this key from the security settings instead.": "Bare en nøkkel med tilgangen `:scope` kan gi den til en annen nøkkel. Opprett heller denne nøkkelen fra sikkerhetsinnstillingene.",
     "Only a pronunciation has a pronunciation system.": "Bare en uttale har et uttalesystem.",
     "Only administrators see this": "Bare administratorer ser dette",
     "Only administrators see this note. :name is never told it exists.": "Bare administratorer ser dette notatet. :name får aldri vite at det finnes.",

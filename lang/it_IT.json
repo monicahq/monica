@@ -3034,7 +3034,7 @@
     "Only :count file can be sent at once, so “:name” was left out.|Only :count files can be sent at once, so “:name” was left out.": "Si può inviare solo :count file alla volta, quindi «:name» è stato escluso.|Si possono inviare solo :count file alla volta, quindi «:name» è stato escluso.",
     "Only a draft can be deleted.": "Solo una bozza si può eliminare.",
     "Only a featured possession has a place in the order.": "Solo un bene in evidenza ha un posto nell’ordine.",
-    "Only a key holding the administration scope can give it to another key. Create this key from the security settings instead.": "Solo una chiave con l’ambito amministrazione può darlo a un’altra chiave. Crea invece questa chiave dalle impostazioni di sicurezza.",
+    "Only a key holding the `:scope` scope can give it to another key. Create this key from the security settings instead.": "Solo una chiave con l’ambito `:scope` può darlo a un’altra chiave. Crea invece questa chiave dalle impostazioni di sicurezza.",
     "Only a pronunciation has a pronunciation system.": "Solo una pronuncia ha un sistema di pronuncia.",
     "Only administrators see this": "Solo gli amministratori lo vedono",
     "Only administrators see this note. :name is never told it exists.": "Solo gli amministratori vedono questa nota. :name non sa mai che esiste.",

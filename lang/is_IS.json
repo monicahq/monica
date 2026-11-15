@@ -3034,7 +3034,7 @@
     "Only :count file can be sent at once, so “:name” was left out.|Only :count files can be sent at once, so “:name” was left out.": "Aðeins má senda :count skrá í einu, svo „:name“ var sleppt.|Aðeins má senda :count skrár í einu, svo „:name“ var sleppt.",
     "Only a draft can be deleted.": "Aðeins er hægt að eyða drögum.",
     "Only a featured possession has a place in the order.": "Aðeins eign sem er í forgrunni á sæti í röðinni.",
-    "Only a key holding the administration scope can give it to another key. Create this key from the security settings instead.": "Aðeins lykill með stjórnunarheimildina getur gefið hana öðrum lykli. Búðu frekar til þennan lykil í öryggisstillingunum.",
+    "Only a key holding the `:scope` scope can give it to another key. Create this key from the security settings instead.": "Aðeins lykill með heimildina `:scope` getur gefið hana öðrum lykli. Búðu frekar til þennan lykil í öryggisstillingunum.",
     "Only a pronunciation has a pronunciation system.": "Aðeins framburður hefur framburðarkerfi.",
     "Only administrators see this": "Aðeins stjórnendur sjá þetta",
     "Only administrators see this note. :name is never told it exists.": "Aðeins stjórnendur sjá þennan minnispunkt. :name fær aldrei að vita að hann sé til.",
