@@ -267,6 +267,32 @@ class NotifyReminderOccurrenceTest extends TestCase
         $this->assertDatabaseCount('notifications', 0);
     }
 
+    #[Test]
+    public function it_tells_a_deactivated_person_nothing_and_does_not_keep_the_deadline_for_later(): void
+    {
+        $occurrence = $this->dueOccurrence();
+        User::query()->where('account_id', $occurrence->account_id)->update(['is_active' => false]);
+
+        $written = new NotifyReminderOccurrence(occurrence: $occurrence->refresh())->execute();
+
+        $this->assertSame(0, $written);
+        $this->assertDatabaseCount('notifications', 0);
+        $this->assertNotNull($occurrence->refresh()->notifications_created_at);
+        $this->assertNull($occurrence->notified_at);
+    }
+
+    #[Test]
+    public function it_writes_no_email_for_an_address_nobody_confirmed(): void
+    {
+        $occurrence = $this->dueOccurrence();
+        User::query()->where('account_id', $occurrence->account_id)->update(['email_verified_at' => null]);
+
+        $written = new NotifyReminderOccurrence(occurrence: $occurrence->refresh())->execute();
+
+        $this->assertSame(1, $written);
+        $this->assertDatabaseMissing('notifications', ['channel' => NotificationChannelEnum::Email->value]);
+    }
+
     private function dueOccurrence(string $dueAt = '2027-05-12 07:00'): ReminderOccurrence
     {
         CarbonImmutable::setTestNow(CarbonImmutable::parse($dueAt, 'UTC')->addMinute());

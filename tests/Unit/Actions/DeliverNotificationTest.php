@@ -392,6 +392,52 @@ class DeliverNotificationTest extends TestCase
         Queue::assertNothingPushed();
     }
 
+    #[Test]
+    public function a_deactivated_person_is_sent_nothing(): void
+    {
+        NotificationFacade::fake();
+        $notification = $this->notification()->email()->create();
+        $notification->user->update(['is_active' => false]);
+
+        $this->assertFalse(new DeliverNotification(notification: $notification)->execute());
+
+        NotificationFacade::assertNothingSent();
+        $this->assertNotNull($notification->refresh()->failed_at);
+        $this->assertNull($notification->sent_at);
+    }
+
+    #[Test]
+    public function an_email_is_not_sent_to_an_address_nobody_confirmed(): void
+    {
+        NotificationFacade::fake();
+        $notification = $this->notification()->email()->create();
+        $notification->user->update(['email_verified_at' => null]);
+
+        $this->assertFalse(new DeliverNotification(notification: $notification)->execute());
+
+        NotificationFacade::assertNothingSent();
+        $this->assertNotNull($notification->refresh()->failed_at);
+    }
+
+    #[Test]
+    public function it_marks_nothing_sent_while_the_channel_still_has_it_yet_keeps_a_second_sweep_off_it(): void
+    {
+        $notification = $this->notification()->email()->create();
+        $whileSending = null;
+        $secondSweep = null;
+        NotificationFacade::shouldReceive('locale')->andReturnSelf();
+        NotificationFacade::shouldReceive('sendNow')->once()->andReturnUsing(function () use ($notification, &$whileSending, &$secondSweep): void {
+            $whileSending = Notification::query()->findOrFail($notification->id);
+            $secondSweep = new DeliverNotification(notification: Notification::query()->findOrFail($notification->id))->execute();
+        });
+
+        $this->assertTrue(new DeliverNotification(notification: $notification)->execute());
+
+        $this->assertNull($whileSending->sent_at);
+        $this->assertFalse($secondSweep);
+        $this->assertNotNull($notification->refresh()->sent_at);
+    }
+
     /**
      * Stand in for the outbound service, which is not called in a test, and
      * make it refuse the way that service refuses.

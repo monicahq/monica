@@ -36,7 +36,8 @@ use Override;
  * `scheduled_for` and `held_until` are two different facts and are never
  * conflated. The first is when the thing was due; the second is the first moment
  * quiet hours allow it out. They are equal when nothing holds it, which is what
- * lets the sweep be a single comparison.
+ * lets the sweep be a single comparison. A delivery in progress also pushes
+ * `held_until` forward as its claim, so the row is not marked sent before it is.
  *
  * A delivery that failed keeps its row and its reason, because a notification
  * silently dropped is indistinguishable from one that was never scheduled.

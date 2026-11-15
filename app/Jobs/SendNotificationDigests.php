@@ -6,8 +6,6 @@ namespace App\Jobs;
 
 use App\Actions\SendNotificationDigest;
 use App\Enums\NotificationDeliveryModeEnum;
-use App\Enums\NotificationTypeEnum;
-use App\Models\Notification;
 use App\Models\NotificationPreference;
 use Carbon\CarbonImmutable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -20,7 +18,8 @@ use Throwable;
  * Send each account that asked for one its daily summary, at the hour it chose. It runs every hour
  * and decides per account, because that hour is local to them. A time after the last run of a local
  * day is sent by the first run of the next one, and only by that run, so whatever arrives later waits
- * for the next chosen time.
+ * for the next chosen time. Whether a summary already went out since that time is asked channel by
+ * channel, so a channel that refused it is tried again on the next run rather than the next day.
  */
 class SendNotificationDigests implements ShouldBeUnique, ShouldQueue
 {
@@ -40,12 +39,14 @@ class SendNotificationDigests implements ShouldBeUnique, ShouldQueue
             ->with('account.user')
             ->chunkById(200, function ($preferences) use (&$sent, &$folded): void {
                 foreach ($preferences as $preference) {
-                    if (! $this->isDue($preference)) {
+                    $slot = $this->slot($preference);
+
+                    if ($slot === null) {
                         continue;
                     }
 
                     try {
-                        $count = new SendNotificationDigest(account: $preference->account)->execute();
+                        $count = new SendNotificationDigest(account: $preference->account, since: $slot)->execute();
                     } catch (Throwable $e) {
                         report($e);
 
@@ -60,7 +61,7 @@ class SendNotificationDigests implements ShouldBeUnique, ShouldQueue
         Log::info('Sent the daily notification summaries.', ['digests' => $sent, 'notifications' => $folded]);
     }
 
-    private function isDue(NotificationPreference $preference): bool
+    private function slot(NotificationPreference $preference): ?CarbonImmutable
     {
         [$hour, $minute] = array_map(intval(...), explode(':', mb_substr((string) $preference->digest_time, 0, 5)));
 
@@ -72,19 +73,15 @@ class SendNotificationDigests implements ShouldBeUnique, ShouldQueue
         }
 
         if (! $slot->isSameDay($local) && $slot->lessThan($local->subHour())) {
-            return false;
+            return null;
         }
 
         $weekdays = $preference->digest_weekdays;
 
         if (is_array($weekdays) && $weekdays !== [] && ! in_array($slot->dayOfWeek, $weekdays, false)) {
-            return false;
+            return null;
         }
 
-        return ! Notification::query()
-            ->where('account_id', $preference->account_id)
-            ->where('type', NotificationTypeEnum::Digest->value)
-            ->where('created_at', '>=', $slot->utc())
-            ->exists();
+        return $slot->utc();
     }
 }

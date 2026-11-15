@@ -16,6 +16,7 @@ use App\Models\User;
 use App\Notifications\NotificationDigest;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Notifications\ChannelManager;
+use Illuminate\Support\Facades\Exceptions;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
 use PHPUnit\Framework\Attributes\Test;
 use RuntimeException;
@@ -33,7 +34,7 @@ class SendNotificationDigestTest extends TestCase
         [$account, $user] = $this->account();
         Notification::factory()->count(3)->email()->create(['account_id' => $account->id, 'user_id' => $user->id]);
 
-        $folded = new SendNotificationDigest(account: $account)->execute();
+        $folded = new SendNotificationDigest(account: $account, since: now())->execute();
 
         $this->assertSame(3, $folded);
         NotificationFacade::assertSentTimes(NotificationDigest::class, 1);
@@ -48,7 +49,7 @@ class SendNotificationDigestTest extends TestCase
         Notification::factory()->count(2)->create(['account_id' => $account->id, 'user_id' => $user->id]);
         Notification::factory()->count(3)->email()->create(['account_id' => $account->id, 'user_id' => $user->id]);
 
-        $this->assertSame(5, new SendNotificationDigest(account: $account)->execute());
+        $this->assertSame(5, new SendNotificationDigest(account: $account, since: now())->execute());
 
         $summaries = Notification::query()->where('type', NotificationTypeEnum::Digest->value)->get();
 
@@ -66,7 +67,7 @@ class SendNotificationDigestTest extends TestCase
         [$account, $user] = $this->account();
         Notification::factory()->count(2)->create(['account_id' => $account->id, 'user_id' => $user->id]);
 
-        $this->assertSame(2, new SendNotificationDigest(account: $account)->execute());
+        $this->assertSame(2, new SendNotificationDigest(account: $account, since: now())->execute());
 
         NotificationFacade::assertNothingSent();
         $this->assertSame(1, Notification::query()->where('type', NotificationTypeEnum::Digest->value)->count());
@@ -83,7 +84,7 @@ class SendNotificationDigestTest extends TestCase
             ->where('channel', NotificationChannelEnum::Email->value)
             ->update(['is_enabled' => false]);
 
-        $this->assertSame(0, new SendNotificationDigest(account: $account)->execute());
+        $this->assertSame(0, new SendNotificationDigest(account: $account, since: now())->execute());
 
         NotificationFacade::assertNothingSent();
     }
@@ -95,7 +96,7 @@ class SendNotificationDigestTest extends TestCase
         [$account, $user] = $this->account();
         $notifications = Notification::factory()->count(2)->create(['account_id' => $account->id, 'user_id' => $user->id]);
 
-        new SendNotificationDigest(account: $account)->execute();
+        new SendNotificationDigest(account: $account, since: now())->execute();
 
         $digest = Notification::query()->where('type', NotificationTypeEnum::Digest->value)->firstOrFail();
 
@@ -113,7 +114,7 @@ class SendNotificationDigestTest extends TestCase
         NotificationFacade::fake();
         [$account] = $this->account();
 
-        $this->assertSame(0, new SendNotificationDigest(account: $account)->execute());
+        $this->assertSame(0, new SendNotificationDigest(account: $account, since: now())->execute());
 
         NotificationFacade::assertNothingSent();
         $this->assertDatabaseCount('notifications', 0);
@@ -129,7 +130,7 @@ class SendNotificationDigestTest extends TestCase
             'user_id' => $user->id,
         ]);
 
-        $this->assertSame(0, new SendNotificationDigest(account: $account)->execute());
+        $this->assertSame(0, new SendNotificationDigest(account: $account, since: now())->execute());
     }
 
     #[Test]
@@ -138,9 +139,9 @@ class SendNotificationDigestTest extends TestCase
         NotificationFacade::fake();
         [$account, $user] = $this->account();
         Notification::factory()->create(['account_id' => $account->id, 'user_id' => $user->id]);
-        new SendNotificationDigest(account: $account)->execute();
+        new SendNotificationDigest(account: $account, since: now())->execute();
 
-        $this->assertSame(0, new SendNotificationDigest(account: $account)->execute());
+        $this->assertSame(0, new SendNotificationDigest(account: $account, since: now())->execute());
         $this->assertSame(1, Notification::query()->where('type', NotificationTypeEnum::Digest->value)->count());
     }
 
@@ -153,7 +154,7 @@ class SendNotificationDigestTest extends TestCase
         $answered = Notification::factory()->email()->create(['account_id' => $account->id, 'user_id' => $user->id]);
         $answered->notifiable->update(['answer' => ReminderAnswerEnum::Remembered, 'answered_at' => now()]);
 
-        $folded = new SendNotificationDigest(account: $account)->execute();
+        $folded = new SendNotificationDigest(account: $account, since: now())->execute();
 
         $this->assertSame(2, $folded);
         $this->assertNull($answered->refresh()->digest_id);
@@ -166,7 +167,7 @@ class SendNotificationDigestTest extends TestCase
         [$account, $user] = $this->account();
         $waiting = Notification::factory()->email()->create(['account_id' => $account->id, 'user_id' => $user->id]);
 
-        new SendNotificationDigest(account: $account)->execute();
+        new SendNotificationDigest(account: $account, since: now())->execute();
 
         $this->assertNotNull($waiting->notifiable->refresh()->notified_at);
     }
@@ -174,18 +175,90 @@ class SendNotificationDigestTest extends TestCase
     #[Test]
     public function a_summary_the_channel_refuses_leaves_the_notifications_waiting(): void
     {
+        Exceptions::fake();
         $this->app->make(ChannelManager::class)->extend('mail', fn (): RefusingChannel => new RefusingChannel);
         [$account, $user] = $this->account();
         $waiting = Notification::factory()->email()->create(['account_id' => $account->id, 'user_id' => $user->id]);
 
-        $this->assertThrows(
-            fn () => new SendNotificationDigest(account: $account)->execute(),
-            RuntimeException::class,
-        );
+        $this->assertSame(0, new SendNotificationDigest(account: $account, since: now())->execute());
 
+        Exceptions::assertReported(RuntimeException::class);
         $this->assertDatabaseHas('notifications', ['id' => $waiting->id, 'digest_id' => null, 'sent_at' => null]);
         $this->assertNull($waiting->notifiable->refresh()->notified_at);
         $this->assertSame(0, Notification::query()->where('type', NotificationTypeEnum::Digest->value)->count());
+    }
+
+    #[Test]
+    public function a_channel_that_refuses_its_summary_does_not_stop_the_next_channel(): void
+    {
+        Exceptions::fake();
+        $this->app->make(ChannelManager::class)->extend('mail', fn (): RefusingChannel => new RefusingChannel);
+        [$account, $user] = $this->account();
+        Notification::factory()->email()->create(['account_id' => $account->id, 'user_id' => $user->id]);
+        Notification::factory()->count(2)->create(['account_id' => $account->id, 'user_id' => $user->id]);
+
+        $this->assertSame(2, new SendNotificationDigest(account: $account, since: now())->execute());
+
+        $this->assertSame(1, Notification::query()->where('type', NotificationTypeEnum::Digest->value)->count());
+    }
+
+    #[Test]
+    public function it_sends_nothing_when_another_run_took_the_waiting_notifications_first(): void
+    {
+        NotificationFacade::fake();
+        [$account, $user] = $this->account();
+        Notification::factory()->count(2)->email()->create(['account_id' => $account->id, 'user_id' => $user->id]);
+        Notification::retrieved(function (Notification $notification): void {
+            Notification::query()->whereKey($notification->id)->update(['sent_at' => now()]);
+        });
+
+        $this->assertSame(0, new SendNotificationDigest(account: $account, since: now())->execute());
+
+        NotificationFacade::assertNothingSent();
+        $this->assertSame(0, Notification::query()->where('type', NotificationTypeEnum::Digest->value)->count());
+    }
+
+    #[Test]
+    public function it_sends_no_second_summary_on_a_channel_already_sent_one_since_the_chosen_time(): void
+    {
+        NotificationFacade::fake();
+        [$account, $user] = $this->account();
+        Notification::factory()->email()->create(['account_id' => $account->id, 'user_id' => $user->id]);
+        new SendNotificationDigest(account: $account, since: now())->execute();
+        Notification::factory()->email()->create(['account_id' => $account->id, 'user_id' => $user->id]);
+
+        $this->assertSame(0, new SendNotificationDigest(account: $account, since: now()->subHour())->execute());
+
+        NotificationFacade::assertSentTimes(NotificationDigest::class, 1);
+    }
+
+    #[Test]
+    public function a_deactivated_person_gets_no_summary_and_nothing_is_kept_for_their_return(): void
+    {
+        NotificationFacade::fake();
+        [$account, $user] = $this->account();
+        $waiting = Notification::factory()->email()->create(['account_id' => $account->id, 'user_id' => $user->id]);
+        $user->update(['is_active' => false]);
+
+        $this->assertSame(0, new SendNotificationDigest(account: $account->refresh(), since: now())->execute());
+
+        NotificationFacade::assertNothingSent();
+        $this->assertNotNull($waiting->refresh()->failed_at);
+    }
+
+    #[Test]
+    public function a_summary_is_not_emailed_to_an_address_nobody_confirmed(): void
+    {
+        NotificationFacade::fake();
+        [$account, $user] = $this->account();
+        $waiting = Notification::factory()->email()->create(['account_id' => $account->id, 'user_id' => $user->id]);
+        Notification::factory()->create(['account_id' => $account->id, 'user_id' => $user->id]);
+        $user->update(['email_verified_at' => null]);
+
+        $this->assertSame(1, new SendNotificationDigest(account: $account->refresh(), since: now())->execute());
+
+        NotificationFacade::assertNothingSent();
+        $this->assertNotNull($waiting->refresh()->failed_at);
     }
 
     /** @return array{0: Account, 1: User} */

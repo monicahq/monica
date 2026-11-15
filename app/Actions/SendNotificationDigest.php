@@ -11,8 +11,10 @@ use App\Models\NotificationChannel;
 use App\Models\ReminderOccurrence;
 use App\Models\User;
 use App\Notifications\NotificationDigest;
+use Carbon\CarbonInterface;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 /**
  * Fold everything an account has waiting into one message per channel.
@@ -21,12 +23,20 @@ use Illuminate\Support\Facades\DB;
  * them, and a channel that refused it would take the others down with it. So
  * each channel gets its own summary row, folding the notifications that were
  * waiting on that channel and nothing else. The summary goes out before its
- * writes are kept, so a channel that refuses it leaves the notifications waiting.
+ * writes are kept, so a channel that refuses it leaves the notifications waiting,
+ * and the next run of the same day tries that channel again.
+ *
+ * The waiting notifications are claimed before anything goes out, so a second
+ * run that read them at the same moment finds them taken and sends nothing.
+ * Somebody who may not be reached on a channel, because they were deactivated
+ * or never confirmed their email address, has what waits there abandoned rather
+ * than kept for the day they come back.
  */
 class SendNotificationDigest
 {
     public function __construct(
         private readonly Account $account,
+        private readonly CarbonInterface $since,
     ) {}
 
     public function execute(): int
@@ -40,31 +50,94 @@ class SendNotificationDigest
         $folded = 0;
 
         foreach ($this->channels() as $channel) {
+            if ($this->alreadySent($channel)) {
+                continue;
+            }
+
             $waiting = $this->waitingFor($user, $channel);
 
             if ($waiting->isEmpty()) {
                 continue;
             }
 
-            DB::transaction(function () use ($user, $channel, $waiting): void {
-                $digest = $this->write($user, $channel, $waiting);
+            if (! $channel->mayReach($user)) {
+                $this->abandon($waiting);
 
-                Notification::query()
-                    ->whereIn('id', $waiting->pluck('id'))
-                    ->update(['digest_id' => $digest->id, 'sent_at' => now(), 'updated_at' => now()]);
+                continue;
+            }
 
-                ReminderOccurrence::query()
-                    ->whereIn('id', $waiting->where('notifiable_type', ReminderOccurrence::class)->pluck('notifiable_id'))
-                    ->whereNull('notified_at')
-                    ->update(['notified_at' => now()]);
-
-                $this->hand($user, $channel, $digest);
-            });
-
-            $folded += $waiting->count();
+            try {
+                $folded += $this->fold($user, $channel, $waiting);
+            } catch (Throwable $e) {
+                report($e);
+            }
         }
 
         return $folded;
+    }
+
+    /** @param  Collection<int, Notification>  $waiting */
+    private function fold(User $user, NotificationChannel $channel, Collection $waiting): int
+    {
+        DB::beginTransaction();
+
+        try {
+            $claimed = Notification::query()
+                ->whereIn('id', $waiting->pluck('id'))
+                ->whereNull('sent_at')
+                ->whereNull('failed_at')
+                ->whereNull('digest_id')
+                ->update(['sent_at' => now(), 'updated_at' => now()]);
+
+            if ($claimed !== $waiting->count()) {
+                DB::rollBack();
+
+                return 0;
+            }
+
+            $digest = $this->write($user, $channel, $waiting);
+
+            Notification::query()
+                ->whereIn('id', $waiting->pluck('id'))
+                ->update(['digest_id' => $digest->id]);
+
+            ReminderOccurrence::query()
+                ->whereIn('id', $waiting->where('notifiable_type', ReminderOccurrence::class)->pluck('notifiable_id'))
+                ->whereNull('notified_at')
+                ->update(['notified_at' => now()]);
+
+            $this->hand($user, $channel, $digest);
+
+            DB::commit();
+        } catch (Throwable $e) {
+            DB::rollBack();
+
+            throw $e;
+        }
+
+        return $waiting->count();
+    }
+
+    private function alreadySent(NotificationChannel $channel): bool
+    {
+        return Notification::query()
+            ->where('account_id', $this->account->id)
+            ->where('type', NotificationTypeEnum::Digest->value)
+            ->where('channel', $channel->channel->value)
+            ->where('created_at', '>=', $this->since)
+            ->exists();
+    }
+
+    /** @param  Collection<int, Notification>  $waiting */
+    private function abandon(Collection $waiting): void
+    {
+        Notification::query()
+            ->whereIn('id', $waiting->pluck('id'))
+            ->update([
+                'failed_at' => now(),
+                'failure_reason' => __('The person it is for cannot be reached on this channel.'),
+                'updated_at' => now(),
+            ]);
     }
 
     /** @return list<NotificationChannel> */

@@ -28,10 +28,14 @@ use Vonage\Client\Exception\ServerException as VonageServerException;
  * up either way.
  *
  * The row is claimed before it is handed over, so two sweeps that load it at
- * once send it once. A refusal gives the claim back.
+ * once send it once. The claim holds the row back for a while rather than
+ * marking it sent, so a worker that dies in the middle of the send leaves it
+ * to be tried again once the claim lapses. A refusal gives the claim back.
  */
 class DeliverNotification
 {
+    private const int CLAIM_MINUTES = 15;
+
     public function __construct(
         private readonly Notification $notification,
     ) {}
@@ -56,6 +60,12 @@ class DeliverNotification
             return false;
         }
 
+        if ($this->channelRow()?->mayReach($this->notification->user) === false) {
+            $this->abandon(__('The person it is for cannot be reached on this channel.'));
+
+            return false;
+        }
+
         if (! $this->claim()) {
             return false;
         }
@@ -63,7 +73,6 @@ class DeliverNotification
         try {
             $this->hand();
         } catch (Throwable $e) {
-            $this->notification->sent_at = null;
             $this->stumble($e);
 
             return false;
@@ -84,18 +93,19 @@ class DeliverNotification
 
     private function claim(): bool
     {
-        $claimedAt = now();
+        $heldUntil = now()->addMinutes(self::CLAIM_MINUTES);
 
         $claimed = Notification::query()
             ->whereKey($this->notification->id)
             ->whereNull('sent_at')
             ->whereNull('failed_at')
             ->whereNull('digest_id')
-            ->update(['sent_at' => $claimedAt]) === 1;
+            ->where('held_until', '<=', now())
+            ->update(['held_until' => $heldUntil]) === 1;
 
         if ($claimed) {
-            $this->notification->sent_at = $claimedAt;
-            $this->notification->syncOriginalAttribute('sent_at');
+            $this->notification->held_until = $heldUntil;
+            $this->notification->syncOriginalAttribute('held_until');
         }
 
         return $claimed;
@@ -170,6 +180,7 @@ class DeliverNotification
             return;
         }
 
+        $this->notification->held_until = now();
         $this->notification->save();
     }
 

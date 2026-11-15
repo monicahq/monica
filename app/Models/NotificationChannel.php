@@ -196,6 +196,20 @@ class NotificationChannel extends Model
     }
 
     /**
+     * Whether this person may be sent anything on this channel. Somebody who
+     * has been deactivated gets nothing on any channel, and an email goes only
+     * to an address its owner has confirmed.
+     */
+    public function mayReach(User $user): bool
+    {
+        if (! $user->is_active) {
+            return false;
+        }
+
+        return $this->channel !== NotificationChannelEnum::Email || $user->hasVerifiedEmail();
+    }
+
+    /**
      * Whether a notification should be written for this channel at all.
      */
     public function mayCarry(): bool

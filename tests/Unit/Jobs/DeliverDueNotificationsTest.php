@@ -174,6 +174,23 @@ class DeliverDueNotificationsTest extends TestCase
         $this->assertNotNull($next->refresh()->notifications_created_at);
     }
 
+    #[Test]
+    public function a_notification_that_fails_does_not_stop_the_next_one(): void
+    {
+        Exceptions::fake();
+        NotificationFacade::fake();
+        $failing = $this->dueOccurrence();
+        $next = $this->dueOccurrence();
+        Notification::saving(fn (Notification $notification) => $notification->notifiable_id === $failing->id
+            ? throw new RuntimeException('Lost the connection.')
+            : null);
+
+        new DeliverDueNotifications()->handle();
+
+        Exceptions::assertReported(RuntimeException::class);
+        $this->assertSame(0, Notification::query()->where('notifiable_id', $next->id)->whereNull('sent_at')->count());
+    }
+
     private function dueOccurrence(bool $due = true, bool $justNow = false): ReminderOccurrence
     {
         $reminder = Reminder::factory()->create();

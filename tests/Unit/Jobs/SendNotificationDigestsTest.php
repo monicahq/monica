@@ -121,6 +121,24 @@ class SendNotificationDigestsTest extends TestCase
     }
 
     #[Test]
+    public function a_channel_that_refused_the_summary_is_tried_again_on_the_next_run_of_the_day(): void
+    {
+        Exceptions::fake();
+        CarbonImmutable::setTestNow('2027-05-12 17:00:00');
+        $this->app->make(ChannelManager::class)->extend('mail', fn (): RefusingChannel => new RefusingChannel);
+        $account = $this->accountWaiting();
+        Notification::factory()->email()->create(['account_id' => $account->id, 'user_id' => $account->user->id]);
+        new SendNotificationDigests()->handle();
+
+        NotificationFacade::fake();
+        CarbonImmutable::setTestNow('2027-05-12 18:00:00');
+        new SendNotificationDigests()->handle();
+
+        $this->assertSame(2, Notification::query()->where('type', NotificationTypeEnum::Digest->value)->count());
+        $this->assertDatabaseHas('notifications', ['type' => NotificationTypeEnum::Digest->value, 'channel' => 'email']);
+    }
+
+    #[Test]
     public function it_sends_a_summary_chosen_after_the_last_run_of_the_day_at_the_first_run_of_the_next(): void
     {
         NotificationFacade::fake();

@@ -66,7 +66,11 @@ class DeliverDueNotifications implements ShouldBeUnique, ShouldQueue
             ->with('user', 'account', 'notifiable.reminder.remindable')
             ->chunkById(200, function ($notifications) use (&$sent): void {
                 foreach ($notifications as $notification) {
-                    $sent += new DeliverNotification(notification: $notification)->execute() ? 1 : 0;
+                    try {
+                        $sent += new DeliverNotification(notification: $notification)->execute() ? 1 : 0;
+                    } catch (Throwable $e) {
+                        report($e);
+                    }
                 }
             });
 

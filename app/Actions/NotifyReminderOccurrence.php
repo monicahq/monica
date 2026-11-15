@@ -53,27 +53,29 @@ class NotifyReminderOccurrence
 
         $heldUntil = QuietHours::release($preference, $this->occurrence->scheduled_for);
 
-        foreach ($this->channels() as $channel) {
+        foreach ($this->channels($user) as $channel) {
             $this->written += $this->rowFor($user, $channel->channel, $heldUntil);
         }
     }
 
     /**
-     * The channels the account has switched on and finished setting up. A
-     * channel switched on but still missing its destination, its credential or
-     * its proof carries nothing, and writing a row for it would only produce a
-     * failure with nothing behind it.
+     * The channels the account has switched on and finished setting up, and on
+     * which the person may be reached. A channel switched on but still missing
+     * its destination, its credential or its proof carries nothing, and writing
+     * a row for it would only produce a failure with nothing behind it. A
+     * deadline nobody may be told about is still marked as dealt with, so
+     * reactivating somebody does not send everything they missed at once.
      *
      * @return list<NotificationChannel>
      */
-    private function channels(): array
+    private function channels(User $user): array
     {
         return NotificationChannel::query()
             ->where('account_id', $this->occurrence->account_id)
             ->where('is_enabled', true)
             ->orderBy('id')
             ->get()
-            ->filter(fn (NotificationChannel $channel): bool => $channel->mayCarry())
+            ->filter(fn (NotificationChannel $channel): bool => $channel->mayCarry() && $channel->mayReach($user))
             ->values()
             ->all();
     }
