@@ -10,11 +10,11 @@ use App\Enums\EmailType;
 use App\Models\User;
 use App\Notifications\Messages\MailMessage;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Notifications\Notification;
 use Override;
 
-class AccessEnded extends Notification implements HasEmailType, ShouldQueue
+class AccessEnded extends Notification implements HasEmailType, ShouldQueueAfterCommit
 {
     use Queueable;
 

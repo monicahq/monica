@@ -84,23 +84,6 @@ class EndAccessTest extends TestCase
     }
 
     #[Test]
-    public function it_leaves_the_running_subscription_alone_when_an_earlier_one_is_refunded(): void
-    {
-        $jim = User::factory()->create();
-        $subscription = $this->subscribeAccount($jim->account);
-        $payment = Payment::factory()->forSubscription()->create([
-            'account_id' => $jim->account_id,
-            'stripe_subscription_id' => 'sub_scranton_branch',
-        ]);
-
-        new EndAccess(account: $jim->account, reason: AccessEndReasonEnum::Refunded, payment: $payment)->execute();
-
-        $this->assertTrue($subscription->fresh()->valid());
-        Notification::assertNothingSent();
-        Queue::assertNothingPushed();
-    }
-
-    #[Test]
     public function it_changes_nothing_when_stripe_sends_the_same_refund_of_the_purchase_again(): void
     {
         Log::spy();

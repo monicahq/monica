@@ -300,7 +300,7 @@ count for every shipped locale, and a locale missing from that table fails the s
 - Resources/Transformers: plural form + `Resource` or `Transformer` suffix.
 - Jobs: describe the action performed.
 - Events: use tense to indicate timing (before vs. after).
-- Listeners: named after what they do, with no suffix (`RecordEmailSent`, `HandleStripeRefund`).
+- Listeners: named after what they do, with no suffix (`RecordEmailSent`, `HandleStripeEvent`).
 - Commands: add a `Command` suffix to avoid collisions.
 - Enums: singular, with the `Enum` suffix: `GenderEnum`, `UserActionEnum`, `FieldTypeEnum`. Every
   enum in `app/Enums` is named that way except the older `EmailType`.

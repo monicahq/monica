@@ -143,6 +143,20 @@ A change is done when all of these hold. CI runs the tests and PHPStan, so passi
 - `vendor/bin/phpstan analyse --no-progress` reports nothing.
 - `vendor/bin/pint --dirty --format agent` leaves nothing to fix.
 
+## Agent skills
+
+### Issue tracker
+
+Issues live in GitHub Issues on monicahq/erica, used through `gh`. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+The five default labels (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`). Only `wontfix` exists on GitHub so far. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single context, using the existing glossary, constitution and specs rather than `GLOSSARY.md` and `docs/adr/`. See `docs/agents/domain.md`.
+
 # Laravel Boost Guidelines
 
 NOTE: The following guidelines are auto updated regularly. Do not edit this section manually.
