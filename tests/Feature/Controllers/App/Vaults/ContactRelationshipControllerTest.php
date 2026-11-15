@@ -266,6 +266,22 @@ class ContactRelationshipControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_refuses_a_relationship_whose_other_side_was_deleted(): void
+    {
+        $user = User::factory()->create();
+        $relationship = $this->relationshipOf($user);
+        $relationship->contactB->delete();
+
+        $this->actingAs($user)
+            ->get(route('contacts.relationships.edit', [
+                'vault' => $relationship->vault,
+                'contact' => $relationship->contactA,
+                'relationship' => $relationship,
+            ]))
+            ->assertStatus(404);
+    }
+
+    #[Test]
     public function it_removes_a_relationship(): void
     {
         Queue::fake();

@@ -56,6 +56,23 @@ class RelationshipTest extends TestCase
     }
 
     #[Test]
+    public function it_leaves_out_a_relationship_whose_other_side_was_deleted_until_that_contact_comes_back(): void
+    {
+        $relationship = Relationship::factory()->create();
+        $michael = Contact::query()->findOrFail($relationship->contact_a_id);
+        $jan = Contact::query()->findOrFail($relationship->contact_b_id);
+
+        $jan->delete();
+
+        $this->assertCount(0, Relationship::query()->forContact($michael)->get());
+        $this->assertCount(1, Relationship::query()->forContact($jan)->get());
+
+        $jan->restore();
+
+        $this->assertCount(1, Relationship::query()->forContact($michael)->get());
+    }
+
+    #[Test]
     public function it_excludes_a_relationship_in_another_vault(): void
     {
         $account = Account::factory()->create();

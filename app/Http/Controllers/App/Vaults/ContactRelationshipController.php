@@ -91,7 +91,7 @@ class ContactRelationshipController extends Controller
     {
         abort_unless($contact->isReachableThrough($request->user(), $vault), 404);
         abort_unless($relationship->vault_id === $vault->id, 404);
-        abort_unless($relationship->involves($contact), 404);
+        abort_unless(Relationship::query()->forContact($contact)->whereKey($relationship->id)->exists(), 404);
 
         return view('app.vaults.contacts.relationships.edit', [
             'viewModel' => new RelationshipEditViewModel(
@@ -107,7 +107,7 @@ class ContactRelationshipController extends Controller
     {
         abort_unless($contact->isReachableThrough($request->user(), $vault), 404);
         abort_unless($relationship->vault_id === $vault->id, 404);
-        abort_unless($relationship->involves($contact), 404);
+        abort_unless(Relationship::query()->forContact($contact)->whereKey($relationship->id)->exists(), 404);
 
         $validated = $request->validate([
             'relationship' => ['required', 'string', 'regex:/^\d+-[ab]$/'],
@@ -156,7 +156,7 @@ class ContactRelationshipController extends Controller
     {
         abort_unless($contact->isReachableThrough($request->user(), $vault), 404);
         abort_unless($relationship->vault_id === $vault->id, 404);
-        abort_unless($relationship->involves($contact), 404);
+        abort_unless(Relationship::query()->forContact($contact)->whereKey($relationship->id)->exists(), 404);
 
         new DestroyRelationship(
             user: $request->user(),

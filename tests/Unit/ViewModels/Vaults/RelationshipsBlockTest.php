@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Vaults;
 
+use App\Actions\DestroyContact;
 use App\Enums\DefaultFieldEnum;
 use App\Enums\RelationshipTypeEnum;
 use App\Models\Contact;
@@ -253,6 +254,23 @@ class RelationshipsBlockTest extends TestCase
             route('contacts.relationships.new', ['vault' => $vault, 'contact' => $michael, 'type' => $parent->id]),
             $categories[0]['addUrl'],
         );
+    }
+
+    #[Test]
+    public function it_leaves_out_somebody_who_was_deleted(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $michael = $this->contactOn($vault, 'Michael', 'Scott');
+        $jan = $this->contactOn($vault, 'Jan', 'Levinson');
+        $this->link($vault, $michael, $jan, $this->typeOf($user, RelationshipTypeEnum::Partner, $this->categoryOf($user, 'Love', 1)));
+
+        new DestroyContact(user: $user, contact: $jan)->execute();
+
+        $block = new RelationshipsBlock(vault: $vault, contact: $michael->fresh());
+
+        $this->assertSame([], $block->groups());
+        $this->assertSame(0, $block->total());
     }
 
     private function link(Vault $vault, Contact $one, Contact $other, RelationshipType $type): Relationship

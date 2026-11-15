@@ -19,8 +19,12 @@ use App\Models\FieldValue;
 use App\Models\File;
 use App\Models\Group;
 use App\Models\GroupMember;
+use App\Models\LifeEvent;
+use App\Models\LifeEventParticipant;
 use App\Models\Possession;
 use App\Models\PossessionLoan;
+use App\Models\Relationship;
+use App\Models\RelationshipType;
 use App\Models\Reminder;
 use App\Models\SectionVersion;
 use App\Models\ShareLink;
@@ -373,6 +377,47 @@ class UndoContactMergeTest extends TestCase
         $this->assertNull($mine->role);
         $this->assertNotSoftDeleted($theirs);
         $this->assertDatabaseHas('group_members', ['id' => $theirs->id, 'contact_id' => $james->id, 'role' => 'Member']);
+    }
+
+    #[Test]
+    public function it_gives_the_relationships_back(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        [$jim, $james] = $this->twoContactsOf($user);
+        $pam = Contact::factory()->create(['account_id' => $jim->account_id, 'vault_id' => $jim->vault_id, 'first_name' => 'Pam']);
+        $spouse = RelationshipType::factory()->create(['account_id' => $user->account_id, 'is_symmetric' => true]);
+        $moved = Relationship::factory()->create(['vault_id' => $jim->vault_id, 'relationship_type_id' => $spouse->id, 'contact_a_id' => $pam->id, 'contact_b_id' => $james->id]);
+        $between = Relationship::factory()->create(['vault_id' => $jim->vault_id, 'relationship_type_id' => $spouse->id, 'contact_a_id' => $jim->id, 'contact_b_id' => $james->id]);
+        $merge = new MergeContacts(user: $user, kept: $jim, absorbed: $james)->execute();
+
+        new UndoContactMerge(user: $user, merge: $merge)->execute();
+
+        $this->assertDatabaseHas('relationships', ['id' => $moved->id, 'contact_a_id' => $pam->id, 'contact_b_id' => $james->id]);
+        $this->assertNotSoftDeleted($between);
+    }
+
+    #[Test]
+    public function it_gives_the_life_event_participations_back(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        [$jim, $james] = $this->twoContactsOf($user);
+        $dundies = LifeEvent::factory()->create(['vault_id' => $jim->vault_id]);
+        $wedding = LifeEvent::factory()->create(['vault_id' => $jim->vault_id]);
+        $moved = LifeEventParticipant::factory()->create(['life_event_id' => $dundies->id, 'participant_id' => $james->id]);
+        LifeEventParticipant::factory()->create(['life_event_id' => $wedding->id, 'participant_id' => $jim->id]);
+        LifeEventParticipant::factory()->create(['life_event_id' => $wedding->id, 'participant_id' => $james->id, 'role' => 'Groom']);
+        $merge = new MergeContacts(user: $user, kept: $jim, absorbed: $james)->execute();
+
+        new UndoContactMerge(user: $user, merge: $merge)->execute();
+
+        $this->assertDatabaseHas('life_event_participants', ['id' => $moved->id, 'participant_id' => $james->id]);
+        $this->assertDatabaseHas('life_event_participants', ['life_event_id' => $wedding->id, 'participant_id' => $james->id, 'role' => 'Groom']);
+        $this->assertSame(2, $james->fresh()->life_event_count);
+        $this->assertSame(1, $jim->fresh()->life_event_count);
     }
 
     /** @return array{0: Contact, 1: Contact} */

@@ -17,7 +17,9 @@ use App\Models\FieldValue;
 use App\Models\FieldValueRow;
 use App\Models\Group;
 use App\Models\GroupMember;
+use App\Models\LifeEventParticipant;
 use App\Models\PossessionLoan;
+use App\Models\Relationship;
 use App\Models\Reminder;
 use App\Models\ShareLink;
 use App\Models\User;
@@ -32,6 +34,8 @@ use Illuminate\Support\Facades\DB;
  */
 class UndoContactMerge
 {
+    use RecountsLifeEvents;
+
     private Contact $kept;
 
     private Contact $absorbed;
@@ -53,6 +57,7 @@ class UndoContactMerge
             }
 
             $this->showTheAbsorbedNameAgain();
+            $this->recountLifeEventsOf([$this->kept->id, $this->absorbed->id]);
 
             $this->merge->undone_at = now();
             $this->merge->undone_by_user_id = $this->user->id;
@@ -105,6 +110,10 @@ class UndoContactMerge
             'share_link_moved' => $this->giveTheShareLinkBack($entry),
             'membership_moved' => $this->giveTheMembershipBack($entry),
             'loan_moved' => $this->giveTheLoanBack($entry),
+            'relationship_moved' => $this->giveTheRelationshipBack($entry),
+            'relationship_dropped' => Relationship::query()->onlyTrashed()->whereKey($entry['id'])->first()?->restore(),
+            'participation_moved' => LifeEventParticipant::query()->whereKey($entry['id'])->update(['participant_id' => $this->absorbed->id]),
+            'participation_dropped' => LifeEventParticipant::query()->create([...$entry['attributes'], 'participant_type' => $this->absorbed->getMorphClass(), 'participant_id' => $this->absorbed->id]),
             'membership_folded' => $this->unfoldTheMembership($entry),
             'avatar_replaced' => $this->putTheOldAvatarBack($entry),
             'name_representation_moved' => $this->giveTheNameBack($entry),
@@ -246,6 +255,20 @@ class UndoContactMerge
         PossessionLoan::query()
             ->whereKey($entry['id'])
             ->update(['contact_id' => $this->absorbed->id]);
+    }
+
+    /** @param array<string, mixed> $entry */
+    private function giveTheRelationshipBack(array $entry): void
+    {
+        $relationship = Relationship::query()->withTrashed()->find($entry['id']);
+
+        if ($relationship === null) {
+            return;
+        }
+
+        $relationship->contact_a_id = $entry['contact_a_id'];
+        $relationship->contact_b_id = $entry['contact_b_id'];
+        $relationship->save();
     }
 
     /** @param array<string, mixed> $entry */

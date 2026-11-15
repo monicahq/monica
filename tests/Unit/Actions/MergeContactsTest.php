@@ -23,9 +23,13 @@ use App\Models\FieldValue;
 use App\Models\File;
 use App\Models\Group;
 use App\Models\GroupMember;
+use App\Models\LifeEvent;
+use App\Models\LifeEventParticipant;
 use App\Models\Possession;
 use App\Models\PossessionLoan;
 use App\Models\RecordSnapshot;
+use App\Models\Relationship;
+use App\Models\RelationshipType;
 use App\Models\Reminder;
 use App\Models\SectionVersion;
 use App\Models\ShareLink;
@@ -572,6 +576,71 @@ class MergeContactsTest extends TestCase
         new MergeContacts(user: $user, kept: $jim, absorbed: $james)->execute();
 
         $this->assertEquals('2009-10-17', $mine->fresh()->joined_on->format('Y-m-d'));
+    }
+
+    #[Test]
+    public function it_moves_the_relationships_of_the_absorbed_contact_to_the_survivor(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        [$jim, $james] = $this->twoContactsOf($user);
+        $pam = Contact::factory()->create(['account_id' => $jim->account_id, 'vault_id' => $jim->vault_id, 'first_name' => 'Pam']);
+        $spouse = RelationshipType::factory()->create(['account_id' => $user->account_id, 'is_symmetric' => true]);
+        $relationship = Relationship::factory()->create([
+            'vault_id' => $jim->vault_id,
+            'relationship_type_id' => $spouse->id,
+            'contact_a_id' => $pam->id,
+            'contact_b_id' => $james->id,
+        ]);
+
+        $merge = new MergeContacts(user: $user, kept: $jim, absorbed: $james)->execute();
+
+        $this->assertDatabaseHas('relationships', ['id' => $relationship->id, 'contact_a_id' => $pam->id, 'contact_b_id' => $jim->id, 'deleted_at' => null]);
+        $this->assertContains(['kind' => 'relationship_moved', 'id' => $relationship->id, 'contact_a_id' => $pam->id, 'contact_b_id' => $james->id], $merge->ledger);
+    }
+
+    #[Test]
+    public function it_drops_a_relationship_between_the_two_contacts_and_one_the_survivor_already_has(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        [$jim, $james] = $this->twoContactsOf($user);
+        $pam = Contact::factory()->create(['account_id' => $jim->account_id, 'vault_id' => $jim->vault_id, 'first_name' => 'Pam']);
+        $spouse = RelationshipType::factory()->create(['account_id' => $user->account_id, 'is_symmetric' => true]);
+        $mine = Relationship::factory()->create(['vault_id' => $jim->vault_id, 'relationship_type_id' => $spouse->id, 'contact_a_id' => $jim->id, 'contact_b_id' => $pam->id]);
+        $twin = Relationship::factory()->create(['vault_id' => $jim->vault_id, 'relationship_type_id' => $spouse->id, 'contact_a_id' => $pam->id, 'contact_b_id' => $james->id]);
+        $between = Relationship::factory()->create(['vault_id' => $jim->vault_id, 'relationship_type_id' => $spouse->id, 'contact_a_id' => $jim->id, 'contact_b_id' => $james->id]);
+
+        $merge = new MergeContacts(user: $user, kept: $jim, absorbed: $james)->execute();
+
+        $this->assertNotSoftDeleted($mine);
+        $this->assertSoftDeleted($twin);
+        $this->assertSoftDeleted($between);
+        $this->assertContains(['kind' => 'relationship_dropped', 'id' => $twin->id], $merge->ledger);
+        $this->assertContains(['kind' => 'relationship_dropped', 'id' => $between->id], $merge->ledger);
+    }
+
+    #[Test]
+    public function it_moves_the_life_event_participations_of_the_absorbed_contact_to_the_survivor(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        [$jim, $james] = $this->twoContactsOf($user);
+        $dundies = LifeEvent::factory()->create(['vault_id' => $jim->vault_id]);
+        $wedding = LifeEvent::factory()->create(['vault_id' => $jim->vault_id]);
+        $moved = LifeEventParticipant::factory()->create(['life_event_id' => $dundies->id, 'participant_id' => $james->id]);
+        LifeEventParticipant::factory()->create(['life_event_id' => $wedding->id, 'participant_id' => $jim->id]);
+        $dropped = LifeEventParticipant::factory()->create(['life_event_id' => $wedding->id, 'participant_id' => $james->id, 'role' => 'Groom']);
+
+        $merge = new MergeContacts(user: $user, kept: $jim, absorbed: $james)->execute();
+
+        $this->assertDatabaseHas('life_event_participants', ['id' => $moved->id, 'participant_id' => $jim->id]);
+        $this->assertModelMissing($dropped);
+        $this->assertSame(2, $jim->fresh()->life_event_count);
+        $this->assertContains(['kind' => 'participation_moved', 'id' => $moved->id], $merge->ledger);
     }
 
     /** @return array{0: Contact, 1: Contact} */

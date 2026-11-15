@@ -16,8 +16,10 @@ use App\Models\ContactNameRepresentation;
 use App\Models\FieldValue;
 use App\Models\Group;
 use App\Models\GroupMember;
+use App\Models\LifeEventParticipant;
 use App\Models\PossessionLoan;
 use App\Models\RecordSnapshot;
+use App\Models\Relationship;
 use App\Models\Reminder;
 use App\Models\ShareLink;
 use App\Models\User;
@@ -33,6 +35,8 @@ use Illuminate\Validation\ValidationException;
  */
 class MergeContacts
 {
+    use RecountsLifeEvents;
+
     private ContactMerge $merge;
 
     private RecordSnapshot $snapshot;
@@ -78,6 +82,8 @@ class MergeContacts
             $this->takeTheShareLinks();
             $this->takeTheMemberships();
             $this->takeTheLoans();
+            $this->takeTheRelationships();
+            $this->takeTheLifeEventParticipations();
             $this->setAsideWhatTheStructureDoesNotCarry();
             $this->stopBeingPartial();
 
@@ -355,6 +361,80 @@ class MergeContacts
         foreach ($loans as $id) {
             $this->ledger[] = ['kind' => 'loan_moved', 'id' => $id, 'from' => $this->absorbed->id];
         }
+    }
+
+    private function takeTheRelationships(): void
+    {
+        $theirs = Relationship::query()
+            ->where('contact_a_id', $this->absorbed->id)
+            ->orWhere('contact_b_id', $this->absorbed->id)
+            ->with('relationshipType')
+            ->get();
+
+        foreach ($theirs as $relationship) {
+            $sideA = $relationship->contact_a_id === $this->absorbed->id ? $this->kept->id : $relationship->contact_a_id;
+            $sideB = $relationship->contact_b_id === $this->absorbed->id ? $this->kept->id : $relationship->contact_b_id;
+
+            $twin = Relationship::query()
+                ->where('relationship_type_id', $relationship->relationship_type_id)
+                ->where(function ($query) use ($relationship, $sideA, $sideB): void {
+                    $query->where(fn ($query) => $query->where('contact_a_id', $sideA)->where('contact_b_id', $sideB));
+
+                    if ($relationship->relationshipType->is_symmetric) {
+                        $query->orWhere(fn ($query) => $query->where('contact_a_id', $sideB)->where('contact_b_id', $sideA));
+                    }
+                })
+                ->exists();
+
+            if ($sideA === $sideB || $twin) {
+                $relationship->delete();
+
+                $this->ledger[] = ['kind' => 'relationship_dropped', 'id' => $relationship->id];
+
+                continue;
+            }
+
+            $this->ledger[] = ['kind' => 'relationship_moved', 'id' => $relationship->id, 'contact_a_id' => $relationship->contact_a_id, 'contact_b_id' => $relationship->contact_b_id];
+
+            $relationship->contact_a_id = $sideA;
+            $relationship->contact_b_id = $sideB;
+            $relationship->save();
+        }
+    }
+
+    private function takeTheLifeEventParticipations(): void
+    {
+        $theirs = LifeEventParticipant::query()
+            ->where('participant_type', $this->absorbed->getMorphClass())
+            ->where('participant_id', $this->absorbed->id)
+            ->get();
+
+        if ($theirs->isEmpty()) {
+            return;
+        }
+
+        $mine = LifeEventParticipant::query()
+            ->where('participant_type', $this->kept->getMorphClass())
+            ->where('participant_id', $this->kept->id)
+            ->pluck('life_event_id')
+            ->all();
+
+        foreach ($theirs as $participation) {
+            if (in_array($participation->life_event_id, $mine, true)) {
+                $this->ledger[] = ['kind' => 'participation_dropped', 'attributes' => $participation->only(['account_id', 'life_event_id', 'role', 'notes', 'position'])];
+
+                $participation->delete();
+
+                continue;
+            }
+
+            $participation->participant_id = $this->kept->id;
+            $participation->save();
+
+            $this->ledger[] = ['kind' => 'participation_moved', 'id' => $participation->id];
+        }
+
+        $this->recountLifeEventsOf([$this->kept->id, $this->absorbed->id]);
     }
 
     private function takeTheMemberships(): void

@@ -110,6 +110,10 @@ class Relationship extends Model
      * `contact_b_id` and never through both at once. The two are asked as one `where`
      * group so each meets the index that leads with its own column.
      *
+     * A relationship whose other side was deleted is left out and its row kept, so restoring that
+     * contact brings it back. Only the other side is asked about, so a contact just deleted still
+     * reaches the people it was linked to.
+     *
      * @param  Builder<$this>  $query
      */
     public function scopeForContact(Builder $query, Contact $contact): void
@@ -117,8 +121,8 @@ class Relationship extends Model
         $query->where('account_id', $contact->account_id)
             ->where('vault_id', $contact->vault_id)
             ->where(function (Builder $query) use ($contact): void {
-                $query->where('contact_a_id', $contact->id)
-                    ->orWhere('contact_b_id', $contact->id);
+                $query->where(fn (Builder $query) => $query->where('contact_a_id', $contact->id)->whereHas('contactB'))
+                    ->orWhere(fn (Builder $query) => $query->where('contact_b_id', $contact->id)->whereHas('contactA'));
             });
     }
 
