@@ -86,6 +86,41 @@ class CreateLifeEventTest extends TestCase
     }
 
     /** @test */
+    public function it_stores_a_life_event_with_reminder_for_built_in_type()
+    {
+        $contact = factory(Contact::class)->create([]);
+        $lifeEventType = factory(LifeEventType::class)->create([
+            'account_id' => $contact->account_id,
+            'name' => null,
+            'default_life_event_type_key' => 'new_job',
+        ]);
+
+        $request = [
+            'contact_id' => $contact->id,
+            'account_id' => $contact->account_id,
+            'life_event_type_id' => $lifeEventType->id,
+            'happened_at' => now(),
+            'name' => null,
+            'note' => 'Started a new position',
+            'has_reminder' => true,
+            'happened_at_day_unknown' => false,
+            'happened_at_month_unknown' => false,
+        ];
+
+        $lifeEvent = app(CreateLifeEvent::class)->execute($request);
+
+        $this->assertDatabaseHas('reminders', [
+            'id' => $lifeEvent->reminder->id,
+            'title' => trans('people.life_event_sentence_new_job'),
+        ]);
+
+        $this->assertDatabaseHas('life_events', [
+            'id' => $lifeEvent->id,
+            'reminder_id' => $lifeEvent->reminder->id,
+        ]);
+    }
+
+    /** @test */
     public function it_fails_if_wrong_parameters_are_given()
     {
         $contact = factory(Contact::class)->create([]);

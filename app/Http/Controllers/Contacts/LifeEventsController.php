@@ -9,6 +9,7 @@ use App\Models\Contact\LifeEvent;
 use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
 use App\Traits\JsonRespondController;
+use Illuminate\Validation\ValidationException;
 use App\Models\Contact\LifeEventCategory;
 use App\Services\Contact\LifeEvent\CreateLifeEvent;
 use App\Services\Contact\LifeEvent\DestroyLifeEvent;
@@ -80,7 +81,7 @@ class LifeEventsController extends Controller
      *
      * @param  Request  $request
      * @param  Contact  $contact
-     * @return LifeEvent|\Illuminate\Http\RedirectResponse
+     * @return LifeEvent|\Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
     public function store(Request $request, Contact $contact)
     {
@@ -96,10 +97,21 @@ class LifeEventsController extends Controller
             'happened_at_day_unknown' => $request->input('happened_at_day_unknown'),
         ];
 
-        // create the conversation
         try {
             $lifeEvent = app(CreateLifeEvent::class)->execute($data);
+        } catch (ValidationException $e) {
+            if ($request->expectsJson() || $request->ajax() || $request->wantsJson()) {
+                return $this->respondValidatorFailed($e->validator);
+            }
+
+            return back()
+                ->withInput()
+                ->withErrors($e->validator);
         } catch (\Exception $e) {
+            if ($request->expectsJson() || $request->ajax() || $request->wantsJson()) {
+                return $this->respondInvalidParameters($e->getMessage() ?: trans('app.error_save'));
+            }
+
             return back()
                 ->withInput()
                 ->withErrors(trans('app.error_save'));
