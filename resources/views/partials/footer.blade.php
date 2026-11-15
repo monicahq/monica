@@ -15,7 +15,7 @@
 
       <div class="{{ htmldir() == 'ltr' ? 'fl tr' : 'fr tl' }} w-40-ns w-100 pa2 bt b--gray-monica pt3">
         <ul>
-          <li class="di"><a href="https://monicahq.com/changelog" hreflang="en">{{ trans('app.footer_release') }}</a></li>
+          <li class="di"><a href="https://github.com/monicahq/monica/releases" hreflang="en">{{ trans('app.footer_release') }}</a></li>
           <li class="di ml2"><a href="https://github.com/monicahq/monica">{{ trans('app.footer_source_code') }}</a></li>
           @if (($version = config('monica.app_version')) !== '')
             <li class="di ml2">{{ trans('app.footer_version', ['version' => $version]) }}</li>
