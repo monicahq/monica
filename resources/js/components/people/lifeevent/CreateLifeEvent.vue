@@ -287,6 +287,28 @@ export default {
             text: '',
             type: 'success'
           });
+        })
+        .catch(error => {
+          let message = this.$t('app.error_try_again');
+          if (error.response && error.response.data) {
+            const data = error.response.data;
+            if (data.error && data.error.message) {
+              message = Array.isArray(data.error.message)
+                ? data.error.message.join(' ')
+                : data.error.message;
+            } else if (data.message) {
+              message = Array.isArray(data.message)
+                ? data.message.join(' ')
+                : data.message;
+            }
+          }
+
+          this.$notify({
+            group: 'main',
+            title: this.$t('app.error_title'),
+            text: message,
+            type: 'error'
+          });
         });
     },
   }
