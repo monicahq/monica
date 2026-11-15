@@ -6,9 +6,9 @@ namespace App\Helpers;
 
 use App\Models\Account;
 use App\Models\Payment;
-use Exception;
 use Illuminate\Support\Facades\Log;
 use Laravel\Cashier\Cashier;
+use Stripe\Exception\InvalidRequestException;
 
 /**
  * Reads a charge Stripe is telling us about, and finds what it belongs to here.
@@ -22,6 +22,9 @@ class StripeCharge
     /**
      * The charge itself, whether Stripe sent it whole or only named it. Naming it costs one round
      * trip, which is why the listeners that need this are queued.
+     *
+     * Only a charge Stripe says does not exist is null. Any other failure is thrown, so the queued
+     * listener is retried rather than dropping a refund or a dispute for good.
      *
      * @return array<string, mixed>|null
      */
@@ -37,7 +40,11 @@ class StripeCharge
 
         try {
             return Cashier::stripe()->charges->retrieve($charge)->toArray();
-        } catch (Exception $exception) {
+        } catch (InvalidRequestException $exception) {
+            if ($exception->getHttpStatus() !== 404) {
+                throw $exception;
+            }
+
             Log::warning('Stripe named a charge it would not then answer for.', [
                 'charge' => $charge,
                 'reason' => $exception->getMessage(),
@@ -91,7 +98,8 @@ class StripeCharge
 
     /**
      * Since the dahlia API version a charge no longer names its invoice, so the invoice is asked
-     * for through the payment intent the charge settled.
+     * for through the payment intent the charge settled. A failure is thrown rather than read as no
+     * invoice, which would leave the caller withdrawing whatever the account holds.
      */
     private static function invoiceBehind(mixed $paymentIntent): mixed
     {
@@ -103,19 +111,10 @@ class StripeCharge
             return null;
         }
 
-        try {
-            $invoicePayments = Cashier::stripe()->invoicePayments->all([
-                'payment' => ['type' => 'payment_intent', 'payment_intent' => $paymentIntent],
-                'limit' => 1,
-            ]);
-        } catch (Exception $exception) {
-            Log::warning('Stripe would not say which invoice a payment intent paid.', [
-                'payment_intent' => $paymentIntent,
-                'reason' => $exception->getMessage(),
-            ]);
-
-            return null;
-        }
+        $invoicePayments = Cashier::stripe()->invoicePayments->all([
+            'payment' => ['type' => 'payment_intent', 'payment_intent' => $paymentIntent],
+            'limit' => 1,
+        ]);
 
         return $invoicePayments->first()?->toArray()['invoice'] ?? null;
     }

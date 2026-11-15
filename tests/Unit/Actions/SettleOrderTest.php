@@ -17,6 +17,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
+use Stripe\Exception\ApiErrorException;
 use Tests\Fixtures\Stripe\FakeStripeClient;
 use Tests\TestCase;
 
@@ -235,6 +236,34 @@ class SettleOrderTest extends TestCase
 
         $this->assertNotNull($subscription->fresh()->ends_at);
         $this->assertTrue($account->fresh()->hasFullAccess());
+    }
+
+    #[Test]
+    public function it_stops_the_subscription_on_a_retry_when_stripe_failed_the_first_time(): void
+    {
+        Queue::fake();
+        Notification::fake();
+
+        $account = Account::factory()->create(['stripe_id' => 'cus_dundermifflin']);
+        $subscription = $this->subscribeAccount($account);
+        $order = StripeOrder::factory()->create(['account_id' => $account->id, 'stripe_id' => 'cs_test_scranton']);
+        $this->stripe->respondTo('checkout/sessions*', $this->stripeCheckoutSession(id: 'cs_test_scranton', paymentStatus: 'paid'));
+        $this->stripe->failOn('POST subscriptions/sub_dundermifflin');
+
+        try {
+            new SettleOrder(account: $account, sessionId: 'cs_test_scranton')->execute();
+            $this->fail('Stripe failing to stop the subscription went unnoticed.');
+        } catch (ApiErrorException) {
+            $this->assertTrue($order->fresh()->isSettled());
+            $this->assertNull($subscription->fresh()->ends_at);
+        }
+
+        $this->stripe->respondTo('POST subscriptions/sub_dundermifflin', $this->stripeSubscription());
+
+        new SettleOrder(account: $account->fresh(), sessionId: 'cs_test_scranton')->execute();
+
+        $this->assertNotNull($subscription->fresh()->ends_at);
+        Queue::assertPushed(LogUserAction::class, 1);
     }
 
     #[Test]

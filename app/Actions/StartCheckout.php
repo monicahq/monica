@@ -47,14 +47,24 @@ class StartCheckout
      * The offer this price is, refused unless it is one the account may still take: a lifetime
      * holder is offered nothing, and a subscriber only what sits above what they hold.
      *
+     * A subscriber moving to a longer subscription goes through UpgradeSubscription, which changes
+     * the subscription they hold. A checkout here would open a second one beside it, and both would
+     * bill.
+     *
      * @return array{price_id: string, kind: OfferKindEnum, amount: int, currency: string, prices: array<string, int>}
      */
     private function offer(): array
     {
         foreach ($this->account->availableOffers() as $offer) {
-            if ($offer['price_id'] === $this->priceId) {
-                return $offer;
+            if ($offer['price_id'] !== $this->priceId) {
+                continue;
             }
+
+            if ($offer['kind']->renews() && $this->account->subscription()?->valid() === true) {
+                break;
+            }
+
+            return $offer;
         }
 
         throw new AccountAlreadyOwnsTheProduct(__('This account cannot take up that plan.'));

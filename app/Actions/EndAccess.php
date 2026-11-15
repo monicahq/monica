@@ -19,8 +19,9 @@ use Illuminate\Support\Facades\Log;
  *
  * What is withdrawn depends on what the money paid for. A refunded or disputed purchase leaves its
  * order in place carrying Stripe's word for what happened, which is what lets a screen say when
- * access ended and why. A refunded or disputed renewal stops the subscription at once, since the
- * period it paid for has been given back. A subscription Stripe abandoned or that was cancelled
+ * access ended and why. A refunded or disputed renewal stops the subscription it paid for at once,
+ * since the period it paid for has been given back. Money back on a subscription the account no
+ * longer runs leaves the one it runs now alone. A subscription Stripe abandoned or that was cancelled
  * takes nothing off, because Cashier's own record of it already says it is over.
  *
  * No charge is ever translated back into a checkout session: an account holds at most one purchase,
@@ -66,6 +67,10 @@ class EndAccess
             $subscription = $this->account->subscription();
 
             if ($subscription?->ended()) {
+                return false;
+            }
+
+            if ($this->payment !== null && $this->payment->stripe_subscription_id !== $subscription?->stripe_id) {
                 return false;
             }
 

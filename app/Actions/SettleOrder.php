@@ -29,7 +29,9 @@ use Laravel\Cashier\Cashier;
  *
  * A second purchase on an account that already holds one is refused, because money was taken for
  * nothing and somebody has to look at it. Bought while a subscription is running, it stops that
- * subscription renewing and keeps the period already paid for, so access never gaps.
+ * subscription renewing and keeps the period already paid for, so access never gaps. That is the
+ * one step a replay of a settled order repeats, and it comes last, so Stripe failing there leaves
+ * the order settled and the retry stops the subscription rather than skipping it.
  */
 class SettleOrder
 {
@@ -53,6 +55,8 @@ class SettleOrder
         }
 
         if ($order->isSettled()) {
+            $this->stopTheSubscriptionRenewing();
+
             return $order;
         }
 
@@ -69,9 +73,9 @@ class SettleOrder
         }
 
         $this->settle();
-        $this->stopTheSubscriptionRenewing();
         $this->notify();
         $this->log($order);
+        $this->stopTheSubscriptionRenewing();
 
         return $order;
     }

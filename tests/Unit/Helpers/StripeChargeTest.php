@@ -10,6 +10,7 @@ use App\Models\Payment;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Log;
 use PHPUnit\Framework\Attributes\Test;
+use Stripe\Exception\ApiErrorException;
 use Tests\TestCase;
 
 class StripeChargeTest extends TestCase
@@ -39,15 +40,28 @@ class StripeChargeTest extends TestCase
     }
 
     #[Test]
-    public function it_writes_down_a_charge_stripe_will_not_answer_for(): void
+    public function it_writes_down_a_charge_stripe_says_does_not_exist(): void
     {
         Log::spy();
 
         $client = $this->fakeStripe();
-        $client->failOn('charges*');
+        $client->respondTo('charges*', [
+            'error' => ['type' => 'invalid_request_error', 'code' => 'resource_missing', 'message' => 'No such charge.'],
+        ], 404);
 
         $this->assertNull(StripeCharge::behind('ch_dundermifflin'));
         Log::shouldHaveReceived('warning')->once();
+    }
+
+    #[Test]
+    public function it_lets_stripe_failing_on_a_charge_reach_the_caller(): void
+    {
+        $this->expectException(ApiErrorException::class);
+
+        $client = $this->fakeStripe();
+        $client->failOn('charges*');
+
+        StripeCharge::behind('ch_dundermifflin');
     }
 
     #[Test]
@@ -133,15 +147,14 @@ class StripeChargeTest extends TestCase
     }
 
     #[Test]
-    public function it_writes_down_a_payment_intent_stripe_will_not_answer_for(): void
+    public function it_lets_stripe_failing_on_a_payment_intent_reach_the_caller(): void
     {
-        Log::spy();
+        $this->expectException(ApiErrorException::class);
 
         $client = $this->fakeStripe();
         $client->failOn('invoice_payments*');
         Payment::factory()->create(['stripe_id' => 'in_dundermifflin']);
 
-        $this->assertNull(StripeCharge::paymentFor(['payment_intent' => 'pi_dundermifflin']));
-        Log::shouldHaveReceived('warning')->once();
+        StripeCharge::paymentFor(['payment_intent' => 'pi_dundermifflin']);
     }
 }

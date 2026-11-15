@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Queue;
 use Laravel\Cashier\Events\WebhookReceived;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestWith;
+use Stripe\Exception\ApiErrorException;
 use Tests\TestCase;
 
 class HandleStripeDisputeClosedTest extends TestCase
@@ -75,14 +76,17 @@ class HandleStripeDisputeClosedTest extends TestCase
     }
 
     #[Test]
-    public function it_does_nothing_when_stripe_will_not_answer_for_the_charge(): void
+    public function it_fails_so_the_queue_retries_when_stripe_will_not_answer_for_the_charge(): void
     {
         $michael = $this->somebodyWhoseDisputeTookAccessAway();
         $this->fakeStripe()->failOn('charges*');
 
-        new HandleStripeDisputeClosed()->handle(new WebhookReceived($this->event('won')));
-
-        $this->assertFalse($michael->account->fresh()->hasFullAccess());
+        try {
+            new HandleStripeDisputeClosed()->handle(new WebhookReceived($this->event('won')));
+            $this->fail('Stripe failing on the charge was swallowed.');
+        } catch (ApiErrorException) {
+            $this->assertFalse($michael->account->fresh()->hasFullAccess());
+        }
     }
 
     private function somebodyWhoseDisputeTookAccessAway(): User

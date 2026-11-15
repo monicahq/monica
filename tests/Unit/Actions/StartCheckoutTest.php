@@ -229,6 +229,20 @@ class StartCheckoutTest extends TestCase
     }
 
     #[Test]
+    public function it_refuses_a_second_subscription_beside_the_running_one(): void
+    {
+        $michael = User::factory()->create();
+        $this->subscribeAccount($michael->account, 'price_monthly');
+
+        try {
+            new StartCheckout(account: $michael->account, priceId: 'price_yearly')->execute();
+            $this->fail('A subscriber was let open a second subscription.');
+        } catch (AccountAlreadyOwnsTheProduct) {
+            $this->assertFalse($this->stripe->sent('POST checkout/sessions'));
+        }
+    }
+
+    #[Test]
     public function it_refuses_a_price_that_is_not_an_offer_at_all(): void
     {
         $this->expectException(AccountAlreadyOwnsTheProduct::class);
