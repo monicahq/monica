@@ -83,4 +83,48 @@ class ResizeImageTest extends TestCase
             disk: 'local',
         )->execute();
     }
+
+    /** @return array<string, array{0: int, 1: int}> */
+    public static function imagesLargerThanTheLimit(): array
+    {
+        return [
+            'one pixel too wide' => [8193, 1],
+            'one pixel too tall' => [1, 8193],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('imagesLargerThanTheLimit')]
+    public function it_refuses_an_image_larger_than_the_limit_before_decoding_it(int $width, int $height): void
+    {
+        Storage::fake('local');
+
+        $this->expectExceptionMessage('The image must not be wider or taller than 8192 pixels');
+
+        new ResizeImage(
+            file: UploadedFile::fake()->image('creed.png', $width, $height),
+            width: 96,
+            height: 96,
+            path: 'photos/1',
+            name: 'creed.webp',
+            disk: 'local',
+        )->execute();
+    }
+
+    #[Test]
+    public function it_refuses_a_file_that_is_not_an_image(): void
+    {
+        Storage::fake('local');
+
+        $this->expectExceptionMessage('The file is not an image');
+
+        new ResizeImage(
+            file: UploadedFile::fake()->createWithContent('kevin.png', 'famous chili'),
+            width: 96,
+            height: 96,
+            path: 'photos/1',
+            name: 'kevin.webp',
+            disk: 'local',
+        )->execute();
+    }
 }

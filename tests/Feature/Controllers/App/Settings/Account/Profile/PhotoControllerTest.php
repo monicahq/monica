@@ -102,6 +102,18 @@ class PhotoControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_refuses_an_image_wider_than_the_limit(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->post(route('settings.photo.update'), [
+            'photo' => UploadedFile::fake()->image('beets.png', 8193, 1),
+        ]);
+
+        $response->assertSessionHasErrors('photo');
+    }
+
+    #[Test]
     public function it_serves_a_version_of_the_photo(): void
     {
         Queue::fake();

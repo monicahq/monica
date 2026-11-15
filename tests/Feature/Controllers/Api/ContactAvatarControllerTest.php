@@ -61,6 +61,26 @@ class ContactAvatarControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_refuses_a_picture_wider_than_the_limit(): void
+    {
+        Storage::fake('local');
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('POST', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/avatar", [
+            'avatar' => UploadedFile::fake()->image('dundies.png', 8193, 1),
+        ]);
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors(['avatar']);
+        $this->assertNull($contact->refresh()->avatar_file_id);
+    }
+
+    #[Test]
     public function it_refuses_a_picture_that_would_take_the_account_past_its_storage(): void
     {
         Storage::fake('local');

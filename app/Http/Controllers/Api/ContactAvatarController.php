@@ -22,7 +22,7 @@ class ContactAvatarController extends Controller
         $contact = Contact::query()->where('vault_id', $vault->id)->addressedBy($contact)->firstOrFail();
 
         $validated = $request->validate([
-            'avatar' => ['required', 'image', 'mimes:jpeg,jpg,png,webp', 'max:5120'],
+            'avatar' => ['required', 'image', 'mimes:jpeg,jpg,png,webp', 'max:5120', 'dimensions:max_width=8192,max_height=8192'],
         ]);
 
         try {

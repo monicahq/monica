@@ -22,8 +22,10 @@ use App\Models\ValueListItem;
 use App\Models\Vault;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Image\ImageException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Sabre\DAV\Exception\BadRequest;
@@ -556,14 +558,23 @@ class ImportVCard
             return;
         }
 
-        file_put_contents($path, $sent);
+        try {
+            file_put_contents($path, $sent);
 
-        new UpdateContactAvatar(
-            user: $this->user,
-            vault: $this->vault,
-            contact: $contact,
-            upload: new UploadedFile($path, Str::uuid()->toString(), mime_content_type($path) ?: null, test: true),
-        )->execute();
+            new UpdateContactAvatar(
+                user: $this->user,
+                vault: $this->vault,
+                contact: $contact,
+                upload: new UploadedFile($path, Str::uuid()->toString(), mime_content_type($path) ?: null, test: true),
+            )->execute();
+        } catch (InvalidArgumentException|ImageException $exception) {
+            Log::warning('Left out the photo a vCard sent that could not be read.', [
+                'contact' => $contact->id,
+                'exception' => $exception->getMessage(),
+            ]);
+        } finally {
+            @unlink($path);
+        }
     }
 
     private function keepTheCard(Contact $contact): void

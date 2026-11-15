@@ -20,7 +20,7 @@ class ContactAvatarController extends Controller
         abort_unless($contact->isReachableThrough($request->user(), $vault), 404);
 
         $validated = $request->validate([
-            'avatar' => ['required', 'image', 'mimes:jpeg,jpg,png,webp', 'max:5120'],
+            'avatar' => ['required', 'image', 'mimes:jpeg,jpg,png,webp', 'max:5120', 'dimensions:max_width=8192,max_height=8192'],
         ]);
 
         try {

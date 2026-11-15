@@ -10,10 +10,13 @@ use InvalidArgumentException;
 use RuntimeException;
 
 /**
- * Resize an uploaded image to a box and write it to disk as WebP.
+ * Resize an uploaded image to a box and write it to disk as WebP. An image wider or taller than
+ * MAX_SIDE_IN_PIXELS is refused before it is decoded, since decoding allocates every pixel.
  */
 class ResizeImage
 {
+    private const int MAX_SIDE_IN_PIXELS = 8192;
+
     private const int QUALITY = 80;
 
     public function __construct(
@@ -36,6 +39,16 @@ class ResizeImage
     {
         if ($this->width < 1 || $this->height < 1) {
             throw new InvalidArgumentException('The width and height must be positive');
+        }
+
+        $size = @getimagesize((string) $this->file->getRealPath());
+
+        if ($size === false) {
+            throw new InvalidArgumentException('The file is not an image');
+        }
+
+        if ($size[0] > self::MAX_SIDE_IN_PIXELS || $size[1] > self::MAX_SIDE_IN_PIXELS) {
+            throw new InvalidArgumentException('The image must not be wider or taller than 8192 pixels');
         }
     }
 

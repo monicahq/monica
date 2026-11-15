@@ -92,6 +92,26 @@ class ContactAvatarControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_refuses_a_picture_taller_than_the_limit(): void
+    {
+        Queue::fake();
+        Storage::fake('local');
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create(['vault_id' => $vault->id]);
+
+        $response = $this->actingAs($user)->post(
+            route('contacts.avatar.update', ['vault' => $vault, 'contact' => $contact]),
+            ['avatar' => UploadedFile::fake()->image('dundies.png', 1, 8193)],
+        );
+
+        $response->assertInvalid('avatar');
+
+        $this->assertFalse($contact->refresh()->hasAvatar());
+    }
+
+    #[Test]
     public function it_refuses_a_picture_that_would_take_the_account_past_its_storage(): void
     {
         Queue::fake();

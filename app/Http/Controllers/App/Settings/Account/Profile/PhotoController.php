@@ -18,7 +18,7 @@ class PhotoController extends Controller
     public function update(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'photo' => ['required', 'image', 'mimes:jpeg,jpg,png,webp', 'max:5120'],
+            'photo' => ['required', 'image', 'mimes:jpeg,jpg,png,webp', 'max:5120', 'dimensions:max_width=8192,max_height=8192'],
         ]);
 
         new UpdateUserPhoto(

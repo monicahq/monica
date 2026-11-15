@@ -25,6 +25,7 @@ use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Pennant\Feature;
@@ -522,6 +523,24 @@ class ImportVCardTest extends TestCase
             vault: $this->vault,
             card: 'beets',
         )->execute();
+    }
+
+    #[Test]
+    public function it_imports_the_rest_of_a_card_whose_photo_cannot_be_read_and_leaves_no_temporary_file(): void
+    {
+        Queue::fake();
+        Storage::fake('local');
+        Log::spy();
+        Structure::asTheDefaultOf($this->user, $this->vault, []);
+        $temporaryFiles = glob(sys_get_temp_dir().'/dav-photo-*');
+
+        $contact = $this->importCarrying('PHOTO:data:image/jpeg;base64,'.base64_encode('bears, beets, battlestar galactica')."\r\n");
+
+        $this->assertEquals('Dwight', $contact->first_name);
+        $this->assertEquals('Schrute', $contact->last_name);
+        $this->assertNull($contact->refresh()->avatar_file_id);
+        $this->assertSame($temporaryFiles, glob(sys_get_temp_dir().'/dav-photo-*'));
+        Log::shouldHaveReceived('warning')->once();
     }
 
     #[Test]
