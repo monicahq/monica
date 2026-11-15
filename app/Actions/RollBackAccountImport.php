@@ -151,24 +151,26 @@ class RollBackAccountImport
             ->distinct()
             ->pluck('participant_id')
             ->all();
+
+        $entities = $this->recordsOf(Entity::class);
+        $contacts = $this->recordsOf(Contact::class);
         $this->removeTheValuesOf(new LifeEvent()->getMorphClass(), $lifeEvents);
+        $this->removeTheValuesOf(new Entity()->getMorphClass(), $entities);
+        $this->removeTheValuesOf(new Contact()->getMorphClass(), $contacts);
+
         $this->giveTheCountsBack(LifeEvent::query()->whereIn('id', $lifeEvents), 'structure_version_id', StructureVersion::class, 'record_count');
         LifeEvent::withdrawFromSearch(LifeEvent::withTrashed()->whereIn('id', $lifeEvents));
         LifeEvent::withTrashed()->whereIn('id', $lifeEvents)->forceDelete();
 
-        $entities = $this->recordsOf(Entity::class);
-        $this->removeTheValuesOf(new Entity()->getMorphClass(), $entities);
         $this->giveTheCountsBack(Entity::query()->whereIn('id', $entities), 'structure_version_id', StructureVersion::class, 'record_count');
         $this->giveTheCountsBack(Entity::query()->whereIn('id', $entities), 'entity_type_id', EntityType::class, 'entity_count');
         Entity::withdrawFromSearch(Entity::withTrashed()->whereIn('id', $entities));
         Entity::withTrashed()->whereIn('id', $entities)->forceDelete();
 
-        $contacts = $this->recordsOf(Contact::class);
         $files = File::withTrashed()
             ->whereIn('id', $this->recordsOf(File::class))
             ->orWhereIn('id', Contact::withTrashed()->whereIn('id', $contacts)->whereNotNull('avatar_file_id')->select('avatar_file_id'))
             ->get();
-        $this->removeTheValuesOf(new Contact()->getMorphClass(), $contacts);
         $this->giveTheCountsBack($this->countedContacts()->whereIn('id', $contacts), 'structure_version_id', StructureVersion::class, 'record_count');
         $this->giveTheCountsBack($this->countedContacts()->whereIn('id', $contacts), 'vault_id', Vault::class, 'contact_count');
         Contact::withdrawFromSearch(Contact::withTrashed()->whereIn('id', $contacts));
@@ -183,6 +185,7 @@ class RollBackAccountImport
     {
         $this->removeFromStorage(File::withTrashed()->where('vault_id', $vault->id)->get());
         $this->releaseTheChoicesOf(FieldValue::query()->where('vault_id', $vault->id));
+        FieldValue::query()->where('vault_id', $vault->id)->delete();
 
         $this->giveTheCountsBack($this->countedContacts()->where('vault_id', $vault->id), 'structure_version_id', StructureVersion::class, 'record_count');
         $this->giveTheCountsBack(Entity::query()->where('vault_id', $vault->id), 'structure_version_id', StructureVersion::class, 'record_count');

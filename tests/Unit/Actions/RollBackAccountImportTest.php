@@ -17,11 +17,13 @@ use App\Actions\PublishStructureVersion;
 use App\Actions\ReadMonicaFile;
 use App\Actions\ReadMonicaFourFile;
 use App\Actions\RollBackAccountImport;
+use App\Actions\SetFieldValue;
 use App\Actions\StartAccountImport;
 use App\Actions\WriteAccountExport;
 use App\Enums\AccountImportStatusEnum;
 use App\Enums\DefaultTemplateEnum;
 use App\Enums\FieldTypeEnum;
+use App\Enums\RelationTargetEnum;
 use App\Enums\ValueListEnum;
 use App\Jobs\CreateDefaultLifeEventTypes;
 use App\Jobs\CreateDefaultTemplate;
@@ -199,6 +201,63 @@ class RollBackAccountImportTest extends TestCase
         $this->assertSame(0, Group::withTrashed()->where('vault_id', $stamford->id)->count());
         $this->assertSame(0, Reminder::withTrashed()->where('vault_id', $stamford->id)->count());
         $this->assertSame(0, ReminderOccurrence::query()->where('vault_id', $stamford->id)->count());
+    }
+
+    #[Test]
+    public function it_removes_imported_contacts_whose_values_point_at_another_imported_contact_and_at_an_imported_entity(): void
+    {
+        $scranton = new CreateVault(user: $this->michael, name: 'Scranton')->execute();
+        $animals = EntityType::query()->where('account_id', $this->michael->account_id)->where('slug', 'animals')->firstOrFail();
+
+        $draft = new CreateStructureVersionDraft(
+            user: $this->michael,
+            structureVersion: Template::query()->where('account_id', $this->michael->account_id)->where('slug', DefaultTemplateEnum::BasicContact->value)->firstOrFail()->structure->publishedVersion,
+        )->execute();
+        $sectionVersion = SectionVersion::factory()->create([
+            'account_id' => $this->michael->account_id,
+            'section_id' => Section::factory()->create(['account_id' => $this->michael->account_id])->id,
+        ]);
+        $bestFriend = Field::factory()->relation()->create(['account_id' => $this->michael->account_id, 'section_version_id' => $sectionVersion->id, 'key' => 'best_friend', 'label' => 'Best friend']);
+        $pet = Field::factory()->relation()->create([
+            'account_id' => $this->michael->account_id,
+            'section_version_id' => $sectionVersion->id,
+            'key' => 'pet',
+            'label' => 'Pet',
+            'relation_target' => RelationTargetEnum::Entity,
+            'relation_entity_type_id' => $animals->id,
+        ]);
+        new AddSectionToStructureVersion(user: $this->michael, structureVersion: $draft, sectionVersion: $sectionVersion)->execute();
+        new PublishStructureVersion(user: $this->michael, structureVersion: $draft, changeNote: 'Relations added.')->execute();
+
+        $dwight = new CreateContact(user: $this->michael, vault: $scranton, structureVersion: $draft->refresh(), firstName: 'Dwight', lastName: 'Schrute')->execute();
+        $jim = new CreateContact(user: $this->michael, vault: $scranton, structureVersion: $draft, firstName: 'Jim', lastName: 'Halpert')->execute();
+        $goat = new CreateEntity(user: $this->michael, vault: $scranton, entityType: $animals, name: "Mose's goat")->execute();
+        new SetFieldValue(user: $this->michael, valuable: $dwight, field: $bestFriend, relatedContact: $jim)->execute();
+        new SetFieldValue(user: $this->michael, valuable: $dwight, field: $pet, relatedEntity: $goat)->execute();
+
+        $pam = $this->accountHolder('Pam', 'Beesly');
+        $stamford = new CreateVault(user: $pam, name: 'Stamford')->execute();
+        $before = $this->whatTheAccountHolds($pam);
+        $valuesBefore = FieldValue::query()->where('account_id', $pam->account_id)->count();
+
+        $import = AccountImport::factory()->create(['user_id' => $pam->id]);
+        Storage::disk('local')->put($import->path, $this->exported([$scranton]));
+        new ReadMonicaFile(import: $import)->execute();
+        $import->refresh()->update(['status' => AccountImportStatusEnum::Read]);
+        new StartAccountImport(user: $pam, import: $import, vault: $stamford)->execute();
+
+        $this->assertTrue(FieldValue::query()->where('vault_id', $stamford->id)->whereNotNull('related_contact_id')->exists());
+        $this->assertTrue(FieldValue::query()->where('vault_id', $stamford->id)->whereNotNull('related_entity_id')->exists());
+
+        new RollBackAccountImport(import: $import->refresh())->execute();
+
+        $this->assertSame(AccountImportStatusEnum::RolledBack, $import->refresh()->status);
+        $this->assertSame($before, $this->whatTheAccountHolds($pam));
+        $this->assertSame($valuesBefore, FieldValue::query()->where('account_id', $pam->account_id)->count());
+        $this->assertSame(2, Contact::query()->where('vault_id', $scranton->id)->where('is_me', false)->count());
+        $this->assertModelExists($goat);
+        $this->assertDatabaseHas('field_values', ['valuable_id' => $dwight->id, 'related_contact_id' => $jim->id]);
+        $this->assertDatabaseHas('field_values', ['valuable_id' => $dwight->id, 'related_entity_id' => $goat->id]);
     }
 
     #[Test]
