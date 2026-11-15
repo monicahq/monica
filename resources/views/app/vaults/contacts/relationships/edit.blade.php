@@ -58,7 +58,7 @@
             </fieldset>
 
             <div class="mt-4">
-              <x-checkbox id="creates_record" :checked="$values['createsRecord']">
+              <x-checkbox id="creates_record" :checked="$values['createsRecord']" :error="$errors->get('creates_record')">
                 <span class="text-sm text-ink">{{ __('Create a contact record for this person') }}</span>
               </x-checkbox>
             </div>
@@ -82,7 +82,7 @@
                 <x-input id="last_name" :value="$values['lastName']" :label="__('Last name')" :error="$errors->get('last_name')" optional maxlength="255" />
               </div>
 
-              <x-checkbox id="creates_record" :checked="$values['createsRecord']">
+              <x-checkbox id="creates_record" :checked="$values['createsRecord']" :error="$errors->get('creates_record')">
                 <span class="text-sm text-ink">{{ __('Create a contact record for this person') }}</span>
               </x-checkbox>
             @endif

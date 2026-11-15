@@ -172,6 +172,26 @@ class CreateFileTest extends TestCase
     }
 
     #[Test]
+    public function it_measures_the_room_left_after_uploads_that_finished_meanwhile(): void
+    {
+        Queue::fake();
+        Storage::fake('local');
+
+        $user = User::factory()->create();
+        $user->account->update(['storage_limit_in_bytes' => 4096, 'storage_used_in_bytes' => 0]);
+        DB::table('accounts')->where('id', $user->account_id)->update(['storage_used_in_bytes' => 3072]);
+
+        $this->expectException(NotEnoughStorageLeft::class);
+
+        try {
+            new CreateFile(user: $user, upload: UploadedFile::fake()->create('scan.pdf', 2))->execute();
+        } finally {
+            $this->assertEquals(0, File::query()->count());
+            $this->assertSame([], Storage::disk('local')->allFiles());
+        }
+    }
+
+    #[Test]
     public function it_measures_a_paid_account_against_the_paid_ceiling(): void
     {
         Queue::fake();

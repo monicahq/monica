@@ -166,6 +166,8 @@ class ContactRelationshipController extends Controller
             throw ValidationException::withMessages(['relationship_type' => $e->getMessage()]);
         } catch (RelationshipDatesAreOutOfOrder $e) {
             throw ValidationException::withMessages(['ended_on' => $e->getMessage()]);
+        } catch (AuthorizationException $e) {
+            throw ValidationException::withMessages(['creates_record' => $e->getMessage()]);
         }
 
         return new RelationshipResource($this->relationship($contact, $relationship->uuid))->response()->setStatusCode(200);

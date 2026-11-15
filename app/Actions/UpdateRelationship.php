@@ -9,6 +9,7 @@ use App\Enums\UserActionEnum;
 use App\Exceptions\RelationshipDatesAreOutOfOrder;
 use App\Exceptions\RelationshipTypeIsNotAvailable;
 use App\Jobs\LogUserAction;
+use App\Models\Account;
 use App\Models\Contact;
 use App\Models\Relationship;
 use App\Models\RelationshipType;
@@ -145,6 +146,9 @@ class UpdateRelationship
         if (! $this->createsRecord) {
             return;
         }
+
+        Account::query()->whereKey($this->user->account_id)->lockForUpdate()->first();
+        $this->user->authorize('create', Contact::class);
 
         $this->other->is_partial = false;
         $this->other->save();

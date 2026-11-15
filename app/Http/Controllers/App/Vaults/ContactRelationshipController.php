@@ -22,6 +22,7 @@ use App\ViewModels\Vaults\ContactViewModel;
 use App\ViewModels\Vaults\RelationshipEditViewModel;
 use App\ViewModels\Vaults\RelationshipFormViewModel;
 use Carbon\CarbonImmutable;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -147,6 +148,8 @@ class ContactRelationshipController extends Controller
             return back()->withInput()->withErrors(['relationship' => $e->getMessage()]);
         } catch (RelationshipDatesAreOutOfOrder $e) {
             return back()->withInput()->withErrors(['ended_on' => $e->getMessage()]);
+        } catch (AuthorizationException $e) {
+            return back()->withInput()->withErrors(['creates_record' => $e->getMessage()]);
         }
 
         return $this->backToTheTab($vault, $contact, __('The relationship is changed.'));

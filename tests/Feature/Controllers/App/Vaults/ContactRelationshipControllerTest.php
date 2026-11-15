@@ -229,6 +229,29 @@ class ContactRelationshipControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_refuses_a_record_once_the_free_offer_is_full(): void
+    {
+        Queue::fake();
+        config(['monica.free_contact_limit' => 1]);
+
+        $user = User::factory()->create();
+        $relationship = $this->relationshipOf($user);
+        Contact::query()->whereKey($relationship->contact_b_id)->update(['is_partial' => true]);
+        $contact = Contact::query()->findOrFail($relationship->contact_a_id);
+
+        $this->actingAs($user)
+            ->put(route('contacts.relationships.update', [
+                'vault' => $relationship->vault,
+                'contact' => $contact,
+                'relationship' => $relationship,
+            ]), [
+                'relationship' => "{$relationship->relationship_type_id}-a",
+                'creates_record' => '1',
+            ])
+            ->assertSessionHasErrors('creates_record');
+    }
+
+    #[Test]
     public function it_refuses_a_relationship_value_it_cannot_read(): void
     {
         $user = User::factory()->create();

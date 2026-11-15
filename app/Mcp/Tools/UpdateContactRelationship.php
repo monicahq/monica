@@ -11,6 +11,7 @@ use App\Exceptions\RelationshipTypeIsNotAvailable;
 use App\Exceptions\RelationshipWouldLoopParentage;
 use App\Http\Resources\RelationshipResource;
 use Carbon\CarbonImmutable;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Illuminate\Validation\Rule;
@@ -72,7 +73,7 @@ class UpdateContactRelationship extends Tool
                 otherLastName: $validated['last_name'] ?? null,
                 createsRecord: $request->boolean('creates_record'),
             )->execute();
-        } catch (RelationshipTypeIsNotAvailable|RelationshipWouldLoopParentage|RelationshipDatesAreOutOfOrder $e) {
+        } catch (RelationshipTypeIsNotAvailable|RelationshipWouldLoopParentage|RelationshipDatesAreOutOfOrder|AuthorizationException $e) {
             return Response::error($e->getMessage());
         }
 

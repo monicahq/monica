@@ -46,18 +46,6 @@ class CreateFile
         if ($this->vault !== null && $this->vault->account_id !== $this->user->account_id) {
             throw new ModelNotFoundException('This vault is in another account.');
         }
-
-        $account = $this->user->account;
-
-        if (! $account->isMetered()) {
-            return;
-        }
-
-        $wouldHold = $account->storage_used_in_bytes + (int) $this->upload->getSize();
-
-        if ($wouldHold > $account->storageLimitInBytes()) {
-            throw new NotEnoughStorageLeft('This file would take the account past the storage it is allowed.');
-        }
     }
 
     private function store(): void
@@ -73,6 +61,12 @@ class CreateFile
 
         DB::transaction(function () use ($disk, $size, $dimensions): void {
             DB::afterRollBack(fn (): bool => Storage::disk($disk)->delete($this->path));
+
+            $account = Account::query()->lockForUpdate()->findOrFail($this->user->account_id);
+
+            if ($account->isMetered() && $account->storage_used_in_bytes + $size > $account->storageLimitInBytes()) {
+                throw new NotEnoughStorageLeft('This file would take the account past the storage it is allowed.');
+            }
 
             $this->file = File::query()->create([
                 'account_id' => $this->user->account_id,
@@ -91,7 +85,7 @@ class CreateFile
                 'uploaded_by_user_id' => $this->user->id,
             ]);
 
-            Account::query()->whereKey($this->user->account_id)->increment('storage_used_in_bytes', $size);
+            $account->increment('storage_used_in_bytes', $size);
         });
     }
 

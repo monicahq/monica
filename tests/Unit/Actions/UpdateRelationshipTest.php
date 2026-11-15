@@ -24,6 +24,7 @@ use App\Models\User;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
 use Carbon\CarbonImmutable;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -331,6 +332,39 @@ class UpdateRelationshipTest extends TestCase
         $this->assertDatabaseHas('contacts', [
             'id' => $relationship->contact_b_id,
             'is_partial' => false,
+        ]);
+    }
+
+    #[Test]
+    public function it_refuses_a_record_once_the_free_offer_is_full(): void
+    {
+        Queue::fake();
+        config(['monica.free_contact_limit' => 1]);
+
+        $user = User::factory()->create();
+        $vault = $this->vaultOf($user);
+        $relationship = $this->relationshipOn($vault, $user);
+        $relationship->contactB->update(['is_partial' => true]);
+
+        try {
+            new UpdateRelationship(
+                user: $user,
+                vault: $vault,
+                contact: $relationship->contactA,
+                relationship: $relationship,
+                relationshipType: $relationship->relationshipType,
+                status: RelationshipStatusEnum::Current,
+                createsRecord: true,
+            )->execute();
+
+            $this->fail('The record was given past the ceiling.');
+        } catch (AuthorizationException $e) {
+            $this->assertSame('The free plan holds 1 contact across every vault, and this account already has it. Full access lifts the ceiling.', $e->getMessage());
+        }
+
+        $this->assertDatabaseHas('contacts', [
+            'id' => $relationship->contact_b_id,
+            'is_partial' => true,
         ]);
     }
 

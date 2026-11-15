@@ -14,6 +14,7 @@ use App\Exceptions\VaultHasNoContactDefault;
 use App\Helpers\TextSanitizer;
 use App\Jobs\DetectDuplicateContacts;
 use App\Jobs\LogUserAction;
+use App\Models\Account;
 use App\Models\Contact;
 use App\Models\StructureVersion;
 use App\Models\User;
@@ -58,7 +59,6 @@ class CreateContact
         $this->sanitize();
         $this->readTheVaultDefault();
         $this->validate();
-        $this->refuseAboveTheCeiling();
         $this->create();
         $this->log();
         $this->lookForDuplicates();
@@ -139,12 +139,15 @@ class CreateContact
             return;
         }
 
+        Account::query()->whereKey($this->user->account_id)->lockForUpdate()->first();
         $this->user->authorize('create', Contact::class);
     }
 
     private function create(): void
     {
         DB::transaction(function (): void {
+            $this->refuseAboveTheCeiling();
+
             $this->contact = Contact::query()->create([
                 'account_id' => $this->user->account_id,
                 'vault_id' => $this->vault->id,
