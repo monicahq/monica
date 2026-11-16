@@ -288,6 +288,20 @@ Route::middleware(['portal.timing', 'searchable'])->group(function (): void {
         ->name('docs.portal.show');
 });
 
+// Redirect .well-known urls (https://en.wikipedia.org/wiki/List_of_/.well-known/_services_offered_by_webservers)
+Route::get('/.well-known/security.txt', fn () => redirect('/security.txt', 301));
+Route::get('/.well-known/passkey-endpoints', fn () => response()->json([
+    'enroll' => route('settings.security.index'),
+    'manage' => route('settings.security.index'),
+]));
+Route::get('/.well-known/webauthn', fn () => response()->json([
+    'origins' => config('passkeys.allowed_origins'),
+]));
+Route::middleware(['flag:carddav'])->group(function (): void {
+    Route::get('/.well-known/carddav', fn () => redirect('/dav', 301));
+    Route::get('/.well-known/caldav', fn () => redirect('/dav', 301));
+});
+
 /*
  * The marketplace is still being built, so a flag holds it back. A visitor sees it exactly when it is
  * on for every account.
