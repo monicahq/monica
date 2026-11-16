@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Actions\DestroyLocation;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -28,14 +26,9 @@ class DeleteLocation extends Tool
             'location' => ['required', 'string'],
         ]);
 
-        try {
-            new DestroyLocation(
-                user: $this->user($request),
-                location: $this->location($request, $validated['location']),
-            )->execute();
-        } catch (AuthorizationException $e) {
-            return Response::error($e->getMessage());
-        }
+        $location = $this->location($request, $validated['location']);
+
+        $this->answerThroughApi($request, $location->uuid);
 
         return Response::text(__('The location is deleted.'));
     }

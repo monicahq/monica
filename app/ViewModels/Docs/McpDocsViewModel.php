@@ -383,12 +383,12 @@ class McpDocsViewModel
                 ['name' => 'delete-life-event-category', 'description' => 'Deletes a category you created that holds no type.'],
             ]],
             ['name' => 'Locations', 'changesData' => false, 'tools' => [
-                ['name' => 'list-locations', 'description' => 'Lists the places of your account, such as a house, a room or a shelf, each before the places inside it, with its full path.'],
+                ['name' => 'list-locations', 'description' => 'Lists the places of your account, such as a house, a room or a shelf, one page at a time, each before the places inside it, with its full path.'],
                 ['name' => 'get-location', 'description' => 'Returns one place: its path, its emoji, its address or the one it falls back on, and how many places it holds.'],
             ]],
             ['name' => 'Locations, changing', 'changesData' => true, 'tools' => [
                 ['name' => 'create-location', 'description' => 'Adds a place, at the top level or inside another place.'],
-                ['name' => 'update-location', 'description' => 'Renames a place, moves it with everything inside it, or changes its emoji or address. What you leave out keeps its value.'],
+                ['name' => 'update-location', 'description' => 'Renames a place, moves it with everything inside it, or changes its emoji or address. What you leave out is cleared, as the API does.'],
                 ['name' => 'delete-location', 'description' => 'Deletes a place that holds no other place.'],
             ]],
             ['name' => 'Possession types', 'changesData' => false, 'tools' => [

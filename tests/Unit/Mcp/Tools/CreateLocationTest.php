@@ -40,15 +40,34 @@ class CreateLocationTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_parent_of_another_account(): void
+    public function it_relays_the_refusal_of_the_api(): void
     {
-        $stamford = Location::factory()->create();
-
         MonicaServer::actingAs(User::factory()->create())->tool(CreateLocation::class, [
             'name' => 'Warehouse',
-            'parent_id' => $stamford->uuid,
-        ])->assertHasErrors();
+            'parent_id' => 'the-annex',
+        ])->assertHasErrors(['The parent id field must be a valid UUID.']);
 
-        $this->assertDatabaseCount('locations', 1);
+        $this->assertDatabaseCount('locations', 0);
+    }
+
+    #[Test]
+    public function it_reads_blank_values_as_the_api_does(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+
+        MonicaServer::actingAs($user)->tool(CreateLocation::class, [
+            'name' => 'Warehouse',
+            'parent_id' => '',
+            'address' => '   ',
+        ])->assertOk()->assertHasNoErrors();
+
+        $this->assertDatabaseHas('locations', [
+            'account_id' => $user->account_id,
+            'parent_id' => null,
+            'name' => 'Warehouse',
+            'address' => null,
+        ]);
     }
 }

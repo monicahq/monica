@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Actions\CreateLocation as CreateLocationAction;
-use App\Helpers\LocationTree;
-use App\Http\Resources\LocationResource;
-use App\Rules\SingleEmoji;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -24,22 +20,7 @@ class CreateLocation extends Tool
 
     public function handle(Request $request): Response
     {
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'parent_id' => ['nullable', 'string'],
-            'emoji' => ['nullable', 'string', 'max:32', new SingleEmoji],
-            'address' => ['nullable', 'string', 'max:2000'],
-        ]);
-
-        $location = new CreateLocationAction(
-            user: $this->user($request),
-            name: $validated['name'],
-            parent: isset($validated['parent_id']) ? $this->location($request, $validated['parent_id']) : null,
-            emoji: $validated['emoji'] ?? null,
-            address: $validated['address'] ?? null,
-        )->execute();
-
-        return Response::json(new LocationResource($location, LocationTree::forAccount($location->account_id))->resolve());
+        return $this->answerThroughApi($request);
     }
 
     /** @return array<string, Type> */

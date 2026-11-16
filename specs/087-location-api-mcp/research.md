@@ -27,7 +27,7 @@ path per location with `parent` lazy loads (one query per level per location).
 
 Decision: `index` returns every location in the screen's order, sliced by `page` and `per_page` with
 the API defaults (25, at most 100), and the same `meta` as other lists. The MCP `list-locations`
-returns all of them, as `list-relationship-types` does.
+answers through the same controller method and is paged the same way (revised 2026-11-16, see R9).
 Rationale: an order by parent then name cannot be written in SQL without recursion, and a household
 holds tens of locations. Paging keeps the shape every other list endpoint has.
 Rejected: ordering by name in SQL (a child would appear before its parent, contradicting spec FR-004).
@@ -53,6 +53,9 @@ The cycle refusal (`InvalidArgumentException`) becomes an error on `parent_id`; 
 `relationshipType`; the empty name refusal already arrives as a `ValidationException` on `name`.
 
 ## R6. API update replaces, MCP update keeps what is left out
+
+Superseded on 2026-11-16 by R9: the MCP `update-location` now replaces, as the `PUT` does. The
+original decision is kept below for the record.
 
 Decision: `PUT` requires `name` and clears `parent_id`, `emoji` and `address` when they are absent, as
 the API's other `PUT` endpoints do. The MCP `update-location` keeps every value that is left out and
@@ -91,3 +94,26 @@ fails when a route is undocumented, so both stay in step without another change.
 
 Decision: any key of the account reaches locations (`ApiKeyScopeEnum` has one scope, for sensitive
 fields, and a location is not one). No flag, as in 086 R2. No webhook: the application sends none yet.
+
+## R9. One implementation for the endpoint and the tool (2026-11-16)
+
+Decision: the five location tools answer through the API controller method their route names
+(`MirrorsAnApiCapability::answerThroughApi()`). The tool first looks the addressed location up
+through the trait, which gives the translated "does not exist" sentence and records the subject in
+the MCP history, then hands the arguments to the controller. Validation, paging, the replacing
+update and the response body are the controller's, so they cannot drift apart.
+Consequences: `update-location` clears what it leaves out, `list-locations` takes `page` and
+`per_page` and answers `{data, meta}`, and a `parent_id` that is not a uuid is refused on
+`parent_id` with the framework's message. The request handed to the controller goes through
+`TrimStrings` and `ConvertEmptyStringsToNull`, the two global middlewares that reshape input, so a
+blank value reads as it does on the endpoint. This reverses R6 and the MCP half of R3.
+A single location comes back without the endpoint's `data` wrapper, as every other tool returns a
+record; a list keeps `{data, meta}`. The two refusals the controller raises as a validation error (a
+location holding others, a parent inside the location) are recorded in the MCP history as invalid
+parameters, as the endpoint answers them with a 422.
+Rationale: the MCP server instructions say each capability answers exactly as the equivalent JSON API
+endpoint, and principle X says the MCP server exposes the API. Two copies had already drifted on all
+three points.
+Rejected: a PATCH endpoint for the partial update the assistant had (a second update semantics on
+the API); a separate operation class shared by both (a third file per operation for no behaviour the
+controller does not already hold).

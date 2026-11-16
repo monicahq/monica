@@ -72,8 +72,7 @@ into it, give it 📦, then clear its parent.
    top level with everything inside it.
 5. **Given** a change through the API that leaves out the parent, the emoji or the address, **When**
    it is saved, **Then** that value is cleared, as the API's other update endpoints do. Through the
-   assistant, a value left out keeps what it was and only an explicit empty value clears it, as the
-   other assistant tools do.
+   assistant, the same: the tool answers exactly as the endpoint (research R9).
 
 ### User Story 3 - Delete a location (Priority: P2)
 
@@ -136,8 +135,8 @@ tools.
 
 - Two locations share a name under different parents: both are returned, told apart by their path.
 - A location is moved: its path and the paths of everything inside it change in the next answer.
-- A tree many levels deep: the list still returns every location in one answer for a household of
-  tens of locations; a larger account is paged the way the other list endpoints are.
+- A tree many levels deep: the list is paged the way the other list endpoints are, through the API
+  and through the assistant alike (research R9).
 - An emoji sent as an empty string, or an address of only spaces: stored as none, as on the screen.
 - A key of a deactivated account, or no key: refused the way every other endpoint refuses.
 - Two requests move two locations into each other at the same time: out of scope here, as on the

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Helpers\LocationTree;
-use App\Http\Resources\LocationResource;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -29,9 +27,8 @@ class GetLocation extends Tool
         ]);
 
         $location = $this->location($request, $validated['location']);
-        $tree = LocationTree::forAccount($location->account_id);
 
-        return Response::json(new LocationResource($location, $tree)->resolve());
+        return $this->answerThroughApi($request, $location->uuid);
     }
 
     /** @return array<string, Type> */

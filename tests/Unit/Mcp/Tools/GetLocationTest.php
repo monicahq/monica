@@ -25,6 +25,7 @@ class GetLocationTest extends TestCase
 
         MonicaServer::actingAs($user)->tool(GetLocation::class, ['location' => $warehouse->uuid])
             ->assertOk()
+            ->assertSee('{"type":"location"')
             ->assertSee('Scranton › Warehouse')
             ->assertSee('1725 Slough Avenue')
             ->assertSee($scranton->uuid);

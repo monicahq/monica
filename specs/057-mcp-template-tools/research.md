@@ -77,6 +77,11 @@ gesture); a top level `POST sections` (sections exist to sit in templates; the w
 
 ## R6. Partial updates
 
+**Superseded on 2026-11-16**: an MCP tool must answer exactly as the endpoint it mirrors, so these
+three tools are to replace what they leave out, as the `PUT` does, once they answer through the API
+controller (`MirrorsAnApiCapability::answerThroughApi()`, first used by the location tools, spec 087
+research R9). Until then they still behave as decided below.
+
 **Decision**: `update-template`, `update-template-section` and `update-template-field` keep what is
 there for every argument left out, as `update-contact-name` does. The endpoints require the full
 object (`present` rules, booleans defaulting to false), which an assistant asked to "make the field

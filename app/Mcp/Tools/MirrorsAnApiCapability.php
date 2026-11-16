@@ -57,9 +57,15 @@ use App\Models\Vault;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
+use Illuminate\Foundation\Http\Middleware\TrimStrings;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request as HttpRequest;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Laravel\Mcp\Request;
+use Laravel\Mcp\Response;
 use Laravel\Sanctum\PersonalAccessToken;
 
 /**
@@ -80,6 +86,36 @@ trait MirrorsAnApiCapability
     public function mirrors(): string
     {
         return $this->mirrors;
+    }
+
+    /**
+     * Answers through the API controller method this tool mirrors, so the endpoint and the tool run
+     * one implementation: its validation, its paging and its update semantics. The call skips the
+     * route's middleware, which the MCP route already ran, except the two global ones that reshape
+     * input, and keeps the MCP request as the current
+     * one, so the changelog still records the change as arriving from an assistant. A validation
+     * refusal reaches the assistant word for word; a single record comes back without the `data` wrapper, as every other tool returns one, and an
+     * answer without a JSON body comes back empty.
+     */
+    protected function answerThroughApi(Request $request, string ...$routeArguments): Response
+    {
+        $route = Route::getRoutes()->getByName($this->mirrors);
+        [$controller, $method] = explode('@', $route->getActionName());
+
+        $httpRequest = HttpRequest::create('/', $route->methods()[0], $request->all());
+        $httpRequest->setUserResolver(fn (): User => $this->user($request));
+        new TrimStrings()->handle($httpRequest, fn (HttpRequest $request): HttpRequest => $request);
+        new ConvertEmptyStringsToNull()->handle($httpRequest, fn (HttpRequest $request): HttpRequest => $request);
+
+        $answer = app($controller)->{$method}($httpRequest, ...$routeArguments);
+
+        if (! $answer instanceof JsonResponse) {
+            return Response::text('');
+        }
+
+        $body = $answer->getData(true);
+
+        return Response::json(array_keys($body) === ['data'] ? $body['data'] : $body);
     }
 
     public function shouldRegister(Request $request): bool

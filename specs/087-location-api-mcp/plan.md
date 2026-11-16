@@ -70,7 +70,7 @@ spec/models/058-location-in-progress.md              drop "No API endpoint and n
 
 ## Spec amendments made while planning
 
-- US2.5: the API `PUT` clears what it leaves out; the MCP update keeps it (R6).
+- US2.5: the API `PUT` clears what it leaves out, and so does the MCP update, which runs the same controller method (R9, replacing R6).
 - FR-008: MCP changes are recorded as from the assistant; API changes as every other API endpoint's (R7).
 
 ## Complexity Tracking
@@ -78,5 +78,4 @@ spec/models/058-location-in-progress.md              drop "No API endpoint and n
 | Departure | Why | Simpler alternative rejected because |
 | --- | --- | --- |
 | Extract `LocationTree` from a shipped view model | Three callers need the path and the inherited address | Copying it into the resource makes two paths that can disagree |
-| API and MCP updates differ on a left out value | Each follows its interface's existing convention | One rule for both breaks either the API's `PUT` or every MCP update tool |
 | List paged in memory | Tree order needs the whole account | SQL ordering puts children before parents |

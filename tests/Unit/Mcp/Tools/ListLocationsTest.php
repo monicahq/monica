@@ -17,16 +17,17 @@ class ListLocationsTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_lists_the_locations_of_the_account_by_their_path(): void
+    public function it_lists_one_page_of_the_locations_of_the_account(): void
     {
         $user = User::factory()->create();
         $scranton = Location::factory()->create(['account_id' => $user->account_id, 'name' => 'Scranton']);
         Location::factory()->inside($scranton)->create(['name' => 'Warehouse']);
         Location::factory()->create(['name' => 'Stamford']);
 
-        MonicaServer::actingAs($user)->tool(ListLocations::class)
+        MonicaServer::actingAs($user)->tool(ListLocations::class, ['page' => 2, 'per_page' => 1])
             ->assertOk()
             ->assertSee('Scranton › Warehouse')
-            ->assertDontSee('Stamford');
+            ->assertDontSee('Stamford')
+            ->assertSee('"total":2');
     }
 }

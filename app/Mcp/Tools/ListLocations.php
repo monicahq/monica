@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Helpers\LocationTree;
-use App\Http\Resources\LocationResource;
-use App\Models\Location;
+use Illuminate\Contracts\JsonSchema\JsonSchema;
+use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
-#[Description('List the places of the account, such as a house, a room or a shelf. Each one comes before the places inside it, and carries its full path, the address it falls back on and how many places it holds.')]
+#[Description('List the places of the account, such as a house, a room or a shelf, one page at a time. Each one comes before the places inside it, and carries its full path, the address it falls back on and how many places it holds.')]
 #[IsReadOnly]
 class ListLocations extends Tool
 {
@@ -23,11 +22,18 @@ class ListLocations extends Tool
 
     public function handle(Request $request): Response
     {
-        $tree = LocationTree::forAccount($this->user($request)->account_id);
+        return $this->answerThroughApi($request);
+    }
 
-        return Response::json($tree->ordered()
-            ->map(fn (Location $location): array => new LocationResource($location, $tree)->resolve())
-            ->values()
-            ->all());
+    /** @return array<string, Type> */
+    public function schema(JsonSchema $schema): array
+    {
+        $default = (int) config('monica.api_default_items_per_page');
+        $maximum = (int) config('monica.api_maximum_items_per_page');
+
+        return [
+            'page' => $schema->integer()->description('The page to read, starting at 1.'),
+            'per_page' => $schema->integer()->description("How many places a page holds: {$default} unless asked, {$maximum} at most."),
+        ];
     }
 }
