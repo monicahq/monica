@@ -2,6 +2,7 @@
 {{--
   @var string $title
   @var string|null $description
+  @var \Illuminate\View\ComponentSlot|null $landscape
 --}}
 @props([
   'title',
@@ -9,28 +10,32 @@
 ])
 
 <x-guest-layout :title="$title">
-  <div class="relative isolate flex min-h-screen flex-col">
-    <img
-      src="{{ asset('images/sign-in-landscape.webp') }}"
-      alt=""
-      width="1983"
-      height="793"
-      decoding="async"
-      loading="lazy"
-      aria-hidden="true"
-      class="pointer-events-none absolute inset-x-0 bottom-0 -z-10 w-full select-none dark:hidden"
-    />
+  <div {{ $attributes->class('relative isolate flex min-h-screen flex-col') }}>
+    @isset($landscape)
+      {{ $landscape }}
+    @else
+      <img
+        src="{{ asset('images/sign-in-landscape.webp') }}"
+        alt=""
+        width="1983"
+        height="793"
+        decoding="async"
+        loading="lazy"
+        aria-hidden="true"
+        class="pointer-events-none absolute inset-x-0 bottom-0 -z-10 w-full select-none dark:hidden"
+      />
 
-    <img
-      src="{{ asset('images/sign-in-landscape-dark.webp') }}"
-      alt=""
-      width="1983"
-      height="793"
-      decoding="async"
-      loading="lazy"
-      aria-hidden="true"
-      class="pointer-events-none absolute inset-x-0 bottom-0 -z-10 hidden w-full select-none dark:block"
-    />
+      <img
+        src="{{ asset('images/sign-in-landscape-dark.webp') }}"
+        alt=""
+        width="1983"
+        height="793"
+        decoding="async"
+        loading="lazy"
+        aria-hidden="true"
+        class="pointer-events-none absolute inset-x-0 bottom-0 -z-10 hidden w-full select-none dark:block"
+      />
+    @endisset
 
     <main class="flex flex-1 flex-col justify-center px-6 py-10">
       <div class="mx-auto w-full max-w-md space-y-6">
