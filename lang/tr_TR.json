@@ -3698,6 +3698,7 @@
     "Send notifications on this channel": "Bildirimleri bu kanaldan gönder",
     "Send reply": "Yanıt gönder",
     "Send the email again": "E-postayı yeniden gönder",
+    "Send this parameter either in the address or in the body, not both.": "Bu parametreyi adreste veya gövdede gönderin, ikisinde birden göndermeyin.",
     "Send yourself a test?": "Size bir test gönderilsin mi?",
     "Sending the link": "Bağlantıyı gönderme",
     "Sends you back to": "Geri gönderdiği adres",

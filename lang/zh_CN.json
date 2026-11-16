@@ -3698,6 +3698,7 @@
     "Send notifications on this channel": "通过此渠道发送通知",
     "Send reply": "发送回复",
     "Send the email again": "重新发送邮件",
+    "Send this parameter either in the address or in the body, not both.": "请在地址或请求体中发送此参数，不要两处都发送。",
     "Send yourself a test?": "给自己发送测试？",
     "Sending the link": "正在发送链接",
     "Sends you back to": "返回地址",

@@ -114,6 +114,35 @@ return [
             ],
         ],
         [
+            'id' => 'query-method',
+            'title' => 'The QUERY method',
+            'label' => 'The QUERY method',
+            'method' => 'QUERY',
+            'path' => '/vaults/{vault}/contacts',
+            'examplePath' => '/vaults/9d4f1c2e-7b3a-4f88-9a2d-6c1e5b0f7a31/contacts',
+            'description' => 'Every endpoint that answers GET also answers QUERY, at the same address and with the same parameters. QUERY is a read like GET, safe to retry, but it carries its parameters in the request body, so a long search stays out of the address and out of the logs that record addresses.',
+            'body' => [
+                'Send the body as JSON or as a form. The answer is exactly the one GET gives for the same parameters, validation errors included.',
+                'A parameter may sit in the address or in the body, never in both. Sending the same one twice answers 422 with an error on that parameter.',
+                'To page, send QUERY again with the next page in the body. The meta object of the answer says which page this is and how many there are in total.',
+                'Every answer from an endpoint that accepts QUERY carries an Accept-Query header listing the body formats it reads. A HEAD request is the cheapest way to check.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
+            'exampleBody' => [
+                'query' => 'Dwight',
+                'page' => 1,
+                'per_page' => 25,
+            ],
+            'response' => [
+                'data' => [],
+                'meta' => [
+                    'page' => 1,
+                    'per_page' => 25,
+                    'total' => 1,
+                ],
+            ],
+        ],
+        [
             'id' => 'errors',
             'title' => 'Errors',
             'label' => 'Errors',

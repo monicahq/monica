@@ -46,23 +46,7 @@ class BuildOpenApiDocumentTest extends TestCase
     #[Test]
     public function it_describes_no_path_a_guide_page_only_borrowed_to_show_a_sample(): void
     {
-        $document = new BuildOpenApiDocument()->execute();
-        $viewModel = new ApiDocsViewModel;
-
-        $described = [];
-
-        foreach ($document['paths'] as $path => $operations) {
-            foreach (array_keys($operations) as $method) {
-                $described[] = mb_strtoupper((string) $method).' '.$path;
-            }
-        }
-
-        $registered = array_map(
-            fn (array $route): string => $route['method'].' '.$route['path'],
-            $viewModel->registeredRoutes(),
-        );
-
-        $this->assertEqualsCanonicalizing($registered, $described);
+        $this->assertEqualsCanonicalizing($this->registered(), $this->described());
     }
 
     #[Test]
@@ -71,9 +55,7 @@ class BuildOpenApiDocumentTest extends TestCase
         $described = $this->described();
         $missing = [];
 
-        foreach (new ApiDocsViewModel()->registeredRoutes() as $route) {
-            $endpoint = $route['method'].' '.$route['path'];
-
+        foreach ($this->registered() as $endpoint) {
             if (! in_array($endpoint, $described, true)) {
                 $missing[] = $endpoint;
             }
@@ -85,11 +67,7 @@ class BuildOpenApiDocumentTest extends TestCase
     #[Test]
     public function it_describes_no_endpoint_the_api_does_not_answer(): void
     {
-        $registered = array_map(
-            fn (array $route): string => $route['method'].' '.$route['path'],
-            new ApiDocsViewModel()->registeredRoutes(),
-        );
-
+        $registered = $this->registered();
         $extra = [];
 
         foreach ($this->described() as $endpoint) {
@@ -122,6 +100,22 @@ class BuildOpenApiDocumentTest extends TestCase
         }
 
         return $described;
+    }
+
+    /** @return list<string> */
+    private function registered(): array
+    {
+        $registered = [];
+
+        foreach (new ApiDocsViewModel()->registeredRoutes() as $route) {
+            $registered[] = "{$route['method']} {$route['path']}";
+
+            if ($route['method'] === 'GET') {
+                $registered[] = "QUERY {$route['path']}";
+            }
+        }
+
+        return $registered;
     }
 
     #[Test]
@@ -201,6 +195,18 @@ class BuildOpenApiDocumentTest extends TestCase
 
         $this->assertArrayNotHasKey(401, $document['paths']['/status']['get']['responses']);
         $this->assertArrayHasKey(429, $document['paths']['/status']['get']['responses']);
+    }
+
+    #[Test]
+    public function it_describes_query_beside_every_read_with_its_parameters_in_the_body(): void
+    {
+        $document = new BuildOpenApiDocument()->execute();
+
+        $query = $document['paths']['/vaults/{vault}/contacts']['query'];
+
+        $this->assertSame('contacts-index-query', $query['operationId']);
+        $this->assertArrayHasKey('per_page', $query['requestBody']['content']['application/json']['schema']['properties']);
+        $this->assertArrayNotHasKey('query', $document['paths']['/logout']);
     }
 
     #[Test]

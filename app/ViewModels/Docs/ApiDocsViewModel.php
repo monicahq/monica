@@ -216,7 +216,7 @@ class ApiDocsViewModel
             }
 
             foreach ($route->methods() as $method) {
-                if (in_array($method, ['HEAD', 'OPTIONS'], true)) {
+                if (in_array($method, ['HEAD', 'OPTIONS', 'QUERY'], true)) {
                     continue;
                 }
 

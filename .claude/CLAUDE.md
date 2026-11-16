@@ -75,7 +75,7 @@ the rule.
 - `app/Http/Controllers`: `App` (the logged in app), grouped by domain (`Vaults`, `Settings`, `Marketplace`, `Admin`, `Auth`, `Docs`, `Support`), `Api` (the JSON API), plus the base `Controller.php`.
 - `app/Http/Middleware`: route middleware. The aliases are declared in
   `bootstrap/app.php`: `active`, `administration`, `administrator`, `flag`, `magic.link`,
-  `portal.timing`, `registration`, `searchable`, `sso` and `support`. `SetLocale` is appended to the web
+  `portal.timing`, `query.body`, `registration`, `searchable`, `sso` and `support`. `SetLocale` is appended to the web
   group and `SetApiLocale` to the api group instead. An account carries no role: a record
   is reached when its account matches, which `resolveRouteBinding()` enforces, and when the vault in
   the URL matches, which the controller enforces with `abort_unless(..., 404)`. The one capacity is

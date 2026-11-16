@@ -3698,6 +3698,7 @@
     "Send notifications on this channel": "Envia les notificacions per aquest canal",
     "Send reply": "Envia la resposta",
     "Send the email again": "Torna a enviar el correu",
+    "Send this parameter either in the address or in the body, not both.": "Envia aquest paràmetre a l’adreça o al cos, no als dos llocs.",
     "Send yourself a test?": "T’envio una prova?",
     "Sending the link": "S’està enviant l’enllaç",
     "Sends you back to": "Et retorna a",

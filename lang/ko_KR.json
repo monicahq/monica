@@ -3698,6 +3698,7 @@
     "Send notifications on this channel": "이 채널로 알림 보내기",
     "Send reply": "답장 보내기",
     "Send the email again": "이메일 다시 보내기",
+    "Send this parameter either in the address or in the body, not both.": "이 매개변수는 주소 또는 본문 중 한 곳에서만 보내 주세요.",
     "Send yourself a test?": "나에게 테스트를 보낼까요?",
     "Sending the link": "링크 보내는 중",
     "Sends you back to": "돌아갈 주소",

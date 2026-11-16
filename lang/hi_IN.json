@@ -3698,6 +3698,7 @@
     "Send notifications on this channel": "इस माध्यम पर सूचनाएँ भेजें",
     "Send reply": "उत्तर भेजें",
     "Send the email again": "ईमेल फिर भेजें",
+    "Send this parameter either in the address or in the body, not both.": "इस पैरामीटर को पते में या बॉडी में भेजें, दोनों में नहीं।",
     "Send yourself a test?": "अपने आप को एक परीक्षण भेजें?",
     "Sending the link": "कड़ी भेजी जा रही है",
     "Sends you back to": "आपको वापस भेजता है",

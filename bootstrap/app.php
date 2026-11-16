@@ -12,6 +12,7 @@ use App\Http\Middleware\EnsureUserIsActive;
 use App\Http\Middleware\EnsureUserIsAdministrator;
 use App\Http\Middleware\InsertServerGenerationTime;
 use App\Http\Middleware\MarkPageSearchable;
+use App\Http\Middleware\MergeQueryRequestBody;
 use App\Http\Middleware\SetApiLocale;
 use App\Http\Middleware\SetLocale;
 use Illuminate\Foundation\Application;
@@ -57,6 +58,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'flag' => EnsureFlagIsOn::class,
             'magic.link' => EnsureMagicLinkIsEnabled::class,
             'portal.timing' => InsertServerGenerationTime::class,
+            'query.body' => MergeQueryRequestBody::class,
             'registration' => EnsureRegistrationIsEnabled::class,
             'searchable' => MarkPageSearchable::class,
             'sso' => EnsureSsoProviderIsAvailable::class,

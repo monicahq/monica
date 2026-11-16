@@ -3698,6 +3698,7 @@
     "Send notifications on this channel": "ส่งการแจ้งเตือนทางช่องทางนี้",
     "Send reply": "ส่งคำตอบ",
     "Send the email again": "ส่งอีเมลอีกครั้ง",
+    "Send this parameter either in the address or in the body, not both.": "โปรดส่งพารามิเตอร์นี้ในที่อยู่หรือในเนื้อหาอย่างใดอย่างหนึ่ง ไม่ใช่ทั้งสองแห่ง",
     "Send yourself a test?": "ส่งการทดสอบให้ตัวเองใช่ไหม",
     "Sending the link": "กำลังส่งลิงก์",
     "Sends you back to": "ส่งคุณกลับไปที่",

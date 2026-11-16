@@ -3698,6 +3698,7 @@
     "Send notifications on this channel": "Értesítések küldése ezen a csatornán",
     "Send reply": "Válasz küldése",
     "Send the email again": "Az e-mail újraküldése",
+    "Send this parameter either in the address or in the body, not both.": "Ezt a paramétert vagy a címben, vagy a törzsben küldd el, ne mindkettőben.",
     "Send yourself a test?": "Küldjünk neked egy tesztet?",
     "Sending the link": "A hivatkozás küldése",
     "Sends you back to": "Visszairányít ide",

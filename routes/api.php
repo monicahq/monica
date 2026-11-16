@@ -140,24 +140,24 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Nightwatch\Http\Middleware\Sample;
 
 Route::prefix('v1')->name('api.v1.')->group(function (): void {
-    Route::get('status', [StatusController::class, 'show'])->middleware(['throttle:60,1', Sample::rate(0.01)])->name('status');
+    Route::match(['GET', 'QUERY'], 'status', [StatusController::class, 'show'])->middleware(['throttle:60,1', Sample::rate(0.01)])->name('status');
 
     Route::post('register', [RegistrationController::class, 'store'])->middleware(['registration', 'throttle:6,1'])->name('register');
     Route::post('login', [LoginController::class, 'store'])->middleware('throttle:6,1')->name('login');
 
-    Route::middleware(['auth:sanctum'])->group(function (): void {
+    Route::middleware(['auth:sanctum', 'query.body'])->group(function (): void {
         Route::delete('logout', [LoginController::class, 'destroy'])->name('logout');
 
-        Route::get('me', [MeController::class, 'show'])->name('me');
+        Route::match(['GET', 'QUERY'], 'me', [MeController::class, 'show'])->name('me');
         Route::put('me', [MeController::class, 'update'])->name('me.update');
         Route::put('me/timezone', [MeTimezoneController::class, 'update'])->name('me.timezone.update');
         Route::put('me/contact-list-view', [MeContactListViewController::class, 'update'])->name('me.contactListView.update');
         Route::put('me/welcome', [MeWelcomeController::class, 'update'])->name('me.welcome.update');
         Route::put('me/full-access-offer', [MeFullAccessOfferController::class, 'update'])->name('me.fullAccessOffer.update');
 
-        Route::get('billing', [BillingController::class, 'show'])->name('billing');
-        Route::get('billing/payments', [PaymentController::class, 'index'])->name('billing.payments');
-        Route::get('billing/payments/{payment}', [PaymentController::class, 'show'])->where('payment', '[A-Za-z0-9_]+')->name('billing.payments.show');
+        Route::match(['GET', 'QUERY'], 'billing', [BillingController::class, 'show'])->name('billing');
+        Route::match(['GET', 'QUERY'], 'billing/payments', [PaymentController::class, 'index'])->name('billing.payments');
+        Route::match(['GET', 'QUERY'], 'billing/payments/{payment}', [PaymentController::class, 'show'])->where('payment', '[A-Za-z0-9_]+')->name('billing.payments.show');
         Route::post('billing/checkout-sessions', [CheckoutSessionController::class, 'store'])->name('billing.checkoutSessions.create');
         Route::put('billing/subscription', [SubscriptionController::class, 'update'])->name('billing.subscription.update');
         Route::delete('billing/subscription', [SubscriptionController::class, 'destroy'])->name('billing.subscription.destroy');
@@ -165,81 +165,81 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::post('billing/portal-sessions', [PortalSessionController::class, 'store'])->name('billing.portalSessions.create');
 
         Route::middleware(['support'])->group(function (): void {
-            Route::get('support-requests', [SupportRequestController::class, 'index'])->name('supportRequests');
+            Route::match(['GET', 'QUERY'], 'support-requests', [SupportRequestController::class, 'index'])->name('supportRequests');
             Route::post('support-requests', [SupportRequestController::class, 'create'])->middleware('throttle:support')->name('supportRequests.create');
-            Route::get('support-requests/{supportRequest}', [SupportRequestController::class, 'show'])->where('supportRequest', '[0-9a-fA-F-]{36}')->name('supportRequests.show');
+            Route::match(['GET', 'QUERY'], 'support-requests/{supportRequest}', [SupportRequestController::class, 'show'])->where('supportRequest', '[0-9a-fA-F-]{36}')->name('supportRequests.show');
             Route::post('support-requests/{supportRequest}/messages', [SupportMessageController::class, 'create'])->middleware('throttle:support')->where('supportRequest', '[0-9a-fA-F-]{36}')->name('supportRequests.messages.create');
             Route::post('support-requests/{supportRequest}/solution', [SupportSolutionController::class, 'create'])->where('supportRequest', '[0-9a-fA-F-]{36}')->name('supportRequests.solution.create');
-            Route::get('support-requests/{supportRequest}/attachments/{attachment}/content', [SupportAttachmentContentController::class, 'show'])->where(['supportRequest' => '[0-9a-fA-F-]{36}', 'attachment' => '[0-9a-fA-F-]{36}'])->name('supportRequests.attachments.content.show');
+            Route::match(['GET', 'QUERY'], 'support-requests/{supportRequest}/attachments/{attachment}/content', [SupportAttachmentContentController::class, 'show'])->where(['supportRequest' => '[0-9a-fA-F-]{36}', 'attachment' => '[0-9a-fA-F-]{36}'])->name('supportRequests.attachments.content.show');
         });
 
         Route::middleware(['support', 'administrator', 'administration'])->group(function (): void {
-            Route::get('admin/support-requests', [AdminSupportRequestController::class, 'index'])->name('admin.supportRequests');
-            Route::get('admin/support-requests/{supportRequest}', [AdminSupportRequestController::class, 'show'])->where('supportRequest', '[0-9a-fA-F-]{36}')->name('admin.supportRequests.show');
+            Route::match(['GET', 'QUERY'], 'admin/support-requests', [AdminSupportRequestController::class, 'index'])->name('admin.supportRequests');
+            Route::match(['GET', 'QUERY'], 'admin/support-requests/{supportRequest}', [AdminSupportRequestController::class, 'show'])->where('supportRequest', '[0-9a-fA-F-]{36}')->name('admin.supportRequests.show');
             Route::post('admin/support-requests/{supportRequest}/replies', [AdminSupportReplyController::class, 'create'])->where('supportRequest', '[0-9a-fA-F-]{36}')->name('admin.supportRequests.replies.create');
             Route::post('admin/support-requests/{supportRequest}/notes', [AdminSupportNoteController::class, 'create'])->where('supportRequest', '[0-9a-fA-F-]{36}')->name('admin.supportRequests.notes.create');
             Route::put('admin/support-requests/{supportRequest}/status', [AdminSupportStatusController::class, 'update'])->where('supportRequest', '[0-9a-fA-F-]{36}')->name('admin.supportRequests.status.update');
         });
 
-        Route::get('api-keys', [ApiKeyController::class, 'index'])->name('apiKeys');
-        Route::get('api-keys/{apiKey}', [ApiKeyController::class, 'show'])->where('apiKey', '[1-9][0-9]*')->name('apiKeys.show');
+        Route::match(['GET', 'QUERY'], 'api-keys', [ApiKeyController::class, 'index'])->name('apiKeys');
+        Route::match(['GET', 'QUERY'], 'api-keys/{apiKey}', [ApiKeyController::class, 'show'])->where('apiKey', '[1-9][0-9]*')->name('apiKeys.show');
         Route::post('api-keys', [ApiKeyController::class, 'create'])->name('apiKeys.create');
         Route::delete('api-keys/{apiKey}', [ApiKeyController::class, 'destroy'])->where('apiKey', '[1-9][0-9]*')->name('apiKeys.destroy');
 
-        Route::get('notifications', [ApiNotificationController::class, 'index'])->name('notifications');
+        Route::match(['GET', 'QUERY'], 'notifications', [ApiNotificationController::class, 'index'])->name('notifications');
         Route::put('notifications/read', [ApiNotificationReadController::class, 'updateAll'])->name('notifications.readAll.update');
-        Route::get('notifications/{notification}', [ApiNotificationController::class, 'show'])->where('notification', '[0-9a-fA-F-]{36}')->name('notifications.show');
+        Route::match(['GET', 'QUERY'], 'notifications/{notification}', [ApiNotificationController::class, 'show'])->where('notification', '[0-9a-fA-F-]{36}')->name('notifications.show');
         Route::put('notifications/{notification}/read', [ApiNotificationReadController::class, 'update'])->where('notification', '[0-9a-fA-F-]{36}')->name('notifications.read.update');
 
-        Route::get('notification-channels', [ApiNotificationChannelController::class, 'index'])->name('notificationChannels');
-        Route::get('notification-channels/{channel}', [ApiNotificationChannelController::class, 'show'])->name('notificationChannels.show');
+        Route::match(['GET', 'QUERY'], 'notification-channels', [ApiNotificationChannelController::class, 'index'])->name('notificationChannels');
+        Route::match(['GET', 'QUERY'], 'notification-channels/{channel}', [ApiNotificationChannelController::class, 'show'])->name('notificationChannels.show');
         Route::put('notification-channels/{channel}', [ApiNotificationChannelController::class, 'update'])->name('notificationChannels.update');
         Route::post('notification-channels/{channel}/proof', [ApiChannelProofController::class, 'create'])->name('notificationChannels.proof.store');
         Route::put('notification-channels/{channel}/proof', [ApiChannelProofController::class, 'update'])->name('notificationChannels.proof.update');
         Route::post('notification-channels/{channel}/test', [ApiChannelTestController::class, 'create'])->name('notificationChannels.test.store');
         Route::delete('notification-channels/{channel}/setup', [ApiChannelSetupController::class, 'destroy'])->name('notificationChannels.setup.destroy');
 
-        Route::get('notification-preferences', [ApiNotificationPreferenceController::class, 'show'])->name('notificationPreferences.show');
+        Route::match(['GET', 'QUERY'], 'notification-preferences', [ApiNotificationPreferenceController::class, 'show'])->name('notificationPreferences.show');
         Route::put('notification-preferences', [ApiNotificationPreferenceController::class, 'update'])->name('notificationPreferences.update');
 
-        Route::get('logs', [LogController::class, 'index'])->name('logs');
-        Route::get('logs/{log}', [LogController::class, 'show'])->where('log', '[1-9][0-9]*')->name('logs.show');
+        Route::match(['GET', 'QUERY'], 'logs', [LogController::class, 'index'])->name('logs');
+        Route::match(['GET', 'QUERY'], 'logs/{log}', [LogController::class, 'show'])->where('log', '[1-9][0-9]*')->name('logs.show');
 
-        Route::get('mcp-calls', [McpCallController::class, 'index'])->middleware('flag:mcp-server')->name('mcpCalls');
-        Route::get('mcp-calls/{mcpCall}', [McpCallController::class, 'show'])->middleware('flag:mcp-server')->where('mcpCall', '[0-9a-fA-F-]{36}')->name('mcpCalls.show');
+        Route::match(['GET', 'QUERY'], 'mcp-calls', [McpCallController::class, 'index'])->middleware('flag:mcp-server')->name('mcpCalls');
+        Route::match(['GET', 'QUERY'], 'mcp-calls/{mcpCall}', [McpCallController::class, 'show'])->middleware('flag:mcp-server')->where('mcpCall', '[0-9a-fA-F-]{36}')->name('mcpCalls.show');
 
-        Route::get('emails-sent', [EmailSentController::class, 'index'])->name('emailsSent');
-        Route::get('emails-sent/{emailSent}', [EmailSentController::class, 'show'])->where('emailSent', '[1-9][0-9]*')->name('emailsSent.show');
+        Route::match(['GET', 'QUERY'], 'emails-sent', [EmailSentController::class, 'index'])->name('emailsSent');
+        Route::match(['GET', 'QUERY'], 'emails-sent/{emailSent}', [EmailSentController::class, 'show'])->where('emailSent', '[1-9][0-9]*')->name('emailsSent.show');
 
-        Route::get('vaults', [VaultController::class, 'index'])->name('vaults');
-        Route::get('vaults/{vault}', [VaultController::class, 'show'])->name('vaults.show');
+        Route::match(['GET', 'QUERY'], 'vaults', [VaultController::class, 'index'])->name('vaults');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}', [VaultController::class, 'show'])->name('vaults.show');
         Route::post('vaults', [VaultController::class, 'create'])->name('vaults.create');
         Route::put('vaults/{vault}', [VaultController::class, 'update'])->name('vaults.update');
         Route::delete('vaults/{vault}', [VaultController::class, 'destroy'])->name('vaults.destroy');
 
-        Route::get('entity-types', [EntityTypeController::class, 'index'])->name('entityTypes');
-        Route::get('entity-types/{entityType}', [EntityTypeController::class, 'show'])->where('entityType', '[0-9a-fA-F-]{36}')->name('entityTypes.show');
+        Route::match(['GET', 'QUERY'], 'entity-types', [EntityTypeController::class, 'index'])->name('entityTypes');
+        Route::match(['GET', 'QUERY'], 'entity-types/{entityType}', [EntityTypeController::class, 'show'])->where('entityType', '[0-9a-fA-F-]{36}')->name('entityTypes.show');
         Route::post('entity-types', [EntityTypeController::class, 'create'])->name('entityTypes.create');
         Route::put('entity-types/{entityType}', [EntityTypeController::class, 'update'])->where('entityType', '[0-9a-fA-F-]{36}')->name('entityTypes.update');
         Route::delete('entity-types/{entityType}', [EntityTypeController::class, 'destroy'])->where('entityType', '[0-9a-fA-F-]{36}')->name('entityTypes.destroy');
 
         Route::put('entity-types/{entityType}/activation', [EntityTypeActivationController::class, 'update'])->where('entityType', '[0-9a-fA-F-]{36}')->name('entityTypes.activation.update');
         Route::put('entity-types/{entityType}/position', [EntityTypePositionController::class, 'update'])->where('entityType', '[0-9a-fA-F-]{36}')->name('entityTypes.position.update');
-        Route::get('vaults/{vault}/entity-types/{entityType}/entities', [EntityController::class, 'index'])->where('entityType', '[0-9a-fA-F-]{36}')->name('entities');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/entity-types/{entityType}/entities', [EntityController::class, 'index'])->where('entityType', '[0-9a-fA-F-]{36}')->name('entities');
         Route::post('vaults/{vault}/entity-types/{entityType}/entities', [EntityController::class, 'create'])->where('entityType', '[0-9a-fA-F-]{36}')->name('entities.create');
 
-        Route::get('life-event-categories', [LifeEventCategoryController::class, 'index'])->name('lifeEventCategories');
-        Route::get('life-event-categories/{lifeEventCategory}', [LifeEventCategoryController::class, 'show'])->where('lifeEventCategory', '[0-9a-fA-F-]{36}')->name('lifeEventCategories.show');
+        Route::match(['GET', 'QUERY'], 'life-event-categories', [LifeEventCategoryController::class, 'index'])->name('lifeEventCategories');
+        Route::match(['GET', 'QUERY'], 'life-event-categories/{lifeEventCategory}', [LifeEventCategoryController::class, 'show'])->where('lifeEventCategory', '[0-9a-fA-F-]{36}')->name('lifeEventCategories.show');
         Route::post('life-event-categories', [LifeEventCategoryController::class, 'create'])->name('lifeEventCategories.create');
         Route::put('life-event-categories/{lifeEventCategory}', [LifeEventCategoryController::class, 'update'])->where('lifeEventCategory', '[0-9a-fA-F-]{36}')->name('lifeEventCategories.update');
         Route::delete('life-event-categories/{lifeEventCategory}', [LifeEventCategoryController::class, 'destroy'])->where('lifeEventCategory', '[0-9a-fA-F-]{36}')->name('lifeEventCategories.destroy');
 
         Route::put('life-event-categories/{lifeEventCategory}/activation', [LifeEventCategoryActivationController::class, 'update'])->where('lifeEventCategory', '[0-9a-fA-F-]{36}')->name('lifeEventCategories.activation.update');
         Route::put('life-event-categories/{lifeEventCategory}/position', [LifeEventCategoryPositionController::class, 'update'])->where('lifeEventCategory', '[0-9a-fA-F-]{36}')->name('lifeEventCategories.position.update');
-        Route::get('life-event-categories/{lifeEventCategory}/types', [LifeEventCategoryTypeController::class, 'index'])->where('lifeEventCategory', '[0-9a-fA-F-]{36}')->name('lifeEventCategories.types');
+        Route::match(['GET', 'QUERY'], 'life-event-categories/{lifeEventCategory}/types', [LifeEventCategoryTypeController::class, 'index'])->where('lifeEventCategory', '[0-9a-fA-F-]{36}')->name('lifeEventCategories.types');
 
-        Route::get('life-event-types', [LifeEventTypeController::class, 'index'])->name('lifeEventTypes');
-        Route::get('life-event-types/{lifeEventType}', [LifeEventTypeController::class, 'show'])->where('lifeEventType', '[0-9a-fA-F-]{36}')->name('lifeEventTypes.show');
+        Route::match(['GET', 'QUERY'], 'life-event-types', [LifeEventTypeController::class, 'index'])->name('lifeEventTypes');
+        Route::match(['GET', 'QUERY'], 'life-event-types/{lifeEventType}', [LifeEventTypeController::class, 'show'])->where('lifeEventType', '[0-9a-fA-F-]{36}')->name('lifeEventTypes.show');
         Route::post('life-event-types', [LifeEventTypeController::class, 'create'])->name('lifeEventTypes.create');
         Route::put('life-event-types/{lifeEventType}', [LifeEventTypeController::class, 'update'])->where('lifeEventType', '[0-9a-fA-F-]{36}')->name('lifeEventTypes.update');
         Route::delete('life-event-types/{lifeEventType}', [LifeEventTypeController::class, 'destroy'])->where('lifeEventType', '[0-9a-fA-F-]{36}')->name('lifeEventTypes.destroy');
@@ -247,12 +247,12 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::put('life-event-types/{lifeEventType}/activation', [LifeEventTypeActivationController::class, 'update'])->where('lifeEventType', '[0-9a-fA-F-]{36}')->name('lifeEventTypes.activation.update');
         Route::put('life-event-types/{lifeEventType}/position', [LifeEventTypePositionController::class, 'update'])->where('lifeEventType', '[0-9a-fA-F-]{36}')->name('lifeEventTypes.position.update');
 
-        Route::get('life-event-types/{lifeEventType}/fields', [LifeEventTypeFieldController::class, 'index'])->where('lifeEventType', '[0-9a-fA-F-]{36}')->name('lifeEventTypes.fields');
+        Route::match(['GET', 'QUERY'], 'life-event-types/{lifeEventType}/fields', [LifeEventTypeFieldController::class, 'index'])->where('lifeEventType', '[0-9a-fA-F-]{36}')->name('lifeEventTypes.fields');
         Route::put('life-event-types/{lifeEventType}/fields', [LifeEventTypeFieldController::class, 'update'])->where('lifeEventType', '[0-9a-fA-F-]{36}')->name('lifeEventTypes.fields.update');
 
-        Route::get('relationship-categories', [RelationshipCategoryController::class, 'index'])->name('relationshipCategories');
-        Route::get('relationship-categories/{relationshipCategory}', [RelationshipCategoryController::class, 'show'])->where('relationshipCategory', '[0-9a-fA-F-]{36}')->name('relationshipCategories.show');
-        Route::get('relationship-categories/{relationshipCategory}/types', [RelationshipCategoryTypeController::class, 'index'])->where('relationshipCategory', '[0-9a-fA-F-]{36}')->name('relationshipCategories.types');
+        Route::match(['GET', 'QUERY'], 'relationship-categories', [RelationshipCategoryController::class, 'index'])->name('relationshipCategories');
+        Route::match(['GET', 'QUERY'], 'relationship-categories/{relationshipCategory}', [RelationshipCategoryController::class, 'show'])->where('relationshipCategory', '[0-9a-fA-F-]{36}')->name('relationshipCategories.show');
+        Route::match(['GET', 'QUERY'], 'relationship-categories/{relationshipCategory}/types', [RelationshipCategoryTypeController::class, 'index'])->where('relationshipCategory', '[0-9a-fA-F-]{36}')->name('relationshipCategories.types');
         Route::post('relationship-categories', [RelationshipCategoryController::class, 'create'])->name('relationshipCategories.create');
         Route::put('relationship-categories/{relationshipCategory}', [RelationshipCategoryController::class, 'update'])->where('relationshipCategory', '[0-9a-fA-F-]{36}')->name('relationshipCategories.update');
         Route::delete('relationship-categories/{relationshipCategory}', [RelationshipCategoryController::class, 'destroy'])->where('relationshipCategory', '[0-9a-fA-F-]{36}')->name('relationshipCategories.destroy');
@@ -260,19 +260,19 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::put('relationship-categories/{relationshipCategory}/activation', [RelationshipCategoryActivationController::class, 'update'])->where('relationshipCategory', '[0-9a-fA-F-]{36}')->name('relationshipCategories.activation.update');
         Route::put('relationship-categories/{relationshipCategory}/position', [RelationshipCategoryPositionController::class, 'update'])->where('relationshipCategory', '[0-9a-fA-F-]{36}')->name('relationshipCategories.position.update');
 
-        Route::get('locations', [LocationController::class, 'index'])->name('locations');
-        Route::get('locations/{location}', [LocationController::class, 'show'])->where('location', '[0-9a-fA-F-]{36}')->name('locations.show');
+        Route::match(['GET', 'QUERY'], 'locations', [LocationController::class, 'index'])->name('locations');
+        Route::match(['GET', 'QUERY'], 'locations/{location}', [LocationController::class, 'show'])->where('location', '[0-9a-fA-F-]{36}')->name('locations.show');
         Route::post('locations', [LocationController::class, 'create'])->name('locations.create');
         Route::put('locations/{location}', [LocationController::class, 'update'])->where('location', '[0-9a-fA-F-]{36}')->name('locations.update');
         Route::delete('locations/{location}', [LocationController::class, 'destroy'])->where('location', '[0-9a-fA-F-]{36}')->name('locations.destroy');
 
-        Route::get('possession-types', [PossessionTypeController::class, 'index'])->name('possessionTypes');
+        Route::match(['GET', 'QUERY'], 'possession-types', [PossessionTypeController::class, 'index'])->name('possessionTypes');
         Route::post('possession-types', [PossessionTypeController::class, 'create'])->name('possessionTypes.create');
         Route::post('possession-types/import', [PossessionTypeImportController::class, 'create'])->name('possessionTypes.import');
-        Route::get('possession-types/{possessionType}', [PossessionTypeController::class, 'show'])->where('possessionType', '[0-9a-fA-F-]{36}')->name('possessionTypes.show');
+        Route::match(['GET', 'QUERY'], 'possession-types/{possessionType}', [PossessionTypeController::class, 'show'])->where('possessionType', '[0-9a-fA-F-]{36}')->name('possessionTypes.show');
         Route::put('possession-types/{possessionType}', [PossessionTypeController::class, 'update'])->where('possessionType', '[0-9a-fA-F-]{36}')->name('possessionTypes.update');
         Route::delete('possession-types/{possessionType}', [PossessionTypeController::class, 'destroy'])->where('possessionType', '[0-9a-fA-F-]{36}')->name('possessionTypes.destroy');
-        Route::get('possession-types/{possessionType}/export', [PossessionTypeExportController::class, 'show'])->where('possessionType', '[0-9a-fA-F-]{36}')->name('possessionTypes.export');
+        Route::match(['GET', 'QUERY'], 'possession-types/{possessionType}/export', [PossessionTypeExportController::class, 'show'])->where('possessionType', '[0-9a-fA-F-]{36}')->name('possessionTypes.export');
         Route::post('possession-types/{possessionType}/groups', [PossessionFieldGroupController::class, 'create'])->where('possessionType', '[0-9a-fA-F-]{36}')->name('possessionFieldGroups.create');
         Route::put('possession-types/{possessionType}/groups/{group}', [PossessionFieldGroupController::class, 'update'])->where(['possessionType' => '[0-9a-fA-F-]{36}', 'group' => '[0-9a-fA-F-]{36}'])->name('possessionFieldGroups.update');
         Route::delete('possession-types/{possessionType}/groups/{group}', [PossessionFieldGroupController::class, 'destroy'])->where(['possessionType' => '[0-9a-fA-F-]{36}', 'group' => '[0-9a-fA-F-]{36}'])->name('possessionFieldGroups.destroy');
@@ -282,21 +282,21 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::delete('possession-types/{possessionType}/fields/{field}', [PossessionFieldController::class, 'destroy'])->where(['possessionType' => '[0-9a-fA-F-]{36}', 'field' => '[0-9a-fA-F-]{36}'])->name('possessionFields.destroy');
         Route::put('possession-types/{possessionType}/fields/{field}/position', [PossessionFieldPositionController::class, 'update'])->where(['possessionType' => '[0-9a-fA-F-]{36}', 'field' => '[0-9a-fA-F-]{36}'])->name('possessionFields.position');
 
-        Route::get('possession-tags', [PossessionTagController::class, 'index'])->name('possessionTags');
-        Route::get('possession-tags/{possessionTag}', [PossessionTagController::class, 'show'])->where('possessionTag', '[0-9a-fA-F-]{36}')->name('possessionTags.show');
+        Route::match(['GET', 'QUERY'], 'possession-tags', [PossessionTagController::class, 'index'])->name('possessionTags');
+        Route::match(['GET', 'QUERY'], 'possession-tags/{possessionTag}', [PossessionTagController::class, 'show'])->where('possessionTag', '[0-9a-fA-F-]{36}')->name('possessionTags.show');
         Route::post('possession-tags', [PossessionTagController::class, 'create'])->name('possessionTags.create');
         Route::put('possession-tags/{possessionTag}', [PossessionTagController::class, 'update'])->where('possessionTag', '[0-9a-fA-F-]{36}')->name('possessionTags.update');
         Route::delete('possession-tags/{possessionTag}', [PossessionTagController::class, 'destroy'])->where('possessionTag', '[0-9a-fA-F-]{36}')->name('possessionTags.destroy');
 
-        Route::get('possession-conditions', [PossessionConditionController::class, 'index'])->name('possessionConditions');
-        Route::get('possession-conditions/{possessionCondition}', [PossessionConditionController::class, 'show'])->where('possessionCondition', '[0-9a-fA-F-]{36}')->name('possessionConditions.show');
+        Route::match(['GET', 'QUERY'], 'possession-conditions', [PossessionConditionController::class, 'index'])->name('possessionConditions');
+        Route::match(['GET', 'QUERY'], 'possession-conditions/{possessionCondition}', [PossessionConditionController::class, 'show'])->where('possessionCondition', '[0-9a-fA-F-]{36}')->name('possessionConditions.show');
         Route::post('possession-conditions', [PossessionConditionController::class, 'create'])->name('possessionConditions.create');
         Route::put('possession-conditions/{possessionCondition}', [PossessionConditionController::class, 'update'])->where('possessionCondition', '[0-9a-fA-F-]{36}')->name('possessionConditions.update');
         Route::put('possession-conditions/{possessionCondition}/position', [PossessionConditionPositionController::class, 'update'])->where('possessionCondition', '[0-9a-fA-F-]{36}')->name('possessionConditions.position');
         Route::delete('possession-conditions/{possessionCondition}', [PossessionConditionController::class, 'destroy'])->where('possessionCondition', '[0-9a-fA-F-]{36}')->name('possessionConditions.destroy');
 
-        Route::get('relationship-types', [RelationshipTypeController::class, 'index'])->name('relationshipTypes');
-        Route::get('relationship-types/{relationshipType}', [RelationshipTypeController::class, 'show'])->where('relationshipType', '[0-9a-fA-F-]{36}')->name('relationshipTypes.show');
+        Route::match(['GET', 'QUERY'], 'relationship-types', [RelationshipTypeController::class, 'index'])->name('relationshipTypes');
+        Route::match(['GET', 'QUERY'], 'relationship-types/{relationshipType}', [RelationshipTypeController::class, 'show'])->where('relationshipType', '[0-9a-fA-F-]{36}')->name('relationshipTypes.show');
         Route::post('relationship-types', [RelationshipTypeController::class, 'create'])->name('relationshipTypes.create');
         Route::put('relationship-types/{relationshipType}', [RelationshipTypeController::class, 'update'])->where('relationshipType', '[0-9a-fA-F-]{36}')->name('relationshipTypes.update');
         Route::delete('relationship-types/{relationshipType}', [RelationshipTypeController::class, 'destroy'])->where('relationshipType', '[0-9a-fA-F-]{36}')->name('relationshipTypes.destroy');
@@ -304,8 +304,8 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::put('relationship-types/{relationshipType}/activation', [RelationshipTypeActivationController::class, 'update'])->where('relationshipType', '[0-9a-fA-F-]{36}')->name('relationshipTypes.activation.update');
         Route::put('relationship-types/{relationshipType}/position', [RelationshipTypePositionController::class, 'update'])->where('relationshipType', '[0-9a-fA-F-]{36}')->name('relationshipTypes.position.update');
 
-        Route::get('templates', [TemplateController::class, 'index'])->name('templates');
-        Route::get('templates/{template}', [TemplateController::class, 'show'])->where('template', '[0-9a-fA-F-]{36}')->name('templates.show');
+        Route::match(['GET', 'QUERY'], 'templates', [TemplateController::class, 'index'])->name('templates');
+        Route::match(['GET', 'QUERY'], 'templates/{template}', [TemplateController::class, 'show'])->where('template', '[0-9a-fA-F-]{36}')->name('templates.show');
         Route::post('templates', [TemplateController::class, 'create'])->name('templates.create');
         Route::put('templates/{template}', [TemplateController::class, 'update'])->where('template', '[0-9a-fA-F-]{36}')->name('templates.update');
         Route::delete('templates/{template}', [TemplateController::class, 'destroy'])->where('template', '[0-9a-fA-F-]{36}')->name('templates.destroy');
@@ -313,8 +313,8 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::put('templates/{template}/position', [TemplatePositionController::class, 'update'])->where('template', '[0-9a-fA-F-]{36}')->name('templates.position.update');
         Route::post('templates/{template}/duplicate', [TemplateDuplicateController::class, 'create'])->where('template', '[0-9a-fA-F-]{36}')->name('templates.duplicate.create');
 
-        Route::get('templates/{template}/versions', [StructureVersionController::class, 'index'])->where('template', '[0-9a-fA-F-]{36}')->name('templates.versions');
-        Route::get('templates/{template}/versions/{version}', [StructureVersionController::class, 'show'])->where(['template' => '[0-9a-fA-F-]{36}', 'version' => '[1-9][0-9]*'])->name('templates.versions.show');
+        Route::match(['GET', 'QUERY'], 'templates/{template}/versions', [StructureVersionController::class, 'index'])->where('template', '[0-9a-fA-F-]{36}')->name('templates.versions');
+        Route::match(['GET', 'QUERY'], 'templates/{template}/versions/{version}', [StructureVersionController::class, 'show'])->where(['template' => '[0-9a-fA-F-]{36}', 'version' => '[1-9][0-9]*'])->name('templates.versions.show');
 
         Route::post('templates/{template}/versions', [StructureVersionController::class, 'create'])->where('template', '[0-9a-fA-F-]{36}')->name('templates.versions.create');
         Route::put('templates/{template}/versions/{version}/publication', [StructureVersionPublicationController::class, 'update'])->where(['template' => '[0-9a-fA-F-]{36}', 'version' => '[1-9][0-9]*'])->name('templates.versions.publication.update');
@@ -337,69 +337,69 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::put('templates/{template}/versions/{version}/sections/{section}/fields/{field}/position', [FieldPositionController::class, 'update'])->where(['template' => '[0-9a-fA-F-]{36}', 'version' => '[1-9][0-9]*', 'section' => '[1-9][0-9]*', 'field' => '[1-9][0-9]*'])->name('templates.versions.sections.fields.position.update');
 
         Route::delete('vaults/{vault}/merges/{merge}', [ContactMergeController::class, 'destroy'])->where(['merge' => '[0-9a-fA-F-]{36}'])->name('merges.destroy');
-        Route::get('vaults/{vault}/duplicates', [ContactDuplicateController::class, 'index'])->name('duplicates');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/duplicates', [ContactDuplicateController::class, 'index'])->name('duplicates');
         Route::put('vaults/{vault}/duplicates/{candidate}/dismissal', [ContactDuplicateDismissalController::class, 'update'])->where(['candidate' => '[1-9][0-9]*'])->name('duplicates.dismissal.update');
 
-        Route::get('vaults/{vault}/contact-list-columns', [ContactListColumnController::class, 'show'])->name('contactListColumns.show');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/contact-list-columns', [ContactListColumnController::class, 'show'])->name('contactListColumns.show');
         Route::put('vaults/{vault}/contact-list-columns', [ContactListColumnController::class, 'update'])->name('contactListColumns.update');
 
-        Route::get('vaults/{vault}/possessions', [PossessionController::class, 'index'])->name('possessions');
-        Route::get('vaults/{vault}/possessions/{possession}', [PossessionController::class, 'show'])->where('possession', '[0-9a-fA-F-]{36}')->name('possessions.show');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/possessions', [PossessionController::class, 'index'])->name('possessions');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/possessions/{possession}', [PossessionController::class, 'show'])->where('possession', '[0-9a-fA-F-]{36}')->name('possessions.show');
         Route::post('vaults/{vault}/possessions', [PossessionController::class, 'create'])->name('possessions.create');
         Route::put('vaults/{vault}/possessions/{possession}', [PossessionController::class, 'update'])->where('possession', '[0-9a-fA-F-]{36}')->name('possessions.update');
         Route::delete('vaults/{vault}/possessions/{possession}', [PossessionController::class, 'destroy'])->where('possession', '[0-9a-fA-F-]{36}')->name('possessions.destroy');
         Route::put('vaults/{vault}/possessions/{possession}/position', [PossessionPositionController::class, 'update'])->where('possession', '[0-9a-fA-F-]{36}')->name('possessions.position');
         Route::put('vaults/{vault}/possessions/{possession}/values', [PossessionFieldValueController::class, 'update'])->where('possession', '[0-9a-fA-F-]{36}')->name('possessions.values');
-        Route::get('vaults/{vault}/possessions/{possession}/transactions', [PossessionTransactionController::class, 'index'])->where('possession', '[0-9a-fA-F-]{36}')->name('possessions.transactions');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/possessions/{possession}/transactions', [PossessionTransactionController::class, 'index'])->where('possession', '[0-9a-fA-F-]{36}')->name('possessions.transactions');
         Route::post('vaults/{vault}/possessions/{possession}/transactions', [PossessionTransactionController::class, 'create'])->where('possession', '[0-9a-fA-F-]{36}')->name('possessions.transactions.create');
-        Route::get('vaults/{vault}/possessions/{possession}/transactions/{transaction}', [PossessionTransactionController::class, 'show'])->where(['possession' => '[0-9a-fA-F-]{36}', 'transaction' => '[0-9a-fA-F-]{36}'])->name('possessions.transactions.show');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/possessions/{possession}/transactions/{transaction}', [PossessionTransactionController::class, 'show'])->where(['possession' => '[0-9a-fA-F-]{36}', 'transaction' => '[0-9a-fA-F-]{36}'])->name('possessions.transactions.show');
         Route::put('vaults/{vault}/possessions/{possession}/transactions/{transaction}', [PossessionTransactionController::class, 'update'])->where(['possession' => '[0-9a-fA-F-]{36}', 'transaction' => '[0-9a-fA-F-]{36}'])->name('possessions.transactions.update');
         Route::delete('vaults/{vault}/possessions/{possession}/transactions/{transaction}', [PossessionTransactionController::class, 'destroy'])->where(['possession' => '[0-9a-fA-F-]{36}', 'transaction' => '[0-9a-fA-F-]{36}'])->name('possessions.transactions.destroy');
         Route::post('vaults/{vault}/possessions/{possession}/transactions/{transaction}/documents', [PossessionTransactionDocumentController::class, 'create'])->middleware('flag:file-upload')->where(['possession' => '[0-9a-fA-F-]{36}', 'transaction' => '[0-9a-fA-F-]{36}'])->name('possessions.transactions.documents.create');
         Route::delete('vaults/{vault}/possessions/{possession}/transactions/{transaction}/documents/{file}', [PossessionTransactionDocumentController::class, 'destroy'])->where(['possession' => '[0-9a-fA-F-]{36}', 'transaction' => '[0-9a-fA-F-]{36}', 'file' => '[0-9a-fA-F-]{36}'])->name('possessions.transactions.documents.destroy');
-        Route::get('vaults/{vault}/possessions/{possession}/insurance-records', [PossessionInsuranceRecordController::class, 'index'])->where('possession', '[0-9a-fA-F-]{36}')->name('possessions.insuranceRecords');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/possessions/{possession}/insurance-records', [PossessionInsuranceRecordController::class, 'index'])->where('possession', '[0-9a-fA-F-]{36}')->name('possessions.insuranceRecords');
         Route::post('vaults/{vault}/possessions/{possession}/insurance-records', [PossessionInsuranceRecordController::class, 'create'])->where('possession', '[0-9a-fA-F-]{36}')->name('possessions.insuranceRecords.create');
-        Route::get('vaults/{vault}/possessions/{possession}/insurance-records/{insuranceRecord}', [PossessionInsuranceRecordController::class, 'show'])->where(['possession' => '[0-9a-fA-F-]{36}', 'insuranceRecord' => '[0-9a-fA-F-]{36}'])->name('possessions.insuranceRecords.show');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/possessions/{possession}/insurance-records/{insuranceRecord}', [PossessionInsuranceRecordController::class, 'show'])->where(['possession' => '[0-9a-fA-F-]{36}', 'insuranceRecord' => '[0-9a-fA-F-]{36}'])->name('possessions.insuranceRecords.show');
         Route::put('vaults/{vault}/possessions/{possession}/insurance-records/{insuranceRecord}', [PossessionInsuranceRecordController::class, 'update'])->where(['possession' => '[0-9a-fA-F-]{36}', 'insuranceRecord' => '[0-9a-fA-F-]{36}'])->name('possessions.insuranceRecords.update');
         Route::delete('vaults/{vault}/possessions/{possession}/insurance-records/{insuranceRecord}', [PossessionInsuranceRecordController::class, 'destroy'])->where(['possession' => '[0-9a-fA-F-]{36}', 'insuranceRecord' => '[0-9a-fA-F-]{36}'])->name('possessions.insuranceRecords.destroy');
-        Route::get('vaults/{vault}/possessions/{possession}/valuations', [PossessionValuationController::class, 'index'])->where('possession', '[0-9a-fA-F-]{36}')->name('possessions.valuations');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/possessions/{possession}/valuations', [PossessionValuationController::class, 'index'])->where('possession', '[0-9a-fA-F-]{36}')->name('possessions.valuations');
         Route::post('vaults/{vault}/possessions/{possession}/valuations', [PossessionValuationController::class, 'create'])->where('possession', '[0-9a-fA-F-]{36}')->name('possessions.valuations.create');
-        Route::get('vaults/{vault}/possessions/{possession}/valuations/{valuation}', [PossessionValuationController::class, 'show'])->where(['possession' => '[0-9a-fA-F-]{36}', 'valuation' => '[0-9a-fA-F-]{36}'])->name('possessions.valuations.show');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/possessions/{possession}/valuations/{valuation}', [PossessionValuationController::class, 'show'])->where(['possession' => '[0-9a-fA-F-]{36}', 'valuation' => '[0-9a-fA-F-]{36}'])->name('possessions.valuations.show');
         Route::delete('vaults/{vault}/possessions/{possession}/valuations/{valuation}', [PossessionValuationController::class, 'destroy'])->where(['possession' => '[0-9a-fA-F-]{36}', 'valuation' => '[0-9a-fA-F-]{36}'])->name('possessions.valuations.destroy');
         Route::post('vaults/{vault}/possessions/{possession}/valuations/{valuation}/documents', [PossessionValuationDocumentController::class, 'create'])->middleware('flag:file-upload')->where(['possession' => '[0-9a-fA-F-]{36}', 'valuation' => '[0-9a-fA-F-]{36}'])->name('possessions.valuations.documents.create');
         Route::delete('vaults/{vault}/possessions/{possession}/valuations/{valuation}/documents/{file}', [PossessionValuationDocumentController::class, 'destroy'])->where(['possession' => '[0-9a-fA-F-]{36}', 'valuation' => '[0-9a-fA-F-]{36}', 'file' => '[0-9a-fA-F-]{36}'])->name('possessions.valuations.documents.destroy');
-        Route::get('vaults/{vault}/possessions/{possession}/provenance', [PossessionProvenanceEventController::class, 'index'])->where('possession', '[0-9a-fA-F-]{36}')->name('possessions.provenance');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/possessions/{possession}/provenance', [PossessionProvenanceEventController::class, 'index'])->where('possession', '[0-9a-fA-F-]{36}')->name('possessions.provenance');
         Route::post('vaults/{vault}/possessions/{possession}/provenance', [PossessionProvenanceEventController::class, 'create'])->where('possession', '[0-9a-fA-F-]{36}')->name('possessions.provenance.create');
-        Route::get('vaults/{vault}/possessions/{possession}/provenance/{event}', [PossessionProvenanceEventController::class, 'show'])->where(['possession' => '[0-9a-fA-F-]{36}', 'event' => '[0-9a-fA-F-]{36}'])->name('possessions.provenance.show');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/possessions/{possession}/provenance/{event}', [PossessionProvenanceEventController::class, 'show'])->where(['possession' => '[0-9a-fA-F-]{36}', 'event' => '[0-9a-fA-F-]{36}'])->name('possessions.provenance.show');
         Route::put('vaults/{vault}/possessions/{possession}/provenance/{event}', [PossessionProvenanceEventController::class, 'update'])->where(['possession' => '[0-9a-fA-F-]{36}', 'event' => '[0-9a-fA-F-]{36}'])->name('possessions.provenance.update');
         Route::delete('vaults/{vault}/possessions/{possession}/provenance/{event}', [PossessionProvenanceEventController::class, 'destroy'])->where(['possession' => '[0-9a-fA-F-]{36}', 'event' => '[0-9a-fA-F-]{36}'])->name('possessions.provenance.destroy');
-        Route::get('vaults/{vault}/possessions/{possession}/location-stays', [PossessionLocationStayController::class, 'index'])->where('possession', '[0-9a-fA-F-]{36}')->name('possessions.locationStays');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/possessions/{possession}/location-stays', [PossessionLocationStayController::class, 'index'])->where('possession', '[0-9a-fA-F-]{36}')->name('possessions.locationStays');
         Route::post('vaults/{vault}/possessions/{possession}/location-stays', [PossessionLocationStayController::class, 'create'])->where('possession', '[0-9a-fA-F-]{36}')->name('possessions.locationStays.create');
-        Route::get('vaults/{vault}/possessions/{possession}/location-stays/{stay}', [PossessionLocationStayController::class, 'show'])->where(['possession' => '[0-9a-fA-F-]{36}', 'stay' => '[0-9a-fA-F-]{36}'])->name('possessions.locationStays.show');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/possessions/{possession}/location-stays/{stay}', [PossessionLocationStayController::class, 'show'])->where(['possession' => '[0-9a-fA-F-]{36}', 'stay' => '[0-9a-fA-F-]{36}'])->name('possessions.locationStays.show');
         Route::put('vaults/{vault}/possessions/{possession}/location-stays/{stay}', [PossessionLocationStayController::class, 'update'])->where(['possession' => '[0-9a-fA-F-]{36}', 'stay' => '[0-9a-fA-F-]{36}'])->name('possessions.locationStays.update');
         Route::delete('vaults/{vault}/possessions/{possession}/location-stays/{stay}', [PossessionLocationStayController::class, 'destroy'])->where(['possession' => '[0-9a-fA-F-]{36}', 'stay' => '[0-9a-fA-F-]{36}'])->name('possessions.locationStays.destroy');
-        Route::get('vaults/{vault}/possessions/{possession}/loans', [PossessionLoanController::class, 'index'])->where('possession', '[0-9a-fA-F-]{36}')->name('possessions.loans');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/possessions/{possession}/loans', [PossessionLoanController::class, 'index'])->where('possession', '[0-9a-fA-F-]{36}')->name('possessions.loans');
         Route::post('vaults/{vault}/possessions/{possession}/loans', [PossessionLoanController::class, 'create'])->where('possession', '[0-9a-fA-F-]{36}')->name('possessions.loans.create');
-        Route::get('vaults/{vault}/possessions/{possession}/loans/{loan}', [PossessionLoanController::class, 'show'])->where(['possession' => '[0-9a-fA-F-]{36}', 'loan' => '[0-9a-fA-F-]{36}'])->name('possessions.loans.show');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/possessions/{possession}/loans/{loan}', [PossessionLoanController::class, 'show'])->where(['possession' => '[0-9a-fA-F-]{36}', 'loan' => '[0-9a-fA-F-]{36}'])->name('possessions.loans.show');
         Route::put('vaults/{vault}/possessions/{possession}/loans/{loan}', [PossessionLoanController::class, 'update'])->where(['possession' => '[0-9a-fA-F-]{36}', 'loan' => '[0-9a-fA-F-]{36}'])->name('possessions.loans.update');
         Route::delete('vaults/{vault}/possessions/{possession}/loans/{loan}', [PossessionLoanController::class, 'destroy'])->where(['possession' => '[0-9a-fA-F-]{36}', 'loan' => '[0-9a-fA-F-]{36}'])->name('possessions.loans.destroy');
-        Route::get('vaults/{vault}/possessions/{possession}/maintenance-records', [PossessionMaintenanceRecordController::class, 'index'])->where('possession', '[0-9a-fA-F-]{36}')->name('possessions.maintenanceRecords');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/possessions/{possession}/maintenance-records', [PossessionMaintenanceRecordController::class, 'index'])->where('possession', '[0-9a-fA-F-]{36}')->name('possessions.maintenanceRecords');
         Route::post('vaults/{vault}/possessions/{possession}/maintenance-records', [PossessionMaintenanceRecordController::class, 'create'])->where('possession', '[0-9a-fA-F-]{36}')->name('possessions.maintenanceRecords.create');
-        Route::get('vaults/{vault}/possessions/{possession}/maintenance-records/{maintenanceRecord}', [PossessionMaintenanceRecordController::class, 'show'])->where(['possession' => '[0-9a-fA-F-]{36}', 'maintenanceRecord' => '[0-9a-fA-F-]{36}'])->name('possessions.maintenanceRecords.show');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/possessions/{possession}/maintenance-records/{maintenanceRecord}', [PossessionMaintenanceRecordController::class, 'show'])->where(['possession' => '[0-9a-fA-F-]{36}', 'maintenanceRecord' => '[0-9a-fA-F-]{36}'])->name('possessions.maintenanceRecords.show');
         Route::put('vaults/{vault}/possessions/{possession}/maintenance-records/{maintenanceRecord}', [PossessionMaintenanceRecordController::class, 'update'])->where(['possession' => '[0-9a-fA-F-]{36}', 'maintenanceRecord' => '[0-9a-fA-F-]{36}'])->name('possessions.maintenanceRecords.update');
         Route::delete('vaults/{vault}/possessions/{possession}/maintenance-records/{maintenanceRecord}', [PossessionMaintenanceRecordController::class, 'destroy'])->where(['possession' => '[0-9a-fA-F-]{36}', 'maintenanceRecord' => '[0-9a-fA-F-]{36}'])->name('possessions.maintenanceRecords.destroy');
-        Route::get('vaults/{vault}/knowledge/folders', [KnowledgeFolderController::class, 'index'])->name('knowledge.folders');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/knowledge/folders', [KnowledgeFolderController::class, 'index'])->name('knowledge.folders');
         Route::post('vaults/{vault}/knowledge/folders', [KnowledgeFolderController::class, 'create'])->name('knowledge.folders.create');
         Route::put('vaults/{vault}/knowledge/folders/{folder}', [KnowledgeFolderController::class, 'update'])->where('folder', '[0-9a-fA-F-]{36}')->name('knowledge.folders.update');
         Route::delete('vaults/{vault}/knowledge/folders/{folder}', [KnowledgeFolderController::class, 'destroy'])->where('folder', '[0-9a-fA-F-]{36}')->name('knowledge.folders.destroy');
-        Route::get('vaults/{vault}/knowledge/notes', [KnowledgeNoteController::class, 'index'])->name('knowledge.notes');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/knowledge/notes', [KnowledgeNoteController::class, 'index'])->name('knowledge.notes');
         Route::post('vaults/{vault}/knowledge/notes', [KnowledgeNoteController::class, 'create'])->name('knowledge.notes.create');
-        Route::get('vaults/{vault}/knowledge/notes/{note}', [KnowledgeNoteController::class, 'show'])->where('note', '[0-9a-fA-F-]{36}')->name('knowledge.notes.show');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/knowledge/notes/{note}', [KnowledgeNoteController::class, 'show'])->where('note', '[0-9a-fA-F-]{36}')->name('knowledge.notes.show');
         Route::put('vaults/{vault}/knowledge/notes/{note}', [KnowledgeNoteController::class, 'update'])->where('note', '[0-9a-fA-F-]{36}')->name('knowledge.notes.update');
         Route::delete('vaults/{vault}/knowledge/notes/{note}', [KnowledgeNoteController::class, 'destroy'])->where('note', '[0-9a-fA-F-]{36}')->name('knowledge.notes.destroy');
-        Route::get('vaults/{vault}/knowledge/lists', [KnowledgeListController::class, 'index'])->name('knowledge.lists');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/knowledge/lists', [KnowledgeListController::class, 'index'])->name('knowledge.lists');
         Route::post('vaults/{vault}/knowledge/lists', [KnowledgeListController::class, 'create'])->name('knowledge.lists.create');
-        Route::get('vaults/{vault}/knowledge/lists/{list}', [KnowledgeListController::class, 'show'])->where('list', '[0-9a-fA-F-]{36}')->name('knowledge.lists.show');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/knowledge/lists/{list}', [KnowledgeListController::class, 'show'])->where('list', '[0-9a-fA-F-]{36}')->name('knowledge.lists.show');
         Route::put('vaults/{vault}/knowledge/lists/{list}', [KnowledgeListController::class, 'update'])->where('list', '[0-9a-fA-F-]{36}')->name('knowledge.lists.update');
         Route::delete('vaults/{vault}/knowledge/lists/{list}', [KnowledgeListController::class, 'destroy'])->where('list', '[0-9a-fA-F-]{36}')->name('knowledge.lists.destroy');
         Route::post('vaults/{vault}/knowledge/lists/{list}/columns', [KnowledgeListColumnController::class, 'create'])->where('list', '[0-9a-fA-F-]{36}')->name('knowledge.lists.columns.create');
@@ -408,24 +408,24 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::post('vaults/{vault}/knowledge/lists/{list}/items', [KnowledgeListItemController::class, 'create'])->where('list', '[0-9a-fA-F-]{36}')->name('knowledge.lists.items.create');
         Route::put('vaults/{vault}/knowledge/lists/{list}/items/{item}', [KnowledgeListItemController::class, 'update'])->where(['list' => '[0-9a-fA-F-]{36}', 'item' => '[0-9a-fA-F-]{36}'])->name('knowledge.lists.items.update');
         Route::delete('vaults/{vault}/knowledge/lists/{list}/items/{item}', [KnowledgeListItemController::class, 'destroy'])->where(['list' => '[0-9a-fA-F-]{36}', 'item' => '[0-9a-fA-F-]{36}'])->name('knowledge.lists.items.destroy');
-        Route::get('vaults/{vault}/knowledge/search', [KnowledgeSearchController::class, 'index'])->name('knowledge.search');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/knowledge/search', [KnowledgeSearchController::class, 'index'])->name('knowledge.search');
 
-        Route::get('vaults/{vault}/contacts', [ContactController::class, 'index'])->name('contacts');
-        Route::get('vaults/{vault}/contact-categories', [ContactCategoryController::class, 'index'])->name('contactCategories');
-        Route::get('vaults/{vault}/reminder-occurrences', [VaultReminderOccurrenceController::class, 'index'])->name('reminderOccurrences');
-        Route::get('vaults/{vault}/search', [SearchController::class, 'index'])->name('search');
-        Route::get('vaults/{vault}/contacts/me', [ContactMeController::class, 'show'])->name('contacts.me');
-        Route::get('vaults/{vault}/contacts/{contact}', [ContactController::class, 'show'])->name('contacts.show');
-        Route::get('vaults/{vault}/contacts/{contact}/vcard', [ContactVCardController::class, 'show'])->middleware('flag:vcard-export')->name('contacts.vcard.show');
-        Route::get('vaults/{vault}/contacts/{contact}/markdown', [ContactMarkdownController::class, 'show'])->name('contacts.markdown.show');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/contacts', [ContactController::class, 'index'])->name('contacts');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/contact-categories', [ContactCategoryController::class, 'index'])->name('contactCategories');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/reminder-occurrences', [VaultReminderOccurrenceController::class, 'index'])->name('reminderOccurrences');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/search', [SearchController::class, 'index'])->name('search');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/contacts/me', [ContactMeController::class, 'show'])->name('contacts.me');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/contacts/{contact}', [ContactController::class, 'show'])->name('contacts.show');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/contacts/{contact}/vcard', [ContactVCardController::class, 'show'])->middleware('flag:vcard-export')->name('contacts.vcard.show');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/contacts/{contact}/markdown', [ContactMarkdownController::class, 'show'])->name('contacts.markdown.show');
         Route::post('vaults/{vault}/contacts', [ContactController::class, 'create'])->name('contacts.create');
         Route::delete('vaults/{vault}/contacts/{contact}', [ContactController::class, 'destroy'])->name('contacts.destroy');
 
-        Route::get('vaults/{vault}/contacts/{contact}/merge/{other}', [ContactMergeController::class, 'show'])->name('contacts.merge.show');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/contacts/{contact}/merge/{other}', [ContactMergeController::class, 'show'])->name('contacts.merge.show');
         Route::post('vaults/{vault}/contacts/{contact}/merge/{other}', [ContactMergeController::class, 'create'])->name('contacts.merge.create');
 
         Route::put('vaults/{vault}/contacts/{contact}/name', [ContactNameController::class, 'update'])->name('contacts.name.update');
-        Route::get('vaults/{vault}/contacts/{contact}/name-representations', [ContactNameRepresentationController::class, 'index'])->name('contacts.nameRepresentations');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/contacts/{contact}/name-representations', [ContactNameRepresentationController::class, 'index'])->name('contacts.nameRepresentations');
         Route::put('vaults/{vault}/contacts/{contact}/name-representations', [ContactNameRepresentationController::class, 'update'])->name('contacts.nameRepresentations.update');
 
         Route::put('vaults/{vault}/contacts/{contact}/favourite', [ContactFavouriteController::class, 'update'])->name('contacts.favourite.update');
@@ -434,9 +434,9 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::put('vaults/{vault}/contacts/{contact}/template-version', [ContactStructureVersionController::class, 'update'])->name('contacts.templateVersion.update');
         Route::put('vaults/{vault}/contacts/{contact}/sections/{section}', [ContactSectionController::class, 'update'])->name('contacts.sections.update');
 
-        Route::get('vaults/{vault}/contacts/{contact}/reminders', [ContactReminderController::class, 'index'])->name('contacts.reminders');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/contacts/{contact}/reminders', [ContactReminderController::class, 'index'])->name('contacts.reminders');
         Route::post('vaults/{vault}/contacts/{contact}/reminders', [ContactReminderController::class, 'create'])->name('contacts.reminders.create');
-        Route::get('vaults/{vault}/contacts/{contact}/reminders/{reminder}', [ContactReminderController::class, 'show'])
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/contacts/{contact}/reminders/{reminder}', [ContactReminderController::class, 'show'])
             ->where('reminder', '[0-9a-fA-F-]{36}')
             ->name('contacts.reminders.show');
         Route::put('vaults/{vault}/contacts/{contact}/reminders/{reminder}', [ContactReminderController::class, 'update'])
@@ -445,14 +445,14 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::delete('vaults/{vault}/contacts/{contact}/reminders/{reminder}', [ContactReminderController::class, 'destroy'])
             ->where('reminder', '[0-9a-fA-F-]{36}')
             ->name('contacts.reminders.destroy');
-        Route::get('vaults/{vault}/contacts/{contact}/reminder-occurrences', [ContactReminderOccurrenceController::class, 'index'])->name('contacts.reminderOccurrences');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/contacts/{contact}/reminder-occurrences', [ContactReminderOccurrenceController::class, 'index'])->name('contacts.reminderOccurrences');
         Route::put('vaults/{vault}/contacts/{contact}/reminder-occurrences/{occurrence}/answer', [ReminderOccurrenceAnswerController::class, 'update'])
             ->where('occurrence', '[0-9a-fA-F-]{36}')
             ->name('contacts.reminderOccurrences.answer.update');
 
-        Route::get('vaults/{vault}/contacts/{contact}/relationships', [ContactRelationshipController::class, 'index'])->name('contacts.relationships');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/contacts/{contact}/relationships', [ContactRelationshipController::class, 'index'])->name('contacts.relationships');
         Route::post('vaults/{vault}/contacts/{contact}/relationships', [ContactRelationshipController::class, 'create'])->name('contacts.relationships.create');
-        Route::get('vaults/{vault}/contacts/{contact}/relationships/{relationship}', [ContactRelationshipController::class, 'show'])
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/contacts/{contact}/relationships/{relationship}', [ContactRelationshipController::class, 'show'])
             ->where('relationship', '[0-9a-fA-F-]{36}')
             ->name('contacts.relationships.show');
         Route::put('vaults/{vault}/contacts/{contact}/relationships/{relationship}', [ContactRelationshipController::class, 'update'])
@@ -462,54 +462,54 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
             ->where('relationship', '[0-9a-fA-F-]{36}')
             ->name('contacts.relationships.destroy');
 
-        Route::get('vaults/{vault}/life-events', [LifeEventController::class, 'index'])->name('lifeEvents');
-        Route::get('vaults/{vault}/life-events/{lifeEvent}', [LifeEventController::class, 'show'])->where('lifeEvent', '[0-9a-fA-F-]{36}')->name('lifeEvents.show');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/life-events', [LifeEventController::class, 'index'])->name('lifeEvents');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/life-events/{lifeEvent}', [LifeEventController::class, 'show'])->where('lifeEvent', '[0-9a-fA-F-]{36}')->name('lifeEvents.show');
         Route::post('vaults/{vault}/life-events', [LifeEventController::class, 'create'])->name('lifeEvents.create');
         Route::put('vaults/{vault}/life-events/{lifeEvent}', [LifeEventController::class, 'update'])->where('lifeEvent', '[0-9a-fA-F-]{36}')->name('lifeEvents.update');
         Route::delete('vaults/{vault}/life-events/{lifeEvent}', [LifeEventController::class, 'destroy'])->where('lifeEvent', '[0-9a-fA-F-]{36}')->name('lifeEvents.destroy');
         Route::put('vaults/{vault}/life-events/{lifeEvent}/restoration', [LifeEventRestorationController::class, 'update'])->where('lifeEvent', '[0-9a-fA-F-]{36}')->name('lifeEvents.restoration.update');
 
-        Route::get('vaults/{vault}/groups', [GroupController::class, 'index'])->middleware('flag:groups')->name('groups');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/groups', [GroupController::class, 'index'])->middleware('flag:groups')->name('groups');
         Route::post('vaults/{vault}/groups', [GroupController::class, 'create'])->middleware('flag:groups')->name('groups.create');
-        Route::get('vaults/{vault}/groups/{group}', [GroupController::class, 'show'])->middleware('flag:groups')->where('group', '[0-9a-fA-F-]{36}')->name('groups.show');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/groups/{group}', [GroupController::class, 'show'])->middleware('flag:groups')->where('group', '[0-9a-fA-F-]{36}')->name('groups.show');
         Route::put('vaults/{vault}/groups/{group}', [GroupController::class, 'update'])->middleware('flag:groups')->where('group', '[0-9a-fA-F-]{36}')->name('groups.update');
         Route::delete('vaults/{vault}/groups/{group}', [GroupController::class, 'destroy'])->middleware('flag:groups')->where('group', '[0-9a-fA-F-]{36}')->name('groups.destroy');
         Route::put('vaults/{vault}/groups/{group}/restoration', [GroupRestorationController::class, 'update'])->middleware('flag:groups')->where('group', '[0-9a-fA-F-]{36}')->name('groups.restoration.update');
-        Route::get('vaults/{vault}/groups/{group}/members', [GroupMemberController::class, 'index'])->middleware('flag:groups')->where('group', '[0-9a-fA-F-]{36}')->name('groups.members');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/groups/{group}/members', [GroupMemberController::class, 'index'])->middleware('flag:groups')->where('group', '[0-9a-fA-F-]{36}')->name('groups.members');
         Route::post('vaults/{vault}/groups/{group}/members', [GroupMemberController::class, 'create'])->middleware('flag:groups')->where('group', '[0-9a-fA-F-]{36}')->name('groups.members.create');
         Route::put('vaults/{vault}/groups/{group}/members/{membership}', [GroupMemberController::class, 'update'])->middleware('flag:groups')->where(['group' => '[0-9a-fA-F-]{36}', 'membership' => '[0-9a-fA-F-]{36}'])->name('groups.members.update');
         Route::delete('vaults/{vault}/groups/{group}/members/{membership}', [GroupMemberController::class, 'destroy'])->middleware('flag:groups')->where(['group' => '[0-9a-fA-F-]{36}', 'membership' => '[0-9a-fA-F-]{36}'])->name('groups.members.destroy');
-        Route::get('vaults/{vault}/groups/{group}/files', [GroupFileController::class, 'index'])->middleware(['flag:groups', 'flag:file-upload'])->where('group', '[0-9a-fA-F-]{36}')->name('groups.files');
-        Route::get('vaults/{vault}/groups/{group}/files/{file}', [GroupFileController::class, 'show'])->middleware(['flag:groups', 'flag:file-upload'])->where(['group' => '[0-9a-fA-F-]{36}', 'file' => '[0-9a-fA-F-]{36}'])->name('groups.files.show');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/groups/{group}/files', [GroupFileController::class, 'index'])->middleware(['flag:groups', 'flag:file-upload'])->where('group', '[0-9a-fA-F-]{36}')->name('groups.files');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/groups/{group}/files/{file}', [GroupFileController::class, 'show'])->middleware(['flag:groups', 'flag:file-upload'])->where(['group' => '[0-9a-fA-F-]{36}', 'file' => '[0-9a-fA-F-]{36}'])->name('groups.files.show');
         Route::post('vaults/{vault}/groups/{group}/files', [GroupFileController::class, 'create'])->middleware(['flag:groups', 'flag:file-upload'])->where('group', '[0-9a-fA-F-]{36}')->name('groups.files.create');
         Route::delete('vaults/{vault}/groups/{group}/files/{file}', [GroupFileController::class, 'destroy'])->middleware(['flag:groups', 'flag:file-upload'])->where(['group' => '[0-9a-fA-F-]{36}', 'file' => '[0-9a-fA-F-]{36}'])->name('groups.files.destroy');
-        Route::get('vaults/{vault}/groups/{group}/files/{file}/content', [GroupFileContentController::class, 'show'])->middleware(['flag:groups', 'flag:file-upload'])->where(['group' => '[0-9a-fA-F-]{36}', 'file' => '[0-9a-fA-F-]{36}'])->name('groups.files.content.show');
-        Route::get('vaults/{vault}/groups/{group}/notes', [GroupNoteController::class, 'index'])->middleware('flag:groups')->where('group', '[0-9a-fA-F-]{36}')->name('groups.notes');
-        Route::get('vaults/{vault}/groups/{group}/notes/{note}', [GroupNoteController::class, 'show'])->middleware('flag:groups')->where(['group' => '[0-9a-fA-F-]{36}', 'note' => '[0-9a-fA-F-]{36}'])->name('groups.notes.show');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/groups/{group}/files/{file}/content', [GroupFileContentController::class, 'show'])->middleware(['flag:groups', 'flag:file-upload'])->where(['group' => '[0-9a-fA-F-]{36}', 'file' => '[0-9a-fA-F-]{36}'])->name('groups.files.content.show');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/groups/{group}/notes', [GroupNoteController::class, 'index'])->middleware('flag:groups')->where('group', '[0-9a-fA-F-]{36}')->name('groups.notes');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/groups/{group}/notes/{note}', [GroupNoteController::class, 'show'])->middleware('flag:groups')->where(['group' => '[0-9a-fA-F-]{36}', 'note' => '[0-9a-fA-F-]{36}'])->name('groups.notes.show');
         Route::post('vaults/{vault}/groups/{group}/notes', [GroupNoteController::class, 'create'])->middleware('flag:groups')->where('group', '[0-9a-fA-F-]{36}')->name('groups.notes.create');
         Route::put('vaults/{vault}/groups/{group}/notes/{note}', [GroupNoteController::class, 'update'])->middleware('flag:groups')->where(['group' => '[0-9a-fA-F-]{36}', 'note' => '[0-9a-fA-F-]{36}'])->name('groups.notes.update');
         Route::delete('vaults/{vault}/groups/{group}/notes/{note}', [GroupNoteController::class, 'destroy'])->middleware('flag:groups')->where(['group' => '[0-9a-fA-F-]{36}', 'note' => '[0-9a-fA-F-]{36}'])->name('groups.notes.destroy');
-        Route::get('vaults/{vault}/groups/{group}/life-events', [GroupLifeEventController::class, 'index'])->middleware('flag:groups')->where('group', '[0-9a-fA-F-]{36}')->name('groups.lifeEvents');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/groups/{group}/life-events', [GroupLifeEventController::class, 'index'])->middleware('flag:groups')->where('group', '[0-9a-fA-F-]{36}')->name('groups.lifeEvents');
         Route::post('vaults/{vault}/groups/{group}/life-events', [GroupLifeEventController::class, 'create'])->middleware('flag:groups')->where('group', '[0-9a-fA-F-]{36}')->name('groups.lifeEvents.create');
-        Route::get('vaults/{vault}/groups/{group}/reminders', [GroupReminderController::class, 'index'])->middleware('flag:groups')->where('group', '[0-9a-fA-F-]{36}')->name('groups.reminders');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/groups/{group}/reminders', [GroupReminderController::class, 'index'])->middleware('flag:groups')->where('group', '[0-9a-fA-F-]{36}')->name('groups.reminders');
         Route::post('vaults/{vault}/groups/{group}/reminders', [GroupReminderController::class, 'create'])->middleware('flag:groups')->where('group', '[0-9a-fA-F-]{36}')->name('groups.reminders.create');
-        Route::get('vaults/{vault}/groups/{group}/reminders/{reminder}', [GroupReminderController::class, 'show'])->middleware('flag:groups')->where(['group' => '[0-9a-fA-F-]{36}', 'reminder' => '[0-9a-fA-F-]{36}'])->name('groups.reminders.show');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/groups/{group}/reminders/{reminder}', [GroupReminderController::class, 'show'])->middleware('flag:groups')->where(['group' => '[0-9a-fA-F-]{36}', 'reminder' => '[0-9a-fA-F-]{36}'])->name('groups.reminders.show');
         Route::put('vaults/{vault}/groups/{group}/reminders/{reminder}', [GroupReminderController::class, 'update'])->middleware('flag:groups')->where(['group' => '[0-9a-fA-F-]{36}', 'reminder' => '[0-9a-fA-F-]{36}'])->name('groups.reminders.update');
         Route::delete('vaults/{vault}/groups/{group}/reminders/{reminder}', [GroupReminderController::class, 'destroy'])->middleware('flag:groups')->where(['group' => '[0-9a-fA-F-]{36}', 'reminder' => '[0-9a-fA-F-]{36}'])->name('groups.reminders.destroy');
-        Route::get('vaults/{vault}/groups/{group}/reminder-occurrences', [GroupReminderOccurrenceController::class, 'index'])->middleware('flag:groups')->where('group', '[0-9a-fA-F-]{36}')->name('groups.reminderOccurrences');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/groups/{group}/reminder-occurrences', [GroupReminderOccurrenceController::class, 'index'])->middleware('flag:groups')->where('group', '[0-9a-fA-F-]{36}')->name('groups.reminderOccurrences');
         Route::put('vaults/{vault}/groups/{group}/reminder-occurrences/{occurrence}/answer', [GroupReminderOccurrenceAnswerController::class, 'update'])->middleware('flag:groups')->where(['group' => '[0-9a-fA-F-]{36}', 'occurrence' => '[0-9a-fA-F-]{36}'])->name('groups.reminderOccurrences.answer.update');
-        Route::get('vaults/{vault}/contacts/{contact}/groups', [ContactGroupController::class, 'index'])->middleware('flag:groups')->name('contacts.groups');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/contacts/{contact}/groups', [ContactGroupController::class, 'index'])->middleware('flag:groups')->name('contacts.groups');
 
-        Route::get('exports', [AccountExportController::class, 'index'])->name('accountExports');
-        Route::get('exports/{accountExport}', [AccountExportController::class, 'show'])->where('accountExport', '[0-9a-fA-F-]{36}')->name('accountExports.show');
+        Route::match(['GET', 'QUERY'], 'exports', [AccountExportController::class, 'index'])->name('accountExports');
+        Route::match(['GET', 'QUERY'], 'exports/{accountExport}', [AccountExportController::class, 'show'])->where('accountExport', '[0-9a-fA-F-]{36}')->name('accountExports.show');
         Route::post('exports', [AccountExportController::class, 'create'])->middleware('throttle:20,1')->name('accountExports.create');
-        Route::get('exports/{accountExport}/download', [AccountExportDownloadController::class, 'show'])->where('accountExport', '[0-9a-fA-F-]{36}')->name('accountExports.download.show');
+        Route::match(['GET', 'QUERY'], 'exports/{accountExport}/download', [AccountExportDownloadController::class, 'show'])->where('accountExport', '[0-9a-fA-F-]{36}')->name('accountExports.download.show');
 
-        Route::get('imports/{accountImport}', [AccountImportController::class, 'show'])->where('accountImport', '[0-9a-fA-F-]{36}')->name('accountImports.show');
+        Route::match(['GET', 'QUERY'], 'imports/{accountImport}', [AccountImportController::class, 'show'])->where('accountImport', '[0-9a-fA-F-]{36}')->name('accountImports.show');
         Route::post('imports', [AccountImportController::class, 'create'])->middleware('throttle:20,1')->name('accountImports.create');
         Route::put('imports/{accountImport}', [AccountImportController::class, 'update'])->where('accountImport', '[0-9a-fA-F-]{36}')->name('accountImports.update');
         Route::delete('imports/{accountImport}', [AccountImportController::class, 'destroy'])->where('accountImport', '[0-9a-fA-F-]{36}')->name('accountImports.destroy');
-        Route::get('imports/{accountImport}/contacts', [AccountImportContactController::class, 'index'])->where('accountImport', '[0-9a-fA-F-]{36}')->name('accountImports.contacts');
-        Route::get('imports/{accountImport}/report', [AccountImportReportController::class, 'index'])->where('accountImport', '[0-9a-fA-F-]{36}')->name('accountImports.report');
+        Route::match(['GET', 'QUERY'], 'imports/{accountImport}/contacts', [AccountImportContactController::class, 'index'])->where('accountImport', '[0-9a-fA-F-]{36}')->name('accountImports.contacts');
+        Route::match(['GET', 'QUERY'], 'imports/{accountImport}/report', [AccountImportReportController::class, 'index'])->where('accountImport', '[0-9a-fA-F-]{36}')->name('accountImports.report');
     });
 });

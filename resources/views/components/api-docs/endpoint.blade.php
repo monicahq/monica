@@ -30,6 +30,13 @@
       <p class="mt-3.5 text-[14px] leading-[1.65] text-pretty text-body">{{ $paragraph }}</p>
     @endforeach
 
+    @if ($section->method === 'GET')
+      <p class="mt-3.5 text-[14px] leading-[1.65] text-pretty text-body">
+        This endpoint also answers QUERY, with the same parameters sent in the request body.
+        <a href="{{ route('docs.api.show', ['section' => 'query-method']) }}" class="underline decoration-hairline-strong underline-offset-3 hover:decoration-ink focus-ring">How QUERY works</a>.
+      </p>
+    @endif
+
     <x-api-docs.params :section="$section" />
 
     <x-api-docs.returns :section="$section" />

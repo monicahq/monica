@@ -46,6 +46,10 @@ class ApiDocsMarkdown
             $blocks[] = $paragraph;
         }
 
+        if ($section->method === 'GET') {
+            $blocks[] = 'This endpoint also answers QUERY, with the same parameters sent in the request body. [How QUERY works]('.route('docs.api.show', ['section' => 'query-method']).').';
+        }
+
         foreach ([$this->params($section), $this->returns($section), $this->statusCodes($section)] as $part) {
             if ($part !== []) {
                 $blocks = array_merge($blocks, $part);

@@ -55,7 +55,7 @@ class ApiDocsControllerTest extends TestCase
             new ApiDocsViewModel()->sections(),
         );
 
-        $this->assertCount(309, $ids);
+        $this->assertCount(310, $ids);
 
         $this->get(route('docs.api.show', ['section' => 'knowledge-folders-index']))
             ->assertSee('Knowledge folders')
@@ -75,6 +75,31 @@ class ApiDocsControllerTest extends TestCase
         $this->get(route('docs.api.show', ['section' => 'possessions-index']));
         $this->get(route('docs.api.show', ['section' => 'support-requests-index']))->assertSee('List support requests');
         $this->get(route('docs.api.show', ['section' => 'admin-support-requests-index']))->assertSee('List support requests of the instance');
+    }
+
+    #[Test]
+    public function a_page_reading_records_says_it_also_answers_query(): void
+    {
+        $response = $this->get(route('docs.api.show', ['section' => 'contacts-index']));
+
+        $response->assertSee('This endpoint also answers QUERY');
+        $response->assertSee(route('docs.api.show', ['section' => 'query-method']), escape: false);
+    }
+
+    #[Test]
+    public function a_page_writing_records_says_nothing_about_query(): void
+    {
+        $this->get(route('docs.api.show', ['section' => 'contacts-create']))
+            ->assertDontSee('This endpoint also answers QUERY');
+    }
+
+    #[Test]
+    public function the_query_guide_shows_a_request_sent_with_query(): void
+    {
+        $this->get(route('docs.api.show', ['section' => 'query-method']))
+            ->assertOk()
+            ->assertSee('The QUERY method')
+            ->assertSee('-X QUERY');
     }
 
     #[Test]

@@ -3698,6 +3698,7 @@
     "Send notifications on this channel": "Отправлять уведомления по этому каналу",
     "Send reply": "Отправить ответ",
     "Send the email again": "Отправить письмо ещё раз",
+    "Send this parameter either in the address or in the body, not both.": "Передайте этот параметр либо в адресе, либо в теле запроса, но не в обоих местах.",
     "Send yourself a test?": "Отправить себе тестовое сообщение?",
     "Sending the link": "Отправка ссылки",
     "Sends you back to": "Возвращает вас на",

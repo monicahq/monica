@@ -3698,6 +3698,7 @@
     "Send notifications on this channel": "Lähetä ilmoitukset tällä kanavalla",
     "Send reply": "Lähetä vastaus",
     "Send the email again": "Lähetä viesti uudelleen",
+    "Send this parameter either in the address or in the body, not both.": "Lähetä tämä parametri joko osoitteessa tai rungossa, ei molemmissa.",
     "Send yourself a test?": "Lähetetäänkö sinulle testi?",
     "Sending the link": "Lähetetään linkkiä",
     "Sends you back to": "Palauttaa sinut osoitteeseen",

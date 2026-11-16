@@ -116,6 +116,15 @@ class BuildOpenApiDocument
         foreach ($groups as $group) {
             foreach ($group['sections'] as $section) {
                 $paths[$section['path']][mb_strtolower($section['method'])] = $this->operation($section, $group['name']);
+
+                if ($section['method'] === 'GET') {
+                    $paths[$section['path']]['query'] = $this->operation([
+                        ...$section,
+                        'id' => "{$section['id']}-query",
+                        'queryParams' => [],
+                        'bodyParams' => $section['queryParams'] ?? [],
+                    ], $group['name']);
+                }
             }
         }
 

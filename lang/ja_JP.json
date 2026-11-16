@@ -3698,6 +3698,7 @@
     "Send notifications on this channel": "このチャンネルで通知を送る",
     "Send reply": "返信を送信",
     "Send the email again": "メールを再送する",
+    "Send this parameter either in the address or in the body, not both.": "このパラメータは、アドレスまたはボディのどちらか一方で送信してください。両方では送信できません。",
     "Send yourself a test?": "自分にテストを送信しますか？",
     "Sending the link": "リンクを送信中",
     "Sends you back to": "戻り先",
