@@ -24,10 +24,10 @@ class NotificationPreferenceController extends Controller
     public function update(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'quiet_hours_are_enabled' => ['required', 'boolean'],
+            'quiet_hours_are_enabled' => ['sometimes', 'required', 'boolean'],
             'quiet_hours_start' => ['nullable', 'string', 'max:5'],
             'quiet_hours_end' => ['nullable', 'string', 'max:5'],
-            'delivery_mode' => ['required', 'string', Rule::enum(NotificationDeliveryModeEnum::class)],
+            'delivery_mode' => ['sometimes', 'required', 'string', Rule::enum(NotificationDeliveryModeEnum::class)],
             'digest_time' => ['nullable', 'string', 'max:5'],
             'digest_weekdays' => ['nullable', 'array'],
             'digest_weekdays.*' => ['integer'],
@@ -40,13 +40,13 @@ class NotificationPreferenceController extends Controller
             new UpdateNotificationPreference(
                 user: $request->user(),
                 preference: $preference,
-                quietHoursAreEnabled: (bool) $validated['quiet_hours_are_enabled'],
-                quietHoursStart: $validated['quiet_hours_start'] ?? null,
-                quietHoursEnd: $validated['quiet_hours_end'] ?? null,
-                deliveryMode: NotificationDeliveryModeEnum::from($validated['delivery_mode']),
-                digestTime: $validated['digest_time'] ?? null,
-                digestWeekdays: $validated['digest_weekdays'] ?? null,
-                timezone: $validated['timezone'] ?? null,
+                quietHoursAreEnabled: array_key_exists('quiet_hours_are_enabled', $validated) ? (bool) $validated['quiet_hours_are_enabled'] : $preference->quiet_hours_are_enabled,
+                quietHoursStart: array_key_exists('quiet_hours_start', $validated) ? $validated['quiet_hours_start'] : $preference->quiet_hours_start,
+                quietHoursEnd: array_key_exists('quiet_hours_end', $validated) ? $validated['quiet_hours_end'] : $preference->quiet_hours_end,
+                deliveryMode: isset($validated['delivery_mode']) ? NotificationDeliveryModeEnum::from($validated['delivery_mode']) : $preference->delivery_mode,
+                digestTime: array_key_exists('digest_time', $validated) ? $validated['digest_time'] : $preference->digest_time,
+                digestWeekdays: array_key_exists('digest_weekdays', $validated) ? $validated['digest_weekdays'] : $preference->digest_weekdays,
+                timezone: array_key_exists('timezone', $validated) ? $validated['timezone'] : $preference->timezone,
             )->execute();
         } catch (NotificationPreferenceIsNotValid $e) {
             throw ValidationException::withMessages(['delivery_mode' => $e->getMessage()]);

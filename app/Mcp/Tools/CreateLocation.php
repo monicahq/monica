@@ -11,7 +11,7 @@ use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 
-#[Description('Add a place to the account, such as a house, a room, a shelf or a box, at the top level or inside another place. Find the place it sits inside with list-locations first. The change is written to the account journal.')]
+#[Description('Add a place to the account, such as a house, a room, a shelf or a box, at the top level or inside another place. Find the place it sits inside with list-locations first. The change is written to the account log.')]
 class CreateLocation extends Tool
 {
     use MirrorsAnApiCapability;
@@ -28,7 +28,7 @@ class CreateLocation extends Tool
     {
         return [
             'name' => $schema->string()->description('What the place is called, such as Garage.')->required(),
-            'parent_id' => $schema->string()->description('The identifier of the place it sits inside, as list-locations gives it. Left out, it sits at the top level.'),
+            'parent_id' => $schema->string()->description('The id of the place it sits inside, as list-locations gives it. Left out, it sits at the top level.'),
             'emoji' => $schema->string()->description('One emoji shown in place of the default icon, such as 🏠.'),
             'address' => $schema->string()->description('The address, as free text over several lines. Left out, the place uses the address of the nearest place around it that has one.'),
         ];

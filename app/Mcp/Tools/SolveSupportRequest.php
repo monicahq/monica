@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Actions\SolveSupportRequest as SolveSupportRequestAction;
 use App\Helpers\SupportAvailability;
-use App\Http\Resources\SupportRequestResource;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -35,13 +32,7 @@ class SolveSupportRequest extends Tool
 
         $supportRequest = $this->supportRequest($request, $validated['support_request']);
 
-        try {
-            new SolveSupportRequestAction(user: $this->user($request), supportRequest: $supportRequest)->execute();
-        } catch (AuthorizationException $e) {
-            return Response::error($e->getMessage());
-        }
-
-        return Response::json(new SupportRequestResource($supportRequest)->resolve());
+        return $this->answerThroughApi($request, $supportRequest->uuid);
     }
 
     /** @return array<string, Type> */

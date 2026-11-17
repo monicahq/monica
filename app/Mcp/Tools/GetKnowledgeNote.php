@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Http\Resources\KnowledgeNoteResource;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -28,17 +27,18 @@ class GetKnowledgeNote extends Tool
             'note' => ['required', 'string'],
         ]);
 
-        $note = $this->knowledgeNote($this->vault($request, $validated['vault']), $validated['note']);
+        $vault = $this->vault($request, $validated['vault']);
+        $note = $this->knowledgeNote($vault, $validated['note']);
 
-        return Response::json(new KnowledgeNoteResource($note)->resolve());
+        return $this->answerThroughApi($request, $vault->uuid, $note->uuid);
     }
 
     /** @return array<string, Type> */
     public function schema(JsonSchema $schema): array
     {
         return [
-            'vault' => $schema->string()->description('The address of the vault.')->required(),
-            'note' => $schema->string()->description('The identifier of the note, as list-knowledge gives it.')->required(),
+            'vault' => $schema->string()->description('The id of the vault, as list-vaults gives it.')->required(),
+            'note' => $schema->string()->description('The id of the note, as list-knowledge gives it.')->required(),
         ];
     }
 }

@@ -35,7 +35,7 @@ class GetLocation extends Tool
     public function schema(JsonSchema $schema): array
     {
         return [
-            'location' => $schema->string()->description('The identifier of the location, as list-locations gives it.')->required(),
+            'location' => $schema->string()->description('The id of the place, as list-locations gives it.')->required(),
         ];
     }
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Actions\DestroyPossessionField;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -13,7 +12,7 @@ use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
 
-#[Description('Remove a field from a possession type. This cannot be undone. The change is written to the account journal.')]
+#[Description('Remove a field from a possession type. This cannot be undone. The change is written to the account log.')]
 #[IsDestructive]
 class DeletePossessionField extends Tool
 {
@@ -29,11 +28,13 @@ class DeletePossessionField extends Tool
         ]);
 
         $possessionType = $this->possessionType($request, $validated['possession_type']);
+        $field = $this->possessionField($possessionType, $validated['field']);
 
-        new DestroyPossessionField(
-            user: $this->user($request),
-            field: $this->possessionField($possessionType, $validated['field']),
-        )->execute();
+        $answer = $this->answerThroughApi($request, $possessionType->uuid, $field->uuid);
+
+        if ($answer->isError()) {
+            return $answer;
+        }
 
         return Response::text(__('The field is removed.'));
     }
@@ -42,8 +43,8 @@ class DeletePossessionField extends Tool
     public function schema(JsonSchema $schema): array
     {
         return [
-            'possession_type' => $schema->string()->description('The identifier of the possession type, as list-possession-types gives it.')->required(),
-            'field' => $schema->string()->description('The identifier of the field, as get-possession-type gives it.')->required(),
+            'possession_type' => $schema->string()->description('The id of the possession type, as list-possession-types gives it.')->required(),
+            'field' => $schema->string()->description('The id of the field, as get-possession-type gives it.')->required(),
         ];
     }
 }

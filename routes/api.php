@@ -138,7 +138,9 @@ use App\Http\Controllers\Api\TemplateActivationController;
 use App\Http\Controllers\Api\TemplateController;
 use App\Http\Controllers\Api\TemplateDuplicateController;
 use App\Http\Controllers\Api\TemplatePositionController;
+use App\Http\Controllers\Api\ValueListController;
 use App\Http\Controllers\Api\VaultController;
+use App\Http\Controllers\Api\VaultReminderController;
 use App\Http\Controllers\Api\VaultReminderOccurrenceController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Nightwatch\Http\Middleware\Sample;
@@ -318,6 +320,7 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::put('relationship-types/{relationshipType}/activation', [RelationshipTypeActivationController::class, 'update'])->where('relationshipType', '[0-9a-fA-F-]{36}')->name('relationshipTypes.activation.update');
         Route::put('relationship-types/{relationshipType}/position', [RelationshipTypePositionController::class, 'update'])->where('relationshipType', '[0-9a-fA-F-]{36}')->name('relationshipTypes.position.update');
 
+        Route::match(['GET', 'QUERY'], 'value-lists', [ValueListController::class, 'index'])->name('valueLists');
         Route::match(['GET', 'QUERY'], 'templates', [TemplateController::class, 'index'])->name('templates');
         Route::match(['GET', 'QUERY'], 'templates/{template}', [TemplateController::class, 'show'])->where('template', '[0-9a-fA-F-]{36}')->name('templates.show');
         Route::post('templates', [TemplateController::class, 'create'])->name('templates.create');
@@ -427,6 +430,7 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::match(['GET', 'QUERY'], 'vaults/{vault}/contacts', [ContactController::class, 'index'])->name('contacts');
         Route::match(['GET', 'QUERY'], 'vaults/{vault}/contact-categories', [ContactCategoryController::class, 'index'])->name('contactCategories');
         Route::match(['GET', 'QUERY'], 'vaults/{vault}/reminder-occurrences', [VaultReminderOccurrenceController::class, 'index'])->name('reminderOccurrences');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/reminders', [VaultReminderController::class, 'index'])->name('reminders');
         Route::match(['GET', 'QUERY'], 'vaults/{vault}/search', [SearchController::class, 'index'])->name('search');
         Route::match(['GET', 'QUERY'], 'vaults/{vault}/contacts/me', [ContactMeController::class, 'show'])->name('contacts.me');
         Route::match(['GET', 'QUERY'], 'vaults/{vault}/contacts/{contact}', [ContactController::class, 'show'])->name('contacts.show');

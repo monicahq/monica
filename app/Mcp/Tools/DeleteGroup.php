@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Actions\DestroyGroup as DestroyGroupAction;
 use App\Helpers\FlagState;
 use App\Models\User;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
@@ -15,7 +14,7 @@ use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
 
-#[Description('Delete a group. The people in it stay, and the group can be restored with its memberships. The change is written to the account journal.')]
+#[Description('Delete a group. The people in it stay, and the group can be restored with its memberships. The change is written to the account log.')]
 #[IsDestructive]
 class DeleteGroup extends Tool
 {
@@ -40,11 +39,11 @@ class DeleteGroup extends Tool
         $vault = $this->vault($request, $validated['vault']);
         $group = $this->group($vault, $validated['group']);
 
-        new DestroyGroupAction(
-            user: $this->user($request),
-            vault: $vault,
-            group: $group,
-        )->execute();
+        $answer = $this->answerThroughApi($request, $vault->uuid, $group->uuid);
+
+        if ($answer->isError()) {
+            return $answer;
+        }
 
         return Response::text(__('The group is deleted.'));
     }
@@ -53,7 +52,7 @@ class DeleteGroup extends Tool
     public function schema(JsonSchema $schema): array
     {
         return [
-            'vault' => $schema->string()->description('The address of the vault holding the group.')->required(),
+            'vault' => $schema->string()->description('The id of the vault, as list-vaults gives it.')->required(),
             'group' => $schema->string()->description('The id of the group, as list-groups gives it.')->required(),
         ];
     }

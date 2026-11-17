@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Actions\DestroyPossessionLocationStay;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -13,7 +12,7 @@ use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
 
-#[Description('Delete one stay of a possession. The other stays are not moved, so its period shows as unrecorded. Deleting the stay where it is now leaves the possession with no current location until it is moved. No tool brings the stay back. The change is written to the account journal.')]
+#[Description('Delete one stay of a possession. The other stays are not moved, so its period shows as unrecorded. Deleting the stay where it is now leaves the possession with no current location until it is moved. No tool brings the stay back. The change is written to the account log.')]
 #[IsDestructive]
 class DeletePossessionLocationStay extends Tool
 {
@@ -29,12 +28,15 @@ class DeletePossessionLocationStay extends Tool
             'stay' => ['required', 'string'],
         ]);
 
-        $possession = $this->possession($this->vault($request, $validated['vault']), $validated['possession']);
+        $vault = $this->vault($request, $validated['vault']);
+        $possession = $this->possession($vault, $validated['possession']);
+        $stay = $this->possessionLocationStay($possession, $validated['stay']);
 
-        new DestroyPossessionLocationStay(
-            user: $this->user($request),
-            stay: $this->possessionLocationStay($possession, $validated['stay']),
-        )->execute();
+        $answer = $this->answerThroughApi($request, $vault->uuid, $possession->uuid, $stay->uuid);
+
+        if ($answer->isError()) {
+            return $answer;
+        }
 
         return Response::text(__('The stay is deleted.'));
     }
@@ -43,9 +45,9 @@ class DeletePossessionLocationStay extends Tool
     public function schema(JsonSchema $schema): array
     {
         return [
-            'vault' => $schema->string()->description('The address of the vault holding the possession.')->required(),
-            'possession' => $schema->string()->description('The identifier of the possession, as list-possessions gives it.')->required(),
-            'stay' => $schema->string()->description('The identifier of the stay, as list-possession-location-stays gives it.')->required(),
+            'vault' => $schema->string()->description('The id of the vault, as list-vaults gives it.')->required(),
+            'possession' => $schema->string()->description('The id of the possession, as list-possessions gives it.')->required(),
+            'stay' => $schema->string()->description('The id of the stay, as list-possession-location-stays gives it.')->required(),
         ];
     }
 }

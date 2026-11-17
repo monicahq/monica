@@ -59,7 +59,7 @@ $conditionAttributes = [
 
 $one = ApiDocsFields::one('possession_condition', 'possession condition', $conditionAttributes, webLink: $webLink);
 
-$conditionParam = ['name' => 'possessionCondition', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the possession condition. A condition belonging to somebody else answers 404.'];
+$conditionParam = ['name' => 'possessionCondition', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the possession condition. A condition belonging to somebody else answers 404.'];
 
 $nameRefusal = 'Up to 50 characters. Markup and surrounding blank space are stripped, and a name left with nothing in it is refused. A name another condition of the account already has, ignoring case, is refused with “You already have a condition with this name.”';
 
@@ -125,14 +125,14 @@ return [
             'method' => 'PUT',
             'path' => '/possession-conditions/{possessionCondition}',
             'examplePath' => "/possession-conditions/{$conditionId}",
-            'description' => 'Rename a possession condition, set its colour and its icon. The name and the colour are required; an icon left out or null removes it.',
+            'description' => 'Rename a possession condition, or set its colour or its icon. The name and the colour cannot be null; an icon sent as null is removed.',
             'body' => ['The condition keeps its place in the order. Changing only the case of its own name is allowed. The change is written to the account log.'],
             'rateLimit' => $rateLimit,
             'pathParams' => [$conditionParam],
             'bodyParams' => [
-                ['name' => 'name', 'type' => 'string', 'required' => true, 'description' => "The new name. {$nameRefusal}", 'example' => 'Well loved'],
-                ['name' => 'colour', 'type' => 'string', 'required' => true, 'description' => $colours, 'example' => '#9a6a24'],
-                ['name' => 'icon', 'type' => 'string', 'required' => false, 'description' => "{$icons} Left out or null removes the icon.", 'example' => 'heart'],
+                ['name' => 'name', 'type' => 'string', 'required' => false, 'description' => "The new name. {$nameRefusal}", 'example' => 'Well loved'],
+                ['name' => 'colour', 'type' => 'string', 'required' => false, 'description' => $colours, 'example' => '#9a6a24'],
+                ['name' => 'icon', 'type' => 'string', 'required' => false, 'description' => "{$icons} Null removes the icon.", 'example' => 'heart'],
             ],
             'returns' => 'The possession condition object as it now reads.',
             'response' => ['data' => $wellLoved],

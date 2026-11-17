@@ -176,6 +176,36 @@ class StructureVersionSectionControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_keeps_what_is_left_out_of_an_update(): void
+    {
+        Queue::fake();
+        [$user, $template, $row] = $this->placement(titleOverride: 'Scranton branch');
+        $row->update(['is_collapsed_by_default' => true]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', "/api/v1/templates/{$template->uuid}/versions/1/sections/{$row->id}", [])
+            ->assertOk()
+            ->assertJsonPath('data.attributes.title', 'Scranton branch')
+            ->assertJsonPath('data.attributes.is_collapsed_by_default', true);
+    }
+
+    #[Test]
+    public function it_clears_a_field_sent_as_null(): void
+    {
+        Queue::fake();
+        [$user, $template, $row] = $this->placement(titleOverride: 'Scranton branch');
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', "/api/v1/templates/{$template->uuid}/versions/1/sections/{$row->id}", [
+            'title_override' => null,
+        ])->assertOk();
+
+        $this->assertNull($row->refresh()->title_override);
+    }
+
+    #[Test]
     public function it_takes_a_section_off_a_version(): void
     {
         Queue::fake();

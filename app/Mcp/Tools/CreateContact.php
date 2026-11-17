@@ -4,20 +4,15 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Actions\CreateContact as CreateContactAction;
 use App\Enums\NameOrderEnum;
-use App\Exceptions\VaultHasNoContactDefault;
-use App\Http\Resources\ContactResource;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
-use Illuminate\Validation\Rule;
 use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 
-#[Description('Record a new contact in a vault. The change is written to the account journal.')]
+#[Description('Record a new contact in a vault. The change is written to the account log.')]
 class CreateContact extends Tool
 {
     use MirrorsAnApiCapability;
@@ -28,48 +23,29 @@ class CreateContact extends Tool
     {
         $validated = $request->validate([
             'vault' => ['required', 'string'],
-            'first_name' => ['required', 'string', 'max:255'],
-            'last_name' => ['nullable', 'string', 'max:255'],
-            'middle_name' => ['nullable', 'string', 'max:255'],
-            'nickname' => ['nullable', 'string', 'max:255'],
-            'name_order' => ['nullable', Rule::enum(NameOrderEnum::class)],
         ]);
 
         $vault = $this->vault($request, $validated['vault']);
 
-        try {
-            $contact = new CreateContactAction(
-                user: $this->user($request),
-                vault: $vault,
-                structureVersion: null,
-                firstName: $validated['first_name'],
-                middleName: $validated['middle_name'] ?? null,
-                lastName: $validated['last_name'] ?? null,
-                nickname: $validated['nickname'] ?? null,
-                nameOrder: isset($validated['name_order']) ? NameOrderEnum::from($validated['name_order']) : null,
-            )->execute();
-        } catch (AuthorizationException|VaultHasNoContactDefault $e) {
-            return Response::error($e->getMessage());
-        }
-
-        return Response::json(new ContactResource($this->contact($vault, $contact->uuid))->resolve());
+        return $this->answerThroughApi($request, $vault->uuid);
     }
 
     /** @return array<string, Type> */
     public function schema(JsonSchema $schema): array
     {
         return [
-            'vault' => $schema->string()
-                ->description('The address of the vault to record them in.')
-                ->required(),
-            'first_name' => $schema->string()
-                ->description('Their given name, the one part a contact cannot go without.')
-                ->required(),
-            'last_name' => $schema->string()->description('Their family name.'),
+            'vault' => $schema->string()->description('The id of the vault, as list-vaults gives it.')->required(),
+            'first_name' => $schema->string()->description('Their given name, the one part a contact cannot go without.')->required(),
+            'prefix' => $schema->string()->description('What comes before the name, such as Dr.'),
             'middle_name' => $schema->string()->description('Their middle name.'),
+            'last_name' => $schema->string()->description('Their family name.'),
+            'suffix' => $schema->string()->description('What comes after the name, such as Jr.'),
+            'maiden_name' => $schema->string()->description('Their name before marriage.'),
             'nickname' => $schema->string()->description('What they are actually called.'),
-            'name_order' => $schema->string()
-                ->description('Which part of the name reads first: '.implode(', ', array_column(NameOrderEnum::cases(), 'value')).'.'),
+            'name_order' => $schema->string()->enum(array_column(NameOrderEnum::cases(), 'value'))->description('Which part of the name reads first. Left out, the reader decides.'),
+            'is_partial' => $schema->boolean()->description('True for somebody you know of rather than somebody you have written down. A partial contact is off every list until they are more than a first name. False when left out.'),
+            'is_favourite' => $schema->boolean()->description('True to put the contact at the top of the list. False when left out.'),
+            'structure_version_id' => $schema->integer()->description('The id of the published version of one of your active contact templates, as list-template-versions gives it, which says what the page of the contact holds. Left out, the contact starts from the template the vault uses for new contacts.'),
         ];
     }
 }

@@ -93,9 +93,9 @@ $attributes = [
     ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When it last changed, as a count of seconds, or null.'],
 ];
 
-$vaultParam = ['name' => 'vault', 'type' => 'string', 'required' => true, 'description' => 'The vault the possession is kept in, named either by the readable name it reports as slug or by the identifier it reports as id. A vault of another account answers 404.'];
-$possessionParam = ['name' => 'possession', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the possession. A possession of another vault or of another account answers 404.'];
-$recordParam = ['name' => 'insuranceRecord', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the insurance record. A record of another possession answers 404.'];
+$vaultParam = ['name' => 'vault', 'type' => 'string', 'required' => true, 'description' => 'The vault the possession is kept in, named either by the readable name it reports as slug or by its id. A vault of another account answers 404.'];
+$possessionParam = ['name' => 'possession', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the possession. A possession of another vault or of another account answers 404.'];
+$recordParam = ['name' => 'insuranceRecord', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the insurance record. A record of another possession answers 404.'];
 
 $figure = 'Zero or more, up to 9999999999.99. A figure below zero is refused with “Write an amount of zero or more.”';
 

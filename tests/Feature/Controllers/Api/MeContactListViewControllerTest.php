@@ -93,15 +93,42 @@ class MeContactListViewControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_request_naming_only_part_of_the_view(): void
+    public function it_keeps_what_is_left_out_of_an_update(): void
     {
-        Sanctum::actingAs(User::factory()->create());
+        Queue::fake();
+        $user = User::factory()->create([
+            'contact_list_grouping' => 'everyone',
+            'contact_list_sort' => 'nickname',
+            'contact_list_direction' => 'desc',
+        ]);
+
+        Sanctum::actingAs($user);
 
         $response = $this->json('PUT', route('api.v1.me.contactListView.update'), [
             'grouping' => 'favourites',
         ]);
 
+        $response->assertOk();
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'contact_list_grouping' => 'favourites',
+            'contact_list_sort' => 'nickname',
+            'contact_list_direction' => 'desc',
+        ]);
+    }
+
+    #[Test]
+    public function it_refuses_a_choice_sent_as_null(): void
+    {
+        Sanctum::actingAs(User::factory()->create());
+
+        $response = $this->json('PUT', route('api.v1.me.contactListView.update'), [
+            'grouping' => null,
+            'sort' => null,
+            'direction' => null,
+        ]);
+
         $response->assertUnprocessable();
-        $response->assertJsonValidationErrors(['sort', 'direction']);
+        $response->assertJsonValidationErrors(['grouping', 'sort', 'direction']);
     }
 }

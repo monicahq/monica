@@ -25,6 +25,7 @@ $reminder = [
         'source' => 'manual',
         'starts_on' => '2026-11-20',
         'field' => null,
+        'contact' => null,
         'group' => $group,
         'cadence' => 'monthly',
         'interval' => 1,
@@ -62,13 +63,13 @@ $occurrence = [
 $flagNote = 'Groups are not yet available to every account. Until they are available to yours, every endpoint here answers 404.';
 
 $groupIdentifier = [
-    ['name' => 'vault', 'type' => 'string', 'required' => true, 'description' => 'The vault the group lives in, named either by the readable name it reports as slug or by the identifier it reports as id.'],
-    ['name' => 'group', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the group. One addressed through the wrong vault, deleted, or belonging to another account, answers 404.'],
+    ['name' => 'vault', 'type' => 'string', 'required' => true, 'description' => 'The vault the group lives in, named either by the readable name it reports as slug or by its id.'],
+    ['name' => 'group', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the group. One addressed through the wrong vault, deleted, or belonging to another account, answers 404.'],
 ];
 
 $reminderIdentifier = [
     ...$groupIdentifier,
-    ['name' => 'reminder', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the reminder. One about another group answers 404, and so does a deleted one.'],
+    ['name' => 'reminder', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the reminder. One about another group answers 404, and so does a deleted one.'],
 ];
 
 $pageParams = [
@@ -78,7 +79,7 @@ $pageParams = [
 
 $groupAttributes = [
     ['name' => 'group', 'type' => 'object', 'description' => 'The group the reminder is about.'],
-    ['name' => 'group.id', 'type' => 'uuid', 'description' => 'The identifier of the group.'],
+    ['name' => 'group.id', 'type' => 'uuid', 'description' => 'The id of the group.'],
     ['name' => 'group.name', 'type' => 'string', 'description' => 'What the group is called.'],
 ];
 
@@ -87,6 +88,7 @@ $reminderAttributes = [
     ['name' => 'source', 'type' => 'string', 'description' => 'Where its date comes from. Always manual for a group, since a group has no date of its own for a reminder to read.'],
     ['name' => 'starts_on', 'type' => 'string', 'description' => 'The first date, written as a year, a month and a day.'],
     ['name' => 'field', 'type' => 'object', 'description' => 'The date on a contact a reminder reads. Always null for a group.'],
+    ['name' => 'contact', 'type' => 'object', 'description' => 'The contact a reminder is about. Always null for a group.'],
     ...$groupAttributes,
     ['name' => 'cadence', 'type' => 'string', 'description' => 'How often it comes back: once, weekly, monthly or yearly.'],
     ['name' => 'interval', 'type' => 'integer', 'description' => 'How many of those between two dates. Every 3 months is monthly with an interval of 3.'],
@@ -166,7 +168,7 @@ return [
             'method' => 'POST',
             'path' => '/vaults/{vault}/groups/{group}/reminders',
             'examplePath' => '/vaults/'.$vaultSlug.'/groups/'.$groupId.'/reminders',
-            'description' => 'Write a reminder about a group as a whole, with a date of its own. The change is written to the account journal.',
+            'description' => 'Write a reminder about a group as a whole, with a date of its own. The change is written to the account log.',
             'body' => [
                 $flagNote,
                 'A starts_on before today answers 422 on starts_on, saying a reminder cannot start in the past. One that happens once, dated today, whose hour has already passed, answers 422 on time, saying the time for this reminder has already passed today.',
@@ -195,7 +197,7 @@ return [
             'method' => 'PUT',
             'path' => '/vaults/{vault}/groups/{group}/reminders/{reminder}',
             'examplePath' => '/vaults/'.$vaultSlug.'/groups/'.$groupId.'/reminders/'.$reminderId,
-            'description' => 'Change what a reminder about a group says and when it comes back. The change is written to the account journal.',
+            'description' => 'Change what a reminder about a group says and when it comes back. The change is written to the account log.',
             'body' => [
                 $flagNote,
                 'Changing the schedule replaces the dates after today that nobody answered. Today\'s date and the overdue ones stay as they are, and no answer already given is ever changed.',
@@ -204,12 +206,12 @@ return [
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $reminderIdentifier,
             'bodyParams' => [
-                ['name' => 'name', 'type' => 'string', 'required' => true, 'description' => 'What the reminder says. Up to 255 characters.', 'example' => 'Book the conference room for the birthday party'],
-                ['name' => 'starts_on', 'type' => 'string', 'required' => false, 'description' => 'A new first date. The one it has is kept when left out.', 'example' => '2026-11-20'],
-                ['name' => 'cadence', 'type' => 'string', 'required' => true, 'description' => 'One of once, weekly, monthly or yearly.', 'example' => 'monthly'],
-                ['name' => 'interval', 'type' => 'integer', 'required' => false, 'description' => 'How many of those between two dates, from 1 to 99. The one it has is kept when left out.', 'example' => '1'],
-                ['name' => 'time', 'type' => 'string', 'required' => true, 'description' => 'The local hour to be told at.', 'example' => '09:00'],
-                ['name' => 'timezone', 'type' => 'string', 'required' => false, 'description' => 'A new time zone. The one it has is kept when left out.', 'example' => 'America/New_York'],
+                ['name' => 'name', 'type' => 'string', 'required' => false, 'description' => 'What the reminder says. Up to 255 characters. It cannot be null.', 'example' => 'Book the conference room for the birthday party'],
+                ['name' => 'starts_on', 'type' => 'string', 'required' => false, 'description' => 'A new first date.', 'example' => '2026-11-20'],
+                ['name' => 'cadence', 'type' => 'string', 'required' => false, 'description' => 'One of once, weekly, monthly or yearly. It cannot be null.', 'example' => 'monthly'],
+                ['name' => 'interval', 'type' => 'integer', 'required' => false, 'description' => 'How many of those between two dates, from 1 to 99.', 'example' => '1'],
+                ['name' => 'time', 'type' => 'string', 'required' => false, 'description' => 'The local hour to be told at. It cannot be null.', 'example' => '09:00'],
+                ['name' => 'timezone', 'type' => 'string', 'required' => false, 'description' => 'A new time zone.', 'example' => 'America/New_York'],
             ],
             'returns' => 'The reminder object as it stands now.',
             'response' => ['data' => $reminder],
@@ -277,7 +279,7 @@ return [
             'method' => 'PUT',
             'path' => '/vaults/{vault}/groups/{group}/reminder-occurrences/{occurrence}/answer',
             'examplePath' => '/vaults/'.$vaultSlug.'/groups/'.$groupId.'/reminder-occurrences/'.$occurrenceId.'/answer',
-            'description' => 'Say whether you remembered a date or forgot it. The answer is final, and the change is written to the account journal.',
+            'description' => 'Say whether you remembered a date or forgot it. The answer is final, and the change is written to the account log.',
             'body' => [
                 $flagNote,
                 'remembered is accepted from the date\'s own day, and earlier answers 422 on answer, saying the reminder is not due yet. forgotten is accepted from the day after, and earlier answers 422 on answer, saying you can say you forgot from the day after. Both are read against today in your time zone.',
@@ -287,7 +289,7 @@ return [
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [
                 ...$groupIdentifier,
-                ['name' => 'occurrence', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the date, which is the id it comes back with. A date of another group answers 404.'],
+                ['name' => 'occurrence', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the date. A date of another group answers 404.'],
             ],
             'bodyParams' => [
                 ['name' => 'answer', 'type' => 'string', 'required' => true, 'description' => 'remembered or forgotten.', 'example' => 'remembered'],

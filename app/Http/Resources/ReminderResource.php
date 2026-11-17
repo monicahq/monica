@@ -33,6 +33,10 @@ class ReminderResource extends JsonResource
                     'key' => $this->field->key,
                     'label' => $this->field->label,
                 ],
+                'contact' => $record instanceof Contact ? [
+                    'id' => $record->uuid,
+                    'name' => $record->name,
+                ] : null,
                 'group' => $record instanceof Group ? [
                     'id' => $record->uuid,
                     'name' => $record->name,

@@ -109,7 +109,7 @@ class PossessionFieldControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_replaces_a_field_and_clears_the_options_of_a_select_field_left_out(): void
+    public function it_keeps_what_is_left_out_of_an_update(): void
     {
         Queue::fake();
 
@@ -124,17 +124,53 @@ class PossessionFieldControllerTest extends TestCase
 
         Sanctum::actingAs($user);
 
-        $response = $this->json('PUT', "/api/v1/possession-types/{$type->uuid}/fields/{$field->uuid}", [
-            'name' => 'State',
-            'kind' => 'select',
-        ]);
+        $response = $this->json('PUT', "/api/v1/possession-types/{$type->uuid}/fields/{$field->uuid}", ['name' => 'State']);
 
         $response->assertOk();
         $response->assertJsonPath('data.attributes.fields.0.name', 'State');
 
         $field->refresh();
         $this->assertSame('State', $field->name);
-        $this->assertEmpty($field->options);
+        $this->assertSame(PossessionFieldKindEnum::Select, $field->kind);
+        $this->assertSame(['New', 'Used'], $field->options);
+    }
+
+    #[Test]
+    public function it_clears_a_field_sent_as_null(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $type = PossessionType::factory()->create(['account_id' => $user->account_id]);
+        $field = PossessionField::factory()->create([
+            'possession_type_id' => $type->id,
+            'name' => 'Condition',
+            'kind' => PossessionFieldKindEnum::Select,
+            'options' => ['New', 'Used'],
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('PUT', "/api/v1/possession-types/{$type->uuid}/fields/{$field->uuid}", ['options' => null]);
+
+        $response->assertOk();
+        $this->assertEmpty($field->refresh()->options);
+    }
+
+    #[Test]
+    public function it_refuses_a_name_or_a_kind_sent_as_null(): void
+    {
+        $user = User::factory()->create();
+        $type = PossessionType::factory()->create(['account_id' => $user->account_id]);
+        $field = PossessionField::factory()->create(['possession_type_id' => $type->id, 'name' => 'Condition']);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('PUT', "/api/v1/possession-types/{$type->uuid}/fields/{$field->uuid}", ['name' => null, 'kind' => null]);
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors(['name', 'kind']);
+        $this->assertSame('Condition', $field->refresh()->name);
     }
 
     #[Test]

@@ -58,7 +58,7 @@ $cellarStay = [
 ];
 
 $attributes = [
-    ['name' => 'location_id', 'type' => 'uuid', 'description' => 'The identifier of the location of the account where the possession stayed. Its full path comes from the locations endpoints.'],
+    ['name' => 'location_id', 'type' => 'uuid', 'description' => 'The id of the location of the account where the possession stayed. Its full path comes from the locations endpoints.'],
     ['name' => 'location_name', 'type' => 'string', 'description' => 'The name of that location, without the locations around it.'],
     ['name' => 'arrived_on', 'type' => 'date', 'description' => 'The day it arrived, as YYYY-MM-DD, or null when the day is unknown.'],
     ['name' => 'left_on', 'type' => 'date', 'description' => 'The day it left, as YYYY-MM-DD, or null on the stay where it is now.'],
@@ -68,9 +68,9 @@ $attributes = [
     ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When the stay was recorded, as a count of seconds since 1970.'],
 ];
 
-$vaultParam = ['name' => 'vault', 'type' => 'string', 'required' => true, 'description' => 'The vault the possession is kept in, named either by the readable name it reports as slug or by the identifier it reports as id. A vault of another account answers 404.'];
-$possessionParam = ['name' => 'possession', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the possession. A possession of another vault or of another account answers 404.'];
-$stayParam = ['name' => 'stay', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the stay. A stay of another possession answers 404.'];
+$vaultParam = ['name' => 'vault', 'type' => 'string', 'required' => true, 'description' => 'The vault the possession is kept in, named either by the readable name it reports as slug or by its id. A vault of another account answers 404.'];
+$possessionParam = ['name' => 'possession', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the possession. A possession of another vault or of another account answers 404.'];
+$stayParam = ['name' => 'stay', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the stay. A stay of another possession answers 404.'];
 
 return [
     'name' => 'Possession locations',
@@ -122,7 +122,7 @@ return [
             'rateLimit' => $rateLimit,
             'pathParams' => [$vaultParam, $possessionParam],
             'bodyParams' => [
-                ['name' => 'location_id', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of a location of the account. A location of another account answers 422.', 'example' => $cellarId],
+                ['name' => 'location_id', 'type' => 'uuid', 'required' => true, 'description' => 'The id of a location of the account. A location of another account answers 422.', 'example' => $cellarId],
                 ['name' => 'moved_on', 'type' => 'date', 'required' => true, 'description' => 'The day it moved, as YYYY-MM-DD.', 'example' => '2024-06-04'],
                 ['name' => 'reason', 'type' => 'string', 'required' => false, 'description' => 'Why it moved, up to 255 characters. Markup is stripped.', 'example' => 'Harvest season'],
                 ['name' => 'note', 'type' => 'string', 'required' => false, 'description' => 'Anything worth knowing about the new stay, up to 5,000 characters.', 'example' => 'Mose carried it down.'],
@@ -146,7 +146,7 @@ return [
             'rateLimit' => $rateLimit,
             'pathParams' => [$vaultParam, $possessionParam, $stayParam],
             'bodyParams' => [
-                ['name' => 'location_id', 'type' => 'uuid', 'required' => false, 'description' => 'The identifier of a location of the account.'],
+                ['name' => 'location_id', 'type' => 'uuid', 'required' => false, 'description' => 'The id of a location of the account.'],
                 ['name' => 'arrived_on', 'type' => 'date', 'required' => false, 'description' => 'The day it arrived, as YYYY-MM-DD, or null when unknown.'],
                 ['name' => 'left_on', 'type' => 'date', 'required' => false, 'description' => 'The day it left, as YYYY-MM-DD. Only for a past stay.'],
                 ['name' => 'reason', 'type' => 'string', 'required' => false, 'description' => 'Why it was there, up to 255 characters.'],

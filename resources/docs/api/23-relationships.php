@@ -47,13 +47,13 @@ $relationship = [
 ];
 
 $identifier = [
-    ['name' => 'vault', 'type' => 'string', 'required' => true, 'description' => 'The vault both people live in, named either by the readable name it reports as slug or by the identifier it reports as id.'],
+    ['name' => 'vault', 'type' => 'string', 'required' => true, 'description' => 'The vault both people live in, named either by the readable name it reports as slug or by its id.'],
     ['name' => 'contact', 'type' => 'string', 'required' => true, 'description' => 'One of the two people, named either by their slug or by their id. A contact addressed through the wrong vault answers 404.'],
 ];
 
 $relationshipIdentifier = [
     ...$identifier,
-    ['name' => 'relationship', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the relationship. It is reached through either of its two people, and through anybody else answers 404.'],
+    ['name' => 'relationship', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the relationship. It is reached through either of its two people, and through anybody else answers 404.'],
 ];
 
 $pageParams = [
@@ -63,7 +63,7 @@ $pageParams = [
 
 $person = fn (string $side, string $role): array => [
     ['name' => $side, 'type' => 'object', 'description' => "The person holding {$role}."],
-    ['name' => "{$side}.id", 'type' => 'uuid', 'description' => 'The identifier of the contact.'],
+    ['name' => "{$side}.id", 'type' => 'uuid', 'description' => 'The id of the contact.'],
     ['name' => "{$side}.slug", 'type' => 'string', 'description' => 'The readable name of the contact, which addresses it as well as its id.'],
     ['name' => "{$side}.name", 'type' => 'string', 'description' => 'The name of the contact, as it is shown.'],
     ['name' => "{$side}.is_partial", 'type' => 'boolean', 'description' => 'True for somebody who exists only through a relationship and has no record of their own.'],
@@ -72,7 +72,7 @@ $person = fn (string $side, string $role): array => [
 
 $relationshipAttributes = [
     ['name' => 'relationship_type', 'type' => 'object', 'description' => 'What the link is.'],
-    ['name' => 'relationship_type.id', 'type' => 'uuid', 'description' => 'The identifier of the relationship type.'],
+    ['name' => 'relationship_type.id', 'type' => 'uuid', 'description' => 'The id of the relationship type.'],
     ['name' => 'relationship_type.name', 'type' => 'string', 'description' => 'The name of the relationship type.'],
     ['name' => 'relationship_type.is_symmetric', 'type' => 'boolean', 'description' => 'True when both people hold the same role, as partners do.'],
     ...$person('contact_a', 'role_a'),
@@ -84,7 +84,7 @@ $relationshipAttributes = [
     ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When it last changed, as a count of seconds. Equal to created_at until it first changes.'],
 ];
 
-$typeParam = ['name' => 'relationship_type', 'type' => 'uuid', 'description' => 'The identifier of a relationship type of your account. A type that is switched off answers 422.', 'example' => $typeId];
+$typeParam = ['name' => 'relationship_type', 'type' => 'uuid', 'description' => 'The id of a relationship type of your account. A type that is switched off answers 422.', 'example' => $typeId];
 
 $holdsRoleA = ['name' => 'holds_role_a', 'type' => 'boolean', 'description' => 'Whether the contact in the address holds role_a and the other person role_b. For a parent and child type, true says the contact is the parent. Ignored for a symmetric type.', 'example' => 'true'];
 

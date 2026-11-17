@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Actions\DestroyLifeEvent;
-use App\Models\Contact;
-use App\Models\LifeEventParticipant;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -15,7 +12,7 @@ use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
 
-#[Description('Take a life event off the timeline of everybody who was there. restore-life-event puts it back. The change is written to the account journal.')]
+#[Description('Take a life event off the timeline of everybody who was there. restore-life-event puts it back. The change is written to the account log.')]
 #[IsDestructive]
 class DeleteLifeEvent extends Tool
 {
@@ -33,20 +30,11 @@ class DeleteLifeEvent extends Tool
         $vault = $this->vault($request, $validated['vault']);
         $lifeEvent = $this->lifeEvent($vault, $validated['life_event']);
 
-        $subject = $lifeEvent->participants
-            ->map(fn (LifeEventParticipant $participation): mixed => $participation->participant)
-            ->first(fn (mixed $person): bool => $person instanceof Contact);
+        $answer = $this->answerThroughApi($request, $vault->uuid, $lifeEvent->uuid);
 
-        if (! $subject instanceof Contact) {
-            return Response::error(__('Nobody who took part in this life event is left, so it cannot be changed here.'));
+        if ($answer->isError()) {
+            return $answer;
         }
-
-        new DestroyLifeEvent(
-            user: $this->user($request),
-            vault: $vault,
-            contact: $subject,
-            lifeEvent: $lifeEvent,
-        )->execute();
 
         return Response::text(__('The life event is deleted.'));
     }
@@ -55,7 +43,7 @@ class DeleteLifeEvent extends Tool
     public function schema(JsonSchema $schema): array
     {
         return [
-            'vault' => $schema->string()->description('The address of the vault holding the life event.')->required(),
+            'vault' => $schema->string()->description('The id of the vault, as list-vaults gives it.')->required(),
             'life_event' => $schema->string()->description('The id of the life event, as list-life-events gives it.')->required(),
         ];
     }

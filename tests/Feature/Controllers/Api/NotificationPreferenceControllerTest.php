@@ -76,6 +76,54 @@ class NotificationPreferenceControllerTest extends TestCase
         $response->assertJsonValidationErrors('delivery_mode');
     }
 
+    #[Test]
+    public function it_keeps_what_is_left_out_of_an_update(): void
+    {
+        $user = $this->signedIn();
+        NotificationPreference::query()->where('account_id', $user->account_id)->update([
+            'quiet_hours_are_enabled' => true,
+            'quiet_hours_start' => '22:00',
+            'quiet_hours_end' => '08:00',
+            'timezone' => 'America/New_York',
+        ]);
+
+        $response = $this->json('PUT', route('api.v1.notificationPreferences.update'), [
+            'quiet_hours_end' => '07:00',
+        ]);
+
+        $response->assertOk();
+        $this->assertDatabaseHas('notification_preferences', [
+            'account_id' => $user->account_id,
+            'quiet_hours_are_enabled' => true,
+            'quiet_hours_start' => '22:00',
+            'quiet_hours_end' => '07:00',
+            'delivery_mode' => 'immediate',
+            'timezone' => 'America/New_York',
+        ]);
+    }
+
+    #[Test]
+    public function it_clears_a_field_sent_as_null(): void
+    {
+        $user = $this->signedIn();
+        NotificationPreference::query()->where('account_id', $user->account_id)->update([
+            'quiet_hours_are_enabled' => false,
+            'quiet_hours_start' => '22:00',
+            'quiet_hours_end' => '08:00',
+        ]);
+
+        $response = $this->json('PUT', route('api.v1.notificationPreferences.update'), [
+            'quiet_hours_start' => null,
+        ]);
+
+        $response->assertOk();
+        $this->assertDatabaseHas('notification_preferences', [
+            'account_id' => $user->account_id,
+            'quiet_hours_start' => null,
+            'quiet_hours_end' => '08:00',
+        ]);
+    }
+
     private function signedIn(): User
     {
         $account = Account::factory()->create();

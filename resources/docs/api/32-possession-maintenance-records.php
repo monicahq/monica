@@ -75,10 +75,10 @@ $attributes = [
     ['name' => 'cost', 'type' => 'string', 'description' => 'What the job cost, as a string with two decimals, or null when it is not recorded. It is never added to the transactions or to the declared value of the possession.'],
     ['name' => 'currency', 'type' => 'string', 'description' => 'The currency of the cost, in lower case, or null when there is no cost. Nothing is ever converted.'],
     ['name' => 'condition_before', 'type' => 'object', 'description' => 'The possession condition the possession was in before the job, or null when it is not recorded. A condition renamed since gives its new name, and one deleted since leaves null.'],
-    ['name' => 'condition_before.id', 'type' => 'uuid', 'description' => 'The identifier of the condition, as the possession conditions endpoints give it.'],
+    ['name' => 'condition_before.id', 'type' => 'uuid', 'description' => 'The id of the condition, as the possession conditions endpoints give it.'],
     ['name' => 'condition_before.name', 'type' => 'string', 'description' => 'What the condition is called.'],
     ['name' => 'condition_after', 'type' => 'object', 'description' => 'The possession condition the possession was in after the job, or null when it is not recorded. A condition renamed since gives its new name, and one deleted since leaves null.'],
-    ['name' => 'condition_after.id', 'type' => 'uuid', 'description' => 'The identifier of the condition, as the possession conditions endpoints give it.'],
+    ['name' => 'condition_after.id', 'type' => 'uuid', 'description' => 'The id of the condition, as the possession conditions endpoints give it.'],
     ['name' => 'condition_after.name', 'type' => 'string', 'description' => 'What the condition is called.'],
     ['name' => 'next_due_on', 'type' => 'string', 'description' => 'The day the job should be done again, or null when nothing is scheduled.'],
     ['name' => 'is_overdue', 'type' => 'boolean', 'description' => 'Whether the job is due again and has not been done. Only the latest record of the possession can be overdue, since a later job replaces the schedule of an earlier one, and it is overdue when its next due date is before today, in the timezone of the user the key belongs to. It is read, never written.'],
@@ -87,14 +87,14 @@ $attributes = [
     ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When it last changed, as a count of seconds, or null.'],
 ];
 
-$vaultParam = ['name' => 'vault', 'type' => 'string', 'required' => true, 'description' => 'The vault the possession is kept in, named either by the readable name it reports as slug or by the identifier it reports as id. A vault of another account answers 404.'];
-$possessionParam = ['name' => 'possession', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the possession. A possession of another vault or of another account answers 404.'];
-$recordParam = ['name' => 'maintenanceRecord', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the maintenance record. A record of another possession answers 404.'];
+$vaultParam = ['name' => 'vault', 'type' => 'string', 'required' => true, 'description' => 'The vault the possession is kept in, named either by the readable name it reports as slug or by its id. A vault of another account answers 404.'];
+$possessionParam = ['name' => 'possession', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the possession. A possession of another vault or of another account answers 404.'];
+$recordParam = ['name' => 'maintenanceRecord', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the maintenance record. A record of another possession answers 404.'];
 
 $types = 'inspection, cleaning, servicing, repair, restoration, part_replacement, conservation or other';
 $title = 'What was done, up to 255 characters. Markup is stripped, and a title left empty once it is stripped is refused with “Say what was done.”';
 $performedOn = 'The day the job was done, written as 2026-03-12. A day after today, in the timezone of the user the key belongs to, is refused with “The job cannot be performed in the future.”';
-$condition = 'The identifier of one of the possession conditions of your account, or null for none. A condition of another account answers 404.';
+$condition = 'The id of one of the possession conditions of your account, or null for none. A condition of another account answers 404.';
 
 $optionalParams = [
     ['name' => 'performed_by', 'type' => 'string', 'required' => false, 'description' => 'The person or the workshop who did the job, up to 255 characters.', 'example' => 'Scranton Trophy and Engraving'],

@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Http\Resources\TemplateResource;
+use Illuminate\Contracts\JsonSchema\JsonSchema;
+use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
@@ -21,12 +22,18 @@ class ListTemplates extends Tool
 
     public function handle(Request $request): Response
     {
-        $templates = $this->user($request)->account->templates()
-            ->with(['structure.entityType', 'publishedVersion'])
-            ->orderBy('position')
-            ->orderBy('id')
-            ->get();
+        return $this->answerThroughApi($request);
+    }
 
-        return Response::json(TemplateResource::collection($templates)->resolve());
+    /** @return array<string, Type> */
+    public function schema(JsonSchema $schema): array
+    {
+        $default = (int) config('monica.api_default_items_per_page');
+        $maximum = (int) config('monica.api_maximum_items_per_page');
+
+        return [
+            'page' => $schema->integer()->description('The page to read, starting at 1.'),
+            'per_page' => $schema->integer()->description("How many templates a page holds: {$default} unless asked, {$maximum} at most."),
+        ];
     }
 }

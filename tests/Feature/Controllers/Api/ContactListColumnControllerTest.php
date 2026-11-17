@@ -66,6 +66,38 @@ class ContactListColumnControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_keeps_what_is_left_out_of_an_update(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        ContactListColumn::factory()->create(['vault_id' => $vault->id, 'source' => ContactListColumnSourceEnum::Nickname]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/contact-list-columns", [])
+            ->assertOk()
+            ->assertJsonCount(1, 'data')
+            ->assertJsonPath('data.0.source', 'nickname')
+            ->assertJsonPath('meta.is_default', false);
+    }
+
+    #[Test]
+    public function it_refuses_columns_sent_as_null(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        ContactListColumn::factory()->create(['vault_id' => $vault->id, 'source' => ContactListColumnSourceEnum::Nickname]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/contact-list-columns", ['columns' => null])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['columns']);
+
+        $this->assertDatabaseHas('contact_list_columns', ['vault_id' => $vault->id, 'source' => 'nickname']);
+    }
+
+    #[Test]
     public function it_refuses_the_same_column_twice(): void
     {
         $user = User::factory()->create();

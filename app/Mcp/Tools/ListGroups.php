@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Mcp\Tools;
 
 use App\Helpers\FlagState;
-use App\Http\Resources\GroupResource;
-use App\Models\Group;
 use App\Models\User;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
@@ -35,42 +33,23 @@ class ListGroups extends Tool
     {
         $validated = $request->validate([
             'vault' => ['required', 'string'],
-            'page' => ['nullable', 'integer'],
-            'per_page' => ['nullable', 'integer'],
         ]);
 
         $vault = $this->vault($request, $validated['vault']);
 
-        $perPage = max(1, min(
-            (int) ($validated['per_page'] ?? config('monica.api_default_items_per_page')),
-            (int) config('monica.api_maximum_items_per_page'),
-        ));
-
-        $groups = Group::query()
-            ->where('vault_id', $vault->id)
-            ->with('vault')
-            ->withCount('currentMembers')
-            ->orderBy('name')
-            ->orderBy('id')
-            ->paginate($perPage, ['*'], 'page', max(1, (int) ($validated['page'] ?? 1)));
-
-        return Response::json([
-            'data' => array_map(fn (Group $group): array => new GroupResource($group)->resolve(), $groups->items()),
-            'meta' => [
-                'page' => $groups->currentPage(),
-                'per_page' => $groups->perPage(),
-                'total' => $groups->total(),
-            ],
-        ]);
+        return $this->answerThroughApi($request, $vault->uuid);
     }
 
     /** @return array<string, Type> */
     public function schema(JsonSchema $schema): array
     {
+        $default = (int) config('monica.api_default_items_per_page');
+        $maximum = (int) config('monica.api_maximum_items_per_page');
+
         return [
-            'vault' => $schema->string()->description('The address of the vault, as list-vaults gives it.')->required(),
-            'page' => $schema->integer()->description('Which page to return, counting from 1.'),
-            'per_page' => $schema->integer()->description('How many groups a page holds.'),
+            'vault' => $schema->string()->description('The id of the vault, as list-vaults gives it.')->required(),
+            'page' => $schema->integer()->description('The page to read, starting at 1.'),
+            'per_page' => $schema->integer()->description("How many groups a page holds: {$default} unless asked, {$maximum} at most."),
         ];
     }
 }

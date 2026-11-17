@@ -121,7 +121,24 @@ class PossessionConditionControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_changes_a_possession_condition_and_removes_its_icon_when_left_out(): void
+    public function it_keeps_what_is_left_out_of_an_update(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $possessionCondition = PossessionCondition::factory()->create(['account_id' => $user->account_id, 'name' => 'Worn', 'colour' => VaultColourEnum::Teal->value, 'icon' => 'star']);
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', "/api/v1/possession-conditions/{$possessionCondition->uuid}", ['name' => 'Well loved'])
+            ->assertOk()
+            ->assertJsonPath('data.attributes.name', 'Well loved')
+            ->assertJsonPath('data.attributes.colour', VaultColourEnum::Teal->value)
+            ->assertJsonPath('data.attributes.icon', 'star');
+    }
+
+    #[Test]
+    public function it_clears_a_field_sent_as_null(): void
     {
         Queue::fake();
 
@@ -130,10 +147,23 @@ class PossessionConditionControllerTest extends TestCase
 
         Sanctum::actingAs($user);
 
-        $this->json('PUT', "/api/v1/possession-conditions/{$possessionCondition->uuid}", ['name' => 'Well loved', 'colour' => VaultColourEnum::Amber->value])
+        $this->json('PUT', "/api/v1/possession-conditions/{$possessionCondition->uuid}", ['icon' => null])
             ->assertOk()
-            ->assertJsonPath('data.attributes.name', 'Well loved')
+            ->assertJsonPath('data.attributes.name', 'Worn')
             ->assertJsonPath('data.attributes.icon', null);
+    }
+
+    #[Test]
+    public function it_refuses_a_name_or_a_colour_sent_as_null(): void
+    {
+        $user = User::factory()->create();
+        $possessionCondition = PossessionCondition::factory()->create(['account_id' => $user->account_id, 'name' => 'Worn']);
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', "/api/v1/possession-conditions/{$possessionCondition->uuid}", ['name' => null, 'colour' => null])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['name', 'colour']);
     }
 
     #[Test]

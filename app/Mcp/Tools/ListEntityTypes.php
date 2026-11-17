@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Http\Resources\EntityTypeResource;
+use Illuminate\Contracts\JsonSchema\JsonSchema;
+use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
-#[Description('List the kinds of record the account has defined, beyond contacts.')]
+#[Description('List the kinds of record the account has defined, beyond contacts, a page at a time.')]
 #[IsReadOnly]
 class ListEntityTypes extends Tool
 {
@@ -21,11 +22,18 @@ class ListEntityTypes extends Tool
 
     public function handle(Request $request): Response
     {
-        $entityTypes = $this->user($request)->account->entityTypes()
-            ->orderBy('position')
-            ->orderBy('id')
-            ->get();
+        return $this->answerThroughApi($request);
+    }
 
-        return Response::json(EntityTypeResource::collection($entityTypes)->resolve());
+    /** @return array<string, Type> */
+    public function schema(JsonSchema $schema): array
+    {
+        $default = (int) config('monica.api_default_items_per_page');
+        $maximum = (int) config('monica.api_maximum_items_per_page');
+
+        return [
+            'page' => $schema->integer()->description('The page to read, starting at 1.'),
+            'per_page' => $schema->integer()->description("How many entity types a page holds: {$default} unless asked, {$maximum} at most."),
+        ];
     }
 }

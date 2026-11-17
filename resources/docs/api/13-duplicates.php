@@ -16,12 +16,12 @@ $vaultParam = [
     'name' => 'vault',
     'type' => 'uuid',
     'required' => true,
-    'description' => 'The identifier of the vault the contacts live in. A path that is not a uuid answers 404 without a query being run.',
+    'description' => 'The id of the vault the contacts live in. A path that is not a uuid answers 404 without a query being run.',
 ];
 
 $pairParams = [
     $vaultParam,
-    ['name' => 'candidate', 'type' => 'integer', 'required' => true, 'description' => 'The identifier of a pair this vault proposed.'],
+    ['name' => 'candidate', 'type' => 'integer', 'required' => true, 'description' => 'The id of a pair this vault proposed.'],
 ];
 
 $mergeParams = [
@@ -69,10 +69,10 @@ $previewFields = [
     ['name' => 'data.type', 'type' => 'string', 'description' => 'Always contact_merge_preview.'],
     ['name' => 'data.attributes', 'type' => 'object', 'description' => 'Everything the preview reports.'],
     ['name' => 'data.attributes.kept', 'type' => 'object', 'description' => 'The surviving contact.'],
-    ['name' => 'data.attributes.kept.uuid', 'type' => 'string', 'description' => 'Its identifier.'],
+    ['name' => 'data.attributes.kept.uuid', 'type' => 'string', 'description' => 'Its id.'],
     ['name' => 'data.attributes.kept.name', 'type' => 'string', 'description' => 'What it is called.'],
     ['name' => 'data.attributes.other', 'type' => 'object', 'description' => 'The contact that would be absorbed.'],
-    ['name' => 'data.attributes.other.uuid', 'type' => 'string', 'description' => 'Its identifier.'],
+    ['name' => 'data.attributes.other.uuid', 'type' => 'string', 'description' => 'Its id.'],
     ['name' => 'data.attributes.other.name', 'type' => 'string', 'description' => 'What it is called.'],
     ['name' => 'data.attributes.conflicts', 'type' => 'array', 'description' => 'Every place the two disagree. Each one has to be decided before the merge will run.'],
     ['name' => 'data.attributes.conflicts[]', 'type' => 'object', 'description' => 'One disagreement.'],
@@ -90,7 +90,7 @@ $previewFields = [
     ['name' => 'data.attributes.set_aside', 'type' => 'array', 'description' => 'Answers with no matching question on the surviving structure. They are kept out of the way rather than thrown away. Empty when there are none.'],
     ['name' => 'data.attributes.folds', 'type' => 'array', 'description' => 'Groups both contacts are current members of. The two memberships become one, from the earlier join date, with the surviving contact\'s role unless it has none. Empty when there are none.'],
     ['name' => 'data.attributes.folds[]', 'type' => 'object', 'description' => 'One group whose two memberships become one.'],
-    ['name' => 'data.attributes.folds[].group', 'type' => 'string', 'description' => 'The identifier of the group.'],
+    ['name' => 'data.attributes.folds[].group', 'type' => 'string', 'description' => 'The id of the group.'],
     ['name' => 'data.attributes.folds[].name', 'type' => 'string', 'description' => 'What the group is called.'],
     ['name' => 'data.attributes.fingerprint', 'type' => 'string', 'description' => 'What the preview was built on. Hand it back when you merge and the merge is refused if either contact changed in between.'],
 ];
@@ -271,7 +271,7 @@ return [
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [
                 $vaultParam,
-                ['name' => 'merge', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the merge to undo.'],
+                ['name' => 'merge', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the merge to undo.'],
             ],
             'returns' => 'Nothing at all. A merge in another vault or another account answers 404. One already undone, or one whose absorbed contact is gone, answers 422 and nothing changes.',
             'responseStatus' => 204,

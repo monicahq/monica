@@ -105,6 +105,77 @@ class FieldControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_keeps_what_is_left_out_of_an_update(): void
+    {
+        Queue::fake();
+        [$user, $template, $row] = $this->placement();
+        $field = Field::factory()->create([
+            'section_version_id' => $row->section_version_id,
+            'position' => 1,
+            'label' => 'Branch',
+            'help_text' => 'Where Dwight sells paper.',
+            'placeholder' => 'Scranton',
+            'is_required' => true,
+            'is_sensitive' => true,
+            'validation' => ['max' => 120],
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', $this->url($template, $row)."/fields/{$field->id}", [
+            'label' => 'Office',
+        ])
+            ->assertOk()
+            ->assertJsonPath('data.attributes.label', 'Office')
+            ->assertJsonPath('data.attributes.help_text', 'Where Dwight sells paper.')
+            ->assertJsonPath('data.attributes.placeholder', 'Scranton')
+            ->assertJsonPath('data.attributes.is_required', true)
+            ->assertJsonPath('data.attributes.is_sensitive', true)
+            ->assertJsonPath('data.attributes.validation.max', 120);
+    }
+
+    #[Test]
+    public function it_clears_a_field_sent_as_null(): void
+    {
+        Queue::fake();
+        [$user, $template, $row] = $this->placement();
+        $field = Field::factory()->create([
+            'section_version_id' => $row->section_version_id,
+            'position' => 1,
+            'label' => 'Branch',
+            'help_text' => 'Where Dwight sells paper.',
+            'placeholder' => 'Scranton',
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', $this->url($template, $row)."/fields/{$field->id}", [
+            'help_text' => null,
+            'placeholder' => null,
+        ])
+            ->assertOk()
+            ->assertJsonPath('data.attributes.label', 'Branch')
+            ->assertJsonPath('data.attributes.help_text', null)
+            ->assertJsonPath('data.attributes.placeholder', null);
+    }
+
+    #[Test]
+    public function it_refuses_a_label_sent_as_null(): void
+    {
+        Queue::fake();
+        [$user, $template, $row] = $this->placement();
+        $field = Field::factory()->create(['section_version_id' => $row->section_version_id, 'position' => 1, 'label' => 'Branch']);
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', $this->url($template, $row)."/fields/{$field->id}", ['label' => null])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['label']);
+
+        $this->assertSame('Branch', $field->refresh()->label);
+    }
+
+    #[Test]
     public function it_refuses_a_relation_to_a_kind_of_record_that_is_turned_off(): void
     {
         Queue::fake();

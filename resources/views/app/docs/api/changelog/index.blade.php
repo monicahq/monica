@@ -83,7 +83,7 @@
                 </div>
 
                 @foreach ($releases as $release)
-                  <section id="release-{{ $release['date']->toDateString() }}" x-show="holdsMatch($el)" class="mt-10 scroll-mt-32">
+                  <section id="release-{{ $release['date']->toDateString() }}" x-show="holdsMatch($el)" class="mt-10 scroll-mt-4">
                     <div class="flex flex-wrap items-baseline gap-2.5">
                       <h2 class="text-section-title text-ink"><time datetime="{{ $release['date']->toDateString() }}">{{ $release['date']->format('j F Y') }}</time></h2>
                       @if ($release['latest'])
@@ -112,7 +112,7 @@
             </div>
 
             @if ($releases !== [])
-              <nav aria-labelledby="releases-heading" class="flex min-w-45 grow basis-50 flex-col gap-1.5 lg:sticky lg:top-32 lg:grow-0">
+              <nav aria-labelledby="releases-heading" class="flex min-w-45 grow basis-50 flex-col gap-1.5 lg:sticky lg:top-4 lg:grow-0">
                 <h2 id="releases-heading" class="px-2.5 text-2xs font-medium tracking-caption text-muted uppercase">Releases</h2>
                 <ul class="flex flex-col gap-0.5">
                   @foreach ($releases as $release)

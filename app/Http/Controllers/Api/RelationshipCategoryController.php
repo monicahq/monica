@@ -66,14 +66,14 @@ class RelationshipCategoryController extends Controller
         $category = $this->find($request, $relationshipCategory);
 
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['sometimes', 'string', 'max:255'],
         ]);
 
         try {
             new UpdateRelationshipCategory(
                 user: $request->user(),
                 relationshipCategory: $category,
-                name: $validated['name'],
+                name: $validated['name'] ?? $category->name,
             )->execute();
         } catch (CannotChangeASuppliedRelationshipCategory $e) {
             throw ValidationException::withMessages(['name' => $e->getMessage()]);

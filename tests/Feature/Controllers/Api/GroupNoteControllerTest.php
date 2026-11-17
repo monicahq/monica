@@ -171,6 +171,33 @@ class GroupNoteControllerTest extends TestCase
             ->assertNotFound();
     }
 
+    #[Test]
+    public function it_keeps_what_is_left_out_of_an_update(): void
+    {
+        Queue::fake();
+        [$user, $vault, $group] = $this->finerThingsClub();
+        $note = GroupNote::factory()->create(['group_id' => $group->id, 'body' => 'Pam brings the watercolours.']);
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/groups/{$group->uuid}/notes/{$note->uuid}", [])
+            ->assertOk()
+            ->assertJsonPath('data.attributes.body', 'Pam brings the watercolours.');
+    }
+
+    #[Test]
+    public function it_refuses_a_body_sent_as_null(): void
+    {
+        [$user, $vault, $group] = $this->finerThingsClub();
+        $note = GroupNote::factory()->create(['group_id' => $group->id]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/groups/{$group->uuid}/notes/{$note->uuid}", ['body' => null])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['body']);
+    }
+
     /** @return array{0: User, 1: Vault, 2: Group} */
     private function finerThingsClub(): array
     {

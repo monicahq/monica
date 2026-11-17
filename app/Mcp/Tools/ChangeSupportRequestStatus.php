@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Actions\ChangeSupportRequestStatus as ChangeSupportRequestStatusAction;
 use App\Enums\SupportRequestStatusEnum;
-use App\Http\Resources\Admin\SupportRequestResource;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
-use Illuminate\Validation\Rule;
 use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
@@ -35,16 +32,11 @@ class ChangeSupportRequestStatus extends Tool
 
         $validated = $request->validate([
             'support_request' => ['required', 'string'],
-            'status' => ['required', Rule::enum(SupportRequestStatusEnum::class)],
         ]);
 
-        $supportRequest = new ChangeSupportRequestStatusAction(
-            administrator: $this->user($request),
-            supportRequest: $this->supportRequest($request, $validated['support_request'], acrossAccounts: true),
-            status: SupportRequestStatusEnum::from($validated['status']),
-        )->execute();
+        $supportRequest = $this->supportRequest($request, $validated['support_request'], acrossAccounts: true);
 
-        return Response::json(new SupportRequestResource($supportRequest)->resolve());
+        return $this->answerThroughApi($request, $supportRequest->uuid);
     }
 
     /** @return array<string, Type> */
@@ -52,7 +44,7 @@ class ChangeSupportRequestStatus extends Tool
     {
         return [
             'support_request' => $schema->string()->description('The id of the support request, as list-support-queue gives it.')->required(),
-            'status' => $schema->string()->enum(SupportRequestStatusEnum::values())->description('The status to move it to.')->required(),
+            'status' => $schema->string()->enum(SupportRequestStatusEnum::values())->description('The status to move the request to.')->required(),
         ];
     }
 }

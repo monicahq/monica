@@ -87,7 +87,7 @@ class ApiDocsFields
     {
         $rows = [
             ['name' => "{$prefix}.type", 'type' => 'string', 'description' => "Always {$type}. It names the kind of record, so a caller holding several kinds can tell them apart without looking at where they came from."],
-            ['name' => "{$prefix}.id", 'type' => 'string', 'description' => 'The identifier of this record, as a string even when it reads as a number. It is what every address naming this record takes.'],
+            ['name' => "{$prefix}.id", 'type' => 'string', 'description' => 'The id of this record, as a string even when it reads as a number. It is what every endpoint naming this record takes.'],
             ['name' => "{$prefix}.attributes", 'type' => 'object', 'description' => 'Everything the record holds.'],
         ];
 

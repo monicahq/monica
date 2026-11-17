@@ -314,4 +314,50 @@ class RelationshipTypeControllerTest extends TestCase
         $this->json('DELETE', "/api/v1/relationship-types/{$type->uuid}")->assertNotFound();
         $this->assertNotSoftDeleted($type);
     }
+
+    #[Test]
+    public function it_keeps_what_is_left_out_of_an_update(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
+        $type = RelationshipType::factory()->directed()->create([
+            'account_id' => $user->account_id,
+            'relationship_category_id' => $category->id,
+            'name' => 'Boss / Employee',
+            'role_a' => 'Boss',
+            'role_b' => 'Employee',
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('PUT', "/api/v1/relationship-types/{$type->uuid}", [
+            'name' => 'Regional manager / Salesman',
+        ]);
+
+        $response->assertOk();
+        $response->assertJsonPath('data.attributes.name', 'Regional manager / Salesman');
+        $response->assertJsonPath('data.attributes.role_a', 'Boss');
+        $response->assertJsonPath('data.attributes.role_b', 'Employee');
+        $response->assertJsonPath('data.attributes.relationship_category_id', $category->uuid);
+        $response->assertJsonPath('data.attributes.is_symmetric', false);
+    }
+
+    #[Test]
+    public function it_refuses_a_role_sent_as_null(): void
+    {
+        $user = User::factory()->create();
+        $category = RelationshipCategory::factory()->create(['account_id' => $user->account_id]);
+        $type = RelationshipType::factory()->directed()->create([
+            'account_id' => $user->account_id,
+            'relationship_category_id' => $category->id,
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', "/api/v1/relationship-types/{$type->uuid}", ['role_a' => null, 'role_b' => null])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['role_a', 'role_b']);
+    }
 }

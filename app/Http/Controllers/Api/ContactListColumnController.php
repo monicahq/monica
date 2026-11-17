@@ -29,13 +29,17 @@ class ContactListColumnController extends Controller
         $vault = $this->vault($request, $vault);
 
         $validated = $request->validate([
-            'columns' => ['present', 'array'],
+            'columns' => ['sometimes', 'array'],
             'columns.*.source' => ['required', 'string', Rule::enum(ContactListColumnSourceEnum::class)],
             'columns.*.section' => ['nullable', 'required_if:columns.*.source,field', 'uuid'],
             'columns.*.field_key' => ['nullable', 'required_if:columns.*.source,field', 'string', 'max:64'],
             'columns.*.heading' => ['nullable', 'string', 'max:255'],
             'columns.*.is_visible' => ['required', 'boolean'],
         ]);
+
+        if (! array_key_exists('columns', $validated)) {
+            return $this->columnsOf($request, $vault);
+        }
 
         try {
             new UpdateContactListColumns(

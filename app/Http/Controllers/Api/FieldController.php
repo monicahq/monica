@@ -86,24 +86,25 @@ class FieldController extends TemplateScopedController
         $key = $this->keyOf($row->sectionVersion, $field);
 
         $validated = $request->validate([
-            'label' => ['required', 'string', 'max:255'],
-            'help_text' => ['present', 'nullable', 'string', 'max:65535'],
-            'placeholder' => ['present', 'nullable', 'string', 'max:255'],
-            'is_required' => ['nullable', 'boolean'],
-            'is_sensitive' => ['nullable', 'boolean'],
-            'is_highlighted' => ['nullable', 'boolean'],
-            'is_unique' => ['nullable', 'boolean'],
-            'is_identifying' => ['nullable', 'boolean'],
+            'label' => ['sometimes', 'required', 'string', 'max:255'],
+            'help_text' => ['sometimes', 'nullable', 'string', 'max:65535'],
+            'placeholder' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'is_required' => ['sometimes', 'boolean'],
+            'is_sensitive' => ['sometimes', 'boolean'],
+            'is_highlighted' => ['sometimes', 'boolean'],
+            'is_unique' => ['sometimes', 'boolean'],
+            'is_identifying' => ['sometimes', 'boolean'],
             'value_list_id' => [
+                'sometimes',
                 'nullable',
                 Rule::exists('value_lists', 'id')->where('account_id', $request->user()->account_id),
             ],
-            'default_value' => ['nullable', 'array'],
-            'options' => ['nullable', 'array'],
-            'validation' => ['nullable', 'array'],
-            'repeat_min' => ['nullable', 'integer', 'min:0'],
-            'repeat_max' => ['nullable', 'integer', 'min:1'],
-            'repetition_order' => ['nullable', Rule::enum(RepetitionOrderEnum::class)],
+            'default_value' => ['sometimes', 'nullable', 'array'],
+            'options' => ['sometimes', 'nullable', 'array'],
+            'validation' => ['sometimes', 'nullable', 'array'],
+            'repeat_min' => ['sometimes', 'nullable', 'integer', 'min:0'],
+            'repeat_max' => ['sometimes', 'nullable', 'integer', 'min:1'],
+            'repetition_order' => ['sometimes', 'nullable', Rule::enum(RepetitionOrderEnum::class)],
         ]);
 
         try {
@@ -113,23 +114,23 @@ class FieldController extends TemplateScopedController
             new UpdateField(
                 user: $request->user(),
                 field: $field,
-                label: $validated['label'],
-                helpText: $validated['help_text'],
-                placeholder: $validated['placeholder'],
-                isRequired: $request->boolean('is_required'),
-                isSensitive: $request->boolean('is_sensitive'),
-                isHighlighted: $request->boolean('is_highlighted'),
-                isUnique: $request->boolean('is_unique'),
-                isIdentifying: $request->boolean('is_identifying'),
-                valueList: $this->valueList($request, $validated['value_list_id'] ?? null),
-                defaultValue: $validated['default_value'] ?? null,
-                options: $validated['options'] ?? null,
-                validation: $validated['validation'] ?? null,
-                repeatMin: $validated['repeat_min'] ?? null,
-                repeatMax: $validated['repeat_max'] ?? null,
-                repetitionOrder: isset($validated['repetition_order'])
-                    ? RepetitionOrderEnum::from($validated['repetition_order'])
-                    : null,
+                label: $validated['label'] ?? $field->label,
+                helpText: array_key_exists('help_text', $validated) ? $validated['help_text'] : $field->help_text,
+                placeholder: array_key_exists('placeholder', $validated) ? $validated['placeholder'] : $field->placeholder,
+                isRequired: array_key_exists('is_required', $validated) ? (bool) $validated['is_required'] : $field->is_required,
+                isSensitive: array_key_exists('is_sensitive', $validated) ? (bool) $validated['is_sensitive'] : $field->is_sensitive,
+                isHighlighted: array_key_exists('is_highlighted', $validated) ? (bool) $validated['is_highlighted'] : $field->is_highlighted,
+                isUnique: array_key_exists('is_unique', $validated) ? (bool) $validated['is_unique'] : $field->is_unique,
+                isIdentifying: array_key_exists('is_identifying', $validated) ? (bool) $validated['is_identifying'] : $field->is_identifying,
+                valueList: array_key_exists('value_list_id', $validated) ? $this->valueList($request, $validated['value_list_id']) : $field->valueList,
+                defaultValue: array_key_exists('default_value', $validated) ? $validated['default_value'] : $field->default_value,
+                options: array_key_exists('options', $validated) ? $validated['options'] : $field->options,
+                validation: array_key_exists('validation', $validated) ? $validated['validation'] : $field->validation,
+                repeatMin: array_key_exists('repeat_min', $validated) ? $validated['repeat_min'] : $field->repeat_min,
+                repeatMax: array_key_exists('repeat_max', $validated) ? $validated['repeat_max'] : $field->repeat_max,
+                repetitionOrder: array_key_exists('repetition_order', $validated)
+                    ? ($validated['repetition_order'] === null ? null : RepetitionOrderEnum::from($validated['repetition_order']))
+                    : $field->repetition_order,
             )->execute();
         } catch (InvalidArgumentException $e) {
             throw ValidationException::withMessages(['value_list_id' => $e->getMessage()]);

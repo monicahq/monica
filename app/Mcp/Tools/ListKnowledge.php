@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Http\Resources\KnowledgeFolderResource;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -13,7 +12,7 @@ use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
-#[Description('List the Knowledge of a vault: its folders in their order, each with the identifiers and titles of its notes and lists. Read a note with get-knowledge-note and a list with get-knowledge-list.')]
+#[Description('List the Knowledge of a vault: its folders in their order, each with the ids and titles of its notes and lists. Read a note with get-knowledge-note and a list with get-knowledge-list.')]
 #[IsReadOnly]
 class ListKnowledge extends Tool
 {
@@ -27,19 +26,16 @@ class ListKnowledge extends Tool
             'vault' => ['required', 'string'],
         ]);
 
-        $folders = $this->vault($request, $validated['vault'])
-            ->knowledgeFolders()
-            ->with(['vault', 'notes:id,uuid,knowledge_folder_id,title', 'lists:id,uuid,knowledge_folder_id,title'])
-            ->get();
+        $vault = $this->vault($request, $validated['vault']);
 
-        return Response::json(['data' => KnowledgeFolderResource::collection($folders)->resolve()]);
+        return $this->answerThroughApi($request, $vault->uuid);
     }
 
     /** @return array<string, Type> */
     public function schema(JsonSchema $schema): array
     {
         return [
-            'vault' => $schema->string()->description('The address of the vault.')->required(),
+            'vault' => $schema->string()->description('The id of the vault, as list-vaults gives it.')->required(),
         ];
     }
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Actions\DestroyReminder;
 use App\Helpers\FlagState;
 use App\Models\User;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
@@ -15,7 +14,7 @@ use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
 
-#[Description('Stop a reminder about a group for good. There is no pause. Dates still waiting for an answer are dropped; answers already given are kept. The change is written to the account journal.')]
+#[Description('Stop a reminder about a group for good. There is no pause. Dates still waiting for an answer are dropped. Answers already given are kept. The change is written to the account log.')]
 #[IsDestructive]
 class DeleteGroupReminder extends Tool
 {
@@ -38,12 +37,15 @@ class DeleteGroupReminder extends Tool
             'reminder' => ['required', 'string'],
         ]);
 
-        $group = $this->group($this->vault($request, $validated['vault']), $validated['group']);
+        $vault = $this->vault($request, $validated['vault']);
+        $group = $this->group($vault, $validated['group']);
+        $reminder = $this->groupReminder($group, $validated['reminder']);
 
-        new DestroyReminder(
-            user: $this->user($request),
-            reminder: $this->groupReminder($group, $validated['reminder']),
-        )->execute();
+        $answer = $this->answerThroughApi($request, $vault->uuid, $group->uuid, $reminder->uuid);
+
+        if ($answer->isError()) {
+            return $answer;
+        }
 
         return Response::text(__('The reminder is deleted.'));
     }
@@ -52,9 +54,9 @@ class DeleteGroupReminder extends Tool
     public function schema(JsonSchema $schema): array
     {
         return [
-            'vault' => $schema->string()->description('The address of the vault holding the group.')->required(),
+            'vault' => $schema->string()->description('The id of the vault, as list-vaults gives it.')->required(),
             'group' => $schema->string()->description('The id of the group, as list-groups gives it.')->required(),
-            'reminder' => $schema->string()->description('The identifier of the reminder, as list-group-reminders gives it.')->required(),
+            'reminder' => $schema->string()->description('The id of the reminder, as list-group-reminders gives it.')->required(),
         ];
     }
 }

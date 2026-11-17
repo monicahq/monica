@@ -163,6 +163,42 @@ class GroupReminderControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_keeps_what_is_left_out_of_an_update(): void
+    {
+        [$user, $vault, $group] = $this->finerThingsClub();
+        $reminder = Reminder::factory()->manual($group, now()->addWeek()->toDateString())->create([
+            'name' => 'Book the room',
+            'cadence' => 'monthly',
+            'frequency_interval' => 3,
+            'time_of_day' => '09:00:00',
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/groups/{$group->uuid}/reminders/{$reminder->uuid}", [
+            'time' => '10:00',
+        ])->assertOk();
+
+        $this->assertDatabaseHas('reminders', ['id' => $reminder->id, 'name' => 'Book the room', 'cadence' => 'monthly', 'frequency_interval' => 3]);
+        $this->assertSame('10:00', mb_substr($reminder->refresh()->time_of_day, 0, 5));
+    }
+
+    #[Test]
+    public function it_refuses_a_name_sent_as_null(): void
+    {
+        [$user, $vault, $group] = $this->finerThingsClub();
+        $reminder = Reminder::factory()->manual($group, now()->addWeek()->toDateString())->create(['name' => 'Book the room']);
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/groups/{$group->uuid}/reminders/{$reminder->uuid}", [
+            'name' => null,
+        ])->assertUnprocessable()->assertJsonValidationErrors(['name']);
+
+        $this->assertDatabaseHas('reminders', ['id' => $reminder->id, 'name' => 'Book the room']);
+    }
+
+    #[Test]
     public function it_deletes_a_reminder(): void
     {
         [$user, $vault, $group] = $this->finerThingsClub();

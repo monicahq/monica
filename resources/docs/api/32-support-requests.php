@@ -72,7 +72,7 @@ $supportRequestWithMessages = [
 ];
 
 $requestIdentifier = [
-    ['name' => 'supportRequest', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the request. One belonging to another account answers 404.'],
+    ['name' => 'supportRequest', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the request. One belonging to another account answers 404.'],
 ];
 
 $messageAttributes = [
@@ -82,7 +82,7 @@ $messageAttributes = [
     ['name' => 'body', 'type' => 'string', 'description' => 'What was written, as plain text.'],
     ['name' => 'attachments', 'type' => 'array', 'description' => 'The files sent with it. An empty list when there are none.'],
     ['name' => 'attachments[]', 'type' => 'object', 'description' => 'One file.'],
-    ['name' => 'attachments[].id', 'type' => 'uuid', 'description' => 'The identifier of the file, which the download address takes.'],
+    ['name' => 'attachments[].id', 'type' => 'uuid', 'description' => 'The id of the file, which the download address takes.'],
     ['name' => 'attachments[].name', 'type' => 'string', 'description' => 'The name the file had when it was sent.'],
     ['name' => 'attachments[].mime_type', 'type' => 'string', 'description' => 'The type of the file, such as image/png.'],
     ['name' => 'attachments[].size_in_bytes', 'type' => 'integer', 'description' => 'How large the file is, in bytes.'],
@@ -105,7 +105,7 @@ $requestWithMessagesAttributes = [
     ['name' => 'messages', 'type' => 'array', 'description' => 'The whole thread, the oldest first, without the internal notes of the support team.'],
     ['name' => 'messages[]', 'type' => 'object', 'description' => 'One message of the thread.'],
     ['name' => 'messages[].type', 'type' => 'string', 'description' => 'Always support_message.'],
-    ['name' => 'messages[].id', 'type' => 'string', 'description' => 'The identifier of the message.'],
+    ['name' => 'messages[].id', 'type' => 'string', 'description' => 'The id of the message.'],
     ['name' => 'messages[].attributes', 'type' => 'object', 'description' => 'Everything the message holds.'],
     ...array_map(fn (array $field): array => [...$field, 'name' => 'messages[].attributes.'.$field['name']], $messageAttributes),
 ];
@@ -115,7 +115,7 @@ $messageFields = fn (string $prefix): array => array_map(fn (array $field): arra
 $messageResponseFields = [
     ['name' => 'data', 'type' => 'object', 'description' => 'The message.'],
     ['name' => 'data.type', 'type' => 'string', 'description' => 'Always support_message.'],
-    ['name' => 'data.id', 'type' => 'string', 'description' => 'The identifier of the message.'],
+    ['name' => 'data.id', 'type' => 'string', 'description' => 'The id of the message.'],
     ['name' => 'data.attributes', 'type' => 'object', 'description' => 'Everything the message holds.'],
     ...$messageFields('data.attributes.'),
 ];
@@ -259,11 +259,11 @@ return [
             'path' => '/support-requests/{supportRequest}/attachments/{attachment}/content',
             'examplePath' => '/support-requests/'.$requestId.'/attachments/'.$attachmentId.'/content',
             'description' => 'Return a file sent with a message of the request, byte for byte.',
-            'body' => ['This endpoint does not answer in JSON. The body is the file, sent as a download with the type and the name it was uploaded with. The identifier of the file is the id found in the attachments of a message.'],
+            'body' => ['This endpoint does not answer in JSON. The body is the file, sent as a download with the type and the name it was uploaded with. The id of the file is the id found in the attachments of a message.'],
             'rateLimit' => $rateLimit,
             'pathParams' => [
                 ...$requestIdentifier,
-                ['name' => 'attachment', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the file. One sent with an internal note, one belonging to another request, or one whose content is no longer stored answers 404.'],
+                ['name' => 'attachment', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the file. One sent with an internal note, one belonging to another request, or one whose content is no longer stored answers 404.'],
             ],
             'returns' => 'The file. A request of another account answers 404.',
             'responseMediaType' => 'application/octet-stream',

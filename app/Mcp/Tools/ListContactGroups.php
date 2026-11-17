@@ -5,11 +5,8 @@ declare(strict_types=1);
 namespace App\Mcp\Tools;
 
 use App\Helpers\FlagState;
-use App\Http\Resources\GroupMembershipResource;
-use App\Models\GroupMember;
 use App\Models\User;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
@@ -42,26 +39,15 @@ class ListContactGroups extends Tool
         $vault = $this->vault($request, $validated['vault']);
         $contact = $this->contact($vault, $validated['contact']);
 
-        $memberships = GroupMember::query()
-            ->where('contact_id', $contact->id)
-            ->whereHas('group', fn (Builder $query): Builder => $query->where('vault_id', $vault->id))
-            ->with(GroupMembershipResource::RELATIONS)
-            ->orderByRaw('case when left_on is null then 0 else 1 end')
-            ->orderByDesc('left_on')
-            ->orderBy('id')
-            ->get();
-
-        return Response::json([
-            'data' => $memberships->map(fn (GroupMember $membership): array => new GroupMembershipResource($membership)->resolve())->all(),
-        ]);
+        return $this->answerThroughApi($request, $vault->uuid, $contact->uuid);
     }
 
     /** @return array<string, Type> */
     public function schema(JsonSchema $schema): array
     {
         return [
-            'vault' => $schema->string()->description('The address of the vault holding the contact.')->required(),
-            'contact' => $schema->string()->description('The address of the contact, as list-contacts gives it.')->required(),
+            'vault' => $schema->string()->description('The id of the vault, as list-vaults gives it.')->required(),
+            'contact' => $schema->string()->description('The id of the contact, as list-contacts gives it.')->required(),
         ];
     }
 }

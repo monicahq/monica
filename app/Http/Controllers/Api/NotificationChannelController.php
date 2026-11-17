@@ -37,7 +37,7 @@ class NotificationChannelController extends Controller
     public function update(Request $request, NotificationChannel $channel): JsonResponse
     {
         $validated = $request->validate([
-            'is_enabled' => ['required', 'boolean'],
+            'is_enabled' => ['sometimes', 'required', 'boolean'],
             'destination' => ['nullable', 'string', 'max:255'],
         ]);
 
@@ -45,7 +45,7 @@ class NotificationChannelController extends Controller
             new UpdateNotificationChannel(
                 user: $request->user(),
                 channel: $channel,
-                isEnabled: (bool) $validated['is_enabled'],
+                isEnabled: array_key_exists('is_enabled', $validated) ? (bool) $validated['is_enabled'] : $channel->is_enabled,
                 destination: $validated['destination'] ?? null,
             )->execute();
         } catch (ChannelIsNotValid $e) {

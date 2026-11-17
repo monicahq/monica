@@ -78,10 +78,10 @@ class GroupNoteController extends Controller
         $group = $this->group($vault, $group);
         $note = $this->note($group, $note);
 
-        $validated = $request->validate(['body' => ['required', 'string', 'max:65535']]);
+        $validated = $request->validate(['body' => ['sometimes', 'string', 'max:65535']]);
 
         try {
-            new UpdateGroupNote(user: $request->user(), vault: $vault, group: $group, note: $note, body: $validated['body'])->execute();
+            new UpdateGroupNote(user: $request->user(), vault: $vault, group: $group, note: $note, body: $validated['body'] ?? $note->body)->execute();
         } catch (NoteIsEmpty $e) {
             throw ValidationException::withMessages(['body' => $e->getMessage()]);
         }

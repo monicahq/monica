@@ -57,10 +57,13 @@ use App\Models\Vault;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
 use Illuminate\Foundation\Http\Middleware\TrimStrings;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request as HttpRequest;
+use Illuminate\Pagination\PaginationState;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -93,11 +96,11 @@ trait MirrorsAnApiCapability
      * one implementation: its validation, its paging and its update semantics. The call skips the
      * route's middleware, which the MCP route already ran, except the two global ones that reshape
      * input, and keeps the MCP request as the current
-     * one, so the changelog still records the change as arriving from an assistant. A validation
+     * one, so the account log still records the change as arriving from an assistant. A validation
      * refusal reaches the assistant word for word; a single record comes back without the `data` wrapper, as every other tool returns one, and an
      * answer without a JSON body comes back empty.
      */
-    protected function answerThroughApi(Request $request, string ...$routeArguments): Response
+    protected function answerThroughApi(Request $request, int|string ...$routeArguments): Response
     {
         $route = Route::getRoutes()->getByName($this->mirrors);
         [$controller, $method] = explode('@', $route->getActionName());
@@ -107,13 +110,29 @@ trait MirrorsAnApiCapability
         new TrimStrings()->handle($httpRequest, fn (HttpRequest $request): HttpRequest => $request);
         new ConvertEmptyStringsToNull()->handle($httpRequest, fn (HttpRequest $request): HttpRequest => $request);
 
-        $answer = app($controller)->{$method}($httpRequest, ...$routeArguments);
+        Paginator::currentPageResolver(function (string $pageName = 'page') use ($httpRequest): int {
+            $page = $httpRequest->input($pageName);
+
+            return filter_var($page, FILTER_VALIDATE_INT) !== false && (int) $page >= 1 ? (int) $page : 1;
+        });
+
+        try {
+            $answer = app($controller)->{$method}($httpRequest, ...$routeArguments);
+        } catch (ModelNotFoundException) {
+            throw $this->doesNotExist(__('That record does not exist.'));
+        } finally {
+            PaginationState::resolveUsing(app());
+        }
 
         if (! $answer instanceof JsonResponse) {
             return Response::text('');
         }
 
         $body = $answer->getData(true);
+
+        if ($answer->getStatusCode() >= 400) {
+            return Response::error((string) ($body['message'] ?? __('The request could not be completed.')));
+        }
 
         return Response::json(array_keys($body) === ['data'] ? $body['data'] : $body);
     }

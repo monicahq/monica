@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Actions\AddSupportMessage as AddSupportMessageAction;
 use App\Helpers\SupportAvailability;
-use App\Http\Resources\SupportMessageResource;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -30,16 +28,11 @@ class AddSupportMessage extends Tool
     {
         $validated = $request->validate([
             'support_request' => ['required', 'string'],
-            'body' => ['required', 'string', 'max:20000'],
         ]);
 
-        $message = new AddSupportMessageAction(
-            user: $this->user($request),
-            supportRequest: $this->supportRequest($request, $validated['support_request']),
-            body: $validated['body'],
-        )->execute();
+        $supportRequest = $this->supportRequest($request, $validated['support_request']);
 
-        return Response::json(new SupportMessageResource($message->load('attachments'))->resolve());
+        return $this->answerThroughApi($request, $supportRequest->uuid);
     }
 
     /** @return array<string, Type> */

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Http\Resources\RelationshipTypeResource;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -27,14 +26,16 @@ class GetRelationshipType extends Tool
             'relationship_type' => ['required', 'string'],
         ]);
 
-        return Response::json(new RelationshipTypeResource($this->relationshipType($request, $validated['relationship_type']))->resolve());
+        $relationshipType = $this->relationshipType($request, $validated['relationship_type']);
+
+        return $this->answerThroughApi($request, $relationshipType->uuid);
     }
 
     /** @return array<string, Type> */
     public function schema(JsonSchema $schema): array
     {
         return [
-            'relationship_type' => $schema->string()->description('The identifier of the relationship type, as list-relationship-types gives it.')->required(),
+            'relationship_type' => $schema->string()->description('The id of the relationship type, as list-relationship-types gives it.')->required(),
         ];
     }
 }

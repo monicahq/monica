@@ -199,7 +199,30 @@ class PossessionTypeControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_updates_the_name_and_the_colour_of_a_possession_type(): void
+    public function it_keeps_what_is_left_out_of_an_update(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $type = PossessionType::factory()->create(['account_id' => $user->account_id, 'name' => 'Vehicle', 'colour' => VaultColourEnum::Teal->value, 'icon' => 'car']);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('PUT', "/api/v1/possession-types/{$type->uuid}", ['name' => 'Company car']);
+
+        $response->assertOk();
+        $response->assertJsonStructure($this->jsonStructure);
+        $response->assertJsonPath('data.attributes.name', 'Company car');
+        $this->assertDatabaseHas('possession_types', [
+            'id' => $type->id,
+            'name' => 'Company car',
+            'colour' => VaultColourEnum::Teal->value,
+            'icon' => 'car',
+        ]);
+    }
+
+    #[Test]
+    public function it_clears_a_field_sent_as_null(): void
     {
         Queue::fake();
 
@@ -208,35 +231,29 @@ class PossessionTypeControllerTest extends TestCase
 
         Sanctum::actingAs($user);
 
-        $response = $this->json('PUT', "/api/v1/possession-types/{$type->uuid}", [
-            'name' => 'Company car',
-            'colour' => VaultColourEnum::Rust->value,
-        ]);
+        $response = $this->json('PUT', "/api/v1/possession-types/{$type->uuid}", ['icon' => null]);
 
         $response->assertOk();
-        $response->assertJsonStructure($this->jsonStructure);
-        $response->assertJsonPath('data.attributes.name', 'Company car');
         $response->assertJsonPath('data.attributes.icon', null);
         $this->assertDatabaseHas('possession_types', [
             'id' => $type->id,
-            'name' => 'Company car',
-            'colour' => VaultColourEnum::Rust->value,
+            'name' => 'Vehicle',
             'icon' => null,
         ]);
     }
 
     #[Test]
-    public function it_refuses_to_update_a_possession_type_without_a_colour(): void
+    public function it_refuses_a_name_or_a_colour_sent_as_null(): void
     {
         $user = User::factory()->create();
         $type = PossessionType::factory()->create(['account_id' => $user->account_id, 'name' => 'Vehicle']);
 
         Sanctum::actingAs($user);
 
-        $response = $this->json('PUT', "/api/v1/possession-types/{$type->uuid}", ['name' => 'Company car']);
+        $response = $this->json('PUT', "/api/v1/possession-types/{$type->uuid}", ['name' => null, 'colour' => null]);
 
         $response->assertUnprocessable();
-        $response->assertJsonValidationErrors(['colour']);
+        $response->assertJsonValidationErrors(['name', 'colour']);
         $this->assertSame('Vehicle', $type->refresh()->name);
     }
 

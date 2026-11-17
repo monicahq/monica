@@ -8,7 +8,7 @@
   $inlineCode = '[&_strong]:font-semibold [&_strong]:text-ink [&_code]:rounded-xs [&_code]:border [&_code]:border-hairline [&_code]:bg-card [&_code]:px-1.25 [&_code]:py-px [&_code]:font-mono [&_code]:text-xs [&_code]:text-ink';
   $linkStyle = '[&_a]:rounded-xs [&_a]:text-ink [&_a]:underline [&_a]:decoration-hairline-strong [&_a]:underline-offset-3 [&_a:hover]:decoration-ink';
   $prose = "text-[14.5px] leading-[1.7] text-pretty text-body {$inlineCode} {$linkStyle}";
-  $blockProse = "{$prose} [&>*+*]:mt-4 [&_h2]:mt-10 [&_h2]:scroll-mt-20 [&_h2]:text-[22px] [&_h2]:leading-[1.3] [&_h2]:font-semibold [&_h2]:tracking-[-0.02em] [&_h2]:text-ink [&_[data-heading-anchor]]:ml-2 [&_[data-heading-anchor]]:px-0.5 [&_[data-heading-anchor]]:font-normal [&_[data-heading-anchor]]:text-muted [&_[data-heading-anchor]]:no-underline [&_[data-heading-anchor]]:opacity-0 [&_[data-heading-anchor]]:transition-opacity [&_[data-heading-anchor]]:duration-(--duration-fast) [&_h2:hover_[data-heading-anchor]]:opacity-100 [&_[data-heading-anchor]:focus-visible]:opacity-100 [&_[data-heading-anchor]:hover]:text-ink [&_h3]:mt-8 [&_h3]:scroll-mt-20 [&_h3]:text-[17px] [&_h3]:font-semibold [&_h3]:text-ink [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li+li]:mt-1.5 [&_table]:w-full [&_table]:text-[14px] [&_th]:border-b [&_th]:border-hairline [&_th]:py-2 [&_th]:pr-4 [&_th]:text-left [&_th]:font-semibold [&_th]:text-ink [&_td]:border-b [&_td]:border-hairline [&_td]:py-2 [&_td]:pr-4 [&_td]:align-top [&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:border [&_pre]:border-hairline [&_pre]:bg-sunken [&_pre]:px-4 [&_pre]:py-3.5 [&_pre_code]:border-0 [&_pre_code]:bg-transparent [&_pre_code]:p-0";
+  $blockProse = "{$prose} [&>*+*]:mt-4 [&_h2]:mt-10 [&_h2]:scroll-mt-6 [&_h2]:text-[22px] [&_h2]:leading-[1.3] [&_h2]:font-semibold [&_h2]:tracking-[-0.02em] [&_h2]:text-ink [&_[data-heading-anchor]]:ml-2 [&_[data-heading-anchor]]:px-0.5 [&_[data-heading-anchor]]:font-normal [&_[data-heading-anchor]]:text-muted [&_[data-heading-anchor]]:no-underline [&_[data-heading-anchor]]:opacity-0 [&_[data-heading-anchor]]:transition-opacity [&_[data-heading-anchor]]:duration-(--duration-fast) [&_h2:hover_[data-heading-anchor]]:opacity-100 [&_[data-heading-anchor]:focus-visible]:opacity-100 [&_[data-heading-anchor]:hover]:text-ink [&_h3]:mt-8 [&_h3]:scroll-mt-6 [&_h3]:text-[17px] [&_h3]:font-semibold [&_h3]:text-ink [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li+li]:mt-1.5 [&_table]:w-full [&_table]:text-[14px] [&_th]:border-b [&_th]:border-hairline [&_th]:py-2 [&_th]:pr-4 [&_th]:text-left [&_th]:font-semibold [&_th]:text-ink [&_td]:border-b [&_td]:border-hairline [&_td]:py-2 [&_td]:pr-4 [&_td]:align-top [&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:border [&_pre]:border-hairline [&_pre]:bg-sunken [&_pre]:px-4 [&_pre]:py-3.5 [&_pre_code]:border-0 [&_pre_code]:bg-transparent [&_pre_code]:p-0";
   $image = 'h-auto max-h-130 w-auto max-w-full self-start rounded-lg border border-hairline bg-canvas shadow-panel';
   $placeholder = 'grid aspect-video place-items-center rounded-lg border border-hairline bg-card px-6 text-center text-sm text-muted shadow-panel';
   $entry = 'flex min-h-8 items-center rounded-md px-3 py-1.5 text-[13.5px] leading-snug transition-colors duration-(--duration-fast) ease-out focus-ring';
@@ -38,7 +38,7 @@
           id="portal-pages"
           aria-label="Documentation"
           :data-open="open ? '' : null"
-          class="hidden w-full shrink-0 border-b border-hairline bg-card px-4 pt-5 pb-8 data-open:block lg:sticky lg:top-14 lg:block lg:h-[calc(100vh-3.5rem)] lg:w-65 lg:overflow-y-auto lg:border-r lg:border-b-0 print:hidden"
+          class="hidden w-full shrink-0 border-b border-hairline bg-card px-4 pt-5 pb-8 data-open:block lg:block lg:w-65 lg:border-r lg:border-b-0 print:hidden"
         >
           <label class="flex h-9 items-center gap-2 rounded-md border border-hairline-strong bg-canvas px-3 text-muted focus-within:ring-[3px] focus-within:ring-focus-ring/45">
             <x-icon name="search" :size="15" />
@@ -215,7 +215,7 @@
               </footer>
             </main>
 
-            <aside class="sticky top-22 hidden w-60 flex-none flex-col gap-2.5 self-start xl:flex print:hidden">
+            <aside class="sticky top-8 hidden w-60 flex-none flex-col gap-2.5 self-start xl:flex print:hidden">
               <x-docs.page-meta
                 class="mb-4"
                 :edit-url="$viewModel->editUrl()"

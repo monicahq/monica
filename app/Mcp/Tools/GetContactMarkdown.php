@@ -13,7 +13,7 @@ use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
-#[Description('Return everything recorded about one contact as a single Markdown document: names, fields, relationships, life events, groups, reminders and loans. Values of sensitive fields are left out unless the key carries the sensitive fields scope. The export is written to the account journal.')]
+#[Description('Return everything recorded about one contact as a single Markdown document: names, fields, relationships, life events, groups, reminders and loans. The values of sensitive fields are given only to a key holding the sensitive fields scope. The export is written to the account log.')]
 #[IsReadOnly]
 class GetContactMarkdown extends Tool
 {
@@ -43,10 +43,10 @@ class GetContactMarkdown extends Tool
     {
         return [
             'vault' => $schema->string()
-                ->description('The address of the vault holding the contact.')
+                ->description('The id of the vault, as list-vaults gives it.')
                 ->required(),
             'contact' => $schema->string()
-                ->description('The address of the contact, as list-contacts gives it.')
+                ->description('The id of the contact, as list-contacts gives it.')
                 ->required(),
         ];
     }

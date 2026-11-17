@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Http\Resources\EntityTypeResource;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -27,14 +26,16 @@ class GetEntityType extends Tool
             'entity_type' => ['required', 'string'],
         ]);
 
-        return Response::json(new EntityTypeResource($this->entityType($request, $validated['entity_type']))->resolve());
+        $entityType = $this->entityType($request, $validated['entity_type']);
+
+        return $this->answerThroughApi($request, $entityType->uuid);
     }
 
     /** @return array<string, Type> */
     public function schema(JsonSchema $schema): array
     {
         return [
-            'entity_type' => $schema->string()->description('The identifier of the entity type, as list-entity-types gives it.')->required(),
+            'entity_type' => $schema->string()->description('The id of the entity type, as list-entity-types gives it.')->required(),
         ];
     }
 }

@@ -104,7 +104,7 @@ class RelationshipTypeController extends Controller
         $validated = $request->validate([
             'relationship_category_id' => [
                 'bail',
-                'required',
+                'sometimes',
                 'string',
                 'bail',
                 'uuid',
@@ -112,9 +112,10 @@ class RelationshipTypeController extends Controller
                     ->where('account_id', $request->user()->account_id)
                     ->whereNull('deleted_at'),
             ],
-            'name' => ['required', 'string', 'max:255'],
-            'role_a' => ['required', 'string', 'max:255'],
+            'name' => ['sometimes', 'string', 'max:255'],
+            'role_a' => ['sometimes', 'string', 'max:255'],
             'role_b' => [
+                'sometimes',
                 Rule::requiredIf(fn (): bool => ! $wantsSymmetric),
                 'nullable',
                 'string',
@@ -127,10 +128,10 @@ class RelationshipTypeController extends Controller
             new UpdateRelationshipType(
                 user: $request->user(),
                 relationshipType: $type,
-                relationshipCategory: $this->category($request, $validated['relationship_category_id']),
-                name: $validated['name'],
-                roleA: $validated['role_a'],
-                roleB: $validated['role_b'] ?? $validated['role_a'],
+                relationshipCategory: isset($validated['relationship_category_id']) ? $this->category($request, $validated['relationship_category_id']) : $type->relationshipCategory,
+                name: $validated['name'] ?? $type->name,
+                roleA: $validated['role_a'] ?? $type->role_a,
+                roleB: $validated['role_b'] ?? $type->role_b,
                 isSymmetric: $wantsSymmetric,
                 isActive: $type->is_active,
             )->execute();

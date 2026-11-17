@@ -176,7 +176,7 @@ class LocationControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_updates_a_location_and_clears_what_is_left_out(): void
+    public function it_keeps_what_is_left_out_of_an_update(): void
     {
         Queue::fake();
 
@@ -191,12 +191,58 @@ class LocationControllerTest extends TestCase
         $response->assertOk();
         $response->assertJsonStructure($this->jsonStructure);
         $response->assertJsonPath('data.attributes.name', 'Annex');
-        $response->assertJsonPath('data.attributes.parent_id', null);
+        $response->assertJsonPath('data.attributes.parent_id', $scranton->uuid);
 
-        $warehouse->refresh();
-        $this->assertNull($warehouse->parent_id);
-        $this->assertNull($warehouse->emoji);
-        $this->assertNull($warehouse->address);
+        $this->assertDatabaseHas('locations', [
+            'id' => $warehouse->id,
+            'parent_id' => $scranton->id,
+            'name' => 'Annex',
+            'emoji' => '📦',
+            'address' => '1725 Slough Avenue',
+        ]);
+    }
+
+    #[Test]
+    public function it_clears_a_field_sent_as_null(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $scranton = Location::factory()->create(['account_id' => $user->account_id]);
+        $warehouse = Location::factory()->inside($scranton)->create(['name' => 'Warehouse', 'emoji' => '📦', 'address' => '1725 Slough Avenue']);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('PUT', "/api/v1/locations/{$warehouse->uuid}", [
+            'parent_id' => null,
+            'emoji' => null,
+            'address' => null,
+        ]);
+
+        $response->assertOk();
+
+        $this->assertDatabaseHas('locations', [
+            'id' => $warehouse->id,
+            'parent_id' => null,
+            'name' => 'Warehouse',
+            'emoji' => null,
+            'address' => null,
+        ]);
+    }
+
+    #[Test]
+    public function it_refuses_a_name_sent_as_null(): void
+    {
+        $user = User::factory()->create();
+        $warehouse = Location::factory()->create(['account_id' => $user->account_id, 'name' => 'Warehouse']);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('PUT', "/api/v1/locations/{$warehouse->uuid}", ['name' => null]);
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors(['name']);
+        $this->assertSame('Warehouse', $warehouse->refresh()->name);
     }
 
     #[Test]

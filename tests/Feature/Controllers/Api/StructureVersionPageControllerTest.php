@@ -134,6 +134,37 @@ class StructureVersionPageControllerTest extends TestCase
             ->assertNotFound();
     }
 
+    #[Test]
+    public function it_keeps_what_is_left_out_of_an_update(): void
+    {
+        Queue::fake();
+        [$user, $template, $version] = $this->draft();
+        $page = StructureVersionPage::factory()->create([
+            'structure_version_id' => $version->id,
+            'label' => 'Medical',
+            'position' => 2,
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', "/api/v1/templates/{$template->uuid}/versions/1/pages/{$page->uuid}", [])
+            ->assertOk()
+            ->assertJsonPath('data.attributes.label', 'Medical');
+    }
+
+    #[Test]
+    public function it_refuses_a_label_sent_as_null(): void
+    {
+        [$user, $template, $version] = $this->draft();
+        $page = StructureVersionPage::factory()->create(['structure_version_id' => $version->id, 'position' => 2]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', "/api/v1/templates/{$template->uuid}/versions/1/pages/{$page->uuid}", ['label' => null])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['label']);
+    }
+
     /** @return array{User, Template, StructureVersion} */
     private function draft(): array
     {

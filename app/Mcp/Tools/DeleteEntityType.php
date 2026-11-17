@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Actions\DestroyEntityType;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -14,7 +12,7 @@ use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
 
-#[Description('Delete a kind of record. A type still holding records is refused; switch it off instead. The change is written to the account journal.')]
+#[Description('Delete a kind of record. A type still holding records is refused; switch it off instead. The change is written to the account log.')]
 #[IsDestructive]
 class DeleteEntityType extends Tool
 {
@@ -28,13 +26,12 @@ class DeleteEntityType extends Tool
             'entity_type' => ['required', 'string'],
         ]);
 
-        try {
-            new DestroyEntityType(
-                user: $this->user($request),
-                entityType: $this->entityType($request, $validated['entity_type']),
-            )->execute();
-        } catch (AuthorizationException $e) {
-            return Response::error($e->getMessage());
+        $entityType = $this->entityType($request, $validated['entity_type']);
+
+        $answer = $this->answerThroughApi($request, $entityType->uuid);
+
+        if ($answer->isError()) {
+            return $answer;
         }
 
         return Response::text(__('The entity type is deleted.'));
@@ -44,7 +41,7 @@ class DeleteEntityType extends Tool
     public function schema(JsonSchema $schema): array
     {
         return [
-            'entity_type' => $schema->string()->description('The identifier of the entity type, as list-entity-types gives it.')->required(),
+            'entity_type' => $schema->string()->description('The id of the entity type, as list-entity-types gives it.')->required(),
         ];
     }
 }

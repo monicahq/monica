@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Actions\FavouriteContact;
-use App\Actions\UnfavouriteContact;
-use App\Http\Resources\ContactResource;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -26,29 +23,20 @@ class SetContactFavourite extends Tool
         $validated = $request->validate([
             'vault' => ['required', 'string'],
             'contact' => ['required', 'string'],
-            'favourite' => ['required', 'boolean'],
         ]);
 
         $vault = $this->vault($request, $validated['vault']);
         $contact = $this->contact($vault, $validated['contact']);
 
-        if ($validated['favourite']) {
-            new FavouriteContact(user: $this->user($request), contact: $contact)->execute();
-        }
-
-        if (! $validated['favourite']) {
-            new UnfavouriteContact(user: $this->user($request), contact: $contact)->execute();
-        }
-
-        return Response::json(new ContactResource($this->contact($vault, $contact->uuid))->resolve());
+        return $this->answerThroughApi($request, $vault->uuid, $contact->uuid);
     }
 
     /** @return array<string, Type> */
     public function schema(JsonSchema $schema): array
     {
         return [
-            'vault' => $schema->string()->description('The address of the vault holding the contact.')->required(),
-            'contact' => $schema->string()->description('The address of the contact.')->required(),
+            'vault' => $schema->string()->description('The id of the vault, as list-vaults gives it.')->required(),
+            'contact' => $schema->string()->description('The id of the contact, as list-contacts gives it.')->required(),
             'favourite' => $schema->boolean()->description('True to mark them a favourite, false to stop.')->required(),
         ];
     }

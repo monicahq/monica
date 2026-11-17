@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Actions\CreateRelationshipCategory as CreateRelationshipCategoryAction;
-use App\Http\Resources\RelationshipCategoryResource;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -13,7 +11,7 @@ use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 
-#[Description('Create a category to file kinds of relationship under, such as Sports. It is added at the end of the list. The change is written to the account journal.')]
+#[Description('Create a category to file kinds of relationship under, such as Sports. It is added at the end of the list. The change is written to the account log.')]
 class CreateRelationshipCategory extends Tool
 {
     use MirrorsAnApiCapability;
@@ -22,16 +20,7 @@ class CreateRelationshipCategory extends Tool
 
     public function handle(Request $request): Response
     {
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-        ]);
-
-        $category = new CreateRelationshipCategoryAction(
-            user: $this->user($request),
-            name: $validated['name'],
-        )->execute();
-
-        return Response::json(new RelationshipCategoryResource($category->refresh())->resolve());
+        return $this->answerThroughApi($request);
     }
 
     /** @return array<string, Type> */

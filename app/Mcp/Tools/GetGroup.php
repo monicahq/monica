@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Mcp\Tools;
 
 use App\Helpers\FlagState;
-use App\Http\Resources\GroupResource;
 use App\Models\User;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
@@ -37,16 +36,17 @@ class GetGroup extends Tool
             'group' => ['required', 'string'],
         ]);
 
-        $group = $this->group($this->vault($request, $validated['vault']), $validated['group']);
+        $vault = $this->vault($request, $validated['vault']);
+        $group = $this->group($vault, $validated['group']);
 
-        return Response::json(new GroupResource($group)->resolve());
+        return $this->answerThroughApi($request, $vault->uuid, $group->uuid);
     }
 
     /** @return array<string, Type> */
     public function schema(JsonSchema $schema): array
     {
         return [
-            'vault' => $schema->string()->description('The address of the vault holding the group.')->required(),
+            'vault' => $schema->string()->description('The id of the vault, as list-vaults gives it.')->required(),
             'group' => $schema->string()->description('The id of the group, as list-groups gives it.')->required(),
         ];
     }

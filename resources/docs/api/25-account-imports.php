@@ -66,7 +66,7 @@ $rollingBack = array_replace_recursive($writing, ['attributes' => [
 ]]);
 
 $importIdentifier = [
-    ['name' => 'accountImport', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the import. One belonging to another account answers 404.'],
+    ['name' => 'accountImport', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the import. One belonging to another account answers 404.'],
 ];
 
 $importAttributes = [
@@ -74,12 +74,12 @@ $importAttributes = [
     ['name' => 'source_format', 'type' => 'string', 'description' => 'What the file is: monica_4 for an export of Monica 4, monica for an export of this application. Null while the file is read, and when it was refused as neither.'],
     ['name' => 'refusal', 'type' => 'string', 'description' => 'Why the file cannot be imported, when the status is refused. Null otherwise.'],
     ['name' => 'already_imported_into', 'type' => 'array', 'description' => 'The vaults this same file was completely imported into before. An import only adds, so importing it again into one of them writes every record a second time.'],
-    ['name' => 'already_imported_into[]', 'type' => 'uuid', 'description' => 'The identifier of one of those vaults.'],
+    ['name' => 'already_imported_into[]', 'type' => 'uuid', 'description' => 'The id of one of those vaults.'],
     ['name' => 'progress', 'type' => 'object', 'description' => 'How far the writing has gone.'],
     ['name' => 'progress.done', 'type' => 'integer', 'description' => 'How many records are written.'],
     ['name' => 'progress.total', 'type' => 'integer', 'description' => 'How many records there are to write, known once the file is read.'],
-    ['name' => 'vault', 'type' => 'uuid', 'description' => 'The identifier of the vault the file is written into, or null until one is chosen.'],
-    ['name' => 'me_contact', 'type' => 'string', 'description' => 'The identifier, in the file, of the contact who is you, or null for none. Until you choose, it is the contact the file names as its owner.'],
+    ['name' => 'vault', 'type' => 'uuid', 'description' => 'The id of the vault the file is written into, or null until one is chosen.'],
+    ['name' => 'me_contact', 'type' => 'string', 'description' => 'The id, in the file, of the contact who is you, or null for none. Until you choose, it is the contact the file names as its owner.'],
     ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When the file was received, as a count of seconds since 1970.'],
     ['name' => 'ended_at', 'type' => 'timestamp', 'description' => 'When the import completed or finished being undone, as a count of seconds since 1970, or null.'],
 ];
@@ -108,7 +108,7 @@ $contactAttributes = [
 
 $itemAttributes = [
     ['name' => 'kind', 'type' => 'string', 'description' => 'The kind of record: contact, file, reminder, life_event, relationship and so on.'],
-    ['name' => 'source_uuid', 'type' => 'string', 'description' => 'The identifier of the record in the file, or null when the file gives it none.'],
+    ['name' => 'source_uuid', 'type' => 'string', 'description' => 'The id of the record in the file, or null when the file gives it none.'],
     ['name' => 'reason', 'type' => 'string', 'description' => 'Why it did not come over, as a sentence in the language of whoever asks.'],
 ];
 
@@ -179,7 +179,7 @@ return [
             'bodyParams' => [
                 ['name' => 'vault', 'type' => 'string', 'required' => false, 'description' => 'A vault of the account to write the file into, named by its slug or its id. A vault of another account answers 404.'],
                 ['name' => 'vault_name', 'type' => 'string', 'required' => false, 'description' => 'The name of a new vault to write the file into, up to 255 characters. Required when vault is left out, unless the file holds several vaults.', 'example' => 'Dunder Mifflin'],
-                ['name' => 'me_contact', 'type' => 'string', 'required' => false, 'description' => 'The identifier, in the file, of the contact who is you, or null for none. A contact the file does not hold answers 422.', 'example' => $michaelInTheFile],
+                ['name' => 'me_contact', 'type' => 'string', 'required' => false, 'description' => 'The id, in the file, of the contact who is you, or null for none. A contact the file does not hold answers 422.', 'example' => $michaelInTheFile],
             ],
             'returns' => 'The import object, writing.',
             'responseStatus' => 202,

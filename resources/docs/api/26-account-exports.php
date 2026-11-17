@@ -36,13 +36,13 @@ $preparing = array_replace_recursive($ready, ['attributes' => [
 ]]);
 
 $exportIdentifier = [
-    ['name' => 'accountExport', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the export. One belonging to another account answers 404.'],
+    ['name' => 'accountExport', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the export. One belonging to another account answers 404.'],
 ];
 
 $exportAttributes = [
     ['name' => 'status', 'type' => 'string', 'description' => 'Where the export stands: preparing, ready, failed or expired. The file is prepared in the background, and an email says when it is ready.'],
     ['name' => 'vaults', 'type' => 'array', 'description' => 'The vaults the file holds.'],
-    ['name' => 'vaults[]', 'type' => 'uuid', 'description' => 'The identifier of one of those vaults. A vault deleted since the export was asked for is left out.'],
+    ['name' => 'vaults[]', 'type' => 'uuid', 'description' => 'The id of one of those vaults. A vault deleted since the export was asked for is left out.'],
     ['name' => 'size_in_bytes', 'type' => 'integer', 'description' => 'The size of the file in bytes, or null until it is ready.'],
     ['name' => 'ready_at', 'type' => 'timestamp', 'description' => 'When the file was complete, as a count of seconds since 1970, or null until it is ready.'],
     ['name' => 'expires_at', 'type' => 'timestamp', 'description' => 'When the file is deleted, seven days after it was ready unless a newer export of the account is ready first, as a count of seconds since 1970, or null until it is ready. From that moment it can no longer be downloaded.'],

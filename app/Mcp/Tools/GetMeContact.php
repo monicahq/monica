@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Http\Resources\ContactResource;
-use App\Jobs\RecordContactVisit;
-use App\Models\Contact;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -15,7 +12,7 @@ use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
-#[Description('Resolve the contact that represents the account holder in a vault.')]
+#[Description('Look up the contact that stands for the account holder in a vault.')]
 #[IsReadOnly]
 class GetMeContact extends Tool
 {
@@ -31,28 +28,14 @@ class GetMeContact extends Tool
 
         $vault = $this->vault($request, $validated['vault']);
 
-        $contact = Contact::query()
-            ->where('vault_id', $vault->id)
-            ->where('is_me', true)
-            ->with(['vault', 'structureVersion.structure.owner', 'avatar'])
-            ->first();
-
-        if ($contact === null) {
-            throw $this->doesNotExist(__('That vault holds no contact standing for you.'));
-        }
-
-        RecordContactVisit::dispatch(contact: $contact)->onQueue('low');
-
-        return Response::json(new ContactResource($contact)->resolve());
+        return $this->answerThroughApi($request, $vault->uuid);
     }
 
     /** @return array<string, Type> */
     public function schema(JsonSchema $schema): array
     {
         return [
-            'vault' => $schema->string()
-                ->description('The address of the vault whose Me contact you want.')
-                ->required(),
+            'vault' => $schema->string()->description('The id of the vault, as list-vaults gives it.')->required(),
         ];
     }
 }

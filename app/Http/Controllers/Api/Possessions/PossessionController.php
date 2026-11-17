@@ -125,21 +125,23 @@ class PossessionController extends Controller
     {
         $vault = $this->vault($request, $vault);
         $record = $this->possession($vault, $possession);
-        $validated = $request->validate($this->rules($request, $vault));
+        $validated = $request->validate($this->rules($request, $vault, isCreating: false));
+        $declaredValue = array_key_exists('declared_value', $validated) ? $validated['declared_value'] : $record->declared_value;
+        $declaredValueCurrency = array_key_exists('declared_value_currency', $validated) ? $validated['declared_value_currency'] : $record->declared_value_currency;
 
         new UpdatePossession(
             user: $request->user(),
             possession: $record,
-            name: $validated['name'],
-            description: $validated['description'] ?? null,
-            location: $this->location($request, $validated['location_id'] ?? null),
-            identifier: $validated['identifier'] ?? null,
-            status: PossessionStatusEnum::from($validated['status'] ?? PossessionStatusEnum::Owned->value),
-            quantity: (int) ($validated['quantity'] ?? 1),
-            isFeatured: $request->boolean('is_featured'),
-            declaredValue: isset($validated['declared_value']) ? (string) $validated['declared_value'] : null,
-            declaredValueCurrency: CurrencyEnum::tryFrom($validated['declared_value_currency'] ?? ''),
-            tagNames: $validated['tags'] ?? [],
+            name: $validated['name'] ?? $record->name,
+            description: array_key_exists('description', $validated) ? $validated['description'] : $record->description,
+            location: array_key_exists('location_id', $validated) ? $this->location($request, $validated['location_id']) : $record->location,
+            identifier: array_key_exists('identifier', $validated) ? $validated['identifier'] : $record->identifier,
+            status: isset($validated['status']) ? PossessionStatusEnum::from($validated['status']) : $record->status,
+            quantity: (int) ($validated['quantity'] ?? $record->quantity),
+            isFeatured: array_key_exists('is_featured', $validated) ? (bool) $validated['is_featured'] : $record->is_featured,
+            declaredValue: $declaredValue === null ? null : (string) $declaredValue,
+            declaredValueCurrency: CurrencyEnum::tryFrom($declaredValueCurrency ?? ''),
+            tagNames: array_key_exists('tags', $validated) ? $validated['tags'] ?? [] : null,
         )->execute();
 
         return new PossessionResource($record->refresh())->response();
@@ -158,16 +160,18 @@ class PossessionController extends Controller
     }
 
     /** @return array<string, array<int, mixed>> */
-    private function rules(Request $request, Vault $vault): array
+    private function rules(Request $request, Vault $vault, bool $isCreating = true): array
     {
+        $optionalOnUpdate = $isCreating ? 'nullable' : 'sometimes';
+
         return [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => [$isCreating ? 'required' : 'sometimes', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:2000'],
             'location_id' => ['bail', 'nullable', 'uuid', Rule::exists('locations', 'uuid')->where('account_id', $request->user()->account_id)],
             'identifier' => ['nullable', 'string', 'max:255'],
-            'status' => ['nullable', Rule::enum(PossessionStatusEnum::class)],
-            'quantity' => ['nullable', 'integer', 'min:1', 'max:1000000'],
-            'is_featured' => ['nullable', 'boolean'],
+            'status' => [$optionalOnUpdate, Rule::enum(PossessionStatusEnum::class)],
+            'quantity' => [$optionalOnUpdate, 'integer', 'min:1', 'max:1000000'],
+            'is_featured' => [$optionalOnUpdate, 'boolean'],
             'acquisition' => ['prohibited'],
             'acquired_from_id' => ['prohibited'],
             'acquired_on' => ['prohibited'],

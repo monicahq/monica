@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Http\Resources\LifeEventCategoryResource;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -27,14 +26,16 @@ class GetLifeEventCategory extends Tool
             'life_event_category' => ['required', 'string'],
         ]);
 
-        return Response::json(new LifeEventCategoryResource($this->lifeEventCategory($request, $validated['life_event_category']))->resolve());
+        $lifeEventCategory = $this->lifeEventCategory($request, $validated['life_event_category']);
+
+        return $this->answerThroughApi($request, $lifeEventCategory->uuid);
     }
 
     /** @return array<string, Type> */
     public function schema(JsonSchema $schema): array
     {
         return [
-            'life_event_category' => $schema->string()->description('The identifier of the category, as list-life-event-categories gives it.')->required(),
+            'life_event_category' => $schema->string()->description('The id of the category, as list-life-event-categories gives it.')->required(),
         ];
     }
 }

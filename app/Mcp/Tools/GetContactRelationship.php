@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Http\Resources\RelationshipResource;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -29,18 +28,20 @@ class GetContactRelationship extends Tool
             'relationship' => ['required', 'string'],
         ]);
 
-        $contact = $this->contact($this->vault($request, $validated['vault']), $validated['contact']);
+        $vault = $this->vault($request, $validated['vault']);
+        $contact = $this->contact($vault, $validated['contact']);
+        $relationship = $this->relationship($contact, $validated['relationship']);
 
-        return Response::json(new RelationshipResource($this->relationship($contact, $validated['relationship']))->resolve());
+        return $this->answerThroughApi($request, $vault->uuid, $contact->uuid, $relationship->uuid);
     }
 
     /** @return array<string, Type> */
     public function schema(JsonSchema $schema): array
     {
         return [
-            'vault' => $schema->string()->description('The address of the vault holding the contact.')->required(),
-            'contact' => $schema->string()->description('The address of either person in the relationship.')->required(),
-            'relationship' => $schema->string()->description('The identifier of the relationship, as list-contact-relationships gives it.')->required(),
+            'vault' => $schema->string()->description('The id of the vault, as list-vaults gives it.')->required(),
+            'contact' => $schema->string()->description('The id of either person in the relationship, as list-contacts gives it.')->required(),
+            'relationship' => $schema->string()->description('The id of the relationship, as list-contact-relationships gives it.')->required(),
         ];
     }
 }

@@ -195,6 +195,37 @@ class NotificationChannelControllerTest extends TestCase
         $this->json('GET', route('api.v1.notificationChannels.show', 'sms'))->assertNotFound();
     }
 
+    #[Test]
+    public function it_keeps_what_is_left_out_of_an_update(): void
+    {
+        $user = $this->signedIn();
+        $this->channel($user, NotificationChannelEnum::Sms)->fill([
+            'is_enabled' => true,
+            'destination' => '+15705550172',
+            'proven_at' => now(),
+        ])->save();
+
+        $response = $this->json('PUT', route('api.v1.notificationChannels.update', 'sms'), [
+            'destination' => '+15705550172',
+        ]);
+
+        $response->assertOk();
+        $this->assertTrue($this->channel($user, NotificationChannelEnum::Sms)->is_enabled);
+    }
+
+    #[Test]
+    public function it_refuses_a_switch_sent_as_null(): void
+    {
+        $this->signedIn();
+
+        $response = $this->json('PUT', route('api.v1.notificationChannels.update', 'sms'), [
+            'is_enabled' => null,
+        ]);
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors('is_enabled');
+    }
+
     private function signedIn(): User
     {
         $account = Account::factory()->create();

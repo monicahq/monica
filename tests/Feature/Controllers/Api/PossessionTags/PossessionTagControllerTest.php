@@ -128,6 +128,35 @@ class PossessionTagControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_keeps_what_is_left_out_of_an_update(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $possessionTag = PossessionTag::factory()->create(['account_id' => $user->account_id, 'name' => 'Paperwork filed', 'colour' => VaultColourEnum::Rust->value]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', "/api/v1/possession-tags/{$possessionTag->uuid}", ['name' => 'Paperwork done'])
+            ->assertOk()
+            ->assertJsonPath('data.attributes.name', 'Paperwork done')
+            ->assertJsonPath('data.attributes.colour', VaultColourEnum::Rust->value);
+    }
+
+    #[Test]
+    public function it_refuses_a_name_or_a_colour_sent_as_null(): void
+    {
+        $user = User::factory()->create();
+        $possessionTag = PossessionTag::factory()->create(['account_id' => $user->account_id, 'name' => 'Paperwork filed']);
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', "/api/v1/possession-tags/{$possessionTag->uuid}", ['name' => null, 'colour' => null])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['name', 'colour']);
+    }
+
+    #[Test]
     public function it_deletes_a_possession_tag(): void
     {
         Queue::fake();

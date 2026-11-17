@@ -85,7 +85,7 @@ $payment = [
 ];
 
 $paymentAttributes = [
-    ['name' => 'provider_id', 'type' => 'string', 'description' => 'The identifier of the invoice at Stripe, which is also this record\'s id. It is what makes a confirmation Stripe sends twice recognisable as one payment.'],
+    ['name' => 'provider_id', 'type' => 'string', 'description' => 'The id of the invoice at Stripe, which is also this record\'s id. It is what makes a confirmation Stripe sends twice recognisable as one payment.'],
     ['name' => 'offer', 'type' => 'string', 'description' => 'Which plan was paid for: monthly, yearly or lifetime. It is kept as it stood on the day, so retagging a price at Stripe never rewrites the history, and it is null when the catalogue no longer knows the price that was charged.'],
     ['name' => 'status', 'type' => 'string', 'description' => 'The state of the invoice, as Stripe names it.'],
     ['name' => 'total', 'type' => 'integer', 'description' => 'What was paid, in the smallest unit of the currency, tax included.'],
@@ -124,7 +124,7 @@ $billingFields = [
     ['name' => 'data.attributes.usage.contacts', 'type' => 'integer', 'description' => 'How many contacts the ceiling is measured against.'],
     ['name' => 'data.attributes.usage.storage_in_bytes', 'type' => 'integer', 'description' => 'How many bytes of files are held.'],
     ['name' => 'data.attributes.payment', 'type' => 'object', 'description' => 'The most recent payment, null when nothing was ever paid, which is what an account we opened access on looks like.'],
-    ['name' => 'data.attributes.payment.provider_id', 'type' => 'string', 'description' => 'The identifier of the invoice at Stripe.'],
+    ['name' => 'data.attributes.payment.provider_id', 'type' => 'string', 'description' => 'The id of the invoice at Stripe.'],
     ['name' => 'data.attributes.payment.offer', 'type' => 'string', 'description' => 'Which plan was paid for: monthly, yearly or lifetime. Read off the invoice rather than off the price it charged, and null when the catalogue no longer knows that price.'],
     ['name' => 'data.attributes.payment.status', 'type' => 'string', 'description' => 'The state of the invoice, as Stripe names it.'],
     ['name' => 'data.attributes.payment.total', 'type' => 'integer', 'description' => 'What was paid, in the smallest unit of the currency, tax included.'],
@@ -134,7 +134,7 @@ $billingFields = [
     ['name' => 'data.attributes.offers_available', 'type' => 'boolean', 'description' => 'Whether the catalogue could be read. False means Stripe did not answer and the list below is empty for that reason rather than because nothing is for sale.'],
     ['name' => 'data.attributes.offers', 'type' => 'array', 'description' => 'What this account may still take up, shortest commitment first. Empty once it owns the product outright, and on a self hosted instance.'],
     ['name' => 'data.attributes.offers[]', 'type' => 'object', 'description' => 'One plan.'],
-    ['name' => 'data.attributes.offers[].price_id', 'type' => 'string', 'description' => 'The identifier of the price at Stripe. It is what you send to open a checkout, and it is the only handle on a plan: prices, names and currencies all live at Stripe.'],
+    ['name' => 'data.attributes.offers[].price_id', 'type' => 'string', 'description' => 'The id of the price at Stripe. It is what you send to open a checkout, and it is the only handle on a plan: prices, names and currencies all live at Stripe.'],
     ['name' => 'data.attributes.offers[].kind', 'type' => 'string', 'description' => 'monthly, yearly or lifetime. Every one of them unlocks exactly the same thing, so the kind says how often it bills and nothing else.'],
     ['name' => 'data.attributes.offers[].renews', 'type' => 'boolean', 'description' => 'Whether taking it up starts a subscription. False is the one time purchase.'],
     ['name' => 'data.attributes.offers[].amount', 'type' => 'integer', 'description' => 'The price in the smallest unit of the currency below.'],
@@ -174,7 +174,7 @@ return [
             'path' => '/billing',
             'description' => 'Retrieve whether this account holds full access, how it holds it, what it is allowed against what it holds, the last payment, and the plans it may still take up.',
             'body' => [
-                'There is no identifier in the URL: a token acts as one person, and one person has one account.',
+                'There is no id in the URL: a token acts as one person, and one person has one account.',
                 'Nothing here is bought. Access moves only when Stripe confirms a payment, so a client that has just opened a checkout should read this again a moment later rather than assume anything.',
             ],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
@@ -222,14 +222,14 @@ return [
             'method' => 'GET',
             'path' => '/billing/payments/{payment}',
             'examplePath' => '/billing/payments/in_1QdundieAwards',
-            'description' => 'Retrieve one payment by the identifier Stripe gave its invoice.',
+            'description' => 'Retrieve one payment by the id Stripe gave its invoice.',
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [
                 [
                     'name' => 'payment',
                     'type' => 'string',
                     'required' => true,
-                    'description' => 'The identifier of the invoice at Stripe.',
+                    'description' => 'The id of the invoice at Stripe.',
                     'example' => 'in_1QdundieAwards',
                 ],
             ],
@@ -254,7 +254,7 @@ return [
                     'name' => 'price_id',
                     'type' => 'string',
                     'required' => true,
-                    'description' => 'The identifier of the price at Stripe, from offers in the billing object. Maximum 255 characters.',
+                    'description' => 'The id of the price at Stripe, from offers in the billing object. Maximum 255 characters.',
                     'example' => 'price_1QdundieMonthly',
                 ],
                 [
@@ -295,7 +295,7 @@ return [
                     'name' => 'price_id',
                     'type' => 'string',
                     'required' => true,
-                    'description' => 'The identifier of the price at Stripe to move to, from offers in the billing object. Maximum 255 characters.',
+                    'description' => 'The id of the price at Stripe to move to, from offers in the billing object. Maximum 255 characters.',
                     'example' => 'price_1QdundieYearly',
                 ],
             ],

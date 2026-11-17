@@ -22,4 +22,19 @@ class NotificationPreferenceTest extends TestCase
         $this->assertFalse($immediate->foldsIntoADigest());
         $this->assertTrue($digest->foldsIntoADigest());
     }
+
+    #[Test]
+    public function it_reads_a_stored_time_as_hours_and_minutes(): void
+    {
+        $preference = new NotificationPreference;
+        $preference->setRawAttributes([
+            'quiet_hours_start' => '22:00:00',
+            'quiet_hours_end' => '08:30:00',
+            'digest_time' => null,
+        ]);
+
+        $this->assertSame('22:00', $preference->quiet_hours_start);
+        $this->assertSame('08:30', $preference->quiet_hours_end);
+        $this->assertNull($preference->digest_time);
+    }
 }

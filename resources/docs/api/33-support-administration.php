@@ -103,7 +103,7 @@ $adminRequestWhole = [
 ];
 
 $requestIdentifier = [
-    ['name' => 'supportRequest', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the request, of any account on the instance.'],
+    ['name' => 'supportRequest', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the request, of any account on the instance.'],
 ];
 
 $administrationNote = 'Only an administrator of this instance can use these endpoints, and only with an API key that carries the administration scope by name. Anybody else, including an administrator whose key does not carry it, gets 404 as though the endpoint did not exist.';
@@ -134,7 +134,7 @@ $messageAttributes = [
     ['name' => 'body', 'type' => 'string', 'description' => 'What was written, as plain text.'],
     ['name' => 'attachments', 'type' => 'array', 'description' => 'The files sent with it. An empty list when there are none, which is always the case for a reply or a note written through this API.'],
     ['name' => 'attachments[]', 'type' => 'object', 'description' => 'One file.'],
-    ['name' => 'attachments[].id', 'type' => 'uuid', 'description' => 'The identifier of the file.'],
+    ['name' => 'attachments[].id', 'type' => 'uuid', 'description' => 'The id of the file.'],
     ['name' => 'attachments[].name', 'type' => 'string', 'description' => 'The name the file had when it was sent.'],
     ['name' => 'attachments[].mime_type', 'type' => 'string', 'description' => 'The type of the file, such as image/png.'],
     ['name' => 'attachments[].size_in_bytes', 'type' => 'integer', 'description' => 'How large the file is, in bytes.'],
@@ -147,7 +147,7 @@ $threadAttributes = [
     ['name' => 'messages', 'type' => 'array', 'description' => 'The whole thread, the oldest first, with the internal notes.'],
     ['name' => 'messages[]', 'type' => 'object', 'description' => 'One message of the thread.'],
     ['name' => 'messages[].type', 'type' => 'string', 'description' => 'Always support_message.'],
-    ['name' => 'messages[].id', 'type' => 'string', 'description' => 'The identifier of the message.'],
+    ['name' => 'messages[].id', 'type' => 'string', 'description' => 'The id of the message.'],
     ['name' => 'messages[].attributes', 'type' => 'object', 'description' => 'Everything the message holds.'],
     ...$withPrefix('messages[].attributes.', $messageAttributes),
     ['name' => 'context', 'type' => 'array', 'description' => 'A few facts about the account, to answer with.'],
@@ -168,7 +168,7 @@ $historyAttributes = [
 $messageResponseFields = [
     ['name' => 'data', 'type' => 'object', 'description' => 'The message.'],
     ['name' => 'data.type', 'type' => 'string', 'description' => 'Always support_message.'],
-    ['name' => 'data.id', 'type' => 'string', 'description' => 'The identifier of the message.'],
+    ['name' => 'data.id', 'type' => 'string', 'description' => 'The id of the message.'],
     ['name' => 'data.attributes', 'type' => 'object', 'description' => 'Everything the message holds.'],
     ...$withPrefix('data.attributes.', array_values(array_filter($messageAttributes, fn (array $field): bool => ! str_starts_with($field['name'], 'attachments[')))),
 ];
@@ -199,7 +199,7 @@ return [
                 ['name' => 'view', 'type' => 'string', 'required' => false, 'description' => 'Which requests to list: to_handle, waiting_on_user, solved or all. Any other value is taken as to_handle.', 'default' => 'to_handle'],
                 ['name' => 'q', 'type' => 'string', 'required' => false, 'description' => 'Keep only the requests that mention this text.'],
                 ['name' => 'category', 'type' => 'string', 'required' => false, 'description' => 'Keep only one category: feature, billing, email, question or technical.'],
-                ['name' => 'user', 'type' => 'integer', 'required' => false, 'description' => 'Keep only the requests of the user with this identifier.'],
+                ['name' => 'user', 'type' => 'integer', 'required' => false, 'description' => 'Keep only the requests of the user with this id.'],
                 ['name' => 'age', 'type' => 'string', 'required' => false, 'description' => 'Keep only the requests of one age: day for under 24 hours, week for 1 to 7 days, old for older than 7 days.'],
                 ['name' => 'page', 'type' => 'integer', 'required' => false, 'description' => 'Which page to answer with.', 'default' => '1'],
             ],
@@ -227,7 +227,7 @@ return [
             'body' => [$administrationNote],
             'rateLimit' => $rateLimit,
             'pathParams' => $requestIdentifier,
-            'returns' => 'The support request object. An identifier that matches no request answers 404.',
+            'returns' => 'The support request object. An id that matches no request answers 404.',
             'response' => ['data' => $adminRequestWhole],
         ],
         [

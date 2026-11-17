@@ -60,11 +60,11 @@ $attributes = [
     ['name' => 'list_count', 'type' => 'integer', 'description' => 'How many lists the folder holds.'],
     ['name' => 'notes', 'type' => 'array', 'description' => 'The notes the folder holds.'],
     ['name' => 'notes[]', 'type' => 'object', 'description' => 'One note.'],
-    ['name' => 'notes[].id', 'type' => 'uuid', 'description' => 'The identifier of the note, which the notes endpoints take.'],
+    ['name' => 'notes[].id', 'type' => 'uuid', 'description' => 'The id of the note, which the notes endpoints take.'],
     ['name' => 'notes[].title', 'type' => 'string', 'description' => 'The title of the note.'],
     ['name' => 'lists', 'type' => 'array', 'description' => 'The lists the folder holds.'],
     ['name' => 'lists[]', 'type' => 'object', 'description' => 'One list.'],
-    ['name' => 'lists[].id', 'type' => 'uuid', 'description' => 'The identifier of the list, which the lists endpoints take.'],
+    ['name' => 'lists[].id', 'type' => 'uuid', 'description' => 'The id of the list, which the lists endpoints take.'],
     ['name' => 'lists[].title', 'type' => 'string', 'description' => 'The title of the list.'],
     ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When the folder was added, as a count of seconds since 1970.'],
     ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When it last changed, as a count of seconds, or null.'],
@@ -73,7 +73,7 @@ $attributes = [
 $record = function (string $prefix, bool $empty = false) use ($attributes, $webLink): array {
     $rows = [
         ['name' => "{$prefix}.type", 'type' => 'string', 'description' => 'Always knowledge_folder.'],
-        ['name' => "{$prefix}.id", 'type' => 'string', 'description' => 'The identifier of the folder, which every address naming it takes.'],
+        ['name' => "{$prefix}.id", 'type' => 'string', 'description' => 'The id of the folder, which every address naming it takes.'],
         ['name' => "{$prefix}.attributes", 'type' => 'object', 'description' => 'Everything the folder holds.'],
     ];
 
@@ -94,8 +94,8 @@ $record = function (string $prefix, bool $empty = false) use ($attributes, $webL
 $one = [['name' => 'data', 'type' => 'object', 'description' => 'The knowledge folder.'], ...$record('data')];
 $new = [['name' => 'data', 'type' => 'object', 'description' => 'The knowledge folder, which holds nothing yet, so its notes and lists are empty.'], ...$record('data', empty: true)];
 
-$vaultParam = ['name' => 'vault', 'type' => 'string', 'required' => true, 'description' => 'The vault, named either by the readable name it reports as slug or by the identifier it reports as id. A vault of another account answers 404.'];
-$folderParam = ['name' => 'folder', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the folder. A folder of another vault or of another account answers 404.'];
+$vaultParam = ['name' => 'vault', 'type' => 'string', 'required' => true, 'description' => 'The vault, named either by the readable name it reports as slug or by its id. A vault of another account answers 404.'];
+$folderParam = ['name' => 'folder', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the folder. A folder of another vault or of another account answers 404.'];
 
 return [
     'name' => 'Knowledge folders',
@@ -113,7 +113,7 @@ return [
             'method' => 'GET',
             'path' => '/vaults/{vault}/knowledge/folders',
             'examplePath' => "/vaults/{$vaultSlug}/knowledge/folders",
-            'description' => 'List every folder of a vault\'s Knowledge in its order, each with the identifiers and titles of its notes and lists.',
+            'description' => 'List every folder of a vault\'s Knowledge in its order, each with the ids and titles of its notes and lists.',
             'body' => ['It is the table of contents of the vault\'s Knowledge. Read a note or a list through its own endpoint.'],
             'rateLimit' => $rateLimit,
             'pathParams' => [$vaultParam],
@@ -175,7 +175,7 @@ return [
             'rateLimit' => $rateLimit,
             'pathParams' => [$vaultParam, $folderParam],
             'bodyParams' => [
-                ['name' => 'move_to', 'type' => 'uuid', 'required' => false, 'description' => 'The identifier of another folder of the vault, to move the notes and lists to. A folder of another vault answers 404, and the folder being deleted answers 422.', 'example' => $officeId],
+                ['name' => 'move_to', 'type' => 'uuid', 'required' => false, 'description' => 'The id of another folder of the vault, to move the notes and lists to. A folder of another vault answers 404, and the folder being deleted answers 422.', 'example' => $officeId],
             ],
             'returns' => 'Nothing. A folder of another vault or of another account answers 404.',
             'responseStatus' => 204,

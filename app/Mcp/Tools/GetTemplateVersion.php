@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Http\Resources\StructureVersionResource;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -28,22 +27,17 @@ class GetTemplateVersion extends Tool
             'version' => ['required', 'integer', 'min:1'],
         ]);
 
-        $version = $this->version($this->template($request, $validated['template']), (int) $validated['version'])
-            ->load([
-                'structure.owner',
-                'previousVersion',
-                'pages.assembly.sectionVersion.section',
-                'pages.assembly.sectionVersion.fields',
-            ]);
+        $template = $this->template($request, $validated['template']);
+        $version = $this->version($template, (int) $validated['version']);
 
-        return Response::json(new StructureVersionResource($version)->withStructure()->resolve());
+        return $this->answerThroughApi($request, $template->uuid, (string) $version->version_number);
     }
 
     /** @return array<string, Type> */
     public function schema(JsonSchema $schema): array
     {
         return [
-            'template' => $schema->string()->description('The identifier of the template, as list-templates gives it.')->required(),
+            'template' => $schema->string()->description('The id of the template, as list-templates gives it.')->required(),
             'version' => $schema->integer()->description('The version number, as list-template-versions gives it.')->required(),
         ];
     }

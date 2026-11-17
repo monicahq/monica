@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Actions\DestroyGroupNote;
 use App\Helpers\FlagState;
 use App\Models\User;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
@@ -15,7 +14,7 @@ use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
 
-#[Description('Delete a note about a group. Nothing else changes. The change is written to the account journal.')]
+#[Description('Delete a note about a group. Nothing else changes. The change is written to the account log.')]
 #[IsDestructive]
 class DeleteGroupNote extends Tool
 {
@@ -40,8 +39,13 @@ class DeleteGroupNote extends Tool
 
         $vault = $this->vault($request, $validated['vault']);
         $group = $this->group($vault, $validated['group']);
+        $note = $this->groupNote($group, $validated['note']);
 
-        new DestroyGroupNote(user: $this->user($request), vault: $vault, group: $group, note: $this->groupNote($group, $validated['note']))->execute();
+        $answer = $this->answerThroughApi($request, $vault->uuid, $group->uuid, $note->uuid);
+
+        if ($answer->isError()) {
+            return $answer;
+        }
 
         return Response::text(__('The note is deleted.'));
     }
@@ -50,7 +54,7 @@ class DeleteGroupNote extends Tool
     public function schema(JsonSchema $schema): array
     {
         return [
-            'vault' => $schema->string()->description('The address of the vault holding the group.')->required(),
+            'vault' => $schema->string()->description('The id of the vault, as list-vaults gives it.')->required(),
             'group' => $schema->string()->description('The id of the group, as list-groups gives it.')->required(),
             'note' => $schema->string()->description('The id of the note, as list-group-notes gives it.')->required(),
         ];

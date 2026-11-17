@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Mcp\Tools;
 
 use App\Helpers\FlagState;
-use App\Http\Resources\GroupNoteResource;
-use App\Models\GroupNote;
 use App\Models\User;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
@@ -36,42 +34,25 @@ class ListGroupNotes extends Tool
         $validated = $request->validate([
             'vault' => ['required', 'string'],
             'group' => ['required', 'string'],
-            'page' => ['nullable', 'integer'],
-            'per_page' => ['nullable', 'integer'],
         ]);
 
-        $group = $this->group($this->vault($request, $validated['vault']), $validated['group']);
+        $vault = $this->vault($request, $validated['vault']);
+        $group = $this->group($vault, $validated['group']);
 
-        $perPage = max(1, min(
-            (int) ($validated['per_page'] ?? config('monica.api_default_items_per_page')),
-            (int) config('monica.api_maximum_items_per_page'),
-        ));
-
-        $notes = GroupNote::query()
-            ->where('group_id', $group->id)
-            ->with(GroupNoteResource::RELATIONS)
-            ->orderByDesc('created_at')
-            ->orderByDesc('id')
-            ->paginate($perPage, ['*'], 'page', max(1, (int) ($validated['page'] ?? 1)));
-
-        return Response::json([
-            'data' => array_map(fn (GroupNote $note): array => new GroupNoteResource($note)->resolve(), $notes->items()),
-            'meta' => [
-                'page' => $notes->currentPage(),
-                'per_page' => $notes->perPage(),
-                'total' => $notes->total(),
-            ],
-        ]);
+        return $this->answerThroughApi($request, $vault->uuid, $group->uuid);
     }
 
     /** @return array<string, Type> */
     public function schema(JsonSchema $schema): array
     {
+        $default = (int) config('monica.api_default_items_per_page');
+        $maximum = (int) config('monica.api_maximum_items_per_page');
+
         return [
-            'vault' => $schema->string()->description('The address of the vault holding the group.')->required(),
+            'vault' => $schema->string()->description('The id of the vault, as list-vaults gives it.')->required(),
             'group' => $schema->string()->description('The id of the group, as list-groups gives it.')->required(),
-            'page' => $schema->integer()->description('Which page to return, starting at 1.'),
-            'per_page' => $schema->integer()->description('How many notes per page.'),
+            'page' => $schema->integer()->description('The page to read, starting at 1.'),
+            'per_page' => $schema->integer()->description("How many notes a page holds: {$default} unless asked, {$maximum} at most."),
         ];
     }
 }

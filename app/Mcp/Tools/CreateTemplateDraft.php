@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Actions\CreateStructureVersionDraft;
-use App\Http\Resources\StructureVersionResource;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -28,25 +26,14 @@ class CreateTemplateDraft extends Tool
 
         $template = $this->template($request, $validated['template']);
 
-        $startingPoint = $template->structure->publishedVersion ?? $template->versions()->first();
-
-        if ($startingPoint === null) {
-            return Response::error('This template has no version to start from.');
-        }
-
-        $draft = new CreateStructureVersionDraft(
-            user: $this->user($request),
-            structureVersion: $startingPoint,
-        )->execute();
-
-        return Response::json(new StructureVersionResource($draft->load(['structure.owner', 'previousVersion']))->resolve());
+        return $this->answerThroughApi($request, $template->uuid);
     }
 
     /** @return array<string, Type> */
     public function schema(JsonSchema $schema): array
     {
         return [
-            'template' => $schema->string()->description('The identifier of the template, as list-templates gives it.')->required(),
+            'template' => $schema->string()->description('The id of the template, as list-templates gives it.')->required(),
         ];
     }
 }

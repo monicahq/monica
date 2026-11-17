@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Http\Resources\PossessionResource;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -13,7 +12,7 @@ use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
-#[Description('Look one thing owned up in a vault, with its type, its location and the values of its fields.')]
+#[Description('Get one possession of a vault, with its type, its location and the values of its fields.')]
 #[IsReadOnly]
 class GetPossession extends Tool
 {
@@ -29,16 +28,17 @@ class GetPossession extends Tool
         ]);
 
         $vault = $this->vault($request, $validated['vault']);
+        $possession = $this->possession($vault, $validated['possession']);
 
-        return Response::json(new PossessionResource($this->possession($vault, $validated['possession']))->resolve());
+        return $this->answerThroughApi($request, $vault->uuid, $possession->uuid);
     }
 
     /** @return array<string, Type> */
     public function schema(JsonSchema $schema): array
     {
         return [
-            'vault' => $schema->string()->description('The address of the vault holding the possession.')->required(),
-            'possession' => $schema->string()->description('The identifier of the possession, as list-possessions gives it.')->required(),
+            'vault' => $schema->string()->description('The id of the vault, as list-vaults gives it.')->required(),
+            'possession' => $schema->string()->description('The id of the possession, as list-possessions gives it.')->required(),
         ];
     }
 }

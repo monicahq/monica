@@ -117,6 +117,7 @@ use App\Mcp\Tools\GetSupportRequest;
 use App\Mcp\Tools\GetTemplate;
 use App\Mcp\Tools\GetTemplateVersion;
 use App\Mcp\Tools\ImportPossessionType;
+use App\Mcp\Tools\ListContactCategories;
 use App\Mcp\Tools\ListContactGroups;
 use App\Mcp\Tools\ListContactNameRepresentations;
 use App\Mcp\Tools\ListContactRelationships;
@@ -157,7 +158,9 @@ use App\Mcp\Tools\ListSupportQueue;
 use App\Mcp\Tools\ListSupportRequests;
 use App\Mcp\Tools\ListTemplates;
 use App\Mcp\Tools\ListTemplateVersions;
+use App\Mcp\Tools\ListValueLists;
 use App\Mcp\Tools\ListVaultReminderOccurrences;
+use App\Mcp\Tools\ListVaultReminders;
 use App\Mcp\Tools\ListVaults;
 use App\Mcp\Tools\MovePossession;
 use App\Mcp\Tools\PublishTemplateVersion;
@@ -241,15 +244,19 @@ account has shaped for itself.
 
 Every capability here is confined to the account the presented key belongs to. A vault or a contact
 outside it does not exist as far as this server is concerned, and asking for one answers not found
-rather than forbidden. Reach a vault by its address, which every listing gives you.
+rather than forbidden. Reach a vault, a contact or any record by its id, the `id` every listing gives
+you.
 
 A vault, a contact and a life event each carry two links. links.web opens the page in Monica for the
 person you are working for, and is the one to show them. links.self is the JSON API address, which
 answers only to an API key and refuses a browser, so never hand it to the person.
 
 Nothing here invents a rule of its own: each capability answers exactly as the equivalent JSON API
-endpoint would, and a change made here is recorded in the account's changelog as having arrived from
-an assistant.
+endpoint would, and a change made here is written to the account log as having arrived from an
+assistant.
+
+An update keeps every field it is not given and clears a field sent as null. A field that cannot be
+empty, such as a name, refuses null. So send only what changes.
 
 A template's sections and fields change only on a draft version. Open one with create-template-draft,
 read the section and field ids from get-template-version, and use the ids a changing tool returns,
@@ -288,17 +295,17 @@ what the person described, ask them rather than picking one. Write the values of
 afterwards with set-possession-values, and how it was acquired with create-possession-transaction.
 
 A life event type is a kind of thing that happens to a contact, filed under a category, and it can ask
-for fields of its own. replace-life-event-type-fields replaces the whole set and never changes a life
-event already recorded. Types and categories that came with the account, or that are in use, cannot be
+for fields of its own. replace-life-event-type-fields replaces the set it is given, grouped or not, and
+never changes a life event already recorded. Types and categories that came with the account, or that are in use, cannot be
 deleted, only switched off with set-life-event-type-activation or set-life-event-category-activation.
 
 A life event is something that happened on a date, with contacts of the vault who were there; the
 first of them is the person it is recorded for and has to stay first. Before writing one, read its
 type's fields with get-life-event-type-fields: values are keyed by field id, never by key, since a key
-is only unique inside its group. A file field cannot be written. update-life-event keeps whatever it
-is not given, and a deleted life event comes back with restore-life-event.
+is only unique inside its group. A file field cannot be written. A deleted life event comes back with
+restore-life-event.
 
-The account's activity and the emails it was sent are read with list-logs and list-emails-sent, a
+The account log and the emails the account was sent are read with list-logs and list-emails-sent, a
 page at a time, newest first, with the total. Read one email with get-email-sent to see what it said.
 
 A reminder about a contact is told on its day and never ahead of it. Each date it produces waits for
@@ -306,6 +313,9 @@ the user to say whether they remembered it or forgot it, and answer-reminder-occ
 answer on their word only: remembered from the date's day, forgotten from the day after. An answer is
 final. A date nobody answered is not forgotten, and a notification sent or read is not remembered.
 There is no pause: delete-contact-reminder is the only way to stop a reminder, and the answers stay.
+list-vault-reminders lists every reminder of a vault whatever its date; list-vault-reminder-occurrences
+lists only the dates falling in a window, 7 days ahead unless asked for more, so an empty answer from it
+never means the vault has no reminders.
 TEXT)]
 class MonicaServer extends Server
 {
@@ -471,6 +481,9 @@ class MonicaServer extends Server
         DeleteContactReminder::class,
         ListContactReminderOccurrences::class,
         ListVaultReminderOccurrences::class,
+        ListVaultReminders::class,
+        ListContactCategories::class,
+        ListValueLists::class,
         AnswerReminderOccurrence::class,
         ListGroupReminders::class,
         GetGroupReminder::class,

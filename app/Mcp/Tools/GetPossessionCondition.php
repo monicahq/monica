@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Http\Resources\PossessionConditionResource;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -27,14 +26,16 @@ class GetPossessionCondition extends Tool
             'possession_condition' => ['required', 'string'],
         ]);
 
-        return Response::json(new PossessionConditionResource($this->possessionCondition($request, $validated['possession_condition']))->resolve());
+        $possessionCondition = $this->possessionCondition($request, $validated['possession_condition']);
+
+        return $this->answerThroughApi($request, $possessionCondition->uuid);
     }
 
     /** @return array<string, Type> */
     public function schema(JsonSchema $schema): array
     {
         return [
-            'possession_condition' => $schema->string()->description('The identifier of the possession condition, as list-possession-conditions gives it.')->required(),
+            'possession_condition' => $schema->string()->description('The id of the possession condition, as list-possession-conditions gives it.')->required(),
         ];
     }
 }

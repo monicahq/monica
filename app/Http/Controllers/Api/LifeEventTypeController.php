@@ -55,7 +55,7 @@ class LifeEventTypeController extends Controller
 
     public function create(Request $request): JsonResponse
     {
-        $validated = $request->validate($this->rules());
+        $validated = $request->validate($this->rules(isCreating: true));
 
         $lifeEventType = new CreateLifeEventType(
             user: $request->user(),
@@ -73,16 +73,16 @@ class LifeEventTypeController extends Controller
     {
         $type = $this->find($request, $lifeEventType);
 
-        $validated = $request->validate($this->rules());
+        $validated = $request->validate($this->rules(isCreating: false));
 
         new UpdateLifeEventType(
             user: $request->user(),
             lifeEventType: $type,
-            lifeEventCategory: $this->category($request, (string) $validated['life_event_category_id']),
-            name: $validated['name'],
-            description: $validated['description'] ?? null,
-            icon: $validated['icon'] ?? null,
-            colour: $validated['colour'] ?? null,
+            lifeEventCategory: isset($validated['life_event_category_id']) ? $this->category($request, (string) $validated['life_event_category_id']) : $type->lifeEventCategory,
+            name: $validated['name'] ?? $type->name,
+            description: array_key_exists('description', $validated) ? $validated['description'] : $type->description,
+            icon: array_key_exists('icon', $validated) ? $validated['icon'] : $type->icon,
+            colour: array_key_exists('colour', $validated) ? $validated['colour'] : $type->colour,
         )->execute();
 
         return new LifeEventTypeResource($type->refresh())->response()->setStatusCode(200);
@@ -103,11 +103,11 @@ class LifeEventTypeController extends Controller
     }
 
     /** @return array<string, array<int, mixed>> */
-    private function rules(): array
+    private function rules(bool $isCreating): array
     {
         return [
-            'life_event_category_id' => ['required', 'uuid'],
-            'name' => ['required', 'string', 'max:255'],
+            'life_event_category_id' => [$isCreating ? 'required' : 'sometimes', 'uuid'],
+            'name' => [$isCreating ? 'required' : 'sometimes', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:255'],
             'icon' => ['nullable', 'string', Rule::in(Section::ICONS)],
             'colour' => ['nullable', 'string', Rule::in(VaultColourEnum::values())],

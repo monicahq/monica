@@ -80,7 +80,7 @@ $attributes = [
     ['name' => 'note', 'type' => 'string', 'description' => 'Anything worth remembering about the valuation, or null.'],
     ['name' => 'documents', 'type' => 'array', 'description' => 'The certificates, listings and offers attached to it, oldest first.'],
     ['name' => 'documents[]', 'type' => 'object', 'description' => 'One document.'],
-    ['name' => 'documents[].id', 'type' => 'uuid', 'description' => 'The identifier of the file, which is what removing the document takes.'],
+    ['name' => 'documents[].id', 'type' => 'uuid', 'description' => 'The id of the file, which is what removing the document takes.'],
     ['name' => 'documents[].name', 'type' => 'string', 'description' => 'The name of the file as it was uploaded.'],
     ['name' => 'documents[].mime_type', 'type' => 'string', 'description' => 'The kind of the file, such as application/pdf.'],
     ['name' => 'documents[].size_in_bytes', 'type' => 'integer', 'description' => 'How much storage the file takes.'],
@@ -91,9 +91,9 @@ $attributesWhenRecorded = array_values(array_filter($attributes, fn (array $fiel
 
 $recorded = ['data' => [...$appraisal, 'attributes' => [...$appraisal['attributes'], 'documents' => []]]];
 
-$vaultParam = ['name' => 'vault', 'type' => 'string', 'required' => true, 'description' => 'The vault the possession is kept in, named either by the readable name it reports as slug or by the identifier it reports as id. A vault of another account answers 404.'];
-$possessionParam = ['name' => 'possession', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the possession. A possession of another vault or of another account answers 404.'];
-$valuationParam = ['name' => 'valuation', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the valuation. A valuation of another possession answers 404.'];
+$vaultParam = ['name' => 'vault', 'type' => 'string', 'required' => true, 'description' => 'The vault the possession is kept in, named either by the readable name it reports as slug or by its id. A vault of another account answers 404.'];
+$possessionParam = ['name' => 'possession', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the possession. A possession of another vault or of another account answers 404.'];
+$valuationParam = ['name' => 'valuation', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the valuation. A valuation of another possession answers 404.'];
 
 return [
     'name' => 'Possession valuations',
@@ -212,7 +212,7 @@ return [
                 $vaultParam,
                 $possessionParam,
                 $valuationParam,
-                ['name' => 'file', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the document, as the documents of the valuation give it. A document of another valuation answers 404.'],
+                ['name' => 'file', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the document, as the documents of the valuation give it. A document of another valuation answers 404.'],
             ],
             'returns' => 'Nothing. A valuation of another possession, a document of another valuation or of another account answers 404.',
             'responseStatus' => 204,

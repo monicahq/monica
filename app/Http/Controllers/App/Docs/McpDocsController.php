@@ -16,4 +16,16 @@ class McpDocsController extends Controller
             'viewModel' => new McpDocsViewModel,
         ]);
     }
+
+    public function show(string $family): View
+    {
+        $viewModel = new McpDocsViewModel;
+
+        abort_if($viewModel->family($family) === null, 404);
+
+        return view('app.docs.mcp-tools', [
+            'viewModel' => $viewModel,
+            'family' => $viewModel->family($family),
+        ]);
+    }
 }

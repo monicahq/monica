@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Actions\DestroyReminder;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -13,7 +12,7 @@ use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
 
-#[Description('Stop a reminder about a contact for good. There is no pause. Dates still waiting for an answer are dropped; answers already given are kept. The change is written to the account journal.')]
+#[Description('Stop a reminder about a contact for good. There is no pause. Dates still waiting for an answer are dropped. Answers already given are kept. The change is written to the account log.')]
 #[IsDestructive]
 class DeleteContactReminder extends Tool
 {
@@ -29,12 +28,15 @@ class DeleteContactReminder extends Tool
             'reminder' => ['required', 'string'],
         ]);
 
-        $contact = $this->contact($this->vault($request, $validated['vault']), $validated['contact']);
+        $vault = $this->vault($request, $validated['vault']);
+        $contact = $this->contact($vault, $validated['contact']);
+        $reminder = $this->reminder($contact, $validated['reminder']);
 
-        new DestroyReminder(
-            user: $this->user($request),
-            reminder: $this->reminder($contact, $validated['reminder']),
-        )->execute();
+        $answer = $this->answerThroughApi($request, $vault->uuid, $contact->uuid, $reminder->uuid);
+
+        if ($answer->isError()) {
+            return $answer;
+        }
 
         return Response::text(__('The reminder is deleted.'));
     }
@@ -43,9 +45,9 @@ class DeleteContactReminder extends Tool
     public function schema(JsonSchema $schema): array
     {
         return [
-            'vault' => $schema->string()->description('The address of the vault holding the contact.')->required(),
-            'contact' => $schema->string()->description('The address of the contact.')->required(),
-            'reminder' => $schema->string()->description('The identifier of the reminder, as list-contact-reminders gives it.')->required(),
+            'vault' => $schema->string()->description('The id of the vault, as list-vaults gives it.')->required(),
+            'contact' => $schema->string()->description('The id of the contact, as list-contacts gives it.')->required(),
+            'reminder' => $schema->string()->description('The id of the reminder, as list-contact-reminders gives it.')->required(),
         ];
     }
 }

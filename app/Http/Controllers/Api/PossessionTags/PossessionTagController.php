@@ -67,15 +67,15 @@ class PossessionTagController extends Controller
     {
         $record = $this->find($request, $possessionTag);
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:50'],
-            'colour' => ['required', Rule::enum(VaultColourEnum::class)],
+            'name' => ['sometimes', 'string', 'max:50'],
+            'colour' => ['sometimes', Rule::enum(VaultColourEnum::class)],
         ]);
 
         new UpdatePossessionTag(
             user: $request->user(),
             possessionTag: $record,
-            name: $validated['name'],
-            colour: VaultColourEnum::from($validated['colour']),
+            name: $validated['name'] ?? $record->name,
+            colour: VaultColourEnum::from($validated['colour'] ?? $record->colour),
         )->execute();
 
         return new PossessionTagResource($record)->response();

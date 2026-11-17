@@ -59,7 +59,7 @@ $warehouse = [
 ];
 
 $identifier = [
-    ['name' => 'location', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the location, which is the id it comes back with. A location belonging to somebody else answers 404.'],
+    ['name' => 'location', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the location. A location belonging to somebody else answers 404.'],
 ];
 
 $locationAttributes = [
@@ -79,9 +79,9 @@ $locationAttributes = [
 
 $bodyParams = [
     ['name' => 'name', 'type' => 'string', 'required' => true, 'description' => 'What the location is called. Up to 255 characters. Markup and surrounding blank space are stripped, and a name left with nothing in it is refused.', 'example' => 'Warehouse'],
-    ['name' => 'parent_id', 'type' => 'uuid', 'required' => false, 'description' => 'The location it sits inside. Left out or null, it sits at the top level. A location of somebody else is refused, and so is the location itself or one inside it.', 'example' => '5b7e2c90-4d18-4a3f-9e61-0c8d2f7a1b43'],
+    ['name' => 'parent_id', 'type' => 'uuid', 'required' => false, 'description' => 'The location it sits inside. Null puts it at the top level, and so does leaving it out of a new location. A location of somebody else is refused, and so is the location itself or one inside it.', 'example' => '5b7e2c90-4d18-4a3f-9e61-0c8d2f7a1b43'],
     ['name' => 'emoji', 'type' => 'string', 'required' => false, 'description' => 'Exactly one emoji. A family, a flag or a skin tone counts as one. Letters, or two emoji, are refused.', 'example' => '📦'],
-    ['name' => 'address', 'type' => 'string', 'required' => false, 'description' => 'Free text over several lines, up to 2,000 characters. Left out, the location uses the address of the nearest location around it that has one.'],
+    ['name' => 'address', 'type' => 'string', 'required' => false, 'description' => 'Free text over several lines, up to 2,000 characters. Without one, the location uses the address of the nearest location around it that has one.'],
 ];
 
 return [
@@ -153,12 +153,12 @@ return [
             'examplePath' => '/locations/e83a1f6d-27c4-4b95-8d02-6f1b9c4e7a58',
             'description' => 'Rename a location, move it inside another one or to the top level, or change its emoji or its address.',
             'body' => [
-                'The body describes the whole location, as the form does. A parent_id, an emoji or an address left out is cleared, so send the ones you want to keep.',
+                'Send only what changes. A name sent as null is refused with 422. A parent_id sent as null moves the location to the top level, and an emoji or an address sent as null is cleared.',
                 'Everything inside the location moves with it, and every path containing it changes. A parent that is the location itself or one inside it, at any depth, answers 422 on parent_id: "A location cannot sit inside itself, or inside a location it holds."',
             ],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
-            'bodyParams' => $bodyParams,
+            'bodyParams' => array_map(fn (array $param): array => [...$param, 'required' => false], $bodyParams),
             'returns' => 'The location object as it now reads.',
             'response' => ['data' => $warehouse],
         ],

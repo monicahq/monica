@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Http\Resources\RelationshipTypeResource;
+use Illuminate\Contracts\JsonSchema\JsonSchema;
+use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
@@ -21,16 +22,18 @@ class ListRelationshipTypes extends Tool
 
     public function handle(Request $request): Response
     {
-        $types = $this->user($request)->account->relationshipTypes()
-            ->select('relationship_types.*')
-            ->join('relationship_categories', 'relationship_categories.id', '=', 'relationship_types.relationship_category_id')
-            ->with('relationshipCategory')
-            ->withCount('relationships')
-            ->orderBy('relationship_categories.position')
-            ->orderBy('relationship_types.position')
-            ->orderBy('relationship_types.id')
-            ->get();
+        return $this->answerThroughApi($request);
+    }
 
-        return Response::json(RelationshipTypeResource::collection($types)->resolve());
+    /** @return array<string, Type> */
+    public function schema(JsonSchema $schema): array
+    {
+        $default = (int) config('monica.api_default_items_per_page');
+        $maximum = (int) config('monica.api_maximum_items_per_page');
+
+        return [
+            'page' => $schema->integer()->description('The page to read, starting at 1.'),
+            'per_page' => $schema->integer()->description("How many relationship types a page holds: {$default} unless asked, {$maximum} at most."),
+        ];
     }
 }

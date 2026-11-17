@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Http\Resources\TemplateResource;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -27,16 +26,16 @@ class GetTemplate extends Tool
             'template' => ['required', 'string'],
         ]);
 
-        $template = $this->template($request, $validated['template'])->load(['structure.entityType', 'publishedVersion']);
+        $template = $this->template($request, $validated['template']);
 
-        return Response::json(new TemplateResource($template)->resolve());
+        return $this->answerThroughApi($request, $template->uuid);
     }
 
     /** @return array<string, Type> */
     public function schema(JsonSchema $schema): array
     {
         return [
-            'template' => $schema->string()->description('The identifier of the template, as list-templates gives it.')->required(),
+            'template' => $schema->string()->description('The id of the template, as list-templates gives it.')->required(),
         ];
     }
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Http\Resources\PossessionLocationStayResource;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -29,18 +28,20 @@ class GetPossessionLocationStay extends Tool
             'stay' => ['required', 'string'],
         ]);
 
-        $possession = $this->possession($this->vault($request, $validated['vault']), $validated['possession']);
+        $vault = $this->vault($request, $validated['vault']);
+        $possession = $this->possession($vault, $validated['possession']);
+        $stay = $this->possessionLocationStay($possession, $validated['stay']);
 
-        return Response::json(new PossessionLocationStayResource($this->possessionLocationStay($possession, $validated['stay']))->resolve());
+        return $this->answerThroughApi($request, $vault->uuid, $possession->uuid, $stay->uuid);
     }
 
     /** @return array<string, Type> */
     public function schema(JsonSchema $schema): array
     {
         return [
-            'vault' => $schema->string()->description('The address of the vault holding the possession.')->required(),
-            'possession' => $schema->string()->description('The identifier of the possession, as list-possessions gives it.')->required(),
-            'stay' => $schema->string()->description('The identifier of the stay, as list-possession-location-stays gives it.')->required(),
+            'vault' => $schema->string()->description('The id of the vault, as list-vaults gives it.')->required(),
+            'possession' => $schema->string()->description('The id of the possession, as list-possessions gives it.')->required(),
+            'stay' => $schema->string()->description('The id of the stay, as list-possession-location-stays gives it.')->required(),
         ];
     }
 }

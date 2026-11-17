@@ -83,17 +83,17 @@ class VaultController extends Controller
         $vault = $this->find($request, $vault);
 
         $validated = $request->validate(array_merge([
-            'name' => ['required', 'string', 'max:255'],
-            'description' => ['present', 'nullable', 'string', 'max:65535'],
-            'colour' => ['required', 'string', Rule::in(VaultColourEnum::values())],
+            'name' => ['sometimes', 'required', 'string', 'max:255'],
+            'description' => ['sometimes', 'nullable', 'string', 'max:65535'],
+            'colour' => ['sometimes', 'required', 'string', Rule::in(VaultColourEnum::values())],
         ], $this->decisionRules($request)));
 
         new UpdateVault(
             user: $request->user(),
             vault: $vault,
-            name: $validated['name'],
-            description: $validated['description'],
-            colour: $validated['colour'],
+            name: $validated['name'] ?? $vault->name,
+            description: array_key_exists('description', $validated) ? $validated['description'] : $vault->description,
+            colour: $validated['colour'] ?? $vault->colour,
         )->execute();
 
         $this->settleTheTwoDecisions($request, $vault);

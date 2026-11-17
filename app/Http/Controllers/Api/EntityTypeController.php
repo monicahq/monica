@@ -83,21 +83,21 @@ class EntityTypeController extends Controller
         $entityType = $this->find($request, $entityType);
 
         $validated = $request->validate([
-            'name_singular' => ['required', 'string', 'max:255'],
-            'name_plural' => ['required', 'string', 'max:255'],
-            'description' => ['present', 'nullable', 'string', 'max:65535'],
-            'icon' => ['required', 'string', Rule::in(EntityType::ICONS)],
-            'colour' => ['required', 'string', Rule::in(EntityType::COLOURS)],
+            'name_singular' => ['sometimes', 'required', 'string', 'max:255'],
+            'name_plural' => ['sometimes', 'required', 'string', 'max:255'],
+            'description' => ['sometimes', 'nullable', 'string', 'max:65535'],
+            'icon' => ['sometimes', 'required', 'string', Rule::in(EntityType::ICONS)],
+            'colour' => ['sometimes', 'required', 'string', Rule::in(EntityType::COLOURS)],
         ]);
 
         new UpdateEntityType(
             user: $request->user(),
             entityType: $entityType,
-            nameSingular: $validated['name_singular'],
-            namePlural: $validated['name_plural'],
-            description: $validated['description'],
-            icon: $validated['icon'],
-            colour: $validated['colour'],
+            nameSingular: $validated['name_singular'] ?? $entityType->name_singular,
+            namePlural: $validated['name_plural'] ?? $entityType->name_plural,
+            description: array_key_exists('description', $validated) ? $validated['description'] : $entityType->description,
+            icon: $validated['icon'] ?? $entityType->icon,
+            colour: $validated['colour'] ?? $entityType->colour,
         )->execute();
 
         return new EntityTypeResource($entityType->refresh())->response()->setStatusCode(200);

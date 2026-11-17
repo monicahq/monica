@@ -80,6 +80,46 @@ class ContactNameRepresentationControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_keeps_what_is_left_out_of_an_update(): void
+    {
+        Queue::fake();
+        [$user, $vault, $contact] = $this->michael();
+        ContactNameRepresentation::factory()->transliteration()->create(['contact_id' => $contact->id, 'script_code' => 'Kana', 'formatted_name' => 'マイケル・スコット']);
+        $contact->update(['maiden_name' => 'Scarn']);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('PUT', route('api.v1.contacts.nameRepresentations.update', [$vault, $contact]), [
+            'nickname' => 'Prison Mike',
+        ]);
+
+        $response->assertOk();
+        $response->assertJsonPath('data.attributes.nickname', 'Prison Mike');
+        $response->assertJsonPath('data.attributes.maiden_name', 'Scarn');
+        $response->assertJsonCount(2, 'data.attributes.name_representations');
+        $response->assertJsonPath('data.attributes.name_representations.0.is_display', true);
+        $response->assertJsonPath('data.attributes.name_representations.1.formatted_name', 'マイケル・スコット');
+    }
+
+    #[Test]
+    public function it_clears_a_field_sent_as_null(): void
+    {
+        Queue::fake();
+        [$user, $vault, $contact] = $this->michael();
+        $contact->update(['nickname' => 'Prison Mike']);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('PUT', route('api.v1.contacts.nameRepresentations.update', [$vault, $contact]), [
+            'nickname' => null,
+        ]);
+
+        $response->assertOk();
+        $response->assertJsonPath('data.attributes.nickname', null);
+        $response->assertJsonCount(1, 'data.attributes.name_representations');
+    }
+
+    #[Test]
     public function it_refuses_a_pronunciation_with_no_system(): void
     {
         [$user, $vault, $contact] = $this->michael();

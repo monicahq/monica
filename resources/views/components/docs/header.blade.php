@@ -1,5 +1,5 @@
 {{-- The top bar of every documentation page: the way home, the theme, and signing in for a visitor. --}}
-<header class="sticky print:hidden top-0 z-5 border-b border-hairline bg-canvas">
+<header class="print:hidden border-b border-hairline bg-canvas">
   <div class="mx-auto flex h-14 max-w-390 items-center gap-3.5 px-4 sm:px-7">
     <a href="{{ route('home.index') }}" class="flex shrink-0 items-center gap-2.5 text-ink rounded-md focus-ring">
       <x-logo :size="22" />

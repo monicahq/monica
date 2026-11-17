@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Actions\SendSupportReply as SendSupportReplyAction;
 use App\Enums\SupportRequestStatusEnum;
-use App\Http\Resources\SupportMessageResource;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
-use Illuminate\Validation\Rule;
 use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
@@ -35,18 +32,11 @@ class SendSupportReply extends Tool
 
         $validated = $request->validate([
             'support_request' => ['required', 'string'],
-            'body' => ['required', 'string', 'max:20000'],
-            'status' => ['nullable', Rule::enum(SupportRequestStatusEnum::class)],
         ]);
 
-        $reply = new SendSupportReplyAction(
-            administrator: $this->user($request),
-            supportRequest: $this->supportRequest($request, $validated['support_request'], acrossAccounts: true),
-            body: $validated['body'],
-            statusAfter: SupportRequestStatusEnum::tryFrom((string) ($validated['status'] ?? '')) ?? SupportRequestStatusEnum::WaitingOnUser,
-        )->execute();
+        $supportRequest = $this->supportRequest($request, $validated['support_request'], acrossAccounts: true);
 
-        return Response::json(new SupportMessageResource($reply->load('attachments'))->resolve());
+        return $this->answerThroughApi($request, $supportRequest->uuid);
     }
 
     /** @return array<string, Type> */

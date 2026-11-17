@@ -51,6 +51,38 @@ class ContactSectionControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_keeps_what_is_left_out_of_an_update(): void
+    {
+        Queue::fake();
+
+        [$user, $url, $nickname, $motto] = $this->dwightWithTwoTextFields();
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', $url, ['fields' => [$nickname->id => 'Big Tuna', $motto->id => 'Bears, beets, Battlestar Galactica']])->assertOk();
+        $this->json('PUT', $url, ['fields' => [$nickname->id => 'Assistant to the regional manager']])->assertOk();
+
+        $this->assertDatabaseHas('field_values', ['field_id' => $nickname->id, 'value_string' => 'Assistant to the regional manager']);
+        $this->assertDatabaseHas('field_values', ['field_id' => $motto->id, 'value_string' => 'Bears, beets, Battlestar Galactica']);
+    }
+
+    #[Test]
+    public function it_clears_a_field_sent_as_null(): void
+    {
+        Queue::fake();
+
+        [$user, $url, $nickname, $motto] = $this->dwightWithTwoTextFields();
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', $url, ['fields' => [$nickname->id => 'Big Tuna', $motto->id => 'Bears, beets, Battlestar Galactica']])->assertOk();
+        $this->json('PUT', $url, ['fields' => [$motto->id => null]])->assertOk();
+
+        $this->assertDatabaseHas('field_values', ['field_id' => $nickname->id, 'value_string' => 'Big Tuna']);
+        $this->assertDatabaseMissing('field_values', ['field_id' => $motto->id]);
+    }
+
+    #[Test]
     public function it_refuses_a_new_category_naming_one_no_longer_offered(): void
     {
         Queue::fake();
@@ -107,6 +139,23 @@ class ContactSectionControllerTest extends TestCase
 
         $this->json('PUT', "/api/v1/vaults/{$otherVault->uuid}/contacts/{$dwight->uuid}/sections/{$section->id}", [])
             ->assertNotFound();
+    }
+
+    /** @return array{0: User, 1: string, 2: Field, 3: Field} */
+    private function dwightWithTwoTextFields(): array
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $version = Structure::withFields($user, [['type' => FieldTypeEnum::Text, 'label' => 'Nickname'], ['type' => FieldTypeEnum::Text, 'label' => 'Motto']]);
+        $section = StructureVersionSection::query()->where('structure_version_id', $version->id)->sole();
+        $dwight = Contact::factory()->create([
+            'vault_id' => $vault->id,
+            'account_id' => $user->account_id,
+            'structure_version_id' => $version->id,
+        ]);
+        [$nickname, $motto] = $section->sectionVersion->fields->sortBy('position')->values()->all();
+
+        return [$user, "/api/v1/vaults/{$vault->uuid}/contacts/{$dwight->uuid}/sections/{$section->id}", $nickname, $motto];
     }
 
     /** @return array{0: User, 1: Vault, 2: Contact, 3: StructureVersionSection, 4: ValueList} */

@@ -51,7 +51,7 @@ $officeEquipment = [
 
 $fieldAttributes = static fn (string $prefix): array => [
     ['name' => "{$prefix}[]", 'type' => 'object', 'description' => 'One field.'],
-    ['name' => "{$prefix}[].id", 'type' => 'uuid', 'description' => 'The identifier of the field.'],
+    ['name' => "{$prefix}[].id", 'type' => 'uuid', 'description' => 'The id of the field.'],
     ['name' => "{$prefix}[].name", 'type' => 'string', 'description' => 'What the field is called, such as Serial number.'],
     ['name' => "{$prefix}[].kind", 'type' => 'string', 'description' => 'What the field holds: text, number, date, boolean, select, or rating from one to five.'],
     ['name' => "{$prefix}[].options", 'type' => 'array', 'description' => 'The choices of a select field, in order, or null for every other kind.'],
@@ -67,7 +67,7 @@ $typeAttributes = [
     ['name' => 'field_count', 'type' => 'integer', 'description' => 'How many fields the type has, grouped or not.'],
     ['name' => 'groups', 'type' => 'array', 'description' => 'The groups of fields, in order.'],
     ['name' => 'groups[]', 'type' => 'object', 'description' => 'One group.'],
-    ['name' => 'groups[].id', 'type' => 'uuid', 'description' => 'The identifier of the group.'],
+    ['name' => 'groups[].id', 'type' => 'uuid', 'description' => 'The id of the group.'],
     ['name' => 'groups[].name', 'type' => 'string', 'description' => 'What the group is called, such as Purchase.'],
     ['name' => 'groups[].position', 'type' => 'integer', 'description' => 'Its place among the groups, counting from 1.'],
     ['name' => 'groups[].fields', 'type' => 'array', 'description' => 'The fields of the group, in order.'],
@@ -97,9 +97,9 @@ $newTypeAttributes = [
 
 $one = ApiDocsFields::one('possession_type', 'possession type', $typeAttributes, webLink: $webLink);
 
-$typeParam = ['name' => 'possessionType', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the possession type. A type belonging to somebody else answers 404.'];
-$groupParam = ['name' => 'group', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the group. A group of another type answers 404.'];
-$fieldParam = ['name' => 'field', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the field. A field of another type answers 404.'];
+$typeParam = ['name' => 'possessionType', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the possession type. A type belonging to somebody else answers 404.'];
+$groupParam = ['name' => 'group', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the group. A group of another type answers 404.'];
+$fieldParam = ['name' => 'field', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the field. A field of another type answers 404.'];
 
 $nameRefusal = 'Up to 255 characters. Markup and surrounding blank space are stripped, and a name left with nothing in it is refused.';
 
@@ -196,13 +196,13 @@ return [
             'method' => 'PUT',
             'path' => '/possession-types/{possessionType}',
             'examplePath' => "/possession-types/{$typeId}",
-            'description' => 'Rename a possession type and set its colour and its icon. The name and the colour are required; the request replaces the whole type, so an icon left out is removed.',
+            'description' => 'Rename a possession type, or set its colour or its icon. The name and the colour cannot be null; an icon sent as null is removed.',
             'body' => ['The change is written to the account log.'],
             'rateLimit' => $rateLimit,
             'pathParams' => [$typeParam],
             'bodyParams' => [
-                ['name' => 'name', 'type' => 'string', 'required' => true, 'description' => "The new name. {$nameRefusal}", 'example' => 'Office equipment'],
-                ['name' => 'colour', 'type' => 'string', 'required' => true, 'description' => 'One of the vault colours, as a hexadecimal value.', 'example' => '#2f7f86'],
+                ['name' => 'name', 'type' => 'string', 'required' => false, 'description' => "The new name. {$nameRefusal}", 'example' => 'Office equipment'],
+                ['name' => 'colour', 'type' => 'string', 'required' => false, 'description' => 'One of the vault colours, as a hexadecimal value. It cannot be null.', 'example' => '#2f7f86'],
                 ['name' => 'icon', 'type' => 'string', 'required' => false, 'description' => 'One of the glyphs of the catalogue, or null for none. Anything else answers 422.', 'example' => 'briefcase'],
             ],
             'returns' => 'The possession type object as it now reads.',
@@ -297,7 +297,7 @@ return [
             'rateLimit' => $rateLimit,
             'pathParams' => [$typeParam, $groupParam],
             'bodyParams' => [
-                ['name' => 'name', 'type' => 'string', 'required' => true, 'description' => "The new name. {$nameRefusal}", 'example' => 'Purchase'],
+                ['name' => 'name', 'type' => 'string', 'required' => false, 'description' => "The new name. {$nameRefusal}", 'example' => 'Purchase'],
             ],
             'returns' => 'The possession type object as it now reads.',
             'response' => ['data' => $officeEquipment],
@@ -355,10 +355,10 @@ return [
             'path' => '/possession-types/{possessionType}/fields/{field}',
             'examplePath' => "/possession-types/{$typeId}/fields/{$conditionId}",
             'description' => 'Rename a field, change its kind and set its choices.',
-            'body' => ['The body describes the whole field. Options left out are cleared, and a field that stops being a select field loses its choices. A choice removed from a select field is also removed from every possession that held it, and those possessions then hold no value for the field. The deletion is final.'],
+            'body' => ['Send only what changes. The name and the kind cannot be null. Options left out keep the choices the field has, and options sent as null or empty clear them. A field that stops being a select field loses its choices. A choice removed from a select field is also removed from every possession that held it, and those possessions then hold no value for the field. The deletion is final.'],
             'rateLimit' => $rateLimit,
             'pathParams' => [$typeParam, $fieldParam],
-            'bodyParams' => $fieldBody,
+            'bodyParams' => array_map(fn (array $param): array => [...$param, 'required' => false], $fieldBody),
             'returns' => 'The possession type object as it now reads.',
             'response' => ['data' => $officeEquipment],
         ],

@@ -76,13 +76,13 @@ $attributes = [
     ['name' => 'direction', 'type' => 'string', 'description' => 'lent when the possession left your hands, borrowed when it came into them.'],
     ['name' => 'status', 'type' => 'string', 'description' => 'planned, active or returned. A possession has at most one active loan.'],
     ['name' => 'is_overdue', 'type' => 'boolean', 'description' => 'Whether the loan is active and its due day has passed, in the time zone of the person asking. It is worked out, never stored.'],
-    ['name' => 'contact_id', 'type' => 'uuid', 'description' => 'The identifier of the contact who has it or lent it, or null once that contact is deleted.'],
+    ['name' => 'contact_id', 'type' => 'uuid', 'description' => 'The id of the contact who has it or lent it, or null once that contact is deleted.'],
     ['name' => 'contact_name', 'type' => 'string', 'description' => 'The name of that contact, or null once that contact is deleted.'],
     ['name' => 'started_on', 'type' => 'date', 'description' => 'The day the loan started, as YYYY-MM-DD.'],
     ['name' => 'due_on', 'type' => 'date', 'description' => 'The day it is due back, as YYYY-MM-DD, or null when no day was agreed.'],
     ['name' => 'returned_on', 'type' => 'date', 'description' => 'The day it came back, as YYYY-MM-DD, or null unless the loan is returned.'],
-    ['name' => 'condition_out_id', 'type' => 'uuid', 'description' => 'The identifier of the possession condition it left in, or null.'],
-    ['name' => 'condition_back_id', 'type' => 'uuid', 'description' => 'The identifier of the possession condition it came back in, or null.'],
+    ['name' => 'condition_out_id', 'type' => 'uuid', 'description' => 'The id of the possession condition it left in, or null.'],
+    ['name' => 'condition_back_id', 'type' => 'uuid', 'description' => 'The id of the possession condition it came back in, or null.'],
     ['name' => 'deposit_amount', 'type' => 'string', 'description' => 'A deposit left against the loan, as a decimal with two places, or null.'],
     ['name' => 'deposit_currency', 'type' => 'string', 'description' => 'The currency of the deposit, as a lowercase ISO code, or null without a deposit.'],
     ['name' => 'purpose', 'type' => 'string', 'description' => 'Why it was lent or borrowed, or null.'],
@@ -90,15 +90,15 @@ $attributes = [
     ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When the loan was recorded, as a count of seconds since 1970.'],
 ];
 
-$vaultParam = ['name' => 'vault', 'type' => 'string', 'required' => true, 'description' => 'The vault the possession is kept in, named either by the readable name it reports as slug or by the identifier it reports as id. A vault of another account answers 404.'];
-$possessionParam = ['name' => 'possession', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the possession. A possession of another vault or of another account answers 404.'];
-$loanParam = ['name' => 'loan', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the loan. A loan of another possession answers 404.'];
+$vaultParam = ['name' => 'vault', 'type' => 'string', 'required' => true, 'description' => 'The vault the possession is kept in, named either by the readable name it reports as slug or by its id. A vault of another account answers 404.'];
+$possessionParam = ['name' => 'possession', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the possession. A possession of another vault or of another account answers 404.'];
+$loanParam = ['name' => 'loan', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the loan. A loan of another possession answers 404.'];
 
 $sharedBodyParams = [
     ['name' => 'due_on', 'type' => 'date', 'required' => false, 'description' => 'The day it is due back, as YYYY-MM-DD. Not before started_on.'],
     ['name' => 'returned_on', 'type' => 'date', 'required' => false, 'description' => 'The day it came back, as YYYY-MM-DD. Required for a returned loan, not before started_on, and ignored otherwise.'],
-    ['name' => 'condition_out_id', 'type' => 'uuid', 'required' => false, 'description' => 'The identifier of a possession condition of the account, the one it left in.'],
-    ['name' => 'condition_back_id', 'type' => 'uuid', 'required' => false, 'description' => 'The identifier of a possession condition of the account, the one it came back in. Kept only for a returned loan.'],
+    ['name' => 'condition_out_id', 'type' => 'uuid', 'required' => false, 'description' => 'The id of a possession condition of the account, the one it left in.'],
+    ['name' => 'condition_back_id', 'type' => 'uuid', 'required' => false, 'description' => 'The id of a possession condition of the account, the one it came back in. Kept only for a returned loan.'],
     ['name' => 'deposit_amount', 'type' => 'number', 'required' => false, 'description' => 'A deposit left against the loan, from 0 to 9,999,999,999.99.'],
     ['name' => 'deposit_currency', 'type' => 'string', 'required' => false, 'description' => 'The currency of the deposit, as a lowercase ISO code. Required with a deposit.'],
     ['name' => 'purpose', 'type' => 'string', 'required' => false, 'description' => 'Why it was lent or borrowed, up to 5,000 characters. Markup is stripped.'],
@@ -157,7 +157,7 @@ return [
             'bodyParams' => [
                 ['name' => 'direction', 'type' => 'string', 'required' => true, 'description' => 'lent or borrowed.', 'example' => 'lent'],
                 ['name' => 'status', 'type' => 'string', 'required' => true, 'description' => 'planned, active or returned.', 'example' => 'active'],
-                ['name' => 'contact_id', 'type' => 'uuid', 'required' => false, 'description' => 'The identifier of a contact of the vault. Required without new_contact.', 'example' => $dwightId],
+                ['name' => 'contact_id', 'type' => 'uuid', 'required' => false, 'description' => 'The id of a contact of the vault. Required without new_contact.', 'example' => $dwightId],
                 ['name' => 'new_contact', 'type' => 'object', 'required' => false, 'description' => 'A contact to write down with the loan, as first_name (required) and last_name. Required without contact_id, and refused with it.'],
                 ['name' => 'started_on', 'type' => 'date', 'required' => true, 'description' => 'The day the loan started, as YYYY-MM-DD.', 'example' => '2026-11-01'],
                 ...$sharedBodyParams,
@@ -184,7 +184,7 @@ return [
             'bodyParams' => [
                 ['name' => 'direction', 'type' => 'string', 'required' => false, 'description' => 'lent or borrowed.'],
                 ['name' => 'status', 'type' => 'string', 'required' => false, 'description' => 'planned, active or returned.'],
-                ['name' => 'contact_id', 'type' => 'uuid', 'required' => false, 'description' => 'The identifier of a contact of the vault.'],
+                ['name' => 'contact_id', 'type' => 'uuid', 'required' => false, 'description' => 'The id of a contact of the vault.'],
                 ['name' => 'started_on', 'type' => 'date', 'required' => false, 'description' => 'The day the loan started, as YYYY-MM-DD.'],
                 ...$sharedBodyParams,
             ],

@@ -32,9 +32,9 @@ anybody noticed. Two copies of a rule is the defect, whatever the reason for the
 
 ## What follows from it
 
-- **An update replaces.** It clears what is left out, as the `PUT` does. There is no partial update
-  in a tool and no `PATCH` on the API to carry one. The schema marks what the endpoint requires as
-  required, and the description says that what is left out is cleared.
+- **An update keeps what is left out and clears what is sent as null**, as the `PUT` does. A field
+  that cannot be empty, such as a name, refuses null. The schema marks what the endpoint requires as
+  required, and the server instructions state the rule once, so a description does not repeat it.
 - **A list is paged.** The schema takes `page` and `per_page`, and the answer is `{data, meta}`.
 - **A single record comes back without `data`.** `answerThroughApi()` removes the wrapper when it is
   the only key, so a record reads as it does from every other tool.
@@ -47,22 +47,26 @@ anybody noticed. Two copies of a rule is the defect, whatever the reason for the
 
 `answerThroughApi()` calls the controller method in process. The `/mcp` route already ran
 authentication, the flag and the rate limit, and the MCP request stays the current one, so the
-changelog still records the change as arriving from an assistant.
+account log still records the change as arriving from an assistant.
 
 The two global middlewares that reshape input, `TrimStrings` and `ConvertEmptyStringsToNull`, are
 applied by the adapter. Without them `parent_id: ""` reached `firstOrFail()` as an empty string and
 broke the call. A controller that reads something else a middleware sets (a route parameter it binds,
 `abort_unless` on the vault, `currentAccessToken()`) has to be checked before its tool moves over.
 
-## Most tools are still copies
-
-On 2026-11-16 the five location tools were the only ones answering through the controller. The other
-tools still hold their own rules. A new tool never copies a controller, and a tool you change moves to
-`answerThroughApi()` in the same change, with its schema and its description brought in line with the
-endpoint.
-
 ## In the tests
 
-What the endpoint does is proven once, in the controller's feature test. A tool's test proves the
-wiring and nothing the controller test already proves: the tool reaches the endpoint and returns its
-answer, a record of another account does not exist, and one refusal from the controller is relayed.
+What the endpoint does is proven once, in the controller's feature test. The wiring is proven once
+too, not per tool:
+
+- `answerThroughApi()` and the lookups of `MirrorsAnApiCapability` have their own test: the body is
+  passed on, the `data` wrapper is removed, a refusal is relayed word for word, an answer without a
+  body comes back empty, and a record of another account does not exist.
+- One test walks every registered tool, sends another account's record in the first parameter that
+  addresses one (the vault when there is one), and expects "does not exist". A record nested under the
+  vault is scoped twice: by the trait's lookup, which takes its parent, and by the controller, whose
+  own test proves it. That is why the walk stops at the first parameter.
+- `McpCatalogueTest` proves every tool names a route that exists and is registered.
+
+A tool gets a test file of its own only for what it adds beyond a lookup and `answerThroughApi()`. A
+tool that adds nothing has no test file.

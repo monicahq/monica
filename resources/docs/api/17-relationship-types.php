@@ -57,15 +57,15 @@ $pageParams = [
 ];
 
 $categoryIdentifier = [
-    ['name' => 'relationshipCategory', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the category whose types you want. A category belonging to somebody else answers 404.'],
+    ['name' => 'relationshipCategory', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the category whose types you want. A category belonging to somebody else answers 404.'],
 ];
 
 $identifier = [
-    ['name' => 'relationshipType', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the type, which is the id it comes back with. A path that is not a uuid answers 404 without a query being run.'],
+    ['name' => 'relationshipType', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the type. A path that is not a uuid answers 404 without a query being run.'],
 ];
 
 $typeAttributes = [
-    ['name' => 'relationship_category_id', 'type' => 'uuid', 'description' => 'The group the type is filed under. It groups the list and the picker and has no other effect: moving a type between categories never changes what the product does with it.'],
+    ['name' => 'relationship_category_id', 'type' => 'uuid', 'description' => 'The category the type is filed under. It groups the list and the picker and has no other effect: moving a type between categories never changes what the product does with it.'],
     ['name' => 'name', 'type' => 'string', 'description' => 'What the link is called: Parent / Child, Sibling, Colleague. A type the product supplied reads in the language you ask for, until somebody rewrites it, after which their words stand in every language. Up to 255 characters, reduced to plain text.'],
     ['name' => 'role_a', 'type' => 'string', 'description' => 'How the first person relates to the second. In a Parent / Child link the first person is the Parent. It is read in the same way the name is.'],
     ['name' => 'role_b', 'type' => 'string', 'description' => 'How the second person relates to the first. A symmetric type carries the same word here as in role_a, and rewording the two never swaps the people over: the first role stays on the first person of every relationship already written.'],
@@ -112,9 +112,9 @@ return [
             'method' => 'GET',
             'path' => '/relationship-categories/{relationshipCategory}/types',
             'examplePath' => '/relationship-categories/7d1f4a83-2c06-4e59-9b27-8f3a5d0e6c14/types',
-            'description' => 'List the relationship types filed under one group, in the order you arranged them.',
+            'description' => 'List the relationship types filed under one category, in the order you arranged them.',
             'body' => [
-                'This is the grouped reading the settings screen shows, one group at a time. The objects are relationship types, described in full in the relationship types reference.',
+                'This is the grouped reading the settings screen shows, one category at a time. The objects are relationship types, described in full in the relationship types reference.',
                 'A category holding nothing answers an empty list rather than an error, which is the state Other is supplied in.',
             ],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
@@ -158,7 +158,7 @@ return [
             ],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'bodyParams' => [
-                ['name' => 'relationship_category_id', 'type' => 'uuid', 'required' => true, 'description' => 'The group to file the type under. A category belonging to somebody else is refused.', 'example' => '7d1f4a83-2c06-4e59-9b27-8f3a5d0e6c14'],
+                ['name' => 'relationship_category_id', 'type' => 'uuid', 'required' => true, 'description' => 'The category to file the type under. A category belonging to somebody else is refused.', 'example' => '7d1f4a83-2c06-4e59-9b27-8f3a5d0e6c14'],
                 ['name' => 'name', 'type' => 'string', 'required' => true, 'description' => 'What the link is called. Up to 255 characters. Markup and surrounding blank space are stripped, and a name left with nothing in it is refused.', 'example' => 'Godparent / Godchild'],
                 ['name' => 'role_a', 'type' => 'string', 'required' => true, 'description' => 'How the first person relates to the second. Up to 255 characters.', 'example' => 'Godparent'],
                 ['name' => 'role_b', 'type' => 'string', 'required' => false, 'description' => 'How the second person relates to the first. Required when is_symmetric is false; ignored and set to role_a when it is true.', 'example' => 'Godchild'],
@@ -177,20 +177,20 @@ return [
             'method' => 'PUT',
             'path' => '/relationship-types/{relationshipType}',
             'examplePath' => '/relationship-types/c60d8f14-9a27-4b53-8e01-2d7f5c3a6b48',
-            'description' => 'Change what a type is called, how it reads from each side, and which group it sits in.',
+            'description' => 'Change what a type is called, how it reads from each side, and which category it sits in.',
             'body' => [
                 'This works on a type the product supplied as readily as on one you added. A French household preferring Conjoint to Spouse writes it here, and what the product does with that type is untouched: its system_behavior, its direction and its identity all stay.',
                 'Rewording the two roles of a directed type never swaps the people over. The first person keeps role_a in every relationship already written, so correcting a word cannot quietly turn parents into children.',
                 'The direction stays as it is unless you send is_symmetric. Send it against a type the product supplied, or one that relationships already use, and the request is refused rather than quietly ignored, because turning a type round would rewrite what people wrote years ago.',
-                'Whether the type is offered, and where it sits, are not changed here. Each has an address of its own below.',
+                'Whether the type is offered, and where it sits, are not changed here. Each has an endpoint of its own below.',
             ],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'bodyParams' => [
-                ['name' => 'relationship_category_id', 'type' => 'uuid', 'required' => true, 'description' => 'The group the type sits in. Moving it between groups changes nothing about what the product does with it.', 'example' => '7d1f4a83-2c06-4e59-9b27-8f3a5d0e6c14'],
-                ['name' => 'name', 'type' => 'string', 'required' => true, 'description' => 'What the link is called. A name another type of your account carries is refused.', 'example' => 'Godparent / Godchild'],
-                ['name' => 'role_a', 'type' => 'string', 'required' => true, 'description' => 'How the first person relates to the second.', 'example' => 'Godparent'],
-                ['name' => 'role_b', 'type' => 'string', 'required' => false, 'description' => 'How the second person relates to the first. Required when the type is directed.', 'example' => 'Godchild'],
+                ['name' => 'relationship_category_id', 'type' => 'uuid', 'required' => false, 'description' => 'The category the type sits in. Moving it between categories changes nothing about what the product does with it. It cannot be null.', 'example' => '7d1f4a83-2c06-4e59-9b27-8f3a5d0e6c14'],
+                ['name' => 'name', 'type' => 'string', 'required' => false, 'description' => 'What the link is called. A name another type of your account carries is refused. It cannot be null.', 'example' => 'Godparent / Godchild'],
+                ['name' => 'role_a', 'type' => 'string', 'required' => false, 'description' => 'How the first person relates to the second. It cannot be null.', 'example' => 'Godparent'],
+                ['name' => 'role_b', 'type' => 'string', 'required' => false, 'description' => 'How the second person relates to the first. Left out, it keeps the role it has rather than copying role_a. It cannot be null while the type is directed.', 'example' => 'Godchild'],
                 ['name' => 'is_symmetric', 'type' => 'boolean', 'required' => false, 'description' => 'Send it only to change the direction. Left out, the direction holds. Refused for a supplied type and for one in use.', 'example' => 'false'],
             ],
             'returns' => 'The relationship type object as it now reads.',
@@ -245,10 +245,10 @@ return [
             'method' => 'PUT',
             'path' => '/relationship-types/{relationshipType}/position',
             'examplePath' => '/relationship-types/c60d8f14-9a27-4b53-8e01-2d7f5c3a6b48/position',
-            'description' => 'Put a type somewhere else inside its group, so the ones you use most sit at the top of the picker.',
+            'description' => 'Put a type somewhere else inside its category, so the ones you use most sit at the top of the picker.',
             'body' => [
                 'A type moves inside the category it is filed under, and only the types of that category are renumbered from 1, retired ones counted among them. A position past the end puts the type last rather than being refused.',
-                'To move a type into a different group, reword it and send the group you want instead. This address only changes the order.',
+                'To move a type into a different category, reword it and send the category you want instead. This endpoint only changes the order.',
             ],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,

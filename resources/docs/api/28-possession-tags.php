@@ -43,7 +43,7 @@ $tagAttributes = [
 
 $one = ApiDocsFields::one('possession_tag', 'possession tag', $tagAttributes, webLink: $webLink);
 
-$tagParam = ['name' => 'possessionTag', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the possession tag. A tag belonging to somebody else answers 404.'];
+$tagParam = ['name' => 'possessionTag', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the possession tag. A tag belonging to somebody else answers 404.'];
 
 $nameRefusal = 'Up to 50 characters. Markup and surrounding blank space are stripped, and a name left with nothing in it is refused. A name another tag of the account already has, ignoring case, is refused with “You already have a tag with this name.”';
 
@@ -106,13 +106,13 @@ return [
             'method' => 'PUT',
             'path' => '/possession-tags/{possessionTag}',
             'examplePath' => "/possession-tags/{$tagId}",
-            'description' => 'Rename a possession tag and set its colour. Both are required.',
+            'description' => 'Rename a possession tag or set its colour. Neither can be null.',
             'body' => ['Changing only the case of its own name is allowed. The change is written to the account log.'],
             'rateLimit' => $rateLimit,
             'pathParams' => [$tagParam],
             'bodyParams' => [
-                ['name' => 'name', 'type' => 'string', 'required' => true, 'description' => "The new name. {$nameRefusal}", 'example' => 'Insured'],
-                ['name' => 'colour', 'type' => 'string', 'required' => true, 'description' => $colours, 'example' => '#2f7f86'],
+                ['name' => 'name', 'type' => 'string', 'required' => false, 'description' => "The new name. {$nameRefusal}", 'example' => 'Insured'],
+                ['name' => 'colour', 'type' => 'string', 'required' => false, 'description' => $colours, 'example' => '#2f7f86'],
             ],
             'returns' => 'The possession tag object as it now reads.',
             'response' => ['data' => $insured],

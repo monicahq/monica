@@ -66,13 +66,13 @@ $identifier = [
         'name' => 'apiKey',
         'type' => 'integer',
         'required' => true,
-        'description' => 'The identifier of the key.',
+        'description' => 'The id of the key.',
     ],
 ];
 
 $keyAttributes = [
-    ['name' => 'name', 'type' => 'string', 'description' => 'What the key is for, between 3 and 255 characters, as the person who minted it wrote it. Two keys may share a name; the identifier is what tells them apart.'],
-    ['name' => 'client', 'type' => 'string', 'description' => 'What the key was minted for: script for something you wrote yourself, assistant for an assistant connecting over MCP. It tells the two apart on the security screen and in your journal, and it restricts nothing: a key of either kind reaches exactly what you reach.'],
+    ['name' => 'name', 'type' => 'string', 'description' => 'What the key is for, between 3 and 255 characters, as the person who minted it wrote it. Two keys may share a name; the id is what tells them apart.'],
+    ['name' => 'client', 'type' => 'string', 'description' => 'What the key was minted for: script for something you wrote yourself, assistant for an assistant connecting over MCP. It tells the two apart on the security screen and in your account log, and it restricts nothing: a key of either kind reaches exactly what you reach.'],
     ['name' => 'sensitive_fields', 'type' => 'boolean', 'description' => 'Whether the key reaches the values of fields marked sensitive. False unless that was chosen when the key was minted, because a key is handed to a device and an address book on a phone can be read by the other applications on it.'],
     ...(SupportAvailability::isEnabled() ? [['name' => 'administration', 'type' => 'boolean', 'description' => 'Whether the key reaches the support queue of the whole instance. Only an administrator of the instance can mint such a key, and only when it was chosen at that moment.']] : []),
     ['name' => 'last_used_at', 'type' => 'timestamp', 'description' => 'When the key last let something in, as a count of seconds, or null if it never has. A key with null here has been minted and never used.'],
@@ -135,7 +135,7 @@ return [
             'description' => 'Mint a key, which acts as you and nobody else.',
             'body' => [
                 'The readable value comes back in the token field, beside the object describing the key. This is the only time it exists in that form. Copy it now: it is not shown again, and a key you fail to copy is replaced rather than recovered.',
-                'Calling this with a key is deliberate, and it is how a key is rotated without opening the application. Every creation is written to your account journal, so a key that mints other keys is visible afterwards.',
+                'Calling this with a key is deliberate, and it is how a key is rotated without opening the application. Every creation is written to your account log, so a key that mints other keys is visible afterwards.',
             ],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'bodyParams' => [
@@ -143,7 +143,7 @@ return [
                     'name' => 'name',
                     'type' => 'string',
                     'required' => true,
-                    'description' => 'What the key is for, in a few words. Between 3 and 255 characters. Two keys may share a name; the identifier is what tells them apart.',
+                    'description' => 'What the key is for, in a few words. Between 3 and 255 characters. Two keys may share a name; the id is what tells them apart.',
                     'example' => 'Dundie awards bot',
                 ],
                 [

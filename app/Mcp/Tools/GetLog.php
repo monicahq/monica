@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Http\Resources\LogResource;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -13,7 +12,7 @@ use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
-#[Description('Read one entry of the account’s activity.')]
+#[Description('Read one entry of the account log.')]
 #[IsReadOnly]
 class GetLog extends Tool
 {
@@ -27,14 +26,14 @@ class GetLog extends Tool
             'log' => ['required', 'string'],
         ]);
 
-        return Response::json(new LogResource($this->log($request, $validated['log']))->resolve());
+        return $this->answerThroughApi($request, $this->log($request, $validated['log'])->id);
     }
 
     /** @return array<string, Type> */
     public function schema(JsonSchema $schema): array
     {
         return [
-            'log' => $schema->string()->description('The identifier of the entry, as list-logs gives it.')->required(),
+            'log' => $schema->string()->description('The id of the entry, as list-logs gives it.')->required(),
         ];
     }
 }

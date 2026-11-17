@@ -31,18 +31,18 @@ $note = [
 $flagNote = 'Groups are not yet available to every account. Until they are available to yours, every endpoint here answers 404.';
 
 $groupIdentifier = [
-    ['name' => 'vault', 'type' => 'string', 'required' => true, 'description' => 'The vault the group lives in, named either by the readable name it reports as slug or by the identifier it reports as id.'],
-    ['name' => 'group', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the group. One addressed through the wrong vault, deleted, or belonging to another account, answers 404.'],
+    ['name' => 'vault', 'type' => 'string', 'required' => true, 'description' => 'The vault the group lives in, named either by the readable name it reports as slug or by its id.'],
+    ['name' => 'group', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the group. One addressed through the wrong vault, deleted, or belonging to another account, answers 404.'],
 ];
 
 $noteIdentifier = [
     ...$groupIdentifier,
-    ['name' => 'note', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the note. One addressed through another group answers 404.'],
+    ['name' => 'note', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the note. One addressed through another group answers 404.'],
 ];
 
 $noteAttributes = [
     ['name' => 'group', 'type' => 'object', 'description' => 'The group the note is about.'],
-    ['name' => 'group.id', 'type' => 'uuid', 'description' => 'The identifier of the group.'],
+    ['name' => 'group.id', 'type' => 'uuid', 'description' => 'The id of the group.'],
     ['name' => 'group.name', 'type' => 'string', 'description' => 'What the group is called.'],
     ['name' => 'body', 'type' => 'string', 'description' => 'What was written, as plain text.'],
     ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When the note was written, as a count of seconds since 1970. This is the date the group page shows.'],
@@ -103,7 +103,7 @@ return [
             'method' => 'POST',
             'path' => '/vaults/{vault}/groups/{group}/notes',
             'examplePath' => '/vaults/'.$vaultSlug.'/groups/'.$groupId.'/notes',
-            'description' => 'Write a note about a group as a whole. It is dated the day it is written, and the change is written to the account journal.',
+            'description' => 'Write a note about a group as a whole. It is dated the day it is written, and the change is written to the account log.',
             'body' => [$flagNote],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $groupIdentifier,
@@ -121,11 +121,11 @@ return [
             'method' => 'PUT',
             'path' => '/vaults/{vault}/groups/{group}/notes/{note}',
             'examplePath' => '/vaults/'.$vaultSlug.'/groups/'.$groupId.'/notes/'.$noteId,
-            'description' => 'Replace what a note says. It keeps the day it was written.',
+            'description' => 'Change what a note says. It keeps the day it was written.',
             'body' => [$flagNote],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $noteIdentifier,
-            'bodyParams' => [$bodyParam],
+            'bodyParams' => [[...$bodyParam, 'required' => false, 'description' => 'What to write, as plain text, up to 65,535 characters. Any markup is taken out. Left out, the note keeps what it says. A body sent as null or left empty answers 422.']],
             'returns' => 'The note object as it stands now.',
             'response' => ['data' => $note],
         ],

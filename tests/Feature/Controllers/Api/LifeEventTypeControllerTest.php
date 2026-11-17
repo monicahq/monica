@@ -330,4 +330,80 @@ class LifeEventTypeControllerTest extends TestCase
 
         $this->json('DELETE', "/api/v1/life-event-types/{$type->uuid}")->assertNotFound();
     }
+
+    #[Test]
+    public function it_keeps_what_is_left_out_of_an_update(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
+        $type = LifeEventType::factory()->create([
+            'account_id' => $user->account_id,
+            'life_event_category_id' => $category->id,
+            'name' => 'Dinner party',
+            'description' => 'Hosted by Jan.',
+            'icon' => 'home',
+            'colour' => '#3f5fd0',
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('PUT', "/api/v1/life-event-types/{$type->uuid}", [
+            'name' => 'Snip snap',
+        ]);
+
+        $response->assertOk();
+        $this->assertDatabaseHas('life_event_types', [
+            'id' => $type->id,
+            'life_event_category_id' => $category->id,
+            'name' => 'Snip snap',
+            'description' => 'Hosted by Jan.',
+            'icon' => 'home',
+            'colour' => '#3f5fd0',
+        ]);
+    }
+
+    #[Test]
+    public function it_clears_a_field_sent_as_null(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
+        $type = LifeEventType::factory()->create([
+            'account_id' => $user->account_id,
+            'life_event_category_id' => $category->id,
+            'name' => 'Dinner party',
+            'description' => 'Hosted by Jan.',
+            'icon' => 'home',
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', "/api/v1/life-event-types/{$type->uuid}", [
+            'description' => null,
+        ])->assertOk();
+
+        $this->assertDatabaseHas('life_event_types', [
+            'id' => $type->id,
+            'name' => 'Dinner party',
+            'description' => null,
+            'icon' => 'home',
+        ]);
+    }
+
+    #[Test]
+    public function it_refuses_a_name_sent_as_null(): void
+    {
+        $user = User::factory()->create();
+        $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
+        $type = LifeEventType::factory()->create(['account_id' => $user->account_id, 'life_event_category_id' => $category->id]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', "/api/v1/life-event-types/{$type->uuid}", ['name' => null])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['name']);
+    }
 }

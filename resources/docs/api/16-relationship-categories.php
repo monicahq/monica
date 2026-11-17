@@ -47,14 +47,14 @@ $pageParams = [
 ];
 
 $identifier = [
-    ['name' => 'relationshipCategory', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the category, which is the id it comes back with. A path that is not a uuid answers 404 without a query being run.'],
+    ['name' => 'relationshipCategory', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the category. A path that is not a uuid answers 404 without a query being run.'],
 ];
 
 $categoryAttributes = [
-    ['name' => 'name', 'type' => 'string', 'description' => 'What the group is called. A category the product supplied reads in the language you ask for, until somebody rewrites it, after which their words stand in every language. Up to 255 characters, reduced to plain text, so no markup survives here.'],
+    ['name' => 'name', 'type' => 'string', 'description' => 'What the category is called. A category the product supplied reads in the language you ask for, until somebody rewrites it, after which their words stand in every language. Up to 255 characters, reduced to plain text, so no markup survives here.'],
     ['name' => 'position', 'type' => 'integer', 'description' => 'Where the category sits in the settings and in the picker, counting from 1. Retired categories are numbered along with the rest, so one switched back on finds the place it had.'],
     ['name' => 'is_system', 'type' => 'boolean', 'description' => 'Whether the product supplied the category with the account. A supplied category may be moved and retired, never renamed and never deleted, because the wording it falls back to belongs to the product.'],
-    ['name' => 'is_active', 'type' => 'boolean', 'description' => 'Whether the category and the types under it are offered when a new relationship is written. False removes the whole group from that choice and touches nothing already written: every relationship stays readable.'],
+    ['name' => 'is_active', 'type' => 'boolean', 'description' => 'Whether the category and the types under it are offered when a new relationship is written. False removes the whole category from that choice and touches nothing already written: every relationship stays readable.'],
     ['name' => 'type_count', 'type' => 'integer', 'description' => 'How many relationship types sit under the category, retired ones counted. It is what decides whether the category may be deleted, since one still holding a type cannot go.'],
     ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When the category was added, as a count of seconds since 1970 rather than a written date.'],
     ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When it last changed, as a count of seconds. Equal to created_at until it first changes.'],
@@ -62,7 +62,7 @@ $categoryAttributes = [
 
 return [
     'name' => 'Relationship categories',
-    'description' => 'The groups relationship types are filed under, which order the vocabulary rather than deciding anything.',
+    'description' => 'The categories relationship types are filed under, which order the vocabulary rather than deciding anything.',
     'sections' => [
         [
             'id' => 'relationship-categories-index',
@@ -71,7 +71,7 @@ return [
             'label' => 'List relationship categories',
             'method' => 'GET',
             'path' => '/relationship-categories',
-            'description' => 'List the groups your account files its relationship types under, in the order you arranged them.',
+            'description' => 'List the categories your account files its relationship types under, in the order you arranged them.',
             'body' => [
                 'A category groups the list and nothing more. Moving a type into Family does not make it genealogical, and moving a genealogical one out of it does not take that behaviour away.',
                 'Every account starts with five: Family, Romantic, Friendship, Professional and Other. Those five are marked with is_system, may be moved and retired, and can never be renamed or deleted. Any category you add yourself carries none of those restrictions.',
@@ -93,7 +93,7 @@ return [
             'method' => 'GET',
             'path' => '/relationship-categories/{relationshipCategory}',
             'examplePath' => '/relationship-categories/7d1f4a83-2c06-4e59-9b27-8f3a5d0e6c14',
-            'description' => 'Retrieve one group: what it is called, where it sits, and how many types it holds.',
+            'description' => 'Retrieve one category: what it is called, where it sits, and how many types it holds.',
             'body' => [
                 'The types themselves are not in here. Ask for them at the address below, or list every type of the account at once.',
             ],
@@ -109,14 +109,14 @@ return [
             'label' => 'Add a relationship category',
             'method' => 'POST',
             'path' => '/relationship-categories',
-            'description' => 'Add a group of your own, when the five the product supplies do not sort your list the way you think of it.',
+            'description' => 'Add a category of your own, when the five the product supplies do not sort your list the way you think of it.',
             'body' => [
-                'The category goes at the end of the list and is offered straight away. It holds nothing until you file types under it, and a group holding nothing is a perfectly ordinary state: Other is supplied that way.',
+                'The category goes at the end of the list and is offered straight away. It holds nothing until you file types under it, and a category holding nothing is a perfectly ordinary state: Other is supplied that way.',
                 'A category does no work beyond grouping. Adding one called Family of my own does not make anything filed under it genealogical.',
             ],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'bodyParams' => [
-                ['name' => 'name', 'type' => 'string', 'required' => true, 'description' => 'What the group is called. Up to 255 characters. Markup and surrounding blank space are stripped, and a name left with nothing in it is refused.', 'example' => 'Neighbourhood'],
+                ['name' => 'name', 'type' => 'string', 'required' => true, 'description' => 'What the category is called. Up to 255 characters. Markup and surrounding blank space are stripped, and a name left with nothing in it is refused.', 'example' => 'Neighbourhood'],
             ],
             'returns' => 'The relationship category object that was added.',
             'responseStatus' => 201,
@@ -130,15 +130,15 @@ return [
             'method' => 'PUT',
             'path' => '/relationship-categories/{relationshipCategory}',
             'examplePath' => '/relationship-categories/b42e9c07-5a18-4d73-8e60-1c9f2b7a4d35',
-            'description' => 'Change what one of your own groups is called.',
+            'description' => 'Change what one of your own categories is called.',
             'body' => [
-                'A category the product supplied cannot be renamed, and answers 422. Its wording belongs to the product and reads in the language of whoever is looking, which is what would be lost. Move it, retire it, or file your types under a group of your own instead.',
+                'A category the product supplied cannot be renamed, and answers 422. Its wording belongs to the product and reads in the language of whoever is looking, which is what would be lost. Move it, retire it, or file your types under a category of your own instead.',
                 'The types under the category are untouched by a rename, and so is where the category sits.',
             ],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'bodyParams' => [
-                ['name' => 'name', 'type' => 'string', 'required' => true, 'description' => 'What the group is called. Up to 255 characters.', 'example' => 'Neighbourhood'],
+                ['name' => 'name', 'type' => 'string', 'required' => false, 'description' => 'What the category is called. Up to 255 characters. It cannot be null.', 'example' => 'Neighbourhood'],
             ],
             'returns' => 'The relationship category object as it now reads. A supplied category answers 422.',
             'response' => ['data' => $otherCategory],
@@ -150,7 +150,7 @@ return [
             'method' => 'DELETE',
             'path' => '/relationship-categories/{relationshipCategory}',
             'examplePath' => '/relationship-categories/b42e9c07-5a18-4d73-8e60-1c9f2b7a4d35',
-            'description' => 'Remove a group of your own that holds nothing.',
+            'description' => 'Remove a category of your own that holds nothing.',
             'body' => [
                 'Two categories cannot go. One the product supplied stays. One that still holds a type stays, and the answer says how many it holds, because removing it would take those types with it. Move them elsewhere first, or retire the category instead.',
                 'A deletion is recoverable, so an accident is not the end of anything.',
@@ -169,9 +169,9 @@ return [
             'method' => 'PUT',
             'path' => '/relationship-categories/{relationshipCategory}/activation',
             'examplePath' => '/relationship-categories/b42e9c07-5a18-4d73-8e60-1c9f2b7a4d35/activation',
-            'description' => 'Say whether a group, and every type under it, may still be chosen for a new relationship.',
+            'description' => 'Say whether a category, and every type under it, may still be chosen for a new relationship.',
             'body' => [
-                'Retiring a category takes the whole group out of the choice offered when somebody writes a relationship down. It is the tidiest way to put a run of types aside without deciding about each one, and it works on a category the product supplied as readily as on your own.',
+                'Retiring a category takes it out of the choice offered when somebody writes a relationship down. It is the tidiest way to put a run of types aside without deciding about each one, and it works on a category the product supplied as readily as on your own.',
                 'Nothing already written is touched. Every relationship keeps reading with the words it was written with, and the category keeps the place it had, so offering it again puts it back where it was rather than at the end.',
                 'Send the state you want rather than asking for a toggle, so sending the same value twice confirms it instead of inverting it.',
             ],
@@ -191,10 +191,10 @@ return [
             'method' => 'PUT',
             'path' => '/relationship-categories/{relationshipCategory}/position',
             'examplePath' => '/relationship-categories/b42e9c07-5a18-4d73-8e60-1c9f2b7a4d35/position',
-            'description' => 'Put a group somewhere else in the list, so the ones you reach for sit at the top.',
+            'description' => 'Put a category somewhere else in the list, so the ones you reach for sit at the top.',
             'body' => [
                 'Every category of your account is numbered from 1 again once the move is made, retired ones counted among them. A position past the end puts the category last rather than being refused.',
-                'A category the product supplied may be moved like any other. Where a group sits has no effect beyond the order things are read in.',
+                'A category the product supplied may be moved like any other. Where a category sits has no effect beyond the order things are read in.',
             ],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,

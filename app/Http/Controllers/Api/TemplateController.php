@@ -84,15 +84,15 @@ class TemplateController extends Controller
         $template = $this->find($request, $template);
 
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'description' => ['present', 'nullable', 'string', 'max:65535'],
+            'name' => ['sometimes', 'required', 'string', 'max:255'],
+            'description' => ['sometimes', 'nullable', 'string', 'max:65535'],
         ]);
 
         new UpdateTemplate(
             user: $request->user(),
             template: $template,
-            name: $validated['name'],
-            description: $validated['description'],
+            name: $validated['name'] ?? $template->name,
+            description: array_key_exists('description', $validated) ? $validated['description'] : $template->description,
         )->execute();
 
         return new TemplateResource($template->refresh()->load(['structure.entityType', 'publishedVersion']))

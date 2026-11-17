@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Http\Resources\PossessionProvenanceEventResource;
-use App\Models\PossessionProvenanceEvent;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -29,21 +27,18 @@ class ListPossessionProvenanceEvents extends Tool
             'possession' => ['required', 'string'],
         ]);
 
-        $possession = $this->possession($this->vault($request, $validated['vault']), $validated['possession']);
-        $possession->load('provenanceEvents.transaction');
+        $vault = $this->vault($request, $validated['vault']);
+        $possession = $this->possession($vault, $validated['possession']);
 
-        $events = $possession->provenanceEvents
-            ->each(fn (PossessionProvenanceEvent $event) => $event->setRelation('possession', $possession));
-
-        return Response::json(['data' => PossessionProvenanceEventResource::collection($events)->resolve()]);
+        return $this->answerThroughApi($request, $vault->uuid, $possession->uuid);
     }
 
     /** @return array<string, Type> */
     public function schema(JsonSchema $schema): array
     {
         return [
-            'vault' => $schema->string()->description('The address of the vault holding the possession.')->required(),
-            'possession' => $schema->string()->description('The identifier of the possession, as list-possessions gives it.')->required(),
+            'vault' => $schema->string()->description('The id of the vault, as list-vaults gives it.')->required(),
+            'possession' => $schema->string()->description('The id of the possession, as list-possessions gives it.')->required(),
         ];
     }
 }

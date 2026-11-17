@@ -276,4 +276,70 @@ class TemplateControllerTest extends TestCase
         $this->json('DELETE', "/api/v1/templates/{$template->uuid}")->assertNotFound();
         $this->assertNotSoftDeleted($template);
     }
+
+    #[Test]
+    public function it_keeps_what_is_left_out_of_an_update(): void
+    {
+        Queue::fake();
+        $user = User::factory()->create();
+        $template = Template::factory()->create([
+            'account_id' => $user->account_id,
+            'name' => 'Contact',
+            'description' => 'Anybody the family knows.',
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('PUT', "/api/v1/templates/{$template->uuid}", [
+            'name' => 'Person',
+        ]);
+
+        $response->assertOk();
+        $this->assertDatabaseHas('templates', [
+            'id' => $template->id,
+            'name' => 'Person',
+            'description' => 'Anybody the family knows.',
+        ]);
+    }
+
+    #[Test]
+    public function it_clears_a_field_sent_as_null(): void
+    {
+        Queue::fake();
+        $user = User::factory()->create();
+        $template = Template::factory()->create([
+            'account_id' => $user->account_id,
+            'name' => 'Contact',
+            'description' => 'Anybody the family knows.',
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('PUT', "/api/v1/templates/{$template->uuid}", [
+            'description' => null,
+        ]);
+
+        $response->assertOk();
+        $this->assertDatabaseHas('templates', [
+            'id' => $template->id,
+            'name' => 'Contact',
+            'description' => null,
+        ]);
+    }
+
+    #[Test]
+    public function it_refuses_a_name_sent_as_null(): void
+    {
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('PUT', "/api/v1/templates/{$template->uuid}", [
+            'name' => null,
+        ]);
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors('name');
+    }
 }

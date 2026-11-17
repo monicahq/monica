@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Actions\AddSupportNote as AddSupportNoteAction;
-use App\Http\Resources\SupportMessageResource;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -33,16 +31,11 @@ class AddSupportNote extends Tool
 
         $validated = $request->validate([
             'support_request' => ['required', 'string'],
-            'body' => ['required', 'string', 'max:20000'],
         ]);
 
-        $note = new AddSupportNoteAction(
-            administrator: $this->user($request),
-            supportRequest: $this->supportRequest($request, $validated['support_request'], acrossAccounts: true),
-            body: $validated['body'],
-        )->execute();
+        $supportRequest = $this->supportRequest($request, $validated['support_request'], acrossAccounts: true);
 
-        return Response::json(new SupportMessageResource($note->load('attachments'))->resolve());
+        return $this->answerThroughApi($request, $supportRequest->uuid);
     }
 
     /** @return array<string, Type> */

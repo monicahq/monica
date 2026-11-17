@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Http\Resources\LifeEventTypeResource;
+use Illuminate\Contracts\JsonSchema\JsonSchema;
+use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
-#[Description('List the kinds of life event the account can record, such as Moved house or Started a job, grouped by category.')]
+#[Description('List the kinds of life event the account can record, such as Moved house or Started a job, sorted by category.')]
 #[IsReadOnly]
 class ListLifeEventTypes extends Tool
 {
@@ -21,15 +22,18 @@ class ListLifeEventTypes extends Tool
 
     public function handle(Request $request): Response
     {
-        $types = $this->user($request)->account->lifeEventTypes()
-            ->join('life_event_categories', 'life_event_categories.id', '=', 'life_event_types.life_event_category_id')
-            ->select('life_event_types.*')
-            ->with('lifeEventCategory')
-            ->orderBy('life_event_categories.position')
-            ->orderBy('life_event_types.position')
-            ->orderBy('life_event_types.id')
-            ->get();
+        return $this->answerThroughApi($request);
+    }
 
-        return Response::json(LifeEventTypeResource::collection($types)->resolve());
+    /** @return array<string, Type> */
+    public function schema(JsonSchema $schema): array
+    {
+        $default = (int) config('monica.api_default_items_per_page');
+        $maximum = (int) config('monica.api_maximum_items_per_page');
+
+        return [
+            'page' => $schema->integer()->description('The page to read, starting at 1.'),
+            'per_page' => $schema->integer()->description("How many life event types a page holds: {$default} unless asked, {$maximum} at most."),
+        ];
     }
 }

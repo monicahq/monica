@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Http\Resources\PossessionTransactionResource;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -29,18 +28,20 @@ class GetPossessionTransaction extends Tool
             'transaction' => ['required', 'string'],
         ]);
 
-        $possession = $this->possession($this->vault($request, $validated['vault']), $validated['possession']);
+        $vault = $this->vault($request, $validated['vault']);
+        $possession = $this->possession($vault, $validated['possession']);
+        $record = $this->possessionTransaction($possession, $validated['transaction']);
 
-        return Response::json(new PossessionTransactionResource($this->possessionTransaction($possession, $validated['transaction']))->resolve());
+        return $this->answerThroughApi($request, $vault->uuid, $possession->uuid, $record->uuid);
     }
 
     /** @return array<string, Type> */
     public function schema(JsonSchema $schema): array
     {
         return [
-            'vault' => $schema->string()->description('The address of the vault holding the possession.')->required(),
-            'possession' => $schema->string()->description('The identifier of the possession, as list-possessions gives it.')->required(),
-            'transaction' => $schema->string()->description('The identifier of the transaction, as list-possession-transactions gives it.')->required(),
+            'vault' => $schema->string()->description('The id of the vault, as list-vaults gives it.')->required(),
+            'possession' => $schema->string()->description('The id of the possession, as list-possessions gives it.')->required(),
+            'transaction' => $schema->string()->description('The id of the transaction, as list-possession-transactions gives it.')->required(),
         ];
     }
 }

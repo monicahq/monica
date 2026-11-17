@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Actions\DestroyPossessionValuation;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -13,7 +12,7 @@ use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
 
-#[Description('Delete a valuation of a possession, with the documents attached to it. When it gave the current value, the latest valuation left gives it instead. To correct a figure, record a new valuation rather than deleting this one. No tool brings it back. The change is written to the account journal.')]
+#[Description('Delete a valuation of a possession, with the documents attached to it. When it gave the current value, the latest valuation left gives it instead. To correct a figure, record a new valuation rather than deleting this one. No tool brings it back. The change is written to the account log.')]
 #[IsDestructive]
 class DeletePossessionValuation extends Tool
 {
@@ -29,12 +28,15 @@ class DeletePossessionValuation extends Tool
             'valuation' => ['required', 'string'],
         ]);
 
-        $possession = $this->possession($this->vault($request, $validated['vault']), $validated['possession']);
+        $vault = $this->vault($request, $validated['vault']);
+        $possession = $this->possession($vault, $validated['possession']);
+        $record = $this->possessionValuation($possession, $validated['valuation']);
 
-        new DestroyPossessionValuation(
-            user: $this->user($request),
-            valuation: $this->possessionValuation($possession, $validated['valuation']),
-        )->execute();
+        $answer = $this->answerThroughApi($request, $vault->uuid, $possession->uuid, $record->uuid);
+
+        if ($answer->isError()) {
+            return $answer;
+        }
 
         return Response::text(__('The valuation is deleted.'));
     }
@@ -43,9 +45,9 @@ class DeletePossessionValuation extends Tool
     public function schema(JsonSchema $schema): array
     {
         return [
-            'vault' => $schema->string()->description('The address of the vault holding the possession.')->required(),
-            'possession' => $schema->string()->description('The identifier of the possession, as list-possessions gives it.')->required(),
-            'valuation' => $schema->string()->description('The identifier of the valuation, as list-possession-valuations gives it.')->required(),
+            'vault' => $schema->string()->description('The id of the vault, as list-vaults gives it.')->required(),
+            'possession' => $schema->string()->description('The id of the possession, as list-possessions gives it.')->required(),
+            'valuation' => $schema->string()->description('The id of the valuation, as list-possession-valuations gives it.')->required(),
         ];
     }
 }

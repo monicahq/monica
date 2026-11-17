@@ -156,6 +156,42 @@ class ContactReminderControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_keeps_what_is_left_out_of_an_update(): void
+    {
+        [$user, $vault, $contact] = $this->michaelAndPam();
+        $reminder = Reminder::factory()->manual($contact, now()->addWeek()->toDateString())->create([
+            'name' => 'Ask about the art school',
+            'cadence' => 'monthly',
+            'frequency_interval' => 3,
+            'time_of_day' => '09:00:00',
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/reminders/{$reminder->uuid}", [
+            'time' => '10:00',
+        ])->assertOk();
+
+        $this->assertDatabaseHas('reminders', ['id' => $reminder->id, 'name' => 'Ask about the art school', 'cadence' => 'monthly', 'frequency_interval' => 3]);
+        $this->assertSame('10:00', mb_substr($reminder->refresh()->time_of_day, 0, 5));
+    }
+
+    #[Test]
+    public function it_refuses_a_name_sent_as_null(): void
+    {
+        [$user, $vault, $contact] = $this->michaelAndPam();
+        $reminder = Reminder::factory()->manual($contact, now()->addWeek()->toDateString())->create(['name' => 'Ask about the art school']);
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/reminders/{$reminder->uuid}", [
+            'name' => null,
+        ])->assertUnprocessable()->assertJsonValidationErrors(['name']);
+
+        $this->assertDatabaseHas('reminders', ['id' => $reminder->id, 'name' => 'Ask about the art school']);
+    }
+
+    #[Test]
     public function it_deletes_a_reminder(): void
     {
         [$user, $vault, $contact] = $this->michaelAndPam();

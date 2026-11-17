@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Http\Resources\StructureVersionSectionResource;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -27,16 +26,16 @@ class GetLifeEventTypeFields extends Tool
             'life_event_type' => ['required', 'string'],
         ]);
 
-        $version = $this->lifeEventType($request, $validated['life_event_type'])->structure?->publishedVersion;
+        $lifeEventType = $this->lifeEventType($request, $validated['life_event_type']);
 
-        return Response::json($version === null ? [] : StructureVersionSectionResource::collection($version->assembly)->resolve());
+        return $this->answerThroughApi($request, $lifeEventType->uuid);
     }
 
     /** @return array<string, Type> */
     public function schema(JsonSchema $schema): array
     {
         return [
-            'life_event_type' => $schema->string()->description('The identifier of the life event type, as list-life-event-types gives it.')->required(),
+            'life_event_type' => $schema->string()->description('The id of the life event type, as list-life-event-types gives it.')->required(),
         ];
     }
 }

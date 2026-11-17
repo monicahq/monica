@@ -76,7 +76,7 @@ $drill = [
 $shared = [
     ['name' => 'title', 'type' => 'string', 'description' => 'The title of the note.'],
     ['name' => 'folder', 'type' => 'object', 'description' => 'The folder the note sits in.'],
-    ['name' => 'folder.id', 'type' => 'uuid', 'description' => 'The identifier of the folder, as the knowledge folders endpoints give it.'],
+    ['name' => 'folder.id', 'type' => 'uuid', 'description' => 'The id of the folder, as the knowledge folders endpoints give it.'],
     ['name' => 'folder.name', 'type' => 'string', 'description' => 'What the folder is called.'],
     ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When the note was written, as a count of seconds since 1970.'],
     ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When it last changed, as a count of seconds, or null.'],
@@ -92,9 +92,9 @@ $attributes = [
     ['name' => 'headings[].anchor', 'type' => 'string', 'description' => 'The anchor the application gives it, to open the note at that heading with links.web followed by # and the anchor.'],
 ];
 
-$vaultParam = ['name' => 'vault', 'type' => 'string', 'required' => true, 'description' => 'The vault, named either by the readable name it reports as slug or by the identifier it reports as id. A vault of another account answers 404.'];
-$noteParam = ['name' => 'note', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the note. A note of another vault or of another account answers 404.'];
-$folderParam = 'The identifier of a folder of the vault, as the knowledge folders endpoints give it. A folder of another vault answers 404.';
+$vaultParam = ['name' => 'vault', 'type' => 'string', 'required' => true, 'description' => 'The vault, named either by the readable name it reports as slug or by its id. A vault of another account answers 404.'];
+$noteParam = ['name' => 'note', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the note. A note of another vault or of another account answers 404.'];
+$folderParam = 'The id of a folder of the vault, as the knowledge folders endpoints give it. A folder of another vault answers 404.';
 $titleParam = 'The title of the note, up to 255 characters. Markup is stripped.';
 $bodyParam = 'The text of the note in Markdown, up to 200,000 characters: # for a heading, - for a bullet, - [ ] for a task, > for a quote, **bold**. Web addresses become links on their own.';
 
@@ -108,7 +108,7 @@ return [
                 ['name' => 'data', 'type' => 'array', 'description' => 'Every note, whole rather than a page at a time.'],
                 ['name' => 'data[]', 'type' => 'object', 'description' => 'One knowledge note, without its text.'],
                 ['name' => 'data[].type', 'type' => 'string', 'description' => 'Always knowledge_note.'],
-                ['name' => 'data[].id', 'type' => 'string', 'description' => 'The identifier of the note, which every address naming it takes.'],
+                ['name' => 'data[].id', 'type' => 'string', 'description' => 'The id of the note, which every address naming it takes.'],
                 ['name' => 'data[].attributes', 'type' => 'object', 'description' => 'What the note is, without its text.'],
                 ...array_map(fn (array $attribute): array => [...$attribute, 'name' => "data[].attributes.{$attribute['name']}"], $shared),
                 ['name' => 'data[].links', 'type' => 'object', 'description' => 'Where to find this note.'],
@@ -208,7 +208,7 @@ return [
                 ['name' => 'data', 'type' => 'array', 'description' => 'Every note found, then every list found, whole rather than a page at a time.'],
                 ['name' => 'data[]', 'type' => 'object', 'description' => 'One knowledge note, or one knowledge list as the knowledge lists endpoints describe it, told apart by type.'],
                 ['name' => 'data[].type', 'type' => 'string', 'description' => 'knowledge_note or knowledge_list.'],
-                ['name' => 'data[].id', 'type' => 'string', 'description' => 'The identifier of the note or the list.'],
+                ['name' => 'data[].id', 'type' => 'string', 'description' => 'The id of the note or the list.'],
                 ['name' => 'data[].attributes', 'type' => 'object', 'description' => 'Everything the note holds, or what the list is without its columns and items.'],
                 ...array_map(fn (array $attribute): array => [...$attribute, 'name' => "data[].attributes.{$attribute['name']}"], $attributes),
                 ['name' => 'data[].attributes.description', 'type' => 'string', 'description' => 'For a list, what it is for, in Markdown as written, or null. A note carries none.'],

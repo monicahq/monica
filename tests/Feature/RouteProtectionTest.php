@@ -55,6 +55,7 @@ class RouteProtectionTest extends TestCase
         'docs.api.changelog.show',
         'docs.api.changelog.markdown.show',
         'docs.mcp.index',
+        'docs.mcp.tools.show',
         'docs.mcp.markdown.index',
         'docs.carddav.index',
         'docs.carddav.markdown.index',

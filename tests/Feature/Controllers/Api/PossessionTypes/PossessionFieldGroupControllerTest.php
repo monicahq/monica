@@ -73,7 +73,23 @@ class PossessionFieldGroupControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_to_rename_a_group_with_an_empty_name(): void
+    public function it_keeps_what_is_left_out_of_an_update(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $type = PossessionType::factory()->create(['account_id' => $user->account_id]);
+        $group = PossessionFieldGroup::factory()->create(['possession_type_id' => $type->id, 'name' => 'Purchase']);
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', "/api/v1/possession-types/{$type->uuid}/groups/{$group->uuid}", [])->assertOk();
+
+        $this->assertSame('Purchase', $group->refresh()->name);
+    }
+
+    #[Test]
+    public function it_refuses_a_name_sent_as_null(): void
     {
         $user = User::factory()->create();
         $type = PossessionType::factory()->create(['account_id' => $user->account_id]);
@@ -81,7 +97,7 @@ class PossessionFieldGroupControllerTest extends TestCase
 
         Sanctum::actingAs($user);
 
-        $response = $this->json('PUT', "/api/v1/possession-types/{$type->uuid}/groups/{$group->uuid}", ['name' => '']);
+        $response = $this->json('PUT', "/api/v1/possession-types/{$type->uuid}/groups/{$group->uuid}", ['name' => null]);
 
         $response->assertUnprocessable();
         $response->assertJsonValidationErrors(['name']);

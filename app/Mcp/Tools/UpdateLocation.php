@@ -11,7 +11,7 @@ use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 
-#[Description('Rename a place of the account, move it inside another place or to the top level, or change its emoji or address. Everything inside it moves with it. Send the whole place: what you leave out is cleared, and a place left without a parent moves to the top level. The change is written to the account journal.')]
+#[Description('Rename a place of the account, move it inside another place or to the top level, or change its emoji or address. Everything inside it moves with it. The change is written to the account log.')]
 class UpdateLocation extends Tool
 {
     use MirrorsAnApiCapability;
@@ -33,11 +33,11 @@ class UpdateLocation extends Tool
     public function schema(JsonSchema $schema): array
     {
         return [
-            'location' => $schema->string()->description('The identifier of the location, as list-locations gives it.')->required(),
-            'name' => $schema->string()->description('The name, such as Garage.')->required(),
-            'parent_id' => $schema->string()->nullable()->description('The identifier of the place to move it inside, as list-locations gives it. Left out, it moves to the top level.'),
-            'emoji' => $schema->string()->nullable()->description('One emoji shown in place of the default icon. Left out, it shows the default icon.'),
-            'address' => $schema->string()->nullable()->description('The address as free text. Left out, the place uses the address of the nearest place around it that has one.'),
+            'location' => $schema->string()->description('The id of the place, as list-locations gives it.')->required(),
+            'name' => $schema->string()->description('The name, such as Garage.'),
+            'parent_id' => $schema->string()->nullable()->description('The id of the place to move it inside, as list-locations gives it. Null moves it to the top level.'),
+            'emoji' => $schema->string()->nullable()->description('One emoji shown in place of the default icon. Null shows the default icon again.'),
+            'address' => $schema->string()->nullable()->description('The address as free text. Null makes the place use the address of the nearest place around it that has one.'),
         ];
     }
 }

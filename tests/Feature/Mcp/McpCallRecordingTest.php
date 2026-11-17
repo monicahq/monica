@@ -11,6 +11,7 @@ use App\Helpers\McpPayload;
 use App\Http\Middleware\SetMcpLogSource;
 use App\Models\Contact;
 use App\Models\Field;
+use App\Models\LifeEvent;
 use App\Models\McpCall;
 use App\Models\User;
 use App\Models\Vault;
@@ -124,7 +125,7 @@ class McpCallRecordingTest extends TestCase
     {
         $this->callTool('update-life-event', [
             'vault' => $this->vault->uuid,
-            'life_event' => 'anything',
+            'life_event' => LifeEvent::factory()->create(['account_id' => $this->vault->account_id, 'vault_id' => $this->vault->id])->uuid,
             'happened_on' => '31/02/1978',
         ])->assertOk()->assertJsonPath('result.isError', true);
 

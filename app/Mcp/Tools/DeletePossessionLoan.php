@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Actions\DestroyPossessionLoan;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -13,7 +12,7 @@ use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
 
-#[Description('Delete one loan of a possession, with the provenance events it wrote. The contact stays. No tool brings the loan back. The change is written to the account journal.')]
+#[Description('Delete one loan of a possession, with the provenance events it wrote. The contact stays. No tool brings the loan back. The change is written to the account log.')]
 #[IsDestructive]
 class DeletePossessionLoan extends Tool
 {
@@ -29,12 +28,15 @@ class DeletePossessionLoan extends Tool
             'loan' => ['required', 'string'],
         ]);
 
-        $possession = $this->possession($this->vault($request, $validated['vault']), $validated['possession']);
+        $vault = $this->vault($request, $validated['vault']);
+        $possession = $this->possession($vault, $validated['possession']);
+        $record = $this->possessionLoan($possession, $validated['loan']);
 
-        new DestroyPossessionLoan(
-            user: $this->user($request),
-            loan: $this->possessionLoan($possession, $validated['loan']),
-        )->execute();
+        $answer = $this->answerThroughApi($request, $vault->uuid, $possession->uuid, $record->uuid);
+
+        if ($answer->isError()) {
+            return $answer;
+        }
 
         return Response::text(__('The loan is deleted.'));
     }
@@ -43,9 +45,9 @@ class DeletePossessionLoan extends Tool
     public function schema(JsonSchema $schema): array
     {
         return [
-            'vault' => $schema->string()->description('The address of the vault holding the possession.')->required(),
-            'possession' => $schema->string()->description('The identifier of the possession, as list-possessions gives it.')->required(),
-            'loan' => $schema->string()->description('The identifier of the loan, as list-possession-loans gives it.')->required(),
+            'vault' => $schema->string()->description('The id of the vault, as list-vaults gives it.')->required(),
+            'possession' => $schema->string()->description('The id of the possession, as list-possessions gives it.')->required(),
+            'loan' => $schema->string()->description('The id of the loan, as list-possession-loans gives it.')->required(),
         ];
     }
 }

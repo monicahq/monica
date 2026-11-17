@@ -83,16 +83,16 @@ class StructureVersionSectionController extends TemplateScopedController
         $row = $this->findRow($request, $template, $version, $section);
 
         $validated = $request->validate([
-            'title_override' => ['present', 'nullable', 'string', 'max:255'],
-            'is_collapsed_by_default' => ['nullable', 'boolean'],
+            'title_override' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'is_collapsed_by_default' => ['sometimes', 'boolean'],
         ]);
 
         try {
             new UpdateStructureVersionSection(
                 user: $request->user(),
                 row: $row,
-                titleOverride: $validated['title_override'],
-                isCollapsedByDefault: $request->boolean('is_collapsed_by_default'),
+                titleOverride: array_key_exists('title_override', $validated) ? $validated['title_override'] : $row->title_override,
+                isCollapsedByDefault: array_key_exists('is_collapsed_by_default', $validated) ? (bool) $validated['is_collapsed_by_default'] : $row->is_collapsed_by_default,
             )->execute();
         } catch (PublishedVersionIsFrozen $e) {
             throw ValidationException::withMessages(['version' => $e->getMessage()]);

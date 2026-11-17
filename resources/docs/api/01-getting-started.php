@@ -143,6 +143,27 @@ return [
             ],
         ],
         [
+            'id' => 'updating',
+            'title' => 'Updating a record',
+            'label' => 'Updating a record',
+            'method' => 'PUT',
+            'path' => '/vaults/{vault}',
+            'examplePath' => '/vaults/dunder-mifflin',
+            'description' => 'Every PUT follows one rule: send what you want to change, and leave out what you want to keep.',
+            'body' => [
+                'A field left out of the body keeps its stored value. A body holding only a new name renames the record and touches nothing else.',
+                'A field sent as null is cleared. Send null to remove a description, a date or an icon.',
+                'A field that cannot be empty, such as a name, a label or a cadence, refuses null with 422. Leave it out to keep it.',
+                'A boolean left out keeps its value. Send true or false to change it.',
+                'A list sent whole, such as tags, options, columns or the fields of a layout, follows the same rule: left out, the stored list stays as it is; sent, it replaces the stored list, so an empty list empties it.',
+                'Where an endpoint departs from this, its own page says so.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
+            'exampleBody' => [
+                'description' => null,
+            ],
+        ],
+        [
             'id' => 'errors',
             'title' => 'Errors',
             'label' => 'Errors',
@@ -181,7 +202,7 @@ return [
                 [
                     'status' => 404,
                     'name' => 'Not Found',
-                    'when' => 'Nothing answers to that path. A record belonging to another account, one reached through a vault that does not hold it, and an identifier that is not well formed all answer the same way, so that nothing is disclosed about them.',
+                    'when' => 'Nothing answers to that path. A record belonging to another account, one reached through a vault that does not hold it, and an id that is not well formed all answer the same way, so that nothing is disclosed about them.',
                     'body' => 'A message.',
                 ],
                 [

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Http\Resources\LifeEventTypeResource;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -27,14 +26,16 @@ class GetLifeEventType extends Tool
             'life_event_type' => ['required', 'string'],
         ]);
 
-        return Response::json(new LifeEventTypeResource($this->lifeEventType($request, $validated['life_event_type']))->resolve());
+        $lifeEventType = $this->lifeEventType($request, $validated['life_event_type']);
+
+        return $this->answerThroughApi($request, $lifeEventType->uuid);
     }
 
     /** @return array<string, Type> */
     public function schema(JsonSchema $schema): array
     {
         return [
-            'life_event_type' => $schema->string()->description('The identifier of the life event type, as list-life-event-types gives it.')->required(),
+            'life_event_type' => $schema->string()->description('The id of the life event type, as list-life-event-types gives it.')->required(),
         ];
     }
 }

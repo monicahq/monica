@@ -947,6 +947,13 @@ class ApiDocsReturnFieldsTest extends TestCase
                 return $this->json('DELETE', "/api/v1/templates/{$template->uuid}/versions/1/sections/{$row->id}/fields/{$field->id}");
             }),
 
+            'value-lists-index' => $this->asSomebody(function (User $user): TestResponse {
+                $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+                ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id]);
+
+                return $this->json('GET', '/api/v1/value-lists');
+            }),
+
             'fields-position-update' => $this->asSomebody(function (User $user): TestResponse {
                 [$template, , $row] = $this->aPlacement($user);
                 $field = Field::factory()->create(['section_version_id' => $row->section_version_id, 'position' => 1]);
@@ -2286,6 +2293,12 @@ class ApiDocsReturnFieldsTest extends TestCase
                 ReminderOccurrence::factory()->past()->remembered()->create(['reminder_id' => $reminder->id]);
 
                 return $this->json('GET', "/api/v1/vaults/{$reminder->vault->uuid}/contacts/{$reminder->remindable->uuid}/reminder-occurrences?category=history");
+            }),
+
+            'vault-reminders-index' => $this->asSomebody(function (User $user): TestResponse {
+                $reminder = $this->aManualReminder($user);
+
+                return $this->json('GET', "/api/v1/vaults/{$reminder->vault->uuid}/reminders");
             }),
 
             'vault-reminder-occurrences-index' => $this->asSomebody(function (User $user): TestResponse {

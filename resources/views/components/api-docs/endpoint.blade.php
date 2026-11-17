@@ -47,7 +47,7 @@
   </div>
 
   <div class="min-w-0 max-w-135 flex-1 basis-[400px]">
-    <div class="flex flex-col gap-4 lg:sticky lg:top-32">
+    <div class="flex flex-col gap-4 lg:sticky lg:top-4">
       <x-api-docs.code-panel :section="$section" />
       <x-api-docs.response-panel :section="$section" />
 

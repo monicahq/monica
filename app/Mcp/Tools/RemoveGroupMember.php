@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Actions\DestroyGroupMembership;
 use App\Helpers\FlagState;
 use App\Models\User;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
@@ -15,7 +14,7 @@ use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
 
-#[Description('Delete a membership that was recorded by mistake. Somebody who really left keeps their membership with a leave date instead, given through update-group-member. The change is written to the account journal.')]
+#[Description('Delete a membership that was recorded by mistake. Somebody who really left keeps their membership with a leave date instead, given through update-group-member. The change is written to the account log.')]
 #[IsDestructive]
 class RemoveGroupMember extends Tool
 {
@@ -39,12 +38,14 @@ class RemoveGroupMember extends Tool
         ]);
 
         $vault = $this->vault($request, $validated['vault']);
+        $group = $this->group($vault, $validated['group']);
+        $membership = $this->groupMembership($group, $validated['membership']);
 
-        new DestroyGroupMembership(
-            user: $this->user($request),
-            vault: $vault,
-            membership: $this->groupMembership($this->group($vault, $validated['group']), $validated['membership']),
-        )->execute();
+        $answer = $this->answerThroughApi($request, $vault->uuid, $group->uuid, $membership->uuid);
+
+        if ($answer->isError()) {
+            return $answer;
+        }
 
         return Response::text(__('The membership is deleted.'));
     }
@@ -53,7 +54,7 @@ class RemoveGroupMember extends Tool
     public function schema(JsonSchema $schema): array
     {
         return [
-            'vault' => $schema->string()->description('The address of the vault holding the group.')->required(),
+            'vault' => $schema->string()->description('The id of the vault, as list-vaults gives it.')->required(),
             'group' => $schema->string()->description('The id of the group, as list-groups gives it.')->required(),
             'membership' => $schema->string()->description('The id of the membership, as list-group-members gives it.')->required(),
         ];

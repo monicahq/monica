@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Http\Resources\ContactResource;
-use App\Jobs\RecordContactVisit;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -14,7 +12,7 @@ use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
-#[Description('Look one contact up in a vault, by the address a listing gave for them.')]
+#[Description('Look one contact up in a vault.')]
 #[IsReadOnly]
 class GetContact extends Tool
 {
@@ -32,21 +30,15 @@ class GetContact extends Tool
         $vault = $this->vault($request, $validated['vault']);
         $contact = $this->contact($vault, $validated['contact']);
 
-        RecordContactVisit::dispatch(contact: $contact)->onQueue('low');
-
-        return Response::json(new ContactResource($contact)->resolve());
+        return $this->answerThroughApi($request, $vault->uuid, $contact->uuid);
     }
 
     /** @return array<string, Type> */
     public function schema(JsonSchema $schema): array
     {
         return [
-            'vault' => $schema->string()
-                ->description('The address of the vault holding the contact.')
-                ->required(),
-            'contact' => $schema->string()
-                ->description('The address of the contact, as list-contacts gives it.')
-                ->required(),
+            'vault' => $schema->string()->description('The id of the vault, as list-vaults gives it.')->required(),
+            'contact' => $schema->string()->description('The id of the contact, as list-contacts gives it.')->required(),
         ];
     }
 }

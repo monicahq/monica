@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Http\Resources\EmailSentResource;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -23,29 +22,7 @@ class ListEmailsSent extends Tool
 
     public function handle(Request $request): Response
     {
-        $validated = $request->validate([
-            'page' => ['nullable', 'integer'],
-            'per_page' => ['nullable', 'integer'],
-        ]);
-
-        $perPage = max(1, min(
-            (int) ($validated['per_page'] ?? config('monica.api_default_items_per_page')),
-            (int) config('monica.api_maximum_items_per_page'),
-        ));
-
-        $emails = $this->user($request)->account->emailsSent()
-            ->orderByDesc('sent_at')
-            ->orderByDesc('id')
-            ->paginate($perPage, ['*'], 'page', max(1, (int) ($validated['page'] ?? 1)));
-
-        return Response::json([
-            'data' => EmailSentResource::collection($emails->items())->resolve(),
-            'meta' => [
-                'page' => $emails->currentPage(),
-                'per_page' => $emails->perPage(),
-                'total' => $emails->total(),
-            ],
-        ]);
+        return $this->answerThroughApi($request);
     }
 
     /** @return array<string, Type> */

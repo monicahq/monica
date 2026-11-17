@@ -250,12 +250,15 @@ class EntityTypeControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_an_update_that_leaves_a_field_out_rather_than_erasing_it(): void
+    public function it_keeps_what_is_left_out_of_an_update(): void
     {
+        Queue::fake();
         $user = User::factory()->create();
         $entityType = EntityType::factory()->create([
             'account_id' => $user->account_id,
             'description' => 'Every creature the family keeps.',
+            'icon' => 'device',
+            'colour' => '#9a3f2b',
         ]);
 
         Sanctum::actingAs($user);
@@ -265,9 +268,59 @@ class EntityTypeControllerTest extends TestCase
             'name_plural' => 'Pets',
         ]);
 
+        $response->assertOk();
+        $this->assertDatabaseHas('entity_types', [
+            'id' => $entityType->id,
+            'name_singular' => 'Pet',
+            'name_plural' => 'Pets',
+            'description' => 'Every creature the family keeps.',
+            'icon' => 'device',
+            'colour' => '#9a3f2b',
+        ]);
+    }
+
+    #[Test]
+    public function it_clears_a_field_sent_as_null(): void
+    {
+        Queue::fake();
+        $user = User::factory()->create();
+        $entityType = EntityType::factory()->create([
+            'account_id' => $user->account_id,
+            'name_singular' => 'Animal',
+            'description' => 'Every creature the family keeps.',
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('PUT', "/api/v1/entity-types/{$entityType->uuid}", [
+            'description' => null,
+        ]);
+
+        $response->assertOk();
+        $this->assertDatabaseHas('entity_types', [
+            'id' => $entityType->id,
+            'name_singular' => 'Animal',
+            'description' => null,
+        ]);
+    }
+
+    #[Test]
+    public function it_refuses_a_name_sent_as_null(): void
+    {
+        $user = User::factory()->create();
+        $entityType = EntityType::factory()->create([
+            'account_id' => $user->account_id,
+            'name_singular' => 'Animal',
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('PUT', "/api/v1/entity-types/{$entityType->uuid}", [
+            'name_singular' => null,
+        ]);
+
         $response->assertUnprocessable();
-        $response->assertJsonValidationErrors(['description', 'icon', 'colour']);
-        $this->assertSame('Every creature the family keeps.', $entityType->refresh()->description);
+        $response->assertJsonValidationErrors('name_singular');
     }
 
     #[Test]

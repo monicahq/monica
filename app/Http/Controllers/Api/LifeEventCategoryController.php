@@ -64,13 +64,13 @@ class LifeEventCategoryController extends Controller
         $category = $this->find($request, $lifeEventCategory);
 
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['sometimes', 'string', 'max:255'],
         ]);
 
         new UpdateLifeEventCategory(
             user: $request->user(),
             lifeEventCategory: $category,
-            name: $validated['name'],
+            name: $validated['name'] ?? $category->name,
         )->execute();
 
         return new LifeEventCategoryResource($category->refresh())->response()->setStatusCode(200);

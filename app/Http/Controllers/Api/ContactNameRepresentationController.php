@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ContactNameRepresentationResource;
 use App\Http\Resources\ContactResource;
 use App\Models\Contact;
+use App\Models\ContactNameRepresentation;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -30,19 +31,25 @@ class ContactNameRepresentationController extends Controller
         $contact = $this->contact($request, $vault, $contact);
 
         $validated = $request->validate([
-            ...UpdateContactNameRepresentations::rules('name_representations', $contact->nameRepresentations()->pluck('uuid')->all()),
-            'maiden_name' => ['present', 'nullable', 'string', 'max:255'],
-            'nickname' => ['present', 'nullable', 'string', 'max:255'],
+            ...UpdateContactNameRepresentations::rules('name_representations', $contact->nameRepresentations->pluck('uuid')->all()),
+            'name_representations' => ['sometimes', 'array', 'max:'.UpdateContactNameRepresentations::MAXIMUM],
+            'maiden_name' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'nickname' => ['sometimes', 'nullable', 'string', 'max:255'],
         ]);
+
+        $storedRows = $contact->nameRepresentations
+            ->map(fn (ContactNameRepresentation $representation): array => ['id' => $representation->uuid, ...$representation->toComparable()])
+            ->all();
+        $storedDisplay = $contact->nameRepresentations->search(fn (ContactNameRepresentation $representation): bool => $representation->id === $contact->display_name_representation_id);
 
         try {
             new UpdateContactNameRepresentations(
                 user: $request->user(),
                 contact: $contact,
-                nameRepresentations: array_values($validated['name_representations']),
-                display: isset($validated['display']) ? (int) $validated['display'] : null,
-                nickname: $validated['nickname'],
-                maidenName: $validated['maiden_name'],
+                nameRepresentations: array_values($validated['name_representations'] ?? $storedRows),
+                display: isset($validated['display']) ? (int) $validated['display'] : ($storedDisplay === false ? null : $storedDisplay),
+                nickname: array_key_exists('nickname', $validated) ? $validated['nickname'] : $contact->nickname,
+                maidenName: array_key_exists('maiden_name', $validated) ? $validated['maiden_name'] : $contact->maiden_name,
             )->execute();
         } catch (InvalidArgumentException $e) {
             throw ValidationException::withMessages(['name_representations' => $e->getMessage()]);

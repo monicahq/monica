@@ -18,16 +18,16 @@ class MeContactListViewController extends Controller
     public function update(Request $request): UserResource
     {
         $validated = $request->validate([
-            'grouping' => ['required', 'string', Rule::enum(ContactGroupingEnum::class)],
-            'sort' => ['required', 'string', Rule::enum(ContactSortEnum::class)],
-            'direction' => ['required', 'string', Rule::enum(SortDirectionEnum::class)],
+            'grouping' => ['sometimes', 'required', 'string', Rule::enum(ContactGroupingEnum::class)],
+            'sort' => ['sometimes', 'required', 'string', Rule::enum(ContactSortEnum::class)],
+            'direction' => ['sometimes', 'required', 'string', Rule::enum(SortDirectionEnum::class)],
         ]);
 
         new UpdateContactListView(
             user: $request->user(),
-            grouping: ContactGroupingEnum::from($validated['grouping']),
-            sort: ContactSortEnum::from($validated['sort']),
-            direction: SortDirectionEnum::from($validated['direction']),
+            grouping: ContactGroupingEnum::fromValueOrEveryone($validated['grouping'] ?? $request->user()->contact_list_grouping),
+            sort: ContactSortEnum::fromValueOrName($validated['sort'] ?? $request->user()->contact_list_sort),
+            direction: SortDirectionEnum::fromValueOrAscending($validated['direction'] ?? $request->user()->contact_list_direction),
         )->execute();
 
         return new UserResource($request->user()->refresh());

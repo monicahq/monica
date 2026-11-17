@@ -42,14 +42,15 @@ class PossessionFieldController extends Controller
     public function update(Request $request, string $possessionType, string $field): JsonResponse
     {
         $type = $this->type($request, $possessionType);
-        $validated = $request->validate($this->rules());
+        $record = $this->field($type, $field);
+        $validated = $request->validate($this->rules(isCreating: false));
 
         new UpdatePossessionField(
             user: $request->user(),
-            field: $this->field($type, $field),
-            name: $validated['name'],
-            kind: PossessionFieldKindEnum::from($validated['kind']),
-            options: array_values($validated['options'] ?? []),
+            field: $record,
+            name: $validated['name'] ?? $record->name,
+            kind: isset($validated['kind']) ? PossessionFieldKindEnum::from($validated['kind']) : $record->kind,
+            options: array_key_exists('options', $validated) ? array_values($validated['options'] ?? []) : $record->options,
         )->execute();
 
         return new PossessionTypeResource($type)->response();
@@ -68,11 +69,11 @@ class PossessionFieldController extends Controller
     }
 
     /** @return array<string, array<int, mixed>> */
-    private function rules(): array
+    private function rules(bool $isCreating = true): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'kind' => ['required', Rule::enum(PossessionFieldKindEnum::class)],
+            'name' => [$isCreating ? 'required' : 'sometimes', 'string', 'max:255'],
+            'kind' => [$isCreating ? 'required' : 'sometimes', Rule::enum(PossessionFieldKindEnum::class)],
             'options' => ['nullable', 'array'],
             'options.*' => ['nullable', 'string', 'max:255'],
         ];

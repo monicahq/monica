@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Http\Resources\PossessionInsuranceRecordResource;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -29,18 +28,20 @@ class GetPossessionInsuranceRecord extends Tool
             'insurance_record' => ['required', 'string'],
         ]);
 
-        $possession = $this->possession($this->vault($request, $validated['vault']), $validated['possession']);
+        $vault = $this->vault($request, $validated['vault']);
+        $possession = $this->possession($vault, $validated['possession']);
+        $record = $this->possessionInsuranceRecord($possession, $validated['insurance_record']);
 
-        return Response::json(new PossessionInsuranceRecordResource($this->possessionInsuranceRecord($possession, $validated['insurance_record']))->resolve());
+        return $this->answerThroughApi($request, $vault->uuid, $possession->uuid, $record->uuid);
     }
 
     /** @return array<string, Type> */
     public function schema(JsonSchema $schema): array
     {
         return [
-            'vault' => $schema->string()->description('The address of the vault holding the possession.')->required(),
-            'possession' => $schema->string()->description('The identifier of the possession, as list-possessions gives it.')->required(),
-            'insurance_record' => $schema->string()->description('The identifier of the insurance record, as list-possession-insurance-records gives it.')->required(),
+            'vault' => $schema->string()->description('The id of the vault, as list-vaults gives it.')->required(),
+            'possession' => $schema->string()->description('The id of the possession, as list-possessions gives it.')->required(),
+            'insurance_record' => $schema->string()->description('The id of the insurance record, as list-possession-insurance-records gives it.')->required(),
         ];
     }
 }

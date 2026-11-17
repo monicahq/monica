@@ -19,14 +19,14 @@ class MeController extends Controller
     public function update(Request $request): UserResource
     {
         $validated = $request->validate([
-            'first_name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255'],
+            'first_name' => ['sometimes', 'required', 'string', 'max:255'],
+            'last_name' => ['sometimes', 'required', 'string', 'max:255'],
         ]);
 
         new UpdateUserProfile(
             user: $request->user(),
-            firstName: $validated['first_name'],
-            lastName: $validated['last_name'],
+            firstName: $validated['first_name'] ?? $request->user()->first_name,
+            lastName: $validated['last_name'] ?? $request->user()->last_name,
             email: $request->user()->email,
         )->execute();
 

@@ -8,6 +8,7 @@ use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\MirrorsAnApiCapability;
 use App\Models\Administrator;
 use App\Models\User;
+use App\ViewModels\Docs\McpDocsViewModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Route;
 use Laravel\Mcp\Server\Tool;
@@ -103,6 +104,28 @@ class McpCatalogueTest extends TestCase
         }
 
         $this->assertSame([], $mislabelled);
+    }
+
+    #[Test]
+    public function every_parameter_taking_an_id_names_the_tool_that_gives_it(): void
+    {
+        $catalogue = McpDocsViewModel::catalogue();
+        $tools = array_keys($catalogue);
+        $silent = [];
+
+        foreach ($catalogue as $tool) {
+            foreach ($tool['params'] as $param) {
+                if (! str_starts_with($param['description'], 'The id')) {
+                    continue;
+                }
+
+                if (! collect($tools)->contains(fn (string $name): bool => str_contains($param['description'], $name))) {
+                    $silent[] = "{$tool['name']}.{$param['name']}";
+                }
+            }
+        }
+
+        $this->assertSame([], $silent);
     }
 
     /** @return array<int, class-string<Tool>> */

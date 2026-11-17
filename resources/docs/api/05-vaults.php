@@ -72,7 +72,7 @@ $identifier = [
         'name' => 'vault',
         'type' => 'string',
         'required' => true,
-        'description' => 'The vault, named either by the readable name it reports as slug or by the identifier it reports as id. Both answer, whichever the account builds its own addresses from. A readable name is rebuilt whenever the record is renamed, and the previous one stops answering, so a client that stores a reference stores the id. A name a record has released is never given to another.',
+        'description' => 'The vault, named either by the readable name it reports as slug or by its id. Both answer, whichever the account builds its own addresses from. A readable name is rebuilt whenever the record is renamed, and the previous one stops answering, so a client that stores a reference stores the id. A name a record has released is never given to another.',
     ],
 ];
 
@@ -184,7 +184,7 @@ return [
                     'description' => 'The published version of one of your active contact templates. A new contact in this vault starts from it. Contacts already created keep the version they were created on. A draft, a version belonging to somebody else, and a version describing something other than a contact are each refused.',
                 ],
             ],
-            'returns' => 'The new vault object. Keep its id: it is the address every other call here takes.',
+            'returns' => 'The new vault object. Keep its id: every other call here names the vault by it.',
             'responseStatus' => 201,
             'response' => ['data' => $vault],
         ],
@@ -198,7 +198,7 @@ return [
             'examplePath' => '/vaults/9d4f1c2e-7b3a-4f88-9a2d-6c1e5b0f7a31',
             'description' => 'Change what a vault is called, what it is for, and the colour it is told apart by.',
             'body' => [
-                'This replaces the wording of the vault rather than patching it, so state all three. A field you leave out is refused rather than quietly reset, which is why the colour is required and the description has to be sent even when it is null. Renaming a vault can therefore never lose its colour by accident.',
+                'Send only what changes. A name or a colour sent as null is refused with 422, and a description sent as null is cleared.',
                 'What the vault holds is untouched, and so are its place in your list and whether it is the vault records land in by default.',
             ],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
@@ -207,21 +207,21 @@ return [
                 [
                     'name' => 'name',
                     'type' => 'string',
-                    'required' => true,
-                    'description' => 'What the vault is called. Up to 255 characters.',
+                    'required' => false,
+                    'description' => 'What the vault is called. Up to 255 characters. It cannot be null.',
                     'example' => 'Scranton',
                 ],
                 [
                     'name' => 'description',
                     'type' => 'string or null',
-                    'required' => true,
-                    'description' => 'What the vault is for. Up to 65535 characters. Must be sent, and null clears it.',
+                    'required' => false,
+                    'description' => 'What the vault is for. Up to 65535 characters. Null clears it.',
                     'example' => 'The branch, and everybody who walks through it.',
                 ],
                 [
                     'name' => 'colour',
                     'type' => 'string',
-                    'required' => true,
+                    'required' => false,
                     'description' => $colours,
                     'example' => '#9a3f2b',
                 ],

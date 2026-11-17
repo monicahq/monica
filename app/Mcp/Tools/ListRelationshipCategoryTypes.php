@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Http\Resources\RelationshipTypeResource;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -27,21 +26,21 @@ class ListRelationshipCategoryTypes extends Tool
             'relationship_category' => ['required', 'string'],
         ]);
 
-        $types = $this->relationshipCategory($request, $validated['relationship_category'])->types()
-            ->with('relationshipCategory')
-            ->withCount('relationships')
-            ->orderBy('position')
-            ->orderBy('id')
-            ->get();
+        $relationshipCategory = $this->relationshipCategory($request, $validated['relationship_category']);
 
-        return Response::json(RelationshipTypeResource::collection($types)->resolve());
+        return $this->answerThroughApi($request, $relationshipCategory->uuid);
     }
 
     /** @return array<string, Type> */
     public function schema(JsonSchema $schema): array
     {
+        $default = (int) config('monica.api_default_items_per_page');
+        $maximum = (int) config('monica.api_maximum_items_per_page');
+
         return [
-            'relationship_category' => $schema->string()->description('The identifier of the category, as list-relationship-categories gives it.')->required(),
+            'relationship_category' => $schema->string()->description('The id of the category, as list-relationship-categories gives it.')->required(),
+            'page' => $schema->integer()->description('The page to read, starting at 1.'),
+            'per_page' => $schema->integer()->description("How many relationship types a page holds: {$default} unless asked, {$maximum} at most."),
         ];
     }
 }

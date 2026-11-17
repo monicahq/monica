@@ -90,11 +90,11 @@ class ContactReminderController extends Controller
         $reminder = $this->reminder($contact, $reminder);
 
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['sometimes', 'required', 'string', 'max:255'],
             'starts_on' => ['nullable', 'date_format:Y-m-d'],
-            'cadence' => ['required', Rule::in(ReminderCadenceEnum::values())],
+            'cadence' => ['sometimes', 'required', Rule::in(ReminderCadenceEnum::values())],
             'interval' => ['nullable', 'integer', 'min:1', 'max:'.Reminder::MAXIMUM_INTERVAL],
-            'time' => ['required', 'date_format:H:i'],
+            'time' => ['sometimes', 'required', 'date_format:H:i'],
             'timezone' => ['nullable', 'string', 'timezone'],
         ]);
 
@@ -102,9 +102,9 @@ class ContactReminderController extends Controller
             new UpdateReminder(
                 user: $request->user(),
                 reminder: $reminder,
-                cadence: ReminderCadenceEnum::from($validated['cadence']),
-                timeOfDay: $validated['time'],
-                name: $validated['name'],
+                cadence: isset($validated['cadence']) ? ReminderCadenceEnum::from($validated['cadence']) : $reminder->cadence,
+                timeOfDay: $validated['time'] ?? $reminder->time_of_day,
+                name: $validated['name'] ?? $reminder->name,
                 frequencyInterval: (int) ($validated['interval'] ?? $reminder->frequency_interval),
                 timezone: $validated['timezone'] ?? null,
                 startsOn: $validated['starts_on'] ?? null,

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Actions\DestroyPossessionTag;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -13,7 +12,7 @@ use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
 
-#[Description('Delete a possession tag. This cannot be undone. The change is written to the account journal.')]
+#[Description('Delete a possession tag. This cannot be undone. The change is written to the account log.')]
 #[IsDestructive]
 class DeletePossessionTag extends Tool
 {
@@ -27,10 +26,13 @@ class DeletePossessionTag extends Tool
             'possession_tag' => ['required', 'string'],
         ]);
 
-        new DestroyPossessionTag(
-            user: $this->user($request),
-            possessionTag: $this->possessionTag($request, $validated['possession_tag']),
-        )->execute();
+        $possessionTag = $this->possessionTag($request, $validated['possession_tag']);
+
+        $answer = $this->answerThroughApi($request, $possessionTag->uuid);
+
+        if ($answer->isError()) {
+            return $answer;
+        }
 
         return Response::text(__('The possession tag is deleted.'));
     }
@@ -39,7 +41,7 @@ class DeletePossessionTag extends Tool
     public function schema(JsonSchema $schema): array
     {
         return [
-            'possession_tag' => $schema->string()->description('The identifier of the possession tag, as list-possession-tags gives it.')->required(),
+            'possession_tag' => $schema->string()->description('The id of the possession tag, as list-possession-tags gives it.')->required(),
         ];
     }
 }

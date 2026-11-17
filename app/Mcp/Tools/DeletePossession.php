@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Actions\DestroyPossession;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -13,7 +12,7 @@ use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
 
-#[Description('Delete a possession and the values of its fields. It leaves every list and no tool brings it back. The change is written to the account journal.')]
+#[Description('Delete a possession and the values of its fields. It is removed from every list and no tool brings it back. The change is written to the account log.')]
 #[IsDestructive]
 class DeletePossession extends Tool
 {
@@ -28,10 +27,14 @@ class DeletePossession extends Tool
             'possession' => ['required', 'string'],
         ]);
 
-        new DestroyPossession(
-            user: $this->user($request),
-            possession: $this->possession($this->vault($request, $validated['vault']), $validated['possession']),
-        )->execute();
+        $vault = $this->vault($request, $validated['vault']);
+        $possession = $this->possession($vault, $validated['possession']);
+
+        $answer = $this->answerThroughApi($request, $vault->uuid, $possession->uuid);
+
+        if ($answer->isError()) {
+            return $answer;
+        }
 
         return Response::text(__('The possession is deleted.'));
     }
@@ -40,8 +43,8 @@ class DeletePossession extends Tool
     public function schema(JsonSchema $schema): array
     {
         return [
-            'vault' => $schema->string()->description('The address of the vault holding the possession.')->required(),
-            'possession' => $schema->string()->description('The identifier of the possession, as list-possessions gives it.')->required(),
+            'vault' => $schema->string()->description('The id of the vault, as list-vaults gives it.')->required(),
+            'possession' => $schema->string()->description('The id of the possession, as list-possessions gives it.')->required(),
         ];
     }
 }

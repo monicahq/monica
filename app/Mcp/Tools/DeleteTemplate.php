@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Actions\DestroyTemplate;
-use App\Exceptions\CannotDeleteATemplateInUse;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -14,7 +12,7 @@ use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
 
-#[Description('Delete a template and all its versions. A template still describing records is refused. The change is written to the account journal.')]
+#[Description('Delete a template and all its versions. A template still describing records is refused. The change is written to the account log.')]
 #[IsDestructive]
 class DeleteTemplate extends Tool
 {
@@ -28,13 +26,12 @@ class DeleteTemplate extends Tool
             'template' => ['required', 'string'],
         ]);
 
-        try {
-            new DestroyTemplate(
-                user: $this->user($request),
-                template: $this->template($request, $validated['template']),
-            )->execute();
-        } catch (CannotDeleteATemplateInUse $e) {
-            return Response::error($e->getMessage());
+        $template = $this->template($request, $validated['template']);
+
+        $answer = $this->answerThroughApi($request, $template->uuid);
+
+        if ($answer->isError()) {
+            return $answer;
         }
 
         return Response::text(__('The template is deleted.'));
@@ -44,7 +41,7 @@ class DeleteTemplate extends Tool
     public function schema(JsonSchema $schema): array
     {
         return [
-            'template' => $schema->string()->description('The identifier of the template, as list-templates gives it.')->required(),
+            'template' => $schema->string()->description('The id of the template, as list-templates gives it.')->required(),
         ];
     }
 }

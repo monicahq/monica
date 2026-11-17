@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Api\Possessions;
 
+use App\Enums\PossessionStatusEnum;
 use App\Enums\PossessionTransactionTypeEnum;
 use App\Models\Location;
 use App\Models\Possession;
@@ -278,19 +279,103 @@ class PossessionControllerTest extends TestCase
     }
 
     #[Test]
-    public function a_change_replaces_everything_so_tags_left_out_are_cleared(): void
+    public function it_keeps_what_is_left_out_of_an_update(): void
     {
         Queue::fake();
 
         [$user, $vault] = $this->scranton();
-        $possession = Possession::factory()->create(['vault_id' => $vault->id]);
+        $warehouse = Location::factory()->create(['account_id' => $user->account_id]);
+        $possession = Possession::factory()->featured(1)->create([
+            'vault_id' => $vault->id,
+            'name' => 'Chili pot',
+            'description' => 'Kevin’s famous chili',
+            'identifier' => 'KM-001',
+            'current_location_id' => $warehouse->id,
+            'status' => PossessionStatusEnum::Lent,
+            'quantity' => 3,
+            'declared_value' => '45.00',
+            'declared_value_currency' => 'usd',
+        ]);
         $possession->tags()->attach(PossessionTag::factory()->create(['account_id' => $user->account_id]));
 
         Sanctum::actingAs($user);
 
-        $this->json('PUT', "/api/v1/vaults/{$vault->slug}/possessions/{$possession->uuid}", ['name' => 'Chili pot'])
+        $this->json('PUT', "/api/v1/vaults/{$vault->slug}/possessions/{$possession->uuid}", ['name' => 'Big chili pot'])
+            ->assertOk()
+            ->assertJsonCount(1, 'data.attributes.tags');
+
+        $this->assertDatabaseHas('possessions', [
+            'id' => $possession->id,
+            'name' => 'Big chili pot',
+            'description' => 'Kevin’s famous chili',
+            'identifier' => 'KM-001',
+            'current_location_id' => $warehouse->id,
+            'status' => PossessionStatusEnum::Lent->value,
+            'quantity' => 3,
+            'is_featured' => true,
+            'declared_value' => '45.00',
+            'declared_value_currency' => 'usd',
+        ]);
+    }
+
+    #[Test]
+    public function it_clears_a_field_sent_as_null(): void
+    {
+        Queue::fake();
+
+        [$user, $vault] = $this->scranton();
+        $warehouse = Location::factory()->create(['account_id' => $user->account_id]);
+        $possession = Possession::factory()->create([
+            'vault_id' => $vault->id,
+            'name' => 'Chili pot',
+            'description' => 'Kevin’s famous chili',
+            'identifier' => 'KM-001',
+            'current_location_id' => $warehouse->id,
+            'declared_value' => '45.00',
+            'declared_value_currency' => 'usd',
+        ]);
+        $possession->tags()->attach(PossessionTag::factory()->create(['account_id' => $user->account_id]));
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', "/api/v1/vaults/{$vault->slug}/possessions/{$possession->uuid}", [
+            'description' => null,
+            'identifier' => null,
+            'location_id' => null,
+            'declared_value' => null,
+            'declared_value_currency' => null,
+            'tags' => null,
+        ])
             ->assertOk()
             ->assertJsonCount(0, 'data.attributes.tags');
+
+        $this->assertDatabaseHas('possessions', [
+            'id' => $possession->id,
+            'name' => 'Chili pot',
+            'description' => null,
+            'identifier' => null,
+            'current_location_id' => null,
+            'declared_value' => null,
+            'declared_value_currency' => null,
+        ]);
+    }
+
+    #[Test]
+    public function it_refuses_what_cannot_be_empty_sent_as_null(): void
+    {
+        [$user, $vault] = $this->scranton();
+        $possession = Possession::factory()->create(['vault_id' => $vault->id, 'name' => 'Chili pot']);
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', "/api/v1/vaults/{$vault->slug}/possessions/{$possession->uuid}", [
+            'name' => null,
+            'status' => null,
+            'quantity' => null,
+            'is_featured' => null,
+        ])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['name', 'status', 'quantity', 'is_featured']);
     }
 
     #[Test]

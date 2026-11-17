@@ -297,7 +297,7 @@ class VaultControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_change_that_omits_the_name(): void
+    public function it_refuses_a_name_sent_as_null(): void
     {
         $user = User::factory()->create();
         $vault = Vault::factory()->create([
@@ -308,8 +308,7 @@ class VaultControllerTest extends TestCase
         Sanctum::actingAs($user);
 
         $response = $this->json('PUT', "/api/v1/vaults/{$vault->uuid}", [
-            'description' => null,
-            'colour' => '#9a3f2b',
+            'name' => null,
         ]);
 
         $response->assertUnprocessable();
@@ -484,6 +483,58 @@ class VaultControllerTest extends TestCase
             'vault_id' => $vault->id,
             'applies_to' => StructureAppliesToEnum::Contact->value,
             'structure_version_id' => $chosen->structure->published_version_id,
+        ]);
+    }
+
+    #[Test]
+    public function it_keeps_what_is_left_out_of_an_update(): void
+    {
+        Queue::fake();
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create([
+            'account_id' => $user->account_id,
+            'name' => 'Dunder Mifflin',
+            'description' => 'The Scranton branch.',
+            'colour' => '#9a3f2b',
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('PUT', "/api/v1/vaults/{$vault->uuid}", [
+            'name' => 'Sabre',
+        ]);
+
+        $response->assertOk();
+        $this->assertDatabaseHas('vaults', [
+            'id' => $vault->id,
+            'name' => 'Sabre',
+            'description' => 'The Scranton branch.',
+            'colour' => '#9a3f2b',
+        ]);
+    }
+
+    #[Test]
+    public function it_clears_a_field_sent_as_null(): void
+    {
+        Queue::fake();
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create([
+            'account_id' => $user->account_id,
+            'name' => 'Dunder Mifflin',
+            'description' => 'The Scranton branch.',
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('PUT', "/api/v1/vaults/{$vault->uuid}", [
+            'description' => null,
+        ]);
+
+        $response->assertOk();
+        $this->assertDatabaseHas('vaults', [
+            'id' => $vault->id,
+            'name' => 'Dunder Mifflin',
+            'description' => null,
         ]);
     }
 

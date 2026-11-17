@@ -68,16 +68,6 @@ class SupportQueueToolsTest extends TestCase
         MonicaServer::actingAs($dwight)->tool(ListSupportQueue::class, [])->assertHasErrors();
     }
 
-    #[Test]
-    public function it_names_the_api_capabilities_it_mirrors(): void
-    {
-        $this->assertSame('api.v1.admin.supportRequests', app(ListSupportQueue::class)->mirrors());
-        $this->assertSame('api.v1.admin.supportRequests.show', app(GetSupportQueueRequest::class)->mirrors());
-        $this->assertSame('api.v1.admin.supportRequests.replies.create', app(SendSupportReply::class)->mirrors());
-        $this->assertSame('api.v1.admin.supportRequests.notes.create', app(AddSupportNote::class)->mirrors());
-        $this->assertSame('api.v1.admin.supportRequests.status.update', app(ChangeSupportRequestStatus::class)->mirrors());
-    }
-
     /** @param  list<string>  $abilities */
     private function holding(array $abilities, bool $administrator): User
     {

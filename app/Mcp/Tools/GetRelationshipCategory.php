@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Http\Resources\RelationshipCategoryResource;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -27,14 +26,16 @@ class GetRelationshipCategory extends Tool
             'relationship_category' => ['required', 'string'],
         ]);
 
-        return Response::json(new RelationshipCategoryResource($this->relationshipCategory($request, $validated['relationship_category']))->resolve());
+        $relationshipCategory = $this->relationshipCategory($request, $validated['relationship_category']);
+
+        return $this->answerThroughApi($request, $relationshipCategory->uuid);
     }
 
     /** @return array<string, Type> */
     public function schema(JsonSchema $schema): array
     {
         return [
-            'relationship_category' => $schema->string()->description('The identifier of the category, as list-relationship-categories gives it.')->required(),
+            'relationship_category' => $schema->string()->description('The id of the category, as list-relationship-categories gives it.')->required(),
         ];
     }
 }

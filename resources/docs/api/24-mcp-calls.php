@@ -85,12 +85,12 @@ $callAttributes = [
     ['name' => 'duration_in_milliseconds', 'type' => 'integer', 'description' => 'How long the tool took, or null while the call is interrupted.'],
     ['name' => 'connection', 'type' => 'object', 'description' => 'What the assistant connected with.'],
     ['name' => 'connection.type', 'type' => 'string', 'description' => 'api_key for an API key, oauth_client for an assistant connected through OAuth.'],
-    ['name' => 'connection.id', 'type' => 'string', 'description' => 'The identifier of the key or of the OAuth client. It stays after the key is revoked or the assistant disconnected.'],
+    ['name' => 'connection.id', 'type' => 'string', 'description' => 'The id of the key or of the OAuth client. It stays after the key is revoked or the assistant disconnected.'],
     ['name' => 'connection.name', 'type' => 'string', 'description' => 'The name the connection had when the call was made. It is the name you or the assistant chose, not a verified identity of whoever made the assistant.'],
     ['name' => 'tool', 'type' => 'string', 'description' => 'The name of the tool, as the assistant sent it, such as get-contact.'],
     ['name' => 'operation', 'type' => 'string', 'description' => 'read, create, update or delete, taken from the API endpoint the tool mirrors. Null for a tool that does not exist.'],
     ['name' => 'vault', 'type' => 'object', 'description' => 'The vault the call reached, or null when it named none inside your account.'],
-    ['name' => 'vault.id', 'type' => 'uuid', 'description' => 'The identifier of the vault, or null once the vault is deleted.'],
+    ['name' => 'vault.id', 'type' => 'uuid', 'description' => 'The id of the vault, or null once the vault is deleted.'],
     ['name' => 'vault.name', 'type' => 'string', 'description' => 'The name the vault had when the call was made.'],
     ['name' => 'subject', 'type' => 'object', 'description' => 'The record the call reached, or null when it reached none inside your account.'],
     ['name' => 'subject.type', 'type' => 'string', 'description' => 'What kind of record it is, such as contact or life_event.'],
@@ -99,7 +99,7 @@ $callAttributes = [
     ['name' => 'error', 'type' => 'object', 'description' => 'Why the call did not succeed, or null when it did.'],
     ['name' => 'error.code', 'type' => 'integer', 'description' => 'The JSON-RPC code: -32602 when the parameters or the record were refused, -32603 for anything else.'],
     ['name' => 'error.message', 'type' => 'string', 'description' => 'The reason sent to the assistant, word for word.'],
-    ['name' => 'json_rpc_id', 'type' => 'string', 'description' => 'The identifier the assistant gave the request, as a string.'],
+    ['name' => 'json_rpc_id', 'type' => 'string', 'description' => 'The id the assistant gave the request, as a string.'],
     ['name' => 'ip_address', 'type' => 'string', 'description' => 'The address the request came from, up to 45 characters.'],
     ['name' => 'parameters', 'type' => 'string', 'description' => 'The parameters the assistant sent, as JSON, with secrets and the values of sensitive fields masked before they were stored.'],
     ['name' => 'parameters_truncated', 'type' => 'boolean', 'description' => 'Whether the parameters were longer than 16 384 bytes and only their beginning was kept, in which case parameters is not valid JSON.'],
@@ -109,7 +109,7 @@ $callAttributes = [
 
 return [
     'name' => 'MCP history',
-    'description' => 'Every call an assistant made to a tool of the MCP server on your account, including reads, refusals and failures, kept apart from the account journal.',
+    'description' => 'Every call an assistant made to a tool of the MCP server on your account, including reads, refusals and failures, kept apart from the account log.',
     'sections' => [
         [
             'id' => 'mcp-calls-index',
@@ -120,7 +120,7 @@ return [
             'path' => '/mcp-calls',
             'description' => 'List the calls assistants made to your account through MCP, newest first.',
             'body' => [
-                'The account journal records what changed. This records what was asked: every tool call, whether it read, changed, was refused, was given wrong parameters or failed. A call made with no valid key is never attributed to an account, so it never appears here.',
+                'The account log records what changed. This records what was asked: every tool call, whether it read, changed, was refused, was given wrong parameters or failed. A call made with no valid key is never attributed to an account, so it never appears here.',
                 'Calls are kept for 90 days by default, a period the instance sets, and then removed. Nothing here can be written, changed or removed through the API.',
             ],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
@@ -192,7 +192,7 @@ return [
                     'name' => 'mcpCall',
                     'type' => 'uuid',
                     'required' => true,
-                    'description' => 'The identifier of the call.',
+                    'description' => 'The id of the call.',
                 ],
             ],
             'returns' => 'A call. A call from another account answers 404.',

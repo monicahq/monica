@@ -80,26 +80,57 @@ class ContactNameControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_body_that_leaves_a_part_of_the_name_out(): void
+    public function it_keeps_what_is_left_out_of_an_update(): void
     {
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $contact = Contact::factory()->create([
             'vault_id' => $vault->id,
             'account_id' => $user->account_id,
+            'first_name' => 'Pam',
+            'last_name' => 'Beesly',
             'nickname' => 'Pammy',
         ]);
 
         Sanctum::actingAs($user);
 
-        $body = $this->wholeName;
-        unset($body['nickname']);
+        $response = $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/name", [
+            'last_name' => 'Halpert',
+        ]);
 
-        $response = $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/name", $body);
+        $response->assertOk();
+        $this->assertDatabaseHas('contacts', [
+            'id' => $contact->id,
+            'first_name' => 'Pam',
+            'last_name' => 'Halpert',
+            'nickname' => 'Pammy',
+        ]);
+    }
 
-        $response->assertUnprocessable();
-        $response->assertJsonValidationErrors(['nickname']);
-        $this->assertEquals('Pammy', $contact->refresh()->nickname);
+    #[Test]
+    public function it_clears_a_field_sent_as_null(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create([
+            'vault_id' => $vault->id,
+            'account_id' => $user->account_id,
+            'first_name' => 'Pam',
+            'nickname' => 'Pammy',
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/name", [
+            'nickname' => null,
+        ]);
+
+        $response->assertOk();
+        $this->assertDatabaseHas('contacts', [
+            'id' => $contact->id,
+            'first_name' => 'Pam',
+            'nickname' => null,
+        ]);
     }
 
     #[Test]

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Actions\DestroyStructureVersion;
-use App\Exceptions\PublishedVersionIsFrozen;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -14,7 +12,7 @@ use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
 
-#[Description('Delete a draft of a template and every change made in it. A published version cannot be deleted. The change is written to the account journal.')]
+#[Description('Delete a draft of a template and every change made in it. A published version cannot be deleted. The change is written to the account log.')]
 #[IsDestructive]
 class DeleteTemplateDraft extends Tool
 {
@@ -29,15 +27,13 @@ class DeleteTemplateDraft extends Tool
             'version' => ['required', 'integer', 'min:1'],
         ]);
 
-        $version = $this->version($this->template($request, $validated['template']), (int) $validated['version']);
+        $template = $this->template($request, $validated['template']);
+        $version = $this->version($template, (int) $validated['version']);
 
-        try {
-            new DestroyStructureVersion(
-                user: $this->user($request),
-                structureVersion: $version,
-            )->execute();
-        } catch (PublishedVersionIsFrozen $e) {
-            return Response::error($e->getMessage());
+        $answer = $this->answerThroughApi($request, $template->uuid, (string) $version->version_number);
+
+        if ($answer->isError()) {
+            return $answer;
         }
 
         return Response::text(__('The draft is deleted.'));
@@ -47,8 +43,8 @@ class DeleteTemplateDraft extends Tool
     public function schema(JsonSchema $schema): array
     {
         return [
-            'template' => $schema->string()->description('The identifier of the template.')->required(),
-            'version' => $schema->integer()->description('The number of the draft to delete.')->required(),
+            'template' => $schema->string()->description('The id of the template, as list-templates gives it.')->required(),
+            'version' => $schema->integer()->description('The number of the draft to delete, as list-template-versions gives it.')->required(),
         ];
     }
 }

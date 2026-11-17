@@ -7,21 +7,15 @@ namespace App\Mcp\Tools;
 use App\Enums\ContactGroupingEnum;
 use App\Enums\ContactSortEnum;
 use App\Enums\SortDirectionEnum;
-use App\Enums\ValueListEnum;
-use App\Http\Resources\ContactResource;
-use App\Models\Contact;
-use App\Models\ValueList;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\JsonSchema\Types\Type;
-use Illuminate\Validation\Rule;
 use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
-#[Description('List the contacts of one vault, a page at a time, optionally narrowed by a search or a grouping.')]
+#[Description('List the contacts of one vault, a page at a time, optionally narrowed by a search, a grouping or contact categories. Each contact comes with the columns the vault shows in its list.')]
 #[IsReadOnly]
 class ListContacts extends Tool
 {
@@ -33,50 +27,11 @@ class ListContacts extends Tool
     {
         $validated = $request->validate([
             'vault' => ['required', 'string'],
-            'filter' => ['nullable', 'string', Rule::in(ContactGroupingEnum::values())],
-            'query' => ['nullable', 'string', 'max:255'],
-            'sort' => ['nullable', 'string', Rule::in(ContactSortEnum::values())],
-            'direction' => ['nullable', 'string', Rule::enum(SortDirectionEnum::class)],
-            'page' => ['nullable', 'integer'],
-            'per_page' => ['nullable', 'integer'],
-            'categories' => ['nullable', 'array'],
-            'categories.*' => ['integer', Rule::exists('value_list_items', 'id')
-                ->where('account_id', $this->user($request)->account_id)
-                ->where('value_list_id', ValueList::query()
-                    ->where('account_id', $this->user($request)->account_id)
-                    ->where('key', ValueListEnum::ContactCategories->value)
-                    ->value('id'))],
         ]);
-
-        $categoryIds = array_map(intval(...), $validated['categories'] ?? []);
 
         $vault = $this->vault($request, $validated['vault']);
 
-        $perPage = max(1, min(
-            (int) ($validated['per_page'] ?? config('monica.api_default_items_per_page')),
-            (int) config('monica.api_maximum_items_per_page'),
-        ));
-
-        $contacts = Contact::query()
-            ->where('vault_id', $vault->id)
-            ->inGrouping(ContactGroupingEnum::fromValueOrEveryone($validated['filter'] ?? null))
-            ->matchingSearch($validated['query'] ?? '')
-            ->when($categoryIds !== [], fn (Builder $query): Builder => $query->holdingAnyCategory($categoryIds, $this->reachesSensitiveFields($request)))
-            ->sortedBy(
-                ContactSortEnum::fromValueOrName($validated['sort'] ?? null),
-                SortDirectionEnum::fromValueOrAscending($validated['direction'] ?? null),
-            )
-            ->with(['vault', 'structureVersion.structure.owner', 'avatar', 'nameRepresentations'])
-            ->paginate($perPage, ['*'], 'page', max(1, (int) ($validated['page'] ?? 1)));
-
-        return Response::json([
-            'data' => ContactResource::collection($contacts->items())->resolve(),
-            'meta' => [
-                'page' => $contacts->currentPage(),
-                'per_page' => $contacts->perPage(),
-                'total' => $contacts->total(),
-            ],
-        ]);
+        return $this->answerThroughApi($request, $vault->uuid);
     }
 
     /** @return array<string, Type> */
@@ -86,22 +41,14 @@ class ListContacts extends Tool
         $maximum = (int) config('monica.api_maximum_items_per_page');
 
         return [
-            'vault' => $schema->string()
-                ->description('The address of the vault, as list-vaults gives it.')
-                ->required(),
-            'query' => $schema->string()
-                ->description('Words to search the contacts of that vault for.'),
-            'filter' => $schema->string()
-                ->description('Narrow the list to a grouping: '.implode(', ', ContactGroupingEnum::values()).'.'),
-            'sort' => $schema->string()
-                ->description('Order the list by: '.implode(', ', ContactSortEnum::values()).'.'),
-            'direction' => $schema->string()
-                ->description('Either asc or desc.'),
+            'vault' => $schema->string()->description('The id of the vault, as list-vaults gives it.')->required(),
+            'query' => $schema->string()->description('Words to search the contacts of the vault for.'),
+            'filter' => $schema->string()->enum(ContactGroupingEnum::values())->description('Only the contacts of one grouping.'),
+            'sort' => $schema->string()->enum(ContactSortEnum::values())->description('What the list is ordered by.'),
+            'direction' => $schema->string()->enum(SortDirectionEnum::values())->description('The direction of the order.'),
+            'categories' => $schema->array()->items($schema->integer())->description('The ids of contact categories, as list-contact-categories gives them; only the people holding any of them.'),
             'page' => $schema->integer()->description('The page to read, starting at 1.'),
             'per_page' => $schema->integer()->description("How many contacts a page holds: {$default} unless asked, {$maximum} at most."),
-            'categories' => $schema->array()
-                ->items($schema->integer())
-                ->description('Narrow the list to the people holding any of these categories, by the ids the API lists for the vault.'),
         ];
     }
 }

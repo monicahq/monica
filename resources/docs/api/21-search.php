@@ -24,7 +24,7 @@ return [
             ],
             'rateLimit' => 'Sixty requests per minute, per token.',
             'pathParams' => [
-                ['name' => 'vault', 'type' => 'string', 'required' => true, 'description' => 'The vault to search, named either by the readable name it reports as slug or by the identifier it reports as id. Both answer.'],
+                ['name' => 'vault', 'type' => 'string', 'required' => true, 'description' => 'The vault to search, named either by the readable name it reports as slug or by its id. Both answer.'],
             ],
             'queryParams' => [
                 ['name' => 'query', 'type' => 'string', 'required' => true, 'description' => 'The words to find, at least two characters and at most 255.', 'example' => 'farms'],
@@ -43,10 +43,10 @@ return [
                 ['name' => 'data[].results', 'type' => 'array', 'description' => 'The records of the group on this page, best match first.'],
                 ['name' => 'data[].results[]', 'type' => 'object', 'description' => 'One record.'],
                 ['name' => 'data[].results[].type', 'type' => 'string', 'description' => 'contact, entity or life_event.'],
-                ['name' => 'data[].results[].id', 'type' => 'uuid', 'description' => 'The identifier the record answers to on its own endpoints.'],
+                ['name' => 'data[].results[].id', 'type' => 'uuid', 'description' => 'The id the record answers to on its own endpoints.'],
                 ['name' => 'data[].results[].name', 'type' => 'string', 'description' => 'The name the record is listed under.'],
                 ['name' => 'data[].results[].vault', 'type' => 'object', 'description' => 'The vault the record lives in.'],
-                ['name' => 'data[].results[].vault.id', 'type' => 'uuid', 'description' => 'The identifier of the vault.'],
+                ['name' => 'data[].results[].vault.id', 'type' => 'uuid', 'description' => 'The id of the vault.'],
                 ['name' => 'data[].results[].vault.name', 'type' => 'string', 'description' => 'The name of the vault.'],
                 ['name' => 'data[].results[].archived', 'type' => 'boolean', 'description' => 'Whether the record is archived.'],
                 ['name' => 'data[].results[].date', 'type' => 'string', 'description' => 'For a life event, the day it happened, else null.'],

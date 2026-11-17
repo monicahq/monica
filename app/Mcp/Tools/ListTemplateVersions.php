@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Http\Resources\StructureVersionResource;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -29,20 +28,19 @@ class ListTemplateVersions extends Tool
 
         $template = $this->template($request, $validated['template']);
 
-        $versions = $template->versions()
-            ->with(['structure.owner', 'previousVersion'])
-            ->get();
-
-        return Response::json(StructureVersionResource::collection($versions)->resolve());
+        return $this->answerThroughApi($request, $template->uuid);
     }
 
     /** @return array<string, Type> */
     public function schema(JsonSchema $schema): array
     {
+        $default = (int) config('monica.api_default_items_per_page');
+        $maximum = (int) config('monica.api_maximum_items_per_page');
+
         return [
-            'template' => $schema->string()
-                ->description('The identifier of the template, as list-templates gives it.')
-                ->required(),
+            'template' => $schema->string()->description('The id of the template, as list-templates gives it.')->required(),
+            'page' => $schema->integer()->description('The page to read, starting at 1.'),
+            'per_page' => $schema->integer()->description("How many versions a page holds: {$default} unless asked, {$maximum} at most."),
         ];
     }
 }

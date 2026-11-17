@@ -273,4 +273,32 @@ class LifeEventCategoryControllerTest extends TestCase
         $this->assertNotSoftDeleted($category);
         $this->assertEquals('Volunteering', $category->refresh()->name);
     }
+
+    #[Test]
+    public function it_keeps_what_is_left_out_of_an_update(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id, 'name' => 'Volunteering']);
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', "/api/v1/life-event-categories/{$category->uuid}", [])
+            ->assertOk()
+            ->assertJsonPath('data.attributes.name', 'Volunteering');
+    }
+
+    #[Test]
+    public function it_refuses_a_name_sent_as_null(): void
+    {
+        $user = User::factory()->create();
+        $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id, 'name' => 'Volunteering']);
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', "/api/v1/life-event-categories/{$category->uuid}", ['name' => null])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['name']);
+    }
 }

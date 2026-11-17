@@ -123,7 +123,7 @@
             </article>
 
             @if ($entry->example !== null)
-              <aside aria-label="Example" class="flex max-w-115 min-w-0 flex-1 basis-85 flex-col gap-4 lg:sticky lg:top-32">
+              <aside aria-label="Example" class="flex max-w-115 min-w-0 flex-1 basis-85 flex-col gap-4 lg:sticky lg:top-4">
                 <div
                   x-data="{ side: 'after', copied: false, shapes: {{ Js::from(['before' => $entry->example['before'] ?? null, 'after' => $entry->example['after']]) }} }"
                   class="overflow-hidden rounded-lg border border-hairline bg-sunken"

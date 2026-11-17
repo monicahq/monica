@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace App\Mcp\Tools;
 
 use App\Helpers\ReminderDates;
-use App\Http\Resources\ReminderOccurrenceResource;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
-use Illuminate\Validation\Rule;
 use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
@@ -28,44 +26,26 @@ class ListContactReminderOccurrences extends Tool
         $validated = $request->validate([
             'vault' => ['required', 'string'],
             'contact' => ['required', 'string'],
-            'category' => ['nullable', 'string', Rule::in(ReminderDates::categories())],
-            'page' => ['nullable', 'integer'],
-            'per_page' => ['nullable', 'integer'],
         ]);
 
-        $perPage = max(1, min(
-            (int) ($validated['per_page'] ?? config('monica.api_default_items_per_page')),
-            (int) config('monica.api_maximum_items_per_page'),
-        ));
+        $vault = $this->vault($request, $validated['vault']);
+        $contact = $this->contact($vault, $validated['contact']);
 
-        $contact = $this->contact($this->vault($request, $validated['vault']), $validated['contact']);
-        $dates = ReminderDates::page(
-            user: $this->user($request),
-            record: $contact,
-            category: $validated['category'] ?? null,
-            perPage: $perPage,
-            page: max(1, (int) ($validated['page'] ?? 1)),
-        );
-
-        return Response::json([
-            'data' => ReminderOccurrenceResource::collection($dates->items())->resolve(),
-            'meta' => [
-                'page' => $dates->currentPage(),
-                'per_page' => $dates->perPage(),
-                'total' => $dates->total(),
-            ],
-        ]);
+        return $this->answerThroughApi($request, $vault->uuid, $contact->uuid);
     }
 
     /** @return array<string, Type> */
     public function schema(JsonSchema $schema): array
     {
+        $default = (int) config('monica.api_default_items_per_page');
+        $maximum = (int) config('monica.api_maximum_items_per_page');
+
         return [
-            'vault' => $schema->string()->description('The address of the vault holding the contact.')->required(),
-            'contact' => $schema->string()->description('The address of the contact.')->required(),
-            'category' => $schema->string()->description('Only one kind of date: overdue, today, upcoming or history. Every date, newest first, when left out.'),
+            'vault' => $schema->string()->description('The id of the vault, as list-vaults gives it.')->required(),
+            'contact' => $schema->string()->description('The id of the contact, as list-contacts gives it.')->required(),
+            'category' => $schema->string()->enum(ReminderDates::categories())->description('Only one kind of date: overdue, today, upcoming or history. Every date, newest first, when left out.'),
             'page' => $schema->integer()->description('The page to read, starting at 1.'),
-            'per_page' => $schema->integer()->description('How many dates a page holds.'),
+            'per_page' => $schema->integer()->description("How many dates a page holds: {$default} unless asked, {$maximum} at most."),
         ];
     }
 }

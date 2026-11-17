@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Actions\DestroyPossessionCondition;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -13,7 +12,7 @@ use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
 
-#[Description('Delete a possession condition. This cannot be undone. The change is written to the account journal.')]
+#[Description('Delete a possession condition. This cannot be undone. The change is written to the account log.')]
 #[IsDestructive]
 class DeletePossessionCondition extends Tool
 {
@@ -27,10 +26,13 @@ class DeletePossessionCondition extends Tool
             'possession_condition' => ['required', 'string'],
         ]);
 
-        new DestroyPossessionCondition(
-            user: $this->user($request),
-            possessionCondition: $this->possessionCondition($request, $validated['possession_condition']),
-        )->execute();
+        $possessionCondition = $this->possessionCondition($request, $validated['possession_condition']);
+
+        $answer = $this->answerThroughApi($request, $possessionCondition->uuid);
+
+        if ($answer->isError()) {
+            return $answer;
+        }
 
         return Response::text(__('The possession condition is deleted.'));
     }
@@ -39,7 +41,7 @@ class DeletePossessionCondition extends Tool
     public function schema(JsonSchema $schema): array
     {
         return [
-            'possession_condition' => $schema->string()->description('The identifier of the possession condition, as list-possession-conditions gives it.')->required(),
+            'possession_condition' => $schema->string()->description('The id of the possession condition, as list-possession-conditions gives it.')->required(),
         ];
     }
 }

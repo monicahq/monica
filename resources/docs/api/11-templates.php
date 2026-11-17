@@ -153,14 +153,14 @@ $templateParam = [
     'name' => 'template',
     'type' => 'uuid',
     'required' => true,
-    'description' => 'The identifier of the template, which is the id it comes back with. A path that is not a uuid answers 404 without a query being run, so neither the slug nor a sequential number reaches anything here.',
+    'description' => 'The id of the template. A path that is not a uuid answers 404 without a query being run, so neither the slug nor a sequential number reaches anything here.',
 ];
 
 $versionParam = [
     'name' => 'version',
     'type' => 'integer',
     'required' => true,
-    'description' => 'The number of the version within its template, counting from 1, which is the number shown in the version history and the number a change note refers to. It is not a row identifier, so version 1 of one template and version 1 of another are different things reached through different templates.',
+    'description' => 'The number of the version within its template, counting from 1, which is the number shown in the version history and the number a change note refers to. It is not a row id, so version 1 of one template and version 1 of another are different things reached through different templates.',
 ];
 
 $templateAttributes = [
@@ -168,7 +168,7 @@ $templateAttributes = [
     ['name' => 'name', 'type' => 'string', 'description' => 'What the template is called. A template the product supplied answers with the name translated into your language rather than the one stored, so the same template reads differently to two people.'],
     ['name' => 'description', 'type' => 'string', 'description' => 'What the template is for, or null when nobody said.'],
     ['name' => 'applies_to', 'type' => 'string', 'description' => 'Either contact or entity. A template describing a contact applies to the people in every vault; one describing an entity applies only to records of the type named in entity_type_id.'],
-    ['name' => 'entity_type_id', 'type' => 'string', 'description' => 'The identifier of the entity type this template describes, or null when it describes contacts. Read that type through the entity types endpoints.'],
+    ['name' => 'entity_type_id', 'type' => 'string', 'description' => 'The id of the entity type this template describes, or null when it describes contacts. Read that type through the entity types endpoints.'],
     ['name' => 'is_system', 'type' => 'boolean', 'description' => 'Whether the product supplied the template rather than you. It says where the template came from and locks nothing: a supplied template is renamed, moved, stopped and deleted exactly like one you made. Duplicating it first is usually the better move, because a copy leaves the original for anything already using it.'],
     ['name' => 'is_active', 'type' => 'boolean', 'description' => 'Whether the template may still be applied to a record. False stops it being offered and touches nothing already using it: every record on it stays readable and stays editable.'],
     ['name' => 'position', 'type' => 'integer', 'description' => 'Where the template sits in the list on the templates screen, counting from 1. It is the order you arranged, and it is the order the list endpoint answers in.'],
@@ -200,7 +200,7 @@ $nested = function (string $prefix, string $type, string $singular, string $plur
         ['name' => $prefix, 'type' => 'array', 'description' => $summary],
         ['name' => "{$prefix}[]", 'type' => 'object', 'description' => "One {$singular}."],
         ['name' => "{$prefix}[].type", 'type' => 'string', 'description' => "Always {$type}. It names the kind of record, so a caller holding several kinds can tell them apart."],
-        ['name' => "{$prefix}[].id", 'type' => 'string', 'description' => "The identifier of the {$singular}, as a string even when it reads as a number."],
+        ['name' => "{$prefix}[].id", 'type' => 'string', 'description' => "The id of the {$singular}, as a string even when it reads as a number."],
         ['name' => "{$prefix}[].attributes", 'type' => 'object', 'description' => "Everything the {$singular} holds."],
     ];
 
@@ -239,7 +239,7 @@ $sectionAttributes = [
     ['name' => 'position', 'type' => 'integer', 'description' => 'Where the block sits on its page, counting from 1 again on each page.'],
     ['name' => 'title', 'type' => 'string', 'description' => 'What the block is headed: the override when there is one, and the name of the section otherwise. It is what to show a reader.'],
     ['name' => 'title_override', 'type' => 'string', 'description' => 'The heading chosen for this placement alone, or null when the section name is used. What a section is called here belongs to the assembly rather than to the section.'],
-    ['name' => 'section_id', 'type' => 'string', 'description' => 'The identifier of the reusable section behind the placement. The same section may appear in several templates and in several versions of one template.'],
+    ['name' => 'section_id', 'type' => 'string', 'description' => 'The id of the reusable section behind the placement. The same section may appear in several templates and in several versions of one template.'],
     ['name' => 'section_name', 'type' => 'string', 'description' => 'What the section is called in the section library.'],
     ['name' => 'section_version_number', 'type' => 'integer', 'description' => 'Which version of the section is placed here. A placement names a version and not a section, which is what stops a change made through another template reaching this one.'],
     ['name' => 'section_version_status', 'type' => 'string', 'description' => 'One of draft, published or retired, for the section version rather than the template version. A template version cannot be published while a section it carries is still a draft.'],
@@ -292,21 +292,21 @@ $pageParam = [
     'name' => 'page',
     'type' => 'uuid',
     'required' => true,
-    'description' => 'The identifier of the page, which is the id it comes back with.',
+    'description' => 'The id of the page.',
 ];
 
 $sectionParam = [
     'name' => 'section',
     'type' => 'integer',
     'required' => true,
-    'description' => 'The identifier of the placement, which is not the identifier of the section. It is the id a placement comes back with when a version is read.',
+    'description' => 'The id of the placement, which is not the id of the section. It is the id a placement comes back with when a version is read.',
 ];
 
 $fieldParam = [
     'name' => 'field',
     'type' => 'integer',
     'required' => true,
-    'description' => 'The identifier of the field. It changes the first time a published section is changed, because the change opens a draft of the section and the fields are copied into it. The key does not change, and the answer carries the new id.',
+    'description' => 'The id of the field. It changes the first time a published section is changed, because the change opens a draft of the section and the fields are copied into it. The key does not change, and the answer carries the new id.',
 ];
 
 $pageExample = [
@@ -455,13 +455,13 @@ return [
             'body' => [
                 'This is the wording and nothing else. The slug, the place in the order, every version and every record on them are untouched, so renaming a template is safe at any time and breaks no link that already went out.',
                 'What the template applies to cannot be changed. A template that describes contacts describes contacts for good, because records already exist on that promise. Build the other one instead.',
-                'Both fields are sent every time. Sending description as null clears it rather than leaving it alone.',
+                'A name sent as null is refused with 422. A description sent as null is cleared.',
             ],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [$templateParam],
             'bodyParams' => [
-                ['name' => 'name', 'type' => 'string', 'required' => true, 'description' => 'What the template is called. Up to 255 characters.', 'example' => 'Person'],
-                ['name' => 'description', 'type' => 'string', 'required' => true, 'description' => 'What the template is for, or null to clear it. The field has to be present even when it is null.', 'example' => 'Anybody the family knows.'],
+                ['name' => 'name', 'type' => 'string', 'required' => false, 'description' => 'What the template is called. Up to 255 characters. It cannot be null.', 'example' => 'Person'],
+                ['name' => 'description', 'type' => 'string', 'required' => false, 'description' => 'What the template is for, or null to clear it.', 'example' => 'Anybody the family knows.'],
             ],
             'returns' => 'The template as it now stands. A template belonging to somebody else answers 404.',
             'response' => ['data' => $template],
@@ -535,7 +535,7 @@ return [
             'examplePath' => '/templates/'.$templateId.'/duplicate',
             'description' => 'Copy a template and everything it is made of into a separate template of your own.',
             'body' => [
-                'This is how you build on a template the product supplied without touching it, and how you try a change out without putting the records of the original at risk. The copy is a separate template with its own identifier and its own slug, and nothing about the original moves.',
+                'This is how you build on a template the product supplied without touching it, and how you try a change out without putting the records of the original at risk. The copy is a separate template with its own id and its own slug, and nothing about the original moves.',
                 'What is copied is the published version when there is one, and the newest version otherwise. It arrives in the copy as a draft numbered 1, so the copy has nothing published until you publish it. A template with no version at all has nothing to copy and answers 404.',
                 'The copy takes a name and a slug of your choosing, or is given ones derived from the original when you send none.',
             ],
@@ -644,7 +644,7 @@ return [
             'body' => [
                 'This is the endpoint that tells you what a record means. A record names the version it sits on, and this answers with the structure that version froze, so a client can render the record without guessing what any of its values are for.',
                 'The whole structure comes back in one answer rather than a page at a time. A structure is one document, and splitting it would make it unreadable.',
-                'The version is named by its number within its template, which is the number the version history shows, and not by a row identifier. Version 3 of one template and version 3 of another are different things reached through different templates.',
+                'The version is named by its number within its template, which is the number the version history shows, and not by a row id. Version 3 of one template and version 3 of another are different things reached through different templates.',
                 'A section is placed rather than owned. The same section can sit in several templates, and each placement names a precise version of it, which is what stops a change made through one template reaching another.',
             ],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
@@ -691,7 +691,7 @@ return [
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [$templateParam, $versionParam, $pageParam],
             'bodyParams' => [
-                ['name' => 'label', 'type' => 'string', 'required' => true, 'description' => 'What the tab says. Up to 255 characters.', 'example' => 'Health'],
+                ['name' => 'label', 'type' => 'string', 'required' => false, 'description' => 'What the tab says. Up to 255 characters. It cannot be null.', 'example' => 'Health'],
             ],
             'returns' => 'The page as it now stands. A label another page of the version already reads answers 422.',
             'response' => ['data' => $pageExample],
@@ -775,13 +775,13 @@ return [
             'description' => 'Change what a block is headed here and whether it starts folded shut.',
             'body' => [
                 'This touches the placement and never the section. The section keeps its name, its fields and its version, and every other template placing it is unaffected.',
-                'Sending title_override as null goes back to the name of the section. The field has to be present either way.',
+                'Sending title_override as null goes back to the name of the section.',
             ],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [$templateParam, $versionParam, $sectionParam],
             'bodyParams' => [
-                ['name' => 'title_override', 'type' => 'string', 'required' => true, 'description' => 'What to head the block here, or null to use the name of the section. The field has to be present even when it is null.', 'example' => 'Where they live'],
-                ['name' => 'is_collapsed_by_default', 'type' => 'boolean', 'required' => false, 'description' => 'Whether the block starts folded shut. False when absent.'],
+                ['name' => 'title_override', 'type' => 'string', 'required' => false, 'description' => 'What to head the block here, or null to use the name of the section.', 'example' => 'Where they live'],
+                ['name' => 'is_collapsed_by_default', 'type' => 'boolean', 'required' => false, 'description' => 'Whether the block starts folded shut. It cannot be null.'],
             ],
             'returns' => 'The placement as it now stands.',
             'response' => ['data' => $placementExample],
@@ -863,7 +863,7 @@ return [
                 ['name' => 'type', 'type' => 'string', 'required' => true, 'description' => 'What kind of thing the field holds: one of text, textarea, number, boolean, url, email, phone, select, multiselect, radio, date, recurring_date, relation, file, image, avatar, address, repeater, divider, heading or help.', 'example' => 'text'],
                 ['name' => 'label', 'type' => 'string', 'required' => true, 'description' => 'What the field is called on the form. Up to 255 characters.', 'example' => 'Nickname'],
                 ['name' => 'key', 'type' => 'string', 'required' => false, 'description' => 'How the field is named in an import or an export. Derived from the label when absent, and settled once.'],
-                ['name' => 'value_list_id', 'type' => 'integer', 'required' => false, 'description' => 'The list a field offering choices takes them from. Required for select, multiselect and radio.'],
+                ['name' => 'value_list_id', 'type' => 'integer', 'required' => false, 'description' => 'The list a field offering choices takes them from, as the id the value lists endpoint gives. Required for select, multiselect and radio.'],
                 ['name' => 'relation_target', 'type' => 'string', 'required' => false, 'description' => 'What a relation field points at: contact or entity. Required for a relation field.'],
                 ['name' => 'relation_entity_type_id', 'type' => 'uuid', 'required' => false, 'description' => 'Which kind of entity a relation field points at. Required when relation_target is entity.'],
                 ['name' => 'parent_id', 'type' => 'integer', 'required' => false, 'description' => 'The repeater this field sits inside. Only a repeater can hold other fields, and a repeater cannot sit inside another.'],
@@ -883,19 +883,20 @@ return [
             'description' => 'Change what a field is called and how it behaves.',
             'body' => [
                 'As with adding one, changing a field of a section that has been published opens a draft of the section and changes it there, leaving the published section and every other template placing it alone.',
-                'The type, whether the field repeats, and what a relation points at are settled when the field is added and are not sent here. Everything else is sent every time: a setting left out goes back to its default rather than staying as it was.',
+                'The type, whether the field repeats, and what a relation points at are settled when the field is added and are not sent here. Everything else may be sent: a setting left out keeps its value, and a setting sent as null goes back to its default. The label and the five switches cannot be null.',
             ],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [$templateParam, $versionParam, $sectionParam, $fieldParam],
             'bodyParams' => [
-                ['name' => 'label', 'type' => 'string', 'required' => true, 'description' => 'What the field is called on the form.', 'example' => 'Street name'],
-                ['name' => 'help_text', 'type' => 'string', 'required' => true, 'description' => 'A sentence shown under the field, or null. The field has to be present even when it is null.', 'example' => 'Including the number.'],
-                ['name' => 'placeholder', 'type' => 'string', 'required' => true, 'description' => 'What the empty box shows as an example, or null. The field has to be present even when it is null.', 'example' => '221B Baker Street'],
+                ['name' => 'label', 'type' => 'string', 'required' => false, 'description' => 'What the field is called on the form. It cannot be null.', 'example' => 'Street name'],
+                ['name' => 'help_text', 'type' => 'string', 'required' => false, 'description' => 'A sentence shown under the field, or null to remove it.', 'example' => 'Including the number.'],
+                ['name' => 'placeholder', 'type' => 'string', 'required' => false, 'description' => 'What the empty box shows as an example, or null to remove it.', 'example' => '221B Baker Street'],
                 ['name' => 'is_required', 'type' => 'boolean', 'required' => false, 'description' => 'Whether the record refuses to save without it.'],
                 ['name' => 'is_sensitive', 'type' => 'boolean', 'required' => false, 'description' => 'Whether the value is hidden until somebody asks to see it.'],
                 ['name' => 'is_highlighted', 'type' => 'boolean', 'required' => false, 'description' => 'Whether the value is repeated at the top of the record.'],
                 ['name' => 'is_unique', 'type' => 'boolean', 'required' => false, 'description' => 'Whether two records may hold the same value.'],
-                ['name' => 'value_list_id', 'type' => 'integer', 'required' => false, 'description' => 'The list a field offering choices takes them from.'],
+                ['name' => 'is_identifying', 'type' => 'boolean', 'required' => false, 'description' => 'Whether two records sharing this value are likely the same record, so the pair is proposed as a duplicate.'],
+                ['name' => 'value_list_id', 'type' => 'integer', 'required' => false, 'description' => 'The list a field offering choices takes them from, as the id the value lists endpoint gives. A list of another account is refused. Null removes it.'],
                 ['name' => 'default_value', 'type' => 'object', 'required' => false, 'description' => 'What the field starts filled with.'],
                 ['name' => 'options', 'type' => 'object', 'required' => false, 'description' => 'Settings belonging to this kind of field alone. A file or image field takes accepted_mime_types, a list of at most 20 mime types such as image/png, and an image field takes image types only. Anything else answers 422 on options.'],
                 ['name' => 'validation', 'type' => 'object', 'required' => false, 'description' => 'Extra rules a value has to satisfy.'],
@@ -942,6 +943,54 @@ return [
             ],
             'returns' => 'The field with the place it now holds.',
             'response' => ['data' => $fieldExample],
+        ],
+        [
+            'id' => 'value-lists-index',
+            'returnFields' => [
+                ['name' => 'data', 'type' => 'array', 'description' => 'The value lists on this page. An empty list rather than an error when there are none.'],
+                ['name' => 'data[]', 'type' => 'object', 'description' => 'One value list.'],
+                ['name' => 'data[].type', 'type' => 'string', 'description' => 'Always value_list.'],
+                ['name' => 'data[].id', 'type' => 'integer', 'description' => 'The id of the list, which is what value_list_id takes when a field is added or configured.'],
+                ['name' => 'data[].attributes', 'type' => 'object', 'description' => 'What the list holds.'],
+                ['name' => 'data[].attributes.name', 'type' => 'string', 'description' => 'What the list is called.'],
+                ['name' => 'data[].attributes.items', 'type' => 'array', 'description' => 'The choices the list offers, in their order. An empty list when it offers none yet.'],
+                ['name' => 'data[].attributes.items[]', 'type' => 'object', 'description' => 'One choice.'],
+                ['name' => 'data[].attributes.items[].id', 'type' => 'integer', 'description' => 'The id of the choice, which is what a field offering this list stores as its value.'],
+                ['name' => 'data[].attributes.items[].label', 'type' => 'string', 'description' => 'What the choice says.'],
+                ['name' => 'meta', 'type' => 'object', 'description' => 'Where you are in the collection.'],
+                ['name' => 'meta.page', 'type' => 'integer', 'description' => 'The page this is, counting from 1.'],
+                ['name' => 'meta.per_page', 'type' => 'integer', 'description' => 'How many one page holds, which is the size that was asked for once it has been brought into the allowed range.'],
+                ['name' => 'meta.total', 'type' => 'integer', 'description' => 'How many value lists there are in all, not how many are on this page.'],
+            ],
+            'title' => 'List value lists',
+            'label' => 'List value lists',
+            'method' => 'GET',
+            'path' => '/value-lists',
+            'description' => 'List the value lists of your account, each with its choices, so a field offering choices can name the one it takes them from.',
+            'body' => [
+                'A value list is a named set of choices defined once for the account and reused by any number of fields: genders, phone labels, contact categories. The lists are in the order the settings show them, and the choices of each in their own order.',
+                'Only the shared lists are here. The choices somebody typed into a single field belong to that field and are not listed.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
+            'queryParams' => $pageParams,
+            'returns' => 'A page of value lists, and how many there are in all. The lists of another account are never included.',
+            'response' => [
+                'data' => [
+                    [
+                        'type' => 'value_list',
+                        'id' => 3,
+                        'attributes' => [
+                            'name' => 'Genders',
+                            'items' => [
+                                ['id' => 11, 'label' => 'Woman'],
+                                ['id' => 12, 'label' => 'Man'],
+                                ['id' => 13, 'label' => 'Non-binary'],
+                            ],
+                        ],
+                    ],
+                ],
+                'meta' => ['page' => 1, 'per_page' => 25, 'total' => 1],
+            ],
         ],
     ],
 ];

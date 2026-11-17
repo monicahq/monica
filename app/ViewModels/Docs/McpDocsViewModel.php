@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Docs;
 
+use App\Helpers\FlagState;
 use App\Helpers\SupportAvailability;
+use App\Mcp\Servers\MonicaServer;
 use Carbon\CarbonImmutable;
+use Illuminate\Support\Str;
+use ReflectionClass;
 
 class McpDocsViewModel
 {
@@ -21,7 +25,6 @@ class McpDocsViewModel
         ['id' => 'setup', 'label' => 'Set up Monica MCP'],
         ['id' => 'check', 'label' => 'Check your connection'],
         ['id' => 'access', 'label' => 'Manage access'],
-        ['id' => 'tools', 'label' => 'Available tools'],
         ['id' => 'templates', 'label' => 'Edit a template'],
         ['id' => 'troubleshooting', 'label' => 'Troubleshooting'],
         ['id' => 'see-also', 'label' => 'See also'],
@@ -48,7 +51,7 @@ class McpDocsViewModel
     /** @var list<string> */
     public const array TEMPLATES = [
         'A template changes through a draft. Its sections and fields can only change on a draft version, and nothing reaches the records it describes until the draft is published. Deleting a draft throws its changes away.',
-        'The tools that change a template, a section or a field keep what you leave out, so asking for one change never clears the others. A field can come back with a new id when its section had to be drafted first. Use the id the tool returns.',
+        'A field can come back with a new id when its section had to be drafted first. Use the id the tool returns.',
     ];
 
     public const string TEMPLATE_EXAMPLE = 'Asked to add a Hobbies section with a text field and a date field, an assistant calls:';
@@ -66,10 +69,10 @@ class McpDocsViewModel
     /** @var array{title: string, text: string} */
     public const array ACCESS_NOTICE = [
         'title' => 'Your assistant can access all your vaults',
-        'text' => 'Your assistant can use every tool listed below in every vault in your account, whether it connects with a key or through OAuth. Choosing “AI Assistant” when creating an API key only labels the key—it does not limit what your assistant can access or change.',
+        'text' => 'Your assistant can use every tool in every vault in your account, whether it connects with a key or through OAuth. Choosing “AI Assistant” when creating an API key only labels the key—it does not limit what your assistant can access or change.',
     ];
 
-    public const string LAST_UPDATED = '2026-10-23';
+    public const string LAST_UPDATED = '2026-11-17';
 
     public const string SOURCE_URL = 'https://github.com/monicahq/monica';
 
@@ -215,333 +218,154 @@ class McpDocsViewModel
         ];
     }
 
-    /** @return list<array{name: string, changesData: bool, tools: list<array{name: string, description: string}>}> */
-    public function toolGroups(): array
-    {
-        $groups = [
-            ['name' => 'Vaults', 'changesData' => false, 'tools' => [
-                ['name' => 'list-vaults', 'description' => 'Lists the vaults of your account.'],
-            ]],
-            ['name' => 'Search', 'changesData' => false, 'tools' => [
-                ['name' => 'search-records', 'description' => 'Finds the people, entities and life events of a vault, or of every vault, holding every word given, typing mistakes tolerated.'],
-            ]],
-            ['name' => 'Contacts, reading', 'changesData' => false, 'tools' => [
-                ['name' => 'list-contacts', 'description' => 'Lists the contacts in a vault, a page at a time. Can search, narrow to a grouping, and sort.'],
-                ['name' => 'get-contact', 'description' => 'Returns one contact: their names, their template, and whether they are a favourite or archived.'],
-                ['name' => 'get-contact-markdown', 'description' => 'Returns everything recorded about one contact as a single Markdown document, the same text the contact page downloads.'],
-                ['name' => 'get-me-contact', 'description' => 'Returns the contact that represents you in a vault.'],
-                ['name' => 'list-contact-name-representations', 'description' => 'Returns every way a contact’s name is written, and which one it is shown under.'],
-            ]],
-            ['name' => 'Contacts, changing', 'changesData' => true, 'tools' => [
-                ['name' => 'create-contact', 'description' => 'Adds a contact to a vault.'],
-                ['name' => 'update-contact-name', 'description' => 'Changes a contact’s first, middle or last name, or nickname.'],
-                ['name' => 'update-contact-name-representations', 'description' => 'Replaces every way a contact’s name is written, and chooses the one it is shown under.'],
-                ['name' => 'set-contact-favourite', 'description' => 'Marks a contact as a favourite, or removes the mark.'],
-            ]],
-            ['name' => 'Reminders, reading', 'changesData' => false, 'tools' => [
-                ['name' => 'list-contact-reminders', 'description' => 'Lists the reminders about a contact.'],
-                ['name' => 'get-contact-reminder', 'description' => 'Returns one reminder: what it says, where its date comes from, how often it comes back and its next date.'],
-                ['name' => 'list-contact-reminder-occurrences', 'description' => 'Lists the dates the reminders about a contact produced, with what was answered for each.'],
-                ['name' => 'list-group-reminders', 'description' => 'Lists the reminders about a group as a whole.'],
-                ['name' => 'get-group-reminder', 'description' => 'Returns one reminder about a group: what it says, how often it comes back and its next date.'],
-                ['name' => 'list-group-reminder-occurrences', 'description' => 'Lists the dates the reminders about a group produced, with what was answered for each.'],
-                ['name' => 'list-vault-reminder-occurrences', 'description' => 'Lists what is overdue, due today and coming up in a whole vault, or only the birthdays, with the age being reached.'],
-            ]],
-            ['name' => 'Reminders, changing', 'changesData' => true, 'tools' => [
-                ['name' => 'create-contact-reminder', 'description' => 'Writes a reminder about a contact with a date of its own.'],
-                ['name' => 'update-contact-reminder', 'description' => 'Changes what a reminder says and when it comes back.'],
-                ['name' => 'delete-contact-reminder', 'description' => 'Stops a reminder for good. The answers already given stay.'],
-                ['name' => 'answer-reminder-occurrence', 'description' => 'Records whether you remembered a date or forgot it. The answer is final.'],
-                ['name' => 'create-group-reminder', 'description' => 'Writes a reminder about a group as a whole, with a date of its own.'],
-                ['name' => 'update-group-reminder', 'description' => 'Changes what a reminder about a group says and when it comes back.'],
-                ['name' => 'delete-group-reminder', 'description' => 'Stops a reminder about a group for good. The answers already given stay.'],
-                ['name' => 'answer-group-reminder-occurrence', 'description' => 'Records whether you remembered a date of a reminder about a group or forgot it. The answer is final.'],
-            ]],
-            ['name' => 'Relationships, reading', 'changesData' => false, 'tools' => [
-                ['name' => 'list-contact-relationships', 'description' => 'Lists the people a contact is linked to, with the role each holds.'],
-                ['name' => 'get-contact-relationship', 'description' => 'Returns one relationship: its type, both people, whether it is current or ended, and its dates.'],
-            ]],
-            ['name' => 'Relationships, changing', 'changesData' => true, 'tools' => [
-                ['name' => 'create-contact-relationship', 'description' => 'Adds a partner, a family member or any other relative to a contact, with or without a record of their own.'],
-                ['name' => 'update-contact-relationship', 'description' => 'Changes a relationship’s type, roles, dates or whether it ended. What you leave out keeps its value.'],
-                ['name' => 'delete-contact-relationship', 'description' => 'Deletes a relationship. Both people stay.'],
-            ]],
-            ['name' => 'Life events, reading', 'changesData' => false, 'tools' => [
-                ['name' => 'list-life-events', 'description' => 'Lists the life events of a vault, the most recent first. Can narrow to the ones one contact took part in.'],
-                ['name' => 'get-life-event', 'description' => 'Returns one life event: its type, its date, who was there and the values of its custom fields.'],
-            ]],
-            ['name' => 'Life events, changing', 'changesData' => true, 'tools' => [
-                ['name' => 'create-life-event', 'description' => 'Writes down something that happened, with the people who were there and the values of its custom fields.'],
-                ['name' => 'update-life-event', 'description' => 'Changes a life event. What is left out keeps its value.'],
-                ['name' => 'delete-life-event', 'description' => 'Takes a life event off every timeline. It can be restored.'],
-                ['name' => 'restore-life-event', 'description' => 'Puts a deleted life event back.'],
-            ]],
-            ['name' => 'Groups, reading', 'changesData' => false, 'tools' => [
-                ['name' => 'list-groups', 'description' => 'Lists the groups of a vault, such as households and teams, with how many people are in each today.'],
-                ['name' => 'get-group', 'description' => 'Returns one group: its name, its description, its dates and how many people are in it today.'],
-                ['name' => 'list-group-members', 'description' => 'Lists the people of a group, those in it today first, each with their role and dates.'],
-                ['name' => 'list-contact-groups', 'description' => 'Lists the groups a contact belongs to or belonged to, with their role and dates in each.'],
-                ['name' => 'list-group-files', 'description' => 'Lists the files kept with a group, the newest first, with their name, type and size. Needs groups and file upload.'],
-                ['name' => 'list-group-notes', 'description' => 'Lists the notes written about a group, the newest first.'],
-                ['name' => 'get-group-note', 'description' => 'Returns one note written about a group.'],
-                ['name' => 'list-group-life-events', 'description' => 'Lists the activities recorded on a group, the most recent first. Needs groups.'],
-            ]],
-            ['name' => 'Groups, changing', 'changesData' => true, 'tools' => [
-                ['name' => 'create-group', 'description' => 'Creates a group of contacts in a vault, such as a household or a team. It starts with nobody in it.'],
-                ['name' => 'update-group', 'description' => 'Changes the name, the description or the dates of a group. What you leave out keeps its value.'],
-                ['name' => 'delete-group', 'description' => 'Deletes a group. The people in it stay, and it can be restored with its memberships.'],
-                ['name' => 'restore-group', 'description' => 'Puts a deleted group back, with every membership it held.'],
-                ['name' => 'add-group-member', 'description' => 'Puts a contact in a group, with an optional role and the dates they joined and left.'],
-                ['name' => 'update-group-member', 'description' => 'Changes the role or the dates of a membership. Giving a leave date is how somebody leaves.'],
-                ['name' => 'remove-group-member', 'description' => 'Deletes a membership recorded by mistake. Somebody who really left gets a leave date instead.'],
-                ['name' => 'remove-group-file', 'description' => 'Stops keeping a file with a group. The file stays wherever else it is used. Needs groups and file upload.'],
-                ['name' => 'create-group-note', 'description' => 'Writes a note about a group as a whole. It never reaches the page of a member.'],
-                ['name' => 'update-group-note', 'description' => 'Changes what a note about a group says. It keeps the day it was written.'],
-                ['name' => 'delete-group-note', 'description' => 'Deletes a note about a group. Nothing else changes.'],
-                ['name' => 'create-group-life-event', 'description' => 'Records an activity on a group, with the members who were there. It goes on the timeline of each of them. Needs groups.'],
-            ]],
-            ['name' => 'Templates', 'changesData' => false, 'tools' => [
-                ['name' => 'list-templates', 'description' => 'Lists the templates of your account.'],
-                ['name' => 'get-template', 'description' => 'Returns one template: its name, what it describes, whether it is active and which version is published.'],
-                ['name' => 'list-template-versions', 'description' => 'Lists the versions of a template.'],
-                ['name' => 'get-template-version', 'description' => 'Returns one version of a template with its pages, sections and fields, and the ids the other template tools take.'],
-            ]],
-            ['name' => 'Templates, changing', 'changesData' => true, 'tools' => [
-                ['name' => 'create-template', 'description' => 'Creates a template for contacts, for a kind of entity or for life events.'],
-                ['name' => 'update-template', 'description' => 'Renames a template or changes its description.'],
-                ['name' => 'duplicate-template', 'description' => 'Copies a template into a new one.'],
-                ['name' => 'set-template-activation', 'description' => 'Switches a template on or off for new records.'],
-                ['name' => 'set-template-position', 'description' => 'Moves a template to another place in the list.'],
-                ['name' => 'delete-template', 'description' => 'Deletes a template that no record uses.'],
-            ]],
-            ['name' => 'Template drafts', 'changesData' => true, 'tools' => [
-                ['name' => 'create-template-draft', 'description' => 'Opens a draft of a template, or returns the one already open.'],
-                ['name' => 'publish-template-version', 'description' => 'Publishes a draft, so the records the template describes start using it.'],
-                ['name' => 'delete-template-draft', 'description' => 'Deletes a draft and every change made in it.'],
-            ]],
-            ['name' => 'Sections', 'changesData' => true, 'tools' => [
-                ['name' => 'add-template-section', 'description' => 'Adds a new section to a draft, or one your account already has.'],
-                ['name' => 'update-template-section', 'description' => 'Changes what a section is headed in a draft and whether it starts folded shut.'],
-                ['name' => 'remove-template-section', 'description' => 'Removes a section from a draft. The section stays in your account.'],
-                ['name' => 'set-template-section-position', 'description' => 'Moves a section to another place on its page.'],
-            ]],
-            ['name' => 'Fields', 'changesData' => true, 'tools' => [
-                ['name' => 'create-template-field', 'description' => 'Adds a field to a section of a draft.'],
-                ['name' => 'update-template-field', 'description' => 'Changes a field. What you leave out keeps its value.'],
-                ['name' => 'delete-template-field', 'description' => 'Deletes a field from a section of a draft.'],
-                ['name' => 'set-template-field-position', 'description' => 'Moves a field to another place in its section.'],
-            ]],
-            ['name' => 'Entity types', 'changesData' => false, 'tools' => [
-                ['name' => 'list-entity-types', 'description' => 'Lists the kinds of record your account keeps besides contacts.'],
-                ['name' => 'get-entity-type', 'description' => 'Returns one kind of record: its names, icon, colour, whether new records can be added and how many exist.'],
-            ]],
-            ['name' => 'Entity types, changing', 'changesData' => true, 'tools' => [
-                ['name' => 'create-entity-type', 'description' => 'Adds a kind of record, such as Animal or Wine bottle.'],
-                ['name' => 'update-entity-type', 'description' => 'Renames a kind of record or changes its description, icon or colour. What you leave out keeps its value.'],
-                ['name' => 'set-entity-type-activation', 'description' => 'Switches a kind of record on or off for new records. Existing ones stay.'],
-                ['name' => 'set-entity-type-position', 'description' => 'Moves a kind of record to another place in the list.'],
-                ['name' => 'delete-entity-type', 'description' => 'Deletes a kind of record that holds no record.'],
-            ]],
-            ['name' => 'Relationship vocabulary', 'changesData' => false, 'tools' => [
-                ['name' => 'list-relationship-types', 'description' => 'Lists the kinds of relationship your account uses, such as parent or colleague.'],
-                ['name' => 'get-relationship-type', 'description' => 'Returns one kind of relationship: its roles, its category, whether it is offered and how many relationships use it.'],
-                ['name' => 'list-relationship-categories', 'description' => 'Lists the categories your account groups relationship types into.'],
-                ['name' => 'get-relationship-category', 'description' => 'Returns one category and how many types it holds.'],
-                ['name' => 'list-relationship-category-types', 'description' => 'Lists the kinds of relationship filed under one category.'],
-            ]],
-            ['name' => 'Relationship vocabulary, changing', 'changesData' => true, 'tools' => [
-                ['name' => 'create-relationship-type', 'description' => 'Adds a kind of relationship, such as godparent and godchild.'],
-                ['name' => 'update-relationship-type', 'description' => 'Renames a kind of relationship, changes its roles or moves it to another category. What you leave out keeps its value.'],
-                ['name' => 'set-relationship-type-activation', 'description' => 'Offers a kind of relationship when contacts are linked, or stops offering it. Existing relationships stay.'],
-                ['name' => 'set-relationship-type-position', 'description' => 'Moves a kind of relationship within its category.'],
-                ['name' => 'delete-relationship-type', 'description' => 'Deletes a kind of relationship you created and nobody uses.'],
-                ['name' => 'create-relationship-category', 'description' => 'Adds a category, such as Sports.'],
-                ['name' => 'update-relationship-category', 'description' => 'Renames a category you created.'],
-                ['name' => 'set-relationship-category-activation', 'description' => 'Offers a category or stops offering it.'],
-                ['name' => 'set-relationship-category-position', 'description' => 'Moves a category to another place in the list.'],
-                ['name' => 'delete-relationship-category', 'description' => 'Deletes a category you created that holds no type.'],
-            ]],
-            ['name' => 'Life event vocabulary', 'changesData' => false, 'tools' => [
-                ['name' => 'list-life-event-categories', 'description' => 'Lists the categories your account files life events under.'],
-                ['name' => 'get-life-event-category', 'description' => 'Returns one category and how many types it holds.'],
-                ['name' => 'list-life-event-category-types', 'description' => 'Lists the kinds of life event filed under one category.'],
-                ['name' => 'list-life-event-types', 'description' => 'Lists the kinds of life event your account can record, such as Moved house.'],
-                ['name' => 'get-life-event-type', 'description' => 'Returns one kind of life event: its icon, colour, category and whether it is offered.'],
-                ['name' => 'get-life-event-type-fields', 'description' => 'Returns the fields a kind of life event asks for, in their groups.'],
-            ]],
-            ['name' => 'Life event vocabulary, changing', 'changesData' => true, 'tools' => [
-                ['name' => 'create-life-event-type', 'description' => 'Adds a kind of life event, such as Ran a marathon.'],
-                ['name' => 'update-life-event-type', 'description' => 'Renames a kind of life event, changes its description, icon or colour, or moves it to another category. What you leave out keeps its value.'],
-                ['name' => 'set-life-event-type-activation', 'description' => 'Offers a kind of life event, or stops offering it. Life events already recorded stay.'],
-                ['name' => 'set-life-event-type-position', 'description' => 'Moves a kind of life event within its category.'],
-                ['name' => 'replace-life-event-type-fields', 'description' => 'Replaces the fields a kind of life event asks for. A field you leave out is no longer asked for; life events already recorded keep theirs.'],
-                ['name' => 'delete-life-event-type', 'description' => 'Deletes a kind of life event you created and nobody used.'],
-                ['name' => 'create-life-event-category', 'description' => 'Adds a category, such as Sport.'],
-                ['name' => 'update-life-event-category', 'description' => 'Renames a category.'],
-                ['name' => 'set-life-event-category-activation', 'description' => 'Offers a category or stops offering it.'],
-                ['name' => 'set-life-event-category-position', 'description' => 'Moves a category to another place in the list.'],
-                ['name' => 'delete-life-event-category', 'description' => 'Deletes a category you created that holds no type.'],
-            ]],
-            ['name' => 'Locations', 'changesData' => false, 'tools' => [
-                ['name' => 'list-locations', 'description' => 'Lists the places of your account, such as a house, a room or a shelf, one page at a time, each before the places inside it, with its full path.'],
-                ['name' => 'get-location', 'description' => 'Returns one place: its path, its emoji, its address or the one it falls back on, and how many places it holds.'],
-            ]],
-            ['name' => 'Locations, changing', 'changesData' => true, 'tools' => [
-                ['name' => 'create-location', 'description' => 'Adds a place, at the top level or inside another place.'],
-                ['name' => 'update-location', 'description' => 'Renames a place, moves it with everything inside it, or changes its emoji or address. What you leave out is cleared, as the API does.'],
-                ['name' => 'delete-location', 'description' => 'Deletes a place that holds no other place.'],
-            ]],
-            ['name' => 'Possession types', 'changesData' => false, 'tools' => [
-                ['name' => 'list-possession-types', 'description' => 'Lists the kinds of things your account owns, with their groups and fields in order.'],
-                ['name' => 'get-possession-type', 'description' => 'Returns one possession type: its colour, its groups and its fields, each with its kind and choices.'],
-                ['name' => 'export-possession-type', 'description' => 'Writes a possession type out as a file you can import again.'],
-            ]],
-            ['name' => 'Possession types, changing', 'changesData' => true, 'tools' => [
-                ['name' => 'create-possession-type', 'description' => 'Adds a kind of thing you own, such as office equipment.'],
-                ['name' => 'update-possession-type', 'description' => 'Renames a possession type or changes its colour. What you leave out keeps its value.'],
-                ['name' => 'delete-possession-type', 'description' => 'Deletes a possession type with its groups, its fields and every possession of that type, and says how many possessions went.'],
-                ['name' => 'import-possession-type', 'description' => 'Creates a new possession type from a file, or lists every problem with it.'],
-                ['name' => 'create-possession-field-group', 'description' => 'Adds a named group of fields, placed after the others.'],
-                ['name' => 'update-possession-field-group', 'description' => 'Renames a group of fields.'],
-                ['name' => 'delete-possession-field-group', 'description' => 'Removes a group; its fields stay, standing alone.'],
-                ['name' => 'set-possession-field-group-position', 'description' => 'Moves a group to another place among the groups.'],
-                ['name' => 'create-possession-field', 'description' => 'Adds a field, in a group or standing alone, with its kind and choices.'],
-                ['name' => 'update-possession-field', 'description' => 'Renames a field, changes its kind or sets its choices. Changing the kind removes the values possessions held for it. What you leave out keeps its value.'],
-                ['name' => 'delete-possession-field', 'description' => 'Removes a field.'],
-                ['name' => 'set-possession-field-position', 'description' => 'Moves a field to another place among its siblings.'],
-            ]],
-            ['name' => 'Possessions', 'changesData' => false, 'tools' => [
-                ['name' => 'list-possessions', 'description' => 'Lists the things owned recorded in a vault, by name, optionally by type, status or whether they are featured, each with its current value. Compact, it gives only the name, status, type, location and current value of each.'],
-                ['name' => 'get-possession', 'description' => 'Returns one possession: its type, its location, its status and the values of its fields.'],
-                ['name' => 'list-possession-transactions', 'description' => 'Lists the transactions of a possession, oldest first, with their figures, their total and which one is the acquisition.'],
-                ['name' => 'get-possession-transaction', 'description' => 'Returns one transaction of a possession: what happened, when, with whom, its figures, its total and whether it is the acquisition.'],
-                ['name' => 'list-possession-insurance-records', 'description' => 'Lists the insurance records of a possession, active first, with the insurer, the insured value, the period and which one is current.'],
-                ['name' => 'get-possession-insurance-record', 'description' => 'Returns one insurance record of a possession: the insurer, the status, the insured value, the period and who to call.'],
-                ['name' => 'list-possession-maintenance-records', 'description' => 'Lists the maintenance records of a possession, the latest job first, with the conditions before and after and whether the latest one is overdue.'],
-                ['name' => 'get-possession-maintenance-record', 'description' => 'Returns one maintenance record of a possession: what was done, by whom, when, for how much and when it is due again.'],
-                ['name' => 'list-possession-valuations', 'description' => 'Lists the valuations of a possession, the latest by date first, with the amount, the valuer and which one gives the current value.'],
-                ['name' => 'get-possession-valuation', 'description' => 'Returns one valuation of a possession: where the figure comes from, when, how sure it is, who gave it and its documents.'],
-                ['name' => 'list-possession-provenance-events', 'description' => 'Lists the provenance events of a possession, oldest first, with how precise each date is and whether it is verified.'],
-                ['name' => 'get-possession-provenance-event', 'description' => 'Returns one provenance event of a possession: what happened, when, who it passed from and to, where, and the transaction recording what it cost.'],
-                ['name' => 'list-possession-location-stays', 'description' => 'Lists the stays of a possession, oldest first: each location it was kept at, when it arrived and left, and why.'],
-                ['name' => 'get-possession-location-stay', 'description' => 'Returns one stay of a possession: the location, when it arrived and left, and whether it is there now.'],
-            ]],
-            ['name' => 'Possessions, changing', 'changesData' => true, 'tools' => [
-                ['name' => 'create-possession', 'description' => 'Records an object somebody owns in a vault, of one possession type.'],
-                ['name' => 'update-possession', 'description' => 'Changes the name, description, location, identifier, status, quantity or featured state of a possession. What you leave out keeps its value.'],
-                ['name' => 'delete-possession', 'description' => 'Deletes a possession and the values of its fields.'],
-                ['name' => 'set-possession-position', 'description' => 'Moves a featured possession to another place among the featured ones.'],
-                ['name' => 'set-possession-values', 'description' => 'Writes the values of the fields of a possession; only the fields named change.'],
-                ['name' => 'create-possession-transaction', 'description' => 'Records money or ownership changing hands for a possession: a purchase, a gift, an inheritance, a fee, shipping.'],
-                ['name' => 'update-possession-transaction', 'description' => 'Changes a transaction of a possession. What you leave out keeps its value.'],
-                ['name' => 'delete-possession-transaction', 'description' => 'Deletes a transaction of a possession with its documents.'],
-                ['name' => 'create-possession-insurance-record', 'description' => 'Records one policy period covering a possession: the insurer, the status and the insured value.'],
-                ['name' => 'update-possession-insurance-record', 'description' => 'Changes an insurance record of a possession. What you leave out keeps its value.'],
-                ['name' => 'delete-possession-insurance-record', 'description' => 'Deletes an insurance record of a possession.'],
-                ['name' => 'create-possession-maintenance-record', 'description' => 'Records one job done on a possession: its type, a title and the day it was performed.'],
-                ['name' => 'update-possession-maintenance-record', 'description' => 'Changes a maintenance record of a possession. What you leave out keeps its value.'],
-                ['name' => 'delete-possession-maintenance-record', 'description' => 'Deletes a maintenance record of a possession.'],
-                ['name' => 'create-possession-valuation', 'description' => 'Records what a possession is worth on a date: the type, the date and the amount in its currency. A valuation is never changed afterwards.'],
-                ['name' => 'delete-possession-valuation', 'description' => 'Deletes a valuation of a possession and detaches its documents.'],
-                ['name' => 'create-possession-provenance-event', 'description' => 'Records one moment in the provenance of a possession: its origin, a change of owner or of custody, or what authenticated it.'],
-                ['name' => 'update-possession-provenance-event', 'description' => 'Changes a provenance event of a possession. What you leave out keeps its value.'],
-                ['name' => 'delete-possession-provenance-event', 'description' => 'Deletes a provenance event of a possession. The transaction it points at stays.'],
-                ['name' => 'move-possession', 'description' => 'Moves a possession to another location on a given day, closing the stay where it is now.'],
-                ['name' => 'update-possession-location-stay', 'description' => 'Corrects one stay of a possession. The stays before and after it are not moved.'],
-                ['name' => 'delete-possession-location-stay', 'description' => 'Deletes one stay of a possession. Its period then shows as unrecorded.'],
-                ['name' => 'list-possession-loans', 'description' => 'Lists the loans of a possession, newest first: who had it or lent it, when, and whether it is back.'],
-                ['name' => 'get-possession-loan', 'description' => 'Returns one loan of a possession: the contact, the days, the conditions and the deposit.'],
-                ['name' => 'create-possession-loan', 'description' => 'Records a possession lent to or borrowed from a contact, who may be written down with it.'],
-                ['name' => 'update-possession-loan', 'description' => 'Changes one loan of a possession, including marking it as returned.'],
-                ['name' => 'delete-possession-loan', 'description' => 'Deletes one loan of a possession and the provenance events it wrote.'],
-            ]],
-            ['name' => 'Possession tags', 'changesData' => false, 'tools' => [
-                ['name' => 'list-possession-tags', 'description' => 'Lists the words your account puts on its possessions, sorted by name.'],
-                ['name' => 'get-possession-tag', 'description' => 'Returns one possession tag: its name and its colour.'],
-            ]],
-            ['name' => 'Possession tags, changing', 'changesData' => true, 'tools' => [
-                ['name' => 'create-possession-tag', 'description' => 'Adds a word to put on possessions, such as insured or to sell.'],
-                ['name' => 'update-possession-tag', 'description' => 'Renames a possession tag or changes its colour. What you leave out keeps its value.'],
-                ['name' => 'delete-possession-tag', 'description' => 'Deletes a possession tag.'],
-            ]],
-            ['name' => 'Possession conditions', 'changesData' => false, 'tools' => [
-                ['name' => 'list-possession-conditions', 'description' => 'Lists the states your account’s possessions can be in, from best to worst.'],
-                ['name' => 'get-possession-condition', 'description' => 'Returns one possession condition: its name, its colour, its icon and its place in the order.'],
-            ]],
-            ['name' => 'Possession conditions, changing', 'changesData' => true, 'tools' => [
-                ['name' => 'create-possession-condition', 'description' => 'Adds a state a possession can be in, such as mint or needs repair, at the end of the order.'],
-                ['name' => 'update-possession-condition', 'description' => 'Renames a possession condition, or changes its colour or its icon. What you leave out keeps its value.'],
-                ['name' => 'set-possession-condition-position', 'description' => 'Moves a possession condition to another place in the order.'],
-                ['name' => 'delete-possession-condition', 'description' => 'Deletes a possession condition.'],
-            ]],
-            ['name' => 'Knowledge', 'changesData' => false, 'tools' => [
-                ['name' => 'list-knowledge', 'description' => 'Lists the folders of a vault’s Knowledge in their order, each with the titles of its notes and lists.'],
-                ['name' => 'search-knowledge', 'description' => 'Finds the notes and lists holding every word given, in their title, text, description or cells.'],
-                ['name' => 'get-knowledge-note', 'description' => 'Returns one note: its title, its folder, its Markdown text and its headings.'],
-                ['name' => 'get-knowledge-list', 'description' => 'Returns one list: its description, its columns and its items, each text keyed by its column.'],
-            ]],
-            ['name' => 'Knowledge, changing', 'changesData' => true, 'tools' => [
-                ['name' => 'create-knowledge-folder', 'description' => 'Adds a folder to a vault’s Knowledge, after the others.'],
-                ['name' => 'update-knowledge-folder', 'description' => 'Renames a folder or moves it among the folders.'],
-                ['name' => 'delete-knowledge-folder', 'description' => 'Deletes a folder, moving its notes and lists to another folder or deleting them with it. The last folder stays.'],
-                ['name' => 'create-knowledge-note', 'description' => 'Writes a note in Markdown, in a folder.'],
-                ['name' => 'update-knowledge-note', 'description' => 'Changes the title, the text or the folder of a note. The text replaces the whole text.'],
-                ['name' => 'delete-knowledge-note', 'description' => 'Deletes a note.'],
-                ['name' => 'create-knowledge-list', 'description' => 'Starts a list with the columns Name and Note, in a folder.'],
-                ['name' => 'update-knowledge-list', 'description' => 'Changes the title, the description or the folder of a list.'],
-                ['name' => 'delete-knowledge-list', 'description' => 'Deletes a list with its columns and items.'],
-                ['name' => 'create-knowledge-list-column', 'description' => 'Adds a column to a list, after the others.'],
-                ['name' => 'update-knowledge-list-column', 'description' => 'Renames a column or moves it among the columns.'],
-                ['name' => 'delete-knowledge-list-column', 'description' => 'Removes a column with what every item holds in it. The last column stays.'],
-                ['name' => 'create-knowledge-list-item', 'description' => 'Adds an item to a list, its texts keyed by column.'],
-                ['name' => 'update-knowledge-list-item', 'description' => 'Changes the texts of an item; only the columns named change.'],
-                ['name' => 'delete-knowledge-list-item', 'description' => 'Deletes an item of a list.'],
-            ]],
-            ['name' => 'Account logs', 'changesData' => false, 'tools' => [
-                ['name' => 'list-logs', 'description' => 'Lists what has been done in your account, newest first, a page at a time.'],
-                ['name' => 'get-log', 'description' => 'Returns one entry of the activity: who, what, from where and when.'],
-                ['name' => 'list-emails-sent', 'description' => 'Lists the emails sent to your account and whether each arrived, a page at a time.'],
-                ['name' => 'get-email-sent', 'description' => 'Returns one email, including what it said with links and web addresses removed.'],
-            ]],
-        ];
+    /** @var array<string, string> */
+    private const array FAMILY_SUMMARIES = [
+        'Vaults' => 'A vault is a compartment for one part of your life, holding its own contacts and reminders. Almost every other tool works inside one vault, named by its id.',
+        'Search' => 'Search finds the people, other records and life events of one vault, or of every vault of your account, from a few words.',
+        'Contacts' => 'A contact is a person you record. Each has a page of their own, shaped by a template, holding what you know about them.',
+        'Reminders' => 'A reminder is a rule telling Monica to tell you about something, on a day and at a time. Each day it falls on is a date you answer.',
+        'Relationships' => 'A relationship is how two people are connected, such as a friend, a sibling or a parent and a child.',
+        'Life events' => 'A life event is something that happened on a date, often with other people, such as a wedding, a move or a new job. Life events form the timeline of a contact.',
+        'Groups' => 'A group gathers contacts of one vault that belong together, such as a household, a couple or a team, with its own notes, files and life events.',
+        'Templates' => 'A template is the shape of a contact’s page: its pages, sections and fields. It changes through a draft and is published in versions.',
+        'Entity types' => 'An entity type is a kind of record that is not a person, such as an animal or a company. Contacts are the kind every vault keeps.',
+        'Relationship vocabulary' => 'A relationship type is the word for how two people are connected, such as Sibling or Friend, filed under a category such as Family.',
+        'Life event vocabulary' => 'A life event is something that happened on a date, often with other people, such as a wedding, a move or a new job. A life event type names that kind of thing, sorted into categories, and carries the fields you fill in each time.',
+        'Locations' => 'A location is a place where you keep things: a house, a room, a shelf, a box. A location can sit inside another, so they form a tree.',
+        'Possession types' => 'A possession type is a kind of thing you own, such as books or cars. It says which details a thing of that kind carries.',
+        'Possessions' => 'A possession is something you own, recorded in one vault. It is of one type, may be kept at a location and may carry tags.',
+        'Possession tags' => 'A possession tag is a word you put on the things you own, such as Insured or To sell, to sort them across their types and locations.',
+        'Possession conditions' => 'A possession condition says what state a thing you own is in, such as New, Used or Broken.',
+        'Knowledge' => 'Knowledge is what you want to remember that is not a person or a possession, kept in folders as notes and lists inside a vault.',
+        'Account logs' => 'The account logs record every action that touched your account, and every email Monica sent you.',
+        'Support' => 'A support request is a message to the people who run your Monica, about something broken, confusing or missing.',
+        'Support queue' => 'The support queue holds the support requests of every account of the instance. Only an administrator of the instance can use it.',
+    ];
 
-        if (! SupportAvailability::isEnabled()) {
-            return $groups;
+    /** @var array<string, list<string>> */
+    public const array FAMILIES = [
+        'Vaults' => ['list-vaults'],
+        'Search' => ['search-records'],
+        'Contacts' => ['list-contacts', 'list-contact-categories', 'get-contact', 'get-contact-markdown', 'get-me-contact', 'list-contact-name-representations', 'create-contact', 'update-contact-name', 'update-contact-name-representations', 'set-contact-favourite'],
+        'Reminders' => ['list-vault-reminders', 'list-vault-reminder-occurrences', 'list-contact-reminders', 'get-contact-reminder', 'list-contact-reminder-occurrences', 'list-group-reminders', 'get-group-reminder', 'list-group-reminder-occurrences', 'create-contact-reminder', 'update-contact-reminder', 'delete-contact-reminder', 'answer-reminder-occurrence', 'create-group-reminder', 'update-group-reminder', 'delete-group-reminder', 'answer-group-reminder-occurrence'],
+        'Relationships' => ['list-contact-relationships', 'get-contact-relationship', 'create-contact-relationship', 'update-contact-relationship', 'delete-contact-relationship'],
+        'Life events' => ['list-life-events', 'get-life-event', 'create-life-event', 'update-life-event', 'delete-life-event', 'restore-life-event'],
+        'Groups' => ['list-groups', 'get-group', 'list-group-members', 'list-contact-groups', 'list-group-files', 'list-group-notes', 'get-group-note', 'list-group-life-events', 'create-group', 'update-group', 'delete-group', 'restore-group', 'add-group-member', 'update-group-member', 'remove-group-member', 'remove-group-file', 'create-group-note', 'update-group-note', 'delete-group-note', 'create-group-life-event'],
+        'Templates' => ['list-templates', 'get-template', 'list-template-versions', 'get-template-version', 'list-value-lists', 'create-template', 'update-template', 'duplicate-template', 'set-template-activation', 'set-template-position', 'delete-template', 'create-template-draft', 'publish-template-version', 'delete-template-draft', 'add-template-section', 'update-template-section', 'remove-template-section', 'set-template-section-position', 'create-template-field', 'update-template-field', 'delete-template-field', 'set-template-field-position'],
+        'Entity types' => ['list-entity-types', 'get-entity-type', 'create-entity-type', 'update-entity-type', 'set-entity-type-activation', 'set-entity-type-position', 'delete-entity-type'],
+        'Relationship vocabulary' => ['list-relationship-types', 'get-relationship-type', 'list-relationship-categories', 'get-relationship-category', 'list-relationship-category-types', 'create-relationship-type', 'update-relationship-type', 'set-relationship-type-activation', 'set-relationship-type-position', 'delete-relationship-type', 'create-relationship-category', 'update-relationship-category', 'set-relationship-category-activation', 'set-relationship-category-position', 'delete-relationship-category'],
+        'Life event vocabulary' => ['list-life-event-categories', 'get-life-event-category', 'list-life-event-category-types', 'list-life-event-types', 'get-life-event-type', 'get-life-event-type-fields', 'create-life-event-type', 'update-life-event-type', 'set-life-event-type-activation', 'set-life-event-type-position', 'replace-life-event-type-fields', 'delete-life-event-type', 'create-life-event-category', 'update-life-event-category', 'set-life-event-category-activation', 'set-life-event-category-position', 'delete-life-event-category'],
+        'Locations' => ['list-locations', 'get-location', 'create-location', 'update-location', 'delete-location'],
+        'Possession types' => ['list-possession-types', 'get-possession-type', 'export-possession-type', 'create-possession-type', 'update-possession-type', 'delete-possession-type', 'import-possession-type', 'create-possession-field-group', 'update-possession-field-group', 'delete-possession-field-group', 'set-possession-field-group-position', 'create-possession-field', 'update-possession-field', 'delete-possession-field', 'set-possession-field-position'],
+        'Possessions' => ['list-possessions', 'get-possession', 'list-possession-transactions', 'get-possession-transaction', 'list-possession-insurance-records', 'get-possession-insurance-record', 'list-possession-maintenance-records', 'get-possession-maintenance-record', 'list-possession-valuations', 'get-possession-valuation', 'list-possession-provenance-events', 'get-possession-provenance-event', 'list-possession-location-stays', 'get-possession-location-stay', 'create-possession', 'update-possession', 'delete-possession', 'set-possession-position', 'set-possession-values', 'create-possession-transaction', 'update-possession-transaction', 'delete-possession-transaction', 'create-possession-insurance-record', 'update-possession-insurance-record', 'delete-possession-insurance-record', 'create-possession-maintenance-record', 'update-possession-maintenance-record', 'delete-possession-maintenance-record', 'create-possession-valuation', 'delete-possession-valuation', 'create-possession-provenance-event', 'update-possession-provenance-event', 'delete-possession-provenance-event', 'move-possession', 'update-possession-location-stay', 'delete-possession-location-stay', 'list-possession-loans', 'get-possession-loan', 'create-possession-loan', 'update-possession-loan', 'delete-possession-loan'],
+        'Possession tags' => ['list-possession-tags', 'get-possession-tag', 'create-possession-tag', 'update-possession-tag', 'delete-possession-tag'],
+        'Possession conditions' => ['list-possession-conditions', 'get-possession-condition', 'create-possession-condition', 'update-possession-condition', 'set-possession-condition-position', 'delete-possession-condition'],
+        'Knowledge' => ['list-knowledge', 'search-knowledge', 'get-knowledge-note', 'get-knowledge-list', 'create-knowledge-folder', 'update-knowledge-folder', 'delete-knowledge-folder', 'create-knowledge-note', 'update-knowledge-note', 'delete-knowledge-note', 'create-knowledge-list', 'update-knowledge-list', 'delete-knowledge-list', 'create-knowledge-list-column', 'update-knowledge-list-column', 'delete-knowledge-list-column', 'create-knowledge-list-item', 'update-knowledge-list-item', 'delete-knowledge-list-item'],
+        'Account logs' => ['list-logs', 'get-log', 'list-emails-sent', 'get-email-sent'],
+        'Support' => ['list-support-requests', 'get-support-request', 'create-support-request', 'add-support-message', 'solve-support-request'],
+        'Support queue' => ['list-support-queue', 'get-support-queue-request', 'send-support-reply', 'add-support-note', 'change-support-request-status'],
+    ];
+
+    /** @var list<string> */
+    private const array GROUP_REMINDER_TOOLS = ['list-group-reminders', 'get-group-reminder', 'list-group-reminder-occurrences', 'create-group-reminder', 'update-group-reminder', 'delete-group-reminder', 'answer-group-reminder-occurrence'];
+
+    /** @var list<array{slug: string, name: string, tools: list<array{name: string, description: string, changesData: bool, params: list<array{name: string, type: string, required: bool, description: string, values: list<mixed>}>}>}>|null */
+    private ?array $families = null;
+
+    /** @return list<array{slug: string, name: string, tools: list<array{name: string, description: string, changesData: bool, params: list<array{name: string, type: string, required: bool, description: string, values: list<mixed>}>}>}> */
+    public function families(): array
+    {
+        if ($this->families !== null) {
+            return $this->families;
         }
 
+        $catalogue = self::catalogue();
+        $groups = FlagState::isOn('groups', null);
+        $support = SupportAvailability::isEnabled();
+        $families = [];
+
+        foreach (self::FAMILIES as $name => $names) {
+            if (in_array($name, ['Support', 'Support queue'], true) && ! $support) {
+                continue;
+            }
+
+            if ($name === 'Groups' && ! $groups) {
+                continue;
+            }
+
+            $tools = array_values(array_filter(
+                array_map(fn (string $tool): ?array => $catalogue[$tool] ?? null, $names),
+                fn (?array $tool): bool => $tool !== null && ($groups || ! in_array($tool['name'], self::GROUP_REMINDER_TOOLS, true)),
+            ));
+
+            if ($tools === []) {
+                continue;
+            }
+
+            $families[] = ['slug' => Str::slug($name), 'name' => $name, 'tools' => $tools];
+        }
+
+        return $this->families = $families;
+    }
+
+    /** @return array{slug: string, name: string, tools: list<array{name: string, description: string, changesData: bool, params: list<array{name: string, type: string, required: bool, description: string, values: list<mixed>}>}>, summary: string, previous: ?array{slug: string, name: string}, next: ?array{slug: string, name: string}}|null */
+    public function family(string $slug): ?array
+    {
+        $families = $this->families();
+        $position = array_search($slug, array_column($families, 'slug'), true);
+
+        if ($position === false) {
+            return null;
+        }
+
+        $family = $families[$position];
+
         return [
-            ...$groups,
-            ['name' => 'Support', 'changesData' => false, 'tools' => [
-                ['name' => 'list-support-requests', 'description' => 'Lists what you have asked the people running this instance, the latest activity first.'],
-                ['name' => 'get-support-request', 'description' => 'Returns one request with your messages, the replies of the support team and the names of the files sent.'],
-            ]],
-            ['name' => 'Support, changing', 'changesData' => true, 'tools' => [
-                ['name' => 'create-support-request', 'description' => 'Asks the people running this instance for help. A person reads it and replies by email and in the request.'],
-                ['name' => 'add-support-message', 'description' => 'Writes in a request already opened, which goes back to the support team. A solved request reopens.'],
-                ['name' => 'solve-support-request', 'description' => 'Tells the support team a request needs nothing more.'],
-            ]],
-            ['name' => 'Support queue, for administrators', 'changesData' => false, 'tools' => [
-                ['name' => 'list-support-queue', 'description' => 'Lists the requests of every account, oldest first, with the count in each view. Only with a key of an administrator holding the administration scope.'],
-                ['name' => 'get-support-queue-request', 'description' => 'Returns one request of any account with its internal notes, a few facts about the account and its status history.'],
-            ]],
-            ['name' => 'Support queue, changing', 'changesData' => true, 'tools' => [
-                ['name' => 'send-support-reply', 'description' => 'Answers a request: the user is emailed and the request moves to the status you choose.'],
-                ['name' => 'add-support-note', 'description' => 'Leaves a note only administrators read. The user is never told it exists.'],
-                ['name' => 'change-support-request-status', 'description' => 'Moves a request to another status, written to its history.'],
-            ]],
+            ...$family,
+            'summary' => self::FAMILY_SUMMARIES[$family['name']],
+            'previous' => $position > 0 ? ['slug' => $families[$position - 1]['slug'], 'name' => $families[$position - 1]['name']] : null,
+            'next' => $position < count($families) - 1 ? ['slug' => $families[$position + 1]['slug'], 'name' => $families[$position + 1]['name']] : null,
         ];
     }
 
-    /** @return list<string> */
-    public function toolsSummary(): array
+    public function toolCount(): int
     {
-        $count = array_sum(array_map(fn (array $group): int => count($group['tools']), $this->toolGroups()));
+        return array_sum(array_map(fn (array $family): int => count($family['tools']), $this->families()));
+    }
 
-        return [
-            "MCP currently exposes {$count} tools. Contact responses include identity and metadata, but not the contents of custom fields or notes.",
-            'A life event is something that happened on a date, with the people who were there. Its type decides which custom fields it carries, so read them with get-life-event-type-fields before writing one: values are keyed by field id. The first participant is the person the life event is recorded for. A deleted life event can be put back with restore-life-event.',
-            'Our goal is to make every action available in Monica accessible through MCP.',
-        ];
+    /**
+     * @return array<string, array{name: string, description: string, changesData: bool, params: list<array{name: string, type: string, required: bool, description: string, values: list<mixed>}>}>
+     */
+    public static function catalogue(): array
+    {
+        $catalogue = [];
+
+        foreach (new ReflectionClass(MonicaServer::class)->getDefaultProperties()['tools'] as $class) {
+            $tool = app($class)->toArray();
+            $required = $tool['inputSchema']['required'] ?? [];
+            $params = [];
+
+            foreach ($tool['inputSchema']['properties'] ?? [] as $name => $property) {
+                $type = array_values(array_diff((array) ($property['type'] ?? 'string'), ['null']));
+
+                $params[] = [
+                    'name' => (string) $name,
+                    'type' => $type[0] ?? 'string',
+                    'required' => in_array($name, $required, true),
+                    'description' => (string) ($property['description'] ?? ''),
+                    'values' => array_values(array_filter((array) ($property['enum'] ?? []), fn (mixed $value): bool => $value !== null)),
+                ];
+            }
+
+            $catalogue[$tool['name']] = [
+                'name' => $tool['name'],
+                'description' => $tool['description'],
+                'changesData' => ! ($tool['annotations']['readOnlyHint'] ?? false),
+                'params' => $params,
+            ];
+        }
+
+        return $catalogue;
     }
 
     /** @return list<array{title: string, text: string}> */
@@ -566,17 +390,6 @@ class McpDocsViewModel
             ['label' => 'API reference', 'url' => route('docs.api.index')],
             ['label' => 'API keys and connected assistants', 'url' => route('settings.security.index')],
             ['label' => 'Logs', 'url' => route('settings.logs.index')],
-        ];
-    }
-
-    /** @return array{claude: string, chatgpt: string} */
-    public function assistantLinks(): array
-    {
-        $prompt = rawurlencode('Read '.route('docs.mcp.markdown.index').' so I can ask you questions about it.');
-
-        return [
-            'claude' => "https://claude.ai/new?q={$prompt}",
-            'chatgpt' => "https://chatgpt.com/?hints=search&q={$prompt}",
         ];
     }
 
@@ -633,18 +446,15 @@ class McpDocsViewModel
         $lines[] = '## Available tools';
         $lines[] = '';
 
-        foreach ($this->toolGroups() as $group) {
-            $lines[] = $group['changesData'] ? "### {$group['name']} (changes data)" : "### {$group['name']}";
+        foreach ($this->families() as $family) {
+            $lines[] = "### {$family['name']}";
             $lines[] = '';
 
-            foreach ($group['tools'] as $tool) {
-                $lines[] = "- `{$tool['name']}`: {$tool['description']}";
+            foreach ($family['tools'] as $tool) {
+                array_push($lines, ...$this->toolLines($tool, '####'));
             }
-
-            $lines[] = '';
         }
 
-        array_push($lines, ...$this->paragraphs($this->toolsSummary()));
         $lines[] = '## Edit a template';
         $lines[] = '';
         array_push($lines, ...$this->paragraphs(self::TEMPLATES));
@@ -672,6 +482,34 @@ class McpDocsViewModel
         }
 
         return implode("\n", $lines)."\n";
+    }
+
+    /** @param array{name: string, description: string, changesData: bool, params: list<array{name: string, type: string, required: bool, description: string, values: list<mixed>}>} $tool */
+    public function toolMarkdown(array $tool): string
+    {
+        return rtrim(implode("\n", $this->toolLines($tool, '##')))."\n";
+    }
+
+    /**
+     * @param  array{name: string, description: string, changesData: bool, params: list<array{name: string, type: string, required: bool, description: string, values: list<mixed>}>}  $tool
+     * @return list<string>
+     */
+    private function toolLines(array $tool, string $heading): array
+    {
+        $mark = $tool['changesData'] ? ' (changes data)' : '';
+        $lines = ["{$heading} `{$tool['name']}`{$mark}", '', $tool['description'], ''];
+
+        foreach ($tool['params'] as $param) {
+            $need = $param['required'] ? 'required' : 'optional';
+            $values = $param['values'] === [] ? '' : ' One of: '.implode(', ', array_map(fn (mixed $value): string => "`{$value}`", $param['values'])).'.';
+            $lines[] = "- `{$param['name']}` ({$param['type']}, {$need}): {$param['description']}{$values}";
+        }
+
+        if ($tool['params'] !== []) {
+            $lines[] = '';
+        }
+
+        return $lines;
     }
 
     /** @return array{type: string, text: string, tone: string, title: string, block: null} */

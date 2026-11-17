@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api;
 
 use App\Actions\SetFieldValues;
-use App\Enums\ApiKeyScopeEnum;
 use App\Exceptions\FieldIsRequired;
 use App\Exceptions\FieldValueIsNotUnique;
 use App\Exceptions\NotEnoughRepetitions;
@@ -18,12 +17,10 @@ use App\Http\Resources\ContactResource;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\StructureVersionSection;
-use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
-use Laravel\Sanctum\PersonalAccessToken;
 
 class ContactSectionController extends Controller
 {
@@ -41,6 +38,12 @@ class ContactSectionController extends Controller
             ->filter(fn (Field $field): bool => $field->type->hasAnInput())
             ->values();
 
+        $fieldRules = FieldValueRules::withoutFiles($fields, $vault);
+
+        foreach ($fields as $field) {
+            $fieldRules["fields.{$field->id}"] = ['sometimes', ...$fieldRules["fields.{$field->id}"] ?? []];
+        }
+
         $validated = $request->validate(
             array_merge([
                 'fields' => ['array'],
@@ -49,15 +52,15 @@ class ContactSectionController extends Controller
                 'year_is_unknown' => ['array'],
                 'month_is_unknown' => ['array'],
                 'new_choices' => ['array'],
-            ], FieldValueRules::withoutFiles($fields, $vault)),
+            ], $fieldRules),
             [],
             $fields->mapWithKeys(fn (Field $field): array => ["fields.{$field->id}" => mb_strtolower($field->label)])->all(),
         );
 
         $values = $validated['fields'] ?? [];
 
-        $hiddenFieldIds = $this->reachesSensitiveFields($request->user()) ? [] : $fields
-            ->filter(fn (Field $field): bool => $field->is_sensitive && ! array_key_exists($field->id, $values))
+        $keptFieldIds = $fields
+            ->reject(fn (Field $field): bool => array_key_exists($field->id, $values) || array_key_exists($field->id, $validated['new_choices'] ?? []))
             ->pluck('id')
             ->all();
 
@@ -71,7 +74,7 @@ class ContactSectionController extends Controller
                 labelWordings: $validated['label_wordings'] ?? [],
                 yearIsUnknown: $validated['year_is_unknown'] ?? [],
                 monthIsUnknown: $validated['month_is_unknown'] ?? [],
-                keptFieldIds: $hiddenFieldIds,
+                keptFieldIds: $keptFieldIds,
                 newChoices: $validated['new_choices'] ?? [],
             )->execute();
         } catch (AuthorizationException|FieldIsRequired|FieldValueIsNotUnique|NotEnoughRepetitions|NotEnoughStorageLeft|TooManyRepetitions|ValueListItemIsStopped $e) {
@@ -81,16 +84,5 @@ class ContactSectionController extends Controller
         return new ContactResource(
             $contact->refresh()->load(['vault', 'structureVersion.structure.owner', 'avatar', 'nameRepresentations']),
         )->response()->setStatusCode(200);
-    }
-
-    private function reachesSensitiveFields(User $user): bool
-    {
-        $token = $user->currentAccessToken();
-
-        if (! $token instanceof PersonalAccessToken) {
-            return false;
-        }
-
-        return in_array(ApiKeyScopeEnum::SensitiveFields->value, $token->abilities ?? [], true);
     }
 }

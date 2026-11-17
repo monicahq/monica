@@ -48,7 +48,7 @@ $logAttributes = [
     ['name' => 'description', 'type' => 'string', 'description' => 'The entry as a sentence a person can read, with the parameters already put into it. Worked out when you ask, and in the language of whoever is asking.'],
     ['name' => 'source', 'type' => 'string', 'description' => 'Where it came from: one of web, api, mcp, import, automation, module or system. It is how a change made by a script is told from one made by hand.'],
     ['name' => 'ip_address', 'type' => 'string', 'description' => 'The address the request came from, up to 45 characters so that a version six address fits, or null when nothing was recorded, which is the case for anything the system did on its own.'],
-    ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When it happened, as a count of seconds since 1970. The journal is append only, so this never moves.'],
+    ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When it happened, as a count of seconds since 1970. The account log is append only, so this never moves.'],
 ];
 
 return [
@@ -64,9 +64,9 @@ return [
             'path' => '/logs',
             'description' => 'List what has been done in your account, newest first.',
             'body' => [
-                'The journal belongs to the account rather than to you, which matters in one case: an entry the application wrote on its own has nobody behind it, and those are exactly the entries nobody watched happen. Its author reads as the system and it carries no address.',
+                'The account log belongs to the account rather than to you, which matters in one case: an entry the application wrote on its own has nobody behind it, and those are exactly the entries nobody watched happen. Its author reads as the system and it carries no address.',
                 'Each entry carries both the raw name of the action, which is what a program matches on, and a sentence in the language on your account, which is what a person reads.',
-                'Nothing here can be written, changed or removed. A journal that can be rewritten is worth nothing, so there is no endpoint for it.',
+                'Nothing here can be written, changed or removed. A log that can be rewritten is worth nothing, so there is no endpoint for it.',
             ],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'queryParams' => [
@@ -85,7 +85,7 @@ return [
                     'default' => '25',
                 ],
             ],
-            'returns' => 'A page of journal entries, and how many there are in all.',
+            'returns' => 'A page of account log entries, and how many there are in all.',
             'response' => [
                 'data' => [$log, $systemLog],
                 'meta' => [
@@ -103,7 +103,7 @@ return [
             'method' => 'GET',
             'path' => '/logs/{log}',
             'examplePath' => '/logs/12',
-            'description' => 'Retrieve one entry of your account journal.',
+            'description' => 'Retrieve one entry of your account log.',
             'body' => [
                 'What changed is not in here. A field somebody marked sensitive records that it changed and not what to, and until the product settles how those values may be kept, the whole column stays out of the API rather than half of it coming through.',
             ],
@@ -113,10 +113,10 @@ return [
                     'name' => 'log',
                     'type' => 'integer',
                     'required' => true,
-                    'description' => 'The identifier of the entry.',
+                    'description' => 'The id of the entry.',
                 ],
             ],
-            'returns' => 'A journal entry. An entry from another account answers 404.',
+            'returns' => 'An account log entry. An entry from another account answers 404.',
             'response' => ['data' => $log],
         ],
     ],

@@ -11,6 +11,7 @@ $vaultSlug = 'dunder-mifflin';
 $contactSlug = 'pam-beesly';
 $reminderId = '4e7b2c90-3d15-4a86-9f21-8b0c6e5d7a13';
 $occurrenceId = 'a9d3f6e1-2b47-4c08-8e5a-17f4c0b9d262';
+$contactId = '0b6d2f4e-8a13-4c57-9e02-6f3a1d8b7c45';
 
 $reminder = [
     'type' => 'reminder',
@@ -20,6 +21,7 @@ $reminder = [
         'source' => 'manual',
         'starts_on' => '2026-10-14',
         'field' => null,
+        'contact' => ['id' => $contactId, 'name' => 'Pam Beesly'],
         'group' => null,
         'cadence' => 'monthly',
         'interval' => 1,
@@ -62,7 +64,7 @@ $vaultOccurrence = [
         'category' => 'overdue',
         'answer' => null,
         'answered_at' => null,
-        'subject' => ['type' => 'contact', 'id' => '0b6d2f4e-8a13-4c57-9e02-6f3a1d8b7c45', 'name' => 'Pam Beesly'],
+        'subject' => ['type' => 'contact', 'id' => $contactId, 'name' => 'Pam Beesly'],
         'age' => null,
     ],
     'links' => [
@@ -72,13 +74,13 @@ $vaultOccurrence = [
 ];
 
 $identifier = [
-    ['name' => 'vault', 'type' => 'string', 'required' => true, 'description' => 'The vault the contact lives in, named either by the readable name it reports as slug or by the identifier it reports as id.'],
+    ['name' => 'vault', 'type' => 'string', 'required' => true, 'description' => 'The vault the contact lives in, named either by the readable name it reports as slug or by its id.'],
     ['name' => 'contact', 'type' => 'string', 'required' => true, 'description' => 'The contact the reminders are about, named either by its slug or by its id. A contact addressed through the wrong vault answers 404.'],
 ];
 
 $reminderIdentifier = [
     ...$identifier,
-    ['name' => 'reminder', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the reminder. A reminder about somebody else answers 404, and so does a deleted one.'],
+    ['name' => 'reminder', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the reminder. A reminder about somebody else answers 404, and so does a deleted one.'],
 ];
 
 $pageParams = [
@@ -91,6 +93,9 @@ $reminderAttributes = [
     ['name' => 'source', 'type' => 'string', 'description' => 'Where its date comes from: manual when somebody wrote the reminder with a date of its own, field_value when it reads a date on the contact, such as a birthday.'],
     ['name' => 'starts_on', 'type' => 'string', 'description' => 'The first date of a manual reminder, written as a year, a month and a day. Null for a reminder that reads a date on the contact.'],
     ['name' => 'field', 'type' => 'object', 'description' => 'The date on the contact the reminder reads, as an object holding key, how the field is named in an import or an export, and label, what it is called on the contact. Null for a manual reminder.'],
+    ['name' => 'contact', 'type' => 'object', 'description' => 'The contact the reminder is about.'],
+    ['name' => 'contact.id', 'type' => 'uuid', 'description' => 'The id of the contact.'],
+    ['name' => 'contact.name', 'type' => 'string', 'description' => 'The name of the contact.'],
     ['name' => 'group', 'type' => 'object', 'description' => 'The group the reminder is about, as an object holding id and name. Always null here, since these reminders are about a contact. A reminder about a group is read from the group reminders endpoints.'],
     ['name' => 'cadence', 'type' => 'string', 'description' => 'How often it comes back: once, weekly, monthly or yearly.'],
     ['name' => 'interval', 'type' => 'integer', 'description' => 'How many of those between two dates. Every 3 months is monthly with an interval of 3.'],
@@ -116,7 +121,7 @@ $occurrenceAttributes = [
 
 return [
     'name' => 'Reminders',
-    'description' => 'The reminders about a contact, the dates they produce, the dates of a whole vault, and what you answered for each date.',
+    'description' => 'The reminders about a contact, the reminders and the dates of a whole vault, and what you answered for each date.',
     'sections' => [
         [
             'id' => 'reminders-index',
@@ -201,12 +206,12 @@ return [
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $reminderIdentifier,
             'bodyParams' => [
-                ['name' => 'name', 'type' => 'string', 'required' => true, 'description' => 'What the reminder says. Up to 255 characters.', 'example' => 'Ask how the art school application went'],
+                ['name' => 'name', 'type' => 'string', 'required' => false, 'description' => 'What the reminder says. Up to 255 characters. It cannot be null.', 'example' => 'Ask how the art school application went'],
                 ['name' => 'starts_on', 'type' => 'string', 'required' => false, 'description' => 'A new first date, for a manual reminder only.', 'example' => '2026-10-14'],
-                ['name' => 'cadence', 'type' => 'string', 'required' => true, 'description' => 'One of once, weekly, monthly or yearly.', 'example' => 'monthly'],
-                ['name' => 'interval', 'type' => 'integer', 'required' => false, 'description' => 'How many of those between two dates, from 1 to 99. The one it has is kept when left out.', 'example' => '1'],
-                ['name' => 'time', 'type' => 'string', 'required' => true, 'description' => 'The local hour to be told at.', 'example' => '09:00'],
-                ['name' => 'timezone', 'type' => 'string', 'required' => false, 'description' => 'A new time zone. The one it has is kept when left out.', 'example' => 'America/New_York'],
+                ['name' => 'cadence', 'type' => 'string', 'required' => false, 'description' => 'One of once, weekly, monthly or yearly. It cannot be null.', 'example' => 'monthly'],
+                ['name' => 'interval', 'type' => 'integer', 'required' => false, 'description' => 'How many of those between two dates, from 1 to 99.', 'example' => '1'],
+                ['name' => 'time', 'type' => 'string', 'required' => false, 'description' => 'The local hour to be told at. It cannot be null.', 'example' => '09:00'],
+                ['name' => 'timezone', 'type' => 'string', 'required' => false, 'description' => 'A new time zone.', 'example' => 'America/New_York'],
             ],
             'returns' => 'The reminder object as it stands now.',
             'response' => ['data' => $reminder],
@@ -278,7 +283,7 @@ return [
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [
                 ...$identifier,
-                ['name' => 'occurrence', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the date, which is the id it comes back with.'],
+                ['name' => 'occurrence', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the date.'],
             ],
             'bodyParams' => [
                 ['name' => 'answer', 'type' => 'string', 'required' => true, 'description' => 'remembered or forgotten.', 'example' => 'remembered'],
@@ -287,13 +292,46 @@ return [
             'response' => ['data' => $occurrence],
         ],
         [
+            'id' => 'vault-reminders-index',
+            'returnFields' => ApiDocsFields::page('reminder', 'reminder', 'reminders', array_map(fn (array $field): array => match ($field['name']) {
+                'contact' => [...$field, 'description' => 'The contact the reminder is about, or null for a reminder about a group.'],
+                'group' => [...$field, 'description' => 'The group the reminder is about, as an object holding id and name, or null for a reminder about a contact.'],
+                'field' => [...$field, 'description' => 'The date on the contact the reminder reads, as an object holding key and label. Null for a manual reminder, and always null for a group.'],
+                default => $field,
+            }, $reminderAttributes)),
+            'title' => 'List a vault\'s reminders',
+            'label' => 'List a vault\'s reminders',
+            'method' => 'GET',
+            'path' => '/vaults/{vault}/reminders',
+            'examplePath' => '/vaults/'.$vaultSlug.'/reminders?about=contact',
+            'description' => 'List every reminder of a vault about a contact or a group, whatever its date: the ones still producing dates, the ones that stopped, and the ones whose next date is far off.',
+            'body' => [
+                'Each reminder names who it is about: contact holds the contact, group holds the group, and the other one is null. The reminders are listed in the order they were made.',
+                'Deleted reminders are left out. While groups are not available to your account, the reminders about a group are left out too.',
+                'This lists the reminders themselves. The dates they produce, and what was answered for each, are read from the vault\'s dates endpoint.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
+            'pathParams' => [
+                ['name' => 'vault', 'type' => 'string', 'required' => true, 'description' => 'The vault, named either by the readable name it reports as slug or by its id. A vault of another account answers 404.'],
+            ],
+            'queryParams' => [
+                ['name' => 'about', 'type' => 'string', 'required' => false, 'description' => 'contact keeps the reminders about a contact, group the reminders about a group. Left out, both are listed. Anything else answers 422.'],
+                ...$pageParams,
+            ],
+            'returns' => 'A page of reminder objects, and how many there are in all. A vault of another account answers 404.',
+            'response' => [
+                'data' => [$reminder],
+                'meta' => ['page' => 1, 'per_page' => 25, 'total' => 1],
+            ],
+        ],
+        [
             'id' => 'vault-reminder-occurrences-index',
             'returnFields' => [
                 ...ApiDocsFields::page('reminder_occurrence', 'date', 'dates', [
                     ...array_map(fn (array $field): array => $field['name'] === 'group' ? [...$field, 'description' => 'The group the reminder is about, as an object holding id and name, or null for a reminder about anything else.'] : $field, $occurrenceAttributes),
                     ['name' => 'subject', 'type' => 'object', 'description' => 'Who or what the date is about, or null once that record is gone.'],
                     ['name' => 'subject.type', 'type' => 'string', 'description' => 'contact, group or entity, an entity being a record of a type you invented.'],
-                    ['name' => 'subject.id', 'type' => 'uuid', 'description' => 'Its identifier.'],
+                    ['name' => 'subject.id', 'type' => 'uuid', 'description' => 'Its id.'],
                     ['name' => 'subject.name', 'type' => 'string', 'description' => 'Its name.'],
                     ['name' => 'age', 'type' => 'integer', 'description' => 'For a birthday, the age reached on that day. Null when the year of birth is unknown, for any other date, and for a birthday held in a sensitive field your key may not read.'],
                 ], withLinks: false),
@@ -315,7 +353,7 @@ return [
             ],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [
-                ['name' => 'vault', 'type' => 'string', 'required' => true, 'description' => 'The vault, named either by the readable name it reports as slug or by the identifier it reports as id.'],
+                ['name' => 'vault', 'type' => 'string', 'required' => true, 'description' => 'The vault, named either by the readable name it reports as slug or by its id.'],
             ],
             'queryParams' => [
                 ['name' => 'category', 'type' => 'string', 'required' => false, 'description' => 'One of overdue, today, upcoming or history.'],

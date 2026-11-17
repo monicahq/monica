@@ -8,6 +8,7 @@ use App\Enums\NotificationDeliveryModeEnum;
 use Carbon\CarbonImmutable;
 use Database\Factories\NotificationPreferenceFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -84,6 +85,38 @@ class NotificationPreference extends Model
             'digest_weekdays' => 'array',
             'type_overrides' => 'array',
         ];
+    }
+
+    /**
+     * Get the start of the quiet hours as hours and minutes. MySQL and
+     * PostgreSQL return a time column with its seconds, which the rule for a
+     * time of day refuses when the value is sent back unchanged.
+     *
+     * @return Attribute<string|null, string|null>
+     */
+    protected function quietHoursStart(): Attribute
+    {
+        return Attribute::get(fn (?string $value): ?string => $value === null ? null : mb_substr($value, 0, 5));
+    }
+
+    /**
+     * Get the end of the quiet hours as hours and minutes.
+     *
+     * @return Attribute<string|null, string|null>
+     */
+    protected function quietHoursEnd(): Attribute
+    {
+        return Attribute::get(fn (?string $value): ?string => $value === null ? null : mb_substr($value, 0, 5));
+    }
+
+    /**
+     * Get the time the daily summary is sent as hours and minutes.
+     *
+     * @return Attribute<string|null, string|null>
+     */
+    protected function digestTime(): Attribute
+    {
+        return Attribute::get(fn (?string $value): ?string => $value === null ? null : mb_substr($value, 0, 5));
     }
 
     /**

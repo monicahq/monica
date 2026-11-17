@@ -39,7 +39,7 @@
 
       <div class="mx-auto flex w-full max-w-280 flex-1 items-start gap-16 px-4 pt-8 pb-24 sm:px-6">
         <main id="main-content" tabindex="-1" class="flex min-w-0 max-w-190 flex-1 flex-col gap-14 focus:outline-none">
-          <section id="overview" class="flex scroll-mt-20 flex-col gap-5">
+          <section id="overview" class="flex scroll-mt-6 flex-col gap-5">
             <div class="flex flex-col gap-2.5">
               <x-caption tone="muted">CardDAV and CalDAV</x-caption>
               <h1 class="text-[34px] leading-[1.15] font-semibold tracking-[-0.03em] text-pretty text-ink">{{ CarddavDocsViewModel::TITLE }}</h1>
@@ -77,7 +77,7 @@
             </details>
           </section>
 
-          <section id="setup" aria-labelledby="setup-heading" class="flex scroll-mt-20 flex-col gap-4">
+          <section id="setup" aria-labelledby="setup-heading" class="flex scroll-mt-6 flex-col gap-4">
             <h2 id="setup-heading" class="{{ $heading }}">Before you connect</h2>
             <a href="{{ route('settings.security.index') }}#api-keys" class="{{ $link }} w-fit text-sm">Open Security settings <span aria-hidden="true">→</span></a>
             <x-docs.steps>
@@ -88,7 +88,7 @@
             <x-docs.notice title="Access to your vaults">{{ CarddavDocsViewModel::ACCESS_NOTICE }}</x-docs.notice>
           </section>
 
-          <section id="connect" aria-labelledby="connect-heading" class="flex scroll-mt-20 flex-col gap-5">
+          <section id="connect" aria-labelledby="connect-heading" class="flex scroll-mt-6 flex-col gap-5">
             <h2 id="connect-heading" class="{{ $heading }}">Connect your app</h2>
             <p class="{{ $prose }}">Every app uses the same connection details. Menu names vary by version. Contacts use CardDAV; calendars and reminder tasks use CalDAV.</p>
 
@@ -149,7 +149,7 @@
             @endforeach
           </section>
 
-          <section id="check" aria-labelledby="check-heading" class="flex scroll-mt-20 flex-col gap-4">
+          <section id="check" aria-labelledby="check-heading" class="flex scroll-mt-6 flex-col gap-4">
             <h2 id="check-heading" class="{{ $heading }}">Check your connection</h2>
             <x-docs.steps>
               @foreach (CarddavDocsViewModel::CHECKS as $step)
@@ -159,7 +159,7 @@
             <p class="{{ $prose }}">{{ CarddavDocsViewModel::TIMING }}</p>
           </section>
 
-          <section id="sync" aria-labelledby="sync-heading" class="flex scroll-mt-20 flex-col gap-4">
+          <section id="sync" aria-labelledby="sync-heading" class="flex scroll-mt-6 flex-col gap-4">
             <h2 id="sync-heading" class="{{ $heading }}">What syncs</h2>
             <p class="{{ $prose }}">{{ CarddavDocsViewModel::CONTACTS }}</p>
             <div class="overflow-x-auto rounded-lg border border-hairline">
@@ -180,7 +180,7 @@
           </section>
 
           @foreach (['changes' => ['Editing and deleting', CarddavDocsViewModel::CHANGES], 'calendars' => ['Calendars and reminders', CarddavDocsViewModel::CALENDARS], 'troubleshooting' => ['Troubleshooting', CarddavDocsViewModel::TROUBLESHOOTING]] as $id => [$title, $entries])
-            <section id="{{ $id }}" aria-labelledby="{{ $id }}-heading" class="flex scroll-mt-20 flex-col gap-4">
+            <section id="{{ $id }}" aria-labelledby="{{ $id }}-heading" class="flex scroll-mt-6 flex-col gap-4">
               <h2 id="{{ $id }}-heading" class="{{ $heading }}">{{ $title }}</h2>
               @if ($id === 'changes')
                 <x-docs.notice title="Moving between vaults does not transfer the history">{{ CarddavDocsViewModel::MOVE_NOTICE }}</x-docs.notice>
@@ -196,7 +196,7 @@
             </section>
           @endforeach
 
-          <section id="disconnect" aria-labelledby="disconnect-heading" class="flex scroll-mt-20 flex-col gap-4">
+          <section id="disconnect" aria-labelledby="disconnect-heading" class="flex scroll-mt-6 flex-col gap-4">
             <h2 id="disconnect-heading" class="{{ $heading }}">Disconnect a device</h2>
             <x-docs.steps>
               @foreach (CarddavDocsViewModel::DISCONNECT as $step)
@@ -207,7 +207,7 @@
           </section>
         </main>
 
-        <aside aria-labelledby="on-this-page" class="sticky top-22 hidden w-50 flex-none flex-col gap-2.5 lg:flex print:hidden">
+        <aside aria-labelledby="on-this-page" class="sticky top-8 hidden w-50 flex-none flex-col gap-2.5 lg:flex print:hidden">
           <x-docs.page-meta class="mb-4" :updated="$viewModel->lastUpdated()" :edit-url="$viewModel->editUrl()" :issue-url="$viewModel->issueUrl()" />
           <x-caption id="on-this-page" tone="muted">On this page</x-caption>
           <nav aria-labelledby="on-this-page" class="flex flex-col gap-0.5 border-l border-hairline">

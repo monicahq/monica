@@ -81,13 +81,13 @@ $attributes = [
     ['name' => 'reference_number', 'type' => 'string', 'description' => 'The reference of the record (a lot, a deed, a certificate), or null.'],
     ['name' => 'source_url', 'type' => 'string', 'description' => 'Where the event can be checked, or null.'],
     ['name' => 'is_verified', 'type' => 'boolean', 'description' => 'Whether a document, a record or an expert confirms the event.'],
-    ['name' => 'transaction_id', 'type' => 'uuid', 'description' => 'The identifier of the transaction of the same possession that records what the moment cost, or null. An event holds no money of its own.'],
+    ['name' => 'transaction_id', 'type' => 'uuid', 'description' => 'The id of the transaction of the same possession that records what the moment cost, or null. An event holds no money of its own.'],
     ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When the event was recorded, as a count of seconds since 1970.'],
 ];
 
-$vaultParam = ['name' => 'vault', 'type' => 'string', 'required' => true, 'description' => 'The vault the possession is kept in, named either by the readable name it reports as slug or by the identifier it reports as id. A vault of another account answers 404.'];
-$possessionParam = ['name' => 'possession', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the possession. A possession of another vault or of another account answers 404.'];
-$eventParam = ['name' => 'event', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the event. An event of another possession answers 404.'];
+$vaultParam = ['name' => 'vault', 'type' => 'string', 'required' => true, 'description' => 'The vault the possession is kept in, named either by the readable name it reports as slug or by its id. A vault of another account answers 404.'];
+$possessionParam = ['name' => 'possession', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the possession. A possession of another vault or of another account answers 404.'];
+$eventParam = ['name' => 'event', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the event. An event of another possession answers 404.'];
 
 $bodyParams = fn (bool $isCreating): array => [
     ['name' => 'type', 'type' => 'string', 'required' => $isCreating, 'description' => 'What happened: origin, acquisition, inheritance, gift, sale, custody, loss, recovery, authentication, exhibition, publication or other.', 'example' => 'gift'],
@@ -100,7 +100,7 @@ $bodyParams = fn (bool $isCreating): array => [
     ['name' => 'description', 'type' => 'string', 'required' => false, 'description' => 'What happened and how it is known, up to 5,000 characters.'],
     ['name' => 'reference_number', 'type' => 'string', 'required' => false, 'description' => 'The reference of the record, up to 255 characters.', 'example' => 'Family ledger, page 12'],
     ['name' => 'source_url', 'type' => 'string', 'required' => false, 'description' => 'A full web address where the event can be checked, up to 255 characters.'],
-    ['name' => 'transaction_id', 'type' => 'uuid', 'required' => false, 'description' => 'The identifier of a transaction of the same possession that records what the moment cost. A transaction of another possession answers 422.', 'example' => $purchaseId],
+    ['name' => 'transaction_id', 'type' => 'uuid', 'required' => false, 'description' => 'The id of a transaction of the same possession that records what the moment cost. A transaction of another possession answers 422.', 'example' => $purchaseId],
     ['name' => 'is_verified', 'type' => 'boolean', 'required' => false, 'default' => $isCreating ? 'false' : null, 'description' => 'Whether a document, a record or an expert confirms the event.', 'example' => true],
 ];
 

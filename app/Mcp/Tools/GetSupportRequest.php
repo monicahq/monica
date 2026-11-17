@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Mcp\Tools;
 
 use App\Helpers\SupportAvailability;
-use App\Http\Resources\SupportRequestResource;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -35,7 +34,7 @@ class GetSupportRequest extends Tool
 
         $supportRequest = $this->supportRequest($request, $validated['support_request']);
 
-        return Response::json(new SupportRequestResource($supportRequest->load('visibleMessages.attachments'))->resolve());
+        return $this->answerThroughApi($request, $supportRequest->uuid);
     }
 
     /** @return array<string, Type> */

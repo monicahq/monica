@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Helpers\SupportQueue;
-use App\Http\Resources\Admin\SupportRequestResource;
-use App\Models\SupportRequest;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -34,47 +31,23 @@ class ListSupportQueue extends Tool
             throw $this->doesNotExist(__('That support request does not exist.'));
         }
 
-        $validated = $request->validate([
-            'view' => ['nullable', 'string'],
-            'q' => ['nullable', 'string', 'max:255'],
-            'category' => ['nullable', 'string'],
-            'user' => ['nullable', 'integer'],
-            'age' => ['nullable', 'string'],
-            'page' => ['nullable', 'integer'],
-        ]);
-
-        $queue = new SupportQueue(
-            view: (string) ($validated['view'] ?? ''),
-            search: (string) ($validated['q'] ?? ''),
-            category: (string) ($validated['category'] ?? ''),
-            user: (string) ($validated['user'] ?? ''),
-            age: (string) ($validated['age'] ?? ''),
-        );
-
-        $supportRequests = $queue->query()
-            ->with('user')
-            ->paginate((int) config('monica.api_maximum_items_per_page'), ['*'], 'page', max(1, (int) ($validated['page'] ?? 1)));
-
-        return Response::json([
-            'data' => array_map(fn (SupportRequest $supportRequest): array => new SupportRequestResource($supportRequest)->resolve(), $supportRequests->items()),
-            'meta' => [
-                'page' => $supportRequests->currentPage(),
-                'total' => $supportRequests->total(),
-                'counts' => $queue->counts(),
-            ],
-        ]);
+        return $this->answerThroughApi($request);
     }
 
     /** @return array<string, Type> */
     public function schema(JsonSchema $schema): array
     {
+        $default = (int) config('monica.api_default_items_per_page');
+        $maximum = (int) config('monica.api_maximum_items_per_page');
+
         return [
             'view' => $schema->string()->enum(['to_handle', 'waiting_on_user', 'solved', 'all'])->description('Which requests to list.'),
-            'q' => $schema->string()->description('Words found in the subject, a message, the name or the email of the user, or the request number.'),
+            'q' => $schema->string()->description('Words found in the subject, a message, the name or the email address of the user, or the request number.'),
             'category' => $schema->string()->enum(['feature', 'billing', 'email', 'question', 'technical'])->description('Only this category.'),
             'user' => $schema->integer()->description('Only the requests of this user id.'),
             'age' => $schema->string()->enum(['day', 'week', 'old'])->description('Opened in the last day, between one and seven days ago, or longer ago.'),
-            'page' => $schema->integer()->description('Which page to return, starting at 1.'),
+            'page' => $schema->integer()->description('The page to read, starting at 1.'),
+            'per_page' => $schema->integer()->description("How many requests a page holds: {$default} unless asked, {$maximum} at most."),
         ];
     }
 }

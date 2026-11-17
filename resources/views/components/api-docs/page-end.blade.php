@@ -8,34 +8,14 @@
 @props(['previous' => null, 'next' => null, 'lastGenerated', 'supportUrl' => null])
 
 @php
-  $card = 'flex flex-col gap-1 rounded-lg border border-hairline bg-canvas px-4 py-3 shadow-panel transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring';
   $link = 'underline decoration-hairline-strong underline-offset-3 hover:decoration-ink focus-ring';
 @endphp
 
 <div class="mt-16 flex max-w-184 flex-col gap-8">
-  @if ($previous || $next)
-    <nav aria-label="Previous and next pages" class="grid grid-cols-2 gap-3 print:hidden">
-      @if ($previous)
-        <a href="{{ route('docs.api.show', ['section' => $previous->id]) }}" class="{{ $card }}">
-          <span class="flex items-center gap-1.5 text-xs font-medium text-muted">
-            <x-icon name="arrow-right" :size="14" class="rotate-180" />
-            Previous
-          </span>
-          <span class="font-semibold text-ink">{{ $previous->title }}</span>
-        </a>
-      @endif
-
-      @if ($next)
-        <a href="{{ route('docs.api.show', ['section' => $next->id]) }}" class="{{ $card }} col-start-2 items-end text-right">
-          <span class="flex items-center gap-1.5 text-xs font-medium text-muted">
-            Next
-            <x-icon name="arrow-right" :size="14" />
-          </span>
-          <span class="font-semibold text-ink">{{ $next->title }}</span>
-        </a>
-      @endif
-    </nav>
-  @endif
+  <x-docs.page-navigation
+    :previous="$previous ? ['url' => route('docs.api.show', ['section' => $previous->id]), 'label' => $previous->title] : null"
+    :next="$next ? ['url' => route('docs.api.show', ['section' => $next->id]), 'label' => $next->title] : null"
+  />
 
   <footer class="flex flex-col gap-6 border-t border-hairline pt-8">
     <ul class="flex flex-col gap-3 text-sm text-ink-soft">

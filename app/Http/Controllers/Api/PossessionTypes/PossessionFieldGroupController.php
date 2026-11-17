@@ -36,14 +36,15 @@ class PossessionFieldGroupController extends Controller
     public function update(Request $request, string $possessionType, string $group): JsonResponse
     {
         $type = $this->type($request, $possessionType);
+        $record = $this->group($type, $group);
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['sometimes', 'string', 'max:255'],
         ]);
 
         new UpdatePossessionFieldGroup(
             user: $request->user(),
-            group: $this->group($type, $group),
-            name: $validated['name'],
+            group: $record,
+            name: $validated['name'] ?? $record->name,
         )->execute();
 
         return new PossessionTypeResource($type)->response();

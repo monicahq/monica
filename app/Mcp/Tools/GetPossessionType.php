@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Http\Resources\PossessionTypeResource;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -27,14 +26,16 @@ class GetPossessionType extends Tool
             'possession_type' => ['required', 'string'],
         ]);
 
-        return Response::json(new PossessionTypeResource($this->possessionType($request, $validated['possession_type']))->resolve());
+        $possessionType = $this->possessionType($request, $validated['possession_type']);
+
+        return $this->answerThroughApi($request, $possessionType->uuid);
     }
 
     /** @return array<string, Type> */
     public function schema(JsonSchema $schema): array
     {
         return [
-            'possession_type' => $schema->string()->description('The identifier of the possession type, as list-possession-types gives it.')->required(),
+            'possession_type' => $schema->string()->description('The id of the possession type, as list-possession-types gives it.')->required(),
         ];
     }
 }

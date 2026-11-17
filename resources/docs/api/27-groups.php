@@ -59,17 +59,17 @@ $membership = [
 $flagNote = 'Groups are not yet available to every account. Until they are available to yours, every endpoint here answers 404.';
 
 $vaultIdentifier = [
-    ['name' => 'vault', 'type' => 'string', 'required' => true, 'description' => 'The vault the groups live in, named either by the readable name it reports as slug or by the identifier it reports as id.'],
+    ['name' => 'vault', 'type' => 'string', 'required' => true, 'description' => 'The vault the groups live in, named either by the readable name it reports as slug or by its id.'],
 ];
 
 $groupIdentifier = [
     ...$vaultIdentifier,
-    ['name' => 'group', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the group. One addressed through the wrong vault, or belonging to another account, answers 404.'],
+    ['name' => 'group', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the group. One addressed through the wrong vault, or belonging to another account, answers 404.'],
 ];
 
 $membershipIdentifier = [
     ...$groupIdentifier,
-    ['name' => 'membership', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the membership. One addressed through another group answers 404.'],
+    ['name' => 'membership', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the membership. One addressed through another group answers 404.'],
 ];
 
 $pageParams = [
@@ -94,10 +94,10 @@ $groupAttributes = [
 
 $membershipAttributes = [
     ['name' => 'group', 'type' => 'object', 'description' => 'The group the membership is in.'],
-    ['name' => 'group.id', 'type' => 'uuid', 'description' => 'The identifier of the group.'],
+    ['name' => 'group.id', 'type' => 'uuid', 'description' => 'The id of the group.'],
     ['name' => 'group.name', 'type' => 'string', 'description' => 'What the group is called.'],
     ['name' => 'contact', 'type' => 'object', 'description' => 'The person the membership is about.'],
-    ['name' => 'contact.id', 'type' => 'uuid', 'description' => 'The identifier of the contact.'],
+    ['name' => 'contact.id', 'type' => 'uuid', 'description' => 'The id of the contact.'],
     ['name' => 'contact.slug', 'type' => 'string', 'description' => 'The readable name of the contact, which addresses it as well as its id.'],
     ['name' => 'contact.name', 'type' => 'string', 'description' => 'The name of the contact, as it is shown.'],
     ['name' => 'role', 'type' => 'string', 'description' => 'What the person is in the group, in their own words, or null.'],

@@ -256,6 +256,74 @@ class LifeEventControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_keeps_what_is_left_out_of_an_update(): void
+    {
+        Queue::fake();
+        [$user, $vault, $jim, $pam] = $this->office();
+        $meal = $this->lifeEventTypeAsking($user, 'Meal');
+
+        Sanctum::actingAs($user);
+
+        $uuid = $this->json('POST', "/api/v1/vaults/{$vault->uuid}/life-events", [
+            'life_event_type' => $meal->uuid,
+            'happened_on' => '2026-10-09',
+            'participants' => [$jim->uuid, $pam->uuid],
+            'title' => 'Lunch at Cugino’s',
+            'location' => 'Scranton',
+            'duration_in_minutes' => 90,
+        ])->json('data.id');
+
+        $response = $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/life-events/{$uuid}", [
+            'narrative' => 'Jim proposed a toast.',
+        ]);
+
+        $response->assertOk();
+        $response->assertJsonPath('data.attributes.life_event_type.id', $meal->uuid);
+        $response->assertJsonPath('data.attributes.happened_on', '2026-10-09');
+        $response->assertJsonPath('data.attributes.participants.1.name', $pam->name);
+        $this->assertDatabaseHas('life_events', [
+            'uuid' => $uuid,
+            'title' => 'Lunch at Cugino’s',
+            'narrative' => 'Jim proposed a toast.',
+            'location' => 'Scranton',
+            'duration_in_minutes' => 90,
+            'participant_count' => 2,
+        ]);
+    }
+
+    #[Test]
+    public function it_clears_a_field_sent_as_null(): void
+    {
+        Queue::fake();
+        [$user, $vault, $jim] = $this->office();
+        $meal = $this->lifeEventTypeAsking($user, 'Meal');
+        $lifeEvent = $this->recorded($user, $vault, $jim, $meal);
+        $lifeEvent->update(['title' => 'Lunch at Cugino’s', 'location' => 'Scranton']);
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/life-events/{$lifeEvent->uuid}", [
+            'title' => null,
+        ])->assertOk();
+
+        $this->assertDatabaseHas('life_events', ['id' => $lifeEvent->id, 'title' => null, 'location' => 'Scranton']);
+    }
+
+    #[Test]
+    public function it_refuses_a_date_sent_as_null(): void
+    {
+        [$user, $vault, $jim] = $this->office();
+        $meal = $this->lifeEventTypeAsking($user, 'Meal');
+        $lifeEvent = $this->recorded($user, $vault, $jim, $meal);
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/life-events/{$lifeEvent->uuid}", [
+            'happened_on' => null,
+        ])->assertUnprocessable()->assertJsonValidationErrors(['happened_on']);
+    }
+
+    #[Test]
     public function it_keeps_a_sensitive_value_the_key_cannot_see_when_the_fields_are_replaced(): void
     {
         Queue::fake();

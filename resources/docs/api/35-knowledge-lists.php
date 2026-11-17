@@ -63,7 +63,7 @@ $shared = [
     ['name' => 'title', 'type' => 'string', 'description' => 'The title of the list.'],
     ['name' => 'description', 'type' => 'string', 'description' => 'What the list is for, in Markdown as written, or null.'],
     ['name' => 'folder', 'type' => 'object', 'description' => 'The folder the list sits in.'],
-    ['name' => 'folder.id', 'type' => 'uuid', 'description' => 'The identifier of the folder, as the knowledge folders endpoints give it.'],
+    ['name' => 'folder.id', 'type' => 'uuid', 'description' => 'The id of the folder, as the knowledge folders endpoints give it.'],
     ['name' => 'folder.name', 'type' => 'string', 'description' => 'What the folder is called.'],
     ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When the list was started, as a count of seconds since 1970.'],
     ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When it, one of its columns or one of its items last changed, as a count of seconds, or null.'],
@@ -73,26 +73,26 @@ $attributes = [
     ...$shared,
     ['name' => 'columns', 'type' => 'array', 'description' => 'The columns of the list, in their order. A list always has at least one.'],
     ['name' => 'columns[]', 'type' => 'object', 'description' => 'One column.'],
-    ['name' => 'columns[].id', 'type' => 'uuid', 'description' => 'The identifier of the column, which the columns endpoints and the cells of an item take.'],
+    ['name' => 'columns[].id', 'type' => 'uuid', 'description' => 'The id of the column, which the columns endpoints and the cells of an item take.'],
     ['name' => 'columns[].name', 'type' => 'string', 'description' => 'What the column is called.'],
     ['name' => 'columns[].position', 'type' => 'integer', 'description' => 'Where the column stands, from 1.'],
     ['name' => 'items', 'type' => 'array', 'description' => 'The items of the list, in their order.'],
     ['name' => 'items[]', 'type' => 'object', 'description' => 'One item.'],
-    ['name' => 'items[].id', 'type' => 'uuid', 'description' => 'The identifier of the item, which the items endpoints take.'],
+    ['name' => 'items[].id', 'type' => 'uuid', 'description' => 'The id of the item, which the items endpoints take.'],
     ['name' => 'items[].position', 'type' => 'integer', 'description' => 'Where the item stands, from 1.'],
-    ['name' => 'items[].cells', 'type' => 'object', 'description' => 'The texts of the item in Markdown, keyed by the identifier of their column. A blank cell is left out.', 'opaque' => true],
+    ['name' => 'items[].cells', 'type' => 'object', 'description' => 'The texts of the item in Markdown, keyed by the id of their column. A blank cell is left out.', 'opaque' => true],
 ];
 
 $one = ApiDocsFields::one('knowledge_list', 'knowledge list', $attributes, webLink: $webLink);
 $started = ApiDocsFields::one('knowledge_list', 'knowledge list, which holds no item yet', array_values(array_filter($attributes, fn (array $attribute): bool => ! str_starts_with($attribute['name'], 'items['))), webLink: $webLink);
 
-$vaultParam = ['name' => 'vault', 'type' => 'string', 'required' => true, 'description' => 'The vault, named either by the readable name it reports as slug or by the identifier it reports as id. A vault of another account answers 404.'];
-$listParam = ['name' => 'list', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the list. A list of another vault or of another account answers 404.'];
-$columnParam = ['name' => 'column', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the column. A column of another list answers 404.'];
-$itemParam = ['name' => 'item', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the item. An item of another list answers 404.'];
-$folderParam = 'The identifier of a folder of the vault, as the knowledge folders endpoints give it. A folder of another vault answers 404.';
+$vaultParam = ['name' => 'vault', 'type' => 'string', 'required' => true, 'description' => 'The vault, named either by the readable name it reports as slug or by its id. A vault of another account answers 404.'];
+$listParam = ['name' => 'list', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the list. A list of another vault or of another account answers 404.'];
+$columnParam = ['name' => 'column', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the column. A column of another list answers 404.'];
+$itemParam = ['name' => 'item', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the item. An item of another list answers 404.'];
+$folderParam = 'The id of a folder of the vault, as the knowledge folders endpoints give it. A folder of another vault answers 404.';
 $descriptionParam = 'What the list is for, in Markdown, up to 5,000 characters.';
-$cellsParam = 'The texts of the item, keyed by the identifier of their column, each in Markdown and up to 5,000 characters. A key naming no column of the list answers 422.';
+$cellsParam = 'The texts of the item, keyed by the id of their column, each in Markdown and up to 5,000 characters. A key naming no column of the list answers 422.';
 $log = 'The change is written to the account log.';
 
 return [

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Http\Resources\ContactNameRepresentationResource;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -28,17 +27,18 @@ class ListContactNameRepresentations extends Tool
             'contact' => ['required', 'string'],
         ]);
 
-        $contact = $this->contact($this->vault($request, $validated['vault']), $validated['contact']);
+        $vault = $this->vault($request, $validated['vault']);
+        $contact = $this->contact($vault, $validated['contact']);
 
-        return Response::json(ContactNameRepresentationResource::collection($contact->nameRepresentations)->resolve());
+        return $this->answerThroughApi($request, $vault->uuid, $contact->uuid);
     }
 
     /** @return array<string, Type> */
     public function schema(JsonSchema $schema): array
     {
         return [
-            'vault' => $schema->string()->description('The address of the vault holding the contact.')->required(),
-            'contact' => $schema->string()->description('The address of the contact.')->required(),
+            'vault' => $schema->string()->description('The id of the vault, as list-vaults gives it.')->required(),
+            'contact' => $schema->string()->description('The id of the contact, as list-contacts gives it.')->required(),
         ];
     }
 }

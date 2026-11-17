@@ -12,7 +12,7 @@
 <aside
   x-data="apiDocsSidebarScroll"
   @click="remember()"
-  class="hidden w-68 shrink-0 self-start border-r border-hairline px-4 py-6 lg:sticky lg:top-28 lg:block lg:h-[calc(100vh-7rem)] lg:overflow-y-auto"
+  class="hidden w-68 shrink-0 self-start border-r border-hairline px-4 py-6 lg:block"
 >
   <h2 class="mb-2 ml-2.5 text-2xs font-medium tracking-caption text-muted-soft uppercase">Getting started</h2>
 

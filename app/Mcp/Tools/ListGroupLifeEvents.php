@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Mcp\Tools;
 
 use App\Helpers\FlagState;
-use App\Http\Resources\LifeEventResource;
-use App\Models\LifeEvent;
 use App\Models\User;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
@@ -16,7 +14,7 @@ use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
-#[Description('List the activities recorded on a group, the most recent first, a page at a time. Each is also on the timeline of the people who were there. Values of sensitive fields are never given. Change or delete one with update-life-event and delete-life-event.')]
+#[Description('List the life events recorded on a group, the most recent first, a page at a time. Each is also on the timeline of the people who were there. Values of sensitive fields are never given. Change or delete one with update-life-event and delete-life-event.')]
 #[IsReadOnly]
 class ListGroupLifeEvents extends Tool
 {
@@ -36,39 +34,12 @@ class ListGroupLifeEvents extends Tool
         $validated = $request->validate([
             'vault' => ['required', 'string'],
             'group' => ['required', 'string'],
-            'page' => ['nullable', 'integer'],
-            'per_page' => ['nullable', 'integer'],
         ]);
 
-        $group = $this->group($this->vault($request, $validated['vault']), $validated['group']);
+        $vault = $this->vault($request, $validated['vault']);
+        $group = $this->group($vault, $validated['group']);
 
-        $perPage = max(1, min(
-            (int) ($validated['per_page'] ?? config('monica.api_default_items_per_page')),
-            (int) config('monica.api_maximum_items_per_page'),
-        ));
-
-        $lifeEvents = LifeEvent::query()
-            ->where('group_id', $group->id)
-            ->with(LifeEventResource::RELATIONS)
-            ->orderByDesc('happened_on')
-            ->orderByDesc('id')
-            ->paginate($perPage, ['*'], 'page', max(1, (int) ($validated['page'] ?? 1)));
-
-        $withSensitive = $this->reachesSensitiveFields($request);
-
-        return Response::json([
-            'data' => array_map(function (LifeEvent $lifeEvent) use ($withSensitive): array {
-                $resource = new LifeEventResource($lifeEvent);
-                $resource->withSensitive = $withSensitive;
-
-                return $resource->resolve();
-            }, $lifeEvents->items()),
-            'meta' => [
-                'page' => $lifeEvents->currentPage(),
-                'per_page' => $lifeEvents->perPage(),
-                'total' => $lifeEvents->total(),
-            ],
-        ]);
+        return $this->answerThroughApi($request, $vault->uuid, $group->uuid);
     }
 
     /** @return array<string, Type> */
@@ -78,10 +49,10 @@ class ListGroupLifeEvents extends Tool
         $maximum = (int) config('monica.api_maximum_items_per_page');
 
         return [
-            'vault' => $schema->string()->description('The address of the vault holding the group.')->required(),
+            'vault' => $schema->string()->description('The id of the vault, as list-vaults gives it.')->required(),
             'group' => $schema->string()->description('The id of the group, as list-groups gives it.')->required(),
-            'page' => $schema->integer()->description('Which page to return, counting from 1.'),
-            'per_page' => $schema->integer()->description("How many activities a page holds, {$default} by default and {$maximum} at most."),
+            'page' => $schema->integer()->description('The page to read, starting at 1.'),
+            'per_page' => $schema->integer()->description("How many life events a page holds: {$default} unless asked, {$maximum} at most."),
         ];
     }
 }

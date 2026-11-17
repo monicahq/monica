@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Actions\UpdatePossessionFieldPosition;
-use App\Http\Resources\PossessionTypeResource;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -13,7 +11,7 @@ use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 
-#[Description('Move a field to another place among the fields of its group, or among the standalone fields of its possession type. The change is written to the account journal.')]
+#[Description('Move a field to another place among the fields of its group, or among the standalone fields of its possession type. The change is written to the account log.')]
 class SetPossessionFieldPosition extends Tool
 {
     use MirrorsAnApiCapability;
@@ -25,27 +23,21 @@ class SetPossessionFieldPosition extends Tool
         $validated = $request->validate([
             'possession_type' => ['required', 'string'],
             'field' => ['required', 'string'],
-            'position' => ['required', 'integer', 'min:1'],
         ]);
 
         $possessionType = $this->possessionType($request, $validated['possession_type']);
+        $field = $this->possessionField($possessionType, $validated['field']);
 
-        new UpdatePossessionFieldPosition(
-            user: $this->user($request),
-            field: $this->possessionField($possessionType, $validated['field']),
-            position: (int) $validated['position'],
-        )->execute();
-
-        return Response::json(new PossessionTypeResource($possessionType)->resolve());
+        return $this->answerThroughApi($request, $possessionType->uuid, $field->uuid);
     }
 
     /** @return array<string, Type> */
     public function schema(JsonSchema $schema): array
     {
         return [
-            'possession_type' => $schema->string()->description('The identifier of the possession type, as list-possession-types gives it.')->required(),
-            'field' => $schema->string()->description('The identifier of the field, as get-possession-type gives it.')->required(),
-            'position' => $schema->integer()->description('Where it goes among its siblings, counting from 1.')->required(),
+            'possession_type' => $schema->string()->description('The id of the possession type, as list-possession-types gives it.')->required(),
+            'field' => $schema->string()->description('The id of the field, as get-possession-type gives it.')->required(),
+            'position' => $schema->integer()->description('Where it goes among the fields beside it, counting from 1.')->required(),
         ];
     }
 }

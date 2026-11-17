@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Http\Resources\PossessionTagResource;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -27,14 +26,16 @@ class GetPossessionTag extends Tool
             'possession_tag' => ['required', 'string'],
         ]);
 
-        return Response::json(new PossessionTagResource($this->possessionTag($request, $validated['possession_tag']))->resolve());
+        $possessionTag = $this->possessionTag($request, $validated['possession_tag']);
+
+        return $this->answerThroughApi($request, $possessionTag->uuid);
     }
 
     /** @return array<string, Type> */
     public function schema(JsonSchema $schema): array
     {
         return [
-            'possession_tag' => $schema->string()->description('The identifier of the possession tag, as list-possession-tags gives it.')->required(),
+            'possession_tag' => $schema->string()->description('The id of the possession tag, as list-possession-tags gives it.')->required(),
         ];
     }
 }

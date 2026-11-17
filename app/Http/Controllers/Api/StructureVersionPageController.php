@@ -47,14 +47,14 @@ class StructureVersionPageController extends TemplateScopedController
         $page = $this->findPage($request, $template, $version, $page);
 
         $validated = $request->validate([
-            'label' => ['required', 'string', 'max:255'],
+            'label' => ['sometimes', 'string', 'max:255'],
         ]);
 
         try {
             new UpdateStructureVersionPage(
                 user: $request->user(),
                 page: $page,
-                label: $validated['label'],
+                label: $validated['label'] ?? $page->label,
             )->execute();
         } catch (PageLabelIsAlreadyUsed $e) {
             throw ValidationException::withMessages(['label' => $e->getMessage()]);

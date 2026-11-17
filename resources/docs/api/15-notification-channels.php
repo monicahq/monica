@@ -80,7 +80,7 @@ $removedSms = $sms;
 $removedSms['attributes']['destination'] = null;
 
 $channelAttributes = [
-    ['name' => 'channel', 'type' => 'string', 'description' => 'Which channel this is: in_app, email, telegram or sms. It is also the address of the record, so this is what goes in the path.'],
+    ['name' => 'channel', 'type' => 'string', 'description' => 'Which channel this is: in_app, email, telegram or sms. It also stands for the id of the record, so this is what goes in the path.'],
     ['name' => 'label', 'type' => 'string', 'description' => 'What the channel is called, in the language you asked in.'],
     ['name' => 'is_enabled', 'type' => 'boolean', 'description' => 'Whether the account wants anything to go out this way. A channel can be switched on only once everything below is satisfied.'],
     ['name' => 'destination', 'type' => 'string', 'description' => 'Where messages go: the room, the conversation or the number, up to 255 characters, or null when the channel asks for none or none has been given.'],
@@ -186,14 +186,14 @@ return [
                 [
                     'name' => 'is_enabled',
                     'type' => 'boolean',
-                    'required' => true,
-                    'description' => 'Whether anything should go out this way. False is always allowed, whatever state the channel is in.',
+                    'required' => false,
+                    'description' => 'Whether anything should go out this way. False is always allowed, whatever state the channel is in. It cannot be null.',
                 ],
                 [
                     'name' => 'destination',
                     'type' => 'string',
                     'required' => false,
-                    'description' => 'Where to send: the room, the conversation or the number, up to 255 characters. Left out, whatever is saved stays.',
+                    'description' => 'Where to send: the room, the conversation or the number, up to 255 characters. Unlike other fields, null keeps whatever is saved rather than clearing it.',
                 ],
             ],
             'returns' => 'The channel as it now stands.',
@@ -318,8 +318,8 @@ return [
                 [
                     'name' => 'quiet_hours_are_enabled',
                     'type' => 'boolean',
-                    'required' => true,
-                    'description' => 'Whether there are hours during which nothing may be delivered.',
+                    'required' => false,
+                    'description' => 'Whether there are hours during which nothing may be delivered. It cannot be null.',
                 ],
                 [
                     'name' => 'quiet_hours_start',
@@ -336,8 +336,8 @@ return [
                 [
                     'name' => 'delivery_mode',
                     'type' => 'string',
-                    'required' => true,
-                    'description' => 'Either immediate or digest.',
+                    'required' => false,
+                    'description' => 'Either immediate or digest. It cannot be null.',
                 ],
                 [
                     'name' => 'digest_time',
@@ -349,13 +349,13 @@ return [
                     'name' => 'digest_weekdays',
                     'type' => 'array',
                     'required' => false,
-                    'description' => 'Which days the summary is sent, as numbers from 0 for Sunday to 6 for Saturday. Left out, every day.',
+                    'description' => 'Which days the summary is sent, as numbers from 0 for Sunday to 6 for Saturday. Null sends it every day.',
                 ],
                 [
                     'name' => 'timezone',
                     'type' => 'string',
                     'required' => false,
-                    'description' => 'The zone quiet hours and the summary hour are read in. Left out, whatever is saved stays.',
+                    'description' => 'The zone quiet hours and the summary hour are read in. Unlike other fields, null keeps whatever is saved rather than clearing it.',
                 ],
             ],
             'returns' => 'The preferences as they now stand.',

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Http\Resources\PossessionLocationStayResource;
-use App\Models\PossessionLocationStay;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -14,7 +12,7 @@ use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
-#[Description('List the stays of a possession, oldest first and those with an unknown arrival first: each location it was kept at, the day it arrived and left, and why. The stay with no day it left is where it is now.')]
+#[Description('List the stays of a possession: each location it was kept at, the day it arrived and left, and why. The stays with an unknown arrival day come first. The others follow by arrival day, oldest first. The stay with no day it left is where it is now.')]
 #[IsReadOnly]
 class ListPossessionLocationStays extends Tool
 {
@@ -29,21 +27,18 @@ class ListPossessionLocationStays extends Tool
             'possession' => ['required', 'string'],
         ]);
 
-        $possession = $this->possession($this->vault($request, $validated['vault']), $validated['possession']);
-        $possession->load('locationStays.location');
+        $vault = $this->vault($request, $validated['vault']);
+        $possession = $this->possession($vault, $validated['possession']);
 
-        $stays = $possession->locationStays
-            ->each(fn (PossessionLocationStay $stay) => $stay->setRelation('possession', $possession));
-
-        return Response::json(['data' => PossessionLocationStayResource::collection($stays)->resolve()]);
+        return $this->answerThroughApi($request, $vault->uuid, $possession->uuid);
     }
 
     /** @return array<string, Type> */
     public function schema(JsonSchema $schema): array
     {
         return [
-            'vault' => $schema->string()->description('The address of the vault holding the possession.')->required(),
-            'possession' => $schema->string()->description('The identifier of the possession, as list-possessions gives it.')->required(),
+            'vault' => $schema->string()->description('The id of the vault, as list-vaults gives it.')->required(),
+            'possession' => $schema->string()->description('The id of the possession, as list-possessions gives it.')->required(),
         ];
     }
 }

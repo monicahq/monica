@@ -69,17 +69,17 @@ class PossessionConditionController extends Controller
     {
         $record = $this->find($request, $possessionCondition);
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:50'],
-            'colour' => ['required', Rule::enum(VaultColourEnum::class)],
+            'name' => ['sometimes', 'string', 'max:50'],
+            'colour' => ['sometimes', Rule::enum(VaultColourEnum::class)],
             'icon' => ['nullable', 'string', Rule::in(Section::ICONS)],
         ]);
 
         new UpdatePossessionCondition(
             user: $request->user(),
             possessionCondition: $record,
-            name: $validated['name'],
-            colour: VaultColourEnum::from($validated['colour']),
-            icon: $validated['icon'] ?? null,
+            name: $validated['name'] ?? $record->name,
+            colour: VaultColourEnum::from($validated['colour'] ?? $record->colour),
+            icon: array_key_exists('icon', $validated) ? $validated['icon'] : $record->icon,
         )->execute();
 
         return new PossessionConditionResource($record)->response();

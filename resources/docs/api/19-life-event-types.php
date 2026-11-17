@@ -53,16 +53,16 @@ $pageParams = [
 ];
 
 $identifier = [
-    ['name' => 'lifeEventType', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the nature, which is the id it comes back with. A path that is not a uuid answers 404 without a query being run.'],
+    ['name' => 'lifeEventType', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the nature. A path that is not a uuid answers 404 without a query being run.'],
 ];
 
 $typeAttributes = [
-    ['name' => 'life_event_category_id', 'type' => 'uuid', 'description' => 'The group the nature is filed under. Moving a nature to another group is an ordinary change, and the life events recorded with it are regrouped along with it.'],
+    ['name' => 'life_event_category_id', 'type' => 'uuid', 'description' => 'The category the nature is filed under. Moving a nature to another category is an ordinary change, and the life events recorded with it are regrouped along with it.'],
     ['name' => 'name', 'type' => 'string', 'description' => 'What the nature is called. One the product supplied reads in the language you ask for, until somebody renames it, after which their words stand in every language. Up to 255 characters, reduced to plain text, so no markup survives here.'],
     ['name' => 'description', 'type' => 'string', 'description' => 'A sentence saying what the nature covers, shown where somebody chooses one. Up to 255 characters, or null when nobody wrote one.'],
     ['name' => 'icon', 'type' => 'string', 'description' => 'The glyph drawn beside the nature, chosen from the catalogue the product ships, or null to read by name alone.'],
     ['name' => 'colour', 'type' => 'string', 'description' => 'The tint the nature is drawn in, chosen from the palette the product ships, or null to take the ordinary one.'],
-    ['name' => 'position', 'type' => 'integer', 'description' => 'Where the nature sits inside its group, counting from 1. Retired natures are numbered along with the rest, so one switched back on finds the place it had.'],
+    ['name' => 'position', 'type' => 'integer', 'description' => 'Where the nature sits inside its category, counting from 1. Retired natures are numbered along with the rest, so one switched back on finds the place it had.'],
     ['name' => 'is_system', 'type' => 'boolean', 'description' => 'Whether the product supplied the nature with the account. It governs one thing and one thing only: a supplied nature cannot be deleted. It may be renamed, redrawn, moved and retired like any other.'],
     ['name' => 'is_active', 'type' => 'boolean', 'description' => 'Whether the nature is offered when a life event is recorded. False takes it out of that choice and touches nothing already written.'],
     ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When the nature was added, as a count of seconds since 1970 rather than a written date.'],
@@ -74,7 +74,7 @@ $nested = function (string $prefix, string $type, string $singular, string $plur
         ['name' => $prefix, 'type' => 'array', 'description' => $summary],
         ['name' => "{$prefix}[]", 'type' => 'object', 'description' => "One {$singular}."],
         ['name' => "{$prefix}[].type", 'type' => 'string', 'description' => "Always {$type}. It names the kind of record, so a caller holding several kinds can tell them apart."],
-        ['name' => "{$prefix}[].id", 'type' => 'string', 'description' => "The identifier of the {$singular}, as a string even when it reads as a number."],
+        ['name' => "{$prefix}[].id", 'type' => 'string', 'description' => "The id of the {$singular}, as a string even when it reads as a number."],
         ['name' => "{$prefix}[].attributes", 'type' => 'object', 'description' => "Everything the {$singular} holds."],
     ];
 
@@ -113,7 +113,7 @@ $groupAttributes = [
     ['name' => 'position', 'type' => 'integer', 'description' => 'Where the group sits in the layout, counting from 1. The fields nobody grouped are a group too, and they come first.'],
     ['name' => 'title', 'type' => 'string', 'description' => 'What the group is headed. The fields nobody grouped answer with a heading that is not drawn.'],
     ['name' => 'title_override', 'type' => 'string', 'description' => 'The heading chosen for this group alone, or null when the underlying name is used.'],
-    ['name' => 'section_id', 'type' => 'string', 'description' => 'The identifier of the reusable block behind the group. It belongs to the engine that stores the layout and a caller rarely needs it.'],
+    ['name' => 'section_id', 'type' => 'string', 'description' => 'The id of the reusable block behind the group. It belongs to the engine that stores the layout and a caller rarely needs it.'],
     ['name' => 'section_name', 'type' => 'string', 'description' => 'What that block is called in the library it lives in.'],
     ['name' => 'section_version_number', 'type' => 'integer', 'description' => 'Which frozen version of the block is placed here. This is what stops a change reaching a life event already recorded.'],
     ['name' => 'section_version_status', 'type' => 'string', 'description' => 'One of draft, published or retired, for the block rather than for the nature.'],
@@ -188,7 +188,7 @@ return [
             'description' => 'List every nature your account can record a life event as, grouped the way the picker groups them.',
             'body' => [
                 'A nature is what a life event was: lunch, a phone call, a medical appointment, a concert. It carries a name, a sentence saying what it covers, a glyph, a tint, and the custom fields a life event of that nature asks for, which are read at their own address rather than here.',
-                'The list runs through the groups in the order you arranged them, and through the natures inside each group in the order you arranged those. Retired natures are listed with the rest, because one that is off is meant to be found again and switched back on.',
+                'The list runs through the categories in the order you arranged them, and through the natures inside each category in the order you arranged those. Retired natures are listed with the rest, because one that is off is meant to be found again and switched back on.',
                 'A nature the product supplied reads in the language you ask for. Once somebody renames it, their words stand in every language.',
             ],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
@@ -209,7 +209,7 @@ return [
             'examplePath' => '/life-event-types/8b2e5c70-1a94-4f38-b6d2-0e7c94a35f18',
             'description' => 'Retrieve one nature: what it is called, what it covers, how it is drawn and where it sits.',
             'body' => [
-                'The custom fields the nature asks for are not in here. They are read at their own address, so listing a vocabulary does not make you carry every layout it holds.',
+                'The custom fields the nature asks for are not in here. They are read at their own endpoint, so listing a vocabulary does not make you carry every layout it holds.',
             ],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
@@ -225,12 +225,12 @@ return [
             'path' => '/life-event-types',
             'description' => 'Add a nature of your own, when the ones the product supplies do not describe what you actually do.',
             'body' => [
-                'The nature goes at the end of the group you file it under and is offered straight away. Retire it afterwards if you are preparing a vocabulary you do not want offered yet.',
+                'The nature goes at the end of the category you file it under and is offered straight away. Retire it afterwards if you are preparing a vocabulary you do not want offered yet.',
                 'It starts with no custom fields, which is a perfectly ordinary state: a life event of a brand new nature can be recorded immediately, carrying nothing beyond what every life event carries. Give it fields at their own address when you want them.',
             ],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'bodyParams' => [
-                ['name' => 'life_event_category_id', 'type' => 'uuid', 'required' => true, 'description' => 'The group to file the nature under. A group belonging to somebody else answers 404.', 'example' => '5f8b3c21-9d07-4a64-8e12-7b0a4d6c3e95'],
+                ['name' => 'life_event_category_id', 'type' => 'uuid', 'required' => true, 'description' => 'The category to file the nature under. A category belonging to somebody else answers 404.', 'example' => '5f8b3c21-9d07-4a64-8e12-7b0a4d6c3e95'],
                 ['name' => 'name', 'type' => 'string', 'required' => true, 'description' => 'What the nature is called. Up to 255 characters. Markup and surrounding blank space are stripped, and a name left with nothing in it is refused.', 'example' => 'Board game night'],
                 ['name' => 'description', 'type' => 'string', 'required' => false, 'description' => 'A sentence saying what the nature covers. Up to 255 characters, stripped the same way.', 'example' => 'An evening around a table with a box of cardboard.'],
                 ['name' => 'icon', 'type' => 'string', 'required' => false, 'description' => 'The glyph drawn beside the nature, from the catalogue the product ships. Anything else is refused.', 'example' => 'activity'],
@@ -248,19 +248,19 @@ return [
             'method' => 'PUT',
             'path' => '/life-event-types/{lifeEventType}',
             'examplePath' => '/life-event-types/8b2e5c70-1a94-4f38-b6d2-0e7c94a35f18',
-            'description' => 'Change what a nature is called, what it covers, how it is drawn and which group it is filed under.',
+            'description' => 'Change what a nature is called, what it covers, how it is drawn and which category it is filed under.',
             'body' => [
                 'A nature the product supplied is changed like any other. is_system stops a nature being deleted and stops nothing else, so a household that calls a phone call something else writes it here.',
-                'Moving a nature to another group puts it last there, because the order inside a group is an order somebody chose and an arrival has no claim on a place in it.',
+                'Moving a nature to another category puts it last there, because the order inside a category is an order somebody chose and an arrival has no claim on a place in it.',
                 'Nothing a life event has recorded changes, since a life event names its nature rather than copying it. Renaming a nature renames it on every life event already recorded with it, which is the point.',
                 'Once you write your own words they stand in every language. The wording the product supplied reads in the language of whoever is looking, and renaming gives that up.',
             ],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'bodyParams' => [
-                ['name' => 'life_event_category_id', 'type' => 'uuid', 'required' => true, 'description' => 'The group to file the nature under. A group belonging to somebody else answers 404.', 'example' => '5f8b3c21-9d07-4a64-8e12-7b0a4d6c3e95'],
-                ['name' => 'name', 'type' => 'string', 'required' => true, 'description' => 'What the nature is called. Up to 255 characters. Markup and surrounding blank space are stripped, and a name left with nothing in it is refused.', 'example' => 'Board game night'],
-                ['name' => 'description', 'type' => 'string', 'required' => false, 'description' => 'A sentence saying what the nature covers. Up to 255 characters, stripped the same way.', 'example' => 'An evening around a table with a box of cardboard.'],
+                ['name' => 'life_event_category_id', 'type' => 'uuid', 'required' => false, 'description' => 'The category to file the nature under. A category belonging to somebody else answers 404. It cannot be null.', 'example' => '5f8b3c21-9d07-4a64-8e12-7b0a4d6c3e95'],
+                ['name' => 'name', 'type' => 'string', 'required' => false, 'description' => 'What the nature is called. Up to 255 characters. Markup and surrounding blank space are stripped, and a name left with nothing in it is refused. It cannot be null.', 'example' => 'Board game night'],
+                ['name' => 'description', 'type' => 'string', 'required' => false, 'description' => 'A sentence saying what the nature covers. Up to 255 characters, stripped the same way. Null clears it.', 'example' => 'An evening around a table with a box of cardboard.'],
                 ['name' => 'icon', 'type' => 'string', 'required' => false, 'description' => 'The glyph drawn beside the nature, from the catalogue the product ships. Anything else is refused.', 'example' => 'activity'],
                 ['name' => 'colour', 'type' => 'string', 'required' => false, 'description' => 'The tint the nature is drawn in, from the palette the product ships. Anything else is refused.', 'example' => 'bg-sky-500'],
             ],
@@ -315,16 +315,16 @@ return [
             'method' => 'PUT',
             'path' => '/life-event-types/{lifeEventType}/position',
             'examplePath' => '/life-event-types/8b2e5c70-1a94-4f38-b6d2-0e7c94a35f18/position',
-            'description' => 'Put a nature somewhere else inside the group it is filed under, so the ones you reach for sit at the top.',
+            'description' => 'Put a nature somewhere else inside the category it is filed under, so the ones you reach for sit at the top.',
             'body' => [
-                'Every nature of that one group is numbered from 1 again once the move is made, retired ones counted among them. A position past the end puts the nature last rather than being refused.',
-                'Moving a nature to another group is not this: it is an ordinary change, and it puts the nature last where it arrives.',
+                'Every nature of that one category is numbered from 1 again once the move is made, retired ones counted among them. A position past the end puts the nature last rather than being refused.',
+                'Moving a nature to another category is not this: it is an ordinary change, and it puts the nature last where it arrives.',
                 'A nature the product supplied may be moved like any other. Where a nature sits changes the order it is read in and changes nothing else.',
             ],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'bodyParams' => [
-                ['name' => 'position', 'type' => 'integer', 'required' => true, 'description' => 'Where the nature should sit inside its group, counting from 1.', 'example' => '1'],
+                ['name' => 'position', 'type' => 'integer', 'required' => true, 'description' => 'Where the nature should sit inside its category, counting from 1.', 'example' => '1'],
             ],
             'returns' => 'The life event type object where you put it.',
             'response' => ['data' => $otherType],
@@ -356,9 +356,9 @@ return [
             'method' => 'PUT',
             'path' => '/life-event-types/{lifeEventType}/fields',
             'examplePath' => '/life-event-types/8b2e5c70-1a94-4f38-b6d2-0e7c94a35f18/fields',
-            'description' => 'Send the whole layout a life event of this nature should ask for.',
+            'description' => 'Send the layout a life event of this nature should ask for.',
             'body' => [
-                'This takes the finished layout rather than one change at a time, because that is the one gesture the product has for it. Whatever you send is what the nature asks for afterwards, and anything you leave out is gone from it.',
+                'This takes the finished layout rather than one change at a time, because that is the one gesture the product has for it. The layout is two lists, groups and fields, each sent whole. A list left out of the body keeps what is stored. A list sent replaces what is stored, so anything left out of it is gone.',
                 'A field is matched to the one already there by its key. Send a field back with its key to keep it, leave the key out to add a field, and leave a field out altogether to take it away. Changing what kind of field it is, or what a relation points at, writes the field again in place under the same key.',
                 'A group is matched by the placement_id you read it with. Leave that out to add a group, and leave a group out to take it away, which files its fields under no group rather than deleting them.',
                 'Every save publishes a new frozen version of the layout beside the old one. A life event already recorded names the version it was written on and never follows, so it keeps the fields and the values it was written with. This is the rule that makes the layout safe to change.',

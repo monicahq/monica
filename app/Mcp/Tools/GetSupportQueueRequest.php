@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Http\Resources\Admin\SupportRequestResource;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -38,7 +37,7 @@ class GetSupportQueueRequest extends Tool
 
         $supportRequest = $this->supportRequest($request, $validated['support_request'], acrossAccounts: true);
 
-        return Response::json(new SupportRequestResource($supportRequest->load(['user', 'messages.attachments', 'statusChanges']))->resolve());
+        return $this->answerThroughApi($request, $supportRequest->uuid);
     }
 
     /** @return array<string, Type> */

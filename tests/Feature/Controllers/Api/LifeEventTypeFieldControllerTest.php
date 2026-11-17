@@ -189,6 +189,57 @@ class LifeEventTypeFieldControllerTest extends TestCase
         ])->assertNotFound();
     }
 
+    #[Test]
+    public function it_keeps_what_is_left_out_of_an_update(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $type = $this->lifeEventType($user);
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', "/api/v1/life-event-types/{$type->uuid}/fields", [
+            'groups' => [
+                ['name' => 'Where', 'fields' => [['label' => 'Venue', 'type' => 'text', 'settings' => ['placeholder' => 'Poor Richard’s']]]],
+            ],
+            'fields' => [['label' => 'Notes', 'type' => 'textarea']],
+        ])->assertOk();
+
+        $this->json('PUT', "/api/v1/life-event-types/{$type->uuid}/fields", [
+            'fields' => [['label' => 'Who paid', 'type' => 'text']],
+        ])->assertOk();
+
+        $this->assertSame([['Who paid'], ['Venue']], $this->labelsBySection($type));
+        $this->assertSame('Poor Richard’s', $this->json('GET', "/api/v1/life-event-types/{$type->uuid}/fields")->json('data.1.attributes.fields.0.attributes.placeholder'));
+
+        $this->json('PUT', "/api/v1/life-event-types/{$type->uuid}/fields", [
+            'groups' => [['name' => 'Where', 'fields' => [['label' => 'Venue', 'type' => 'text']]]],
+        ])->assertOk();
+
+        $this->assertSame([['Who paid'], ['Venue']], $this->labelsBySection($type));
+    }
+
+    #[Test]
+    public function it_clears_a_field_sent_as_null(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $type = $this->lifeEventType($user);
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', "/api/v1/life-event-types/{$type->uuid}/fields", [
+            'groups' => [['name' => 'Where', 'fields' => [['label' => 'Venue', 'type' => 'text']]]],
+            'fields' => [['label' => 'Notes', 'type' => 'textarea']],
+        ])->assertOk();
+
+        $this->json('PUT', "/api/v1/life-event-types/{$type->uuid}/fields", ['groups' => null])->assertOk();
+
+        $this->assertSame([['Notes']], $this->labelsBySection($type));
+    }
+
     private function lifeEventType(User $user): LifeEventType
     {
         $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
@@ -197,5 +248,14 @@ class LifeEventTypeFieldControllerTest extends TestCase
             'account_id' => $user->account_id,
             'life_event_category_id' => $category->id,
         ]);
+    }
+
+    /** @return list<list<string>> */
+    private function labelsBySection(LifeEventType $type): array
+    {
+        return collect($this->json('GET', "/api/v1/life-event-types/{$type->uuid}/fields")->json('data'))
+            ->map(fn (array $section): array => array_column(array_column($section['attributes']['fields'], 'attributes'), 'label'))
+            ->values()
+            ->all();
     }
 }

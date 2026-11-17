@@ -9,6 +9,7 @@ use App\Actions\DestroyLifeEvent;
 use App\Actions\UpdateLifeEvent;
 use App\Enums\ApiKeyScopeEnum;
 use App\Enums\LifeEventSourceEnum;
+use App\Enums\LogSourceEnum;
 use App\Exceptions\FieldIsRequired;
 use App\Exceptions\FieldValueIsNotUnique;
 use App\Exceptions\LifeEventTypeIsNotAvailable;
@@ -92,7 +93,7 @@ class LifeEventController extends Controller
     {
         $vault = $this->vault($request, $vault);
 
-        $validated = $request->validate($this->rules());
+        $validated = $request->validate($this->rules(isCreating: true));
 
         $lifeEventType = $this->lifeEventType($request, $validated['life_event_type']);
         $people = $this->participants($vault, $validated['participants']);
@@ -111,7 +112,7 @@ class LifeEventController extends Controller
                 durationInMinutes: isset($validated['duration_in_minutes']) ? (int) $validated['duration_in_minutes'] : null,
                 participants: array_slice($people, 1),
                 values: $values ?? [],
-                createdFrom: LifeEventSourceEnum::Api,
+                createdFrom: request()->attributes->get('log_source') === LogSourceEnum::Mcp ? LifeEventSourceEnum::Mcp : LifeEventSourceEnum::Api,
             )->execute();
         } catch (LifeEventTypeIsNotAvailable $e) {
             throw ValidationException::withMessages(['life_event_type' => $e->getMessage()]);
@@ -127,11 +128,17 @@ class LifeEventController extends Controller
         $vault = $this->vault($request, $vault);
         $lifeEvent = $this->lifeEvent($vault, $lifeEvent);
 
-        $validated = $request->validate($this->rules());
+        $validated = $request->validate($this->rules(isCreating: false));
 
-        $lifeEventType = $this->lifeEventType($request, $validated['life_event_type']);
+        $lifeEventType = isset($validated['life_event_type']) ? $this->lifeEventType($request, $validated['life_event_type']) : $lifeEvent->lifeEventType;
         $subject = $this->subject($lifeEvent);
-        $people = $this->participants($vault, $validated['participants']);
+        $people = isset($validated['participants'])
+            ? $this->participants($vault, $validated['participants'])
+            : $lifeEvent->participants
+                ->map(fn (LifeEventParticipant $participation): mixed => $participation->participant)
+                ->filter(fn (mixed $person): bool => $person instanceof Contact)
+                ->values()
+                ->all();
 
         if ($people[0]->id !== $subject->id) {
             throw ValidationException::withMessages(['participants' => __('The first participant has to stay the person the life event is recorded for.')]);
@@ -155,11 +162,11 @@ class LifeEventController extends Controller
                 contact: $subject,
                 lifeEvent: $lifeEvent,
                 lifeEventType: $lifeEventType,
-                happenedOn: CarbonImmutable::parse($validated['happened_on']),
-                title: $validated['title'] ?? null,
-                narrative: $validated['narrative'] ?? null,
-                location: $validated['location'] ?? null,
-                durationInMinutes: isset($validated['duration_in_minutes']) ? (int) $validated['duration_in_minutes'] : null,
+                happenedOn: isset($validated['happened_on']) ? CarbonImmutable::parse($validated['happened_on']) : $lifeEvent->happened_on,
+                title: array_key_exists('title', $validated) ? $validated['title'] : $lifeEvent->title,
+                narrative: array_key_exists('narrative', $validated) ? $validated['narrative'] : $lifeEvent->narrative,
+                location: array_key_exists('location', $validated) ? $validated['location'] : $lifeEvent->location,
+                durationInMinutes: array_key_exists('duration_in_minutes', $validated) ? ($validated['duration_in_minutes'] === null ? null : (int) $validated['duration_in_minutes']) : $lifeEvent->duration_in_minutes,
                 participants: array_slice($people, 1),
                 values: $values,
                 keptFieldIds: $hiddenFieldIds,
@@ -213,17 +220,19 @@ class LifeEventController extends Controller
     }
 
     /** @return array<string, array<int, string>> */
-    private function rules(): array
+    private function rules(bool $isCreating): array
     {
+        $sometimes = $isCreating ? [] : ['sometimes'];
+
         return [
-            'life_event_type' => ['required', 'string'],
-            'happened_on' => ['required', 'date_format:Y-m-d'],
-            'participants' => ['required', 'array', 'min:1'],
+            'life_event_type' => [...$sometimes, 'required', 'string'],
+            'happened_on' => [...$sometimes, 'required', 'date_format:Y-m-d'],
+            'participants' => [...$sometimes, 'required', 'array', 'min:1'],
             'participants.*' => ['string', 'distinct'],
-            'title' => ['nullable', 'string', 'max:255'],
-            'narrative' => ['nullable', 'string', 'max:65535'],
-            'location' => ['nullable', 'string', 'max:255'],
-            'duration_in_minutes' => ['nullable', 'integer', 'min:1', 'max:100000'],
+            'title' => [...$sometimes, 'nullable', 'string', 'max:255'],
+            'narrative' => [...$sometimes, 'nullable', 'string', 'max:65535'],
+            'location' => [...$sometimes, 'nullable', 'string', 'max:255'],
+            'duration_in_minutes' => [...$sometimes, 'nullable', 'integer', 'min:1', 'max:100000'],
             'fields' => ['nullable', 'array'],
         ];
     }

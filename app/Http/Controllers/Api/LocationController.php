@@ -69,16 +69,16 @@ class LocationController extends Controller
     public function update(Request $request, string $location): JsonResponse
     {
         $record = $this->find($request, $location);
-        $validated = $request->validate($this->rules($request));
+        $validated = $request->validate($this->rules($request, isCreating: false));
 
         try {
             new UpdateLocation(
                 user: $request->user(),
                 location: $record,
-                name: $validated['name'],
-                parent: $this->parent($request, $validated['parent_id'] ?? null),
-                emoji: $validated['emoji'] ?? null,
-                address: $validated['address'] ?? null,
+                name: $validated['name'] ?? $record->name,
+                parent: array_key_exists('parent_id', $validated) ? $this->parent($request, $validated['parent_id']) : $record->parent,
+                emoji: array_key_exists('emoji', $validated) ? $validated['emoji'] : $record->emoji,
+                address: array_key_exists('address', $validated) ? $validated['address'] : $record->address,
             )->execute();
         } catch (InvalidArgumentException $e) {
             throw ValidationException::withMessages(['parent_id' => $e->getMessage()]);
@@ -102,10 +102,10 @@ class LocationController extends Controller
     }
 
     /** @return array<string, array<int, mixed>> */
-    private function rules(Request $request): array
+    private function rules(Request $request, bool $isCreating = true): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => [$isCreating ? 'required' : 'sometimes', 'string', 'max:255'],
             'parent_id' => ['bail', 'nullable', 'uuid', Rule::exists('locations', 'uuid')->where('account_id', $request->user()->account_id)],
             'emoji' => ['nullable', 'string', 'max:32', new SingleEmoji],
             'address' => ['nullable', 'string', 'max:2000'],

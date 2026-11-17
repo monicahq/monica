@@ -33,18 +33,18 @@ $groupFile = [
 $flagNote = 'Files kept with a group need both groups and file upload to be available to your account. Until they are, every endpoint here answers 404.';
 
 $groupIdentifier = [
-    ['name' => 'vault', 'type' => 'string', 'required' => true, 'description' => 'The vault the group lives in, named either by the readable name it reports as slug or by the identifier it reports as id.'],
-    ['name' => 'group', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the group. One addressed through the wrong vault, deleted, or belonging to another account, answers 404.'],
+    ['name' => 'vault', 'type' => 'string', 'required' => true, 'description' => 'The vault the group lives in, named either by the readable name it reports as slug or by its id.'],
+    ['name' => 'group', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the group. One addressed through the wrong vault, deleted, or belonging to another account, answers 404.'],
 ];
 
 $fileIdentifier = [
     ...$groupIdentifier,
-    ['name' => 'file', 'type' => 'uuid', 'required' => true, 'description' => 'The identifier of the file as kept with the group, which is the id of the group file object and not the id of the stored file. One kept with another group answers 404.'],
+    ['name' => 'file', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the file as kept with the group, which is the id of the group file object and not the id of the stored file. One kept with another group answers 404.'],
 ];
 
 $fileAttributes = [
     ['name' => 'group', 'type' => 'object', 'description' => 'The group the file is kept with.'],
-    ['name' => 'group.id', 'type' => 'uuid', 'description' => 'The identifier of the group.'],
+    ['name' => 'group.id', 'type' => 'uuid', 'description' => 'The id of the group.'],
     ['name' => 'group.name', 'type' => 'string', 'description' => 'What the group is called.'],
     ['name' => 'name', 'type' => 'string', 'description' => 'The name the file had when it was uploaded.'],
     ['name' => 'mime_type', 'type' => 'string', 'description' => 'The type of the file, such as application/pdf.'],
@@ -110,7 +110,7 @@ return [
             'method' => 'POST',
             'path' => '/vaults/{vault}/groups/{group}/files',
             'examplePath' => '/vaults/'.$vaultSlug.'/groups/'.$groupId.'/files',
-            'description' => 'Upload a file and keep it with a group. The change is written to the account journal.',
+            'description' => 'Upload a file and keep it with a group. The change is written to the account log.',
             'body' => [
                 $flagNote,
                 'Send the file as multipart form data, in a field called file. The type of the file is not restricted.',
@@ -133,7 +133,7 @@ return [
             'method' => 'DELETE',
             'path' => '/vaults/{vault}/groups/{group}/files/{file}',
             'examplePath' => '/vaults/'.$vaultSlug.'/groups/'.$groupId.'/files/'.$fileId,
-            'description' => 'Stop keeping a file with a group. The change is written to the account journal.',
+            'description' => 'Stop keeping a file with a group. The change is written to the account log.',
             'body' => [
                 $flagNote,
                 'The file is let go rather than deleted outright. It stays wherever else it is used, and is swept up after a grace period once nothing uses it.',

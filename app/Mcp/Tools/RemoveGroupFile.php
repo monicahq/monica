@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Actions\RemoveGroupFile as RemoveGroupFileAction;
 use App\Helpers\FlagState;
 use App\Models\User;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
@@ -15,7 +14,7 @@ use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
 
-#[Description('Stop keeping a file with a group. The file stays wherever else it is used, and is swept up after a grace period once nothing uses it. The change is written to the account journal.')]
+#[Description('Stop keeping a file with a group. The file stays wherever else it is used, and is swept up after a grace period once nothing uses it. The change is written to the account log.')]
 #[IsDestructive]
 class RemoveGroupFile extends Tool
 {
@@ -42,8 +41,13 @@ class RemoveGroupFile extends Tool
 
         $vault = $this->vault($request, $validated['vault']);
         $group = $this->group($vault, $validated['group']);
+        $file = $this->groupFile($group, $validated['file']);
 
-        new RemoveGroupFileAction(user: $this->user($request), vault: $vault, group: $group, attachment: $this->groupFile($group, $validated['file']))->execute();
+        $answer = $this->answerThroughApi($request, $vault->uuid, $group->uuid, $file->uuid);
+
+        if ($answer->isError()) {
+            return $answer;
+        }
 
         return Response::text(__('The file is no longer kept with the group.'));
     }
@@ -52,7 +56,7 @@ class RemoveGroupFile extends Tool
     public function schema(JsonSchema $schema): array
     {
         return [
-            'vault' => $schema->string()->description('The address of the vault holding the group.')->required(),
+            'vault' => $schema->string()->description('The id of the vault, as list-vaults gives it.')->required(),
             'group' => $schema->string()->description('The id of the group, as list-groups gives it.')->required(),
             'file' => $schema->string()->description('The id of the file kept with the group, as list-group-files gives it.')->required(),
         ];

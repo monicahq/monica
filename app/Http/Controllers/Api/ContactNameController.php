@@ -21,27 +21,27 @@ class ContactNameController extends Controller
         $contact = Contact::query()->where('vault_id', $vault->id)->addressedBy($contact)->firstOrFail();
 
         $validated = $request->validate([
-            'prefix' => ['present', 'nullable', 'string', 'max:50'],
-            'first_name' => ['present', 'nullable', 'string', 'max:255'],
-            'middle_name' => ['present', 'nullable', 'string', 'max:255'],
-            'last_name' => ['present', 'nullable', 'string', 'max:255'],
-            'suffix' => ['present', 'nullable', 'string', 'max:50'],
-            'maiden_name' => ['present', 'nullable', 'string', 'max:255'],
-            'nickname' => ['present', 'nullable', 'string', 'max:255'],
-            'name_order' => ['present', 'nullable', Rule::enum(NameOrderEnum::class)],
+            'prefix' => ['sometimes', 'nullable', 'string', 'max:50'],
+            'first_name' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'middle_name' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'last_name' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'suffix' => ['sometimes', 'nullable', 'string', 'max:50'],
+            'maiden_name' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'nickname' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'name_order' => ['sometimes', 'nullable', Rule::enum(NameOrderEnum::class)],
         ]);
 
         new UpdateContactName(
             user: $request->user(),
             contact: $contact,
-            prefix: $validated['prefix'],
-            firstName: $validated['first_name'],
-            middleName: $validated['middle_name'],
-            lastName: $validated['last_name'],
-            suffix: $validated['suffix'],
-            maidenName: $validated['maiden_name'],
-            nickname: $validated['nickname'],
-            nameOrder: $validated['name_order'] === null ? null : NameOrderEnum::from($validated['name_order']),
+            prefix: array_key_exists('prefix', $validated) ? $validated['prefix'] : $contact->prefix,
+            firstName: array_key_exists('first_name', $validated) ? $validated['first_name'] : $contact->first_name,
+            middleName: array_key_exists('middle_name', $validated) ? $validated['middle_name'] : $contact->middle_name,
+            lastName: array_key_exists('last_name', $validated) ? $validated['last_name'] : $contact->last_name,
+            suffix: array_key_exists('suffix', $validated) ? $validated['suffix'] : $contact->suffix,
+            maidenName: array_key_exists('maiden_name', $validated) ? $validated['maiden_name'] : $contact->maiden_name,
+            nickname: array_key_exists('nickname', $validated) ? $validated['nickname'] : $contact->nickname,
+            nameOrder: array_key_exists('name_order', $validated) ? NameOrderEnum::tryFrom((string) $validated['name_order']) : $contact->name_order,
         )->execute();
 
         return new ContactResource(

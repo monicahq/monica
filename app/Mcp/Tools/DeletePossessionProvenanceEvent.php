@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Mcp\Tools;
 
-use App\Actions\DestroyPossessionProvenanceEvent;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Illuminate\JsonSchema\Types\Type;
 use Laravel\Mcp\Request;
@@ -13,7 +12,7 @@ use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
 
-#[Description('Delete a provenance event of a possession. The transaction it points at, if any, stays. No tool brings the event back. The change is written to the account journal.')]
+#[Description('Delete a provenance event of a possession. The transaction it points at, if any, stays. No tool brings the event back. The change is written to the account log.')]
 #[IsDestructive]
 class DeletePossessionProvenanceEvent extends Tool
 {
@@ -29,12 +28,15 @@ class DeletePossessionProvenanceEvent extends Tool
             'event' => ['required', 'string'],
         ]);
 
-        $possession = $this->possession($this->vault($request, $validated['vault']), $validated['possession']);
+        $vault = $this->vault($request, $validated['vault']);
+        $possession = $this->possession($vault, $validated['possession']);
+        $record = $this->possessionProvenanceEvent($possession, $validated['event']);
 
-        new DestroyPossessionProvenanceEvent(
-            user: $this->user($request),
-            event: $this->possessionProvenanceEvent($possession, $validated['event']),
-        )->execute();
+        $answer = $this->answerThroughApi($request, $vault->uuid, $possession->uuid, $record->uuid);
+
+        if ($answer->isError()) {
+            return $answer;
+        }
 
         return Response::text(__('The event is deleted.'));
     }
@@ -43,9 +45,9 @@ class DeletePossessionProvenanceEvent extends Tool
     public function schema(JsonSchema $schema): array
     {
         return [
-            'vault' => $schema->string()->description('The address of the vault holding the possession.')->required(),
-            'possession' => $schema->string()->description('The identifier of the possession, as list-possessions gives it.')->required(),
-            'event' => $schema->string()->description('The identifier of the event, as list-possession-provenance-events gives it.')->required(),
+            'vault' => $schema->string()->description('The id of the vault, as list-vaults gives it.')->required(),
+            'possession' => $schema->string()->description('The id of the possession, as list-possessions gives it.')->required(),
+            'event' => $schema->string()->description('The id of the event, as list-possession-provenance-events gives it.')->required(),
         ];
     }
 }

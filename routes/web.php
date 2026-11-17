@@ -222,6 +222,11 @@ Route::get('docs/mcp', [McpDocsController::class, 'index'])
     ->middleware(['flag:mcp-server', 'searchable'])
     ->name('docs.mcp.index');
 
+Route::get('docs/mcp/tools/{family}', [McpDocsController::class, 'show'])
+    ->where('family', '[a-z0-9-]+')
+    ->middleware(['flag:mcp-server', 'searchable'])
+    ->name('docs.mcp.tools.show');
+
 Route::get('docs/mcp.md', [McpDocsMarkdownController::class, 'index'])
     ->middleware(['flag:mcp-server'])
     ->name('docs.mcp.markdown.index');

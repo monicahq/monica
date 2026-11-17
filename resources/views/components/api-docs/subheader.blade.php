@@ -1,5 +1,5 @@
 {{-- The bar that says which reference this is, and lets somebody search it. --}}
-<div class="sticky print:hidden top-14 z-4 border-b border-hairline bg-canvas">
+<div class="print:hidden border-b border-hairline bg-canvas">
   <div class="mx-auto flex h-14 max-w-390 items-center gap-5 px-4 sm:px-7">
     <a href="{{ route('docs.api.index') }}" class="flex shrink-0 items-center gap-2.25 text-ink rounded-md focus-ring">
       <x-icon name="key" :size="16" class="text-muted" />
