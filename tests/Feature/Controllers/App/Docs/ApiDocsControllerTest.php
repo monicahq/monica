@@ -55,7 +55,7 @@ class ApiDocsControllerTest extends TestCase
             new ApiDocsViewModel()->sections(),
         );
 
-        $this->assertCount(310, $ids);
+        $this->assertCount(316, $ids);
 
         $this->get(route('docs.api.show', ['section' => 'knowledge-folders-index']))
             ->assertSee('Knowledge folders')
@@ -64,7 +64,8 @@ class ApiDocsControllerTest extends TestCase
             ->assertSee('Possession valuations')
             ->assertSee('Possession provenance')
             ->assertSee('Possession locations')
-            ->assertSee('Possession loans');
+            ->assertSee('Possession loans')
+            ->assertSee('What’s new');
 
         foreach ($ids as $id) {
             $this->get(route('docs.api.show', ['section' => $id]))
@@ -117,6 +118,6 @@ class ApiDocsControllerTest extends TestCase
         $response->assertSee(route('docs.api.changelog.index'), escape: false);
         $response->assertSee('Read the changelog');
         $response->assertSee(route('support.requests.new'), escape: false);
-        $response->assertSee('datetime="2026-11-14"', escape: false);
+        $response->assertSee('datetime="2026-11-17"', escape: false);
     }
 }

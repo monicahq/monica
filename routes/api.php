@@ -15,6 +15,10 @@ use App\Http\Controllers\Api\ApiKeyController;
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\RegistrationController;
 use App\Http\Controllers\Api\BillingController;
+use App\Http\Controllers\Api\ChangelogCommentController;
+use App\Http\Controllers\Api\ChangelogEntryController;
+use App\Http\Controllers\Api\ChangelogSeenController;
+use App\Http\Controllers\Api\ChangelogVoteController;
 use App\Http\Controllers\Api\ChannelProofController as ApiChannelProofController;
 use App\Http\Controllers\Api\ChannelSetupController as ApiChannelSetupController;
 use App\Http\Controllers\Api\ChannelTestController as ApiChannelTestController;
@@ -154,6 +158,16 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::put('me/contact-list-view', [MeContactListViewController::class, 'update'])->name('me.contactListView.update');
         Route::put('me/welcome', [MeWelcomeController::class, 'update'])->name('me.welcome.update');
         Route::put('me/full-access-offer', [MeFullAccessOfferController::class, 'update'])->name('me.fullAccessOffer.update');
+
+        // What's new, switched on per instance
+        Route::middleware(['changelog'])->group(function (): void {
+            Route::match(['GET', 'QUERY'], 'changelog-entries', [ChangelogEntryController::class, 'index'])->name('changelogEntries');
+            Route::put('changelog-entries/seen', [ChangelogSeenController::class, 'update'])->name('changelogEntries.seen.update');
+            Route::put('changelog-entries/{entry}/vote', [ChangelogVoteController::class, 'update'])->where('entry', '[0-7][0-9A-HJKMNP-TV-Z]{25}')->name('changelogEntries.vote.update');
+            Route::delete('changelog-entries/{entry}/vote', [ChangelogVoteController::class, 'destroy'])->where('entry', '[0-7][0-9A-HJKMNP-TV-Z]{25}')->name('changelogEntries.vote.destroy');
+            Route::match(['GET', 'QUERY'], 'changelog-entries/{entry}/comments', [ChangelogCommentController::class, 'index'])->where('entry', '[0-7][0-9A-HJKMNP-TV-Z]{25}')->name('changelogEntries.comments');
+            Route::post('changelog-entries/{entry}/comments', [ChangelogCommentController::class, 'create'])->middleware('throttle:10,1')->where('entry', '[0-7][0-9A-HJKMNP-TV-Z]{25}')->name('changelogEntries.comments.create');
+        });
 
         Route::match(['GET', 'QUERY'], 'billing', [BillingController::class, 'show'])->name('billing');
         Route::match(['GET', 'QUERY'], 'billing/payments', [PaymentController::class, 'index'])->name('billing.payments');

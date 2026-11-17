@@ -8,6 +8,11 @@ use App\Http\Controllers\App\Admin\AccountLifetimeAccessController;
 use App\Http\Controllers\App\Admin\AccountStorageLimitController;
 use App\Http\Controllers\App\Admin\AdministratorController;
 use App\Http\Controllers\App\Admin\AdministratorLogController;
+use App\Http\Controllers\App\Admin\ChangelogCommentController;
+use App\Http\Controllers\App\Admin\ChangelogCommentHidingController;
+use App\Http\Controllers\App\Admin\ChangelogCommentReplyController;
+use App\Http\Controllers\App\Admin\ChangelogCommentReviewController;
+use App\Http\Controllers\App\Admin\ChangelogVoteController;
 use App\Http\Controllers\App\Admin\FlagActivationController;
 use App\Http\Controllers\App\Admin\FlagController;
 use App\Http\Controllers\App\Admin\InstanceSettingController;
@@ -49,6 +54,16 @@ Route::middleware(['administrator', Sample::always()])->group(function (): void 
         Route::post('admin/support/{supportRequest}/replies', [SupportReplyController::class, 'create'])->whereUuid('supportRequest')->name('admin.support.replies.create');
         Route::post('admin/support/{supportRequest}/notes', [SupportNoteController::class, 'create'])->whereUuid('supportRequest')->name('admin.support.notes.create');
         Route::put('admin/support/{supportRequest}/status', [SupportStatusController::class, 'update'])->whereUuid('supportRequest')->name('admin.support.status.update');
+    });
+
+    // Comments and votes left on What's new, switched on per instance
+    Route::middleware(['changelog'])->group(function (): void {
+        Route::get('admin/changelog', [ChangelogCommentController::class, 'index'])->name('admin.changelog.index');
+        Route::get('admin/changelog/votes', [ChangelogVoteController::class, 'index'])->name('admin.changelog.votes.index');
+        Route::post('admin/changelog/comments/{comment}/review', [ChangelogCommentReviewController::class, 'create'])->whereUuid('comment')->name('admin.changelog.comments.review.create');
+        Route::post('admin/changelog/comments/{comment}/hiding', [ChangelogCommentHidingController::class, 'create'])->whereUuid('comment')->name('admin.changelog.comments.hiding.create');
+        Route::delete('admin/changelog/comments/{comment}/hiding', [ChangelogCommentHidingController::class, 'destroy'])->whereUuid('comment')->name('admin.changelog.comments.hiding.destroy');
+        Route::post('admin/changelog/comments/{comment}/replies', [ChangelogCommentReplyController::class, 'create'])->whereUuid('comment')->name('admin.changelog.comments.replies.create');
     });
 
     Route::get('admin/accounts', [AccountController::class, 'index'])->name('admin.accounts.index');

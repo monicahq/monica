@@ -91,6 +91,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | What's new
+    |--------------------------------------------------------------------------
+    |
+    | Whether the instance shows What's new, the changelog of Monica, with its votes and comments.
+    | Off by default. Switching it off takes the screen, the link in the top bar, the comments of
+    | the administrators, the API endpoints and their documentation out of the instance. Comments
+    | and votes already written are kept.
+    |
+    */
+    'changelog_enabled' => (bool) env('MONICA_CHANGELOG_ENABLED', false),
+
+    /*
+    |--------------------------------------------------------------------------
     | Search engine indexing
     |--------------------------------------------------------------------------
     |

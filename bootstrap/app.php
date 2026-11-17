@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Middleware\EnsureChangelogIsEnabled;
 use App\Http\Middleware\EnsureFlagIsOn;
 use App\Http\Middleware\EnsureKeyCanAdminister;
 use App\Http\Middleware\EnsureMagicLinkIsEnabled;
@@ -63,6 +64,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'searchable' => MarkPageSearchable::class,
             'sso' => EnsureSsoProviderIsAvailable::class,
             'support' => EnsureSupportIsEnabled::class,
+            'changelog' => EnsureChangelogIsEnabled::class,
         ]);
         $middleware->web(remove: [
             SubstituteBindings::class,

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 use App\Enums\ContactGroupingEnum;
 use App\Enums\SsoProviderEnum;
+use App\Http\Controllers\App\ChangelogCommentController;
+use App\Http\Controllers\App\ChangelogController;
+use App\Http\Controllers\App\ChangelogVoteController;
 use App\Http\Controllers\App\Docs\ApiChangelogController;
 use App\Http\Controllers\App\Docs\ApiChangelogMarkdownController;
 use App\Http\Controllers\App\Docs\ApiDocsController;
@@ -643,6 +646,15 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
 
     Route::get('vaults/{vault}/settings', [VaultSettingsController::class, 'index'])->name('vaults.settings.index');
     Route::put('vaults/{vault}/settings/default-template', [VaultDefaultTemplateController::class, 'update'])->name('vaults.defaultTemplate.update');
+
+    // What's new, switched on per instance with MONICA_CHANGELOG_ENABLED
+    Route::middleware(['changelog'])->group(function (): void {
+        Route::get('changelog', [ChangelogController::class, 'index'])->name('changelog.index');
+        Route::put('changelog/{entry}/vote', [ChangelogVoteController::class, 'update'])->whereUlid('entry')->name('changelog.vote.update');
+        Route::delete('changelog/{entry}/vote', [ChangelogVoteController::class, 'destroy'])->whereUlid('entry')->name('changelog.vote.destroy');
+        Route::get('changelog/{entry}/comments', [ChangelogCommentController::class, 'index'])->whereUlid('entry')->name('changelog.comments.index');
+        Route::post('changelog/{entry}/comments', [ChangelogCommentController::class, 'create'])->whereUlid('entry')->middleware('throttle:10,1')->name('changelog.comments.create');
+    });
 
     Route::get('notifications', [NotificationController::class, 'index'])->name('notifications.index');
     Route::put('notifications/read', [NotificationReadController::class, 'updateAll'])->name('notifications.readAll.update');

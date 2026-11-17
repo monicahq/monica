@@ -20,12 +20,16 @@ use App\Enums\PossessionTransactionTypeEnum;
 use App\Enums\ValueListEnum;
 use App\Enums\VersionStatusEnum;
 use App\Helpers\AvailableLocales;
+use App\Helpers\ChangelogEntries;
 use App\Helpers\StripeCatalogue;
 use App\Jobs\CreateDefaultTemplate;
 use App\Models\AccountExport;
 use App\Models\AccountImport;
 use App\Models\AccountImportItem;
 use App\Models\Administrator;
+use App\Models\ChangelogComment;
+use App\Models\ChangelogCommentReply;
+use App\Models\ChangelogVote;
 use App\Models\Contact;
 use App\Models\ContactDuplicateCandidate;
 use App\Models\ContactListColumn;
@@ -2759,6 +2763,56 @@ class ApiDocsReturnFieldsTest extends TestCase
                 Vault::factory()->create(['account_id' => $user->account_id]);
 
                 return $this->json('POST', '/api/v1/exports');
+            }),
+
+            'changelog-entries-index' => $this->asSomebody(function (User $user): TestResponse {
+                $this->app->instance(ChangelogEntries::class, new ChangelogEntries(directory: base_path('tests/Fixtures/Changelog/Valid')));
+                CarbonImmutable::setTestNow('2026-11-17 12:00:00');
+
+                return $this->json('GET', '/api/v1/changelog-entries');
+            }),
+
+            'changelog-entries-seen' => $this->asSomebody(function (User $user): TestResponse {
+                $this->app->instance(ChangelogEntries::class, new ChangelogEntries(directory: base_path('tests/Fixtures/Changelog/Valid')));
+                CarbonImmutable::setTestNow('2026-11-17 12:00:00');
+
+                return $this->json('PUT', '/api/v1/changelog-entries/seen');
+            }),
+
+            'changelog-entries-vote-update' => $this->asSomebody(function (User $user): TestResponse {
+                $this->app->instance(ChangelogEntries::class, new ChangelogEntries(directory: base_path('tests/Fixtures/Changelog/Valid')));
+                CarbonImmutable::setTestNow('2026-11-17 12:00:00');
+
+                return $this->json('PUT', '/api/v1/changelog-entries/01M7NBFWK5XNH908RFDGEAJXKN/vote', ['direction' => 'up']);
+            }),
+
+            'changelog-entries-vote-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $this->app->instance(ChangelogEntries::class, new ChangelogEntries(directory: base_path('tests/Fixtures/Changelog/Valid')));
+                CarbonImmutable::setTestNow('2026-11-17 12:00:00');
+
+                ChangelogVote::factory()->create(['user_id' => $user->id, 'entry_id' => '01M7NBFWK5XNH908RFDGEAJXKN']);
+
+                return $this->json('DELETE', '/api/v1/changelog-entries/01M7NBFWK5XNH908RFDGEAJXKN/vote');
+            }),
+
+            'changelog-entries-comments-index' => $this->asSomebody(function (User $user): TestResponse {
+                $this->app->instance(ChangelogEntries::class, new ChangelogEntries(directory: base_path('tests/Fixtures/Changelog/Valid')));
+                CarbonImmutable::setTestNow('2026-11-17 12:00:00');
+
+                $comment = ChangelogComment::factory()->create(['user_id' => $user->id, 'entry_id' => '01M7NBFWK5XNH908RFDGEAJXKN']);
+                ChangelogCommentReply::factory()->create(['changelog_comment_id' => $comment->id]);
+
+                return $this->json('GET', '/api/v1/changelog-entries/01M7NBFWK5XNH908RFDGEAJXKN/comments');
+            }),
+
+            'changelog-entries-comments-create' => $this->asSomebody(function (User $user): TestResponse {
+                $this->app->instance(ChangelogEntries::class, new ChangelogEntries(directory: base_path('tests/Fixtures/Changelog/Valid')));
+                CarbonImmutable::setTestNow('2026-11-17 12:00:00');
+
+                return $this->json('POST', '/api/v1/changelog-entries/01M7NBFWK5XNH908RFDGEAJXKN/comments', [
+                    'body' => 'Can we book it for the Dundies?',
+                    'is_anonymous' => true,
+                ]);
             }),
 
             default => null,

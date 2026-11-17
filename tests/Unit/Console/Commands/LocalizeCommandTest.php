@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Console\Commands;
 
+use App\Helpers\ChangelogEntries;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
@@ -83,6 +84,22 @@ class LocalizeCommandTest extends TestCase
         $english = $this->translations('en');
 
         $this->assertNotEmpty($english);
+    }
+
+    #[Test]
+    public function it_writes_the_title_area_and_description_of_every_changelog_entry(): void
+    {
+        $this->app->useLangPath($this->langPath);
+        $this->app->instance(ChangelogEntries::class, new ChangelogEntries(directory: base_path('tests/Fixtures/Changelog/Valid')));
+
+        $this->artisan('monica:localize')->assertSuccessful();
+
+        $english = $this->translations('en');
+
+        $this->assertArrayHasKey('Book the conference room from a contact', $english);
+        $this->assertArrayHasKey('Reminders', $english);
+        $this->assertArrayHasKey('Michael can now book the conference room **straight** from a contact page.', $english);
+        $this->assertArrayHasKey('Threat level midnight', $english);
     }
 
     #[Test]

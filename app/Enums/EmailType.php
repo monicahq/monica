@@ -35,4 +35,5 @@ enum EmailType: string
     case AccountImportEnded = 'account_import_ended';
     case SupportRequestReceived = 'support_request_received';
     case SupportReplySent = 'support_reply_sent';
+    case ChangelogReplySent = 'changelog_reply_sent';
 }

@@ -31,6 +31,10 @@ enum AdministratorActionEnum: string implements Translatable
     case SearchIndexRebuildStarted = 'search_index_rebuild_started';
     case PreviewListEntryAdmitted = 'preview_list_entry_admitted';
     case PreviewListEntryRemoved = 'preview_list_entry_removed';
+    case ChangelogCommentReviewed = 'changelog_comment_reviewed';
+    case ChangelogCommentHidden = 'changelog_comment_hidden';
+    case ChangelogCommentShown = 'changelog_comment_shown';
+    case ChangelogCommentReplied = 'changelog_comment_replied';
 
     public function description(): string
     {
@@ -57,6 +61,10 @@ enum AdministratorActionEnum: string implements Translatable
             self::SearchIndexRebuildStarted => 'Started the rebuild of the search index :index',
             self::PreviewListEntryAdmitted => 'Admitted :email from the waiting list',
             self::PreviewListEntryRemoved => 'Removed :email from the waiting list',
+            self::ChangelogCommentReviewed => 'Reviewed the comment of :name on “:title”',
+            self::ChangelogCommentHidden => 'Hid the comment of :name on “:title” from What’s new',
+            self::ChangelogCommentShown => 'Showed the comment of :name on “:title” on What’s new again',
+            self::ChangelogCommentReplied => 'Replied to the comment of :name on “:title”',
         };
     }
 
@@ -73,6 +81,7 @@ enum AdministratorActionEnum: string implements Translatable
             self::SupportReplySent, self::SupportNoteAdded, self::SupportRequestStatusChanged => 'mail',
             self::SearchIndexRebuildStarted => 'search',
             self::PreviewListEntryAdmitted, self::PreviewListEntryRemoved => 'profile',
+            self::ChangelogCommentReviewed, self::ChangelogCommentHidden, self::ChangelogCommentShown, self::ChangelogCommentReplied => 'journal',
         };
     }
 
@@ -90,7 +99,11 @@ enum AdministratorActionEnum: string implements Translatable
             self::FlagDeactivated,
             self::SupportReplySent,
             self::SupportNoteAdded,
-            self::SupportRequestStatusChanged => true,
+            self::SupportRequestStatusChanged,
+            self::ChangelogCommentReviewed,
+            self::ChangelogCommentHidden,
+            self::ChangelogCommentShown,
+            self::ChangelogCommentReplied => true,
             self::MarketplaceVersionApproved,
             self::MarketplaceVersionRejected,
             self::InstanceSettingUpdated,

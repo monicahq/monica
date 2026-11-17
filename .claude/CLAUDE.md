@@ -75,7 +75,7 @@ the rule.
 - `app/Http/Controllers`: `App` (the logged in app), grouped by domain (`Vaults`, `Settings`, `Marketplace`, `Admin`, `Auth`, `Docs`, `Support`), `Api` (the JSON API), plus the base `Controller.php`.
 - `app/Http/Middleware`: route middleware. The aliases are declared in
   `bootstrap/app.php`: `active`, `administration`, `administrator`, `flag`, `magic.link`,
-  `portal.timing`, `query.body`, `registration`, `searchable`, `sso` and `support`. `SetLocale` is appended to the web
+  `changelog`, `portal.timing`, `query.body`, `registration`, `searchable`, `sso` and `support`. `SetLocale` is appended to the web
   group and `SetApiLocale` to the api group instead. An account carries no role: a record
   is reached when its account matches, which `resolveRouteBinding()` enforces, and when the vault in
   the URL matches, which the controller enforces with `abort_unless(..., 404)`. The one capacity is
@@ -142,6 +142,7 @@ A change is done when all of these hold. CI runs the tests and PHPStan, so passi
 - `php artisan monica:localize --check` passes: run `php artisan monica:localize` and translate what it reports as missing, in every configured locale. Never edit `lang/*.json` keys by hand.
 - `vendor/bin/phpstan analyse --no-progress` reports nothing.
 - `vendor/bin/pint --dirty --format agent` leaves nothing to fix.
+- A meaningful user facing change carries its entry in `changelog/`, written as the `changelog` skill says. A change nobody using Monica would notice carries none.
 
 ## Agent skills
 

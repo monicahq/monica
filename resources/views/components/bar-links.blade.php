@@ -17,6 +17,8 @@
 @endphp
 
 <div class="flex shrink-0 items-center gap-0.5">
+  <x-changelog-link />
+
   @foreach ($places as $place)
     <x-button.ghost :href="$place['href']" size="top-bar" :aria-label="$place['label']">
       <x-slot:icon>

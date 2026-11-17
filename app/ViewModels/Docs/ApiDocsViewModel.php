@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Docs;
 
+use App\Helpers\ChangelogAvailability;
 use App\Helpers\FlagState;
 use App\Helpers\SupportAvailability;
 use Carbon\CarbonImmutable;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 
 class ApiDocsViewModel
 {
-    public const string LAST_GENERATED = '2026-11-14';
+    public const string LAST_GENERATED = '2026-11-17';
 
     /** @var list<array{name: string, guide: bool, sections: list<ApiDocsSection>}>|null */
     private ?array $groups = null;
@@ -24,7 +25,8 @@ class ApiDocsViewModel
     /**
      * The sections a visitor may read: one naming a flag, or several, is described only while every
      * flag it names is on for every account, since the reference is public. One marked as support is
-     * described only while support is switched on for the instance.
+     * described only while support is switched on for the instance, and one marked as changelog only
+     * while What's new is.
      *
      * @param  list<array<string, mixed>>  $sections
      * @return list<array<string, mixed>>
@@ -34,6 +36,7 @@ class ApiDocsViewModel
         return array_values(array_filter(
             $sections,
             fn (array $section): bool => (! ($section['support'] ?? false) || SupportAvailability::isEnabled())
+                && (! ($section['changelog'] ?? false) || ChangelogAvailability::isEnabled())
                 && collect((array) ($section['flag'] ?? []))->every(fn (string $flag): bool => FlagState::isOn($flag, null)),
         ));
     }

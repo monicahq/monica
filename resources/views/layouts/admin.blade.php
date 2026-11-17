@@ -47,6 +47,7 @@
             ['label' => __('Overview'), 'route' => 'admin.overview.index', 'section' => 'admin.overview.*', 'icon' => 'activity'],
             ['label' => __('Moderation'), 'route' => 'admin.moderation.index', 'section' => 'admin.moderation.*', 'icon' => 'tasks'],
             ...(\App\Helpers\SupportAvailability::isEnabled() ? [['label' => __('Support'), 'route' => 'admin.support.index', 'section' => 'admin.support.*', 'icon' => 'mail', 'count' => $navigation->supportToHandleCount()]] : []),
+            ...(\App\Helpers\ChangelogAvailability::isEnabled() ? [['label' => __('Changelog'), 'route' => 'admin.changelog.index', 'section' => 'admin.changelog.*', 'icon' => 'journal', 'count' => $changelogToReview = $navigation->changelogToReviewCount(), 'countLabel' => trans_choice(':count comment to review|:count comments to review', $changelogToReview)]] : []),
             ['label' => __('Accounts'), 'route' => 'admin.accounts.index', 'section' => 'admin.accounts.*', 'icon' => 'people'],
             ['label' => __('Waiting list'), 'route' => 'admin.previewList.index', 'section' => 'admin.previewList.*', 'icon' => 'profile'],
             ['label' => __('Configuration'), 'route' => 'admin.configuration.index', 'section' => 'admin.configuration.*', 'icon' => 'settings'],
@@ -74,7 +75,7 @@
 
               @if (($item['count'] ?? 0) > 0)
                 <span class="flex h-4.5 min-w-4.5 items-center justify-center rounded-full bg-admin-signal px-1.25 text-2xs font-semibold text-admin-bar" aria-hidden="true">{{ $item['count'] }}</span>
-                <span class="sr-only">{{ trans_choice(':count request to handle|:count requests to handle', $item['count']) }}</span>
+                <span class="sr-only">{{ $item['countLabel'] ?? trans_choice(':count request to handle|:count requests to handle', $item['count']) }}</span>
               @endif
             </a>
           @endforeach

@@ -71,8 +71,9 @@ abstract class TestCase extends BaseTestCase
             Feature::define($flag, true);
         }
 
-        // Support ships switched off. The suite exercises it switched on; a test of the switch turns it off.
+        // Support and What's new ship switched off. The suite exercises them switched on; a test of each switch turns it off.
         config(['monica.support_enabled' => true]);
+        config(['monica.changelog_enabled' => true]);
     }
 
     #[Override]

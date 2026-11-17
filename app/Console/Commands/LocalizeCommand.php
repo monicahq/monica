@@ -6,6 +6,7 @@ namespace App\Console\Commands;
 
 use App\Contracts\Translatable;
 use App\Helpers\AvailableLocales;
+use App\Helpers\ChangelogEntries;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
@@ -452,6 +453,14 @@ class LocalizeCommand extends Command
         foreach ($this->translatableEnums() as $enum) {
             foreach ($enum::cases() as $case) {
                 foreach ($case->translationKeys() as $key) {
+                    $keys[$key] = true;
+                }
+            }
+        }
+
+        foreach (app(ChangelogEntries::class)->all() as $entry) {
+            foreach ([$entry->title, $entry->area, $entry->body] as $key) {
+                if ($key !== null) {
                     $keys[$key] = true;
                 }
             }
