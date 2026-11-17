@@ -133,4 +133,15 @@ class LogTest extends TestCase
 
         $this->assertEquals('stapler_put_in_jelly', $log->description);
     }
+
+    #[Test]
+    public function it_leaves_a_parameter_holding_a_list_out_of_the_sentence(): void
+    {
+        $log = Log::factory()->create([
+            'action' => UserActionEnum::ApiKeyCreation->value,
+            'parameters' => ['name' => 'Dunder Mifflin sync', 'scopes' => ['read', 'write'], 'client' => 'script'],
+        ]);
+
+        $this->assertEquals('Created the API key called Dunder Mifflin sync', $log->description);
+    }
 }

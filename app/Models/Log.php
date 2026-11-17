@@ -188,7 +188,8 @@ class Log extends Model
     /**
      * Get what the action reads as, in the language of whoever is looking. An
      * action this version of the application no longer knows about is shown by
-     * its raw name rather than hidden.
+     * its raw name rather than hidden. A parameter holding a list, such as the
+     * scopes of an API key, is kept for the record but never put in the sentence.
      *
      * @return Attribute<string, never>
      */
@@ -197,7 +198,7 @@ class Log extends Model
         return Attribute::make(
             get: function (): string {
                 $sentence = UserActionEnum::tryFrom($this->action)?->description() ?? $this->action;
-                $parameters = $this->parameters ?? [];
+                $parameters = array_filter($this->parameters ?? [], fn (mixed $value): bool => ! is_array($value));
 
                 // A sentence that shows a number carries a wording per plural
                 // category, and only trans_choice picks between them.
