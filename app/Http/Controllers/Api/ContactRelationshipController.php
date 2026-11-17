@@ -13,6 +13,7 @@ use App\Exceptions\RelationshipDatesAreOutOfOrder;
 use App\Exceptions\RelationshipTypeIsNotAvailable;
 use App\Exceptions\RelationshipWouldCrossVaults;
 use App\Exceptions\RelationshipWouldLoopParentage;
+use App\Exceptions\VaultHasNoContactDefault;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\RelationshipResource;
 use App\Models\Contact;
@@ -97,6 +98,8 @@ class ContactRelationshipController extends Controller
             throw ValidationException::withMessages(['relationship_type' => $e->getMessage()]);
         } catch (AuthorizationException $e) {
             throw ValidationException::withMessages(['first_name' => $e->getMessage()]);
+        } catch (VaultHasNoContactDefault) {
+            throw ValidationException::withMessages(['first_name' => __('This vault has no template for new contacts to start from. Choose one in the vault settings.')]);
         }
 
         return new RelationshipResource($this->relationship($contact, $relationship->uuid))->response()->setStatusCode(201);

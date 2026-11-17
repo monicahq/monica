@@ -10,6 +10,7 @@ use App\Actions\UpdatePossessionLoan;
 use App\Enums\CurrencyEnum;
 use App\Enums\PossessionLoanDirectionEnum;
 use App\Enums\PossessionLoanStatusEnum;
+use App\Exceptions\VaultHasNoContactDefault;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
 use App\Models\Possession;
@@ -40,24 +41,28 @@ class PossessionLoanController extends Controller
         $validated = $this->validated($request);
         $isCreatingContact = $request->boolean('new_contact');
 
-        new CreatePossessionLoan(
-            user: $request->user(),
-            possession: $possession,
-            direction: PossessionLoanDirectionEnum::from($validated['direction']),
-            status: PossessionLoanStatusEnum::from($validated['status']),
-            startedOn: CarbonImmutable::parse($validated['started_on']),
-            contact: $isCreatingContact ? null : $this->contact($vault, $validated['contact_id'] ?? null),
-            newContactFirstName: $isCreatingContact ? (string) ($validated['new_contact_first_name'] ?? '') : null,
-            newContactLastName: $isCreatingContact ? ($validated['new_contact_last_name'] ?? null) : null,
-            dueOn: isset($validated['due_on']) ? CarbonImmutable::parse($validated['due_on']) : null,
-            returnedOn: isset($validated['returned_on']) ? CarbonImmutable::parse($validated['returned_on']) : null,
-            conditionOut: $this->condition($request, $validated['condition_out'] ?? null),
-            conditionBack: $this->condition($request, $validated['condition_back'] ?? null),
-            depositAmount: $validated['deposit_amount'] ?? null,
-            depositCurrency: CurrencyEnum::tryFrom((string) ($validated['deposit_currency'] ?? '')),
-            purpose: $validated['purpose'] ?? null,
-            isInProvenance: $request->boolean('is_in_provenance'),
-        )->execute();
+        try {
+            new CreatePossessionLoan(
+                user: $request->user(),
+                possession: $possession,
+                direction: PossessionLoanDirectionEnum::from($validated['direction']),
+                status: PossessionLoanStatusEnum::from($validated['status']),
+                startedOn: CarbonImmutable::parse($validated['started_on']),
+                contact: $isCreatingContact ? null : $this->contact($vault, $validated['contact_id'] ?? null),
+                newContactFirstName: $isCreatingContact ? (string) ($validated['new_contact_first_name'] ?? '') : null,
+                newContactLastName: $isCreatingContact ? ($validated['new_contact_last_name'] ?? null) : null,
+                dueOn: isset($validated['due_on']) ? CarbonImmutable::parse($validated['due_on']) : null,
+                returnedOn: isset($validated['returned_on']) ? CarbonImmutable::parse($validated['returned_on']) : null,
+                conditionOut: $this->condition($request, $validated['condition_out'] ?? null),
+                conditionBack: $this->condition($request, $validated['condition_back'] ?? null),
+                depositAmount: $validated['deposit_amount'] ?? null,
+                depositCurrency: CurrencyEnum::tryFrom((string) ($validated['deposit_currency'] ?? '')),
+                purpose: $validated['purpose'] ?? null,
+                isInProvenance: $request->boolean('is_in_provenance'),
+            )->execute();
+        } catch (VaultHasNoContactDefault) {
+            return back()->withErrors(['new_contact_first_name' => __('This vault has no template for new contacts to start from. Choose one in the vault settings.')])->withInput();
+        }
 
         return redirect()
             ->route('possessions.loans.index', [$vault, $possession])

@@ -18,7 +18,7 @@
     <button
       type="button"
       x-on:click="choose({{ $candidate['id'] }}, @js($candidate['name']))"
-      ::aria-pressed="picked === '{{ $candidate['id'] }}' ? 'true' : 'false'"
+      :aria-pressed="picked === '{{ $candidate['id'] }}' ? 'true' : 'false'"
       :class="picked === '{{ $candidate['id'] }}' ? 'bg-hover' : ''"
       class="focus-ring-inset flex w-full items-center gap-2.5 border-b border-hairline-soft px-3 py-2.25 text-left last:border-b-0 hover:bg-hover"
     >

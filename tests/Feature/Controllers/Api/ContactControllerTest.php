@@ -444,6 +444,20 @@ class ContactControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_says_so_when_the_vault_has_no_template_for_new_contacts(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('POST', "/api/v1/vaults/{$vault->uuid}/contacts", ['first_name' => 'Michael']);
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors(['structure_version_id' => 'This vault has no template for new contacts to start from. Choose one in the vault settings.']);
+    }
+
+    #[Test]
     public function it_keeps_a_contact_written_down_as_partial_off_the_lists(): void
     {
         $user = User::factory()->create();

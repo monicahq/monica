@@ -320,6 +320,19 @@ class ContactControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_says_so_when_the_vault_has_no_template_for_new_contacts(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $this->actingAs($user)
+            ->from(route('contacts.new', $vault))
+            ->post(route('contacts.create', $vault), ['names' => [['kind' => 'written', 'given_name' => 'Michael']], 'display' => 0])
+            ->assertRedirect(route('contacts.new', $vault))
+            ->assertSessionHasErrors(['names' => 'This vault has no template for new contacts to start from. Choose one in the vault settings.']);
+    }
+
+    #[Test]
     public function it_shows_the_form_that_writes_somebody_down(): void
     {
         $user = User::factory()->create();

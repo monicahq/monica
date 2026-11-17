@@ -4785,6 +4785,7 @@
     "This value list does not take choices of its own.": "Denne verdilisten tar ikke imot egne valg.",
     "This vault": "Dette hvelvet",
     "This vault has no group yet. Create one and :name will be its first member.": "Dette hvelvet har ingen grupper ennå. Opprett en, så blir :name det første medlemmet.",
+    "This vault has no template for new contacts to start from. Choose one in the vault settings.": "Dette hvelvet har ingen mal nye kontakter kan ta utgangspunkt i. Velg en i hvelvinnstillingene.",
     "This vault has no template for new contacts to start from. Give it one in the vault settings, and this form will work.": "Dette hvelvet har ingen mal nye kontakter kan ta utgangspunkt i. Gi det en i hvelvinnstillingene, så virker dette skjemaet.",
     "This vault has reminders, and none of them has a date coming.": "Dette hvelvet har påminnelser, men ingen av dem har en kommende dato.",
     "This vault holds nobody so far. Everybody you write down here appears on this list.": "Dette hvelvet rommer ingen ennå. Alle du skriver ned her, vises på denne listen.",

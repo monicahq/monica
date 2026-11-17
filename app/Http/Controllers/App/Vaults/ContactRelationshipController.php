@@ -13,6 +13,7 @@ use App\Exceptions\RelationshipDatesAreOutOfOrder;
 use App\Exceptions\RelationshipTypeIsNotAvailable;
 use App\Exceptions\RelationshipWouldCrossVaults;
 use App\Exceptions\RelationshipWouldLoopParentage;
+use App\Exceptions\VaultHasNoContactDefault;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
 use App\Models\Relationship;
@@ -77,6 +78,8 @@ class ContactRelationshipController extends Controller
             return back()->withInput()->withErrors(['relationship_type_id' => $e->getMessage()]);
         } catch (RelationshipWouldLoopParentage $e) {
             return back()->withInput()->withErrors(['mode' => $e->getMessage()]);
+        } catch (VaultHasNoContactDefault) {
+            return back()->withInput()->withErrors(['mode' => __('This vault has no template for new contacts to start from. Choose one in the vault settings.')]);
         }
 
         return redirect()->route('contacts.show', [

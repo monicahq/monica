@@ -4785,6 +4785,7 @@
     "This value list does not take choices of its own.": "এই মানের তালিকা নিজস্ব পছন্দ গ্রহণ করে না।",
     "This vault": "এই সিন্দুক",
     "This vault has no group yet. Create one and :name will be its first member.": "এই সিন্দুকে এখনও কোনো গোষ্ঠী নেই। একটি তৈরি করুন, :name হবে এর প্রথম সদস্য।",
+    "This vault has no template for new contacts to start from. Choose one in the vault settings.": "নতুন পরিচিতিরা যেখান থেকে শুরু করবে, এই সিন্দুকের তেমন কোনো টেমপ্লেট নেই। সিন্দুকের সেটিংসে একটি বেছে নিন।",
     "This vault has no template for new contacts to start from. Give it one in the vault settings, and this form will work.": "নতুন পরিচিতিরা যেখান থেকে শুরু করবে, এই সিন্দুকের তেমন কোনো টেমপ্লেট নেই। সিন্দুকের সেটিংসে একটি দিন, আর এই ফর্ম চলবে।",
     "This vault has reminders, and none of them has a date coming.": "এই সিন্দুকে অনুস্মারক আছে, কিন্তু সেগুলোর কোনোটির কোনো তারিখ সামনে নেই।",
     "This vault holds nobody so far. Everybody you write down here appears on this list.": "এই সিন্দুকে এখনও কেউ নেই। আপনি এখানে যাকে লেখেন সে-ই এই তালিকায় দেখা যায়।",

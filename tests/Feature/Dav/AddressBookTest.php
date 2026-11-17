@@ -388,6 +388,17 @@ class AddressBookTest extends TestCase
     }
 
     #[Test]
+    public function it_says_so_when_the_vault_has_no_template_for_new_contacts(): void
+    {
+        $vault = $this->vault();
+
+        $response = $this->dav('PUT', $this->book($vault).'dwight.vcf', body: $this->card(), contentType: 'text/vcard');
+
+        $response->assertStatus(403);
+        $this->assertDatabaseCount('contacts', 0);
+    }
+
+    #[Test]
     public function it_keeps_what_the_structure_has_no_field_for_and_reads_it_back(): void
     {
         $vault = $this->vault();

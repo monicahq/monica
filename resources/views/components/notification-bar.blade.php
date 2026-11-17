@@ -10,7 +10,7 @@
     x-ref="trigger"
     @click="open = ! open; confirming = false; if (open && ! loaded) { loaded = true; $ajax('{{ route('notifications.index') }}', { target: 'notification-list', focus: false }) }"
     @click.outside="open = false; confirming = false"
-    ::aria-expanded="open ? 'true' : 'false'"
+    :aria-expanded="open ? 'true' : 'false'"
     aria-haspopup="dialog"
     aria-controls="notification-bar-panel"
     aria-label="{{ trans_choice('Notifications, :count unread|Notifications, :count unread', $unread) }}"

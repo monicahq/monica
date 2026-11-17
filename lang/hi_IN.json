@@ -4785,6 +4785,7 @@
     "This value list does not take choices of its own.": "यह मान सूची अपनी पसंद स्वीकार नहीं करती।",
     "This vault": "यह तिजोरी",
     "This vault has no group yet. Create one and :name will be its first member.": "इस तिजोरी में अभी कोई समूह नहीं है। एक बनाएँ और :name उसका पहला सदस्य होगा।",
+    "This vault has no template for new contacts to start from. Choose one in the vault settings.": "इस तिजोरी के पास नए संपर्कों के शुरू होने के लिए कोई टेम्पलेट नहीं है। तिजोरी की सेटिंग में एक चुनें।",
     "This vault has no template for new contacts to start from. Give it one in the vault settings, and this form will work.": "इस तिजोरी के पास नए संपर्कों के शुरू होने के लिए कोई टेम्पलेट नहीं है। तिजोरी की सेटिंग में इसे एक दें, और यह फ़ॉर्म चलेगा।",
     "This vault has reminders, and none of them has a date coming.": "इस तिजोरी में अनुस्मारक हैं, और उनमें से किसी की कोई तारीख आने वाली नहीं है।",
     "This vault holds nobody so far. Everybody you write down here appears on this list.": "इस तिजोरी में अभी तक कोई नहीं है। आप यहाँ जिसे भी लिखते हैं, वह इस सूची में दिखता है।",

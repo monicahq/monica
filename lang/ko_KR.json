@@ -4785,6 +4785,7 @@
     "This value list does not take choices of its own.": "이 값 목록은 자체 선택을 받지 않습니다.",
     "This vault": "이 보관함",
     "This vault has no group yet. Create one and :name will be its first member.": "이 보관함에는 아직 그룹이 없습니다. 그룹을 만들면 :name이(가) 첫 번째 구성원이 됩니다.",
+    "This vault has no template for new contacts to start from. Choose one in the vault settings.": "이 보관함에는 새 연락처가 시작할 템플릿이 없습니다. 보관함 설정에서 하나 선택하세요.",
     "This vault has no template for new contacts to start from. Give it one in the vault settings, and this form will work.": "이 보관함에는 새 연락처가 시작할 템플릿이 없습니다. 보관함 설정에서 하나 지정하면 이 양식이 동작합니다.",
     "This vault has reminders, and none of them has a date coming.": "이 보관함에 리마인더가 있지만, 다가오는 날짜는 없습니다.",
     "This vault holds nobody so far. Everybody you write down here appears on this list.": "이 보관함에는 아직 아무도 없습니다. 여기에 적는 사람은 모두 이 목록에 나타납니다.",

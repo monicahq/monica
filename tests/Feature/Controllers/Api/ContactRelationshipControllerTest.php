@@ -113,6 +113,26 @@ class ContactRelationshipControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_says_so_when_the_vault_has_no_template_for_new_contacts(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $jim = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'first_name' => 'Jim']);
+        $type = RelationshipType::factory()->directed()->create(['account_id' => $user->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('POST', "/api/v1/vaults/{$vault->uuid}/contacts/{$jim->uuid}/relationships", [
+            'relationship_type' => $type->uuid,
+            'first_name' => 'Cece',
+        ]);
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors(['first_name' => 'This vault has no template for new contacts to start from. Choose one in the vault settings.']);
+        $this->assertDatabaseCount('relationships', 0);
+    }
+
+    #[Test]
     public function it_refuses_an_existing_contact_and_a_name_at_once(): void
     {
         [$user, $vault, $jim, $pam] = $this->jimAndPam();

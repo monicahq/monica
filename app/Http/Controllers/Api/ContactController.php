@@ -12,6 +12,7 @@ use App\Enums\ContactSortEnum;
 use App\Enums\NameOrderEnum;
 use App\Enums\SortDirectionEnum;
 use App\Enums\ValueListEnum;
+use App\Exceptions\VaultHasNoContactDefault;
 use App\Helpers\ContactListCatalogue;
 use App\Helpers\ContactListCells;
 use App\Http\Controllers\Controller;
@@ -150,6 +151,8 @@ class ContactController extends Controller
             )->execute();
         } catch (AuthorizationException $e) {
             throw ValidationException::withMessages(['first_name' => $e->getMessage()]);
+        } catch (VaultHasNoContactDefault) {
+            throw ValidationException::withMessages(['structure_version_id' => __('This vault has no template for new contacts to start from. Choose one in the vault settings.')]);
         }
 
         return new ContactResource($this->contact($vault, $contact->uuid))->response()->setStatusCode(201);

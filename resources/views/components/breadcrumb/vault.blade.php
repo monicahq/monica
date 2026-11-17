@@ -21,7 +21,7 @@
         @click="open = ! open"
         @click.outside="open = false"
         @keydown.escape.window="if (open) { open = false; $refs.trigger.focus() }"
-        ::aria-expanded="open ? 'true' : 'false'"
+        :aria-expanded="open ? 'true' : 'false'"
         aria-controls="{{ $panelId }}"
         @if ($items === []) aria-current="page" @endif
         class="flex min-w-0 cursor-pointer items-center gap-2 rounded-md border border-transparent px-1.5 py-1 text-left text-sm text-ink transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring"

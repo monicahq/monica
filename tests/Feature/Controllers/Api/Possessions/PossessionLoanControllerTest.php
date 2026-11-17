@@ -72,6 +72,25 @@ class PossessionLoanControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_says_so_when_the_vault_has_no_template_for_new_contacts(): void
+    {
+        [$user, $vault, $mug] = $this->dunderMifflin();
+
+        Sanctum::actingAs($user);
+
+        $this->json('POST', "/api/v1/vaults/{$vault->slug}/possessions/{$mug->uuid}/loans", [
+            'direction' => 'lent',
+            'status' => 'active',
+            'new_contact' => ['first_name' => 'Nate'],
+            'started_on' => '2024-06-12',
+        ])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['new_contact' => 'This vault has no template for new contacts to start from. Choose one in the vault settings.']);
+
+        $this->assertDatabaseCount('possession_loans', 0);
+    }
+
+    #[Test]
     public function it_refuses_a_second_active_loan(): void
     {
         [$user, $vault, $mug] = $this->dunderMifflin();

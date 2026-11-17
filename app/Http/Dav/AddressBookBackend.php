@@ -9,6 +9,7 @@ use App\Actions\DestroyGroup;
 use App\Actions\ImportVCard;
 use App\Actions\WriteGroupCard;
 use App\Enums\ContactGroupingEnum;
+use App\Exceptions\VaultHasNoContactDefault;
 use App\Helpers\FlagState;
 use App\Models\Contact;
 use App\Models\Group;
@@ -130,14 +131,18 @@ class AddressBookBackend implements BackendInterface, SyncSupport
             return null;
         }
 
-        new ImportVCard(
-            user: $this->user,
-            vault: $vault,
-            card: (string) $cardData,
-            reachesSensitiveFields: $this->reachesSensitiveFields,
-            contact: $this->contactNamedBy($vault, (string) $cardData),
-            davUri: (string) $cardUri,
-        )->execute();
+        try {
+            new ImportVCard(
+                user: $this->user,
+                vault: $vault,
+                card: (string) $cardData,
+                reachesSensitiveFields: $this->reachesSensitiveFields,
+                contact: $this->contactNamedBy($vault, (string) $cardData),
+                davUri: (string) $cardUri,
+            )->execute();
+        } catch (VaultHasNoContactDefault $exception) {
+            throw new Forbidden('This vault has no template for new contacts to start from. Choose one in the vault settings.', 0, $exception);
+        }
 
         return null;
     }

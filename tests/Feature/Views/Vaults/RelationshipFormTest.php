@@ -42,6 +42,14 @@ class RelationshipFormTest extends TestCase
     }
 
     #[Test]
+    public function it_submits_the_person_chosen_and_the_order_of_the_roles(): void
+    {
+        $this->form()
+            ->assertSee('name="other_contact_id" :value="picked"', escape: false)
+            ->assertSee('name="swapped" :value="swapped ? 1 : 0"', escape: false);
+    }
+
+    #[Test]
     public function it_announces_the_preview_sentence_as_it_changes(): void
     {
         $this->form()->assertSee('aria-live="polite"', escape: false);

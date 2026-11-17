@@ -22,7 +22,7 @@
   @else
     <div x-data="relationshipForm(@js($viewModel->projection()))" class="flex flex-col gap-8">
       <x-form id="relationship-form" :method="$viewModel->method()" :action="$viewModel->action()">
-        <input type="hidden" name="swapped" ::value="swapped ? 1 : 0" />
+        <input type="hidden" name="swapped" :value="swapped ? 1 : 0" />
 
         <x-panel flush>
           <div class="p-4">
@@ -129,7 +129,7 @@
             </div>
 
             <div x-show="mode === 'existing'" x-cloak class="order-5 flex flex-col gap-2">
-              <input type="hidden" name="other_contact_id" ::value="picked" ::disabled="mode !== 'existing'" />
+              <input type="hidden" name="other_contact_id" :value="picked" :disabled="mode !== 'existing'" />
 
               @include('app.vaults.contacts.relationships._candidates', ['viewModel' => $viewModel])
 

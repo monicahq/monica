@@ -4785,6 +4785,7 @@
     "This value list does not take choices of its own.": "Denne værdiliste tager ikke imod egne valg.",
     "This vault": "Denne boks",
     "This vault has no group yet. Create one and :name will be its first member.": "Denne boks har endnu ingen gruppe. Opret en, så bliver :name dens første medlem.",
+    "This vault has no template for new contacts to start from. Choose one in the vault settings.": "Denne boks har ingen skabelon, nye kontakter kan tage udgangspunkt i. Vælg en i boksindstillingerne.",
     "This vault has no template for new contacts to start from. Give it one in the vault settings, and this form will work.": "Denne boks har ingen skabelon, nye kontakter kan tage udgangspunkt i. Giv den en i boksindstillingerne, så virker denne formular.",
     "This vault has reminders, and none of them has a date coming.": "Denne boks har påmindelser, men ingen af dem har en kommende dato.",
     "This vault holds nobody so far. Everybody you write down here appears on this list.": "Denne boks rummer ingen endnu. Alle du skriver ned her, vises på denne liste.",

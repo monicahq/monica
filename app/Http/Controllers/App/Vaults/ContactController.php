@@ -12,6 +12,7 @@ use App\Enums\ContactGroupingEnum;
 use App\Enums\ContactSortEnum;
 use App\Enums\SortDirectionEnum;
 use App\Enums\ValueListEnum;
+use App\Exceptions\VaultHasNoContactDefault;
 use App\Helpers\AlpineAjaxTargets;
 use App\Helpers\PageSize;
 use App\Http\Controllers\Controller;
@@ -173,6 +174,8 @@ class ContactController extends Controller
             return back()->withErrors(['names' => $e->getMessage()])->withInput();
         } catch (InvalidArgumentException $e) {
             return back()->withErrors(['names' => $e->getMessage()])->withInput();
+        } catch (VaultHasNoContactDefault) {
+            return back()->withErrors(['names' => __('This vault has no template for new contacts to start from. Choose one in the vault settings.')])->withInput();
         }
 
         $destination = $request->boolean('keep_going')

@@ -102,6 +102,27 @@ class ContactRelationshipControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_says_so_when_the_vault_has_no_template_for_new_contacts(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'first_name' => 'Michael', 'last_name' => 'Scott']);
+        $type = $this->typesOf($user)['parent'];
+
+        $this->actingAs($user)
+            ->from(route('contacts.relationships.new', ['vault' => $vault, 'contact' => $contact]))
+            ->post(route('contacts.relationships.create', ['vault' => $vault, 'contact' => $contact]), [
+                'relationship_type_id' => $type->id,
+                'mode' => 'known',
+                'first_name' => 'Dwight',
+            ])
+            ->assertRedirect(route('contacts.relationships.new', ['vault' => $vault, 'contact' => $contact]))
+            ->assertSessionHasErrors(['mode' => 'This vault has no template for new contacts to start from. Choose one in the vault settings.']);
+
+        $this->assertEquals(0, Relationship::query()->count());
+    }
+
+    #[Test]
     public function it_refuses_linking_somebody_to_themselves(): void
     {
         Queue::fake();

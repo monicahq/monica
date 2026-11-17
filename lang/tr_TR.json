@@ -4785,6 +4785,7 @@
     "This value list does not take choices of its own.": "Bu değer listesi kendi seçimlerini kabul etmez.",
     "This vault": "Bu kasa",
     "This vault has no group yet. Create one and :name will be its first member.": "Bu kasada henüz grup yok. Bir tane oluşturun, :name ilk üyesi olsun.",
+    "This vault has no template for new contacts to start from. Choose one in the vault settings.": "Bu kasanın, yeni kişilerin başlayacağı bir şablonu yok. Kasa ayarlarından bir tane seçin.",
     "This vault has no template for new contacts to start from. Give it one in the vault settings, and this form will work.": "Bu kasanın, yeni kişilerin başlayacağı bir şablonu yok. Kasa ayarlarından bir tane verin, bu form çalışacaktır.",
     "This vault has reminders, and none of them has a date coming.": "Bu kasada hatırlatıcılar var, ancak hiçbirinin yaklaşan bir tarihi yok.",
     "This vault holds nobody so far. Everybody you write down here appears on this list.": "Bu kasa şimdilik kimseyi tutmuyor. Buraya yazdığınız herkes bu listede görünür.",

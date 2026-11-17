@@ -4785,6 +4785,7 @@
     "This value list does not take choices of its own.": "Den här värdelistan tar inte emot egna val.",
     "This vault": "Det här valvet",
     "This vault has no group yet. Create one and :name will be its first member.": "Det här valvet har ännu ingen grupp. Skapa en så blir :name dess första medlem.",
+    "This vault has no template for new contacts to start from. Choose one in the vault settings.": "Det här valvet har ingen mall för nya kontakter att utgå från. Välj en i valvinställningarna.",
     "This vault has no template for new contacts to start from. Give it one in the vault settings, and this form will work.": "Det här valvet har ingen mall för nya kontakter att utgå från. Ge det en i valvinställningarna, så fungerar det här formuläret.",
     "This vault has reminders, and none of them has a date coming.": "Det här valvet har påminnelser, men ingen av dem har ett kommande datum.",
     "This vault holds nobody so far. Everybody you write down here appears on this list.": "Det här valvet rymmer ingen än. Alla du skriver ner här visas i den här listan.",

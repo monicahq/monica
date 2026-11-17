@@ -4785,6 +4785,7 @@
     "This value list does not take choices of its own.": "Aquesta llista de valors no admet opcions pròpies.",
     "This vault": "Aquesta caixa forta",
     "This vault has no group yet. Create one and :name will be its first member.": "Aquesta caixa forta encara no té cap grup. Creeu-ne un i :name en serà el primer membre.",
+    "This vault has no template for new contacts to start from. Choose one in the vault settings.": "Aquesta caixa forta no té cap plantilla de la qual parteixin els contactes nous. Tria’n una a la configuració de la caixa forta.",
     "This vault has no template for new contacts to start from. Give it one in the vault settings, and this form will work.": "Aquesta caixa forta no té cap plantilla de la qual parteixin els contactes nous. Dona-n’hi una a la configuració de la caixa forta, i aquest formulari funcionarà.",
     "This vault has reminders, and none of them has a date coming.": "Aquesta caixa forta té recordatoris, però cap no té cap data propera.",
     "This vault holds nobody so far. Everybody you write down here appears on this list.": "Aquesta caixa forta encara no conté ningú. Tothom que anotis aquí surt en aquesta llista.",

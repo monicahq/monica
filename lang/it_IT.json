@@ -4785,6 +4785,7 @@
     "This value list does not take choices of its own.": "Questo elenco di valori non accetta scelte proprie.",
     "This vault": "Questa cassaforte",
     "This vault has no group yet. Create one and :name will be its first member.": "Questa cassaforte non ha ancora nessun gruppo. Creane uno e :name ne sarà il primo membro.",
+    "This vault has no template for new contacts to start from. Choose one in the vault settings.": "Questa cassaforte non ha un modello da cui far partire i nuovi contatti. Scegline uno nelle impostazioni della cassaforte.",
     "This vault has no template for new contacts to start from. Give it one in the vault settings, and this form will work.": "Questa cassaforte non ha un modello da cui far partire i nuovi contatti. Dagliene uno nelle impostazioni della cassaforte, e questo modulo funzionerà.",
     "This vault has reminders, and none of them has a date coming.": "Questa cassaforte ha dei promemoria, e nessuno ha una data in arrivo.",
     "This vault holds nobody so far. Everybody you write down here appears on this list.": "Questa cassaforte finora non contiene nessuno. Tutti quelli che annoti qui compaiono in questo elenco.",

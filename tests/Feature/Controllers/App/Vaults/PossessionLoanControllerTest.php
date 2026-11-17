@@ -101,6 +101,28 @@ class PossessionLoanControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_says_so_when_the_vault_has_no_template_for_new_contacts(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $mug = Possession::factory()->create(['vault_id' => $vault->id]);
+
+        $this->actingAs($user)
+            ->from(route('possessions.loans.index', [$vault, $mug]))
+            ->post(route('possessions.loans.create', [$vault, $mug]), [
+                'direction' => 'lent',
+                'status' => 'active',
+                'new_contact' => '1',
+                'new_contact_first_name' => 'Nate',
+                'started_on' => '2024-06-12',
+            ])
+            ->assertRedirect(route('possessions.loans.index', [$vault, $mug]))
+            ->assertSessionHasErrors(['new_contact_first_name' => 'This vault has no template for new contacts to start from. Choose one in the vault settings.']);
+
+        $this->assertDatabaseCount('possession_loans', 0);
+    }
+
+    #[Test]
     public function it_returns_the_form_when_the_loan_is_refused(): void
     {
         $user = User::factory()->create();

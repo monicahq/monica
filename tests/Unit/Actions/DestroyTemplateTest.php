@@ -85,7 +85,30 @@ class DestroyTemplateTest extends TestCase
     }
 
     #[Test]
-    public function it_takes_the_vault_defaults_naming_one_of_its_versions_with_it(): void
+    public function it_moves_the_vault_default_to_the_system_template_of_the_account(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $systemTemplate = Template::factory()->create(['account_id' => $user->account_id, 'is_system' => true]);
+        $systemVersion = StructureVersion::factory()->published()->create(['structure_id' => $systemTemplate->structure->id]);
+        $systemTemplate->structure->update(['published_version_id' => $systemVersion->id]);
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $version = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $default = VaultDefaultTemplate::factory()->create(['vault_id' => $vault->id, 'structure_version_id' => $version->id]);
+
+        new DestroyTemplate(user: $user, template: $template)->execute();
+
+        $this->assertDatabaseHas('vault_default_templates', [
+            'id' => $default->id,
+            'vault_id' => $vault->id,
+            'structure_version_id' => $systemVersion->id,
+        ]);
+    }
+
+    #[Test]
+    public function it_takes_the_vault_defaults_with_it_when_the_account_has_no_system_template(): void
     {
         Queue::fake();
 
