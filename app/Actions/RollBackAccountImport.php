@@ -18,9 +18,14 @@ use App\Models\FieldValue;
 use App\Models\FieldValueRow;
 use App\Models\File;
 use App\Models\Group;
+use App\Models\KnowledgeFolder;
+use App\Models\KnowledgeList;
+use App\Models\KnowledgeNote;
 use App\Models\LifeEvent;
 use App\Models\LifeEventParticipant;
 use App\Models\LifeEventType;
+use App\Models\Possession;
+use App\Models\RecordSnapshot;
 use App\Models\Relationship;
 use App\Models\RelationshipType;
 use App\Models\Reminder;
@@ -32,6 +37,7 @@ use App\Models\Template;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
 use App\Models\Vault;
+use App\Models\VaultDefaultTemplate;
 use App\Notifications\AccountImportEnded;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -41,8 +47,8 @@ use Illuminate\Support\Facades\Storage;
 
 /**
  * Remove for good everything the items of an import name, with the values, files and counts each
- * record raised, so the account is as it was before. A type the import created that somebody has
- * used since stays, because removing it would take their records with it.
+ * record raised, so the account is as it was before. What somebody made by hand meanwhile stays: a
+ * type or a template they used, and a vault the import created that they added to.
  */
 class RollBackAccountImport
 {
@@ -64,20 +70,17 @@ class RollBackAccountImport
                 return false;
             }
 
-            $createdVaults = Vault::withTrashed()->whereIn('id', $import->created_vault_ids ?? [])->get();
-
-            if ($createdVaults->isEmpty()) {
-                $this->removeWhatWentIntoMe();
-                $this->removeTheRecords();
-            }
-
-            foreach ($createdVaults as $vault) {
-                $this->removeTheVault($vault);
-            }
-
+            $this->removeWhatWentIntoMe();
+            $this->removeTheRecords();
             $this->removeTheOwnTypes();
             $this->removeTheCopiesOfStructures();
             $this->removeTheCategoriesItAdded();
+
+            foreach (Vault::withTrashed()->whereIn('id', $import->created_vault_ids ?? [])->get() as $vault) {
+                if (! $this->holdsSomethingMadeByHand($vault)) {
+                    $this->removeTheVault($vault);
+                }
+            }
 
             $this->import->status = AccountImportStatusEnum::RolledBack;
             $this->import->ended_at = now();
@@ -154,6 +157,12 @@ class RollBackAccountImport
 
         $entities = $this->recordsOf(Entity::class);
         $contacts = $this->recordsOf(Contact::class);
+        $pointingAtThem = FieldValue::query()->whereIn('related_contact_id', $contacts)->orWhereIn('related_entity_id', $entities);
+        $this->releaseTheChoicesOf($pointingAtThem->clone());
+        $pointingAtThem->delete();
+
+        RecordSnapshot::query()->where('snapshotable_type', new Contact()->getMorphClass())->whereIn('snapshotable_id', $contacts)->delete();
+        RecordSnapshot::query()->where('snapshotable_type', new Entity()->getMorphClass())->whereIn('snapshotable_id', $entities)->delete();
         $this->removeTheValuesOf(new LifeEvent()->getMorphClass(), $lifeEvents);
         $this->removeTheValuesOf(new Entity()->getMorphClass(), $entities);
         $this->removeTheValuesOf(new Contact()->getMorphClass(), $contacts);
@@ -179,6 +188,19 @@ class RollBackAccountImport
         $this->recountLifeEventsOf($participants);
 
         $this->removeFromStorage($files);
+    }
+
+    private function holdsSomethingMadeByHand(Vault $vault): bool
+    {
+        if (Contact::withTrashed()->where('vault_id', $vault->id)->where('is_me', false)->exists()) {
+            return true;
+        }
+
+        $softDeleted = [Entity::class, LifeEvent::class, Group::class, File::class, Reminder::class, Relationship::class];
+        $removedForGood = [Possession::class, KnowledgeFolder::class, KnowledgeNote::class, KnowledgeList::class];
+
+        return collect($softDeleted)->contains(fn (string $class): bool => $class::withTrashed()->where('vault_id', $vault->id)->exists())
+            || collect($removedForGood)->contains(fn (string $class): bool => $class::query()->where('vault_id', $vault->id)->exists());
     }
 
     private function removeTheVault(Vault $vault): void
@@ -233,12 +255,13 @@ class RollBackAccountImport
             ->whereIn('id', StructureVersion::query()->whereIn('id', $this->recordsOf(StructureVersion::class))->select('structure_id'))
             ->get();
 
-        $usedTypes = LifeEventType::withTrashed()
-            ->whereIn('id', $structures->where('owner_type', $lifeEventType)->pluck('owner_id'))
-            ->whereIn('id', LifeEvent::withTrashed()->select('life_event_type_id'))
-            ->pluck('id');
+        $versions = StructureVersion::query()->whereIn('structure_id', $structures->modelKeys())->pluck('structure_id', 'id');
 
-        $structures = $structures->reject(fn (Structure $structure): bool => $structure->owner_type === $lifeEventType && $usedTypes->contains($structure->owner_id));
+        $usedStructures = collect([Contact::withTrashed(), Entity::withTrashed(), LifeEvent::withTrashed(), RecordSnapshot::query(), VaultDefaultTemplate::query()])
+            ->flatMap(fn (Builder $records): array => $records->whereIn('structure_version_id', $versions->keys())->distinct()->pluck('structure_version_id')->all())
+            ->map(fn (int $versionId): int => $versions[$versionId]);
+
+        $structures = $structures->reject(fn (Structure $structure): bool => $usedStructures->contains($structure->id));
 
         $ledger = AccountImportItem::query()
             ->where('account_import_id', $this->import->id)

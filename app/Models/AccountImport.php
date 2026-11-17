@@ -34,8 +34,8 @@ use Override;
  * the formats apart, and stays null when the file was refused as neither.
  * `vault_id` is the vault chosen for a file of one vault. A file of several
  * writes each into a new vault, listed in `created_vault_ids`, which a rollback
- * destroys. An import only adds, so rolling back removes exactly what its items
- * say it created.
+ * destroys unless somebody has added to it by hand. An import only adds, so
+ * rolling back removes exactly what its items say it created.
  *
  * The uuid is the source detail of every log the import writes.
  *

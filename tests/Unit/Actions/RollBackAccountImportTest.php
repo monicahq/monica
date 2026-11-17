@@ -9,6 +9,7 @@ use App\Actions\CreateContact;
 use App\Actions\CreateDefaultValueLists;
 use App\Actions\CreateEntity;
 use App\Actions\CreateLifeEvent;
+use App\Actions\CreateRecordSnapshot;
 use App\Actions\CreateRelationship;
 use App\Actions\CreateStructureVersionDraft;
 use App\Actions\CreateVault;
@@ -18,6 +19,7 @@ use App\Actions\ReadMonicaFile;
 use App\Actions\ReadMonicaFourFile;
 use App\Actions\RollBackAccountImport;
 use App\Actions\SetFieldValue;
+use App\Actions\SetVaultDefaultTemplate;
 use App\Actions\StartAccountImport;
 use App\Actions\WriteAccountExport;
 use App\Enums\AccountImportStatusEnum;
@@ -59,6 +61,7 @@ use App\Models\ValueListItem;
 use App\Models\Vault;
 use App\Notifications\AccountImportEnded;
 use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
@@ -261,6 +264,124 @@ class RollBackAccountImportTest extends TestCase
     }
 
     #[Test]
+    public function it_removes_a_hand_made_value_pointing_at_an_imported_contact(): void
+    {
+        $scranton = new CreateVault(user: $this->michael, name: 'Scranton')->execute();
+        $draft = $this->basicContactWithARelationField($this->michael);
+        $jim = new CreateContact(user: $this->michael, vault: $scranton, structureVersion: $draft, firstName: 'Jim', lastName: 'Halpert')->execute();
+
+        $import = $this->imported(vault: $scranton);
+        $imported = Contact::query()->whereKey($this->createdBy($import, Contact::class))->firstOrFail();
+        $importedPet = Entity::query()->whereKey($this->createdBy($import, Entity::class))->firstOrFail();
+
+        new SetFieldValue(
+            user: $this->michael,
+            valuable: $jim,
+            field: Field::query()->where('account_id', $this->michael->account_id)->where('key', 'best_friend')->firstOrFail(),
+            relatedContact: $imported,
+        )->execute();
+        new SetFieldValue(
+            user: $this->michael,
+            valuable: $jim,
+            field: Field::query()->where('account_id', $this->michael->account_id)->where('key', 'pet')->firstOrFail(),
+            relatedEntity: $importedPet,
+        )->execute();
+
+        new RollBackAccountImport(import: $import)->execute();
+
+        $this->assertSame(AccountImportStatusEnum::RolledBack, $import->refresh()->status);
+        $this->assertModelMissing($imported);
+        $this->assertModelMissing($importedPet);
+        $this->assertModelExists($jim);
+        $this->assertDatabaseMissing('field_values', ['related_contact_id' => $imported->id]);
+        $this->assertDatabaseMissing('field_values', ['related_entity_id' => $importedPet->id]);
+    }
+
+    #[Test]
+    public function it_removes_the_snapshots_of_the_contacts_it_removes(): void
+    {
+        $scranton = new CreateVault(user: $this->michael, name: 'Scranton')->execute();
+        $import = $this->imported(vault: $scranton);
+        $imported = Contact::query()->whereKey($this->createdBy($import, Contact::class))->firstOrFail();
+        new CreateRecordSnapshot(user: $this->michael, record: $imported)->execute();
+
+        new RollBackAccountImport(import: $import)->execute();
+
+        $this->assertDatabaseMissing('record_snapshots', ['snapshotable_type' => $imported->getMorphClass(), 'snapshotable_id' => $imported->id]);
+    }
+
+    #[Test]
+    public function it_keeps_a_vault_it_created_that_somebody_has_added_to_by_hand(): void
+    {
+        $import = $this->imported(vault: null);
+        $vault = Vault::query()->findOrFail($import->vault_id);
+        $dwight = new CreateContact(user: $this->michael, vault: $vault, firstName: 'Dwight', lastName: 'Schrute')->execute();
+
+        new RollBackAccountImport(import: $import)->execute();
+
+        $this->assertSame(AccountImportStatusEnum::RolledBack, $import->refresh()->status);
+        $this->assertModelExists($vault);
+        $this->assertModelExists($dwight);
+        $this->assertSame(0, Contact::withTrashed()->whereKey($this->createdBy($import, Contact::class))->count());
+        $this->assertSame(0, File::withTrashed()->where('vault_id', $vault->id)->count());
+        $this->assertSame(2, $vault->refresh()->contact_count);
+    }
+
+    #[Test]
+    public function it_keeps_a_template_copy_somebody_has_used_by_hand(): void
+    {
+        [$pam, $stamford, $import] = $this->importedByPamIntoStamford();
+        $copy = $this->templateCopyMadeBy($import);
+
+        $andy = new CreateContact(user: $pam, vault: $stamford, structureVersion: $copy, firstName: 'Andy', lastName: 'Bernard')->execute();
+
+        new RollBackAccountImport(import: $import)->execute();
+
+        $this->assertSame(AccountImportStatusEnum::RolledBack, $import->refresh()->status);
+        $this->assertModelExists($andy);
+        $this->assertModelExists($copy);
+        $this->assertModelExists($copy->structure->owner);
+    }
+
+    #[Test]
+    public function it_keeps_a_template_copy_somebody_has_made_the_default_of_a_vault(): void
+    {
+        [$pam, $stamford, $import] = $this->importedByPamIntoStamford();
+        $copy = $this->templateCopyMadeBy($import);
+
+        new SetVaultDefaultTemplate(user: $pam, vault: $stamford, structureVersion: $copy)->execute();
+
+        new RollBackAccountImport(import: $import)->execute();
+
+        $this->assertSame(AccountImportStatusEnum::RolledBack, $import->refresh()->status);
+        $this->assertModelExists($copy);
+        $this->assertDatabaseHas('vault_default_templates', ['vault_id' => $stamford->id, 'structure_version_id' => $copy->id]);
+    }
+
+    #[Test]
+    public function it_keeps_a_life_event_type_copy_somebody_has_used_by_hand(): void
+    {
+        [$pam, $stamford, $import] = $this->importedByPamIntoStamford();
+        $harvest = LifeEventType::query()->where('account_id', $pam->account_id)->where('name', 'Beet harvest')->firstOrFail();
+        $andy = new CreateContact(user: $pam, vault: $stamford, firstName: 'Andy', lastName: 'Bernard')->execute();
+
+        $lifeEvent = new CreateLifeEvent(
+            user: $pam,
+            vault: $stamford,
+            contact: $andy,
+            lifeEventType: $harvest,
+            happenedOn: CarbonImmutable::parse('2008-09-25'),
+            title: 'Beet harvest',
+        )->execute();
+
+        new RollBackAccountImport(import: $import)->execute();
+
+        $this->assertSame(AccountImportStatusEnum::RolledBack, $import->refresh()->status);
+        $this->assertModelExists($harvest);
+        $this->assertModelExists($lifeEvent);
+    }
+
+    #[Test]
     public function it_removes_every_life_event_type_copy_and_every_version_an_import_made(): void
     {
         $scranton = new CreateVault(user: $this->michael, name: 'Scranton')->execute();
@@ -456,6 +577,60 @@ class RollBackAccountImportTest extends TestCase
             'value_lists' => ValueList::withTrashed()->where('account_id', $user->account_id)->count(),
             'entity_types' => EntityType::withTrashed()->where('account_id', $user->account_id)->count(),
         ];
+    }
+
+    /** @return array{0: User, 1: Vault, 2: AccountImport} */
+    private function importedByPamIntoStamford(): array
+    {
+        $scranton = new CreateVault(user: $this->michael, name: 'Scranton')->execute();
+        $jim = new CreateContact(user: $this->michael, vault: $scranton, firstName: 'Jim', lastName: 'Halpert')->execute();
+        $this->lifeEventOf($jim, $this->lifeEventTypeAsking($this->michael, 'Beet harvest', ['Variety' => FieldTypeEnum::Text]));
+
+        $pam = $this->accountHolder('Pam', 'Beesly');
+        $stamford = new CreateVault(user: $pam, name: 'Stamford')->execute();
+        $import = AccountImport::factory()->create(['user_id' => $pam->id]);
+        Storage::disk('local')->put($import->path, $this->exported([$scranton]));
+        new ReadMonicaFile(import: $import)->execute();
+        $import->refresh()->update(['status' => AccountImportStatusEnum::Read]);
+        new StartAccountImport(user: $pam, import: $import, vault: $stamford)->execute();
+
+        return [$pam, $stamford, $import->refresh()];
+    }
+
+    private function templateCopyMadeBy(AccountImport $import): StructureVersion
+    {
+        return StructureVersion::query()
+            ->whereKey($this->createdBy($import, StructureVersion::class))
+            ->whereHas('structure', fn (Builder $structure) => $structure->where('owner_type', new Template()->getMorphClass()))
+            ->firstOrFail();
+    }
+
+    private function basicContactWithARelationField(User $user): StructureVersion
+    {
+        $draft = new CreateStructureVersionDraft(
+            user: $user,
+            structureVersion: Template::query()->where('account_id', $user->account_id)->where('slug', DefaultTemplateEnum::BasicContact->value)->firstOrFail()->structure->publishedVersion,
+        )->execute();
+
+        $sectionVersion = SectionVersion::factory()->create([
+            'account_id' => $user->account_id,
+            'section_id' => Section::factory()->create(['account_id' => $user->account_id])->id,
+        ]);
+
+        Field::factory()->relation()->create(['account_id' => $user->account_id, 'section_version_id' => $sectionVersion->id, 'key' => 'best_friend', 'label' => 'Best friend']);
+        Field::factory()->relation()->create([
+            'account_id' => $user->account_id,
+            'section_version_id' => $sectionVersion->id,
+            'key' => 'pet',
+            'label' => 'Pet',
+            'relation_target' => RelationTargetEnum::Entity,
+            'relation_entity_type_id' => EntityType::query()->where('account_id', $user->account_id)->where('slug', 'animals')->firstOrFail()->id,
+        ]);
+
+        new AddSectionToStructureVersion(user: $user, structureVersion: $draft, sectionVersion: $sectionVersion)->execute();
+        new PublishStructureVersion(user: $user, structureVersion: $draft, changeNote: 'Relation added.')->execute();
+
+        return $draft->refresh();
     }
 
     private function fieldAddedTo(LifeEventType $lifeEventType): void
