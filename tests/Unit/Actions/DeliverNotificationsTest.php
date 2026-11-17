@@ -4,33 +4,39 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions;
 
-use App\Actions\DeliverNotification;
+use App\Actions\DeliverNotifications;
 use App\Enums\NotificationChannelEnum;
+use App\Enums\NotificationTypeEnum;
 use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\ReminderOccurrenceCancelledReasonEnum;
+use App\Models\Account;
 use App\Models\Contact;
 use App\Models\Notification;
 use App\Models\NotificationChannel;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
 use App\Models\User;
+use App\Notifications\NotificationDigest;
 use App\Notifications\ReminderDue;
 use Carbon\CarbonImmutable;
 use Database\Factories\NotificationFactory;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Notifications\ChannelManager;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
 use Illuminate\Support\Facades\Queue;
 use Laravel\Pennant\Feature;
+use LogicException;
 use PHPUnit\Framework\Attributes\Test;
 use RuntimeException;
+use Tests\Fixtures\Notifications\BusyChannel;
 use Tests\Fixtures\Notifications\RefusingChannel;
 use Tests\TestCase;
 use Throwable;
 use Vonage\Client\Exception\RequestException as VonageRequestException;
 use Vonage\Client\Exception\ServerException as VonageServerException;
 
-class DeliverNotificationTest extends TestCase
+class DeliverNotificationsTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -40,7 +46,7 @@ class DeliverNotificationTest extends TestCase
         NotificationFacade::fake();
         $notification = $this->notification()->email()->create();
 
-        $this->assertTrue(new DeliverNotification(notification: $notification)->execute());
+        $this->assertSame(1, new DeliverNotifications(notifications: collect([$notification]), asDigest: false)->execute());
 
         NotificationFacade::assertSentTo($notification->user, ReminderDue::class);
         $this->assertNotNull($notification->refresh()->sent_at);
@@ -53,7 +59,7 @@ class DeliverNotificationTest extends TestCase
         NotificationFacade::fake();
         $notification = $this->notification()->create();
 
-        $this->assertTrue(new DeliverNotification(notification: $notification)->execute());
+        $this->assertSame(1, new DeliverNotifications(notifications: collect([$notification]), asDigest: false)->execute());
 
         NotificationFacade::assertNothingSent();
         $this->assertNotNull($notification->refresh()->sent_at);
@@ -65,7 +71,7 @@ class DeliverNotificationTest extends TestCase
         NotificationFacade::fake();
         $notification = $this->notification()->create();
 
-        new DeliverNotification(notification: $notification)->execute();
+        new DeliverNotifications(notifications: collect([$notification]), asDigest: false)->execute();
 
         $this->assertNotNull(ReminderOccurrence::query()->findOrFail($notification->notifiable_id)->notified_at);
     }
@@ -81,11 +87,11 @@ class DeliverNotificationTest extends TestCase
             'notifiable_id' => $first->notifiable_id,
         ]);
 
-        new DeliverNotification(notification: $first)->execute();
+        new DeliverNotifications(notifications: collect([$first]), asDigest: false)->execute();
         $told = ReminderOccurrence::query()->findOrFail($first->notifiable_id)->notified_at;
 
         $this->travel(5)->minutes();
-        new DeliverNotification(notification: $second)->execute();
+        new DeliverNotifications(notifications: collect([$second]), asDigest: false)->execute();
 
         $this->assertTrue($told->equalTo(ReminderOccurrence::query()->findOrFail($first->notifiable_id)->notified_at));
     }
@@ -96,7 +102,7 @@ class DeliverNotificationTest extends TestCase
         NotificationFacade::fake();
         $notification = $this->notification()->heldUntil(now()->addHours(4)->toDateTimeString())->create();
 
-        $this->assertFalse(new DeliverNotification(notification: $notification)->execute());
+        $this->assertSame(0, new DeliverNotifications(notifications: collect([$notification]), asDigest: false)->execute());
         $this->assertNull($notification->refresh()->sent_at);
         $this->assertSame(0, $notification->attempts);
     }
@@ -109,7 +115,7 @@ class DeliverNotificationTest extends TestCase
         $occurrence = ReminderOccurrence::query()->findOrFail($notification->notifiable_id);
         Contact::query()->whereKey($occurrence->reminder->remindable_id)->update(['is_archived' => true]);
 
-        $this->assertFalse(new DeliverNotification(notification: $notification)->execute());
+        $this->assertSame(0, new DeliverNotifications(notifications: collect([$notification]), asDigest: false)->execute());
 
         NotificationFacade::assertNothingSent();
         $this->assertNotNull($notification->refresh()->failed_at);
@@ -127,7 +133,7 @@ class DeliverNotificationTest extends TestCase
             'inactive_reason' => ReminderInactiveReasonEnum::RecordArchived,
         ]);
 
-        $this->assertFalse(new DeliverNotification(notification: $notification)->execute());
+        $this->assertSame(0, new DeliverNotifications(notifications: collect([$notification]), asDigest: false)->execute());
         $this->assertNotNull($notification->refresh()->failed_at);
     }
 
@@ -141,7 +147,7 @@ class DeliverNotificationTest extends TestCase
             'answered_at' => now(),
         ]);
 
-        $this->assertFalse(new DeliverNotification(notification: $notification)->execute());
+        $this->assertSame(0, new DeliverNotifications(notifications: collect([$notification]), asDigest: false)->execute());
 
         NotificationFacade::assertNothingSent();
         $this->assertNotNull($notification->refresh()->failed_at);
@@ -157,7 +163,7 @@ class DeliverNotificationTest extends TestCase
             'cancelled_reason' => ReminderOccurrenceCancelledReasonEnum::RecordArchived,
         ]);
 
-        $this->assertFalse(new DeliverNotification(notification: $notification)->execute());
+        $this->assertSame(0, new DeliverNotifications(notifications: collect([$notification]), asDigest: false)->execute());
 
         NotificationFacade::assertNothingSent();
         $this->assertNotNull($notification->refresh()->failed_at);
@@ -174,7 +180,7 @@ class DeliverNotificationTest extends TestCase
 
         CarbonImmutable::setTestNow('2027-05-13 07:05:00');
 
-        $this->assertTrue(new DeliverNotification(notification: $notification->refresh())->execute());
+        $this->assertSame(1, new DeliverNotifications(notifications: collect([$notification->refresh()]), asDigest: false)->execute());
         $this->assertNotNull($notification->refresh()->sent_at);
     }
 
@@ -184,8 +190,8 @@ class DeliverNotificationTest extends TestCase
         NotificationFacade::fake();
         $notification = $this->notification()->email()->create();
 
-        $this->assertTrue(new DeliverNotification(notification: $notification->refresh())->execute());
-        $this->assertFalse(new DeliverNotification(notification: $notification->refresh())->execute());
+        $this->assertSame(1, new DeliverNotifications(notifications: collect([$notification->refresh()]), asDigest: false)->execute());
+        $this->assertSame(0, new DeliverNotifications(notifications: collect([$notification->refresh()]), asDigest: false)->execute());
 
         NotificationFacade::assertSentToTimes($notification->user, ReminderDue::class, 1);
         $this->assertSame(1, $notification->refresh()->attempts);
@@ -198,7 +204,7 @@ class DeliverNotificationTest extends TestCase
         $notification = $this->notification()->email()->create();
         Notification::query()->whereKey($notification->id)->update(['sent_at' => now()]);
 
-        $this->assertFalse(new DeliverNotification(notification: $notification)->execute());
+        $this->assertSame(0, new DeliverNotifications(notifications: collect([$notification]), asDigest: false)->execute());
 
         NotificationFacade::assertNothingSent();
     }
@@ -209,7 +215,7 @@ class DeliverNotificationTest extends TestCase
         NotificationFacade::fake();
         $notification = $this->notification()->create(['failed_at' => now(), 'failure_reason' => 'Gone']);
 
-        $this->assertFalse(new DeliverNotification(notification: $notification)->execute());
+        $this->assertSame(0, new DeliverNotifications(notifications: collect([$notification]), asDigest: false)->execute());
     }
 
     #[Test]
@@ -219,7 +225,7 @@ class DeliverNotificationTest extends TestCase
         $notification = $this->notification()->state(['channel' => NotificationChannelEnum::Telegram])->create();
         $this->switchOn($notification, NotificationChannelEnum::Telegram);
 
-        $this->assertTrue(new DeliverNotification(notification: $notification)->execute());
+        $this->assertSame(1, new DeliverNotifications(notifications: collect([$notification]), asDigest: false)->execute());
 
         NotificationFacade::assertSentTo(
             $notification->user,
@@ -235,7 +241,7 @@ class DeliverNotificationTest extends TestCase
         NotificationFacade::fake();
         $notification = $this->notification()->state(['channel' => NotificationChannelEnum::Telegram])->create();
 
-        $this->assertFalse(new DeliverNotification(notification: $notification)->execute());
+        $this->assertSame(0, new DeliverNotifications(notifications: collect([$notification]), asDigest: false)->execute());
 
         $notification->refresh();
 
@@ -253,7 +259,7 @@ class DeliverNotificationTest extends TestCase
         $notification->account->features()->deactivate('sms-notifications');
         Feature::flushCache();
 
-        $this->assertFalse(new DeliverNotification(notification: $notification)->execute());
+        $this->assertSame(0, new DeliverNotifications(notifications: collect([$notification]), asDigest: false)->execute());
 
         $row->refresh();
 
@@ -276,8 +282,8 @@ class DeliverNotificationTest extends TestCase
             'notifiable_id' => $refused->notifiable_id,
         ]);
 
-        $this->assertFalse(new DeliverNotification(notification: $refused)->execute());
-        $this->assertTrue(new DeliverNotification(notification: $fine)->execute());
+        $this->assertSame(0, new DeliverNotifications(notifications: collect([$refused]), asDigest: false)->execute());
+        $this->assertSame(1, new DeliverNotifications(notifications: collect([$fine]), asDigest: false)->execute());
 
         $this->assertNotNull($refused->refresh()->failed_at);
         $this->assertNotNull($fine->refresh()->sent_at);
@@ -289,7 +295,7 @@ class DeliverNotificationTest extends TestCase
         NotificationFacade::fake();
         $notification = $this->notification()->state(['channel' => NotificationChannelEnum::Telegram])->create();
 
-        new DeliverNotification(notification: $notification)->execute();
+        new DeliverNotifications(notifications: collect([$notification]), asDigest: false)->execute();
 
         $this->assertSame(1, $this->channelRow($notification, NotificationChannelEnum::Telegram)->consecutive_failures);
     }
@@ -302,7 +308,7 @@ class DeliverNotificationTest extends TestCase
         $row = $this->channelRow($notification, NotificationChannelEnum::Email);
         $row->update(['consecutive_failures' => 3]);
 
-        new DeliverNotification(notification: $notification)->execute();
+        new DeliverNotifications(notifications: collect([$notification]), asDigest: false)->execute();
 
         $this->assertSame(0, $row->refresh()->consecutive_failures);
     }
@@ -314,7 +320,7 @@ class DeliverNotificationTest extends TestCase
         $this->switchOn($notification, NotificationChannelEnum::Telegram);
         $this->refuseWith(new VonageServerException('The service is unavailable.'));
 
-        $this->assertFalse(new DeliverNotification(notification: $notification)->execute());
+        $this->assertSame(0, new DeliverNotifications(notifications: collect([$notification]), asDigest: false)->execute());
 
         $notification->refresh();
 
@@ -330,7 +336,7 @@ class DeliverNotificationTest extends TestCase
         $this->switchOn($notification, NotificationChannelEnum::Telegram);
         $this->refuseWith(new VonageRequestException('Non-Whitelisted Destination.'));
 
-        $this->assertFalse(new DeliverNotification(notification: $notification)->execute());
+        $this->assertSame(0, new DeliverNotifications(notifications: collect([$notification]), asDigest: false)->execute());
 
         $this->assertNotNull($notification->refresh()->failed_at);
     }
@@ -342,7 +348,7 @@ class DeliverNotificationTest extends TestCase
         $this->switchOn($notification, NotificationChannelEnum::Telegram);
         $this->refuseWith(new RuntimeException('token_revoked'));
 
-        $this->assertFalse(new DeliverNotification(notification: $notification)->execute());
+        $this->assertSame(0, new DeliverNotifications(notifications: collect([$notification]), asDigest: false)->execute());
 
         $notification->refresh();
 
@@ -358,7 +364,7 @@ class DeliverNotificationTest extends TestCase
         $this->switchOn($notification, NotificationChannelEnum::Telegram);
         $this->refuseWith(new RuntimeException('Bad Request: chat not found'));
 
-        $this->assertFalse(new DeliverNotification(notification: $notification)->execute());
+        $this->assertSame(0, new DeliverNotifications(notifications: collect([$notification]), asDigest: false)->execute());
 
         $this->assertNotNull($notification->refresh()->failed_at);
     }
@@ -370,7 +376,7 @@ class DeliverNotificationTest extends TestCase
         $this->switchOn($notification, NotificationChannelEnum::Telegram);
         $this->refuseWith(new RuntimeException('Something nobody has seen before.'));
 
-        $this->assertFalse(new DeliverNotification(notification: $notification)->execute());
+        $this->assertSame(0, new DeliverNotifications(notifications: collect([$notification]), asDigest: false)->execute());
 
         $this->assertNull($notification->refresh()->failed_at);
     }
@@ -383,7 +389,7 @@ class DeliverNotificationTest extends TestCase
         $notification = $this->notification()->state(['channel' => NotificationChannelEnum::Telegram])->create();
         $row = $this->switchOn($notification, NotificationChannelEnum::Telegram);
 
-        $this->assertFalse(new DeliverNotification(notification: $notification)->execute());
+        $this->assertSame(0, new DeliverNotifications(notifications: collect([$notification]), asDigest: false)->execute());
 
         $notification->refresh();
         $this->assertNull($notification->sent_at);
@@ -399,7 +405,7 @@ class DeliverNotificationTest extends TestCase
         $notification = $this->notification()->email()->create();
         $notification->user->update(['is_active' => false]);
 
-        $this->assertFalse(new DeliverNotification(notification: $notification)->execute());
+        $this->assertSame(0, new DeliverNotifications(notifications: collect([$notification]), asDigest: false)->execute());
 
         NotificationFacade::assertNothingSent();
         $this->assertNotNull($notification->refresh()->failed_at);
@@ -413,7 +419,7 @@ class DeliverNotificationTest extends TestCase
         $notification = $this->notification()->email()->create();
         $notification->user->update(['email_verified_at' => null]);
 
-        $this->assertFalse(new DeliverNotification(notification: $notification)->execute());
+        $this->assertSame(0, new DeliverNotifications(notifications: collect([$notification]), asDigest: false)->execute());
 
         NotificationFacade::assertNothingSent();
         $this->assertNotNull($notification->refresh()->failed_at);
@@ -428,14 +434,103 @@ class DeliverNotificationTest extends TestCase
         NotificationFacade::shouldReceive('locale')->andReturnSelf();
         NotificationFacade::shouldReceive('sendNow')->once()->andReturnUsing(function () use ($notification, &$whileSending, &$secondSweep): void {
             $whileSending = Notification::query()->findOrFail($notification->id);
-            $secondSweep = new DeliverNotification(notification: Notification::query()->findOrFail($notification->id))->execute();
+            $secondSweep = new DeliverNotifications(notifications: collect([Notification::query()->findOrFail($notification->id)]), asDigest: false)->execute();
         });
 
-        $this->assertTrue(new DeliverNotification(notification: $notification)->execute());
+        $this->assertSame(1, new DeliverNotifications(notifications: collect([$notification]), asDigest: false)->execute());
 
         $this->assertNull($whileSending->sent_at);
-        $this->assertFalse($secondSweep);
+        $this->assertSame(0, $secondSweep);
         $this->assertNotNull($notification->refresh()->sent_at);
+    }
+
+    #[Test]
+    public function it_folds_several_notifications_into_one_digest_they_point_at(): void
+    {
+        NotificationFacade::fake();
+        $waiting = $this->waiting(count: 3);
+
+        $this->assertSame(3, new DeliverNotifications(notifications: $waiting, asDigest: true)->execute());
+
+        NotificationFacade::assertSentTimes(NotificationDigest::class, 1);
+        $digest = Notification::query()->where('type', NotificationTypeEnum::Digest->value)->sole();
+
+        foreach ($waiting as $notification) {
+            $notification->refresh();
+            $this->assertSame($digest->id, $notification->digest_id);
+            $this->assertNotNull($notification->sent_at);
+            $this->assertNotNull($notification->notifiable->notified_at);
+        }
+    }
+
+    #[Test]
+    public function a_digest_refused_for_now_gives_every_notification_back_and_writes_no_digest(): void
+    {
+        $this->app->make(ChannelManager::class)->extend('mail', fn (): BusyChannel => new BusyChannel);
+        $waiting = $this->waiting(count: 2);
+
+        $this->assertSame(0, new DeliverNotifications(notifications: $waiting, asDigest: true)->execute());
+
+        $this->assertSame(0, Notification::query()->where('type', NotificationTypeEnum::Digest->value)->count());
+        $this->assertSame(1, $this->channelRow($waiting->first(), NotificationChannelEnum::Email)->consecutive_failures);
+
+        foreach ($waiting as $notification) {
+            $notification->refresh();
+            $this->assertNull($notification->sent_at);
+            $this->assertNull($notification->failed_at);
+            $this->assertNull($notification->digest_id);
+            $this->assertFalse($notification->held_until->isFuture());
+            $this->assertSame(1, $notification->attempts);
+            $this->assertNull($notification->notifiable->notified_at);
+        }
+    }
+
+    #[Test]
+    public function a_digest_refused_for_good_abandons_every_notification_it_carried(): void
+    {
+        $this->app->make(ChannelManager::class)->extend('mail', fn (): RefusingChannel => new RefusingChannel);
+        $waiting = $this->waiting(count: 2);
+
+        $this->assertSame(0, new DeliverNotifications(notifications: $waiting, asDigest: true)->execute());
+
+        foreach ($waiting as $notification) {
+            $this->assertSame('Bad Request: chat not found', $notification->refresh()->failure_reason);
+        }
+    }
+
+    #[Test]
+    public function a_digest_abandons_a_notification_no_longer_warranted_and_carries_the_rest(): void
+    {
+        NotificationFacade::fake();
+        $waiting = $this->waiting(count: 2);
+        $waiting->first()->notifiable->update(['answer' => 'remembered', 'answered_at' => now()]);
+
+        $this->assertSame(1, new DeliverNotifications(notifications: $waiting, asDigest: true)->execute());
+
+        $this->assertNotNull($waiting->first()->refresh()->failure_reason);
+        $this->assertNull($waiting->first()->digest_id);
+        $this->assertNotNull($waiting->last()->refresh()->digest_id);
+    }
+
+    #[Test]
+    public function it_refuses_to_send_several_notifications_as_one_without_a_digest(): void
+    {
+        $this->expectException(LogicException::class);
+
+        new DeliverNotifications(notifications: $this->waiting(count: 2), asDigest: false)->execute();
+    }
+
+    #[Test]
+    public function a_digest_carries_only_what_another_run_has_not_taken(): void
+    {
+        NotificationFacade::fake();
+        $waiting = $this->waiting(count: 2);
+        Notification::query()->whereKey($waiting->first()->id)->update(['sent_at' => now()]);
+
+        $this->assertSame(1, new DeliverNotifications(notifications: $waiting, asDigest: true)->execute());
+
+        $digest = Notification::query()->where('type', NotificationTypeEnum::Digest->value)->sole();
+        $this->assertSame([$waiting->last()->id], $digest->folded()->pluck('id')->all());
     }
 
     /**
@@ -467,6 +562,18 @@ class DeliverNotificationTest extends TestCase
             ->where('account_id', $notification->account_id)
             ->where('channel', $channel->value)
             ->firstOrFail();
+    }
+
+    /** @return Collection<int, Notification> */
+    private function waiting(int $count): Collection
+    {
+        $account = Account::factory()->create();
+        $user = User::factory()->create(['account_id' => $account->id]);
+
+        return Notification::factory()->count($count)->email()->create([
+            'account_id' => $account->id,
+            'user_id' => $user->id,
+        ]);
     }
 
     private function notification(): NotificationFactory

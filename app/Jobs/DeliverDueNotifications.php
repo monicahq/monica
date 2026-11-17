@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
-use App\Actions\DeliverNotification;
+use App\Actions\DeliverNotifications;
 use App\Actions\NotifyReminderOccurrence;
 use App\Enums\NotificationDeliveryModeEnum;
 use App\Models\Notification;
@@ -67,7 +67,7 @@ class DeliverDueNotifications implements ShouldBeUnique, ShouldQueue
             ->chunkById(200, function ($notifications) use (&$sent): void {
                 foreach ($notifications as $notification) {
                     try {
-                        $sent += new DeliverNotification(notification: $notification)->execute() ? 1 : 0;
+                        $sent += new DeliverNotifications(notifications: collect([$notification]), asDigest: false)->execute();
                     } catch (Throwable $e) {
                         report($e);
                     }

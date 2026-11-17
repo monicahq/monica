@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Notification as NotificationFacade;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
 use RuntimeException;
-use Tests\Fixtures\Notifications\RefusingChannel;
+use Tests\Fixtures\Notifications\BusyChannel;
 use Tests\TestCase;
 
 class SendNotificationDigestsTest extends TestCase
@@ -105,13 +105,14 @@ class SendNotificationDigestsTest extends TestCase
     }
 
     #[Test]
-    public function an_account_whose_summary_is_refused_does_not_stop_the_next_one(): void
+    public function an_account_whose_summary_fails_does_not_stop_the_next_one(): void
     {
         Exceptions::fake();
         CarbonImmutable::setTestNow('2027-05-12 17:00:00');
-        $this->app->make(ChannelManager::class)->extend('mail', fn (): RefusingChannel => new RefusingChannel);
-        $refused = $this->accountWaiting();
-        Notification::factory()->email()->create(['account_id' => $refused->id, 'user_id' => $refused->user->id]);
+        $failing = $this->accountWaiting();
+        Notification::saving(fn (Notification $notification) => $notification->account_id === $failing->id
+            ? throw new RuntimeException('Lost the connection.')
+            : null);
         $next = $this->accountWaiting();
 
         new SendNotificationDigests()->handle();
@@ -123,9 +124,8 @@ class SendNotificationDigestsTest extends TestCase
     #[Test]
     public function a_channel_that_refused_the_summary_is_tried_again_on_the_next_run_of_the_day(): void
     {
-        Exceptions::fake();
         CarbonImmutable::setTestNow('2027-05-12 17:00:00');
-        $this->app->make(ChannelManager::class)->extend('mail', fn (): RefusingChannel => new RefusingChannel);
+        $this->app->make(ChannelManager::class)->extend('mail', fn (): BusyChannel => new BusyChannel);
         $account = $this->accountWaiting();
         Notification::factory()->email()->create(['account_id' => $account->id, 'user_id' => $account->user->id]);
         new SendNotificationDigests()->handle();
