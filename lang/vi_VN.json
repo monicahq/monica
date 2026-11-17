@@ -5348,6 +5348,7 @@
     "Where: :ip": "Ở đâu: :ip",
     "Whether a visitor may leave an email address to wait for an account while registration is closed.": "Khách có được để lại địa chỉ thư để chờ tài khoản khi đăng ký đang đóng hay không.",
     "Whether an animal is female or male": "Động vật là con cái hay con đực",
+    "Whether people on this instance see What’s new, the list of changes made to Monica, and may vote and comment on them. Votes and comments are kept while it is off.": "Có cho phép người dùng trên máy chủ này xem Có gì mới, tức danh sách các thay đổi đã thực hiện với Monica, và bình chọn cũng như bình luận về chúng hay không. Các lượt bình chọn và bình luận vẫn được giữ lại khi tắt.",
     "Whether somebody may create an account on this instance.": "Có cho phép tạo tài khoản trên máy chủ này hay không.",
     "Whether somebody may sign in with a link emailed to them.": "Có cho phép đăng nhập bằng liên kết gửi qua thư hay không.",
     "Whether this instance runs outside the cloud one.": "Máy chủ này có chạy ngoài máy chủ đám mây hay không.",

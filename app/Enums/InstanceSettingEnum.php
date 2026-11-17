@@ -33,6 +33,8 @@ enum InstanceSettingEnum: string implements Translatable
     case ApiDefaultItemsPerPage = 'api_default_items_per_page';
     case ApiMaximumItemsPerPage = 'api_maximum_items_per_page';
 
+    case ChangelogEnabled = 'changelog_enabled';
+
     case GithubClientId = 'github_client_id';
     case GithubClientSecret = 'github_client_secret';
     case GoogleClientId = 'google_client_id';
@@ -231,6 +233,8 @@ enum InstanceSettingEnum: string implements Translatable
 
             self::ApiDefaultItemsPerPage, self::ApiMaximumItemsPerPage => InstanceSettingGroupEnum::Api,
 
+            self::ChangelogEnabled => InstanceSettingGroupEnum::WhatsNew,
+
             default => InstanceSettingGroupEnum::OutboundServices,
         };
     }
@@ -238,7 +242,8 @@ enum InstanceSettingEnum: string implements Translatable
     public function kind(): InstanceSettingKindEnum
     {
         return match ($this) {
-            self::MagicLinkEnabled, self::RegistrationEnabled, self::PreviewListEnabled, self::SelfHosted => InstanceSettingKindEnum::Boolean,
+            self::MagicLinkEnabled, self::RegistrationEnabled, self::PreviewListEnabled, self::SelfHosted,
+            self::ChangelogEnabled => InstanceSettingKindEnum::Boolean,
 
             self::TelegramBotUrl, self::KeycloakServerUrl,
             self::OpenIdConnectBaseUrl => InstanceSettingKindEnum::Url,
@@ -370,6 +375,7 @@ enum InstanceSettingEnum: string implements Translatable
             self::OrphanedFileGracePeriodInDays => 'How long a file nothing points at is kept before the sweep takes it.',
             self::ApiDefaultItemsPerPage => 'How many things one page of an API list holds when nothing asks.',
             self::ApiMaximumItemsPerPage => 'The largest page an API caller may ask for.',
+            self::ChangelogEnabled => 'Whether people on this instance see What’s new, the list of changes made to Monica, and may vote and comment on them. Votes and comments are kept while it is off.',
             self::GithubClientId => 'The identifier GitHub knows this instance by.',
             self::GithubClientSecret => 'The secret this instance proves itself to GitHub with.',
             self::GoogleClientId => 'The identifier Google knows this instance by.',

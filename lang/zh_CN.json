@@ -5348,6 +5348,7 @@
     "Where: :ip": "位置：:ip",
     "Whether a visitor may leave an email address to wait for an account while registration is closed.": "注册关闭期间，访客是否可以留下邮箱地址等待账户。",
     "Whether an animal is female or male": "动物是雌性还是雄性",
+    "Whether people on this instance see What’s new, the list of changes made to Monica, and may vote and comment on them. Votes and comments are kept while it is off.": "是否允许本实例上的用户查看最新动态（Monica 的变更列表），并对其投票和评论。关闭期间，投票和评论会被保留。",
     "Whether somebody may create an account on this instance.": "是否允许在本实例上创建账户。",
     "Whether somebody may sign in with a link emailed to them.": "是否允许通过邮件发送的链接登录。",
     "Whether this instance runs outside the cloud one.": "本实例是否运行于云端实例之外。",

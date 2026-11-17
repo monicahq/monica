@@ -5348,6 +5348,7 @@
     "Where: :ip": "කොහේද: :ip",
     "Whether a visitor may leave an email address to wait for an account while registration is closed.": "ලියාපදිංචිය වසා ඇති විට අමුත්තෙකුට ගිණුමක් එනතෙක් බලා සිටීමට විද්‍යුත් තැපැල් ලිපිනයක් තබා යා හැකිද යන්න.",
     "Whether an animal is female or male": "සතා ගැහැණු ද පිරිමි ද යන්න",
+    "Whether people on this instance see What’s new, the list of changes made to Monica, and may vote and comment on them. Votes and comments are kept while it is off.": "මෙම නිදසුනේ අයට Monica වෙත සිදු කළ වෙනස්කම් ලැයිස්තුව වන අලුත් දේවල් දැකිය හැකිද, ඒවාට ඡන්දය දී අදහස් දැක්විය හැකිද යන්න. අක්‍රිය කර ඇති අතරතුර ඡන්ද සහ අදහස් තබා ගනී.",
     "Whether somebody may create an account on this instance.": "මෙම නිදසුනේ යමෙකුට ගිණුමක් සෑදිය හැකිද යන්න.",
     "Whether somebody may sign in with a link emailed to them.": "තැපෑලෙන් යවන ලද සබැඳියකින් යමෙකුට පිවිසිය හැකිද යන්න.",
     "Whether this instance runs outside the cloud one.": "මෙම නිදසුන වලාකුළු නිදසුනෙන් පිටත ධාවනය වේද යන්න.",

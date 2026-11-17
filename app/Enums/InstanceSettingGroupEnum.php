@@ -16,6 +16,7 @@ enum InstanceSettingGroupEnum: string implements Translatable
     case RemindersAndNotifications = 'reminders_and_notifications';
     case Files = 'files';
     case Api = 'api';
+    case WhatsNew = 'whats_new';
     case OutboundServices = 'outbound_services';
 
     public function label(): string
@@ -28,6 +29,7 @@ enum InstanceSettingGroupEnum: string implements Translatable
             self::RemindersAndNotifications => 'Reminders and notifications',
             self::Files => 'Files',
             self::Api => 'API',
+            self::WhatsNew => 'What’s new',
             self::OutboundServices => 'Outbound services',
         };
     }

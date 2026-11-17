@@ -5348,6 +5348,7 @@
     "Where: :ip": "Hvar: :ip",
     "Whether a visitor may leave an email address to wait for an account while registration is closed.": "Hvort gestur megi skilja eftir netfang til að bíða eftir aðgangi meðan skráning er lokuð.",
     "Whether an animal is female or male": "Hvort dýr er kvendýr eða karldýr",
+    "Whether people on this instance see What’s new, the list of changes made to Monica, and may vote and comment on them. Votes and comments are kept while it is off.": "Hvort fólk á þessu tilviki sjái Nýjungar, listann yfir breytingar sem gerðar hafa verið á Monica, og megi greiða atkvæði um þær og skrifa athugasemdir. Atkvæði og athugasemdir haldast á meðan slökkt er á þessu.",
     "Whether somebody may create an account on this instance.": "Hvort einhver megi stofna aðgang á þessu tilviki.",
     "Whether somebody may sign in with a link emailed to them.": "Hvort einhver megi skrá sig inn með tengli sem sendur er í tölvupósti.",
     "Whether this instance runs outside the cloud one.": "Hvort þetta tilvik keyrir utan skýjatilviksins.",

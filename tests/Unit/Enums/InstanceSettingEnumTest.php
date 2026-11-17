@@ -107,6 +107,17 @@ class InstanceSettingEnumTest extends TestCase
     }
 
     #[Test]
+    public function it_lets_an_administrator_switch_whats_new(): void
+    {
+        $setting = InstanceSettingEnum::ChangelogEnabled;
+
+        $this->assertEquals('monica.changelog_enabled', $setting->configKey());
+        $this->assertEquals('MONICA_CHANGELOG_ENABLED', $setting->environmentVariable());
+        $this->assertEquals(InstanceSettingKindEnum::Boolean, $setting->kind());
+        $this->assertFalse($setting->fixedAtDeployment());
+    }
+
+    #[Test]
     public function it_says_the_apple_settings_have_no_provider_when_its_package_is_absent(): void
     {
         config(['monica.sso_installed' => ['github', 'google']]);

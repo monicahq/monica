@@ -5348,6 +5348,7 @@
     "Where: :ip": "On: :ip",
     "Whether a visitor may leave an email address to wait for an account while registration is closed.": "Indica si un visitant pot deixar una adreça electrònica per esperar un compte mentre el registre està tancat.",
     "Whether an animal is female or male": "Si un animal és femella o mascle",
+    "Whether people on this instance see What’s new, the list of changes made to Monica, and may vote and comment on them. Votes and comments are kept while it is off.": "Si les persones d’aquesta instància veuen Novetats, la llista de canvis fets a Monica, i poden votar-los i comentar-los. Els vots i els comentaris es conserven mentre l’opció és desactivada.",
     "Whether somebody may create an account on this instance.": "Si algú pot crear un compte en aquesta instància.",
     "Whether somebody may sign in with a link emailed to them.": "Si algú pot accedir amb un enllaç enviat per correu.",
     "Whether this instance runs outside the cloud one.": "Si aquesta instància funciona fora de la del núvol.",

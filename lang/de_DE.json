@@ -5348,6 +5348,7 @@
     "Where: :ip": "Wo: :ip",
     "Whether a visitor may leave an email address to wait for an account while registration is closed.": "Legt fest, ob ein Besucher eine E-Mail-Adresse hinterlassen darf, um auf ein Konto zu warten, solange die Registrierung geschlossen ist.",
     "Whether an animal is female or male": "Ob ein Tier weiblich oder männlich ist",
+    "Whether people on this instance see What’s new, the list of changes made to Monica, and may vote and comment on them. Votes and comments are kept while it is off.": "Ob Personen auf dieser Instanz Neuigkeiten sehen, die Liste der Änderungen an Monica, und darüber abstimmen und sie kommentieren dürfen. Stimmen und Kommentare bleiben erhalten, solange die Funktion ausgeschaltet ist.",
     "Whether somebody may create an account on this instance.": "Ob jemand auf dieser Instanz ein Konto erstellen darf.",
     "Whether somebody may sign in with a link emailed to them.": "Ob sich jemand mit einem per E-Mail zugesandten Link anmelden darf.",
     "Whether this instance runs outside the cloud one.": "Ob diese Instanz außerhalb der Cloud-Instanz läuft.",

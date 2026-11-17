@@ -5348,6 +5348,7 @@
     "Where: :ip": "কোথায়: :ip",
     "Whether a visitor may leave an email address to wait for an account while registration is closed.": "নিবন্ধন বন্ধ থাকা অবস্থায় অ্যাকাউন্টের অপেক্ষায় কোনো দর্শক ইমেইল ঠিকানা রেখে যেতে পারবেন কি না।",
     "Whether an animal is female or male": "পশুটি স্ত্রী না পুরুষ",
+    "Whether people on this instance see What’s new, the list of changes made to Monica, and may vote and comment on them. Votes and comments are kept while it is off.": "এই ইনস্ট্যান্সের মানুষ নতুন কী, অর্থাৎ Monica-তে করা পরিবর্তনের তালিকা দেখতে পারবে কি না, এবং সেগুলোতে ভোট ও মন্তব্য করতে পারবে কি না। বন্ধ থাকলেও ভোট ও মন্তব্য সংরক্ষিত থাকে।",
     "Whether somebody may create an account on this instance.": "এই ইনস্ট্যান্সে কেউ অ্যাকাউন্ট তৈরি করতে পারবে কি না।",
     "Whether somebody may sign in with a link emailed to them.": "মেইলে পাঠানো লিঙ্ক দিয়ে কেউ সাইন ইন করতে পারবে কি না।",
     "Whether this instance runs outside the cloud one.": "এই ইনস্ট্যান্স ক্লাউড ইনস্ট্যান্সের বাইরে চলে কি না।",

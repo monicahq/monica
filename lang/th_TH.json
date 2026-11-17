@@ -5348,6 +5348,7 @@
     "Where: :ip": "ที่ใด: :ip",
     "Whether a visitor may leave an email address to wait for an account while registration is closed.": "ว่าผู้เข้าชมฝากที่อยู่อีเมลไว้รอบัญชีได้หรือไม่ขณะปิดการลงทะเบียน",
     "Whether an animal is female or male": "สัตว์เป็นเพศเมียหรือเพศผู้",
+    "Whether people on this instance see What’s new, the list of changes made to Monica, and may vote and comment on them. Votes and comments are kept while it is off.": "อนุญาตให้ผู้ใช้บนเซิร์ฟเวอร์นี้ดูมีอะไรใหม่ ซึ่งเป็นรายการการเปลี่ยนแปลงของ Monica รวมถึงโหวตและแสดงความคิดเห็นหรือไม่ โหวตและความคิดเห็นจะยังคงอยู่ขณะที่ปิดใช้งาน",
     "Whether somebody may create an account on this instance.": "อนุญาตให้สร้างบัญชีบนเซิร์ฟเวอร์นี้หรือไม่",
     "Whether somebody may sign in with a link emailed to them.": "อนุญาตให้เข้าสู่ระบบด้วยลิงก์ที่ส่งทางอีเมลหรือไม่",
     "Whether this instance runs outside the cloud one.": "เซิร์ฟเวอร์นี้ทำงานนอกเซิร์ฟเวอร์บนคลาวด์หรือไม่",

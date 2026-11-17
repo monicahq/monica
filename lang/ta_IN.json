@@ -5348,6 +5348,7 @@
     "Where: :ip": "எங்கே: :ip",
     "Whether a visitor may leave an email address to wait for an account while registration is closed.": "பதிவு மூடியிருக்கும்போது ஒரு பார்வையாளர் கணக்கிற்காகக் காத்திருக்க மின்னஞ்சல் முகவரியை விட்டுச் செல்லலாமா என்பது.",
     "Whether an animal is female or male": "ஒரு விலங்கு பெண்ணா ஆணா",
+    "Whether people on this instance see What’s new, the list of changes made to Monica, and may vote and comment on them. Votes and comments are kept while it is off.": "இந்த நிகழ்வில் உள்ளவர்கள் புதிதாக என்ன, அதாவது Monica-வில் செய்யப்பட்ட மாற்றங்களின் பட்டியலைப் பார்க்கவும், அவற்றுக்கு வாக்களிக்கவும் கருத்து தெரிவிக்கவும் முடியுமா. அணைக்கப்பட்டிருக்கும் போதும் வாக்குகளும் கருத்துகளும் சேமிக்கப்படும்.",
     "Whether somebody may create an account on this instance.": "இந்த நிகழ்வில் ஒருவர் கணக்கை உருவாக்க முடியுமா.",
     "Whether somebody may sign in with a link emailed to them.": "அஞ்சலில் அனுப்பப்பட்ட இணைப்பு மூலம் உள்நுழைய முடியுமா.",
     "Whether this instance runs outside the cloud one.": "இந்த நிகழ்வு மேக நிகழ்வுக்கு வெளியே இயங்குகிறதா.",
