@@ -29,6 +29,9 @@ class SettingsIndexViewHelper
                 'cancel' => [
                     'index' => route('settings.cancel.index'),
                 ],
+                'blackbookd' => [
+                    'index' => route('settings.blackbookd.index'),
+                ],
             ],
         ];
     }

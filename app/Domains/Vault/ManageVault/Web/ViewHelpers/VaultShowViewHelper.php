@@ -202,4 +202,25 @@ class VaultShowViewHelper
             'number_of_hours_slept' => $event->number_of_hours_slept,
         ];
     }
+
+    public static function blackbookdSummary(Vault $vault, User $user): ?array
+    {
+        if (! $user->account->blackbookd_enabled) {
+            return null;
+        }
+
+        if ($user->account->blackbookd_blur_dashboard) {
+            return [
+                'blurred' => true,
+                'url' => route('vault.blackbookd.index', ['vault' => $vault->id]),
+            ];
+        }
+
+        return [
+            'blurred' => false,
+            'encounters' => $vault->blackbookdEncounters()->count(),
+            'pipeline_rows' => $vault->blackbookdDatingPipelines()->count(),
+            'url' => route('vault.blackbookd.index', ['vault' => $vault->id]),
+        ];
+    }
 }

@@ -52,14 +52,14 @@ defineProps({
                 {{ $t('Profile and security') }}
               </Link>
             </li>
-            <li class="flex justify-start">
-              <span class="me-2">⚓</span>
-              <Link :href="route('api-tokens.index')" class="text-blue-500 hover:underline">
-                {{ $t('API Tokens') }}
-              </Link>
-            </li>
-          </ul>
-        </div>
+              <li class="flex justify-start">
+                <span class="me-2">⚓</span>
+                <Link :href="route('api-tokens.index')" class="text-blue-500 hover:underline">
+                  {{ $t('API Tokens') }}
+                </Link>
+              </li>
+            </ul>
+          </div>
 
         <!-- account settings -->
         <div v-if="data.is_account_administrator">
@@ -85,6 +85,10 @@ defineProps({
                 <Link :href="data.url.storage.index" class="text-blue-500 hover:underline">
                   {{ $t('Manage storage') }}
                 </Link>
+              </li>
+              <li class="mb-2 flex justify-start">
+                <span class="me-2">📓</span>
+                <Link :href="data.url.blackbookd.index" class="text-blue-500 hover:underline">BlackBookd module</Link>
               </li>
               <li class="flex justify-start">
                 <span class="me-2">💩</span>

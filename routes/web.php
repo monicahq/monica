@@ -1,5 +1,7 @@
 <?php
 
+use App\Domains\BlackBookd\Web\Controllers\BlackBookdSettingsController;
+use App\Domains\BlackBookd\Web\Controllers\VaultBlackBookdController;
 use App\Domains\Contact\ManageAvatar\Web\Controllers\ModuleAvatarController;
 use App\Domains\Contact\ManageCalls\Web\Controllers\ContactModuleCallController;
 use App\Domains\Contact\ManageContact\Web\Controllers\ContactArchiveController;
@@ -465,6 +467,12 @@ Route::middleware([
                 });
             });
 
+            // BlackBookd private module
+            Route::middleware('blackbookd.enabled')->prefix('blackbookd')->name('vault.blackbookd.')->group(function () {
+                Route::get('', [VaultBlackBookdController::class, 'index'])->name('index');
+                Route::get('pipeline', [VaultBlackBookdController::class, 'pipeline'])->name('pipeline');
+            });
+
             // vault files
             Route::prefix('files')->name('vault.files.')->group(function () {
                 Route::get('', [VaultFileController::class, 'index'])->name('index');
@@ -578,6 +586,10 @@ Route::middleware([
 
         // only for administrators
         Route::middleware('can:administrator')->group(function () {
+            Route::get('blackbookd', [BlackBookdSettingsController::class, 'index'])->name('blackbookd.index');
+            Route::put('blackbookd', [BlackBookdSettingsController::class, 'update'])->name('blackbookd.update');
+            Route::get('blackbookd/export', [BlackBookdSettingsController::class, 'export'])->name('blackbookd.export');
+
             // users
             Route::prefix('users')->name('user.')->group(function () {
                 Route::get('', [UserController::class, 'index'])->name('index');

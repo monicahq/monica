@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title inertia>{{ config('app.name', 'Monica') }}</title>
+        <title inertia>{{ config('app.name', 'BlackBookd') }}</title>
 
         <link rel="shortcut icon" href="/img/favicon.svg">
 

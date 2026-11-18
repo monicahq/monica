@@ -20,6 +20,15 @@ class Account extends Model
      */
     protected $fillable = [
         'storage_limit_in_mb',
+        'blackbookd_enabled',
+        'blackbookd_blur_dashboard',
+        'blackbookd_partner_lookback_days',
+    ];
+
+    protected $casts = [
+        'blackbookd_enabled' => 'boolean',
+        'blackbookd_blur_dashboard' => 'boolean',
+        'blackbookd_partner_lookback_days' => 'integer',
     ];
 
     /**

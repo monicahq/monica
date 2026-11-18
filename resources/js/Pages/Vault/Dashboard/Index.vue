@@ -8,6 +8,7 @@ import Favorites from '@/Pages/Vault/Dashboard/Partials/Favorites.vue';
 import DueTasks from '@/Pages/Vault/Dashboard/Partials/DueTasks.vue';
 import LifeMetrics from '@/Pages/Vault/Dashboard/Partials/LifeMetrics.vue';
 import MoodTrackingEvents from '@/Pages/Vault/Dashboard/Partials/MoodTrackingEvents.vue';
+import BlackBookdSummary from '@/Pages/Vault/Dashboard/Partials/BlackBookdSummary.vue';
 import Feed from '@/Shared/Modules/Feed.vue';
 import LifeEvent from '@/Shared/Modules/LifeEvent.vue';
 import { SquareActivity, Flame, ChartSpline } from 'lucide-vue-next';
@@ -24,6 +25,7 @@ const props = defineProps({
   lifeEvents: Object,
   lifeMetrics: Object,
   defaultTab: String,
+  blackbookdSummary: Object,
 });
 
 const currentTab = ref(props.defaultTab);
@@ -52,6 +54,8 @@ const changeTab = (tab) => {
 
             <!-- last updated contacts -->
             <LastUpdated :data="lastUpdatedContacts" />
+
+            <BlackBookdSummary :summary="blackbookdSummary" />
           </div>
 
           <!-- middle -->

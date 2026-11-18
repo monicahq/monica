@@ -77,6 +77,7 @@ class VaultController extends Controller
             'defaultTab' => $vault->default_activity_tab,
             'lifeEvents' => ModuleLifeEventViewHelper::data($contact, Auth::user()),
             'lifeMetrics' => VaultLifeMetricsViewHelper::data($vault, Auth::user(), Carbon::now()->year),
+            'blackbookdSummary' => VaultShowViewHelper::blackbookdSummary($vault, Auth::user()),
             'url' => [
                 'feed' => route('vault.feed.show', [
                     'vault' => $vault,

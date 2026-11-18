@@ -1,7 +1,7 @@
 {
   "name": "monicahq/monica",
   "type": "project",
-  "description": "Monica is a personal relationship manager.",
+  "description": "BlackBookd — self-hosted personal CRM fork of Monica.",
   "keywords": [
     "laravel",
     "crm",

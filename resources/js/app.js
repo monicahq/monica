@@ -9,7 +9,7 @@ import { i18nVue } from 'laravel-vue-i18n';
 import { sentry } from './sentry';
 import methods from './methods';
 
-const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Monica';
+const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'BlackBookd';
 
 createInertiaApp({
   title: (title) => `${title} - ${appName}`,

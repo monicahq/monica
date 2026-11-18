@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
@@ -234,6 +235,21 @@ class Contact extends VCardResource
     public function reminders(): HasMany
     {
         return $this->hasMany(ContactReminder::class);
+    }
+
+    public function blackbookdEncounters(): BelongsToMany
+    {
+        return $this->belongsToMany(BlackBookdEncounter::class, 'blackbookd_encounter_contact', 'contact_id', 'blackbookd_encounter_id');
+    }
+
+    public function blackbookdProfile(): HasOne
+    {
+        return $this->hasOne(BlackBookdContactProfile::class, 'contact_id');
+    }
+
+    public function blackbookdDatingPipeline(): HasOne
+    {
+        return $this->hasOne(BlackBookdDatingPipeline::class, 'contact_id');
     }
 
     /**
