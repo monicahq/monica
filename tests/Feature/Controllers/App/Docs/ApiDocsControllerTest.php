@@ -67,7 +67,12 @@ class ApiDocsControllerTest extends TestCase
             ->assertSee('Possession loans')
             ->assertSee('What’s new');
 
-        foreach ($ids as $id) {
+        foreach (new ApiDocsViewModel()->sections() as $section) {
+            $this->blade('<x-api-docs.endpoint :section="$section" />', ['section' => $section])
+                ->assertSee($section->title);
+        }
+
+        foreach (['vaults-index', 'contacts-name-update', 'possessions-index'] as $id) {
             $this->get(route('docs.api.show', ['section' => $id]))
                 ->assertOk()
                 ->assertViewIs('app.docs.api.show');

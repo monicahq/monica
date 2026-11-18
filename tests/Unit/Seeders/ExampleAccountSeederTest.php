@@ -20,7 +20,7 @@ class ExampleAccountSeederTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_fills_the_example_account_with_its_possessions(): void
+    public function it_fills_the_example_account_with_its_possessions_and_its_knowledge(): void
     {
         new ExampleAccountSeeder()->run();
 
@@ -62,14 +62,7 @@ class ExampleAccountSeederTest extends TestCase
             'possession_transaction_id' => $ring->transactions()->sole()->id,
         ]);
         $this->assertEquals('Rachel Green', $ring->loans()->sole()->contact?->name);
-    }
 
-    #[Test]
-    public function it_fills_the_example_account_with_its_knowledge(): void
-    {
-        new ExampleAccountSeeder()->run();
-
-        $user = User::query()->where('email', ExampleAccountSeeder::EMAIL)->firstOrFail();
         $vault = $user->account->vaults()->firstOrFail();
 
         $this->assertEquals(

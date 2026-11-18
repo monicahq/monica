@@ -79,27 +79,88 @@ class WriteAccountImportItemTest extends TestCase
     }
 
     #[Test]
-    public function it_writes_every_contact_of_the_file_into_a_new_vault_and_ends(): void
+    public function it_writes_every_item_of_a_monica_4_file_into_a_new_vault(): void
     {
         $import = $this->imported();
+        $me = $this->me($import);
+        $dwight = $this->contactCalled($import, 'Dwight');
+        $jim = $this->contactCalled($import, 'Jim');
+        $cece = $this->contactCalled($import, 'Cece');
+        $notesOfMe = implode("\n", $this->notesOf($me));
 
         $this->assertSame(AccountImportStatusEnum::Completed, $import->status);
         $this->assertSame(['Cece', 'Dwight', 'Jim', 'Pam'], Contact::query()->where('vault_id', $import->vault_id)->where('is_me', false)->orderBy('first_name')->pluck('first_name')->all());
         $this->assertSame(0, $import->items()->whereNull('outcome')->count());
         Storage::disk('local')->assertMissing($import->directory());
         Notification::assertSentTo($this->michael, AccountImportEnded::class, fn (AccountImportEnded $notification): bool => ! $notification->rolledBack);
-    }
-
-    #[Test]
-    public function it_fills_me_with_the_contact_the_file_marks_as_its_owner_without_overwriting_me(): void
-    {
-        $import = $this->imported();
-        $me = $this->me($import);
 
         $this->assertNull($me->middle_name);
         $this->assertDatabaseHas('field_values', ['valuable_id' => $me->id, 'field_key' => 'email', 'value_string' => 'michael@dundermifflin.test']);
         $this->assertSame(AccountImportOutcomeEnum::MergedIntoMe, $import->items()->where('kind', 'contact')->where('source_uuid', '10000000-0000-4000-8000-000000000001')->first()->outcome);
         $this->assertSame(4, Contact::withTrashed()->where('vault_id', $import->vault_id)->where('is_me', false)->count());
+
+        $this->assertDatabaseHas('field_values', ['valuable_id' => $dwight->id, 'field_key' => 'birthday', 'year_is_unknown' => true]);
+        $this->assertDatabaseMissing('field_values', ['valuable_id' => $jim->id, 'field_key' => 'birthday']);
+        $this->assertContains('Born around 1978', $this->notesOf($jim));
+
+        $this->assertStringContainsString('Job: Regional Manager', $notesOfMe);
+        $this->assertStringNotContainsString('Tags:', $notesOfMe);
+        $this->assertStringContainsString('Gift: Oven mitt', $notesOfMe);
+        $this->assertStringContainsString('You owe 20.00 USD', $notesOfMe);
+        $this->assertStringContainsString('Task: Plan the fun run', $notesOfMe);
+        $this->assertStringContainsString('Hosts the Dundies every year.', $notesOfMe);
+        $this->assertStringContainsString('rated 2 out of 3', $notesOfMe);
+
+        $categories = ValueList::query()
+            ->where('account_id', $this->michael->account_id)
+            ->where('key', ValueListEnum::ContactCategories->value)
+            ->sole();
+        $held = FieldValue::query()
+            ->where('valuable_type', $me->getMorphClass())
+            ->where('valuable_id', $me->id)
+            ->whereIn('field_id', Field::query()->where('value_list_id', $categories->id)->select('id'))
+            ->sole();
+        $added = $import->items()->get()->flatMap(fn (AccountImportItem $item): array => $item->payload['value_list_items'] ?? []);
+
+        $this->assertEqualsCanonicalizing(['boss', 'improv'], ValueListItem::query()->whereIn('id', $held->value_list_item_ids)->pluck('label')->all());
+        $this->assertEqualsCanonicalizing($held->value_list_item_ids, $added->all());
+
+        $this->assertDatabaseHas('field_values', ['valuable_id' => $dwight->id, 'field_key' => 'website', 'value_string' => 'https://facebook.example.test/schrutefarms']);
+        $this->assertContains('Telegram: beetfarmer', $this->notesOf($dwight));
+
+        $this->assertDatabaseHas('reminders', ['name' => 'Wish happy birthday to Michael', 'cadence' => ReminderCadenceEnum::Yearly->value]);
+        $this->assertNotNull(Reminder::query()->where('name', 'Wish happy birthday to Michael')->value('field_value_id'));
+        $this->assertDatabaseHas('reminders', ['remindable_id' => $dwight->id, 'cadence' => ReminderCadenceEnum::Weekly->value, 'frequency_interval' => 4]);
+        $this->assertSame(AccountImportReasonEnum::OneTimeReminderInThePast->value, $import->items()->where('kind', 'reminder')->where('outcome', AccountImportOutcomeEnum::LeftOut)->first()->reason);
+
+        $natures = LifeEvent::query()->where('vault_id', $import->vault_id)->with('lifeEventType')->get()->map(fn (LifeEvent $lifeEvent): string => $lifeEvent->lifeEventType->key ?? $lifeEvent->lifeEventType->name)->sort()->values()->all();
+
+        $this->assertSame(['First kiss', 'call', 'message', 'reflection', 'time_together'], $natures);
+        $this->assertSame(5, LifeEvent::query()->where('vault_id', $import->vault_id)->where('created_from', 'import')->count());
+        $this->assertStringContainsString('Bears, beets, Battlestar Galactica.', (string) LifeEvent::query()->where('vault_id', $import->vault_id)->whereHas('lifeEventType', fn ($query) => $query->where('key', 'message'))->value('narrative'));
+        $this->assertDatabaseHas('life_events', ['vault_id' => $import->vault_id, 'title' => 'Dinner party']);
+
+        $cruise = LifeEvent::query()->where('vault_id', $import->vault_id)->where('title', 'Booze cruise')->firstOrFail();
+
+        $this->assertSame(['Jim', 'Pam'], $cruise->participants()->with('participant')->get()->map(fn ($participant): string => $participant->participant->first_name)->sort()->values()->all());
+
+        $goat = Entity::query()->where('vault_id', $import->vault_id)->where('name', "Mose's goat")->firstOrFail();
+
+        $this->assertDatabaseHas('field_values', ['valuable_id' => $goat->id, 'field_key' => 'caregiver_person', 'related_contact_id' => $dwight->id]);
+
+        $godparent = RelationshipType::query()->where('account_id', $this->michael->account_id)->where('name', 'Godparent')->firstOrFail();
+
+        $this->assertSame(2, Relationship::query()->where('vault_id', $import->vault_id)->count());
+        $this->assertDatabaseHas('relationships', ['contact_a_id' => $jim->id, 'contact_b_id' => $cece->id]);
+        $this->assertDatabaseHas('relationships', ['relationship_type_id' => $godparent->id, 'contact_a_id' => $me->id, 'contact_b_id' => $cece->id]);
+        $this->assertSame('Godchild', $godparent->role_b);
+
+        $this->assertTrue($this->contactCalled($import, 'Pam')->is_archived);
+        $this->assertSame('2017-04-01', $dwight->created_at->format('Y-m-d'));
+        $this->assertTrue($cece->is_partial);
+
+        $this->assertTrue(Log::query()->where('source', LogSourceEnum::Import->value)->where('source_detail', $import->uuid)->exists());
+        $this->assertNull(request()->attributes->get('log_source'));
     }
 
     #[Test]
@@ -116,79 +177,6 @@ class WriteAccountImportItemTest extends TestCase
         $this->assertSame(1, FieldValue::query()->where('valuable_id', $me->id)->where('valuable_type', $me->getMorphClass())->where('value_string', 'michael@dundermifflin.test')->count());
         $this->assertContains('Job: Regional Manager', $this->notesOf($me));
         $this->assertFalse(Contact::withTrashed()->where('vault_id', $scranton->id)->where('first_name', 'Michael')->where('is_me', false)->exists());
-    }
-
-    #[Test]
-    public function it_keeps_a_birthday_without_its_year_and_writes_an_age_as_a_note(): void
-    {
-        $import = $this->imported();
-
-        $dwight = $this->contactCalled($import, 'Dwight');
-        $jim = $this->contactCalled($import, 'Jim');
-
-        $this->assertDatabaseHas('field_values', ['valuable_id' => $dwight->id, 'field_key' => 'birthday', 'year_is_unknown' => true]);
-        $this->assertDatabaseMissing('field_values', ['valuable_id' => $jim->id, 'field_key' => 'birthday']);
-        $this->assertContains('Born around 1978', $this->notesOf($jim));
-    }
-
-    #[Test]
-    public function it_keeps_what_monica_has_no_field_for_as_notes(): void
-    {
-        $import = $this->imported();
-        $notes = implode("\n", $this->notesOf($this->me($import)));
-
-        $this->assertStringContainsString('Job: Regional Manager', $notes);
-        $this->assertStringNotContainsString('Tags:', $notes);
-        $this->assertStringContainsString('Gift: Oven mitt', $notes);
-        $this->assertStringContainsString('You owe 20.00 USD', $notes);
-        $this->assertStringContainsString('Task: Plan the fun run', $notes);
-        $this->assertStringContainsString('Hosts the Dundies every year.', $notes);
-    }
-
-    #[Test]
-    public function it_writes_the_tags_as_categories_and_records_the_ones_it_added(): void
-    {
-        $import = $this->imported();
-        $michael = $this->me($import);
-        $categories = ValueList::query()
-            ->where('account_id', $this->michael->account_id)
-            ->where('key', ValueListEnum::ContactCategories->value)
-            ->sole();
-
-        $held = FieldValue::query()
-            ->where('valuable_type', $michael->getMorphClass())
-            ->where('valuable_id', $michael->id)
-            ->whereIn('field_id', Field::query()->where('value_list_id', $categories->id)->select('id'))
-            ->sole();
-        $added = $import->items()->get()->flatMap(fn (AccountImportItem $item): array => $item->payload['value_list_items'] ?? []);
-
-        $this->assertEqualsCanonicalizing(['boss', 'improv'], ValueListItem::query()->whereIn('id', $held->value_list_item_ids)->pluck('label')->all());
-        $this->assertEqualsCanonicalizing($held->value_list_item_ids, $added->all());
-    }
-
-    #[Test]
-    public function it_writes_a_link_as_the_website_and_a_handle_as_a_note(): void
-    {
-        $import = $this->imported();
-        $dwight = $this->contactCalled($import, 'Dwight');
-
-        $this->assertDatabaseHas('field_values', ['valuable_id' => $dwight->id, 'field_key' => 'website', 'value_string' => 'https://facebook.example.test/schrutefarms']);
-        $this->assertContains('Telegram: beetfarmer', $this->notesOf($dwight));
-    }
-
-    #[Test]
-    public function it_writes_the_reminders_the_way_monica_keeps_them(): void
-    {
-        $import = $this->imported();
-        $dwight = $this->contactCalled($import, 'Dwight');
-
-        $this->assertDatabaseHas('reminders', ['name' => 'Wish happy birthday to Michael', 'cadence' => ReminderCadenceEnum::Yearly->value]);
-        $this->assertNotNull(Reminder::query()->where('name', 'Wish happy birthday to Michael')->value('field_value_id'));
-        $this->assertDatabaseHas('reminders', ['remindable_id' => $dwight->id, 'cadence' => ReminderCadenceEnum::Weekly->value, 'frequency_interval' => 4]);
-
-        $past = $import->items()->where('kind', 'reminder')->where('outcome', AccountImportOutcomeEnum::LeftOut)->first();
-
-        $this->assertSame(AccountImportReasonEnum::OneTimeReminderInThePast->value, $past->reason);
     }
 
     #[Test]
@@ -319,80 +307,6 @@ class WriteAccountImportItemTest extends TestCase
 
         $this->assertInstanceOf(LifeEvent::class, $lifeEvent);
         $this->assertSame(DatePrecisionEnum::Year, $lifeEvent->date_precision);
-    }
-
-    #[Test]
-    public function it_writes_life_events_calls_and_conversations_of_the_matching_nature(): void
-    {
-        $import = $this->imported();
-
-        $natures = LifeEvent::query()->where('vault_id', $import->vault_id)->with('lifeEventType')->get()->map(fn (LifeEvent $lifeEvent): string => $lifeEvent->lifeEventType->key ?? $lifeEvent->lifeEventType->name)->sort()->values()->all();
-
-        $this->assertSame(['First kiss', 'call', 'message', 'reflection', 'time_together'], $natures);
-        $this->assertSame(5, LifeEvent::query()->where('vault_id', $import->vault_id)->where('created_from', 'import')->count());
-        $this->assertStringContainsString('Bears, beets, Battlestar Galactica.', (string) LifeEvent::query()->where('vault_id', $import->vault_id)->whereHas('lifeEventType', fn ($query) => $query->where('key', 'message'))->value('narrative'));
-    }
-
-    #[Test]
-    public function it_writes_an_activity_with_everybody_who_took_part(): void
-    {
-        $import = $this->imported();
-
-        $cruise = LifeEvent::query()->where('vault_id', $import->vault_id)->where('title', 'Booze cruise')->firstOrFail();
-
-        $this->assertSame(['Jim', 'Pam'], $cruise->participants()->with('participant')->get()->map(fn ($participant): string => $participant->participant->first_name)->sort()->values()->all());
-    }
-
-    #[Test]
-    public function it_writes_a_pet_as_an_animal_cared_for_by_its_owner(): void
-    {
-        $import = $this->imported();
-        $goat = Entity::query()->where('vault_id', $import->vault_id)->where('name', "Mose's goat")->firstOrFail();
-
-        $this->assertDatabaseHas('field_values', ['valuable_id' => $goat->id, 'field_key' => 'caregiver_person', 'related_contact_id' => $this->contactCalled($import, 'Dwight')->id]);
-    }
-
-    #[Test]
-    public function it_writes_each_relationship_once_and_in_its_direction(): void
-    {
-        $import = $this->imported();
-        $jim = $this->contactCalled($import, 'Jim');
-        $cece = $this->contactCalled($import, 'Cece');
-        $godparent = RelationshipType::query()->where('account_id', $this->michael->account_id)->where('name', 'Godparent')->firstOrFail();
-
-        $this->assertSame(2, Relationship::query()->where('vault_id', $import->vault_id)->count());
-        $this->assertDatabaseHas('relationships', ['contact_a_id' => $jim->id, 'contact_b_id' => $cece->id]);
-        $this->assertDatabaseHas('relationships', ['relationship_type_id' => $godparent->id, 'contact_a_id' => $this->me($import)->id, 'contact_b_id' => $cece->id]);
-        $this->assertSame('Godchild', $godparent->role_b);
-    }
-
-    #[Test]
-    public function it_archives_an_inactive_contact_and_keeps_when_each_was_created(): void
-    {
-        $import = $this->imported();
-
-        $this->assertTrue($this->contactCalled($import, 'Pam')->is_archived);
-        $this->assertSame('2017-04-01', $this->contactCalled($import, 'Dwight')->created_at->format('Y-m-d'));
-        $this->assertTrue($this->contactCalled($import, 'Cece')->is_partial);
-    }
-
-    #[Test]
-    public function it_writes_the_journal_with_me(): void
-    {
-        $import = $this->imported();
-        $me = $this->me($import);
-
-        $this->assertDatabaseHas('life_events', ['vault_id' => $import->vault_id, 'title' => 'Dinner party']);
-        $this->assertStringContainsString('rated 2 out of 3', implode("\n", $this->notesOf($me)));
-    }
-
-    #[Test]
-    public function it_logs_what_it_writes_as_coming_from_the_import(): void
-    {
-        $import = $this->imported();
-
-        $this->assertTrue(Log::query()->where('source', LogSourceEnum::Import->value)->where('source_detail', $import->uuid)->exists());
-        $this->assertNull(request()->attributes->get('log_source'));
     }
 
     #[Test]

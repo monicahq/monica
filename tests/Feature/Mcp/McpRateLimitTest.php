@@ -27,14 +27,22 @@ class McpRateLimitTest extends TestCase
     }
 
     #[Test]
-    public function it_counts_one_key_apart_from_another(): void
+    public function it_allows_sixty_requests_a_minute_unless_told_otherwise(): void
     {
         config(['monica.self_hosted' => false]);
+
+        $this->assertSame(60, $this->resolveLimit()->maxAttempts);
+    }
+
+    #[Test]
+    public function it_counts_one_key_apart_from_another(): void
+    {
+        config(['monica.self_hosted' => false, 'monica.mcp_requests_per_minute' => 2]);
         $user = User::factory()->create();
         $spent = $user->createToken('Dundie awards bot');
         $untouched = $user->createToken('Deployment script');
 
-        foreach (range(1, 61) as $ignored) {
+        foreach (range(1, 3) as $ignored) {
             $this->withToken($spent->plainTextToken)->postJson('/mcp', $this->listTools());
         }
 
@@ -48,11 +56,11 @@ class McpRateLimitTest extends TestCase
     #[Test]
     public function it_answers_too_many_requests_once_the_limit_is_spent(): void
     {
-        config(['monica.self_hosted' => false]);
+        config(['monica.self_hosted' => false, 'monica.mcp_requests_per_minute' => 2]);
         $user = User::factory()->create();
         $key = $user->createToken('Dundie awards bot');
 
-        foreach (range(1, 60) as $ignored) {
+        foreach (range(1, 2) as $ignored) {
             $this->withToken($key->plainTextToken)->postJson('/mcp', $this->listTools())->assertOk();
         }
 

@@ -1,8 +1,144 @@
 # Test suite audit
 
-Started 2026-10-28. The suite holds 7,811 tests in 1,019 files, and CI takes between 12 and 15 minutes
-on MySQL and PostgreSQL. This file records what the audit found, area by area, what to keep, what to
-retire, and the guidelines that follow from it. It is written as the audit goes, so the sections grow.
+Started 2026-10-28, measured again for speed on 2026-11-17. This file records what the audit found,
+area by area, what to keep, what to retire, and the guidelines that follow from it. The speed audit of
+2026-11-17 comes first; everything from "Summary" on is the redundancy audit of 2026-10-28, kept as it
+was, with its numbers of that day.
+
+## Speed audit, 2026-11-17
+
+### In short
+
+- **A pull request waits 11 to 18 minutes** for its tests: the slowest of three jobs (sqlite, MySQL,
+  PostgreSQL), each running the whole suite.
+- **CI runs the suite on 2 processes, not 4.** The repository is private, so the standard GitHub runner
+  has 2 cores, and the log of every job says `Processes: 2`. The MySQL and PostgreSQL servers run on
+  those same 2 cores. The October audit assumed 4 cores; its section "Where the time goes" is corrected
+  below.
+- **The suite grew from 7,811 to 8,218 tests** since October. None of the removals the October audit
+  proposed has been made.
+- **2 percent of the tests cost 43 percent of the time.** 210 tests in 21 files take 127 of the 295
+  seconds. The other 8,008 tests average 21 ms.
+- **Locally the whole suite takes 36 seconds in parallel and 5 minutes serially.** Agents always pay the
+  5 minutes: under an agent, `laravel/pao` takes over the output and its paratest driver crashes, so
+  `php artisan test --parallel` fails and agents fall back to a serial run.
+- **What does not help, measured:** OPcache and JIT on the command line, and an sqlite file in place of
+  sqlite in memory, each change the time by 3 percent or less. Paratest's `--functional` mode (one test
+  at a time instead of one file at a time) breaks 47 tests and is no faster.
+
+### Measurements
+
+All local runs on a 24 core workstation, PHP 8.5.11, sqlite in memory, outside agent mode.
+
+| Run | Wall clock |
+| --- | --- |
+| Serial, `vendor/bin/phpunit` | 4 min 58 s (295 s of test time) |
+| `php artisan test --parallel`, 24 processes | 37 s |
+| `php artisan test --parallel --processes=4` | 85 s |
+| Same, under an agent (`AI_AGENT` set) | crashes in `Laravel\Pao\Drivers\Paratest\WrapperRunner` |
+
+CI, three green runs of 2026-11-17, step `Run tests` (the whole job adds about 45 seconds of setup):
+
+| Run | sqlite | MySQL | PostgreSQL | The pull request waits |
+| --- | --- | --- | --- | --- |
+| 44201469866 | 6 min 53 s | 10 min 17 s | 9 min 25 s | 11 min 9 s |
+| 44196505183 | 6 min 21 s | 12 min 49 s | 17 min 23 s | 18 min 14 s |
+| 44187290713 | 10 min 33 s | 13 min 47 s | 11 min 57 s | 14 min 43 s |
+
+On 2 slower cores, sharing them with the database server, CI runs the same tests about 5 times slower
+than the local 4 process run. The machine, not the tests, sets most of that gap. The variance between
+runs (6 to 10 minutes on sqlite for the same suite) is the runner's.
+
+Fixed cost of one test, from the per test log:
+
+| Kind | Tests | Median | Total |
+| --- | --- | --- | --- |
+| Uses the database (`RefreshDatabase`) | 7,628 | 16.3 ms | 269 s |
+| Boots Laravel, no database | 571 | 6.8 ms | 26 s |
+| Plain PHPUnit | 19 | 0.1 ms | 0 s |
+
+Booting the application costs about 7 ms per test even with config and routes cached
+(`WithCachedConfig`, `WithCachedRoutes`), so 8,218 tests spend about 55 seconds booting. The
+migrations run once per process, not once per test, so they are not a cost.
+
+Where the time goes, by area:
+
+| Area | Tests | Seconds | ms per test |
+| --- | --- | --- | --- |
+| Unit/Actions | 2,285 | 108.0 | 47 |
+| Feature/Controllers/App | 1,251 | 49.4 | 40 |
+| Unit/ViewModels | 1,099 | 26.5 | 24 |
+| Unit/Console | 100 | 24.1 | 241 |
+| Feature/Controllers/Api | 825 | 18.4 | 22 |
+| Unit/Seeders | 5 | 14.2 | 2,844 |
+| Unit/Mcp | 417 | 10.5 | 25 |
+| Unit/Models | 452 | 7.5 | 17 |
+| Unit/Jobs | 166 | 6.8 | 41 |
+| Unit/Helpers | 465 | 5.5 | 12 |
+| Everything else | 1,153 | 24.4 | 21 |
+
+### The long tail
+
+The 21 files whose tests average more than 150 ms. Paratest gives a whole file to one process, so on
+24 cores the slowest file alone (21.7 s) sets most of the 37 second wall clock.
+
+| File | Tests | Seconds | Why | Suggestion | Saves |
+| --- | --- | --- | --- | --- | --- |
+| Unit/Console/Commands/LocalizeCommandTest | 50 | 21.7 | Every test runs `monica:localize` over the whole application | Done: the scanned directories are config (`monica.translation_source_directories`, `monica.translation_enum_directory`); the rule tests scan `tests/Fixtures/Localize` and write nothing into `app/` any more; one test still scans the application. Now 3.2 s | 18 s |
+| Unit/Actions/WriteAccountImportItemTest | 25 | 18.1 | Every test seeds a full account (value lists, two templates, life event and relationship types), then runs a whole import. The 33 KB fixture is not the cost | Done: the 14 tests that ran the same import with no other setup are one test; 12 tests, every assertion kept. Now 8.8 s | 9 s |
+| Unit/Actions/RollBackAccountImportTest | 22 | 18.1 | Same import, then a rollback | Done: two groups of identical arrangements merged (6 and 4 tests); 14 tests, every assertion kept. Now about 12 s | 6 s |
+| Unit/Seeders/ExampleAccountSeederTest | 2 | 14.2 | Each test runs the whole example seeder | Done: one test, the seeder runs once. Now 7.6 s | 7 s |
+| Feature/Controllers/App/Docs/ApiDocsControllerTest | 9 | 11.1 | `every_section_of_the_reference_is_reachable` renders 316 pages over HTTP (10.7 s). The page frame (316 links in the sidebar) is the cost, not the content | Done: the content of every section is rendered through `x-api-docs.endpoint`, and three full pages over HTTP. Now 1.6 s for the file | 9.5 s |
+| Unit/Actions/AccountTransferRoundTripTest | 5 | 9.1 | Export then import a vault, 1.8 s each | Keep; the round trip is the point. Consider one test asserting all five | up to 7 s |
+| Feature/Controllers/App/Docs/ApiDocsReturnFieldsTest | 4 | 6.3 | Calls every endpoint the reference documents | Keep; it is the contract between the reference and the API | 0 |
+| Unit/Actions/ReadMonicaFileTest | 12 | 6.3 | Reads full export files | Smaller fixtures where one record is asserted | about 3 s |
+| Unit/Actions/WriteAccountExportTest | 8 | 6.0 | Writes a whole account | Same | about 3 s |
+| Unit/Actions/SearchRecordsTest | 15 | 4.0 | Search engine tests; locally the 9 engine tests are skipped, on CI they wait on Meilisearch | Measure on CI first (see below) | unknown |
+| Feature/Mcp/McpRateLimitTest | 3 | 2.0 | Sends 61 requests to reach the limit | Done: the limit is `monica.mcp_requests_per_minute` (60 by default, `MONICA_MCP_REQUESTS_PER_MINUTE`); the tests set 2, one test checks the default. Now 0.5 s | 1.5 s |
+| 10 smaller files | 55 | 10.5 | Account creation, default seeding and search, run synchronously | Keep | 0 |
+
+Done on 2026-11-17 for every row marked so, measured: the serial test time went from 295 to 241
+seconds (54 seconds, 18 percent), and the local parallel run from 37 to 27 seconds. 8,197 tests remain,
+21 fewer, every assertion that proved a rule kept.
+
+### Suggestions, by effect on the time a pull request waits
+
+1. **Run the tests on more cores.** CI has 2. A larger GitHub runner (4, 8 or 16 cores, paid per
+   minute) divides the `Run tests` step about in proportion, with no change to a single test. This is
+   the largest lever and a cost decision for the maintainer.
+2. **Shard each job.** Done 2026-11-17: `phpunit.xml` holds three suites (`Actions`, `Unit` without
+   `Unit/Actions`, `Feature`: 2,285, 3,252 and 2,681 tests) and the workflow matrix runs each database
+   times each suite, nine jobs. Not yet measured on CI. Split the suite into three test suites in `phpunit.xml` (for example
+   `Unit/Actions`, the rest of `Unit`, and `Feature`, about 108, 103 and 85 seconds of test time) and
+   run them as a matrix. Each shard still pays about 45 seconds of setup. With three shards a job of
+   10 minutes becomes about 4.
+3. **Run only sqlite on pull requests**, and MySQL and PostgreSQL on `main` (or nightly, or in a merge
+   queue). The pull request then waits for the fastest job, 6 to 10 minutes today, instead of the
+   slowest, 11 to 18. A defect specific to MySQL or PostgreSQL is then caught one merge later. This is
+   the decision the October audit also left to the maintainer; the matrix holds all three again.
+4. **Let agents run the suite in parallel.** Every full run an agent makes costs 5 minutes instead of
+   37 seconds, because `laravel/pao` crashes paratest. Paratest 7.29.0 does not fix it (tried
+   2026-11-17): paratest now creates a private `runTmpDir` in its own `run()`, and `laravel/pao` 1.1.5,
+   its latest release, replaces that `run()` without creating the directory, then starts the workers
+   that need it. The fix belongs in `laravel/pao` and should be reported there. The package's own off
+   switch, `PAO_DISABLE`, does not help locally: `php` is a lerd wrapper, and lerd passes `AI_AGENT` and
+   `CLAUDECODE` into the container but not `PAO_DISABLE`. Done 2026-11-17: `composer test:parallel`
+   removes the agent variables before running the suite in parallel (37 seconds under an agent), and
+   `CLAUDE.md` tells agents to use it.
+5. **Fix the long tail** (table above): about 60 seconds of test time, a fifth of every run, on CI too.
+6. **Measure CI before going further.** Add `--log-junit` to the CI run and upload the file as an
+   artifact. Nothing today says which files are slowest on CI, and the search engine tests in particular
+   only wait on Meilisearch there.
+7. **Try `--processes=4` on the 2 core runner** for the MySQL and PostgreSQL jobs, where a process
+   waits on the server. Not measured.
+8. **Make the removals of October.** 1,874 tests, about 85 seconds of test time at the time. They lower
+   the cost of every run, but less than any lever above, and each one needs reading.
+
+Not worth doing, measured: OPcache or JIT on the command line, an in memory sqlite database on CI in
+place of the file, paratest's `--functional` mode. Eight test files declare `RefreshDatabase` without
+appearing to need it (`OfferListTest`, `PaywallPromptTest`, `SidebarTest`, `FieldTypeEnumTest`,
+`FieldSettingsCatalogueTest`, and three docs view model tests); at 10 ms a test that is not worth a
+pass of its own, but each can drop the trait when it is next touched.
 
 ## Summary
 
@@ -100,7 +236,7 @@ the database per test, not the number of assertions. 883 of the 1,019 test files
 process. Reducing the number of database-backed tests is what shortens the two slow jobs; reducing pure
 unit tests barely moves them.
 
-The GitHub runner has 4 cores. Paratest uses one process per core. The same suite on a 10 core laptop
+(Corrected 2026-11-17: the runner of this private repository has 2 cores, and paratest runs 2 processes. See the speed audit at the top.) Paratest uses one process per core. The same suite on a 10 core laptop
 with sqlite in memory runs in 42 seconds, which says that the wall clock on CI is set by the database
 server and by the core count, and that counting tests alone understates what the slow jobs cost.
 

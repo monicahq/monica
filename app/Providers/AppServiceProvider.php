@@ -313,12 +313,13 @@ class AppServiceProvider extends ServiceProvider
             }
 
             $token = $request->user()?->currentAccessToken();
+            $perMinute = (int) config('monica.mcp_requests_per_minute');
 
             if ($token instanceof AccessToken) {
-                return Limit::perMinute(60)->by("oauth:{$token->oauth_access_token_id}");
+                return Limit::perMinute($perMinute)->by("oauth:{$token->oauth_access_token_id}");
             }
 
-            return Limit::perMinute(60)
+            return Limit::perMinute($perMinute)
                 ->by($token instanceof PersonalAccessToken ? "key:{$token->getKey()}" : (string) $request->ip());
         });
         RateLimiter::for('support', fn (Request $request): array => [

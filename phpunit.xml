@@ -5,8 +5,12 @@
          colors="true"
 >
     <testsuites>
+        <testsuite name="Actions">
+            <directory>tests/Unit/Actions</directory>
+        </testsuite>
         <testsuite name="Unit">
             <directory>tests/Unit</directory>
+            <exclude>tests/Unit/Actions</exclude>
         </testsuite>
         <testsuite name="Feature">
             <directory>tests/Feature</directory>

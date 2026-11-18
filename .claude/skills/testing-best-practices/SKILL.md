@@ -8,7 +8,7 @@ metadata:
 
 # Testing best practices
 
-This skill provides rules for designing Laravel tests. Each rule file explains what to do and why. Use `search-docs` for Laravel API syntax. Fetch the PHPUnit 13.4.6 documentation at `https://phpunit.de/documentation.html` for PHPUnit API syntax.
+This skill provides rules for designing Laravel tests. Each rule file explains what to do and why. Use `search-docs` for Laravel API syntax. Fetch the PHPUnit 13.4.7 documentation at `https://phpunit.de/documentation.html` for PHPUnit API syntax.
 This project uses PHPUnit. Follow the corresponding guidance in each rule.
 
 ## Consistency first

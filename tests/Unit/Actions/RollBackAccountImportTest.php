@@ -86,10 +86,16 @@ class RollBackAccountImportTest extends TestCase
     }
 
     #[Test]
-    public function it_removes_a_vault_the_import_created_and_the_storage_its_files_took(): void
+    public function it_removes_everything_an_import_wrote_into_a_vault_it_created_and_gives_back_every_count(): void
     {
+        $countsBefore = $this->countsOf($this->michael);
+        $structuresBefore = Structure::query()->where('account_id', $this->michael->account_id)->count();
         $import = $this->imported(vault: null);
         $vaultId = $import->vault_id;
+        $logged = Log::query()->where('account_id', $this->michael->account_id)->count();
+        $paths = File::query()->where('account_id', $this->michael->account_id)->pluck('path');
+        Storage::disk('local')->put("{$import->directory()}/files/photo", 'Dwight');
+        Queue::fake();
 
         new RollBackAccountImport(import: $import)->execute();
 
@@ -99,6 +105,15 @@ class RollBackAccountImportTest extends TestCase
         $this->assertFalse(RelationshipType::query()->where('account_id', $this->michael->account_id)->where('name', 'Godparent')->exists());
         $this->assertSame(AccountImportStatusEnum::RolledBack, $import->refresh()->status);
         Notification::assertSentTo($this->michael, AccountImportEnded::class, fn (AccountImportEnded $notification): bool => $notification->rolledBack);
+        $this->assertSame($countsBefore, $this->countsOf($this->michael));
+        $this->assertFalse(RelationshipType::withTrashed()->where('account_id', $this->michael->account_id)->where('name', 'Godparent')->exists());
+        $this->assertSame(0, LifeEventType::withTrashed()->whereIn('id', $this->createdBy($import, LifeEventType::class))->count());
+        $this->assertSame($structuresBefore, Structure::query()->where('account_id', $this->michael->account_id)->count());
+        $this->assertSame($logged, Log::query()->where('account_id', $this->michael->account_id)->count());
+        $this->assertNotEmpty($paths);
+        $paths->each(fn (string $path) => Storage::disk('local')->assertMissing($path));
+        Storage::disk('local')->assertMissing($import->directory());
+        Queue::assertNotPushed(DetectDuplicateContacts::class);
     }
 
     #[Test]
@@ -120,13 +135,17 @@ class RollBackAccountImportTest extends TestCase
     }
 
     #[Test]
-    public function it_leaves_a_vault_that_was_there_and_its_me_as_they_were(): void
+    public function it_leaves_a_vault_that_was_there_as_it_was_and_looks_for_duplicates_in_it(): void
     {
         $scranton = new CreateVault(user: $this->michael, name: 'Scranton')->execute();
         $me = Contact::query()->where('vault_id', $scranton->id)->where('is_me', true)->firstOrFail();
         $valuesOfMe = FieldValue::query()->where('valuable_id', $me->id)->where('valuable_type', $me->getMorphClass())->count();
+        $countsBefore = $this->countsOf($this->michael);
 
         $import = $this->imported(vault: $scranton);
+        $imported = Contact::query()->whereKey($this->createdBy($import, Contact::class))->firstOrFail();
+        new CreateRecordSnapshot(user: $this->michael, record: $imported)->execute();
+        Queue::fake();
 
         new RollBackAccountImport(import: $import)->execute();
 
@@ -138,6 +157,10 @@ class RollBackAccountImportTest extends TestCase
         $this->assertSame(0, File::withTrashed()->where('vault_id', $scranton->id)->count());
         $this->assertSame(0, Account::query()->findOrFail($this->michael->account_id)->storage_used_in_bytes);
         $this->assertSame(1, $scranton->refresh()->contact_count);
+        $this->assertSame($countsBefore, $this->countsOf($this->michael));
+        $this->assertDatabaseMissing('record_snapshots', ['snapshotable_type' => $imported->getMorphClass(), 'snapshotable_id' => $imported->id]);
+        Queue::assertPushed(DetectDuplicateContacts::class, 1);
+        Queue::assertPushedOn('low', DetectDuplicateContacts::class, fn (DetectDuplicateContacts $job): bool => $job->uniqueId() === $scranton->getMorphClass().':'.$scranton->id);
     }
 
     #[Test]
@@ -298,19 +321,6 @@ class RollBackAccountImportTest extends TestCase
     }
 
     #[Test]
-    public function it_removes_the_snapshots_of_the_contacts_it_removes(): void
-    {
-        $scranton = new CreateVault(user: $this->michael, name: 'Scranton')->execute();
-        $import = $this->imported(vault: $scranton);
-        $imported = Contact::query()->whereKey($this->createdBy($import, Contact::class))->firstOrFail();
-        new CreateRecordSnapshot(user: $this->michael, record: $imported)->execute();
-
-        new RollBackAccountImport(import: $import)->execute();
-
-        $this->assertDatabaseMissing('record_snapshots', ['snapshotable_type' => $imported->getMorphClass(), 'snapshotable_id' => $imported->id]);
-    }
-
-    #[Test]
     public function it_keeps_a_vault_it_created_that_somebody_has_added_to_by_hand(): void
     {
         $import = $this->imported(vault: null);
@@ -413,46 +423,6 @@ class RollBackAccountImportTest extends TestCase
     }
 
     #[Test]
-    public function it_gives_back_every_count_the_import_raised_when_it_removes_the_vault_it_created(): void
-    {
-        $before = $this->countsOf($this->michael);
-
-        $import = $this->imported(vault: null);
-
-        new RollBackAccountImport(import: $import)->execute();
-
-        $this->assertSame($before, $this->countsOf($this->michael));
-    }
-
-    #[Test]
-    public function it_gives_back_every_count_the_import_raised_in_a_vault_that_was_there(): void
-    {
-        $scranton = new CreateVault(user: $this->michael, name: 'Scranton')->execute();
-        $before = $this->countsOf($this->michael);
-
-        $import = $this->imported(vault: $scranton);
-
-        new RollBackAccountImport(import: $import)->execute();
-
-        $this->assertSame($before, $this->countsOf($this->michael));
-    }
-
-    #[Test]
-    public function it_removes_the_types_the_import_created_for_good_without_writing_to_the_journal(): void
-    {
-        $before = Structure::query()->where('account_id', $this->michael->account_id)->count();
-        $import = $this->imported(vault: null);
-        $logged = Log::query()->where('account_id', $this->michael->account_id)->count();
-
-        new RollBackAccountImport(import: $import)->execute();
-
-        $this->assertFalse(RelationshipType::withTrashed()->where('account_id', $this->michael->account_id)->where('name', 'Godparent')->exists());
-        $this->assertSame(0, LifeEventType::withTrashed()->whereIn('id', $this->createdBy($import, LifeEventType::class))->count());
-        $this->assertSame($before, Structure::query()->where('account_id', $this->michael->account_id)->count());
-        $this->assertSame($logged, Log::query()->where('account_id', $this->michael->account_id)->count());
-    }
-
-    #[Test]
     public function it_keeps_a_type_the_import_created_that_somebody_has_used_since(): void
     {
         $scranton = new CreateVault(user: $this->michael, name: 'Scranton')->execute();
@@ -471,29 +441,6 @@ class RollBackAccountImportTest extends TestCase
     }
 
     #[Test]
-    public function it_removes_the_bytes_of_the_files_it_removes(): void
-    {
-        $import = $this->imported(vault: null);
-        $paths = File::query()->where('account_id', $this->michael->account_id)->pluck('path');
-
-        new RollBackAccountImport(import: $import)->execute();
-
-        $this->assertNotEmpty($paths);
-        $paths->each(fn (string $path) => Storage::disk('local')->assertMissing($path));
-    }
-
-    #[Test]
-    public function it_deletes_the_working_files_of_the_import(): void
-    {
-        $import = $this->imported(vault: null);
-        Storage::disk('local')->put("{$import->directory()}/files/photo", 'Dwight');
-
-        new RollBackAccountImport(import: $import)->execute();
-
-        Storage::disk('local')->assertMissing($import->directory());
-    }
-
-    #[Test]
     public function it_does_nothing_to_an_import_already_rolled_back(): void
     {
         $import = $this->imported(vault: null);
@@ -503,30 +450,6 @@ class RollBackAccountImportTest extends TestCase
         new RollBackAccountImport(import: $import->refresh())->execute();
 
         Notification::assertNothingSent();
-    }
-
-    #[Test]
-    public function it_looks_for_duplicates_in_a_vault_that_was_there_once_the_import_is_rolled_back(): void
-    {
-        $scranton = new CreateVault(user: $this->michael, name: 'Scranton')->execute();
-        $import = $this->imported(vault: $scranton);
-        Queue::fake();
-
-        new RollBackAccountImport(import: $import)->execute();
-
-        Queue::assertPushed(DetectDuplicateContacts::class, 1);
-        Queue::assertPushedOn('low', DetectDuplicateContacts::class, fn (DetectDuplicateContacts $job): bool => $job->uniqueId() === $scranton->getMorphClass().':'.$scranton->id);
-    }
-
-    #[Test]
-    public function it_looks_for_no_duplicate_in_the_vault_it_created_and_removed(): void
-    {
-        $import = $this->imported(vault: null);
-        Queue::fake();
-
-        new RollBackAccountImport(import: $import)->execute();
-
-        Queue::assertNotPushed(DetectDuplicateContacts::class);
     }
 
     private function accountHolder(string $firstName, string $lastName): User

@@ -139,6 +139,7 @@ Never use dashes (— or -) as punctuation in documentation or README files. Rep
 A change is done when all of these hold. CI runs the tests and PHPStan, so passing the tests alone still lands a red pull request.
 
 - What you wrote is covered by a test, and the affected tests pass.
+- Run the whole suite with `composer test:parallel`, never with `php artisan test` alone: under an agent, `laravel/pao` crashes the parallel runner and the suite falls back to a serial run of 5 minutes instead of under a minute.
 - `php artisan monica:localize --check` passes: run `php artisan monica:localize` and translate what it reports as missing, in every configured locale. Never edit `lang/*.json` keys by hand.
 - `vendor/bin/phpstan analyse --no-progress` reports nothing.
 - `vendor/bin/pint --dirty --format agent` leaves nothing to fix.

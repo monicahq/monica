@@ -24,23 +24,39 @@ class LocalizeCommandTest extends TestCase
 
     private string $langPath;
 
+    private string $scratchPath;
+
+    /** @var array<string, mixed> */
+    private array $applicationSources;
+
     #[Override]
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->langPath = storage_path('framework/testing/lang');
+        $this->scratchPath = storage_path('framework/testing/localize');
 
         File::ensureDirectoryExists($this->langPath);
         File::cleanDirectory($this->langPath);
+        File::deleteDirectory($this->scratchPath);
+
+        $this->applicationSources = [
+            'monica.translation_source_directories' => config('monica.translation_source_directories'),
+            'monica.translation_enum_directory' => config('monica.translation_enum_directory'),
+        ];
+
+        config([
+            'monica.translation_source_directories' => [base_path('tests/Fixtures/Localize'), $this->scratchPath],
+            'monica.translation_enum_directory' => base_path('tests/Fixtures/Localize/Enums'),
+        ]);
     }
 
     #[Override]
     protected function tearDown(): void
     {
         File::deleteDirectory($this->langPath);
-        File::delete(app_path('Scratch.php'));
-        File::deleteDirectory(resource_path('views/scratchtest'));
+        File::deleteDirectory($this->scratchPath);
 
         parent::tearDown();
     }
@@ -48,6 +64,8 @@ class LocalizeCommandTest extends TestCase
     #[Test]
     public function it_keeps_the_locale_files_in_step_with_the_code(): void
     {
+        config($this->applicationSources);
+
         $this->artisan('monica:localize --check')->assertSuccessful();
     }
 
@@ -623,13 +641,14 @@ class LocalizeCommandTest extends TestCase
 
     private function writeScratchView(string $body): void
     {
-        File::ensureDirectoryExists(resource_path('views/scratchtest'));
-        File::put(resource_path('views/scratchtest/probe.blade.php'), $body."\n");
+        File::ensureDirectoryExists($this->scratchPath.'/views');
+        File::put($this->scratchPath.'/views/probe.blade.php', $body."\n");
     }
 
     private function writeScratch(string $body): void
     {
-        File::put(app_path('Scratch.php'), <<<PHP
+        File::ensureDirectoryExists($this->scratchPath.'/app');
+        File::put($this->scratchPath.'/app/Scratch.php', <<<PHP
         <?php
 
         class Scratch

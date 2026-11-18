@@ -512,7 +512,7 @@ class LocalizeCommand extends Command
     {
         $files = [];
 
-        foreach ([base_path('app'), base_path('resources/views')] as $directory) {
+        foreach ((array) config('monica.translation_source_directories') as $directory) {
             if (! is_dir($directory)) {
                 continue;
             }
@@ -789,7 +789,7 @@ class LocalizeCommand extends Command
     {
         $enums = [];
 
-        foreach (glob(app_path('Enums/*.php')) ?: [] as $file) {
+        foreach (glob(config('monica.translation_enum_directory').'/*.php') ?: [] as $file) {
             $class = 'App\\Enums\\'.basename($file, '.php');
 
             if (enum_exists($class) && is_a($class, Translatable::class, true)) {

@@ -245,6 +245,19 @@ return [
 
     'mcp_call_retention_in_days' => env('MONICA_MCP_CALL_RETENTION_IN_DAYS', 90),
 
+    /*
+    |--------------------------------------------------------------------------
+    | MCP rate limit
+    |--------------------------------------------------------------------------
+    |
+    | How many requests one API key or one connected assistant may send to the
+    | MCP server in a minute on the hosted version. A self hosted instance
+    | sets no limit at all.
+    |
+    */
+
+    'mcp_requests_per_minute' => (int) env('MONICA_MCP_REQUESTS_PER_MINUTE', 60),
+
     'notification_channel_failure_threshold' => env('MONICA_NOTIFICATION_CHANNEL_FAILURE_THRESHOLD', 5),
 
     'notification_proof_code_minutes' => env('MONICA_NOTIFICATION_PROOF_CODE_MINUTES', 10),
@@ -366,5 +379,19 @@ return [
             '*.test',
         ],
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Translation sources
+    |--------------------------------------------------------------------------
+    |
+    | Where monica:localize looks for the strings to translate: the folders
+    | it reads every PHP and Blade file of, and the folder holding the enums
+    | whose labels are translated. A test overrides them to read a small tree.
+    |
+    */
+    'translation_source_directories' => [base_path('app'), base_path('resources/views')],
+
+    'translation_enum_directory' => app_path('Enums'),
 
 ];

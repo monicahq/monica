@@ -44,13 +44,14 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    name: PHP ${{ matrix.php-version }} + ${{ matrix.connection }}
+    name: PHP ${{ matrix.php-version }} + ${{ matrix.connection }} + ${{ matrix.suite }}
 
     strategy:
       fail-fast: false
       matrix:
         php-version: ['8.5']
         connection: [sqlite, mysql, pgsql]
+        suite: [Actions, Unit, Feature]
 
     # Selects the database connection for every step, including the plain
     # `artisan migrate` (phpunit.xml pins DB_CONNECTION to "testing", so this
@@ -132,4 +133,4 @@ jobs:
       # therefore has to be allowed to create databases, which is why the
       # postgres step above grants CREATEDB.
       - name: Run tests
-        run: php artisan test --parallel
+        run: php artisan test --parallel --testsuite=${{ matrix.suite }}
