@@ -27,8 +27,21 @@ use Illuminate\View\View;
 
 class VaultController extends Controller
 {
-    public function index(Request $request): View
+    public function index(Request $request): View|RedirectResponse
     {
+        if (! $request->user()->shows_vault_list) {
+            $defaultVault = Vault::query()
+                ->where('account_id', $request->user()->account_id)
+                ->where('is_default', true)
+                ->first();
+
+            if ($defaultVault !== null) {
+                $request->session()->reflash();
+
+                return redirect()->route('vaults.show', $defaultVault);
+            }
+        }
+
         return view('app.vaults.index', [
             'viewModel' => new VaultsViewModel(
                 user: $request->user(),
@@ -81,7 +94,11 @@ class VaultController extends Controller
             new SetDefaultVault(user: $request->user(), vault: $vault)->execute();
         }
 
-        return redirect()->route('vaults.index')
+        $destination = $request->user()->shows_vault_list
+            ? route('vaults.index')
+            : route('vaults.show', $vault);
+
+        return redirect($destination)
             ->with('status', __('The vault is created.'))
             ->with('status_description', __('Everything you put in it stays in it.'));
     }
@@ -108,10 +125,14 @@ class VaultController extends Controller
 
     public function destroy(Request $request, Vault $vault): RedirectResponse
     {
-        new DestroyVault(
-            user: $request->user(),
-            vault: $vault,
-        )->execute();
+        try {
+            new DestroyVault(
+                user: $request->user(),
+                vault: $vault,
+            )->execute();
+        } catch (AuthorizationException $e) {
+            return back()->withErrors(['vault' => $e->getMessage()]);
+        }
 
         $anyLeft = Vault::query()
             ->where('account_id', $request->user()->account_id)

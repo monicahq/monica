@@ -62,6 +62,7 @@ use Override;
  * @property string|null $contact_list_sort
  * @property string|null $contact_list_direction
  * @property bool $uses_readable_addresses
+ * @property bool $shows_vault_list
  * @property CarbonImmutable|null $last_login_at
  * @property string|null $last_login_ip
  * @property string|null $two_factor_secret
@@ -94,6 +95,7 @@ use Override;
     'name_order',
     'number_format',
     'uses_readable_addresses',
+    'shows_vault_list',
     'last_login_at',
     'last_login_ip',
     'two_factor_secret',
@@ -117,6 +119,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
      */
     protected $attributes = [
         'uses_readable_addresses' => true,
+        'shows_vault_list' => true,
     ];
 
     use HasApiTokens;
@@ -151,6 +154,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
             'name_order' => NameOrderEnum::class,
             'number_format' => NumberFormatEnum::class,
             'uses_readable_addresses' => 'boolean',
+            'shows_vault_list' => 'boolean',
             'last_login_at' => 'datetime',
             'is_active' => 'boolean',
             'password' => 'hashed',

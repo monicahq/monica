@@ -23,6 +23,7 @@ enum UserActionEnum: string implements Translatable
     case UserPasswordUpdate = 'user_password_updated';
     case UserPreferencesUpdate = 'user_preferences_updated';
     case UserTimezoneUpdate = 'user_timezone_updated';
+    case VaultListVisibilityUpdate = 'vault_list_visibility_updated';
     case EmailConfirmation = 'email_confirmed';
     case TwoFactorEnabled = 'two_factor_enabled';
     case TwoFactorDisabled = 'two_factor_disabled';
@@ -320,6 +321,7 @@ enum UserActionEnum: string implements Translatable
             self::UserPasswordUpdate => 'Changed their password',
             self::UserPreferencesUpdate => 'Changed their preferences',
             self::UserTimezoneUpdate => 'Set their time zone to :name',
+            self::VaultListVisibilityUpdate => 'Changed whether the list of vaults is shown',
             self::EmailConfirmation => 'Confirmed their email address',
             self::TwoFactorEnabled => 'Turned two-factor authentication on',
             self::TwoFactorDisabled => 'Turned two-factor authentication off',

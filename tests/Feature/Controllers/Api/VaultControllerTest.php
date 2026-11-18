@@ -601,4 +601,19 @@ class VaultControllerTest extends TestCase
         $this->json('GET', "/api/v1/vaults/{$theirs->slug}")->assertNotFound();
         $this->json('GET', "/api/v1/vaults/{$theirs->uuid}")->assertNotFound();
     }
+
+    #[Test]
+    public function it_refuses_to_delete_the_default_vault_while_the_list_of_vaults_is_hidden(): void
+    {
+        $user = User::factory()->create(['shows_vault_list' => false]);
+        $vault = Vault::factory()->default()->create(['account_id' => $user->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('DELETE', "/api/v1/vaults/{$vault->uuid}");
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors('vault');
+        $this->assertNotSoftDeleted('vaults', ['id' => $vault->id]);
+    }
 }

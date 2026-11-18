@@ -88,6 +88,18 @@ class VaultSettingsViewModel
         return route('vaults.destroy', $this->vault);
     }
 
+    public function deletionRefusal(): ?string
+    {
+        $answer = $this->user->inspect('delete', $this->vault);
+
+        return $answer->denied() ? $answer->message() : null;
+    }
+
+    public function preferencesUrl(): string
+    {
+        return route('settings.preferences.index');
+    }
+
     public function exportAction(): string
     {
         return route('settings.accountExports.create');

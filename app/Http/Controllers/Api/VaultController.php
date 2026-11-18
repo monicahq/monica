@@ -103,10 +103,14 @@ class VaultController extends Controller
 
     public function destroy(Request $request, string $vault): Response
     {
-        new DestroyVault(
-            user: $request->user(),
-            vault: $this->find($request, $vault),
-        )->execute();
+        try {
+            new DestroyVault(
+                user: $request->user(),
+                vault: $this->find($request, $vault),
+            )->execute();
+        } catch (AuthorizationException $e) {
+            throw ValidationException::withMessages(['vault' => $e->getMessage()]);
+        }
 
         return response()->noContent(204);
     }

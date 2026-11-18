@@ -43,6 +43,11 @@ class PreferencesViewModel
         return $this->user->uses_readable_addresses;
     }
 
+    public function showsVaultList(): bool
+    {
+        return $this->user->shows_vault_list;
+    }
+
     /** @return array<int, array{value: string, label: string, hint: string, selected: bool}> */
     public function addressStyles(): array
     {

@@ -4,7 +4,7 @@ title: Delete a vault
 description: Learn what deleting a vault removes along with it, what to check first, and the steps to delete it for good.
 slug: delete-a-vault
 section: vaults
-last_updated: 2026-09-29
+last_updated: 2026-11-18
 ---
 
 # Delete a vault
@@ -54,6 +54,10 @@ Monica says **The vault is deleted** and takes you back to **Your vaults**.
 ## If it was your default vault
 
 When the vault you delete is the default, another of your vaults becomes the default, and new records go there. The confirmation says so before you choose.
+
+## If the button is greyed out
+
+When you have turned off the list of vaults, your default vault cannot be deleted, because it is where Monica takes you when you sign in. **Delete this vault** is greyed out and says so. Turn **Show the list of vaults** back on in **Preferences**, then delete the vault. @doc(account.preferences) explains the setting.
 
 ## If it was your only vault
 

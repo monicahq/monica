@@ -17,6 +17,7 @@ use App\Models\ShareLink;
 use App\Models\StructureVersion;
 use App\Models\User;
 use App\Models\Vault;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -263,5 +264,22 @@ class DestroyVaultTest extends TestCase
 
         $this->assertTrue($engine->wasRemoved($dwight));
         $this->assertTrue($engine->wasRemoved($farm));
+    }
+
+    #[Test]
+    public function it_refuses_to_delete_the_default_vault_while_the_list_of_vaults_is_hidden(): void
+    {
+        $user = User::factory()->create(['shows_vault_list' => false]);
+        $vault = Vault::factory()->default()->create([
+            'account_id' => $user->account_id,
+            'name' => 'Dunder Mifflin',
+        ]);
+
+        $this->expectException(AuthorizationException::class);
+
+        new DestroyVault(
+            user: $user,
+            vault: $vault,
+        )->execute();
     }
 }

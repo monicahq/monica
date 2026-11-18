@@ -574,6 +574,10 @@ class ApiDocsReturnFieldsTest extends TestCase
                 'timezone' => 'Europe/Lisbon',
             ])),
 
+            'me-vault-list-update' => $this->asSomebody(fn (User $user): TestResponse => $this->json('PUT', '/api/v1/me/vault-list', [
+                'shows_vault_list' => false,
+            ])),
+
             'me-contact-list-view-update' => $this->asSomebody(fn (User $user): TestResponse => $this->json('PUT', '/api/v1/me/contact-list-view', [
                 'grouping' => 'favourites',
                 'sort' => 'last-spoke',

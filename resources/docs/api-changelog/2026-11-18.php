@@ -6,6 +6,19 @@ return [
     'date' => '2026-11-18',
     'entries' => [
         [
+            'id' => 'me-vault-list',
+            'kind' => 'Added',
+            'group' => 'Your profile',
+            'title' => 'Skip the list of vaults',
+            'summary' => 'A new endpoint, PUT /me/vault-list, turns the list of vaults on or off, and GET /me returns the choice as shows_vault_list. While it is off, deleting the default vault answers 422 and deletes nothing.',
+            'why' => 'Somebody who keeps everything in one vault can go straight to it, and that vault cannot be deleted from under them while they do.',
+            'breaking' => false,
+            'changes' => [
+                ['field' => 'shows_vault_list', 'change' => 'Added', 'endpoints' => ['GET /me', 'PUT /me', 'PUT /me/contact-list-view', 'PUT /me/welcome', 'PUT /me/full-access-offer', 'PUT /me/timezone', 'PUT /me/vault-list']],
+                ['field' => '422 on the default vault while the list of vaults is off', 'change' => 'Added', 'endpoints' => ['DELETE /vaults/{vault}']],
+            ],
+        ],
+        [
             'id' => 'agent-feedback',
             'kind' => 'Added',
             'group' => 'Agent feedback',

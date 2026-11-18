@@ -67,6 +67,7 @@ use App\Http\Controllers\App\Settings\Account\PossessionTypes\PossessionTypeImpo
 use App\Http\Controllers\App\Settings\Account\PossessionTypes\PossessionTypeImportController;
 use App\Http\Controllers\App\Settings\Account\Preferences\PreferenceController;
 use App\Http\Controllers\App\Settings\Account\Preferences\TimezoneController;
+use App\Http\Controllers\App\Settings\Account\Preferences\VaultListController;
 use App\Http\Controllers\App\Settings\Account\Profile\EmailController;
 use App\Http\Controllers\App\Settings\Account\Profile\PhotoController;
 use App\Http\Controllers\App\Settings\Account\Profile\ProfileController;
@@ -711,6 +712,7 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::get('settings/account/preferences', [PreferenceController::class, 'index'])->name('settings.preferences.index');
     Route::put('settings/account/preferences', [PreferenceController::class, 'update'])->name('settings.preferences.update');
     Route::put('settings/account/preferences/timezone', [TimezoneController::class, 'update'])->name('settings.timezone.update');
+    Route::put('settings/account/preferences/vault-list', [VaultListController::class, 'update'])->name('settings.vaultList.update');
 
     Route::get('settings/account/notifications', [NotificationChannelController::class, 'index'])->name('settings.notifications.index');
     Route::put('settings/account/notifications/{channel}', [NotificationChannelController::class, 'update'])->name('settings.notifications.update');

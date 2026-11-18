@@ -101,5 +101,7 @@
     </x-panel>
   </x-page-section>
 
+  @include('app.settings.account.preferences._vault-list', ['showsVaultList' => $viewModel->showsVaultList()])
+
   @include('app.settings.account.preferences._timezone', ['timezone' => $viewModel->timezone(session('timezone_guess', false))])
 </x-settings.page>

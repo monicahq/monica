@@ -210,4 +210,84 @@ class VaultControllerTest extends TestCase
             ->assertSee('aria-disabled="true" aria-describedby="vault-ceiling"', false)
             ->assertSee(route('settings.billing.index'), false);
     }
+
+    #[Test]
+    public function it_opens_the_default_vault_in_place_of_the_list_when_the_list_is_hidden(): void
+    {
+        $user = User::factory()->create(['shows_vault_list' => false]);
+        $vault = Vault::factory()->default()->create([
+            'account_id' => $user->account_id,
+            'name' => 'Dunder Mifflin',
+        ]);
+
+        $this->actingAs($user)->get(route('vaults.index'))
+            ->assertRedirect(route('vaults.show', $vault));
+    }
+
+    #[Test]
+    public function it_opens_the_new_vault_after_creating_it_when_the_list_is_hidden(): void
+    {
+        config(['monica.free_vault_limit' => 5]);
+        Queue::fake();
+
+        $user = User::factory()->create(['shows_vault_list' => false]);
+
+        new CreateDefaultTemplate(user: $user)->handle();
+
+        Vault::factory()->default()->create([
+            'account_id' => $user->account_id,
+            'name' => 'Dunder Mifflin',
+        ]);
+
+        $response = $this->actingAs($user)->post(route('vaults.create'), [
+            'name' => 'Schrute Farms',
+            'colour' => '#4f8a49',
+        ]);
+
+        $vault = Vault::query()->where('name', 'Schrute Farms')->firstOrFail();
+
+        $response->assertRedirect(route('vaults.show', $vault));
+        $response->assertSessionHas('status');
+    }
+
+    #[Test]
+    public function it_shows_the_list_when_the_list_is_hidden_but_there_is_no_vault(): void
+    {
+        $user = User::factory()->create(['shows_vault_list' => false]);
+
+        $this->actingAs($user)->get(route('vaults.index'))
+            ->assertStatus(200)
+            ->assertSee('No vault yet');
+    }
+
+    #[Test]
+    public function it_keeps_the_message_on_the_way_to_the_default_vault(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create(['shows_vault_list' => false]);
+        Vault::factory()->default()->create(['account_id' => $user->account_id, 'name' => 'Dunder Mifflin']);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Schrute Farms']);
+
+        $this->actingAs($user)
+            ->followingRedirects()
+            ->delete(route('vaults.destroy', $vault))
+            ->assertStatus(200)
+            ->assertSee('The vault is deleted.');
+    }
+
+    #[Test]
+    public function it_refuses_to_delete_the_default_vault_while_the_list_is_hidden(): void
+    {
+        $user = User::factory()->create(['shows_vault_list' => false]);
+        $vault = Vault::factory()->default()->create(['account_id' => $user->account_id]);
+
+        $response = $this->actingAs($user)
+            ->from(route('vaults.settings.index', $vault))
+            ->delete(route('vaults.destroy', $vault));
+
+        $response->assertRedirect(route('vaults.settings.index', $vault));
+        $response->assertSessionHasErrors('vault');
+        $this->assertNotSoftDeleted('vaults', ['id' => $vault->id]);
+    }
 }

@@ -86,6 +86,7 @@ use App\Http\Controllers\Api\MeContactListViewController;
 use App\Http\Controllers\Api\MeController;
 use App\Http\Controllers\Api\MeFullAccessOfferController;
 use App\Http\Controllers\Api\MeTimezoneController;
+use App\Http\Controllers\Api\MeVaultListController;
 use App\Http\Controllers\Api\MeWelcomeController;
 use App\Http\Controllers\Api\NotificationChannelController as ApiNotificationChannelController;
 use App\Http\Controllers\Api\NotificationController as ApiNotificationController;
@@ -161,6 +162,7 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::match(['GET', 'QUERY'], 'me', [MeController::class, 'show'])->name('me');
         Route::put('me', [MeController::class, 'update'])->name('me.update');
         Route::put('me/timezone', [MeTimezoneController::class, 'update'])->name('me.timezone.update');
+        Route::put('me/vault-list', [MeVaultListController::class, 'update'])->name('me.vaultList.update');
         Route::put('me/contact-list-view', [MeContactListViewController::class, 'update'])->name('me.contactListView.update');
         Route::put('me/welcome', [MeWelcomeController::class, 'update'])->name('me.welcome.update');
         Route::put('me/full-access-offer', [MeFullAccessOfferController::class, 'update'])->name('me.fullAccessOffer.update');

@@ -254,6 +254,7 @@ return [
                 'The contacts the vault holds go with it, and so do the records of the kinds you invented. Every private link onto the vault, or onto the contacts in it, stops opening. That revocation is permanent, and bringing the vault back would not reopen them: you would decide again who may read it.',
                 'If this was the vault records land in by default, the first vault left takes that over. If no vault is left, your account has no default and holds nothing, which is the state every account starts in. The last vault of an account may be deleted.',
                 'The deletion is soft, so nothing is destroyed, but no endpoint here brings a vault back today. Treat it as final.',
+                'While you have turned off the list of vaults (shows_vault_list is false on GET /me), your default vault cannot be deleted. The call answers 422 on vault with: You cannot delete your default vault while the list of vaults is turned off. Turn the list back on in Preferences first. Nothing is deleted. Your other vaults can still be deleted.',
             ],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,

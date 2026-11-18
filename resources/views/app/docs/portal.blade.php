@@ -33,7 +33,7 @@
     >
       <x-docs.header />
 
-      <div class="flex flex-1 flex-col items-stretch lg:flex-row lg:items-start">
+      <div class="flex flex-1 flex-col lg:flex-row">
         <nav
           id="portal-pages"
           aria-label="Documentation"

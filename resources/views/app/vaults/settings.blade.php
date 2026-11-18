@@ -187,33 +187,48 @@
 
     <p>{{ __('Nothing in the application restores a vault, so this cannot be undone.') }}</p>
 
+    @if ($viewModel->deletionRefusal() !== null)
+      <p class="font-medium">
+        <span id="vault-delete-refusal">{{ $viewModel->deletionRefusal() }}</span>
+        <x-link :href="$viewModel->preferencesUrl()">{{ __('Open Preferences') }}</x-link>
+      </p>
+    @endif
+
+    <x-error :messages="$errors->get('vault')" />
+
     <x-slot:trigger>
-      <x-modal.warning
-        :title="__('Delete “:name”?', ['name' => $vault->name])"
-        :confirm="__('Delete the vault')"
-        :cancel="__('Keep it')"
-        :action="$viewModel->destroyAction()"
-      >
-        <x-slot:trigger>
-          <x-button.danger type="button" @click="open = true">
-            {{ __('Delete this vault') }}
-          </x-button.danger>
-        </x-slot:trigger>
+      @if ($viewModel->deletionRefusal() !== null)
+        <x-button.danger type="button" aria-disabled="true" aria-describedby="vault-delete-refusal">
+          {{ __('Delete this vault') }}
+        </x-button.danger>
+      @else
+        <x-modal.warning
+          :title="__('Delete “:name”?', ['name' => $vault->name])"
+          :confirm="__('Delete the vault')"
+          :cancel="__('Keep it')"
+          :action="$viewModel->destroyAction()"
+        >
+          <x-slot:trigger>
+            <x-button.danger type="button" @click="open = true">
+              {{ __('Delete this vault') }}
+            </x-button.danger>
+          </x-slot:trigger>
 
-        @if ($viewModel->deletionConsequence() !== '')
-          <p>{{ $viewModel->deletionConsequence() }}</p>
-        @endif
+          @if ($viewModel->deletionConsequence() !== '')
+            <p>{{ $viewModel->deletionConsequence() }}</p>
+          @endif
 
-        @if ($viewModel->isTheLastVault())
-          <p>{{ __('This is the only vault you have. Your account will hold nothing, and you start again from the beginning.') }}</p>
+          @if ($viewModel->isTheLastVault())
+            <p>{{ __('This is the only vault you have. Your account will hold nothing, and you start again from the beginning.') }}</p>
 
-          <p>{{ __('The next vault you make becomes the one new records go to.') }}</p>
-        @elseif ($vault->is_default)
-          <p>{{ __('This is your default vault, so another one becomes the vault new records go to.') }}</p>
-        @endif
+            <p>{{ __('The next vault you make becomes the one new records go to.') }}</p>
+          @elseif ($vault->is_default)
+            <p>{{ __('This is your default vault, so another one becomes the vault new records go to.') }}</p>
+          @endif
 
-        <p>{{ __('This cannot be undone.') }}</p>
-      </x-modal.warning>
+          <p>{{ __('This cannot be undone.') }}</p>
+        </x-modal.warning>
+      @endif
     </x-slot:trigger>
   </x-delete-section>
 </x-shell>

@@ -43,6 +43,8 @@ class DestroyVault
         if ($this->vault->account_id !== $this->user->account_id) {
             throw new ModelNotFoundException('This vault is in another account.');
         }
+
+        $this->user->authorize('delete', $this->vault);
     }
 
     private function destroy(): void
