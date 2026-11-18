@@ -245,7 +245,7 @@ class VCardMergerTest extends TestCase
     }
 
     #[Test]
-    public function it_takes_a_property_off_the_card_when_its_field_is_empty(): void
+    public function it_leaves_a_property_no_value_claims_on_the_card(): void
     {
         $user = User::factory()->create();
         $version = Structure::withFields($user, [
@@ -258,7 +258,7 @@ class VCardMergerTest extends TestCase
 
         $card = new VCardMerger()->merge($contact);
 
-        $this->assertStringNotContainsString('dwight@dundermifflin.test', $card);
+        $this->assertStringContainsString('dwight@dundermifflin.test', $card);
     }
 
     #[Test]
@@ -410,6 +410,27 @@ class VCardMergerTest extends TestCase
 
         $this->assertStringContainsString('+15705550000', $card);
         $this->assertStringNotContainsString('+15705559999', $card);
+    }
+
+    #[Test]
+    public function it_withholds_a_sensitive_value_a_card_stored_by_another_key_carries(): void
+    {
+        $user = User::factory()->create();
+        $version = Structure::withFields($user, [
+            ['type' => FieldTypeEnum::Phone, 'label' => 'Private line', 'is_sensitive' => true],
+            ['type' => FieldTypeEnum::Phone, 'label' => 'Mobile'],
+        ]);
+        $contact = $this->contact([
+            'structure_version_id' => $version->id,
+            'vcard' => "BEGIN:VCARD\r\nVERSION:4.0\r\nUID:dwight\r\nFN:Dwight Schrute\r\nTEL:+15705559999\r\nTEL:+15705551212\r\nEND:VCARD\r\n",
+        ]);
+        $this->value($contact, $version, 0, ['value_string' => '+15705559999']);
+        $this->value($contact, $version, 1, ['value_string' => '+15705551212']);
+
+        $card = new VCardMerger()->merge($contact);
+
+        $this->assertStringNotContainsString('+15705559999', $card);
+        $this->assertSame(1, substr_count($card, '+15705551212'));
     }
 
     #[Test]

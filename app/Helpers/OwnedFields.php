@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Dav;
+namespace App\Helpers;
 
 use App\Enums\FieldTypeEnum;
 use App\Enums\ValueListEnum;

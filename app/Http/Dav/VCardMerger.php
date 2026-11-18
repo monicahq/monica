@@ -8,6 +8,8 @@ use App\Enums\AddressLabelEnum;
 use App\Enums\ContactNameKindEnum;
 use App\Enums\EmailLabelEnum;
 use App\Enums\PhoneLabelEnum;
+use App\Helpers\OwnedFields;
+use App\Helpers\VCardFieldMatching;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
@@ -249,18 +251,18 @@ class VCardMerger
 
     private function writeFields(VCard $card, Contact $contact): void
     {
-        $owned = new OwnedFields($contact, preloaded: $this->preloaded);
+        $matching = new VCardFieldMatching($contact, $this->reachesSensitiveFields, $this->preloaded);
         $values = $this->valuesOf($contact);
 
-        foreach ($owned->properties() as $property) {
-            $onTheCard = array_values(iterator_to_array($card->select($property), false));
-            $slot = 0;
+        foreach ($matching->properties() as $property) {
+            $matched = $matching->match($property, array_values(iterator_to_array($card->select($property), false)), $values);
 
-            foreach ($owned->for($property) as $field) {
-                foreach ($this->slotsOf($field, $values) as $value) {
-                    $this->writeSlot($card, $property, $field, $value, $onTheCard[$slot] ?? null);
-                    $slot++;
-                }
+            foreach ($matched['withheld'] as $line) {
+                $card->remove($line);
+            }
+
+            foreach ($matched['pairs'] as $pair) {
+                $this->writeSlot($card, $property, $pair['field'], $pair['value'], $pair['line']);
             }
         }
     }
@@ -299,25 +301,9 @@ class VCardMerger
         }
     }
 
-    /** @param  Collection<int, FieldValue>  $values */
-    private function slotsOf(Field $field, Collection $values): array
-    {
-        $held = $values->where('field_id', $field->id)->values();
-
-        if ($held->isEmpty()) {
-            return [null];
-        }
-
-        return $held->all();
-    }
-
     private function writeSlot(VCard $card, string $property, Field $field, ?FieldValue $value, ?Property $onTheCard): void
     {
-        if ($field->is_sensitive && ! $this->reachesSensitiveFields) {
-            return;
-        }
-
-        $written = $value === null ? null : $this->valueOf($field, $value);
+        $written = $value === null ? null : VCardFieldMatching::cardFormOf($field, $value);
 
         if ($written === null) {
             if ($onTheCard !== null) {
@@ -442,48 +428,6 @@ class VCardMerger
         }
 
         return 'item'.(max($taken) + 1);
-    }
-
-    /** @return string|array<int, string>|null */
-    private function valueOf(Field $field, FieldValue $value): string|array|null
-    {
-        return match (OwnedFields::propertyFor($field)) {
-            'ADR' => $this->address($value),
-            'BDAY', 'X-ABDATE' => $this->recurringDate($value),
-            default => $this->text($value->value_string),
-        };
-    }
-
-    /** @return array<int, string>|null */
-    private function address(FieldValue $value): ?array
-    {
-        $parts = $value->value_json;
-
-        if (! is_array($parts)) {
-            return null;
-        }
-
-        $address = array_map(
-            fn (string $part): string => (string) ($parts[$part] ?? ''),
-            FieldValue::ADDRESS_PARTS,
-        );
-
-        return implode('', $address) === '' ? null : $address;
-    }
-
-    private function recurringDate(FieldValue $value): ?string
-    {
-        $date = $value->value_date;
-
-        if ($date === null || $value->month_is_unknown) {
-            return null;
-        }
-
-        if ($value->year_is_unknown) {
-            return $date->format('--md');
-        }
-
-        return $date->format('Y-m-d');
     }
 
     private function text(?string $value): ?string

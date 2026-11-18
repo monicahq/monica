@@ -9,7 +9,8 @@ use App\Exceptions\NotEnoughRepetitions;
 use App\Exceptions\TooManyRepetitions;
 use App\Exceptions\ValueListItemIsStopped;
 use App\Helpers\FlagState;
-use App\Http\Dav\OwnedFields;
+use App\Helpers\OwnedFields;
+use App\Helpers\VCardFieldMatching;
 use App\Http\Dav\VCardMerger;
 use App\Http\Dav\VCardReader;
 use App\Models\Contact;
@@ -244,40 +245,25 @@ class ImportVCard
 
     private function writeTheFields(VCardReader $reader, Contact $contact): void
     {
-        $owned = new OwnedFields($contact);
+        $matching = new VCardFieldMatching($contact, $this->reachesSensitiveFields);
+        $values = $contact->fieldValues()
+            ->attached()
+            ->orderByRaw('field_value_row_id is null desc')
+            ->orderBy('field_value_row_id')
+            ->get();
 
-        foreach ($owned->properties() as $property) {
-            $onTheCard = $reader->propertiesOf($property);
-            $index = 0;
+        foreach ($matching->properties() as $property) {
+            $matched = $matching->match($property, $reader->propertiesOf($property), $values, fillsEmptyFields: $this->contact === null);
 
-            foreach ($owned->for($property) as $field) {
-                $held = $this->valuesOf($contact, $field);
-                $growable = $field->parent_field_id !== null;
-
-                $slots = $growable
-                    ? max($held->count(), count($onTheCard) - $index)
-                    : max(1, $held->count());
-
-                for ($slot = 0; $slot < $slots; $slot++) {
-                    $this->writeSlot(
-                        $contact,
-                        $field,
-                        $held->get($slot),
-                        $onTheCard[$index] ?? null,
-                        $growable,
-                    );
-
-                    $index++;
-                }
+            foreach ($matched['pairs'] as $pair) {
+                $this->writeSlot($contact, $pair['field'], $pair['value'], $pair['line']);
             }
         }
     }
 
-    private function writeSlot(Contact $contact, Field $field, ?FieldValue $held, ?Property $onTheCard, bool $growable): void
+    private function writeSlot(Contact $contact, Field $field, ?FieldValue $held, ?Property $onTheCard): void
     {
-        if ($field->is_sensitive && ! $this->reachesSensitiveFields) {
-            return;
-        }
+        $growable = $field->parent_field_id !== null;
 
         if ($onTheCard === null) {
             $this->removeTheValue($held);

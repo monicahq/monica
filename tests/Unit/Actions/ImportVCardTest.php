@@ -103,6 +103,42 @@ class ImportVCardTest extends TestCase
     }
 
     #[Test]
+    public function it_brings_an_unchanged_card_back_to_the_fields_it_was_written_from(): void
+    {
+        $version = Structure::asTheDefaultOf($this->user, $this->vault, [
+            ['type' => FieldTypeEnum::Url, 'label' => 'Website'],
+            ['type' => FieldTypeEnum::Url, 'label' => 'LinkedIn'],
+        ]);
+        $contact = new ImportVCard(user: $this->user, vault: $this->vault, card: $this->cardCarrying(''))->execute();
+        $this->write($contact, $version, 1, ['value_string' => 'https://linkedin.test/jim']);
+
+        new ImportVCard(user: $this->user, vault: $this->vault, card: new VCardMerger()->merge($contact->refresh()), contact: $contact)->execute();
+
+        $this->assertSame(['https://linkedin.test/jim'], $this->writtenIn($contact, 'field-2')->pluck('value_string')->all());
+        $this->assertCount(0, $this->writtenIn($contact, 'field-1'));
+    }
+
+    #[Test]
+    public function it_keeps_every_value_when_a_key_without_sensitive_fields_saves_an_unchanged_card(): void
+    {
+        Structure::asTheDefaultOf($this->user, $this->vault, [
+            ['type' => FieldTypeEnum::Phone, 'label' => 'Private line', 'is_sensitive' => true],
+            ['type' => FieldTypeEnum::Phone, 'label' => 'Mobile'],
+        ]);
+        $contact = new ImportVCard(
+            user: $this->user,
+            vault: $this->vault,
+            card: $this->cardCarrying("TEL:+15705559999\r\nTEL:+15705551212\r\n"),
+            reachesSensitiveFields: true,
+        )->execute();
+
+        new ImportVCard(user: $this->user, vault: $this->vault, card: new VCardMerger()->merge($contact->refresh()), contact: $contact)->execute();
+
+        $this->assertSame(['+15705559999'], $this->writtenIn($contact, 'field-1')->pluck('value_string')->all());
+        $this->assertSame(['+15705551212'], $this->writtenIn($contact, 'field-2')->pluck('value_string')->all());
+    }
+
+    #[Test]
     public function it_writes_a_date_that_arrives_without_a_year_as_one_whose_year_is_unknown(): void
     {
         $version = Structure::asTheDefaultOf($this->user, $this->vault, [
