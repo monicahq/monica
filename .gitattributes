@@ -2,10 +2,11 @@
 *.vcf -text eol=crlf
 
 *.blade.php diff=html
-*.css diff=css
+*.css diff=css linguist-vendored
 *.html diff=html
 *.md diff=markdown
 *.php diff=php
+*.js linguist-vendored
 
 /.claude export-ignore
 /.github export-ignore

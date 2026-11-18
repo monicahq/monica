@@ -1,0 +1,107 @@
+name: Bug report
+description: Create a report to help us improve
+labels: ['bug']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### 👍 Thank you for your bug report — we love squashing them!
+        Please note this is a **free and open-source** project. We take our own time to help you, so please, be patient.
+  - type: checkboxes
+    id: check
+    attributes:
+      label: '⚠️ This issue respects the following points: ⚠️'
+      description: All conditions are **required**. Your issue can be closed if these are checked incorrectly.
+      options:
+        - label: This is a **bug**, not a question or a configuration/webserver/proxy issue.
+          required: true
+        - label: This issue is **not** already reported on [Github](https://github.com/monicahq/monica/issues?q=is%3Aopen+is%3Aissue+label%3Abug) _(I've searched it)_.
+          required: true
+        - label: I agree to follow Monica's [Code of Conduct](https://github.com/monicahq/monica/blob/main/CODE_OF_CONDUCT.md).
+          required: true
+  - type: input
+    id: description
+    attributes:
+      label: Bug description
+      description: |
+        Please describe the bug you are experiencing.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: |
+        How do you trigger this bug? Please walk us through it step by step.
+      value: |
+        1.
+        2.
+        3.
+        ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: Describe what you expected to happen instead.
+    validations:
+      required: true
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Environment
+      description: Environment or version where the bug happens.
+      options:
+        - my.monicahq.com (monica v6)
+        - app.monicahq.com (monica v4)
+        - Your own self-hosted instance
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version of Monica
+      description: |
+        Monica's semver version or commit number (for self-hosted instances).
+  - type: dropdown
+    id: install-method
+    attributes:
+      label: Installation method
+      description: |
+        Select installation method you've used.
+        _Describe the method in the "Additional info" section if you chose "Other"._
+      options:
+        - Manual installation with Archive
+        - Docker image
+        - Other
+  - type: dropdown
+    id: webserver
+    attributes:
+      label: Web server
+      description: |
+        Select Webserver serving Monica Server.
+        _Describe in the "Additional info" section if you chose "Other"._
+      options:
+        - Apache
+        - Nginx
+        - Other
+  - type: dropdown
+    id: database
+    attributes:
+      label: Database engine version
+      description: |
+        Select Database engine serving Monica Server.
+        _Describe in the "Additional info" section if you chose "Other"._
+      options:
+        - MySQL
+        - MariaDB
+        - PostgreSQL
+        - SQlite
+        - Other
+  - type: textarea
+    id: additional-info
+    attributes:
+      label: Additional info
+      description: |
+        Please add any other information related to the bug: screenshots, links, any context that can speed-up resolution.

@@ -18,8 +18,9 @@
 <p align="center">
   <img src="https://img.shields.io/github/stars/monicahq/monica?style=flat-square&color=111111&label=stars" alt="Stars">
   <img src="https://img.shields.io/github/v/release/monicahq/monica?style=flat-square&color=111111&label=release" alt="Release">
+  <img src="https://img.shields.io/docker/pulls/library/monica?style=flat-square&color=111111&label=docker%20pulls" alt="Docker pulls">
   <img src="https://img.shields.io/badge/works%20with-any%20agent-blue" alt="Works with 20 agents">
-  <img src="https://img.shields.io/badge/LICENSE-GPL-blue" alt="GPL license">
+  <img src="https://img.shields.io/badge/LICENSE-AGPL-blue" alt="AGPL license">
 </p>
 
 <p align="center">
