@@ -156,6 +156,28 @@ class HandleStripeEventTest extends TestCase
     }
 
     #[Test]
+    public function it_closes_the_subscription_checkouts_left_open_once_the_purchase_settles(): void
+    {
+        $michael = User::factory()->create();
+        $michael->account->forceFill(['stripe_id' => 'cus_dundermifflin'])->save();
+        StripeOrder::factory()->create(['account_id' => $michael->account_id, 'stripe_id' => 'cs_test_scranton']);
+        $this->stripe->respondTo('GET checkout/sessions', [
+            'object' => 'list',
+            'url' => '/v1/checkout/sessions',
+            'has_more' => false,
+            'data' => [
+                [...$this->stripeCheckoutSession(id: 'cs_monthly_tab'), 'mode' => 'subscription'],
+                [...$this->stripeCheckoutSession(id: 'cs_other_purchase'), 'mode' => 'payment'],
+            ],
+        ]);
+
+        new HandleStripeEvent()->handle(new WebhookReceived($this->checkoutEvent()));
+
+        $this->assertTrue($this->stripe->sent('checkout/sessions/cs_monthly_tab/expire'));
+        $this->assertFalse($this->stripe->sent('checkout/sessions/cs_other_purchase/expire'));
+    }
+
+    #[Test]
     public function it_settles_the_order_when_a_delayed_payment_succeeds(): void
     {
         $oscar = User::factory()->create();
@@ -233,7 +255,6 @@ class HandleStripeEventTest extends TestCase
 
     #[Test]
     #[TestWith(['lost'])]
-    #[TestWith(['warning_closed'])]
     #[TestWith(['prevented'])]
     public function it_leaves_access_off_for_any_other_outcome(string $status): void
     {
@@ -469,6 +490,18 @@ class HandleStripeEventTest extends TestCase
     }
 
     #[Test]
+    public function it_leaves_access_alone_for_an_inquiry_that_moves_no_money(): void
+    {
+        $michael = $this->somebodyWhoBought();
+
+        new HandleStripeEvent()->handle(new WebhookReceived($this->disputeCreatedEvent('warning_needs_response')));
+
+        $this->assertTrue($michael->account->fresh()->hasFullAccess());
+        $this->assertDatabaseHas('stripe_orders', ['account_id' => $michael->account_id, 'stripe_status' => StripeOrder::PAID]);
+        Notification::assertNothingSent();
+    }
+
+    #[Test]
     public function it_leaves_access_alone_when_only_part_of_the_money_was_given_back(): void
     {
         $michael = $this->somebodyWhoBought();
@@ -493,6 +526,21 @@ class HandleStripeEventTest extends TestCase
         new HandleStripeEvent()->handle(new WebhookReceived($payload));
 
         $this->assertTrue($michael->account->fresh()->hasFullAccess());
+        Notification::assertNothingSent();
+    }
+
+    #[Test]
+    public function it_opens_nothing_when_the_refund_arrives_before_the_checkout_completes(): void
+    {
+        $michael = User::factory()->create();
+        $michael->account->forceFill(['stripe_id' => 'cus_dundermifflin'])->save();
+        $order = StripeOrder::factory()->create(['account_id' => $michael->account_id, 'stripe_id' => 'cs_test_scranton']);
+
+        new HandleStripeEvent()->handle(new WebhookReceived($this->refundEvent()));
+        new HandleStripeEvent()->handle(new WebhookReceived($this->checkoutEvent(id: 'evt_completion')));
+
+        $this->assertDatabaseHas('stripe_orders', ['id' => $order->id, 'stripe_status' => StripeOrder::REFUNDED]);
+        $this->assertFalse($michael->account->fresh()->hasFullAccess());
         Notification::assertNothingSent();
     }
 
@@ -685,6 +733,35 @@ class HandleStripeEventTest extends TestCase
     }
 
     #[Test]
+    public function it_cancels_and_refunds_a_subscription_paid_after_lifetime_access(): void
+    {
+        $michael = $this->somebodyWhoBought();
+        $subscription = $this->subscribeAccount($michael->account);
+        $invoice = $this->paidInvoicePayload(subscriptionId: 'sub_dundermifflin');
+        $this->stripe->respondTo('subscriptions*', [...$this->stripeSubscription(), 'latest_invoice' => $invoice]);
+        $this->stripe->respondTo('invoice_payments*', [
+            'object' => 'list',
+            'url' => '/v1/invoice_payments',
+            'has_more' => false,
+            'data' => [[
+                'id' => 'inpay_dundermifflin',
+                'object' => 'invoice_payment',
+                'invoice' => $invoice['id'],
+                'payment' => ['type' => 'payment_intent', 'payment_intent' => 'pi_second_tab'],
+            ]],
+        ]);
+        $this->stripe->respondTo('refunds*', ['id' => 're_dundermifflin', 'object' => 'refund']);
+
+        new HandleStripeEvent()->handle(new WebhookHandled($this->subscriptionCreatedEvent('sub_dundermifflin')));
+
+        $this->assertTrue($subscription->fresh()->ended());
+        $this->assertSame('pi_second_tab', $this->stripe->lastParams('refunds*')['payment_intent']);
+        $this->assertDatabaseHas('payments', ['stripe_id' => $invoice['id'], 'stripe_subscription_id' => 'sub_dundermifflin']);
+        $this->assertSame(AccessKindEnum::Lifetime, $michael->account->fresh()->accessKind());
+        Notification::assertNothingSent();
+    }
+
+    #[Test]
     public function it_does_nothing_for_a_created_subscription_it_has_no_row_for(): void
     {
         User::factory()->create();
@@ -860,7 +937,7 @@ class HandleStripeEventTest extends TestCase
     }
 
     /** @return array<string, mixed> */
-    private function disputeCreatedEvent(): array
+    private function disputeCreatedEvent(string $status = 'needs_response'): array
     {
         return [
             'id' => 'evt_dundermifflin',
@@ -870,6 +947,7 @@ class HandleStripeEventTest extends TestCase
                 'object' => 'dispute',
                 'charge' => 'ch_dundermifflin',
                 'amount' => 19900,
+                'status' => $status,
             ]],
         ];
     }

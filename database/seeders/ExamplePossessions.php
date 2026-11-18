@@ -139,7 +139,7 @@ class ExamplePossessions
                 'description' => 'Rachel borrowed it and has not given it back.',
                 'type' => PossessionTypeEnum::Books,
                 'location' => null,
-                'status' => PossessionStatusEnum::Lent,
+                'status' => PossessionStatusEnum::Owned,
                 'quantity' => 1,
                 'featured' => false,
                 'declared_value' => null,

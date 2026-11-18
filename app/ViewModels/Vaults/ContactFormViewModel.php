@@ -80,12 +80,21 @@ class ContactFormViewModel
         return new ContactNameEditorBlock;
     }
 
-    /** @return array<int, array{id: int, name: string}> */
+    /**
+     * The templates a contact can start from. The template the vault uses is offered at the version
+     * the vault names, which is not always its latest, and every other one at its latest version.
+     *
+     * @return array<int, array{id: int, name: string}>
+     */
     public function templates(): array
     {
+        $vaultVersion = $this->vaultStructureVersion();
+
         return $this->contactTemplates()
             ->map(fn (Template $template): array => [
-                'id' => (int) $template->structure->published_version_id,
+                'id' => $vaultVersion?->structure_id === $template->structure->id
+                    ? $vaultVersion->id
+                    : (int) $template->structure->published_version_id,
                 'name' => $template->name,
             ])
             ->all();
@@ -155,6 +164,15 @@ class ContactFormViewModel
                 ->value('structure_version_id');
 
             return $version === null ? '' : (string) $version;
+        });
+    }
+
+    private function vaultStructureVersion(): ?StructureVersion
+    {
+        return once(function (): ?StructureVersion {
+            $id = $this->defaultStructureVersionId();
+
+            return $id === '' ? null : StructureVersion::query()->find((int) $id);
         });
     }
 

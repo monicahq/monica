@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\MovePossession;
+use App\Enums\PossessionStatusEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Location;
@@ -66,6 +67,30 @@ class MovePossessionTest extends TestCase
             callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::PossessionMove
                 && $job->parameters === ['name' => 'Beet press', 'location' => 'Cellar'],
         );
+    }
+
+    #[Test]
+    public function it_refuses_to_move_a_possession_that_was_stolen(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $barn = Location::factory()->create(['account_id' => $user->account_id]);
+        $cellar = Location::factory()->create(['account_id' => $user->account_id]);
+        $possession = Possession::factory()->create(['vault_id' => $vault->id, 'status' => PossessionStatusEnum::Stolen, 'current_location_id' => $barn->id]);
+
+        try {
+            new MovePossession(
+                user: $user,
+                possession: $possession,
+                location: $cellar,
+                movedOn: CarbonImmutable::parse('2024-06-04'),
+            )->execute();
+            $this->fail('A stolen possession was moved.');
+        } catch (ValidationException $exception) {
+            $this->assertArrayHasKey('location_id', $exception->errors());
+        }
+
+        $this->assertEquals($barn->id, $possession->refresh()->current_location_id);
     }
 
     #[Test]

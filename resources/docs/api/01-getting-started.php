@@ -214,7 +214,7 @@ return [
                 [
                     'status' => 409,
                     'name' => 'Conflict',
-                    'when' => 'Merging two contacts, when either of them changed after the preview was read. Nothing is written. Read the preview again and send its new fingerprint.',
+                    'when' => 'Merging two contacts, when either of them changed after the preview was read: read the preview again and send its new fingerprint. Previewing or merging two contacts while an import writes into their vault: wait until the import has finished. Nothing is written either way.',
                     'body' => 'A message.',
                 ],
                 [

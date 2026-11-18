@@ -8,6 +8,7 @@ use App\Actions\CreatePossession;
 use App\Actions\DestroyPossession;
 use App\Actions\UpdatePossession;
 use App\Enums\CurrencyEnum;
+use App\Enums\PossessionStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Location;
 use App\Models\Possession;
@@ -52,6 +53,7 @@ class PossessionController extends Controller
             'type' => ['required', 'uuid'],
             'values' => ['nullable', 'array'],
             'location' => ['nullable', 'uuid'],
+            'status' => ['nullable', Rule::enum(PossessionStatusEnum::class)],
             'declared_value' => ['nullable', 'numeric'],
             'declared_value_currency' => ['nullable', Rule::enum(CurrencyEnum::class)],
             'tags' => ['nullable', 'array'],
@@ -85,6 +87,7 @@ class PossessionController extends Controller
             name: $validated['name'],
             description: $validated['description'] ?? null,
             location: $location,
+            status: PossessionStatusEnum::tryFrom($validated['status'] ?? '') ?? PossessionStatusEnum::Owned,
             isFeatured: $request->boolean('is_featured'),
             declaredValue: isset($validated['declared_value']) ? (string) $validated['declared_value'] : null,
             declaredValueCurrency: CurrencyEnum::tryFrom($validated['declared_value_currency'] ?? ''),
@@ -125,6 +128,7 @@ class PossessionController extends Controller
             'description' => ['nullable', 'string', 'max:2000'],
             'values' => ['nullable', 'array'],
             'location' => ['nullable', 'uuid'],
+            'status' => ['nullable', Rule::enum(PossessionStatusEnum::class)],
             'declared_value' => ['nullable', 'numeric'],
             'declared_value_currency' => ['nullable', Rule::enum(CurrencyEnum::class)],
             'tags' => ['nullable', 'array'],
@@ -149,7 +153,7 @@ class PossessionController extends Controller
             description: $validated['description'] ?? null,
             location: $location,
             identifier: $possession->identifier,
-            status: $possession->status,
+            status: PossessionStatusEnum::tryFrom($validated['status'] ?? '') ?? $possession->status,
             quantity: $possession->quantity,
             isFeatured: $request->boolean('is_featured'),
             declaredValue: isset($validated['declared_value']) ? (string) $validated['declared_value'] : null,

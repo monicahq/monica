@@ -98,6 +98,21 @@ class PossessionLoanAttributes
         }
     }
 
+    public static function refuseAnOpenLoanOfAPossessionNoLongerHeld(Possession $possession, PossessionLoanStatusEnum $status): void
+    {
+        if ($status === PossessionLoanStatusEnum::Returned) {
+            return;
+        }
+
+        if (! $possession->status->isNoLongerHeld()) {
+            return;
+        }
+
+        throw ValidationException::withMessages([
+            'status' => __('This possession is no longer in your hands, so only a returned loan can be recorded for it.'),
+        ]);
+    }
+
     /**
      * The possession row must be locked by the caller, so two loans sent at once cannot both find
      * none active.

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\ViewModels\Vaults;
 
 use App\Enums\CurrencyEnum;
+use App\Enums\PossessionStatusEnum;
 use App\Enums\VaultColourEnum;
 use App\Helpers\AvailableLocales;
 use App\Helpers\LocaleCollation;
@@ -119,6 +120,19 @@ class PossessionFormViewModel
     public function description(): string
     {
         return (string) old('description', $this->possession->description ?? '');
+    }
+
+    /** @return array<string, string> */
+    public function statuses(): array
+    {
+        return collect(PossessionStatusEnum::cases())
+            ->mapWithKeys(fn (PossessionStatusEnum $status): array => [$status->value => __($status->label())])
+            ->all();
+    }
+
+    public function chosenStatus(): string
+    {
+        return (string) old('status', $this->possession->status->value ?? PossessionStatusEnum::Owned->value);
     }
 
     /** @return list<array{id: int, uuid: string, name: string, colour: string, colourName: string, fieldCount: string, fieldsUrl: string}> */

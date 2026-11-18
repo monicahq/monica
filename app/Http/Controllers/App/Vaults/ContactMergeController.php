@@ -10,6 +10,7 @@ use App\Exceptions\CannotAbsorbTheMeContact;
 use App\Exceptions\CannotMergeAContactWithItself;
 use App\Exceptions\ContactChangedSinceThePreview;
 use App\Exceptions\ContactMergeCannotBeUndone;
+use App\Exceptions\VaultIsBeingImportedInto;
 use App\Helpers\PageSize;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
@@ -37,18 +38,28 @@ class ContactMergeController extends Controller
         ]);
     }
 
-    public function show(Request $request, Vault $vault, Contact $contact, Contact $other): View
+    public function show(Request $request, Vault $vault, Contact $contact, Contact $other): View|RedirectResponse
     {
         abort_unless($contact->isReachableThrough($request->user(), $vault), 404);
         abort_unless($other->isReachableThrough($request->user(), $vault), 404);
 
+        $viewModel = new ContactMergeViewModel(
+            user: $request->user(),
+            vault: $vault,
+            contact: $contact,
+            other: $other,
+        );
+
+        try {
+            $viewModel->preview();
+        } catch (VaultIsBeingImportedInto $e) {
+            return redirect()
+                ->route('contacts.show', ['vault' => $vault, 'contact' => $contact])
+                ->with('error', $e->getMessage());
+        }
+
         return view('app.vaults.contacts.merge.show', [
-            'viewModel' => new ContactMergeViewModel(
-                user: $request->user(),
-                vault: $vault,
-                contact: $contact,
-                other: $other,
-            ),
+            'viewModel' => $viewModel,
         ]);
     }
 
@@ -83,6 +94,10 @@ class ContactMergeController extends Controller
             return redirect()
                 ->route('contacts.merge.new', ['vault' => $vault, 'contact' => $contact])
                 ->withErrors(['other' => $e->getMessage()]);
+        } catch (VaultIsBeingImportedInto $e) {
+            return redirect()
+                ->route('contacts.show', ['vault' => $vault, 'contact' => $contact])
+                ->with('error', $e->getMessage());
         }
 
         return redirect()

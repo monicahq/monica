@@ -117,7 +117,7 @@ return [
             'description' => 'Move a possession to another location of the account on a given day.',
             'body' => [
                 'The stay where it is now closes on that day, and a new stay opens at the location on the same day. The possession then reports that location as where it is. The change is written to the account log.',
-                'The location it is already in answers 422 on location_id ("It is already in Barn."). A day before the current stay began answers 422 on moved_on ("The current stay began on 8 November 2019. Date the move after that, or correct the current stay instead.").',
+                'A possession that is sold, given away, thrown away, lost or stolen answers 422 on location_id ("This possession is no longer in your hands, so it cannot be moved."). The location it is already in answers 422 on location_id ("It is already in Barn."). A day before the current stay began answers 422 on moved_on ("The current stay began on 8 November 2019. Date the move after that, or correct the current stay instead.").',
             ],
             'rateLimit' => $rateLimit,
             'pathParams' => [$vaultParam, $possessionParam],

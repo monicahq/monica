@@ -177,6 +177,35 @@ class MoveRecordToStructureVersionTest extends TestCase
     }
 
     #[Test]
+    public function it_keeps_a_value_whose_field_the_new_version_copied_untouched(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $jim = $this->contactOf($user);
+        $birthdayBefore = Field::factory()->recurringDate()->create(['account_id' => $user->account_id, 'key' => 'birthday']);
+        $to = $this->publishedContactVersion($user);
+        $birthdayAfter = $this->fieldCarriedBy($to);
+        $birthdayAfter->sectionVersion->update(['section_id' => $birthdayBefore->sectionVersion->section_id, 'version_number' => 2]);
+        $birthdayAfter->update(['key' => 'birthday', 'type' => FieldTypeEnum::RecurringDate]);
+        $value = FieldValue::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $jim->vault_id,
+            'valuable_type' => Contact::class,
+            'valuable_id' => $jim->id,
+            'field_id' => $birthdayBefore->id,
+            'value_string' => null,
+            'value_date' => '1978-10-01',
+        ]);
+        $reminder = Reminder::factory()->for($value, 'fieldValue')->create();
+
+        new MoveRecordToStructureVersion(user: $user, record: $jim, structureVersion: $to)->execute();
+
+        $this->assertDatabaseHas('field_values', ['id' => $value->id, 'field_id' => $birthdayAfter->id, 'is_detached' => false]);
+        $this->assertDatabaseHas('reminders', ['id' => $reminder->id, 'field_id' => $birthdayAfter->id, 'is_active' => true]);
+    }
+
+    #[Test]
     public function it_stops_the_reminder_on_a_date_the_new_structure_does_not_carry(): void
     {
         Queue::fake();

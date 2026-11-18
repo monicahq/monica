@@ -12,7 +12,9 @@ use App\Enums\VersionStatusEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
 use App\Models\Entity;
+use App\Models\Field;
 use App\Models\FieldValue;
+use App\Models\FieldValueRow;
 use App\Models\Reminder;
 use App\Models\StructureVersion;
 use App\Models\User;
@@ -22,6 +24,11 @@ use InvalidArgumentException;
 
 /**
  * Put a record on another structure.
+ *
+ * A section copied into a new version gets new fields, so a field nobody touched has another id
+ * there. Before anything is set aside, every value, repeated row and reminder of the record follows
+ * its field to the field of the new version with the same section, key and type. Only what has no
+ * such field is set aside, and a field put back later brings its values back the same way.
  */
 class MoveRecordToStructureVersion
 {
@@ -96,6 +103,7 @@ class MoveRecordToStructureVersion
 
             StructureVersion::query()->whereKey($this->structureVersion->id)->increment('record_count');
 
+            $this->followTheFieldsIntoTheNewVersion();
             $this->setAsideWhatTheNewStructureDoesNotCarry();
             $this->bringBackWhatItCarriesAgain();
         });
@@ -108,6 +116,54 @@ class MoveRecordToStructureVersion
             ->load('sectionVersion.fields')
             ->flatMap(fn ($row): array => $row->sectionVersion->fields->pluck('id')->all())
             ->all();
+    }
+
+    private function followTheFieldsIntoTheNewVersion(): void
+    {
+        $values = FieldValue::query()
+            ->where('valuable_type', $this->record->getMorphClass())
+            ->where('valuable_id', $this->record->id);
+
+        $rows = FieldValueRow::query()
+            ->where('valuable_type', $this->record->getMorphClass())
+            ->where('valuable_id', $this->record->id);
+
+        $carried = $this->fieldsCarriedNow();
+
+        $heldIds = $values->clone()->pluck('field_id')
+            ->merge($rows->clone()->pluck('field_id'))
+            ->unique()
+            ->diff($carried);
+
+        if ($heldIds->isEmpty()) {
+            return;
+        }
+
+        $counterparts = Field::query()
+            ->whereIn('id', $carried)
+            ->with('sectionVersion')
+            ->get()
+            ->keyBy(fn (Field $field): string => "{$field->sectionVersion->section_id}|{$field->key}|{$field->type->value}");
+
+        Field::query()
+            ->whereIn('id', $heldIds)
+            ->with('sectionVersion')
+            ->get()
+            ->each(function (Field $held) use ($counterparts, $values, $rows): void {
+                $counterpart = $counterparts->get("{$held->sectionVersion->section_id}|{$held->key}|{$held->type->value}");
+
+                if (! $counterpart instanceof Field) {
+                    return;
+                }
+
+                Reminder::query()
+                    ->whereIn('field_value_id', $values->clone()->where('field_id', $held->id)->select('id'))
+                    ->where('field_id', $held->id)
+                    ->update(['field_id' => $counterpart->id]);
+
+                $values->clone()->where('field_id', $held->id)->update(['field_id' => $counterpart->id]);
+                $rows->clone()->where('field_id', $held->id)->update(['field_id' => $counterpart->id]);
+            });
     }
 
     private function setAsideWhatTheNewStructureDoesNotCarry(): void

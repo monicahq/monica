@@ -54,6 +54,12 @@ class MovePossession
         if ($this->location->account_id !== $this->user->account_id) {
             throw new ModelNotFoundException('This location is in another account.');
         }
+
+        if ($this->possession->status->isNoLongerHeld()) {
+            throw ValidationException::withMessages([
+                'location_id' => __('This possession is no longer in your hands, so it cannot be moved.'),
+            ]);
+        }
     }
 
     /**

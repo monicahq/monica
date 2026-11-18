@@ -6,6 +6,7 @@ namespace Tests\Unit\Actions;
 
 use App\Actions\MergeContacts;
 use App\Actions\PreviewContactMerge;
+use App\Enums\AccountImportStatusEnum;
 use App\Enums\ContactNameKindEnum;
 use App\Enums\DatePrecisionEnum;
 use App\Enums\ReminderInactiveReasonEnum;
@@ -14,7 +15,9 @@ use App\Enums\UserActionEnum;
 use App\Enums\VersionStatusEnum;
 use App\Exceptions\CannotAbsorbTheMeContact;
 use App\Exceptions\ContactChangedSinceThePreview;
+use App\Exceptions\VaultIsBeingImportedInto;
 use App\Jobs\LogUserAction;
+use App\Models\AccountImport;
 use App\Models\Contact;
 use App\Models\ContactMerge;
 use App\Models\ContactNameRepresentation;
@@ -428,6 +431,27 @@ class MergeContactsTest extends TestCase
         $this->expectException(ContactChangedSinceThePreview::class);
 
         new MergeContacts(user: $user, kept: $jim, absorbed: $james, fingerprint: $stale)->execute();
+    }
+
+    #[Test]
+    public function it_refuses_a_merge_while_an_import_writes_into_the_vault(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $version = $this->publishedContactVersion($user);
+        [$dwight, $imported] = $this->twoContactsOf($user, $version);
+        AccountImport::factory()->create(['account_id' => $user->account_id, 'status' => AccountImportStatusEnum::Writing, 'vault_id' => $dwight->vault_id]);
+
+        try {
+            new MergeContacts(user: $user, kept: $imported, absorbed: $dwight)->execute();
+            $this->fail('A merge ran while an import was writing into the vault.');
+        } catch (VaultIsBeingImportedInto) {
+            //
+        }
+
+        $this->assertModelExists($dwight);
+        $this->assertSame(0, ContactMerge::query()->count());
     }
 
     #[Test]

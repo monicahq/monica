@@ -26,8 +26,12 @@ use Illuminate\Support\Facades\Log;
  * No charge is ever translated back into a checkout session: an account holds at most one purchase,
  * so the account the charge names is enough to find the order. Money back on an account holding
  * neither a purchase nor a subscription is written to the log at error level rather than dropped,
- * since somebody has to look at money that came back from nothing. Stripe sending the same refund
- * again finds the purchase already withdrawn or the subscription already ended, and changes nothing.
+ * since somebody has to look at money that came back from nothing. Stripe can also send the refund
+ * before it says the checkout completed: the order is then still unpaid, and it is the latest one,
+ * since a new checkout writes over the order nobody paid. It is marked refunded or disputed so the
+ * late completion cannot settle it, and nobody is told anything, since access never opened. Stripe
+ * sending the same refund again finds the purchase already withdrawn or the subscription already
+ * ended, and changes nothing.
  *
  * Either way the order and the payment row stay, so the history survives, and nothing is said to
  * somebody who still holds full access another way, such as through a grant.
@@ -76,6 +80,10 @@ class EndAccess
 
         $order = $this->account->settledOrder();
 
+        if ($order === null && $this->withdrawAnOrderNotSettledYet()) {
+            return false;
+        }
+
         if ($order === null && $this->account->orders->whereIn('stripe_status', [StripeOrder::REFUNDED, StripeOrder::DISPUTED])->isNotEmpty()) {
             return false;
         }
@@ -98,6 +106,27 @@ class EndAccess
         $this->account->unsetRelation('orders');
 
         return $withdrawn === 1;
+    }
+
+    private function withdrawAnOrderNotSettledYet(): bool
+    {
+        $order = $this->account->orders
+            ->where('stripe_status', StripeOrder::UNPAID)
+            ->sortByDesc('created_at')
+            ->first();
+
+        if ($order === null) {
+            return false;
+        }
+
+        StripeOrder::query()
+            ->whereKey($order->id)
+            ->where('stripe_status', StripeOrder::UNPAID)
+            ->update(['stripe_status' => $this->reason === AccessEndReasonEnum::Disputed ? StripeOrder::DISPUTED : StripeOrder::REFUNDED]);
+
+        $this->account->unsetRelation('orders');
+
+        return true;
     }
 
     /**

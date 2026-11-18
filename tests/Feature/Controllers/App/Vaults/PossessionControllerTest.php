@@ -234,7 +234,7 @@ class PossessionControllerTest extends TestCase
             'vault_id' => $vault->id,
             'name' => 'Sebring',
             'identifier' => '1C3EL55R',
-            'status' => PossessionStatusEnum::Sold,
+            'status' => PossessionStatusEnum::Ordered,
             'quantity' => 2,
             'is_featured' => true,
             'position' => 1,
@@ -259,10 +259,28 @@ class PossessionControllerTest extends TestCase
         $this->assertSame($warehouse->id, $sebring->current_location_id);
         $this->assertFalse($sebring->is_featured);
         $this->assertSame('1C3EL55R', $sebring->identifier);
-        $this->assertSame(PossessionStatusEnum::Sold, $sebring->status);
+        $this->assertSame(PossessionStatusEnum::Ordered, $sebring->status);
         $this->assertSame(2, $sebring->quantity);
         $this->assertEquals(['office party'], $sebring->tags->pluck('name')->all());
         $this->assertSame(['Mileage' => '121500'], $sebring->values()->with('field')->get()->mapWithKeys(fn (PossessionFieldValue $value): array => [$value->field->name => $value->value])->all());
+    }
+
+    #[Test]
+    public function it_saves_the_status_chosen_on_the_form(): void
+    {
+        [$user, $vault] = $this->scranton();
+        $sebring = Possession::factory()->create(['vault_id' => $vault->id, 'name' => 'Sebring', 'status' => PossessionStatusEnum::Owned]);
+
+        $this->actingAs($user)->put(route('possessions.update', [$vault, $sebring]), [
+            'name' => 'Sebring',
+            'status' => PossessionStatusEnum::Sold->value,
+        ])->assertRedirect(route('possessions.show', [$vault, $sebring]));
+
+        $this->assertSame(PossessionStatusEnum::Sold, $sebring->fresh()->status);
+
+        $this->actingAs($user)->from(route('possessions.edit', [$vault, $sebring]))
+            ->put(route('possessions.update', [$vault, $sebring]), ['name' => 'Sebring', 'status' => 'borrowed'])
+            ->assertSessionHasErrors('status');
     }
 
     #[Test]

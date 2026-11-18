@@ -50,6 +50,12 @@
         maxlength="2000"
         optional
       />
+
+      <x-select id="status" :label="__('Status')" :error="$errors->get('status')" class="max-w-96">
+        @foreach ($viewModel->statuses() as $value => $label)
+          <option value="{{ $value }}" @selected($viewModel->chosenStatus() === $value)>{{ $label }}</option>
+        @endforeach
+      </x-select>
     </div>
 
     <x-page-section :title="__('Type and its fields')">

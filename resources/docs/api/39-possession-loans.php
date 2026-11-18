@@ -150,7 +150,7 @@ return [
             'description' => 'Record a possession lent to a contact of its vault, or borrowed from one.',
             'body' => [
                 'Name an existing contact with contact_id, or write a new one down with new_contact: the contact and the loan are then saved together, or neither is. A contact of another vault answers 404. The change is written to the account log.',
-                'A second active loan answers 422 on status ("Another loan of this possession is active. Mark it as returned first."). A due day before the start answers 422 on due_on, and a returned loan without its return day answers 422 on returned_on ("Say when it came back.").',
+                'A planned or active loan of a possession that is sold, given away, thrown away, lost or stolen answers 422 on status ("This possession is no longer in your hands, so only a returned loan can be recorded for it."). A second active loan answers 422 on status ("Another loan of this possession is active. Mark it as returned first."). A due day before the start answers 422 on due_on, and a returned loan without its return day answers 422 on returned_on ("Say when it came back.").',
             ],
             'rateLimit' => $rateLimit,
             'pathParams' => [$vaultParam, $possessionParam],

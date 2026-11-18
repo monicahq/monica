@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\App\Settings\Account\Templates;
 
 use App\Actions\PublishStructureVersion;
+use App\Exceptions\CannotPublishAnEmptyPage;
 use App\Exceptions\PublishedVersionIsFrozen;
 use App\Http\Controllers\Controller;
 use App\Models\StructureVersion;
@@ -36,6 +37,10 @@ class StructureVersionPublicationController extends Controller
         } catch (PublishedVersionIsFrozen) {
             return redirect()->route('settings.templateBuilder.index', $template)
                 ->with('error', __('This version has already been published.'));
+        } catch (CannotPublishAnEmptyPage $e) {
+            return redirect()->route('settings.templateBuilder.index', $template)
+                ->with('error', $e->getMessage())
+                ->with('error_description', __('Add a section to every page, or delete the empty ones, then publish again.'));
         }
 
         return redirect()->route('settings.templateBuilder.index', $template)

@@ -147,12 +147,18 @@ class HandleStripeEvent implements ShouldQueue
     /**
      * Withdraw full access when the whole amount that paid for it is refunded or disputed. A partial
      * refund is a gesture rather than an undoing. Money back on a renewal of a subscription the
-     * account no longer runs leaves the one it runs now alone.
+     * account no longer runs leaves the one it runs now alone. An inquiry, a dispute whose status
+     * starts with warning_, moves no money, and Stripe closes it as warning_closed rather than won,
+     * so withdrawing access for it would never be undone.
      *
      * @param  array<string, mixed>  $object
      */
     private function endAccessForMoneyGivenBack(string $type, array $object): bool
     {
+        if ($type === 'charge.dispute.created' && str_starts_with((string) ($object['status'] ?? ''), 'warning_')) {
+            return false;
+        }
+
         $charge = $type === 'charge.refunded' ? $object : StripeCharge::behind($object['charge'] ?? null);
 
         if ($charge === null) {

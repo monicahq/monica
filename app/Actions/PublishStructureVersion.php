@@ -41,9 +41,13 @@ class PublishStructureVersion
     {
         $this->sanitize();
         $this->validateTheVersion();
-        $this->publishTheSectionsItCarries();
         $this->validateThePages();
-        $this->publish();
+
+        DB::transaction(function (): void {
+            $this->publishTheSectionsItCarries();
+            $this->publish();
+        });
+
         $this->log();
 
         return $this->structureVersion;
@@ -84,8 +88,7 @@ class PublishStructureVersion
 
     /**
      * What has to hold before anything is written. It runs before the sections are
-     * published, so a caller who may not touch this version cannot publish the
-     * sections it carries on the way to being refused.
+     * published, so a version that is refused leaves the sections it carries as drafts.
      */
     private function validateTheVersion(): void
     {
@@ -107,7 +110,7 @@ class PublishStructureVersion
         $pages = $this->structureVersion->pages;
 
         if ($pages->isEmpty()) {
-            throw new CannotPublishAnEmptyPage('This structure version has no page to render.');
+            throw new CannotPublishAnEmptyPage(__('This version has no page to show.'));
         }
 
         if ($pages->count() === 1) {
@@ -119,22 +122,20 @@ class PublishStructureVersion
         $empty = $pages->reject(fn (StructureVersionPage $page): bool => $filled->contains($page->id));
 
         if ($empty->isNotEmpty()) {
-            throw new CannotPublishAnEmptyPage("The page {$empty->first()->label} has nothing on it.");
+            throw new CannotPublishAnEmptyPage(__('The page :label has nothing on it.', ['label' => $empty->first()->label]));
         }
     }
 
     private function publish(): void
     {
-        DB::transaction(function (): void {
-            $this->structureVersion->status = VersionStatusEnum::Published;
-            $this->structureVersion->change_note = $this->changeNote;
-            $this->structureVersion->published_at = now();
-            $this->structureVersion->save();
+        $this->structureVersion->status = VersionStatusEnum::Published;
+        $this->structureVersion->change_note = $this->changeNote;
+        $this->structureVersion->published_at = now();
+        $this->structureVersion->save();
 
-            $structure = $this->structureVersion->structure;
-            $structure->published_version_id = $this->structureVersion->id;
-            $structure->save();
-        });
+        $structure = $this->structureVersion->structure;
+        $structure->published_version_id = $this->structureVersion->id;
+        $structure->save();
     }
 
     private function log(): void

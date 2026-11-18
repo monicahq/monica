@@ -100,6 +100,7 @@ class CreatePossessionLoan
         DB::transaction(function () use ($attributes): void {
             Possession::query()->whereKey($this->possession->id)->lockForUpdate()->first();
 
+            PossessionLoanAttributes::refuseAnOpenLoanOfAPossessionNoLongerHeld($this->possession, $this->status);
             PossessionLoanAttributes::refuseASecondActiveLoan($this->possession, $this->status);
 
             $contact = $this->contact ?? new CreateContact(

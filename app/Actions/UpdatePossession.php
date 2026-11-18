@@ -108,8 +108,8 @@ class UpdatePossession
     private function update(): void
     {
         DB::transaction(function (): void {
-            $this->moveIfRelocated();
             $this->updatePossession();
+            $this->moveIfRelocated();
 
             if ($this->tags !== null) {
                 PossessionTagNames::sync(user: $this->user, possession: $this->possession, names: $this->tags);

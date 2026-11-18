@@ -154,23 +154,30 @@ class PublishStructureVersionTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_while_one_of_several_pages_has_nothing_on_it(): void
+    public function it_refuses_while_one_of_several_pages_has_nothing_on_it_and_leaves_its_sections_as_drafts(): void
     {
         Queue::fake();
 
         $user = User::factory()->create();
         $template = Template::factory()->create(['account_id' => $user->account_id]);
         $version = StructureVersion::factory()->create(['structure_id' => $template->structure->id]);
-        $sectionVersion = SectionVersion::factory()->published()->create(['account_id' => $user->account_id]);
+        $sectionVersion = SectionVersion::factory()->create(['account_id' => $user->account_id]);
         StructureVersionSection::factory()->create([
             'structure_version_id' => $version->id,
             'section_version_id' => $sectionVersion->id,
         ]);
-        StructureVersionPage::factory()->create(['structure_version_id' => $version->id]);
+        StructureVersionPage::factory()->create(['structure_version_id' => $version->id, 'label' => 'Sales']);
 
-        $this->expectException(CannotPublishAnEmptyPage::class);
+        try {
+            new PublishStructureVersion(user: $user, structureVersion: $version)->execute();
+            $this->fail('A version with an empty page was published.');
+        } catch (CannotPublishAnEmptyPage $exception) {
+            $this->assertEquals('The page Sales has nothing on it.', $exception->getMessage());
+        }
 
-        new PublishStructureVersion(user: $user, structureVersion: $version)->execute();
+        $this->assertEquals(VersionStatusEnum::Draft, $sectionVersion->fresh()->status);
+        $this->assertNull($sectionVersion->section->fresh()->published_version_id);
+        $this->assertEquals(VersionStatusEnum::Draft, $version->fresh()->status);
     }
 
     #[Test]

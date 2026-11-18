@@ -128,6 +128,12 @@ abstract class TestCase extends BaseTestCase
         $client->respondTo('prices*', $this->stripePrices($kinds));
         $client->respondTo('customers*', $this->stripeCustomer());
         $client->respondTo('checkout/sessions*', $this->stripeCheckoutSession());
+        $client->respondTo('GET checkout/sessions', [
+            'object' => 'list',
+            'url' => '/v1/checkout/sessions',
+            'has_more' => false,
+            'data' => [],
+        ]);
         $client->respondTo('billing_portal/sessions*', [
             'id' => 'bps_test_dundermifflin',
             'object' => 'billing_portal.session',

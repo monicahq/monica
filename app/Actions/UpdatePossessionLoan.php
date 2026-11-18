@@ -89,6 +89,7 @@ class UpdatePossessionLoan
         DB::transaction(function () use ($attributes): void {
             Possession::query()->whereKey($this->loan->possession_id)->lockForUpdate()->first();
 
+            PossessionLoanAttributes::refuseAnOpenLoanOfAPossessionNoLongerHeld($this->loan->possession, $this->status);
             PossessionLoanAttributes::refuseASecondActiveLoan($this->loan->possession, $this->status, $this->loan);
 
             $this->loan->fill([

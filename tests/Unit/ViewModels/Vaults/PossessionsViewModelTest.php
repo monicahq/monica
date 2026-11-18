@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Vaults;
 
+use App\Enums\PossessionLoanDirectionEnum;
 use App\Enums\PossessionStatusEnum;
 use App\Models\Location;
 use App\Models\Possession;
 use App\Models\PossessionField;
 use App\Models\PossessionFieldGroup;
+use App\Models\PossessionLoan;
 use App\Models\PossessionType;
 use App\Models\Section;
 use App\Models\User;
@@ -140,10 +142,14 @@ class PossessionsViewModelTest extends TestCase
         $vehicle = PossessionType::factory()->create(['account_id' => $user->account_id, 'name' => 'Vehicle', 'icon' => 'car', 'colour' => '#3f5fd0']);
         $office = Location::factory()->create(['account_id' => $user->account_id, 'name' => 'Office']);
         $annex = Location::factory()->inside($office)->create(['name' => 'Annex']);
-        Possession::factory()->create(['vault_id' => $vault->id, 'possession_type_id' => $vehicle->id, 'name' => 'Chrysler Sebring', 'current_location_id' => $annex->id, 'declared_value' => '18400', 'declared_value_currency' => 'eur', 'status' => PossessionStatusEnum::Lent]);
-        Possession::factory()->create(['vault_id' => $vault->id, 'possession_type_id' => $vehicle->id, 'name' => 'Dundie award', 'status' => PossessionStatusEnum::Sold]);
+        $car = Possession::factory()->create(['vault_id' => $vault->id, 'possession_type_id' => $vehicle->id, 'name' => 'Chrysler Sebring', 'current_location_id' => $annex->id, 'declared_value' => '18400', 'declared_value_currency' => 'eur']);
+        $award = Possession::factory()->create(['vault_id' => $vault->id, 'possession_type_id' => $vehicle->id, 'name' => 'Dundie award']);
+        $pot = Possession::factory()->create(['vault_id' => $vault->id, 'possession_type_id' => $vehicle->id, 'name' => 'Teapot']);
+        PossessionLoan::factory()->active()->create(['possession_id' => $car->id, 'direction' => PossessionLoanDirectionEnum::Lent]);
+        PossessionLoan::factory()->returned()->create(['possession_id' => $award->id, 'direction' => PossessionLoanDirectionEnum::Lent]);
+        PossessionLoan::factory()->active()->create(['possession_id' => $pot->id, 'direction' => PossessionLoanDirectionEnum::Borrowed]);
 
-        [$sebring, $dundie] = new PossessionsViewModel(user: $user, vault: $vault)->others();
+        [$sebring, $dundie, $teapot] = new PossessionsViewModel(user: $user, vault: $vault)->others();
 
         $this->assertSame('Vehicle', $sebring['type']);
         $this->assertSame('car', $sebring['icon']);
@@ -152,6 +158,7 @@ class PossessionsViewModelTest extends TestCase
         $this->assertTrue($sebring['isLent']);
         $this->assertSame('—', $dundie['value']);
         $this->assertFalse($dundie['isLent']);
+        $this->assertFalse($teapot['isLent']);
     }
 
     #[Test]

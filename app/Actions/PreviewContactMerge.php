@@ -6,6 +6,7 @@ namespace App\Actions;
 
 use App\Exceptions\CannotAbsorbTheMeContact;
 use App\Exceptions\CannotMergeAContactWithItself;
+use App\Exceptions\VaultIsBeingImportedInto;
 use App\Models\Contact;
 use App\Models\ContactNameRepresentation;
 use App\Models\FieldValue;
@@ -94,6 +95,10 @@ class PreviewContactMerge
 
         if ($this->absorbed->is_me) {
             throw new CannotAbsorbTheMeContact('The contact representing you cannot be absorbed into another.');
+        }
+
+        if ($this->kept->vault->isBeingImportedInto()) {
+            throw new VaultIsBeingImportedInto(__('An import is writing into this vault. Merge these contacts once it has finished.'));
         }
     }
 

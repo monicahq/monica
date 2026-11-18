@@ -44,20 +44,20 @@ class UpdatePossessionTest extends TestCase
             user: $user,
             possession: $possession,
             name: 'Chrysler Sebring',
-            description: 'Sold to pay for the condo',
+            description: 'Ordered for the condo',
             location: $warehouse,
             identifier: '1C3EL55R',
-            status: PossessionStatusEnum::Sold,
+            status: PossessionStatusEnum::Ordered,
             quantity: 1,
         )->execute();
 
         $this->assertDatabaseHas('possessions', [
             'id' => $possession->id,
             'name' => 'Chrysler Sebring',
-            'description' => 'Sold to pay for the condo',
+            'description' => 'Ordered for the condo',
             'current_location_id' => $warehouse->id,
             'identifier' => '1C3EL55R',
-            'status' => 'sold',
+            'status' => 'ordered',
         ]);
 
         Queue::assertPushedOn(

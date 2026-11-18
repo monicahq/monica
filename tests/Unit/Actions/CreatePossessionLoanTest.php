@@ -9,6 +9,7 @@ use App\Enums\CurrencyEnum;
 use App\Enums\PossessionLoanDirectionEnum;
 use App\Enums\PossessionLoanStatusEnum;
 use App\Enums\PossessionProvenanceEventTypeEnum;
+use App\Enums\PossessionStatusEnum;
 use App\Enums\StructureAppliesToEnum;
 use App\Enums\UserActionEnum;
 use App\Enums\VersionStatusEnum;
@@ -146,6 +147,45 @@ class CreatePossessionLoanTest extends TestCase
         }
 
         $this->assertEquals($contactsBefore, Contact::query()->count());
+    }
+
+    #[Test]
+    public function a_sold_possession_takes_a_returned_loan_and_refuses_an_active_one(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $possession = Possession::factory()->create(['vault_id' => $vault->id, 'status' => PossessionStatusEnum::Sold]);
+        $toby = Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Toby']);
+
+        $loan = new CreatePossessionLoan(
+            user: $user,
+            possession: $possession,
+            direction: PossessionLoanDirectionEnum::Lent,
+            status: PossessionLoanStatusEnum::Returned,
+            startedOn: CarbonImmutable::parse('2019-03-01'),
+            contact: $toby,
+            returnedOn: CarbonImmutable::parse('2019-04-01'),
+        )->execute();
+
+        $this->assertModelExists($loan);
+
+        try {
+            new CreatePossessionLoan(
+                user: $user,
+                possession: $possession,
+                direction: PossessionLoanDirectionEnum::Lent,
+                status: PossessionLoanStatusEnum::Active,
+                startedOn: CarbonImmutable::parse('2024-06-12'),
+                newContactFirstName: 'Kevin',
+            )->execute();
+            $this->fail('An active loan of a sold possession was accepted.');
+        } catch (ValidationException $exception) {
+            $this->assertArrayHasKey('status', $exception->errors());
+        }
+
+        $this->assertDatabaseMissing('contacts', ['first_name' => 'Kevin']);
     }
 
     #[Test]

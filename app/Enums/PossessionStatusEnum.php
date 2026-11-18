@@ -11,7 +11,6 @@ enum PossessionStatusEnum: string implements Translatable
 {
     case Owned = 'owned';
     case Ordered = 'ordered';
-    case Lent = 'lent';
     case Sold = 'sold';
     case GivenAway = 'given_away';
     case Lost = 'lost';
@@ -23,12 +22,19 @@ enum PossessionStatusEnum: string implements Translatable
         return match ($this) {
             self::Owned => 'Owned',
             self::Ordered => 'Ordered',
-            self::Lent => 'Lent',
             self::Sold => 'Sold',
             self::GivenAway => 'Given away',
             self::Lost => 'Lost',
             self::Stolen => 'Stolen',
             self::ThrownAway => 'Thrown away',
+        };
+    }
+
+    public function isNoLongerHeld(): bool
+    {
+        return match ($this) {
+            self::Sold, self::GivenAway, self::ThrownAway, self::Lost, self::Stolen => true,
+            self::Owned, self::Ordered => false,
         };
     }
 

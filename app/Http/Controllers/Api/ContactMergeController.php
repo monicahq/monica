@@ -11,6 +11,7 @@ use App\Exceptions\CannotAbsorbTheMeContact;
 use App\Exceptions\CannotMergeAContactWithItself;
 use App\Exceptions\ContactChangedSinceThePreview;
 use App\Exceptions\ContactMergeCannotBeUndone;
+use App\Exceptions\VaultIsBeingImportedInto;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ContactMergePreviewResource;
 use App\Http\Resources\ContactMergeResource;
@@ -36,6 +37,8 @@ class ContactMergeController extends Controller
             )->execute();
         } catch (CannotAbsorbTheMeContact|CannotMergeAContactWithItself $e) {
             throw ValidationException::withMessages(['other' => $e->getMessage()]);
+        } catch (VaultIsBeingImportedInto $e) {
+            return response()->json(['message' => $e->getMessage()], 409);
         }
 
         return response()->json(['data' => new ContactMergePreviewResource($preview)]);
@@ -61,7 +64,7 @@ class ContactMergeController extends Controller
                 resolutions: array_values($validated['resolutions'] ?? []),
                 fingerprint: $validated['fingerprint'] ?? null,
             )->execute();
-        } catch (ContactChangedSinceThePreview $e) {
+        } catch (ContactChangedSinceThePreview|VaultIsBeingImportedInto $e) {
             return response()->json(['message' => $e->getMessage()], 409);
         } catch (CannotAbsorbTheMeContact|CannotMergeAContactWithItself $e) {
             throw ValidationException::withMessages(['other' => $e->getMessage()]);

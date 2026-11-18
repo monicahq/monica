@@ -27,6 +27,10 @@ use Laravel\Cashier\Cashier;
  * order already refunded or disputed is never paid again by a replay. The order is matched
  * on the session and the account together, so a session belonging to somebody else finds nothing.
  *
+ * A subscription checkout still open beside the purchase, in another tab, is closed at Stripe so it
+ * cannot be paid as well. Stripe refusing leaves the purchase settled, since RecordSubscription
+ * cancels and refunds a subscription that arrives anyway.
+ *
  * A second purchase on an account that already holds one is refused, because money was taken for
  * nothing and somebody has to look at it. Bought while a subscription is running, it stops that
  * subscription renewing and keeps the period already paid for, so access never gaps. That is the
@@ -73,6 +77,7 @@ class SettleOrder
         }
 
         $this->settle();
+        $this->closeOpenSubscriptionCheckouts();
         $this->notify();
         $this->log($order);
         $this->stopTheSubscriptionRenewing();
@@ -135,6 +140,32 @@ class SettleOrder
         $this->account->billing_email = $this->account->stripeEmail() ?? $this->account->billing_email;
         $this->account->save();
         $this->account->unsetRelation('orders');
+    }
+
+    private function closeOpenSubscriptionCheckouts(): void
+    {
+        if ($this->account->stripe_id === null) {
+            return;
+        }
+
+        try {
+            $sessions = Cashier::stripe()->checkout->sessions->all([
+                'customer' => $this->account->stripe_id,
+                'status' => 'open',
+                'limit' => 100,
+            ]);
+
+            foreach ($sessions->data as $session) {
+                if ($session->mode === 'subscription') {
+                    Cashier::stripe()->checkout->sessions->expire($session->id);
+                }
+            }
+        } catch (Exception $exception) {
+            Log::warning('Stripe would not close the subscription checkouts left open beside a purchase.', [
+                'account' => $this->account->id,
+                'message' => $exception->getMessage(),
+            ]);
+        }
     }
 
     private function stopTheSubscriptionRenewing(): void

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Vaults;
 
-use App\Enums\PossessionStatusEnum;
+use App\Enums\PossessionLoanDirectionEnum;
 use App\Enums\VaultColourEnum;
 use App\Helpers\LocaleCollation;
 use App\Helpers\LocationTree;
@@ -243,7 +243,7 @@ class PossessionsViewModel
     {
         return once(fn (): Collection => Possession::query()
             ->where('vault_id', $this->vault->id)
-            ->with('possessionType')
+            ->with(['possessionType', 'activeLoan'])
             ->get()
             ->toBase());
     }
@@ -316,7 +316,7 @@ class PossessionsViewModel
             'place' => $this->place($possession),
             'value' => $this->valueFormatter()->format($possession->declared_value, $possession->declared_value_currency),
             'description' => $possession->description,
-            'isLent' => $possession->status === PossessionStatusEnum::Lent,
+            'isLent' => $possession->activeLoan?->direction === PossessionLoanDirectionEnum::Lent,
         ];
     }
 

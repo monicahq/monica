@@ -13,7 +13,7 @@
     }"
     class="flex flex-col gap-3.5"
   >
-    <x-select id="location" :label="__('Location')" :error="$errors->get('location')" x-model="chosen" optional>
+    <x-select id="location" :label="__('Location')" :error="[...$errors->get('location'), ...$errors->get('location_id')]" x-model="chosen" optional>
       <option value="">{{ __('Not recorded') }}</option>
       @foreach ($locations as $location)
         <option value="{{ $location['uuid'] }}" @selected($viewModel->chosenLocation() === $location['uuid'])>{{ $location['path'] }}</option>

@@ -58,6 +58,25 @@ class ContactFormViewModelTest extends TestCase
     }
 
     #[Test]
+    public function it_offers_the_template_of_the_vault_at_the_version_the_vault_names(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $pinned = $this->contactDefaultOf($vault);
+        $basic = Template::query()->where('account_id', $user->account_id)->where('name', 'Basic contact')->firstOrFail();
+        $latest = StructureVersion::factory()->published()->create(['structure_id' => $basic->structure->id, 'version_number' => 2]);
+        $basic->structure->update(['published_version_id' => $latest->id]);
+        $work = $this->publishedContactTemplate($user, 'Work contact');
+
+        $viewModel = new ContactFormViewModel(user: $user, vault: $vault);
+        $offered = collect($viewModel->templates())->pluck('id', 'name');
+
+        $this->assertSame($pinned, $offered['Basic contact']);
+        $this->assertSame($work->structure->published_version_id, $offered['Work contact']);
+        $this->assertSame((string) $pinned, $viewModel->values()['structureVersionId']);
+    }
+
+    #[Test]
     public function it_does_not_offer_the_animal_template_to_a_contact(): void
     {
         Queue::fake();
