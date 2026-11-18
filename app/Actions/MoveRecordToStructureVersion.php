@@ -29,6 +29,9 @@ use InvalidArgumentException;
  * there. Before anything is set aside, every value, repeated row and reminder of the record follows
  * its field to the field of the new version with the same section, key and type. Only what has no
  * such field is set aside, and a field put back later brings its values back the same way.
+ *
+ * The snapshot and the move are one transaction, so a deadlock leaves neither behind and the move is
+ * run again, from the record as the database holds it.
  */
 class MoveRecordToStructureVersion
 {
@@ -44,13 +47,18 @@ class MoveRecordToStructureVersion
     {
         $this->validate();
 
-        new CreateRecordSnapshot(
-            user: $this->user,
-            record: $this->record,
-            reason: SnapshotReasonEnum::TemplateChange,
-        )->execute();
+        DB::transaction(function (): void {
+            $this->record->refresh();
 
-        $this->move();
+            new CreateRecordSnapshot(
+                user: $this->user,
+                record: $this->record,
+                reason: SnapshotReasonEnum::TemplateChange,
+            )->execute();
+
+            $this->move();
+        }, attempts: 3);
+
         $this->record->searchable();
         $this->log();
 
@@ -92,21 +100,19 @@ class MoveRecordToStructureVersion
             return;
         }
 
-        DB::transaction(function (): void {
-            $this->record->structure_version_id = $this->structureVersion->id;
-            $this->record->save();
+        $this->record->structure_version_id = $this->structureVersion->id;
+        $this->record->save();
 
-            StructureVersion::query()
-                ->whereKey($this->from->id)
-                ->where('record_count', '>', 0)
-                ->decrement('record_count');
+        StructureVersion::query()
+            ->whereKey($this->from->id)
+            ->where('record_count', '>', 0)
+            ->decrement('record_count');
 
-            StructureVersion::query()->whereKey($this->structureVersion->id)->increment('record_count');
+        StructureVersion::query()->whereKey($this->structureVersion->id)->increment('record_count');
 
-            $this->followTheFieldsIntoTheNewVersion();
-            $this->setAsideWhatTheNewStructureDoesNotCarry();
-            $this->bringBackWhatItCarriesAgain();
-        });
+        $this->followTheFieldsIntoTheNewVersion();
+        $this->setAsideWhatTheNewStructureDoesNotCarry();
+        $this->bringBackWhatItCarriesAgain();
     }
 
     /** @return list<int> */

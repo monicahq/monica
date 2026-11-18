@@ -25,10 +25,13 @@ use App\Models\StructureVersionSection;
 use App\Models\Template;
 use App\Models\User;
 use App\Models\Vault;
+use Illuminate\Database\DeadlockException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use InvalidArgumentException;
+use PDOException;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -82,6 +85,44 @@ class MoveRecordToStructureVersionTest extends TestCase
         $this->assertEquals(SnapshotReasonEnum::TemplateChange, $snapshot->reason);
         $this->assertEquals($was, $snapshot->structure_version_id);
         $this->assertTrue($contact->is($snapshot->snapshotable));
+    }
+
+    #[Test]
+    public function it_leaves_nothing_behind_when_a_deadlock_rolls_an_attempt_back(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $pam = $this->contactOf($user);
+        $from = $pam->structureVersion;
+        $to = $this->publishedContactVersion($user);
+
+        $deadlocked = false;
+        Contact::updating(function () use (&$deadlocked): void {
+            if ($deadlocked) {
+                return;
+            }
+
+            $deadlocked = true;
+
+            throw new QueryException('testing', 'update contacts', [], new PDOException('Deadlock found when trying to get lock'));
+        });
+
+        $move = new MoveRecordToStructureVersion(user: $user, record: $pam, structureVersion: $to);
+
+        try {
+            $move->execute();
+            $this->fail('The first attempt was expected to deadlock.');
+        } catch (DeadlockException) {
+        }
+
+        $this->assertSame($from->id, $pam->fresh()->structure_version_id);
+        $this->assertSame(0, RecordSnapshot::query()->count());
+
+        $move->execute();
+
+        $this->assertSame($to->id, $pam->fresh()->structure_version_id);
+        $this->assertSame(1, RecordSnapshot::query()->count());
     }
 
     #[Test]
