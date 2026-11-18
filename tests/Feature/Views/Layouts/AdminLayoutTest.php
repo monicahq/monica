@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Tests\Feature\Views\Layouts;
 
 use App\Models\Administrator;
+use App\Models\ChangelogComment;
+use App\Models\SupportRequest;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
@@ -66,5 +68,38 @@ class AdminLayoutTest extends TestCase
 
         $this->actingAs($administrator)->get(route('admin.accounts.index'))
             ->assertDontSee('href="'.route('admin.support.index').'"', escape: false);
+    }
+
+    #[Test]
+    public function it_offers_a_button_that_opens_the_admin_sections(): void
+    {
+        $response = $this->actingAs($this->administrator())->get(route('admin.accounts.index'));
+
+        $response->assertSee('aria-controls="main-nav"', escape: false);
+        $response->assertSee('aria-label="Open the menu"', escape: false);
+        $response->assertSee('id="main-nav"', escape: false);
+    }
+
+    #[Test]
+    public function it_announces_what_waits_in_support_and_in_the_changelog(): void
+    {
+        ChangelogComment::factory()->create();
+        SupportRequest::factory()->count(2)->toHandle()->create();
+
+        $response = $this->actingAs($this->administrator())->get(route('admin.accounts.index'));
+
+        $response->assertSee('1 comment to review');
+        $response->assertSee('2 requests to handle');
+        $response->assertSee('Something is waiting in the admin sections');
+    }
+
+    #[Test]
+    public function it_announces_nothing_while_nothing_waits(): void
+    {
+        $response = $this->actingAs($this->administrator())->get(route('admin.accounts.index'));
+
+        $response->assertDontSee('to review');
+        $response->assertDontSee('to handle');
+        $response->assertDontSee('Something is waiting in the admin sections');
     }
 }

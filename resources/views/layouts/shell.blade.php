@@ -26,14 +26,7 @@
       @isset($sidebar)
         {{ $sidebar }}
 
-        <div
-          x-cloak
-          x-show="navOpen"
-          x-transition.opacity.duration.150ms
-          @click="navOpen = false"
-          class="fixed print:hidden inset-0 z-30 bg-scrim lg:hidden"
-          aria-hidden="true"
-        ></div>
+        <x-nav-scrim />
       @endisset
 
       <main
@@ -41,16 +34,7 @@
         @class(['relative min-w-0 overflow-y-auto print:overflow-visible', 'flex flex-col' => isset($footer)])
       >
         <header class="flex h-14 shrink-0 items-center gap-2 sm:gap-3.5 border-b border-topbar-hairline bg-topbar px-4 sm:px-6 print:hidden">
-          <button
-            type="button"
-            @click="navOpen = true"
-            :aria-expanded="navOpen ? 'true' : 'false'"
-            aria-controls="main-nav"
-            aria-label="{{ __('Open the menu') }}"
-            class="-ml-1.5 flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-ring lg:hidden"
-          >
-            <x-icon name="menu" :size="17" :stroke-width="1.4" />
-          </button>
+          <x-menu-button />
 
           @isset($breadcrumb)
             <div class="-m-1 min-w-0 overflow-hidden p-1">

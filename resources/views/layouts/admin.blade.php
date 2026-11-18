@@ -3,8 +3,45 @@
   @var string|null $title
   @var \App\ViewModels\Admin\AdminNavigationViewModel $navigation
 --}}
+@php
+  $supportToHandle = \App\Helpers\SupportAvailability::isEnabled() ? $navigation->supportToHandleCount() : 0;
+  $changelogToReview = \App\Helpers\ChangelogAvailability::isEnabled() ? $navigation->changelogToReviewCount() : 0;
+
+  $sections = [
+    ['label' => __('Overview'), 'route' => 'admin.overview.index', 'section' => 'admin.overview.*', 'icon' => 'activity'],
+    ['label' => __('Moderation'), 'route' => 'admin.moderation.index', 'section' => 'admin.moderation.*', 'icon' => 'tasks'],
+    ...(\App\Helpers\SupportAvailability::isEnabled() ? [['label' => __('Support'), 'route' => 'admin.support.index', 'section' => 'admin.support.*', 'icon' => 'mail', 'count' => $supportToHandle, 'countLabel' => trans_choice(':count request to handle|:count requests to handle', $supportToHandle)]] : []),
+    ...(\App\Helpers\ChangelogAvailability::isEnabled() ? [['label' => __('Changelog'), 'route' => 'admin.changelog.index', 'section' => 'admin.changelog.*', 'icon' => 'journal', 'count' => $changelogToReview, 'countLabel' => trans_choice(':count comment to review|:count comments to review', $changelogToReview)]] : []),
+    ['label' => __('Accounts'), 'route' => 'admin.accounts.index', 'section' => 'admin.accounts.*', 'icon' => 'people'],
+    ['label' => __('Waiting list'), 'route' => 'admin.previewList.index', 'section' => 'admin.previewList.*', 'icon' => 'profile'],
+    ['label' => __('Configuration'), 'route' => 'admin.configuration.index', 'section' => 'admin.configuration.*', 'icon' => 'settings'],
+    ['label' => __('Search'), 'route' => 'admin.search.index', 'section' => 'admin.search.*', 'icon' => 'search'],
+    ['label' => __('Flags'), 'route' => 'admin.flags.index', 'section' => 'admin.flags.*', 'icon' => 'tag'],
+    ['label' => __('Administrators'), 'route' => 'admin.administrators.index', 'section' => 'admin.administrators.*', 'icon' => 'key'],
+    ['label' => __('Record'), 'route' => 'admin.logs.index', 'section' => 'admin.logs.*', 'icon' => 'timeline'],
+  ];
+
+  $current = '';
+  $entries = [];
+
+  foreach ($sections as $section) {
+    if (request()->routeIs($section['section'])) {
+      $current = $section['route'];
+    }
+
+    $entries[] = [
+      'key' => $section['route'],
+      'label' => $section['label'],
+      'icon' => $section['icon'],
+      'url' => route($section['route']),
+      'currentIsDescendant' => ! request()->routeIs($section['route']),
+      'count' => $section['count'] ?? 0,
+      'countLabel' => $section['countLabel'] ?? '',
+    ];
+  }
+@endphp
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-pt-32">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
   <head>
     @include('partials.meta', ['title' => $title ?? null])
 
@@ -12,11 +49,19 @@
   </head>
 
   <body class="bg-page font-sans text-body antialiased">
-    <header class="sticky print:hidden top-0 z-5 bg-admin-bar text-on-admin-bar">
-      <div aria-hidden="true" class="h-2 bg-[repeating-linear-gradient(-45deg,var(--admin-signal)_0_10px,var(--admin-bar)_10px_20px)]"></div>
+    <div
+      x-data="{ navOpen: false }"
+      @keydown.escape.window="navOpen = false"
+    >
+      <header class="print:hidden bg-admin-bar text-on-admin-bar">
+        <div aria-hidden="true" class="h-2 bg-[repeating-linear-gradient(-45deg,var(--admin-signal)_0_10px,var(--admin-bar)_10px_20px)]"></div>
 
-      <div class="mx-auto max-w-280 px-4 sm:px-6">
-        <div class="flex h-16 items-center gap-4">
+        <div class="flex h-16 items-center gap-3 px-4 sm:gap-4 sm:px-5">
+          <x-menu-button
+            tone="inverted"
+            :description="$supportToHandle + $changelogToReview > 0 ? __('Something is waiting in the admin sections') : null"
+          />
+
           <div class="flex min-w-0 items-center gap-3">
             <x-logo :size="29" />
 
@@ -41,61 +86,36 @@
             <x-account-menu :user="auth()->user()" variant="inverted" />
           </div>
         </div>
+      </header>
 
-        <nav aria-label="{{ __('Admin sections') }}" class="flex gap-1 overflow-x-auto">
-          @foreach ([
-            ['label' => __('Overview'), 'route' => 'admin.overview.index', 'section' => 'admin.overview.*', 'icon' => 'activity'],
-            ['label' => __('Moderation'), 'route' => 'admin.moderation.index', 'section' => 'admin.moderation.*', 'icon' => 'tasks'],
-            ...(\App\Helpers\SupportAvailability::isEnabled() ? [['label' => __('Support'), 'route' => 'admin.support.index', 'section' => 'admin.support.*', 'icon' => 'mail', 'count' => $navigation->supportToHandleCount()]] : []),
-            ...(\App\Helpers\ChangelogAvailability::isEnabled() ? [['label' => __('Changelog'), 'route' => 'admin.changelog.index', 'section' => 'admin.changelog.*', 'icon' => 'journal', 'count' => $changelogToReview = $navigation->changelogToReviewCount(), 'countLabel' => trans_choice(':count comment to review|:count comments to review', $changelogToReview)]] : []),
-            ['label' => __('Accounts'), 'route' => 'admin.accounts.index', 'section' => 'admin.accounts.*', 'icon' => 'people'],
-            ['label' => __('Waiting list'), 'route' => 'admin.previewList.index', 'section' => 'admin.previewList.*', 'icon' => 'profile'],
-            ['label' => __('Configuration'), 'route' => 'admin.configuration.index', 'section' => 'admin.configuration.*', 'icon' => 'settings'],
-            ['label' => __('Search'), 'route' => 'admin.search.index', 'section' => 'admin.search.*', 'icon' => 'search'],
-            ['label' => __('Flags'), 'route' => 'admin.flags.index', 'section' => 'admin.flags.*', 'icon' => 'tag'],
-            ['label' => __('Administrators'), 'route' => 'admin.administrators.index', 'section' => 'admin.administrators.*', 'icon' => 'key'],
-            ['label' => __('Record'), 'route' => 'admin.logs.index', 'section' => 'admin.logs.*', 'icon' => 'timeline'],
-          ] as $item)
-            <a
-              href="{{ route($item['route']) }}"
-              data-turbo="true"
-              @if (request()->routeIs($item['route']))
-                aria-current="page"
-              @elseif (request()->routeIs($item['section']))
-                aria-current="true"
-              @endif
-              @class([
-                'flex shrink-0 items-center gap-2 border-b-3 px-3 pt-2.5 pb-3 text-sm font-medium no-underline transition-colors duration-(--duration-fast) focus-ring-on-admin-bar-inset',
-                'border-admin-signal text-on-admin-bar' => request()->routeIs($item['section']),
-                'border-transparent text-on-admin-bar-muted hover:text-on-admin-bar' => ! request()->routeIs($item['section']),
-              ])
-            >
-              <x-icon :name="$item['icon']" :size="16" class="max-sm:hidden" />
-              {{ $item['label'] }}
+      <div class="grid grid-cols-1 lg:grid-cols-[248px_minmax(0,1fr)] lg:items-start print:block">
+        <div class="lg:sticky lg:top-0 lg:h-dvh">
+          <x-nav-drawer
+            :groups="[['entries' => $entries]]"
+            :current="$current"
+            :label="__('Admin sections')"
+          />
+        </div>
 
-              @if (($item['count'] ?? 0) > 0)
-                <span class="flex h-4.5 min-w-4.5 items-center justify-center rounded-full bg-admin-signal px-1.25 text-2xs font-semibold text-admin-bar" aria-hidden="true">{{ $item['count'] }}</span>
-                <span class="sr-only">{{ $item['countLabel'] ?? trans_choice(':count request to handle|:count requests to handle', $item['count']) }}</span>
-              @endif
-            </a>
-          @endforeach
-        </nav>
+        <x-nav-scrim />
+
+        <div class="min-w-0">
+          <aside aria-labelledby="admin-space-warning" class="print:hidden border-b border-warning-edge bg-warning-tint">
+            <div class="mx-auto flex max-w-280 items-center gap-3 px-4 py-3 text-ink-soft sm:px-6">
+              <span class="flex size-7 shrink-0 items-center justify-center rounded-md bg-admin-signal text-admin-bar">
+                <x-icon name="warning" :size="16" :stroke-width="1.5" />
+              </span>
+
+              <p class="text-pretty"><strong id="admin-space-warning" class="font-semibold text-ink">{{ __('You are looking at the instance, not at your own account.') }}</strong> {{ __('Anything you change here applies to every account on it.') }}</p>
+            </div>
+          </aside>
+
+          <main class="mx-auto flex w-full max-w-280 flex-col gap-8 px-4 pt-10 pb-16 sm:px-6">
+            {{ $slot }}
+          </main>
+        </div>
       </div>
-    </header>
-
-    <aside aria-labelledby="admin-space-warning" class="print:hidden border-b border-warning-edge bg-warning-tint">
-      <div class="mx-auto flex max-w-280 items-center gap-3 px-4 py-3 text-ink-soft sm:px-6">
-        <span class="flex size-7 shrink-0 items-center justify-center rounded-md bg-admin-signal text-admin-bar">
-          <x-icon name="warning" :size="16" :stroke-width="1.5" />
-        </span>
-
-        <p class="text-pretty"><strong id="admin-space-warning" class="font-semibold text-ink">{{ __('You are looking at the instance, not at your own account.') }}</strong> {{ __('Anything you change here applies to every account on it.') }}</p>
-      </div>
-    </aside>
-
-    <main class="mx-auto flex w-full max-w-280 flex-col gap-8 px-4 pt-10 pb-16 sm:px-6">
-      {{ $slot }}
-    </main>
+    </div>
 
     <x-toaster />
   </body>

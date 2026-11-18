@@ -3937,6 +3937,7 @@
     "Somebody tried to sign in to your account and gave the wrong password. If that was you, try again, or use a sign-in link instead.": "誰かがあなたのアカウントにサインインしようとして、誤ったパスワードを入力しました。心当たりがある場合は再度お試しいただくか、サインインリンクをご利用ください。",
     "Something broken": "不具合",
     "Something else": "その他",
+    "Something is waiting in the admin sections": "管理者エリアのセクションに対応待ちの項目があります",
     "Something the fields of your contacts will pick from, such as how you met somebody.": "連絡先のフィールドで選択する項目です。知り合ったきっかけなどに使えます。",
     "Something went wrong": "問題が発生しました",
     "Something you keep track of that is not a person, such as pets, plants or companies. Once it is active, it appears in every vault of this account, with its own list of records.": "ペット、植物、会社など、人以外で記録しておきたいものです。有効にすると、このアカウントのすべての保管庫に、独自のレコード一覧とともに表示されます。",
