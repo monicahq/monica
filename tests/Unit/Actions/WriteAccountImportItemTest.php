@@ -180,6 +180,23 @@ class WriteAccountImportItemTest extends TestCase
     }
 
     #[Test]
+    public function it_leaves_out_a_second_reminder_on_the_same_birthday(): void
+    {
+        $import = $this->started();
+        $item = $import->items()->where('kind', 'reminder')->get()->firstOrFail(fn ($item): bool => ($item->payload['reminder']['title'] ?? null) === 'Wish happy birthday to Michael');
+        $duplicate = $item->replicate();
+        $duplicate->position = $import->items()->max('position') + 1;
+        $duplicate->save();
+
+        $this->writeEveryItem($import);
+
+        $this->assertSame(AccountImportOutcomeEnum::Imported, $item->refresh()->outcome);
+        $this->assertSame(AccountImportOutcomeEnum::LeftOut, $duplicate->refresh()->outcome);
+        $this->assertSame(AccountImportReasonEnum::BirthdayAlreadyHasAReminder->value, $duplicate->reason);
+        $this->assertSame(1, Reminder::query()->where('name', 'Wish happy birthday to Michael')->count());
+    }
+
+    #[Test]
     public function it_writes_a_reminder_switched_off_in_monica_four_and_switches_it_off(): void
     {
         $import = $this->started();

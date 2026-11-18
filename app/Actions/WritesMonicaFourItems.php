@@ -410,6 +410,12 @@ trait WritesMonicaFourItems
 
         $birthday = $this->birthdayOf($contact, $reminder);
 
+        if ($birthday instanceof FieldValue && $birthday->reminder()->exists()) {
+            $this->leaveOut(AccountImportReasonEnum::BirthdayAlreadyHasAReminder);
+
+            return;
+        }
+
         $rule = $birthday instanceof FieldValue
             ? new CreateReminder(
                 user: $this->user,
