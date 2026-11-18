@@ -6,12 +6,14 @@
 @php
   $supportToHandle = \App\Helpers\SupportAvailability::isEnabled() ? $navigation->supportToHandleCount() : 0;
   $changelogToReview = \App\Helpers\ChangelogAvailability::isEnabled() ? $navigation->changelogToReviewCount() : 0;
+  $newAgentFeedback = $navigation->newAgentFeedbackCount();
 
   $sections = [
     ['label' => __('Overview'), 'route' => 'admin.overview.index', 'section' => 'admin.overview.*', 'icon' => 'activity'],
     ['label' => __('Moderation'), 'route' => 'admin.moderation.index', 'section' => 'admin.moderation.*', 'icon' => 'tasks'],
     ...(\App\Helpers\SupportAvailability::isEnabled() ? [['label' => __('Support'), 'route' => 'admin.support.index', 'section' => 'admin.support.*', 'icon' => 'mail', 'count' => $supportToHandle, 'countLabel' => trans_choice(':count request to handle|:count requests to handle', $supportToHandle)]] : []),
     ...(\App\Helpers\ChangelogAvailability::isEnabled() ? [['label' => __('Changelog'), 'route' => 'admin.changelog.index', 'section' => 'admin.changelog.*', 'icon' => 'journal', 'count' => $changelogToReview, 'countLabel' => trans_choice(':count comment to review|:count comments to review', $changelogToReview)]] : []),
+    ['label' => __('Agent feedback'), 'route' => 'admin.agentFeedback.index', 'section' => 'admin.agentFeedback.*', 'icon' => 'memory', 'count' => $newAgentFeedback, 'countLabel' => trans_choice(':count new report|:count new reports', $newAgentFeedback)],
     ['label' => __('Accounts'), 'route' => 'admin.accounts.index', 'section' => 'admin.accounts.*', 'icon' => 'people'],
     ['label' => __('Waiting list'), 'route' => 'admin.previewList.index', 'section' => 'admin.previewList.*', 'icon' => 'profile'],
     ['label' => __('Configuration'), 'route' => 'admin.configuration.index', 'section' => 'admin.configuration.*', 'icon' => 'settings'],
@@ -60,7 +62,7 @@
         <div class="flex h-16 items-center gap-3 px-4 sm:gap-4 sm:px-5">
           <x-menu-button
             tone="inverted"
-            :description="$supportToHandle + $changelogToReview > 0 ? __('Something is waiting in the admin sections') : null"
+            :description="$supportToHandle + $changelogToReview + $newAgentFeedback > 0 ? __('Something is waiting in the admin sections') : null"
           />
 
           <div class="flex min-w-0 items-center gap-3">

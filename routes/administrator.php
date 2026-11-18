@@ -8,6 +8,9 @@ use App\Http\Controllers\App\Admin\AccountLifetimeAccessController;
 use App\Http\Controllers\App\Admin\AccountStorageLimitController;
 use App\Http\Controllers\App\Admin\AdministratorController;
 use App\Http\Controllers\App\Admin\AdministratorLogController;
+use App\Http\Controllers\App\Admin\AgentFeedbackController;
+use App\Http\Controllers\App\Admin\AgentFeedbackNoteController;
+use App\Http\Controllers\App\Admin\AgentFeedbackStatusController;
 use App\Http\Controllers\App\Admin\BillingStatusController;
 use App\Http\Controllers\App\Admin\ChangelogCommentController;
 use App\Http\Controllers\App\Admin\ChangelogCommentHidingController;
@@ -67,6 +70,11 @@ Route::middleware(['administrator', Sample::always()])->group(function (): void 
         Route::delete('admin/changelog/comments/{comment}/hiding', [ChangelogCommentHidingController::class, 'destroy'])->whereUuid('comment')->name('admin.changelog.comments.hiding.destroy');
         Route::post('admin/changelog/comments/{comment}/replies', [ChangelogCommentReplyController::class, 'create'])->whereUuid('comment')->name('admin.changelog.comments.replies.create');
     });
+
+    Route::get('admin/agent-feedback', [AgentFeedbackController::class, 'index'])->name('admin.agentFeedback.index');
+    Route::get('admin/agent-feedback/{agentFeedbackReport}', [AgentFeedbackController::class, 'show'])->whereUuid('agentFeedbackReport')->name('admin.agentFeedback.show');
+    Route::post('admin/agent-feedback/{agentFeedbackReport}/notes', [AgentFeedbackNoteController::class, 'create'])->whereUuid('agentFeedbackReport')->name('admin.agentFeedback.notes.create');
+    Route::put('admin/agent-feedback/{agentFeedbackReport}/status', [AgentFeedbackStatusController::class, 'update'])->whereUuid('agentFeedbackReport')->name('admin.agentFeedback.status.update');
 
     Route::get('admin/accounts', [AccountController::class, 'index'])->name('admin.accounts.index');
     Route::get('admin/accounts/{account}', [AccountController::class, 'show'])->whereNumber('account')->name('admin.accounts.show');

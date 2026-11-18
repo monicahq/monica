@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 
 class ApiDocsViewModel
 {
-    public const string LAST_GENERATED = '2026-11-17';
+    public const string LAST_GENERATED = '2026-11-18';
 
     /** @var list<array{name: string, guide: bool, sections: list<ApiDocsSection>}>|null */
     private ?array $groups = null;

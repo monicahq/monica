@@ -4,7 +4,7 @@ title: Disconnect an assistant
 description: See which AI assistants you approved to act as you, and cut off the ones you no longer use.
 slug: connected-assistants
 section: your-account-and-security
-last_updated: 2026-09-29
+last_updated: 2026-11-18
 ---
 
 # Disconnect an assistant
@@ -30,3 +30,9 @@ Monica says it loses access at once and has to ask you again to come back. Choos
 ::::
 
 Monica says **The assistant is disconnected.** It can no longer reach your account, and has to ask you again before it can.
+
+## When an assistant reports a problem
+
+When a tool of Monica fails, is missing or misleads an assistant, the assistant can send a report to the administrators of your Monica, so they can fix the tool. It is asked to describe your request in its own words and to leave out names, dates and other details from your vaults. The report says which account it came from.
+
+Each report appears in your account log, and the call appears in **MCP history**, with what the assistant sent.

@@ -4,7 +4,7 @@ title: What Monica keeps and who can see it
 description: See what Monica stores about you and your contacts, what administrators can and cannot see, and what leaves your account.
 slug: privacy
 section: your-account-and-security
-last_updated: 2026-09-29
+last_updated: 2026-11-18
 ---
 
 # What Monica keeps and who can see it
@@ -21,6 +21,8 @@ Every instance of Monica, monicahq.com included, has administrators who look aft
 
 - **They see:** your name and email address, when the account was created and last signed in to, how you sign in and whether two factor authentication is on, how many vaults and contacts you have, and how much storage you use.
 - **They never see through their screens:** your contacts, what you wrote about them, your reminders or your files.
+
+An assistant connected to your account can also send the administrators a report about a tool that did not work. It is asked to leave the details of your vaults out, but what it writes is up to the assistant. See @doc(security.assistants).
 
 What an administrator does to an account, such as switching it off, is recorded against their name.
 

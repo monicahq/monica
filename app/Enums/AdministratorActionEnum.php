@@ -36,6 +36,8 @@ enum AdministratorActionEnum: string implements Translatable
     case ChangelogCommentHidden = 'changelog_comment_hidden';
     case ChangelogCommentShown = 'changelog_comment_shown';
     case ChangelogCommentReplied = 'changelog_comment_replied';
+    case AgentFeedbackStatusChanged = 'agent_feedback_status_changed';
+    case AgentFeedbackNoteAdded = 'agent_feedback_note_added';
 
     public function description(): string
     {
@@ -67,6 +69,8 @@ enum AdministratorActionEnum: string implements Translatable
             self::ChangelogCommentHidden => 'Hid the comment of :name on “:title” from What’s new',
             self::ChangelogCommentShown => 'Showed the comment of :name on “:title” on What’s new again',
             self::ChangelogCommentReplied => 'Replied to the comment of :name on “:title”',
+            self::AgentFeedbackStatusChanged => 'Moved the agent feedback report :reference to :status',
+            self::AgentFeedbackNoteAdded => 'Left a note on the agent feedback report :reference',
         };
     }
 
@@ -85,6 +89,7 @@ enum AdministratorActionEnum: string implements Translatable
             self::StripeCatalogueReloaded => 'credit-card',
             self::PreviewListEntryAdmitted, self::PreviewListEntryRemoved => 'profile',
             self::ChangelogCommentReviewed, self::ChangelogCommentHidden, self::ChangelogCommentShown, self::ChangelogCommentReplied => 'journal',
+            self::AgentFeedbackStatusChanged, self::AgentFeedbackNoteAdded => 'memory',
         };
     }
 
@@ -117,7 +122,9 @@ enum AdministratorActionEnum: string implements Translatable
             self::SearchIndexRebuildStarted,
             self::StripeCatalogueReloaded,
             self::PreviewListEntryAdmitted,
-            self::PreviewListEntryRemoved => false,
+            self::PreviewListEntryRemoved,
+            self::AgentFeedbackStatusChanged,
+            self::AgentFeedbackNoteAdded => false,
         };
     }
 

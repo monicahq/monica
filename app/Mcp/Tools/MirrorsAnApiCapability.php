@@ -10,6 +10,7 @@ use App\Http\Resources\GroupFileResource;
 use App\Http\Resources\GroupMembershipResource;
 use App\Http\Resources\GroupNoteResource;
 use App\Http\Resources\LifeEventResource;
+use App\Models\AgentFeedbackReport;
 use App\Models\Contact;
 use App\Models\EmailSent;
 use App\Models\EntityType;
@@ -760,17 +761,32 @@ trait MirrorsAnApiCapability
         return $this->found($supportRequest);
     }
 
+    protected function agentFeedbackReport(string $address): AgentFeedbackReport
+    {
+        $report = Str::isUuid($address) ? AgentFeedbackReport::query()->where('uuid', $address)->first() : null;
+
+        if ($report === null) {
+            throw $this->doesNotExist(__('That report does not exist.'));
+        }
+
+        return $this->found($report);
+    }
+
     /**
-     * Whether the presented key may use the administrators' support tools: support is switched on,
-     * the key belongs to an administrator and carries the administration scope by name, which a
-     * connected assistant never does.
+     * Whether the presented key may use the administrators' support tools: support is switched on
+     * and the key administers the instance.
      */
     protected function administers(Request $request): bool
     {
-        if (! SupportAvailability::isEnabled()) {
-            return false;
-        }
+        return SupportAvailability::isEnabled() && $this->administersInstance($request);
+    }
 
+    /**
+     * Whether the presented key belongs to an administrator and carries the administration scope by
+     * name, which a connected assistant never does.
+     */
+    protected function administersInstance(Request $request): bool
+    {
         $user = $request->user();
 
         if (! $user instanceof User || ! $user->isAdministrator()) {

@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace App\Mcp\Servers;
 
+use App\Mcp\Tools\AddAgentFeedbackNote;
 use App\Mcp\Tools\AddGroupMember;
 use App\Mcp\Tools\AddSupportMessage;
 use App\Mcp\Tools\AddSupportNote;
 use App\Mcp\Tools\AddTemplateSection;
 use App\Mcp\Tools\AnswerGroupReminderOccurrence;
 use App\Mcp\Tools\AnswerReminderOccurrence;
+use App\Mcp\Tools\ChangeAgentFeedbackStatus;
 use App\Mcp\Tools\ChangeSupportRequestStatus;
 use App\Mcp\Tools\CreateContact;
 use App\Mcp\Tools\CreateContactRelationship;
@@ -81,6 +83,7 @@ use App\Mcp\Tools\DeleteTemplateDraft;
 use App\Mcp\Tools\DeleteTemplateField;
 use App\Mcp\Tools\DuplicateTemplate;
 use App\Mcp\Tools\ExportPossessionType;
+use App\Mcp\Tools\GetAgentFeedback;
 use App\Mcp\Tools\GetContact;
 use App\Mcp\Tools\GetContactMarkdown;
 use App\Mcp\Tools\GetContactRelationship;
@@ -117,6 +120,7 @@ use App\Mcp\Tools\GetSupportRequest;
 use App\Mcp\Tools\GetTemplate;
 use App\Mcp\Tools\GetTemplateVersion;
 use App\Mcp\Tools\ImportPossessionType;
+use App\Mcp\Tools\ListAgentFeedback;
 use App\Mcp\Tools\ListContactCategories;
 use App\Mcp\Tools\ListContactGroups;
 use App\Mcp\Tools\ListContactNameRepresentations;
@@ -194,6 +198,7 @@ use App\Mcp\Tools\SetTemplateFieldPosition;
 use App\Mcp\Tools\SetTemplatePosition;
 use App\Mcp\Tools\SetTemplateSectionPosition;
 use App\Mcp\Tools\SolveSupportRequest;
+use App\Mcp\Tools\SubmitFeedback;
 use App\Mcp\Tools\UpdateContactName;
 use App\Mcp\Tools\UpdateContactNameRepresentations;
 use App\Mcp\Tools\UpdateContactRelationship;
@@ -316,6 +321,10 @@ There is no pause: delete-contact-reminder is the only way to stop a reminder, a
 list-vault-reminders lists every reminder of a vault whatever its date; list-vault-reminder-occurrences
 lists only the dates falling in a window, 7 days ahead unless asked for more, so an empty answer from it
 never means the vault has no reminders.
+
+When a tool here fails, is missing or misleads you, tell the administrators of this instance with
+submit-feedback, once per task, paraphrasing what the person asked and leaving names, dates and other
+details from their vault out.
 TEXT)]
 class MonicaServer extends Server
 {
@@ -551,6 +560,11 @@ class MonicaServer extends Server
         SendSupportReply::class,
         AddSupportNote::class,
         ChangeSupportRequestStatus::class,
+        SubmitFeedback::class,
+        ListAgentFeedback::class,
+        GetAgentFeedback::class,
+        AddAgentFeedbackNote::class,
+        ChangeAgentFeedbackStatus::class,
     ];
 
     #[Override]

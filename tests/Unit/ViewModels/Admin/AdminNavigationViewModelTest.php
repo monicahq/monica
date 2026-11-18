@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Admin;
 
+use App\Models\AgentFeedbackReport;
 use App\Models\ChangelogComment;
 use App\Models\SupportRequest;
 use App\ViewModels\Admin\AdminNavigationViewModel;
@@ -33,5 +34,14 @@ class AdminNavigationViewModelTest extends TestCase
         ChangelogComment::factory()->hidden()->create();
 
         $this->assertSame(1, (new AdminNavigationViewModel)->changelogToReviewCount());
+    }
+
+    #[Test]
+    public function it_counts_only_the_new_agent_feedback_reports(): void
+    {
+        AgentFeedbackReport::factory()->count(2)->create();
+        AgentFeedbackReport::factory()->accepted()->create();
+
+        $this->assertSame(2, (new AdminNavigationViewModel)->newAgentFeedbackCount());
     }
 }

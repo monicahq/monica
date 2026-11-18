@@ -27,6 +27,8 @@ use App\Models\AccountExport;
 use App\Models\AccountImport;
 use App\Models\AccountImportItem;
 use App\Models\Administrator;
+use App\Models\AgentFeedbackNote;
+use App\Models\AgentFeedbackReport;
 use App\Models\ChangelogComment;
 use App\Models\ChangelogCommentReply;
 use App\Models\ChangelogVote;
@@ -2660,6 +2662,40 @@ class ApiDocsReturnFieldsTest extends TestCase
                 return $this->withToken($token)->json('PUT', "/api/v1/admin/support-requests/{$supportRequest->uuid}/status", [
                     'status' => 'solved',
                 ]);
+            }),
+
+            'admin-agent-feedback-index' => $this->asAnAdministrator(function (User $administrator, string $token): TestResponse {
+                AgentFeedbackReport::factory()->create(['user_id' => $administrator->id, 'account_id' => $administrator->account_id, 'proposed_code' => 'return true;']);
+
+                return $this->withToken($token)->json('GET', '/api/v1/admin/agent-feedback');
+            }),
+
+            'admin-agent-feedback-show' => $this->asAnAdministrator(function (User $administrator, string $token): TestResponse {
+                $report = AgentFeedbackReport::factory()->create(['user_id' => $administrator->id, 'account_id' => $administrator->account_id]);
+                AgentFeedbackNote::factory()->create(['agent_feedback_report_id' => $report->id]);
+
+                return $this->withToken($token)->json('GET', "/api/v1/admin/agent-feedback/{$report->uuid}");
+            }),
+
+            'agent-feedback-create' => $this->asSomebody(fn (User $user): TestResponse => $this->json('POST', '/api/v1/agent-feedback', [
+                'kind' => 'bug',
+                'severity' => 'minor',
+                'title' => 'Search ignores accents',
+                'observed' => 'Helene does not find Hélène.',
+                'expected' => 'It does.',
+                'proposed_fix' => 'Fold accents on both sides.',
+            ])),
+
+            'admin-agent-feedback-notes-create' => $this->asAnAdministrator(function (User $administrator, string $token): TestResponse {
+                $report = AgentFeedbackReport::factory()->create(['user_id' => $administrator->id, 'account_id' => $administrator->account_id]);
+
+                return $this->withToken($token)->json('POST', "/api/v1/admin/agent-feedback/{$report->uuid}/notes", ['body' => 'Planned.']);
+            }),
+
+            'admin-agent-feedback-status-update' => $this->asAnAdministrator(function (User $administrator, string $token): TestResponse {
+                $report = AgentFeedbackReport::factory()->create(['user_id' => $administrator->id, 'account_id' => $administrator->account_id]);
+
+                return $this->withToken($token)->json('PUT', "/api/v1/admin/agent-feedback/{$report->uuid}/status", ['status' => 'accepted']);
             }),
 
             'contact-groups-index' => $this->asSomebody(function (User $user): TestResponse {

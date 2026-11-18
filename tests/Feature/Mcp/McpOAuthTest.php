@@ -133,6 +133,29 @@ class McpOAuthTest extends TestCase
         $this->assertSame('Schrute Farms Assistant', request()->attributes->get('log_source_detail'));
     }
 
+    #[Test]
+    public function it_signs_a_feedback_report_with_the_name_of_the_assistant(): void
+    {
+        $user = User::factory()->create();
+        $accessToken = $this->authorizeAssistant($user);
+
+        $this->withToken($accessToken)->postJson('/mcp', [
+            'jsonrpc' => '2.0',
+            'id' => 2,
+            'method' => 'tools/call',
+            'params' => ['name' => 'submit-feedback', 'arguments' => [
+                'kind' => 'bug',
+                'severity' => 'minor',
+                'title' => 'Beet harvest reminders are refused',
+                'observed' => 'The reminder is refused.',
+                'expected' => 'It is created.',
+                'proposed_fix' => 'Accept it.',
+            ]],
+        ])->assertOk();
+
+        $this->assertDatabaseHas('agent_feedback_reports', ['user_id' => $user->id, 'connection_name' => 'Schrute Farms Assistant']);
+    }
+
     private function registerClient(): string
     {
         $response = $this->postJson('/oauth/register', [

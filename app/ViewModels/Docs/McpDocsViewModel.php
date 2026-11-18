@@ -240,6 +240,8 @@ class McpDocsViewModel
         'Account logs' => 'The account logs record every action that touched your account, and every email Monica sent you.',
         'Support' => 'A support request is a message to the people who run your Monica, about something broken, confusing or missing.',
         'Support queue' => 'The support queue holds the support requests of every account of the instance. Only an administrator of the instance can use it.',
+        'Feedback' => 'Feedback is how an assistant tells the people who run your Monica that a tool failed, was missing or misled it, with what it tried and the fix it suggests. It paraphrases your request and leaves the details of your vaults out, and you never see the report in Monica, only in your MCP history.',
+        'Agent feedback queue' => 'The agent feedback queue holds the reports assistants sent with submit-feedback, from every account of the instance. Only an administrator of the instance can use it.',
     ];
 
     /** @var array<string, list<string>> */
@@ -264,6 +266,8 @@ class McpDocsViewModel
         'Account logs' => ['list-logs', 'get-log', 'list-emails-sent', 'get-email-sent'],
         'Support' => ['list-support-requests', 'get-support-request', 'create-support-request', 'add-support-message', 'solve-support-request'],
         'Support queue' => ['list-support-queue', 'get-support-queue-request', 'send-support-reply', 'add-support-note', 'change-support-request-status'],
+        'Feedback' => ['submit-feedback'],
+        'Agent feedback queue' => ['list-agent-feedback', 'get-agent-feedback', 'add-agent-feedback-note', 'change-agent-feedback-status'],
     ];
 
     /** @var list<string> */

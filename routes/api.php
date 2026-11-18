@@ -7,10 +7,14 @@ use App\Http\Controllers\Api\AccountExportDownloadController;
 use App\Http\Controllers\Api\AccountImportContactController;
 use App\Http\Controllers\Api\AccountImportController;
 use App\Http\Controllers\Api\AccountImportReportController;
+use App\Http\Controllers\Api\Admin\AgentFeedbackController as AdminAgentFeedbackController;
+use App\Http\Controllers\Api\Admin\AgentFeedbackNoteController as AdminAgentFeedbackNoteController;
+use App\Http\Controllers\Api\Admin\AgentFeedbackStatusController as AdminAgentFeedbackStatusController;
 use App\Http\Controllers\Api\Admin\SupportNoteController as AdminSupportNoteController;
 use App\Http\Controllers\Api\Admin\SupportReplyController as AdminSupportReplyController;
 use App\Http\Controllers\Api\Admin\SupportRequestController as AdminSupportRequestController;
 use App\Http\Controllers\Api\Admin\SupportStatusController as AdminSupportStatusController;
+use App\Http\Controllers\Api\AgentFeedbackController;
 use App\Http\Controllers\Api\ApiKeyController;
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\RegistrationController;
@@ -195,6 +199,15 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
             Route::post('admin/support-requests/{supportRequest}/replies', [AdminSupportReplyController::class, 'create'])->where('supportRequest', '[0-9a-fA-F-]{36}')->name('admin.supportRequests.replies.create');
             Route::post('admin/support-requests/{supportRequest}/notes', [AdminSupportNoteController::class, 'create'])->where('supportRequest', '[0-9a-fA-F-]{36}')->name('admin.supportRequests.notes.create');
             Route::put('admin/support-requests/{supportRequest}/status', [AdminSupportStatusController::class, 'update'])->where('supportRequest', '[0-9a-fA-F-]{36}')->name('admin.supportRequests.status.update');
+        });
+
+        Route::post('agent-feedback', [AgentFeedbackController::class, 'create'])->middleware('throttle:10,1')->name('agentFeedback.create');
+
+        Route::middleware(['administrator', 'administration'])->group(function (): void {
+            Route::match(['GET', 'QUERY'], 'admin/agent-feedback', [AdminAgentFeedbackController::class, 'index'])->name('admin.agentFeedback');
+            Route::match(['GET', 'QUERY'], 'admin/agent-feedback/{agentFeedbackReport}', [AdminAgentFeedbackController::class, 'show'])->whereUuid('agentFeedbackReport')->name('admin.agentFeedback.show');
+            Route::post('admin/agent-feedback/{agentFeedbackReport}/notes', [AdminAgentFeedbackNoteController::class, 'create'])->whereUuid('agentFeedbackReport')->name('admin.agentFeedback.notes.create');
+            Route::put('admin/agent-feedback/{agentFeedbackReport}/status', [AdminAgentFeedbackStatusController::class, 'update'])->whereUuid('agentFeedbackReport')->name('admin.agentFeedback.status.update');
         });
 
         Route::match(['GET', 'QUERY'], 'api-keys', [ApiKeyController::class, 'index'])->name('apiKeys');

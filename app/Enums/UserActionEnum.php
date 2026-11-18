@@ -133,6 +133,7 @@ enum UserActionEnum: string implements Translatable
     case SupportRequestOpened = 'support_request_opened';
     case SupportMessageAdded = 'support_message_added';
     case SupportRequestSolved = 'support_request_solved';
+    case AgentFeedbackSubmitted = 'agent_feedback_submitted';
     case DefaultTemplateSeeded = 'default_template_seeded';
     case TemplateCreation = 'template_created';
     case TemplateUpdate = 'template_updated';
@@ -429,6 +430,7 @@ enum UserActionEnum: string implements Translatable
             self::SupportRequestOpened => 'Asked the support team about :subject',
             self::SupportMessageAdded => 'Wrote to the support team about :subject',
             self::SupportRequestSolved => 'Marked the support request :subject as solved',
+            self::AgentFeedbackSubmitted => 'Sent the administrators a report about a tool: :title',
             self::DefaultTemplateSeeded => 'Set up the template :name the account starts with',
             self::TemplateCreation => 'Created the template :name',
             self::TemplateUpdate => 'Updated the template :name',
