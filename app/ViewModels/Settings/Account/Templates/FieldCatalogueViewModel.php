@@ -17,13 +17,12 @@ class FieldCatalogueViewModel
     ) {}
 
     /**
-     * @return array<int, array{name: string, blurb: string, types: array<int, array{key: string, label: string, description: string, example: string, mark: string, preview: array<string, mixed>, isAvailable: bool}>}>
+     * @return array<int, array{name: string, types: array<int, array{key: string, label: string, description: string, example: string, mark: string, preview: array<string, mixed>, isAvailable: bool}>}>
      */
     public function families(): array
     {
         return array_map(fn (array $family): array => [
             'name' => $family['name'],
-            'blurb' => $family['blurb'],
             'types' => array_map(self::describe(...), $family['types']),
         ], $this->offered());
     }
@@ -204,7 +203,7 @@ class FieldCatalogueViewModel
      * The families shown on the screen. A field added inside a repeater cannot
      * be a repeater itself, so that one is left out there.
      *
-     * @return array<int, array{name: string, blurb: string, types: array<int, array{key: string, label: string, description: string, example: string, mark: string, preview: array<string, mixed>}>}>
+     * @return array<int, array{name: string, types: array<int, array{key: string, label: string, description: string, example: string, mark: string, preview: array<string, mixed>}>}>
      */
     private function offered(): array
     {
@@ -222,14 +221,13 @@ class FieldCatalogueViewModel
     }
 
     /**
-     * @return array<int, array{name: string, blurb: string, types: array<int, array{key: string, label: string, description: string, example: string, mark: string, preview: array<string, mixed>}>}>
+     * @return array<int, array{name: string, types: array<int, array{key: string, label: string, description: string, example: string, mark: string, preview: array<string, mixed>}>}>
      */
     private static function catalogue(): array
     {
         return [
             [
                 'name' => __('Simple'),
-                'blurb' => __('One value, typed straight in.'),
                 'types' => [
                     ['key' => 'text', 'label' => __('Short text'), 'description' => __('One line of text, up to a length you set.'), 'example' => __('Nickname, microchip number, collar colour'), 'mark' => 'text', 'preview' => ['kind' => 'input', 'value' => __('Biscuit')]],
                     ['key' => 'textarea', 'label' => __('Long text'), 'description' => __('Several lines, for anything that needs a paragraph.'), 'example' => __('What the vet said at the last visit'), 'mark' => 'text-lines', 'preview' => ['kind' => 'textarea']],
@@ -240,7 +238,6 @@ class FieldCatalogueViewModel
             ],
             [
                 'name' => __('Choice'),
-                'blurb' => __('Values picked from a list you control.'),
                 'types' => [
                     ['key' => 'select', 'label' => __('Dropdown'), 'description' => __('One option from a value list, in a closed menu.'), 'example' => __('Species: dog, cat, rabbit'), 'mark' => 'chevron-down', 'preview' => ['kind' => 'dropdown', 'value' => __('Dog')]],
                     ['key' => 'multiselect', 'label' => __('Multiple choice'), 'description' => __('Several options from the same value list.'), 'example' => __('Allergies: pollen, chicken, dust'), 'mark' => 'tasks', 'preview' => ['kind' => 'list', 'marker' => 'check', 'options' => [[__('Pollen'), true], [__('Chicken'), true], [__('Dust'), false]]]],
@@ -250,7 +247,6 @@ class FieldCatalogueViewModel
             ],
             [
                 'name' => __('Date'),
-                'blurb' => __('Points in time, and what they trigger.'),
                 'types' => [
                     ['key' => 'date', 'label' => __('Date'), 'description' => __('A precise day.'), 'example' => __('Adoption day'), 'mark' => 'calendar', 'preview' => ['kind' => 'input', 'value' => __('14 June 2019')]],
                     ['key' => 'recurring_date', 'label' => __('Recurring date'), 'description' => __('A day that comes back every year. The year may be unknown, and it can drive a reminder.'), 'example' => __('Birthday, yearly check up'), 'mark' => 'calendar-repeat', 'preview' => ['kind' => 'input', 'value' => __('14 June, every year')]],
@@ -259,7 +255,6 @@ class FieldCatalogueViewModel
             ],
             [
                 'name' => __('Relation'),
-                'blurb' => __('Links to other records in the vault.'),
                 'types' => [
                     ['key' => 'relation', 'label' => __('Record relation'), 'description' => __('Points at another record. You choose what kind it may point at.'), 'example' => __('Veterinarian, pointing at a contact'), 'mark' => 'relationship', 'preview' => ['kind' => 'dropdown', 'value' => __('Dr Patel'), 'caption' => __('contact')]],
                     ['key' => 'qualified_relation', 'label' => __('Qualified relation'), 'description' => __('A link that also says what the two are to each other.'), 'example' => __('Sarah, qualified as “walker of”'), 'mark' => 'relationship', 'preview' => ['kind' => 'dropdown', 'value' => __('Sarah Miller'), 'caption' => __('walker of')]],
@@ -267,7 +262,6 @@ class FieldCatalogueViewModel
             ],
             [
                 'name' => __('File'),
-                'blurb' => __('Things uploaded rather than typed.'),
                 'types' => [
                     ['key' => 'file', 'label' => __('File'), 'description' => __('Any upload, limited to the file types you accept.'), 'example' => __('Pedigree certificate, PDF'), 'mark' => 'file', 'preview' => ['kind' => 'upload', 'value' => __('Drop a file, or choose one')]],
                     ['key' => 'image', 'label' => __('Image'), 'description' => __('An upload shown as an image on the record.'), 'example' => __('Photo of the microchip paperwork'), 'mark' => 'memory', 'preview' => ['kind' => 'upload', 'value' => __('Drop an image, or choose one')]],
@@ -276,7 +270,6 @@ class FieldCatalogueViewModel
             ],
             [
                 'name' => __('Composite'),
-                'blurb' => __('Several values that belong together.'),
                 'types' => [
                     ['key' => 'email', 'label' => __('Email'), 'description' => __('An email address, checked before it is saved, and what it is for.'), 'example' => __('The kennel’s booking address, marked as work'), 'mark' => 'mail', 'preview' => ['kind' => 'labelled', 'label' => __('Work'), 'value' => 'bookings@kennel.example', 'mono' => true]],
                     ['key' => 'phone', 'label' => __('Phone'), 'description' => __('A phone number, stored as written, and what it is for.'), 'example' => __('The out of hours clinic, marked as mobile'), 'mark' => 'device', 'preview' => ['kind' => 'labelled', 'label' => __('Mobile'), 'value' => __('+44 7700 900461'), 'mono' => true]],
@@ -288,7 +281,6 @@ class FieldCatalogueViewModel
             ],
             [
                 'name' => __('Layout'),
-                'blurb' => __('Structure. These store nothing and are skipped by search and export.'),
                 'types' => [
                     ['key' => 'divider', 'label' => __('Divider'), 'description' => __('A line between two blocks of fields.'), 'example' => __('Between health and care'), 'mark' => 'divider', 'preview' => ['kind' => 'layout', 'layout' => 'divider']],
                     ['key' => 'heading', 'label' => __('Heading'), 'description' => __('A title inside the section.'), 'example' => __('“Appointments” above the repeater'), 'mark' => 'heading', 'preview' => ['kind' => 'layout', 'layout' => 'heading', 'value' => __('Appointments')]],
@@ -297,7 +289,6 @@ class FieldCatalogueViewModel
             ],
             [
                 'name' => __('Other'),
-                'blurb' => __('Coming after the first version.'),
                 'types' => [
                     ['key' => 'rating', 'label' => __('Rating'), 'description' => __('A score on a scale you set.'), 'example' => __('How well the last groomer went'), 'mark' => 'star', 'preview' => ['kind' => 'pills', 'options' => [['1', false], ['2', false], ['3', true], ['4', false], ['5', false]]]],
                     ['key' => 'rich_text', 'label' => __('Rich text'), 'description' => __('Long text with bold, lists and links.'), 'example' => __('A full care routine'), 'mark' => 'note', 'preview' => ['kind' => 'textarea']],
@@ -307,7 +298,6 @@ class FieldCatalogueViewModel
             ],
             [
                 'name' => __('Calculated'),
-                'blurb' => __('Filled by the system, not by a person.'),
                 'types' => [
                     ['key' => 'computed', 'label' => __('Computed value'), 'description' => __('Worked out from other fields every time the record is read.'), 'example' => __('Age, from the birthday'), 'mark' => 'settings', 'preview' => ['kind' => 'input', 'value' => __('6 years old')]],
                 ],

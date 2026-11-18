@@ -6,6 +6,19 @@ return [
     'date' => '2026-11-18',
     'entries' => [
         [
+            'id' => 'duration-field-type',
+            'kind' => 'Added',
+            'group' => 'Templates',
+            'title' => 'Adds the duration field type',
+            'summary' => 'A field can now be of type duration. Its value is a whole number of minutes from 1 to 100000, written like any other field value; anything else answers 422.',
+            'why' => 'How long something takes had no type of its own, and a number field left the unit to its label.',
+            'breaking' => false,
+            'changes' => [
+                ['field' => 'type duration', 'change' => 'Added', 'endpoints' => ['POST /templates/{template}/versions/{version}/sections/{section}/fields', 'PUT /life-event-types/{lifeEventType}/fields']],
+                ['field' => 'value of a duration field', 'change' => 'Added', 'endpoints' => ['PUT /vaults/{vault}/contacts/{contact}/sections/{section}']],
+            ],
+        ],
+        [
             'id' => 'me-vault-list',
             'kind' => 'Added',
             'group' => 'Your profile',

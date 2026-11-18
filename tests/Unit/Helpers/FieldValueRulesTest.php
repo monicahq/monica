@@ -42,6 +42,19 @@ class FieldValueRulesTest extends TestCase
     }
 
     #[Test]
+    public function it_takes_a_duration_only_as_a_whole_number_of_minutes_within_its_bounds(): void
+    {
+        $duration = Field::factory()->create(['type' => FieldTypeEnum::Duration]);
+        $rules = FieldValueRules::for(collect([$duration]));
+
+        $this->assertTrue(Validator::make(['fields' => [$duration->id => 90]], $rules)->passes());
+
+        foreach ([0, 2.5, 'abc', 100001] as $refused) {
+            $this->assertTrue(Validator::make(['fields' => [$duration->id => $refused]], $rules)->fails());
+        }
+    }
+
+    #[Test]
     public function it_asks_for_an_answer_only_where_the_field_says_it_is_required(): void
     {
         $required = Field::factory()->create(['is_required' => true]);

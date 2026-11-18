@@ -421,7 +421,7 @@
   @case($type->hasAnInput() && ! $type->isRelation())
     <x-input
       :type="match ($type) {
-          FieldTypeEnum::Number => 'number',
+          FieldTypeEnum::Number, FieldTypeEnum::Duration => 'number',
           FieldTypeEnum::Url => 'url',
           FieldTypeEnum::Email => 'email',
           FieldTypeEnum::Phone => 'tel',
@@ -430,7 +430,13 @@
       :id="$id"
       :name="$name"
       :label="$field->label"
-      :value="$type === FieldTypeEnum::Number ? $value?->value_number : $value?->value_string"
+      :value="match (true) {
+          $type === FieldTypeEnum::Number => $value?->value_number,
+          $type === FieldTypeEnum::Duration && $value?->value_number !== null => (int) $value->value_number,
+          $type === FieldTypeEnum::Duration => null,
+          default => $value?->value_string,
+      }"
+      :min="$type === FieldTypeEnum::Duration ? 1 : null"
       :placeholder="$field->placeholder"
       :help="$field->help_text"
       :error="$error"

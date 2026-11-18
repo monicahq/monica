@@ -149,8 +149,6 @@
             <div class="flex flex-col gap-2" x-show="{{ Js::from($familyKeys) }}.some(key => matches(key))">
               <div class="flex flex-wrap items-baseline gap-x-3 gap-y-0.5 border-b border-hairline-soft pb-1.5">
                 <h3 class="shrink-0 text-label tracking-caption text-ink uppercase">{{ $family['name'] }}</h3>
-
-                <p class="min-w-0 text-xs text-muted">{{ $family['blurb'] }}</p>
               </div>
 
               <div class="grid grid-cols-[repeat(auto-fill,minmax(10.5rem,1fr))] gap-1.5">

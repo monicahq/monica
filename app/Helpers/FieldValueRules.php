@@ -145,6 +145,7 @@ class FieldValueRules
             FieldTypeEnum::Url => ['string', 'url', 'max:1024'],
             FieldTypeEnum::Email => ['string', 'email', 'max:1024'],
             FieldTypeEnum::Number => ['numeric'],
+            FieldTypeEnum::Duration => ['integer', 'min:1', 'max:100000'],
             FieldTypeEnum::Boolean => ['boolean'],
             FieldTypeEnum::Date, FieldTypeEnum::RecurringDate => ['date'],
             FieldTypeEnum::Select, FieldTypeEnum::Radio => [self::choiceRule($field)],

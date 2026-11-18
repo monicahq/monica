@@ -31,6 +31,7 @@ class ContactListCatalogue
         FieldTypeEnum::Text,
         FieldTypeEnum::Textarea,
         FieldTypeEnum::Number,
+        FieldTypeEnum::Duration,
         FieldTypeEnum::Boolean,
         FieldTypeEnum::Url,
         FieldTypeEnum::Select,

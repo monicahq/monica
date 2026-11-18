@@ -124,6 +124,12 @@ class SetFieldValueTest extends TestCase
             field: $this->fieldOf($user, ['type' => FieldTypeEnum::Number]),
             value: 42,
         )->execute();
+        $duration = new SetFieldValue(
+            user: $user,
+            valuable: $contact,
+            field: $this->fieldOf($user, ['type' => FieldTypeEnum::Duration]),
+            value: 90,
+        )->execute();
         $yesNo = new SetFieldValue(
             user: $user,
             valuable: $contact,
@@ -145,6 +151,7 @@ class SetFieldValueTest extends TestCase
 
         $this->assertEquals('Sells paper in Scranton.', $long->value_text);
         $this->assertEquals('42.000000', $number->value_number);
+        $this->assertEquals(90, (int) $duration->value_number);
         $this->assertTrue($yesNo->value_boolean);
         $this->assertEquals('2005-03-24', $date->value_date->format('Y-m-d'));
         $this->assertEquals('1725 Slough Avenue', $address->value_json['street']);

@@ -87,7 +87,7 @@ $nested = function (string $prefix, string $type, string $singular, string $plur
 
 $fieldAttributes = [
     ['name' => 'key', 'type' => 'string', 'description' => 'How the field is named in an import or an export, settled when the field is added. Send it back to keep a field rather than replace it.'],
-    ['name' => 'type', 'type' => 'string', 'description' => 'What kind of thing the field holds: one of text, textarea, number, boolean, url, email, phone, select, multiselect, radio, date, recurring_date, relation, file, image, avatar, address, repeater, divider, heading or help. The last three carry no value and are there to lay the form out.'],
+    ['name' => 'type', 'type' => 'string', 'description' => 'What kind of thing the field holds: one of text, textarea, number, boolean, url, email, phone, select, multiselect, radio, date, recurring_date, duration (a whole number of minutes), relation, file, image, avatar, address, repeater, divider, heading or help. The last three carry no value and are there to lay the form out.'],
     ['name' => 'label', 'type' => 'string', 'description' => 'What the field is called on the form.'],
     ['name' => 'help_text', 'type' => 'string', 'description' => 'A sentence shown under the field, or null when there is none.'],
     ['name' => 'placeholder', 'type' => 'string', 'description' => 'What the empty box shows as an example, or null.'],

@@ -213,7 +213,7 @@ $nested = function (string $prefix, string $type, string $singular, string $plur
 
 $fieldAttributes = [
     ['name' => 'key', 'type' => 'string', 'description' => 'How the field is named in an import or an export, settled when the field is added.'],
-    ['name' => 'type', 'type' => 'string', 'description' => 'What kind of thing the field holds: one of text, textarea, number, boolean, url, email, phone, select, multiselect, radio, date, recurring_date, relation, file, image, avatar, address, repeater, divider, heading or help. The last three carry no value and are there to lay the form out.'],
+    ['name' => 'type', 'type' => 'string', 'description' => 'What kind of thing the field holds: one of text, textarea, number, boolean, url, email, phone, select, multiselect, radio, date, recurring_date, duration (a whole number of minutes), relation, file, image, avatar, address, repeater, divider, heading or help. The last three carry no value and are there to lay the form out.'],
     ['name' => 'label', 'type' => 'string', 'description' => 'What the field is called on the form.'],
     ['name' => 'help_text', 'type' => 'string', 'description' => 'A sentence shown under the field, or null when there is none.'],
     ['name' => 'placeholder', 'type' => 'string', 'description' => 'What the empty box shows as an example, or null.'],
@@ -860,7 +860,7 @@ return [
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [$templateParam, $versionParam, $sectionParam],
             'bodyParams' => [
-                ['name' => 'type', 'type' => 'string', 'required' => true, 'description' => 'What kind of thing the field holds: one of text, textarea, number, boolean, url, email, phone, select, multiselect, radio, date, recurring_date, relation, file, image, avatar, address, repeater, divider, heading or help.', 'example' => 'text'],
+                ['name' => 'type', 'type' => 'string', 'required' => true, 'description' => 'What kind of thing the field holds: one of text, textarea, number, boolean, url, email, phone, select, multiselect, radio, date, recurring_date, duration (a whole number of minutes), relation, file, image, avatar, address, repeater, divider, heading or help.', 'example' => 'text'],
                 ['name' => 'label', 'type' => 'string', 'required' => true, 'description' => 'What the field is called on the form. Up to 255 characters.', 'example' => 'Nickname'],
                 ['name' => 'key', 'type' => 'string', 'required' => false, 'description' => 'How the field is named in an import or an export. Derived from the label when absent, and settled once.'],
                 ['name' => 'value_list_id', 'type' => 'integer', 'required' => false, 'description' => 'The list a field offering choices takes them from, as the id the value lists endpoint gives. Required for select, multiselect and radio.'],

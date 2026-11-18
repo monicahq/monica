@@ -99,6 +99,17 @@ class FieldValueFormatterTest extends TestCase
     }
 
     #[Test]
+    public function it_reads_a_duration_as_a_number_of_minutes(): void
+    {
+        $user = User::factory()->create();
+        $formatter = new FieldValueFormatter($user);
+
+        $this->assertEquals('1 minute', $formatter->format($this->value($user, FieldTypeEnum::Duration, ['value_number' => '1.000000'])));
+        $this->assertEquals('90 minutes', $formatter->format($this->value($user, FieldTypeEnum::Duration, ['value_number' => '90.000000'])));
+        $this->assertNull($formatter->format($this->value($user, FieldTypeEnum::Duration, ['value_number' => null])));
+    }
+
+    #[Test]
     public function it_reads_a_date_in_the_order_the_person_reads_dates(): void
     {
         $user = User::factory()->create(['date_format' => DateFormatEnum::YearFirst]);

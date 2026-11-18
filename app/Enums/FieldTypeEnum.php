@@ -18,6 +18,7 @@ enum FieldTypeEnum: string
     case Radio = 'radio';
     case Date = 'date';
     case RecurringDate = 'recurring_date';
+    case Duration = 'duration';
     case Relation = 'relation';
     case File = 'file';
     case Image = 'image';
@@ -38,7 +39,7 @@ enum FieldTypeEnum: string
         return match ($this) {
             self::Text, self::Url, self::Email, self::Phone => 'value_string',
             self::Textarea => 'value_text',
-            self::Number => 'value_number',
+            self::Number, self::Duration => 'value_number',
             self::Boolean => 'value_boolean',
             self::Date, self::RecurringDate => 'value_date',
             self::Select, self::Radio => 'value_list_item_id',
@@ -54,7 +55,7 @@ enum FieldTypeEnum: string
         return in_array($this, [
             self::Text, self::Textarea, self::Number, self::Boolean, self::Url,
             self::Email, self::Phone, self::Select, self::Multiselect, self::Radio,
-            self::Date, self::RecurringDate, self::Relation, self::File, self::Image, self::Address,
+            self::Date, self::RecurringDate, self::Duration, self::Relation, self::File, self::Image, self::Address,
             self::Repeater,
         ], true);
     }
