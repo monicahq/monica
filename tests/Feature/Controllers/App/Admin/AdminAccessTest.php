@@ -29,6 +29,7 @@ class AdminAccessTest extends TestCase
             'the waiting list' => ['admin/preview-list'],
             'the flags' => ['admin/flags'],
             'the search engine' => ['admin/search'],
+            'the billing status' => ['admin/billing'],
             'the changelog comments' => ['admin/changelog'],
             'the changelog votes' => ['admin/changelog/votes'],
         ];

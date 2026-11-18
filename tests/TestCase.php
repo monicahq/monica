@@ -85,8 +85,9 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
-     * Put the instance in a known state: no provider signs anybody in, whatever the environment the
-     * suite runs in supplies. A test that needs one gives it credentials of its own with `config()`.
+     * Put the instance in a known state: no provider signs anybody in and no Stripe key is set,
+     * whatever the environment the suite runs in supplies. A test that needs one gives it credentials
+     * of its own with `config()`.
      */
     private function clearConfig(): void
     {
@@ -96,6 +97,8 @@ abstract class TestCase extends BaseTestCase
                 "services.{$provider}.client_secret" => null,
             ]);
         }
+
+        config(['cashier.key' => null, 'cashier.secret' => null, 'cashier.webhook.secret' => null]);
     }
 
     /**

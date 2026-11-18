@@ -29,6 +29,7 @@ enum AdministratorActionEnum: string implements Translatable
     case SupportNoteAdded = 'support_note_added';
     case SupportRequestStatusChanged = 'support_request_status_changed';
     case SearchIndexRebuildStarted = 'search_index_rebuild_started';
+    case StripeCatalogueReloaded = 'stripe_catalogue_reloaded';
     case PreviewListEntryAdmitted = 'preview_list_entry_admitted';
     case PreviewListEntryRemoved = 'preview_list_entry_removed';
     case ChangelogCommentReviewed = 'changelog_comment_reviewed';
@@ -59,6 +60,7 @@ enum AdministratorActionEnum: string implements Translatable
             self::SupportNoteAdded => 'Left an internal note on the support request :reference of :name',
             self::SupportRequestStatusChanged => 'Moved the support request :reference of :name to :status',
             self::SearchIndexRebuildStarted => 'Started the rebuild of the search index :index',
+            self::StripeCatalogueReloaded => 'Read the Stripe catalogue again',
             self::PreviewListEntryAdmitted => 'Admitted :email from the waiting list',
             self::PreviewListEntryRemoved => 'Removed :email from the waiting list',
             self::ChangelogCommentReviewed => 'Reviewed the comment of :name on “:title”',
@@ -80,6 +82,7 @@ enum AdministratorActionEnum: string implements Translatable
             self::FlagActivated, self::FlagDeactivated, self::FlagActivatedForEveryAccount, self::FlagDeactivatedForEveryAccount => 'tag',
             self::SupportReplySent, self::SupportNoteAdded, self::SupportRequestStatusChanged => 'mail',
             self::SearchIndexRebuildStarted => 'search',
+            self::StripeCatalogueReloaded => 'credit-card',
             self::PreviewListEntryAdmitted, self::PreviewListEntryRemoved => 'profile',
             self::ChangelogCommentReviewed, self::ChangelogCommentHidden, self::ChangelogCommentShown, self::ChangelogCommentReplied => 'journal',
         };
@@ -112,6 +115,7 @@ enum AdministratorActionEnum: string implements Translatable
             self::FlagActivatedForEveryAccount,
             self::FlagDeactivatedForEveryAccount,
             self::SearchIndexRebuildStarted,
+            self::StripeCatalogueReloaded,
             self::PreviewListEntryAdmitted,
             self::PreviewListEntryRemoved => false,
         };

@@ -8,6 +8,7 @@ use App\Http\Controllers\App\Admin\AccountLifetimeAccessController;
 use App\Http\Controllers\App\Admin\AccountStorageLimitController;
 use App\Http\Controllers\App\Admin\AdministratorController;
 use App\Http\Controllers\App\Admin\AdministratorLogController;
+use App\Http\Controllers\App\Admin\BillingStatusController;
 use App\Http\Controllers\App\Admin\ChangelogCommentController;
 use App\Http\Controllers\App\Admin\ChangelogCommentHidingController;
 use App\Http\Controllers\App\Admin\ChangelogCommentReplyController;
@@ -25,6 +26,7 @@ use App\Http\Controllers\App\Admin\PreviewListEntryController;
 use App\Http\Controllers\App\Admin\PreviewListOldestAdmissionController;
 use App\Http\Controllers\App\Admin\SearchEngineController;
 use App\Http\Controllers\App\Admin\SearchIndexRebuildController;
+use App\Http\Controllers\App\Admin\StripeCatalogueReloadController;
 use App\Http\Controllers\App\Admin\SupportAttachmentController;
 use App\Http\Controllers\App\Admin\SupportController;
 use App\Http\Controllers\App\Admin\SupportNoteController;
@@ -85,6 +87,9 @@ Route::middleware(['administrator', Sample::always()])->group(function (): void 
     Route::get('admin/flags', [FlagController::class, 'index'])->name('admin.flags.index');
 
     Route::get('admin/search', [SearchEngineController::class, 'index'])->name('admin.search.index');
+
+    Route::get('admin/billing', [BillingStatusController::class, 'index'])->name('admin.billing.index');
+    Route::post('admin/billing/catalogue-reload', [StripeCatalogueReloadController::class, 'create'])->name('admin.billing.catalogueReload.create');
 
     Route::get('admin/configuration', [InstanceSettingController::class, 'index'])->name('admin.configuration.index');
     Route::post('admin/configuration/telegram/check', [TelegramRegistrationCheckController::class, 'create'])->name('admin.configuration.telegram.check.create');

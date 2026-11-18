@@ -256,3 +256,6 @@ A chronological list of every feature and improvement shipped during development
 * Admin/waiting list: An administrator can admit a given number of the oldest waiting addresses at once.
 * Admin/waiting list: An administrator can remove an address from the waiting list, which ends the link it was sent.
 * API: The register endpoint accepts an admission from the waiting list while the instance refuses new accounts.
+* Admin/billing: Added a screen showing what is on sale through Stripe, and which confirmations Stripe sends and has sent to the instance.
+* Admin/billing: Showed the figures of the business on that screen: who holds full access and through what, the state of the subscriptions, the payments of this month and the last, and the refunds and disputes that ended access.
+* Admin/billing: Let an administrator read the Stripe catalogue again instead of waiting for the hour, written down in the administrator record.

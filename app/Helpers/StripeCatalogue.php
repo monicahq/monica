@@ -6,6 +6,7 @@ namespace App\Helpers;
 
 use App\Enums\OfferKindEnum;
 use App\Models\Payment;
+use Carbon\CarbonImmutable;
 use Exception;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
@@ -17,6 +18,8 @@ use Stripe\Product;
 class StripeCatalogue
 {
     private const string CACHE_KEY = 'stripe_offers';
+
+    private const string READ_AT_CACHE_KEY = 'stripe_offers_read_at';
 
     private const int CACHE_MINUTES = 60;
 
@@ -106,9 +109,17 @@ class StripeCatalogue
         return $subscription === null ? null : self::kindOfSubscription($subscription);
     }
 
+    public static function readAt(): ?CarbonImmutable
+    {
+        $readAt = Cache::get(self::READ_AT_CACHE_KEY);
+
+        return $readAt instanceof CarbonImmutable ? $readAt : null;
+    }
+
     public static function forget(): void
     {
         Cache::forget(self::CACHE_KEY);
+        Cache::forget(self::READ_AT_CACHE_KEY);
     }
 
     /** @return array<int, array{price_id: string, kind: string, amount: int, currency: string, prices: array<string, int>}>|null */
@@ -135,6 +146,7 @@ class StripeCatalogue
         $offers = self::offersAmong($prices);
 
         Cache::put(self::CACHE_KEY, $offers, now()->addMinutes(self::CACHE_MINUTES));
+        Cache::put(self::READ_AT_CACHE_KEY, now()->toImmutable(), now()->addMinutes(self::CACHE_MINUTES));
 
         return $offers;
     }

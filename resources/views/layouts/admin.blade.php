@@ -16,6 +16,7 @@
     ['label' => __('Waiting list'), 'route' => 'admin.previewList.index', 'section' => 'admin.previewList.*', 'icon' => 'profile'],
     ['label' => __('Configuration'), 'route' => 'admin.configuration.index', 'section' => 'admin.configuration.*', 'icon' => 'settings'],
     ['label' => __('Search'), 'route' => 'admin.search.index', 'section' => 'admin.search.*', 'icon' => 'search'],
+    ['label' => __('Billing'), 'route' => 'admin.billing.index', 'section' => 'admin.billing.*', 'icon' => 'credit-card'],
     ['label' => __('Flags'), 'route' => 'admin.flags.index', 'section' => 'admin.flags.*', 'icon' => 'tag'],
     ['label' => __('Administrators'), 'route' => 'admin.administrators.index', 'section' => 'admin.administrators.*', 'icon' => 'key'],
     ['label' => __('Record'), 'route' => 'admin.logs.index', 'section' => 'admin.logs.*', 'icon' => 'timeline'],

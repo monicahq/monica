@@ -251,4 +251,37 @@ class StripeCatalogueTest extends TestCase
 
         $this->assertCount(2, $client->requests('GET prices'));
     }
+
+    #[Test]
+    public function it_records_when_it_read_the_catalogue(): void
+    {
+        $this->fakeStripe();
+        $this->travelTo('2026-11-17 09:30:00');
+
+        StripeCatalogue::offers();
+
+        $this->assertEquals(now()->toImmutable(), StripeCatalogue::readAt());
+    }
+
+    #[Test]
+    public function it_forgets_when_it_read_the_catalogue_with_the_catalogue(): void
+    {
+        $this->fakeStripe();
+
+        StripeCatalogue::offers();
+        StripeCatalogue::forget();
+
+        $this->assertNull(StripeCatalogue::readAt());
+    }
+
+    #[Test]
+    public function it_records_no_read_time_when_the_catalogue_cannot_be_read(): void
+    {
+        $client = $this->fakeStripe();
+        $client->failOn('prices*');
+
+        StripeCatalogue::offers();
+
+        $this->assertNull(StripeCatalogue::readAt());
+    }
 }

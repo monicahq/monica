@@ -49,7 +49,7 @@
     </x-panel>
 
     <x-panel :title="__('The indexes')" title-id="search-indexes-title" icon="layers" :flush="true">
-      <div class="overflow-x-auto focus-ring-inset" tabindex="0" role="region" aria-labelledby="search-indexes-title">
+      <x-scroll-region labelledby="search-indexes-title">
         <table class="w-full text-sm">
           <caption class="sr-only">{{ __('What each index holds, beside what the instance holds') }}</caption>
           <thead>
@@ -90,7 +90,7 @@
             @endforeach
           </tbody>
         </table>
-      </div>
+      </x-scroll-region>
     </x-panel>
 
     <x-panel :title="__('How changes reach the engine')" icon="settings" :flush="true">

@@ -61,6 +61,7 @@ class NoVaultContentTest extends TestCase
             route('admin.logs.index', ['account' => $dwight->account_id]),
             route('admin.moderation.index'),
             route('admin.search.index'),
+            route('admin.billing.index'),
         ] as $url) {
             $response = $this->actingAs($michael)->get($url);
 
