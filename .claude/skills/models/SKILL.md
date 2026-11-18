@@ -8,8 +8,8 @@ description: Adds a new model to the Laravel application. Use when the user want
 ## Migration
 
 - If no migration already exists, you MUST create a migration for the given fields.
-- If a migration exists, you MUST read it to understand the database schema changes.
-- You MUST comment each field of the migration, except `id` and timestamps.
+- If a migration exists, you MUST read it to understand the database schema changes. A field the model needs that the table lacks is added by a new migration, following the [migrations skill](../migrations/SKILL.md), never by editing the existing one.
+- You MUST comment each field of the migration you write, except `id` and timestamps.
 
 ## Default values
 

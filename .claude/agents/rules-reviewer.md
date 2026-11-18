@@ -47,7 +47,8 @@ These are the rules most often broken. They do not replace reading the rules.
   `x-dynamic-component`, `@js()` inside a component tag, a wrapper that does not forward every slot.
 - **Structure** (`CLAUDE.md` and the skills): business logic in a controller, a view model holding
   business logic, `Route::resource`, a Form Request, `compact()`, `Model::` without `query()`,
-  request input not read with `$request->string(...)`, a `down()` in a migration, `$table->foreign()`.
+  request input not read with `$request->string(...)`, a `down()` in a migration, `$table->foreign()`,
+  a migration already in `main` edited or renamed instead of a new one added.
 - **Comments and style** (`code-style.md`): a comment where none is earned, a Blade template whose
   first line is not its one line `{{-- --}}` description, a missing `#[Override]`, `final`, `else`.
 - **Naming** (`CLAUDE.md`): a name that is informal, a metaphor or a synonym for a term the codebase
