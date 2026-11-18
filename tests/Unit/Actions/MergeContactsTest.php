@@ -38,10 +38,13 @@ use App\Models\StructureVersionSection;
 use App\Models\Template;
 use App\Models\User;
 use App\Models\Vault;
+use Illuminate\Database\DeadlockException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\ValidationException;
+use PDOException;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -321,6 +324,54 @@ class MergeContactsTest extends TestCase
             ['kind' => 'value_moved', 'id' => $value->id, 'from' => $james->id],
             $merge->ledger
         );
+    }
+
+    #[Test]
+    public function it_starts_again_from_the_database_when_a_deadlock_rolls_an_attempt_back(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $version = $this->publishedContactVersion($user);
+        $field = $this->fieldCarriedBy($version);
+        [$jim, $james] = $this->twoContactsOf($user, $version);
+        $jim->is_partial = true;
+        $jim->save();
+        $value = $this->valueFor($james, $field, 'james@dundermifflin.com');
+        $name = $james->nameRepresentations()->sole();
+
+        $deadlocked = false;
+        ContactMerge::creating(function () use (&$deadlocked): void {
+            if ($deadlocked) {
+                return;
+            }
+
+            $deadlocked = true;
+
+            throw new QueryException('testing', 'insert into contact_merges', [], new PDOException('Deadlock found when trying to get lock'));
+        });
+
+        $merge = new MergeContacts(user: $user, kept: $jim, absorbed: $james);
+
+        try {
+            $merge->execute();
+            $this->fail('The first attempt was expected to deadlock.');
+        } catch (DeadlockException) {
+        }
+
+        $record = $merge->execute();
+
+        $this->assertSame(
+            [
+                ['kind' => 'name_representation_moved', 'id' => $name->id, 'from' => $james->id, 'position' => 1],
+                ['kind' => 'value_moved', 'id' => $value->id, 'from' => $james->id],
+                ['kind' => 'partial_cleared', 'id' => $jim->id],
+            ],
+            $record->ledger
+        );
+        $this->assertFalse($jim->refresh()->is_partial);
+        $this->assertSoftDeleted($james);
+        $this->assertSame(1, RecordSnapshot::query()->where('reason', SnapshotReasonEnum::Merge)->count());
     }
 
     #[Test]

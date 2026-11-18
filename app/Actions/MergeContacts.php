@@ -66,13 +66,18 @@ class MergeContacts
         $this->guardTheState($preview);
         $decisions = $this->decisions($preview);
 
-        $this->snapshot = new CreateRecordSnapshot(
-            user: $this->user,
-            record: $this->kept,
-            reason: SnapshotReasonEnum::Merge,
-        )->execute();
-
         DB::transaction(function () use ($decisions): void {
+            // A deadlock reruns this closure, so drop what a rolled back attempt left in memory.
+            $this->ledger = [];
+            $this->kept->refresh();
+            $this->absorbed->refresh();
+
+            $this->snapshot = new CreateRecordSnapshot(
+                user: $this->user,
+                record: $this->kept,
+                reason: SnapshotReasonEnum::Merge,
+            )->execute();
+
             $this->takeTheAvatar($decisions);
             $this->takeTheNames($decisions);
             $this->takeTheValues($decisions);
@@ -90,7 +95,7 @@ class MergeContacts
             $this->absorbed->delete();
 
             $this->record();
-        });
+        }, attempts: 3);
 
         $this->log();
 
