@@ -1,184 +1,165 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/github/app_dark_mode.webp">
+    <img alt="The Monica dashboard of a vault, showing its timeline, favourite people and recently viewed contacts, surrounded by pandas." src="docs/github/app_light_mode.webp">
+  </picture>
 </p>
 
-## Requirements
+<h1 align="center">Monica</h1>
 
-PHP 8.4 or later, with the `intl` extension. The extension is required rather than optional:
-lists of names are ordered and searched in the alphabet of whoever is reading them, and the
-alphabet rules come from it. Without it `composer install` refuses, which is deliberate. An
-installation that started without it would order names in a way no reader could rely on, and
-say nothing about why.
+<p align="center">
+  <em>Your personal CRM and database. The OG.</em>
+</p>
 
-The official `php:8.4` images do not enable it by default:
+<p align="center">
+  <a href="https://trendshift.io/repositories/697?utm_source=repository-badge&amp;utm_medium=badge&amp;utm_campaign=badge-repository-697" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/repositories/697" alt="monicahq%2Fmonica | Trendshift" width="250" height="55"/></a>
+</p>
 
-```
-docker-php-ext-install intl
-```
+<p align="center">
+  <img src="https://img.shields.io/github/stars/monicahq/monica?style=flat-square&color=111111&label=stars" alt="Stars">
+  <img src="https://img.shields.io/github/v/release/monicahq/monica?style=flat-square&color=111111&label=release" alt="Release">
+  <img src="https://img.shields.io/badge/works%20with-any%20agent-blue" alt="Works with 20 agents">
+  <img src="https://img.shields.io/badge/LICENSE-GPL-blue" alt="GPL license">
+</p>
 
-Check it with `php -m | grep intl`.
+<p align="center">
+  <a href="https://trendshift.io/repositories/697?utm_source=trendshift-badge&amp;utm_medium=badge&amp;utm_campaign=badge-trendshift-697" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/trendshift/repositories/697/daily?language=PHP" alt="monicahq%2Fmonica | Trendshift" width="250" height="55"/></a>
+  <a href="https://trendshift.io/repositories/697?utm_source=trendshift-badge&amp;utm_medium=badge&amp;utm_campaign=badge-trendshift-697" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/trendshift/repositories/697/weekly?language=PHP" alt="monicahq%2Fmonica | Trendshift" width="250" height="55"/></a>
+  <a href="https://trendshift.io/repositories/697?utm_source=trendshift-badge&amp;utm_medium=badge&amp;utm_campaign=badge-trendshift-697" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/trendshift/repositories/697/monthly?language=PHP" alt="monicahq%2Fmonica | Trendshift" width="250" height="55"/></a>
+  <a href="https://trendshift.io/repositories/697?utm_source=trendshift-badge&amp;utm_medium=badge&amp;utm_campaign=badge-trendshift-697" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/trendshift/repositories/697/yearly?language=PHP" alt="monicahq%2Fmonica | Trendshift" width="250" height="55"/></a>
+</p>
 
-## Development in Docker
+## Introduction
 
-`compose.yaml` describes a development environment: the application behind Apache, a queue worker
-and a MariaDB database. It serves the checkout it mounts rather than a copy of its own, so that
-checkout has to carry its own `.env`, `vendor` and `node_modules` first. `composer setup` writes
-all three.
+Monica is an open-source web application that enables you to document your life, the people you care about, the things you own, and whatever else. Imagine a CRM—a commonly used tool by sales teams in the corporate world, but for your friends and family, and life.
 
-```
-docker compose up
-```
+Monica is a single user application. It runs as a hosted service, and you can host it yourself for
+free, with no limit.
 
-| Address | What answers there |
+### Who is it for?
+
+This project is for people who want to document their lives and those who have difficulty remembering details about the lives of people they care about.
+
+We’ve also had a lot of positive reviews from people with Asperger syndrome, Alzheimer’s disease, and introverts who use our app every day.
+
+### Who is it not for?
+
+We've had many criticisms over the years about this tool. "Do you really need a tool for that?" or "It's sad that we need this kind of tools in our lives".
+
+Monica is **clearly** not for everybody. We hope you don't need it. But some people do (see above). I know I do.
+
+### What Monica isn't
+
+- Monica is not a social network and it never will be. It’s not meant to be social. It’s designed to be the opposite: it’s for your eyes only.
+- Monica is not a smart assistant. It won’t guess what you want to do. It’s actually pretty dumb: it will only send you emails for the things you asked to be reminded of.
+- Monica does not have built-in AI with integrations like ChatGPT. But we do play very very nice with AI agents.
+- Monica is not a tool that will scan your data and do nasty things with it. It’s your data, your server, do whatever you want with it. You’re in control of your data. We really don't want to own your data.
+
+## Main features
+
+- **Vaults** keep separate parts of your life apart, such as family, friends and work.
+- **Contacts** hold what you know about each person, laid out by templates you design.
+- **Life events** are written once and appear both in the journal and in the history of every person
+  involved.
+- **Relationships and groups** describe how the people you know are connected.
+- **Reminders** bring back the dates that matter, by email or through another notification channel.
+- **Possessions and locations** track the things you own and the places in your life.
+- **A JSON API and an MCP server** let your own scripts and AI assistants work with your data.
+
+## Documentation
+
+A running instance serves its own documentation:
+
+| Address | What it holds |
 | --- | --- |
-| `http://localhost:8000` | The application, served by Apache out of `public/` |
-| `http://localhost:8000/up` | The health route, which answers only once the database does |
-| `localhost:3306` | The database, for a client outside the container |
+| `/docs` | The product guide, for people using Monica |
+| `/docs/api` | The reference of the JSON API |
+| `/docs/mcp` | The tools the MCP server offers to AI assistants |
 
-The stack runs three services. `app` is Apache and nothing else, `queue` is the one process
-development adds, and `database` is what the application talks to. Apache has to be the only
-process of its container: its log files are symbolic links to `/dev/stderr`, and a process
-whose standard error is a pipe cannot open that, so running it under a supervisor fails with
-`AH00015` before it serves anything.
+The guide is written in `docs/portal`, the API reference in `resources/docs/api`, and the
+specification of each feature in `specs`.
 
-The `queue` worker listens to `high,default,low`. Those words name priorities, and
-`MONICA_QUEUE_HIGH`, `MONICA_QUEUE_DEFAULT` and `MONICA_QUEUE_LOW` name the queue behind each one
-(`high`, `default` and `low` when unset or blank). Work that names no queue, search indexing
-included, has the default priority. The application sends to the configured names and the worker
-reads from them, so its command never changes. Give all three the same name and a single
-`php artisan queue:work` started without `--queue` runs everything. A worker reads these names
-only when it starts: change one while its queue is empty, then run `php artisan queue:restart`.
-Work still waiting on the old name stays there.
+You can find all the online document in https://my.monicahq.com/docs.
 
-No Vite dev server runs in the stack. The entrypoint builds the assets once at every start, so a
-page has a manifest to read, and a change to the CSS or the JavaScript needs either a restart or
-`docker compose exec app bun run build`. For a dev server and its hot reloading, run `bun run dev`
-outside the container: it writes `public/hot`, which every view then follows in preference to the
-built files. Delete that file when you stop it, since a page follows it to a dev server that is no
-longer listening.
+## Contribute
 
-Run anything else inside the stack with `docker compose exec`:
+Do you want to lend a hand? That’s great! We accept contributions from everyone, regardless of form.
 
-```
-docker compose exec app php artisan test
-docker compose exec app php artisan tinker
-docker compose exec app php artisan pail
-```
+Here are some of the things you can do to help.
 
-The suite is unaffected by any of this. `phpunit.xml` asks for the `testing` connection, which is
-SQLite in memory, so the database you develop on is never touched.
+### Contribute as a community
 
-### What the image holds, and what the stack adds
+- Unlike Fight Club, the best way to help is **to actually talk about Monica** as much as you can in blog posts and articles, or on social media.
+- You can answer questions in [the issue tracker](https://github.com/monicahq/monica/issues) to help other community members.
+- You can financially support Monica’s development [on Patreon](https://www.patreon.com/monicahq) or by subscribing to [a paid account](https://monicahq.com/pricing).
 
-`docker build` produces an image that serves on its own. It installs the PHP and the JavaScript
-dependencies, builds the assets with Vite, configures Apache to serve `public/`, and ships
-`.env.docker` as its `.env`.
+## Principles, vision, goals and strategy
 
-Composer runs there with `--no-dev`, so the image carries what the application needs to serve and
-nothing else. PHPUnit, Pint, PHPStan and the Telegram, Vonage and Microsoft integrations are all
-development dependencies of this project and are absent from it. The checkout the stack mounts is
-where they come back, which is what `docker compose exec app php artisan test` runs on.
+### Vision
 
-Apache answers on 8000 rather than 80. That is what lets it run as the same user that owns the
-files it serves: a port below 1024 needs privileges that user does not have, and granting them
-would put root owned files back into your checkout.
+Monica’s vision is to **help document their lives**.
 
-`.env.docker` is what the image runs on. It names SQLite as the database, so a container serves
-with nothing else beside it, and the entrypoint creates that file on first start. It holds no key
-and no secret: `APP_KEY` is empty and is generated on first start. To put the image on another
-database, pass `DB_CONNECTION` and its credentials to `docker run`, the way `compose.yaml` does for
-development.
+### Principles
 
-`compose.yaml` mounts the checkout over that copy, which is what makes an edit visible without a
-rebuild. The mount also hides everything the image installed, which is why the checkout has to
-carry its own. `docker-entrypoint.sh` installs none of it: it builds the assets, generates a key
-where `APP_KEY` names none, waits for the database to answer and runs `php artisan monica:setup`.
-Every step of it is safe to repeat, so it runs on every start.
+Monica has a few principles.
 
-`monica:setup` is the command that brings an installation to a state it can serve from. It links
-the storage folder into public, generates the keys that sign OAuth tokens when there are none, clears
-the application cache, resets the compiled configuration, routes, views and events, and migrates. In production it compiles those files instead of clearing
-them, and caches the configuration. `--build` runs only the steps that prepare the checkout and
-`--deploy` only the step that touches the database, so a deployment can split the two.
+- It should help improve relationships.
+- It should be simple to use, simple to contribute to, simple to understand, extremely simple to maintain.
+- It is not a social network and never will be.
+- It is not and never will be ad-supported.
+- Users are not and never will be tracked.
+- It should be transparent.
+- It should be open-source.
+- It should do one thing (documenting your life) extremely well, and nothing more.
+- It should be well documented.
 
-The entrypoint calls it twice, `--deploy` before `--build`. Caching the configuration is refused
-while the cache table is missing, and on a database nobody has migrated yet that table only appears
-once the migrations have run. Run in the command's own order, the first start of a fresh
-installation would serve its whole life with the configuration uncached.
+### Goals
 
-The OAuth keys are written to `storage/oauth-private.key` and `storage/oauth-public.key`. They sign
-the tokens of every assistant connected to the MCP server, so they have to outlive the container:
-keep `storage` on a persistent volume, or pass the keys as `PASSPORT_PRIVATE_KEY` and
-`PASSPORT_PUBLIC_KEY`, in which case none are generated. New keys disconnect every assistant.
+We want to provide a platform that is:
 
-The image does not run it at build time. In production the command caches the configuration, and a
-configuration cached from `.env.docker` would ignore every value passed to `docker run` afterwards.
-The entrypoint runs it once the environment is settled instead.
+- **really easy to use**: we value simplicity over anything else.
+- **open-source**: we believe everyone should be able to contribute to this tool, and see for themselves that nothing nasty is done behind the scenes that would go against the best interests of the users. We also want to leverage the community to build attractive features and do things that would not be possible otherwise.
+- **easy to contribute to**: we want to keep the codebase as simple as possible. This has two big advantages: anyone can contribute, and it’s easily maintainable on the long run.
+- **available everywhere**: Monica should be able to run on any desktop OS or mobile phone easily. This will be made possible by making sure the tool is easily installable by anyone who wants to either contribute or host the platform themselves.
 
-### The health route
+### Why Open Source?
 
-`/up` is where Laravel reports whether an installation is serving, and an installation that cannot
-reach its database is not. `App\Listeners\CheckDatabaseIsReady` listens for `DiagnosingHealth` and
-runs a query there, so the route answers 500 while the database is away rather than claiming a
-health the application does not have.
+Why is Monica open source? Is it risky? Could someone steal my code and use it to start a for-profit business that could hurt my own? Why reveal our strategy to the world? We’ve already received these kinds of questions in our emails.
 
-`compose.yaml` polls it as the health check of the app service, and `queue` waits for it before it
-starts. That is what keeps it from running against a checkout whose dependencies the app container
-has not finished installing, and it is why only that one container runs the entrypoint: `queue`
-steps over it with an emptied `entrypoint`.
+The answer is simple: yes, you can fork Monica and create a competing project, make money from it (even if the license is not ideal for that) and we won’t be aware. But that’s okay, we don’t mind.
 
-### Three things worth knowing
+We wanted to open source Monica for several reasons:
 
-The container writes `public/build`, `storage` and `bootstrap/cache` into the checkout as the user
-1000:1000. Where your own identifiers differ, build with `USER_ID` and `GROUP_ID` set:
-`USER_ID=$(id -u) GROUP_ID=$(id -g) docker compose up --build`.
+- **We believe that this tool can really change people’s lives.**
+  We aim to make money from this project, but also want everyone to benefit. Open sourcing it will help Monica become much bigger than we imagine. We believe the software should follow our vision, but we must be humble enough to recognize that ideas come from everywhere and people may have better ideas than us.
+- **You can’t make something great alone.**
+  While Monica could become a company and hire a bunch of super smart people to work on it, you can’t beat the manpower of an entire community. Open sourcing the product means bugs will be fixed faster, features will be developed faster, and more importantly, developers will be able to contribute to a tool that positively changes their own lives and the lives of other people.
+- **Doing things in a transparent way leads to formidable things.**
+  People respect the project more when they can see how it’s being worked on. You can’t hide nasty things in the code. You can’t do things behind the backs of your users. Doing everything in the open is a major driving force that motivates you to keep doing what’s right.
+- **Once you’ve created a community of passionate developers around your project, you’ve won.**
+  Developers are powerful influencers: they create apps, discuss your product on forums, and share it with their networks. Nurture your relationship with developers – users will follow.
 
-The `.env` of the checkout is read, never written. For the application to reach the stack, it has
-to name the database service: `DB_CONNECTION=mariadb`, `DB_HOST=database`, `DB_DATABASE=monica`,
-`DB_USERNAME=monica` and `DB_PASSWORD=secret`.
+### Patreon
 
-Where the host already answers on 3306, set `DATABASE_PORT_ON_HOST`. Port 8000 is fixed, because
-`APP_URL` is written for it.
+You can support the development of Monica [on Patreon](https://www.patreon.com/monicahq). Thanks for your help.
 
-## About Laravel
+## Contact
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Team
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Our team is made of two core members:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- [Regis (djaiss)](https://github.com/djaiss)
+- [Alexis Saettler (asbiin)](https://github.com/asbiin)
 
-## Learning Laravel
+We are also fortunate to have an amazing [community of developers](https://github.com/monicahq/monica/graphs/contributors) who help us greatly.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Thank you, open source
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Monica makes use of numerous open-source projects and we are deeply grateful. We hope that by offering Monica as a free, open-source project, we can help others in the same way these programs have helped us.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Copyright © 2016–2026
+
+Licensed under [the AGPL License](/LICENSE.md).
