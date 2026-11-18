@@ -16,13 +16,18 @@ class ChangelogController extends Controller
 {
     public function index(Request $request): View
     {
-        $unseen = app(ChangelogEntries::class)->unseenBy($request->user());
+        $user = $request->user();
+        $unseen = [];
 
-        new MarkChangelogSeen(user: $request->user())->execute();
+        if ($user !== null) {
+            $unseen = app(ChangelogEntries::class)->unseenBy($user);
+
+            new MarkChangelogSeen(user: $user)->execute();
+        }
 
         return view('app.changelog.index', [
             'viewModel' => new ChangelogViewModel(
-                user: $request->user(),
+                user: $user,
                 unseenIds: array_map(fn (ChangelogEntry $entry): string => $entry->id, $unseen),
                 period: ChangelogEntries::period($request->string('period')->toString()),
             ),

@@ -3,13 +3,14 @@
 @php
   $figures = $viewModel->figures();
   $days = $viewModel->days();
+  $feedback = $viewModel->allowsFeedback();
 @endphp
-<x-shell :title="__('What’s new')">
+<x-account-layout :title="__('What’s new')">
   <x-slot:breadcrumb>
     <x-breadcrumb :items="[['label' => __('What’s new')]]" />
   </x-slot:breadcrumb>
 
-  <x-page-header :title="__('What’s new')" :description="__('What changed in Monica, day by day. Tell us which changes help you and which do not.')" />
+  <x-page-header :title="__('What’s new')" :description="$feedback ? __('What changed in Monica, day by day. Tell us which changes help you and which do not.') : __('What changed in Monica, day by day.')" />
 
   <div class="flex flex-col gap-2.5">
     <nav aria-label="{{ __('Period') }}" class="flex gap-0.5 self-start rounded-lg border border-hairline bg-card p-0.5">
@@ -62,14 +63,14 @@
 
         <div class="flex min-w-0 flex-col gap-8">
           @foreach ($day['entries'] as $entry)
-            @include('app.changelog._entry', ['entry' => $entry, 'first' => $loop->first])
+            @include('app.changelog._entry', ['entry' => $entry, 'first' => $loop->first, 'feedback' => $feedback])
           @endforeach
 
           @if ($day['fixes'] !== [])
-            @include('app.changelog._fixes', ['fixes' => $day['fixes'], 'heading' => $day['fixesHeading']])
+            @include('app.changelog._fixes', ['fixes' => $day['fixes'], 'heading' => $day['fixesHeading'], 'feedback' => $feedback])
           @endif
         </div>
       </div>
     </section>
   @endforeach
-</x-shell>
+</x-account-layout>

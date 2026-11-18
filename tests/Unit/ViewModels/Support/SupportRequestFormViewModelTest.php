@@ -33,7 +33,7 @@ class SupportRequestFormViewModelTest extends TestCase
     public function it_shows_the_portraits_of_the_two_people_who_read_the_requests(): void
     {
         $this->assertEquals(
-            [asset('images/regis.webp'), asset('images/alexis.webp')],
+            [asset('images/alexis.webp'), asset('images/regis.webp')],
             new SupportRequestFormViewModel(user: User::factory()->create())->portraitUrls(),
         );
     }

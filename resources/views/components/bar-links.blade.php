@@ -41,11 +41,15 @@
 
   <span aria-hidden="true" class="mx-1.5 h-5 w-px bg-hairline-strong max-sm:hidden"></span>
 
-  <x-notification-bar />
+  @auth
+    <x-notification-bar />
+  @endauth
 
   <x-theme-toggle />
 
   @auth
     <x-account-menu :user="auth()->user()" />
+  @else
+    <x-button.secondary :href="route('auth.login.new')" size="top-bar">{{ __('Sign in') }}</x-button.secondary>
   @endauth
 </div>

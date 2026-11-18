@@ -205,6 +205,11 @@ use Laravel\Nightwatch\Http\Middleware\Sample;
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
+// What's new is public; voting and commenting stay behind sign in, below
+Route::get('changelog', [ChangelogController::class, 'index'])
+    ->middleware(['changelog', 'active', 'searchable'])
+    ->name('changelog.index');
+
 Route::get('docs', [DocsController::class, 'index'])
     ->middleware(['searchable'])
     ->name('docs.index');
@@ -654,7 +659,6 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
 
     // What's new, switched on per instance with MONICA_CHANGELOG_ENABLED
     Route::middleware(['changelog'])->group(function (): void {
-        Route::get('changelog', [ChangelogController::class, 'index'])->name('changelog.index');
         Route::put('changelog/{entry}/vote', [ChangelogVoteController::class, 'update'])->whereUlid('entry')->name('changelog.vote.update');
         Route::delete('changelog/{entry}/vote', [ChangelogVoteController::class, 'destroy'])->whereUlid('entry')->name('changelog.vote.destroy');
         Route::get('changelog/{entry}/comments', [ChangelogCommentController::class, 'index'])->whereUlid('entry')->name('changelog.comments.index');

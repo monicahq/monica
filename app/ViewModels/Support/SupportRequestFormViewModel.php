@@ -54,8 +54,8 @@ class SupportRequestFormViewModel
     public function portraitUrls(): array
     {
         return [
-            asset('images/regis.webp'),
             asset('images/alexis.webp'),
+            asset('images/regis.webp'),
         ];
     }
 

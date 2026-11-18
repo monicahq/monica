@@ -108,6 +108,20 @@ class ChangelogViewModelTest extends TestCase
         $this->assertSame('down', $entry['vote']);
     }
 
+    #[Test]
+    public function it_gives_a_visitor_no_vote_and_no_comment_count(): void
+    {
+        $entryId = '01M7NBFWK5XNH908RFDGEAJXKN';
+        ChangelogComment::factory()->count(2)->create(['entry_id' => $entryId]);
+
+        $viewModel = new ChangelogViewModel(user: null, unseenIds: [], period: 30);
+        $entry = $viewModel->days()[0]['entries'][1];
+
+        $this->assertFalse($viewModel->allowsFeedback());
+        $this->assertSame(0, $entry['commentCount']);
+        $this->assertNull($entry['vote']);
+    }
+
     private function viewModel(int $period = 30): ChangelogViewModel
     {
         return new ChangelogViewModel(user: User::factory()->create(), unseenIds: [], period: $period);

@@ -52,6 +52,21 @@ class ChangelogControllerTest extends TestCase
         $this->get(route('settings.index'))->assertDontSee('changes you have not seen');
     }
 
+    #[Test]
+    public function it_shows_what_changed_to_a_visitor_without_votes_or_comments(): void
+    {
+        $response = $this->get(route('changelog.index'));
+
+        $response->assertOk();
+        $response->assertSee('Book the conference room from a contact');
+        $response->assertSee(route('auth.login.new'));
+        $response->assertDontSee('Is this change useful to you?');
+        $response->assertDontSee('Loading the comments');
+        $response->assertDontSee('Tell us which changes help you');
+        $response->assertDontSee(route('notifications.index'));
+        $this->assertDatabaseCount('changelog_seen_entries', 0);
+    }
+
     private function signedIn(): User
     {
         $account = Account::factory()->create();

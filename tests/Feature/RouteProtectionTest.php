@@ -42,6 +42,7 @@ class RouteProtectionTest extends TestCase
         'home.index',
         'marketplace.index',
         'docs.index',
+        'changelog.index',
         'llmsText.index',
         'robotsText.index',
         'sitemap.index',

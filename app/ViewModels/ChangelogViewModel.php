@@ -19,11 +19,17 @@ class ChangelogViewModel
 
     /** @param  list<string>  $unseenIds  the entries the person had not seen when the page was asked for */
     public function __construct(
-        private readonly User $user,
+        private readonly ?User $user,
         array $unseenIds,
         private readonly int $period = 30,
     ) {
         $this->unseenIds = array_fill_keys($unseenIds, true);
+    }
+
+    /** Votes, comments and the link into the application are for signed in people only. */
+    public function allowsFeedback(): bool
+    {
+        return $this->user !== null;
     }
 
     public function currentPeriod(): int
@@ -60,8 +66,8 @@ class ChangelogViewModel
     {
         $entries = $this->entries();
         $ids = array_map(fn (ChangelogEntry $entry): string => $entry->id, $entries);
-        $commentCounts = ChangelogEntries::commentCounts($ids);
-        $votes = ChangelogVote::query()
+        $commentCounts = $this->user === null ? [] : ChangelogEntries::commentCounts($ids);
+        $votes = $this->user === null ? collect() : ChangelogVote::query()
             ->where('user_id', $this->user->id)
             ->whereIn('entry_id', $ids)
             ->pluck('direction', 'entry_id');
@@ -147,7 +153,7 @@ class ChangelogViewModel
 
     private function dateLabel(CarbonImmutable $day): string
     {
-        return $this->user->date_format?->format($day)
+        return $this->user?->date_format?->format($day)
             ?? $day->locale(app()->getLocale())->translatedFormat((string) AvailableLocales::details(app()->getLocale())['date_format']);
     }
 }

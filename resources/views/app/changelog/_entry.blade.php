@@ -2,6 +2,7 @@
 {{--
   @var array<string, mixed> $entry
   @var bool $first
+  @var bool $feedback
 --}}
 <article aria-labelledby="changelog-entry-{{ $entry['id'] }}" @class(['flex max-w-160 flex-col gap-2.5', 'border-t border-hairline pt-8' => ! $first])>
   <div class="flex flex-wrap items-center gap-2.5">
@@ -20,5 +21,7 @@
 
   <div class="text-base text-body text-pretty [&_a]:underline [&_p+p]:mt-2">{!! $entry['bodyHtml'] !!}</div>
 
-  @include('app.changelog._feedback', ['entry' => $entry])
+  @if ($feedback)
+    @include('app.changelog._feedback', ['entry' => $entry])
+  @endif
 </article>

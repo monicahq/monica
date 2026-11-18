@@ -2,6 +2,7 @@
 {{--
   @var list<array<string, mixed>> $fixes
   @var string $heading
+  @var bool $feedback
 --}}
 <div class="flex max-w-160 flex-col gap-2.5">
   <h3><x-caption tone="muted">{{ $heading }}</x-caption></h3>
@@ -32,7 +33,9 @@
         <div id="changelog-fix-{{ $fix['id'] }}" x-show="expanded" x-cloak class="flex flex-col gap-2.5 px-3.5 pb-3.5 pl-10">
           <div class="text-base text-body text-pretty [&_a]:underline [&_p+p]:mt-2">{!! $fix['bodyHtml'] !!}</div>
 
-          @include('app.changelog._feedback', ['entry' => $fix])
+          @if ($feedback)
+            @include('app.changelog._feedback', ['entry' => $fix])
+          @endif
         </div>
       </li>
     @endforeach
