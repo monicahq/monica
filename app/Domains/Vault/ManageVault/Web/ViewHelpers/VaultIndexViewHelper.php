@@ -16,11 +16,14 @@ class VaultIndexViewHelper
      */
     public static function layoutData(?Vault $vault = null): array
     {
+        $account = Auth::user()->account;
+
         return [
             'user' => [
                 'id' => Auth::id(),
                 'name' => Auth::user()->name,
             ],
+            'blackbookd_enabled' => $account->blackbookd_enabled,
             'vault' => $vault ? [
                 'id' => $vault->id,
                 'name' => $vault->name,
@@ -75,6 +78,9 @@ class VaultIndexViewHelper
                         'vault' => $vault->id,
                     ]),
                     'search_contacts_only' => route('vault.user.search.index', [
+                        'vault' => $vault->id,
+                    ]),
+                    'blackbookd' => route('vault.blackbookd.index', [
                         'vault' => $vault->id,
                     ]),
                 ],

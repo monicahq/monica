@@ -3,7 +3,9 @@
 ![Monica’s Logo](https://user-images.githubusercontent.com/61099/242266547-63d98bd9-35f3-4dfe-92f4-a4a8dd75aa5c.png)
 
 </p>
-<h1 align="center">Document your life</h1>
+<h1 align="center">BlackBookd</h1>
+<p align="center"><strong>Self-hosted personal CRM for relationships, health, and dating — built on Monica v5.</strong></p>
+<p align="center"><sub>BlackBookd is a fork of <a href="https://github.com/monicahq/monica">Monica</a> (AGPL-3.0). See <a href="docs/BLACKBOOKD.md">docs/BLACKBOOKD.md</a> and <a href="docs/BLACKBOOKD-API.md">docs/BLACKBOOKD-API.md</a>.</sub></p>
 
 <div align="center">
 

@@ -28,6 +28,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'ability' => CheckForAnyAbility::class,
             'webauthn' => WebauthnMiddleware::class,
             'monica.signup_is_enabled' => EnsureSignupIsEnabled::class,
+            'blackbookd.enabled' => \App\Http\Middleware\EnsureBlackBookdModuleEnabled::class,
         ]);
         $middleware->web(remove: [
             \Illuminate\Routing\Middleware\SubstituteBindings::class,

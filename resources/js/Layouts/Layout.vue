@@ -260,6 +260,13 @@ const toggleStyle = () => {
                   selected: $page.component.startsWith('Vault/Files'),
                 }
               : null,
+            layoutData.blackbookd_enabled
+              ? {
+                  url: layoutData.vault.url.blackbookd,
+                  title: 'BlackBookd',
+                  selected: $page.component.startsWith('Vault/BlackBookd'),
+                }
+              : null,
             layoutData.vault.permission.at_least_editor
               ? {
                   url: layoutData.vault.url.settings,

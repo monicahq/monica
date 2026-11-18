@@ -168,6 +168,21 @@ class Vault extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Journal, $this>
      */
+    public function blackbookdEncounters(): HasMany
+    {
+        return $this->hasMany(BlackBookdEncounter::class, 'vault_id');
+    }
+
+    public function blackbookdHealthLogEntries(): HasMany
+    {
+        return $this->hasMany(BlackBookdHealthLogEntry::class, 'vault_id');
+    }
+
+    public function blackbookdDatingPipelines(): HasMany
+    {
+        return $this->hasMany(BlackBookdDatingPipeline::class, 'vault_id');
+    }
+
     public function journals(): HasMany
     {
         return $this->hasMany(Journal::class);
