@@ -4,18 +4,23 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions;
 
+use App\Actions\CreateDefaultValueLists;
 use App\Actions\MoveRecordToStructureVersion;
+use App\Enums\DefaultFieldEnum;
+use App\Enums\DefaultTemplateEnum;
 use App\Enums\FieldTypeEnum;
 use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\SnapshotReasonEnum;
 use App\Enums\UserActionEnum;
 use App\Enums\VersionStatusEnum;
+use App\Jobs\CreateDefaultTemplate;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
 use App\Models\Entity;
 use App\Models\EntityType;
 use App\Models\Field;
 use App\Models\FieldValue;
+use App\Models\FieldValueRow;
 use App\Models\RecordSnapshot;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
@@ -394,6 +399,168 @@ class MoveRecordToStructureVersionTest extends TestCase
             record: $this->contactOf($user),
             structureVersion: StructureVersion::factory()->published()->create(),
         )->execute();
+    }
+
+    #[Test]
+    public function it_carries_a_value_to_the_field_of_the_same_key_in_another_section(): void
+    {
+        Queue::fake();
+
+        $user = $this->userWithSuppliedTemplates();
+        $jim = $this->contactOn($user, DefaultTemplateEnum::BasicContact);
+        $birthday = $this->valueOf($jim, $this->fieldOf(DefaultTemplateEnum::BasicContact, DefaultFieldEnum::Birthday), ['value_date' => '1978-10-01']);
+        $reminder = Reminder::factory()->for($birthday, 'fieldValue')->create();
+        [$row, $email] = $this->repeatedValueOf($jim, DefaultTemplateEnum::BasicContact, DefaultFieldEnum::Emails, DefaultFieldEnum::Email, 'jim@dundermifflin.com');
+
+        new MoveRecordToStructureVersion(user: $user, record: $jim, structureVersion: $this->versionOf(DefaultTemplateEnum::Essentials))->execute();
+
+        $this->assertDatabaseHas('field_values', ['id' => $birthday->id, 'field_id' => $this->fieldOf(DefaultTemplateEnum::Essentials, DefaultFieldEnum::Birthday)->id, 'is_detached' => false]);
+        $this->assertDatabaseHas('reminders', ['id' => $reminder->id, 'is_active' => true]);
+        $this->assertDatabaseHas('field_value_rows', ['id' => $row->id, 'field_id' => $this->fieldOf(DefaultTemplateEnum::Essentials, DefaultFieldEnum::Emails)->id]);
+        $this->assertDatabaseHas('field_values', ['id' => $email->id, 'field_id' => $this->fieldOf(DefaultTemplateEnum::Essentials, DefaultFieldEnum::Email)->id, 'is_detached' => false]);
+    }
+
+    #[Test]
+    public function it_carries_what_a_repeated_group_holds_only_under_the_group_it_followed_to(): void
+    {
+        Queue::fake();
+
+        $user = $this->userWithSuppliedTemplates();
+        $pam = $this->contactOn($user, DefaultTemplateEnum::FriendsAndFamily);
+        [$row, $idea] = $this->repeatedValueOf($pam, DefaultTemplateEnum::FriendsAndFamily, DefaultFieldEnum::GiftIdeas, DefaultFieldEnum::GiftIdea, 'A teapot');
+
+        new MoveRecordToStructureVersion(user: $user, record: $pam, structureVersion: $this->versionOf(DefaultTemplateEnum::FullPortrait))->execute();
+
+        $this->assertDatabaseHas('field_value_rows', ['id' => $row->id, 'field_id' => $this->fieldOf(DefaultTemplateEnum::FullPortrait, DefaultFieldEnum::GiftIdeas)->id]);
+        $this->assertDatabaseHas('field_values', ['id' => $idea->id, 'field_id' => $this->fieldOf(DefaultTemplateEnum::FullPortrait, DefaultFieldEnum::GiftIdea)->id, 'is_detached' => false]);
+    }
+
+    #[Test]
+    public function it_sets_aside_a_value_the_new_version_holds_two_fields_for(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $dwight = $this->contactOf($user);
+        $held = Field::factory()->create(['account_id' => $user->account_id, 'key' => 'nickname', 'type' => FieldTypeEnum::Text]);
+        $value = FieldValue::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $dwight->vault_id,
+            'valuable_type' => Contact::class,
+            'valuable_id' => $dwight->id,
+            'field_id' => $held->id,
+            'value_string' => 'Big Tuna',
+        ]);
+        $to = $this->publishedContactVersion($user);
+        $this->fieldCarriedBy($to)->update(['key' => 'nickname', 'type' => FieldTypeEnum::Text]);
+        $this->fieldCarriedBy($to)->update(['key' => 'nickname', 'type' => FieldTypeEnum::Text]);
+
+        new MoveRecordToStructureVersion(user: $user, record: $dwight, structureVersion: $to)->execute();
+
+        $this->assertDatabaseHas('field_values', ['id' => $value->id, 'field_id' => $held->id, 'is_detached' => true]);
+    }
+
+    #[Test]
+    public function it_sets_aside_two_values_wanting_the_same_field_of_the_new_version(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $dwight = $this->contactOf($user);
+        $atWork = Field::factory()->create(['account_id' => $user->account_id, 'key' => 'website', 'type' => FieldTypeEnum::Url]);
+        $atHome = Field::factory()->create(['account_id' => $user->account_id, 'key' => 'website', 'type' => FieldTypeEnum::Url]);
+        $schruteFarms = $this->valueOf($dwight, $atWork, ['value_string' => 'https://schrutefarms.com']);
+        $beetFacts = $this->valueOf($dwight, $atHome, ['value_string' => 'https://beetfacts.com']);
+        $to = $this->publishedContactVersion($user);
+        $this->fieldCarriedBy($to)->update(['key' => 'website', 'type' => FieldTypeEnum::Url]);
+
+        new MoveRecordToStructureVersion(user: $user, record: $dwight, structureVersion: $to)->execute();
+
+        $this->assertDatabaseHas('field_values', ['id' => $schruteFarms->id, 'field_id' => $atWork->id, 'is_detached' => true]);
+        $this->assertDatabaseHas('field_values', ['id' => $beetFacts->id, 'field_id' => $atHome->id, 'is_detached' => true]);
+    }
+
+    #[Test]
+    public function it_sets_aside_a_value_whose_field_in_the_new_version_already_holds_one(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $dwight = $this->contactOf($user);
+        $held = Field::factory()->create(['account_id' => $user->account_id, 'key' => 'website', 'type' => FieldTypeEnum::Url]);
+        $schruteFarms = $this->valueOf($dwight, $held, ['value_string' => 'https://schrutefarms.com']);
+        $to = $this->publishedContactVersion($user);
+        $carried = $this->fieldCarriedBy($to);
+        $carried->update(['key' => 'website', 'type' => FieldTypeEnum::Url]);
+        $beetFacts = $this->valueOf($dwight, $carried, ['value_string' => 'https://beetfacts.com']);
+
+        new MoveRecordToStructureVersion(user: $user, record: $dwight, structureVersion: $to)->execute();
+
+        $this->assertDatabaseHas('field_values', ['id' => $schruteFarms->id, 'field_id' => $held->id, 'is_detached' => true]);
+        $this->assertDatabaseHas('field_values', ['id' => $beetFacts->id, 'field_id' => $carried->id, 'is_detached' => false]);
+    }
+
+    private function userWithSuppliedTemplates(): User
+    {
+        $user = User::factory()->create();
+        new CreateDefaultValueLists(user: $user)->execute();
+
+        foreach ([DefaultTemplateEnum::BasicContact, DefaultTemplateEnum::Essentials, DefaultTemplateEnum::FriendsAndFamily, DefaultTemplateEnum::FullPortrait] as $supplied) {
+            new CreateDefaultTemplate(user: $user, supplied: $supplied)->handle();
+        }
+
+        return $user;
+    }
+
+    private function versionOf(DefaultTemplateEnum $supplied): StructureVersion
+    {
+        return Template::query()->where('slug', $supplied->value)->sole()->publishedVersion;
+    }
+
+    private function fieldOf(DefaultTemplateEnum $supplied, DefaultFieldEnum $field): Field
+    {
+        return Field::query()
+            ->whereIn('section_version_id', $this->versionOf($supplied)->assembly->pluck('section_version_id'))
+            ->where('key', $field->value)
+            ->sole();
+    }
+
+    private function contactOn(User $user, DefaultTemplateEnum $supplied): Contact
+    {
+        return Contact::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => Vault::factory()->create(['account_id' => $user->account_id])->id,
+            'structure_version_id' => $this->versionOf($supplied)->id,
+        ]);
+    }
+
+    /** @param  array<string, mixed>  $attributes */
+    private function valueOf(Contact $contact, Field $field, array $attributes): FieldValue
+    {
+        return FieldValue::factory()->create([
+            'account_id' => $contact->account_id,
+            'vault_id' => $contact->vault_id,
+            'valuable_type' => Contact::class,
+            'valuable_id' => $contact->id,
+            'field_id' => $field->id,
+            'value_string' => null,
+            ...$attributes,
+        ]);
+    }
+
+    /** @return array{FieldValueRow, FieldValue} */
+    private function repeatedValueOf(Contact $contact, DefaultTemplateEnum $supplied, DefaultFieldEnum $group, DefaultFieldEnum $inside, string $text): array
+    {
+        $row = FieldValueRow::factory()->create([
+            'account_id' => $contact->account_id,
+            'valuable_type' => Contact::class,
+            'valuable_id' => $contact->id,
+            'field_id' => $this->fieldOf($supplied, $group)->id,
+        ]);
+
+        $value = $this->valueOf($contact, $this->fieldOf($supplied, $inside), ['value_string' => $text, 'field_value_row_id' => $row->id]);
+
+        return [$row, $value];
     }
 
     private function contactOf(User $user): Contact

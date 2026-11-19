@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Vaults;
 
+use App\Enums\DefaultTemplateEnum;
 use App\Enums\StructureAppliesToEnum;
 use App\Enums\VaultColourEnum;
 use App\Models\Template;
@@ -122,9 +123,10 @@ class VaultFormViewModel
 
     private function suppliedStructureVersionId(): string
     {
-        $version = $this->contactTemplates()
-            ->sortByDesc(fn (Template $template): bool => $template->is_system)
-            ->first()?->structure->published_version_id;
+        $templates = $this->contactTemplates();
+
+        $version = ($templates->first(fn (Template $template): bool => $template->is_system && $template->slug === DefaultTemplateEnum::BasicContact->value)
+            ?? $templates->sortByDesc(fn (Template $template): bool => $template->is_system)->first())?->structure->published_version_id;
 
         return $version === null ? '' : (string) $version;
     }

@@ -27,8 +27,11 @@ use InvalidArgumentException;
  *
  * A section copied into a new version gets new fields, so a field nobody touched has another id
  * there. Before anything is set aside, every value, repeated row and reminder of the record follows
- * its field to the field of the new version with the same section, key and type. Only what has no
- * such field is set aside, and a field put back later brings its values back the same way.
+ * its field to the field of the new version with the same section, key and type. Failing that, it
+ * follows the one field with the same key and type elsewhere in the new version, a field inside a
+ * repeater only under the repeater its own followed to. Only what has no such field, more than one,
+ * a field another value already fills, or another held field wanting the same one, is set aside,
+ * and a field put back later brings its values back the same way.
  *
  * The snapshot and the move are one transaction, so a deadlock leaves neither behind and the move is
  * run again, from the record as the database holds it.
@@ -145,31 +148,75 @@ class MoveRecordToStructureVersion
             return;
         }
 
-        $counterparts = Field::query()
+        $carriedFields = Field::query()
             ->whereIn('id', $carried)
             ->with('sectionVersion')
-            ->get()
-            ->keyBy(fn (Field $field): string => "{$field->sectionVersion->section_id}|{$field->key}|{$field->type->value}");
+            ->get();
 
-        Field::query()
+        $inTheSameSection = $carriedFields->keyBy(fn (Field $field): string => "{$field->sectionVersion->section_id}|{$field->key}|{$field->type->value}");
+        $anywhere = $carriedFields->groupBy(fn (Field $field): string => "{$field->parent_field_id}|{$field->key}|{$field->type->value}");
+
+        $heldFields = Field::query()
             ->whereIn('id', $heldIds)
             ->with('sectionVersion')
             ->get()
-            ->each(function (Field $held) use ($counterparts, $values, $rows): void {
-                $counterpart = $counterparts->get("{$held->sectionVersion->section_id}|{$held->key}|{$held->type->value}");
+            ->sortBy(fn (Field $held): bool => $held->parent_field_id !== null);
 
-                if (! $counterpart instanceof Field) {
+        $sameSectionKey = fn (Field $held): string => "{$held->sectionVersion->section_id}|{$held->key}|{$held->type->value}";
+
+        $wanted = $heldFields
+            ->reject(fn (Field $held): bool => $inTheSameSection->has($sameSectionKey($held)))
+            ->countBy(fn (Field $held): string => "{$held->parent_field_id}|{$held->key}|{$held->type->value}");
+
+        /** @var array<int, true> $taken */
+        $taken = $values->clone()->whereIn('field_id', $carried)->pluck('field_id')
+            ->merge($rows->clone()->whereIn('field_id', $carried)->pluck('field_id'))
+            ->merge($heldFields->map(fn (Field $held): ?int => $inTheSameSection->get($sameSectionKey($held))?->id)->filter())
+            ->mapWithKeys(fn (int $id): array => [$id => true])
+            ->all();
+
+        /** @var array<int, Field> $followed */
+        $followed = [];
+
+        $heldFields->each(function (Field $held) use ($inTheSameSection, $anywhere, $sameSectionKey, $wanted, &$taken, &$followed, $values, $rows): void {
+            $counterpart = $inTheSameSection->get($sameSectionKey($held));
+
+            if (! $counterpart instanceof Field) {
+                if ($wanted->get("{$held->parent_field_id}|{$held->key}|{$held->type->value}") > 1) {
                     return;
                 }
 
-                Reminder::query()
-                    ->whereIn('field_value_id', $values->clone()->where('field_id', $held->id)->select('id'))
-                    ->where('field_id', $held->id)
-                    ->update(['field_id' => $counterpart->id]);
+                $parent = $held->parent_field_id === null ? null : ($followed[$held->parent_field_id] ?? null);
 
-                $values->clone()->where('field_id', $held->id)->update(['field_id' => $counterpart->id]);
-                $rows->clone()->where('field_id', $held->id)->update(['field_id' => $counterpart->id]);
-            });
+                if ($held->parent_field_id !== null && $parent === null) {
+                    return;
+                }
+
+                $candidates = $anywhere->get("{$parent?->id}|{$held->key}|{$held->type->value}");
+
+                if ($candidates === null || $candidates->count() !== 1) {
+                    return;
+                }
+
+                $counterpart = $candidates->first();
+
+                if (isset($taken[$counterpart->id])) {
+                    return;
+                }
+
+                $taken[$counterpart->id] = true;
+            }
+
+            $followed[$held->id] = $counterpart;
+
+            Reminder::query()
+                ->whereIn('field_value_id', $values->clone()->where('field_id', $held->id)->select('id'))
+                ->where('field_id', $held->id)
+                ->update(['field_id' => $counterpart->id]);
+
+            $values->clone()->where('field_id', $held->id)->update(['field_id' => $counterpart->id]);
+            $rows->clone()->where('field_id', $held->id)->update(['field_id' => $counterpart->id]);
+        });
     }
 
     private function setAsideWhatTheNewStructureDoesNotCarry(): void

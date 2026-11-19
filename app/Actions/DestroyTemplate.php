@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
+use App\Enums\DefaultTemplateEnum;
 use App\Enums\UserActionEnum;
 use App\Exceptions\CannotDeleteATemplateInUse;
 use App\Jobs\LogUserAction;
@@ -74,6 +75,10 @@ class DestroyTemplate
         $systemTemplate = Template::query()
             ->where('account_id', $this->user->account_id)
             ->where('is_system', true)
+            ->whereIn('slug', array_map(
+                fn (DefaultTemplateEnum $supplied): string => $supplied->value,
+                array_filter(DefaultTemplateEnum::cases(), fn (DefaultTemplateEnum $supplied): bool => $supplied->isVaultDefault()),
+            ))
             ->whereKeyNot($this->template->id)
             ->whereHas('structure', function (Builder $query) use ($default): void {
                 $query->where('applies_to', $default->applies_to)

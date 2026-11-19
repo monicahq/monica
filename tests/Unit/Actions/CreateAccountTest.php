@@ -6,6 +6,7 @@ namespace Tests\Unit\Actions;
 
 use App\Actions\CreateAccount;
 use App\Enums\DefaultTemplateEnum;
+use App\Enums\StructureAppliesToEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\CreateDefaultLifeEventTypes;
 use App\Jobs\CreateDefaultTemplate;
@@ -16,6 +17,7 @@ use App\Jobs\SeedNotificationPreference;
 use App\Jobs\SeedPossessionConditions;
 use App\Jobs\SeedPossessionTypes;
 use App\Jobs\SeedRelationshipTypes;
+use App\Jobs\SupplyContactTemplates;
 use App\Models\Field;
 use App\Models\LifeEventType;
 use App\Models\PreviewListEntry;
@@ -137,6 +139,31 @@ class CreateAccountTest extends TestCase
     }
 
     #[Test]
+    public function it_supplies_the_four_contact_templates_and_keeps_basic_contact_the_default(): void
+    {
+        $user = new CreateAccount(
+            firstName: 'Jim',
+            lastName: 'Halpert',
+            email: 'jim.halpert@dundermifflin.com',
+            password: 'thatswhatshesaid',
+        )->execute();
+
+        $slugs = Template::query()->where('account_id', $user->account_id)->pluck('slug')->all();
+
+        foreach (DefaultTemplateEnum::cases() as $supplied) {
+            $this->assertContains($supplied->value, $slugs);
+        }
+
+        $basicContact = Template::query()->where('account_id', $user->account_id)->where('slug', DefaultTemplateEnum::BasicContact->value)->sole();
+
+        $this->assertDatabaseHas('vault_default_templates', [
+            'vault_id' => $user->account->vaults()->sole()->id,
+            'applies_to' => StructureAppliesToEnum::Contact->value,
+            'structure_version_id' => $basicContact->structure->published_version_id,
+        ]);
+    }
+
+    #[Test]
     public function it_asks_for_the_rest_of_the_seeding_in_the_order_it_has_to_happen_in(): void
     {
         Queue::fake();
@@ -156,6 +183,7 @@ class CreateAccountTest extends TestCase
             new SeedPossessionTypes(user: $user),
             new SeedPossessionConditions(user: $user),
             new SeedLocations(user: $user),
+            new SupplyContactTemplates(user: $user),
         ]);
 
         Queue::assertPushedOn(

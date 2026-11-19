@@ -81,6 +81,7 @@ class CreateVault
         $template = Template::query()
             ->where('account_id', $this->user->account_id)
             ->where('is_system', true)
+            ->where('slug', DefaultTemplateEnum::BasicContact->value)
             ->whereHas('structure', function (Builder $query): void {
                 $query->where('applies_to', StructureAppliesToEnum::Contact)
                     ->whereNotNull('published_version_id');

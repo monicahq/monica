@@ -6,6 +6,7 @@ namespace Tests\Unit\Actions;
 
 use App\Actions\CreateTemplate;
 use App\Actions\DestroyTemplate;
+use App\Enums\DefaultTemplateEnum;
 use App\Enums\UserActionEnum;
 use App\Exceptions\CannotDeleteATemplateInUse;
 use App\Jobs\LogUserAction;
@@ -90,7 +91,7 @@ class DestroyTemplateTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $systemTemplate = Template::factory()->create(['account_id' => $user->account_id, 'is_system' => true]);
+        $systemTemplate = Template::factory()->create(['account_id' => $user->account_id, 'is_system' => true, 'slug' => DefaultTemplateEnum::BasicContact->value]);
         $systemVersion = StructureVersion::factory()->published()->create(['structure_id' => $systemTemplate->structure->id]);
         $systemTemplate->structure->update(['published_version_id' => $systemVersion->id]);
         $template = Template::factory()->create(['account_id' => $user->account_id]);
@@ -123,5 +124,24 @@ class DestroyTemplateTest extends TestCase
 
         $this->assertModelMissing($default);
         $this->assertModelExists($another);
+    }
+
+    #[Test]
+    public function it_never_falls_back_to_a_supplied_template_that_is_not_a_vault_default(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $fullPortrait = Template::factory()->create(['account_id' => $user->account_id, 'is_system' => true, 'slug' => DefaultTemplateEnum::FullPortrait->value]);
+        $fullPortraitVersion = StructureVersion::factory()->published()->create(['structure_id' => $fullPortrait->structure->id]);
+        $fullPortrait->structure->update(['published_version_id' => $fullPortraitVersion->id]);
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        $version = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $default = VaultDefaultTemplate::factory()->create(['vault_id' => $vault->id, 'structure_version_id' => $version->id]);
+
+        new DestroyTemplate(user: $user, template: $template)->execute();
+
+        $this->assertModelMissing($default);
     }
 }

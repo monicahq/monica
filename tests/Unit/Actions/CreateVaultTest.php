@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions;
 
+use App\Actions\CreateDefaultValueLists;
 use App\Actions\CreateVault;
 use App\Actions\UpdateVault;
 use App\Enums\DefaultTemplateEnum;
@@ -139,7 +140,7 @@ class CreateVaultTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
-        $template = Template::factory()->create(['account_id' => $user->account_id, 'is_system' => true]);
+        $template = Template::factory()->create(['account_id' => $user->account_id, 'is_system' => true, 'slug' => DefaultTemplateEnum::BasicContact->value]);
         $version = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
         $template->structure->update(['published_version_id' => $version->id]);
 
@@ -151,6 +152,29 @@ class CreateVaultTest extends TestCase
             'applies_to' => StructureAppliesToEnum::Contact->value,
             'entity_type_id' => null,
             'structure_version_id' => $version->id,
+        ]);
+    }
+
+    #[Test]
+    public function it_gives_the_vault_basic_contact_whatever_other_contact_templates_are_supplied(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        new CreateDefaultValueLists(user: $user)->execute();
+
+        foreach ([DefaultTemplateEnum::FullPortrait, DefaultTemplateEnum::Essentials, DefaultTemplateEnum::BasicContact] as $supplied) {
+            new CreateDefaultTemplate(user: $user, supplied: $supplied)->handle();
+        }
+
+        $vault = new CreateVault(user: $user, name: 'Scranton')->execute();
+
+        $basicContact = Template::query()->where('slug', DefaultTemplateEnum::BasicContact->value)->sole();
+
+        $this->assertDatabaseHas('vault_default_templates', [
+            'vault_id' => $vault->id,
+            'applies_to' => StructureAppliesToEnum::Contact->value,
+            'structure_version_id' => $basicContact->structure->published_version_id,
         ]);
     }
 

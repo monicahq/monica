@@ -20,6 +20,10 @@ enum ValueListEnum: string implements Translatable
     case AddressLabels = 'address_labels';
     case WebsiteLabels = 'website_labels';
     case AnimalSexes = 'animal_sexes';
+    case Hobbies = 'hobbies';
+    case CommunicationChannels = 'communication_channels';
+    case Industries = 'industries';
+    case AreasOfExpertise = 'areas_of_expertise';
 
     public function label(): string
     {
@@ -34,6 +38,10 @@ enum ValueListEnum: string implements Translatable
             self::AddressLabels => 'Address labels',
             self::WebsiteLabels => 'Website labels',
             self::AnimalSexes => 'Animal sexes',
+            self::Hobbies => 'Hobbies',
+            self::CommunicationChannels => 'Communication channels',
+            self::Industries => 'Industries',
+            self::AreasOfExpertise => 'Areas of expertise',
         };
     }
 
@@ -50,6 +58,10 @@ enum ValueListEnum: string implements Translatable
             self::AddressLabels => 'What an address is for',
             self::WebsiteLabels => 'What a link points at',
             self::AnimalSexes => 'Whether an animal is female or male',
+            self::Hobbies => 'What somebody enjoys doing in their free time',
+            self::CommunicationChannels => 'How somebody prefers to be reached',
+            self::Industries => 'The sector somebody works in',
+            self::AreasOfExpertise => 'What somebody knows well, at work or beyond',
         };
     }
 
@@ -67,6 +79,10 @@ enum ValueListEnum: string implements Translatable
             self::AddressLabels => AddressLabelEnum::cases(),
             self::WebsiteLabels => WebsiteLabelEnum::cases(),
             self::AnimalSexes => AnimalSexEnum::cases(),
+            self::Hobbies => HobbyEnum::cases(),
+            self::CommunicationChannels => CommunicationChannelEnum::cases(),
+            self::Industries => IndustryEnum::cases(),
+            self::AreasOfExpertise => [],
         };
     }
 

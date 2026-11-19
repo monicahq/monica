@@ -30,10 +30,10 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Give a fresh account one of the templates it starts with, so the first contact or animal somebody
- * writes down has somewhere to go. The animal template is queued, since it writes a couple of dozen
- * rows nobody is looking at yet. The contact template runs inline while the account is created,
- * because the contact standing for the user is written on it. It does nothing when the account
- * already has that template, so running it again is safe.
+ * writes down has somewhere to go. Basic contact runs inline while the account is created, because
+ * the contact standing for the user is written on it; the others are queued, since nobody is looking
+ * at them yet. Only Basic contact and Basic animal become a vault default. It does nothing when the
+ * account already has that template, so running it again is safe.
  */
 class CreateDefaultTemplate implements ShouldQueue
 {
@@ -66,7 +66,9 @@ class CreateDefaultTemplate implements ShouldQueue
             $this->createTemplate();
             $this->createPages();
             $this->publish();
-            $this->seedTheVaultDefaults();
+            if ($this->supplied->isVaultDefault()) {
+                $this->seedTheVaultDefaults();
+            }
         });
 
         $this->log();
@@ -124,7 +126,7 @@ class CreateDefaultTemplate implements ShouldQueue
             'account_id' => $this->user->account_id,
             'name' => null,
             'name_translation_key' => $supplied->label(),
-            'description' => null,
+            'description' => $supplied->description() === null ? null : __($supplied->description(), locale: $this->user->locale),
             'slug' => $supplied->value,
             'is_system' => true,
             'is_active' => true,
@@ -220,7 +222,7 @@ class CreateDefaultTemplate implements ShouldQueue
             'usage_count' => 0,
         ]);
 
-        $this->createFields($version, $case->fields());
+        $this->createFields($version, $case->fields(), $case);
 
         $version->status = VersionStatusEnum::Published;
         $version->resolved_value_lists = ValueListSnapshot::of($version);
@@ -234,7 +236,7 @@ class CreateDefaultTemplate implements ShouldQueue
     }
 
     /** @param  list<DefaultFieldEnum>  $fields */
-    private function createFields(SectionVersion $version, array $fields, ?Field $parent = null): void
+    private function createFields(SectionVersion $version, array $fields, ?DefaultSectionEnum $section = null, ?Field $parent = null): void
     {
         $position = 1;
 
@@ -244,7 +246,7 @@ class CreateDefaultTemplate implements ShouldQueue
                 'type' => $field->type(),
                 'key' => $field->value,
                 'label' => null,
-                'label_translation_key' => $field->label(),
+                'label_translation_key' => $section?->fieldLabel($field) ?? $field->label(),
                 'help_text' => null,
                 'placeholder' => null,
                 'position' => $position,
@@ -266,7 +268,7 @@ class CreateDefaultTemplate implements ShouldQueue
                 'relation_entity_type_id' => null,
             ]);
 
-            $this->createFields($version, $field->children(), $row);
+            $this->createFields($version, $field->children(), parent: $row);
 
             $position++;
         }

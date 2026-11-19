@@ -4,7 +4,7 @@ title: Templates and customisation
 description: Find the pages on shaping Monica to what you want to remember, from templates to relationship and life event types.
 slug: templates-and-customisation
 section: templates-and-customisation
-last_updated: 2026-09-29
+last_updated: 2026-11-18
 ---
 
 # Templates and customisation
@@ -16,6 +16,18 @@ Monica works as it is, and you can shape it to what you want to remember. Everyt
 - **Life event types** are the kinds of things that happen, such as a move or a Thanksgiving dinner, and what each one asks about.
 - **Profile types** are the kinds of records that are not people, such as pets.
 - **Value lists** are the choices a field offers, such as the categories of contacts.
+
+Every account starts with these templates for contacts. **Basic contact** is the one a new contact starts from, and you can pick any of the others when you add somebody.
+
+| Template | What it is for |
+| --- | --- |
+| **Basic contact** | The details most people note down: categories, birthday, ways to reach somebody, documents and photos. |
+| **Essentials** | Keep your contacts’ details and essential landmarks at hand every day. |
+| **Friends and family** | Remember the small things that matter, to take care of your relationships. |
+| **Professional network** | Remember people, their work and the common ground that feeds the relationship. |
+| **Full portrait** | Build a rich record over time. |
+
+A contact can move to another template at any time. What both templates have in common, such as a birthday or an email address, comes along with it. What the new template has no place for is kept aside, and comes back if the contact returns to a template that has it.
 
 1. @doc(templates.versions)
 2. @doc(templates.build-your-own)

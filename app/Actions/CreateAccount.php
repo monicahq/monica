@@ -16,6 +16,7 @@ use App\Jobs\SeedNotificationPreference;
 use App\Jobs\SeedPossessionConditions;
 use App\Jobs\SeedPossessionTypes;
 use App\Jobs\SeedRelationshipTypes;
+use App\Jobs\SupplyContactTemplates;
 use App\Models\Account;
 use App\Models\PreviewListEntry;
 use App\Models\User;
@@ -128,6 +129,7 @@ class CreateAccount
             new SeedPossessionTypes(user: $this->user),
             new SeedPossessionConditions(user: $this->user),
             new SeedLocations(user: $this->user),
+            new SupplyContactTemplates(user: $this->user),
         ])->onQueue('high')->dispatch();
     }
 

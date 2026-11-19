@@ -11,20 +11,45 @@ enum DefaultTemplateEnum: string implements Translatable
 {
     case BasicContact = 'basic-contact';
     case BasicAnimal = 'basic-animal';
+    case Essentials = 'essentials';
+    case FriendsAndFamily = 'friends-and-family';
+    case ProfessionalNetwork = 'professional-network';
+    case FullPortrait = 'full-portrait';
 
     public function label(): string
     {
         return match ($this) {
             self::BasicContact => 'Basic contact',
             self::BasicAnimal => 'Basic animal',
+            self::Essentials => 'Essentials',
+            self::FriendsAndFamily => 'Friends and family',
+            self::ProfessionalNetwork => 'Professional network',
+            self::FullPortrait => 'Full portrait',
         };
+    }
+
+    public function description(): ?string
+    {
+        return match ($this) {
+            self::BasicContact, self::BasicAnimal => null,
+            self::Essentials => 'Keep your contacts’ details and essential landmarks at hand every day.',
+            self::FriendsAndFamily => 'Remember the small things that matter, to take care of your relationships.',
+            self::ProfessionalNetwork => 'Remember people, their work and the common ground that feeds the relationship.',
+            self::FullPortrait => 'Build a rich record over time.',
+        };
+    }
+
+    /** Whether a vault starts from this template when nobody picks one. */
+    public function isVaultDefault(): bool
+    {
+        return in_array($this, [self::BasicContact, self::BasicAnimal], true);
     }
 
     public function appliesTo(): StructureAppliesToEnum
     {
         return match ($this) {
-            self::BasicContact => StructureAppliesToEnum::Contact,
             self::BasicAnimal => StructureAppliesToEnum::Entity,
+            default => StructureAppliesToEnum::Contact,
         };
     }
 
@@ -40,6 +65,22 @@ enum DefaultTemplateEnum: string implements Translatable
             self::BasicAnimal => [
                 DefaultPageEnum::AnimalGeneral,
             ],
+            self::Essentials => [
+                DefaultPageEnum::EssentialsEveryday,
+            ],
+            self::FriendsAndFamily => [
+                DefaultPageEnum::FriendsEveryday,
+                DefaultPageEnum::FriendsTastesAndAttentions,
+            ],
+            self::ProfessionalNetwork => [
+                DefaultPageEnum::ProfessionalProfile,
+                DefaultPageEnum::ProfessionalRelationship,
+            ],
+            self::FullPortrait => [
+                DefaultPageEnum::PortraitProfile,
+                DefaultPageEnum::PortraitDailyLife,
+                DefaultPageEnum::PortraitMemories,
+            ],
         };
     }
 
@@ -49,7 +90,6 @@ enum DefaultTemplateEnum: string implements Translatable
     public function entityType(): ?array
     {
         return match ($this) {
-            self::BasicContact => null,
             self::BasicAnimal => [
                 'slug' => 'animals',
                 'singular' => 'Animal',
@@ -58,6 +98,7 @@ enum DefaultTemplateEnum: string implements Translatable
                 'icon' => 'pet',
                 'colour' => '#9a6a24',
             ],
+            default => null,
         };
     }
 
@@ -66,11 +107,16 @@ enum DefaultTemplateEnum: string implements Translatable
     public function translationKeys(): array
     {
         $type = $this->entityType();
+        $keys = [$this->label()];
 
-        if ($type === null) {
-            return [$this->label()];
+        if ($this->description() !== null) {
+            $keys[] = $this->description();
         }
 
-        return [$this->label(), $type['singular'], $type['plural'], $type['description']];
+        if ($type === null) {
+            return $keys;
+        }
+
+        return [...$keys, $type['singular'], $type['plural'], $type['description']];
     }
 }

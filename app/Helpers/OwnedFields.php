@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Helpers;
 
+use App\Enums\DefaultFieldEnum;
 use App\Enums\FieldTypeEnum;
 use App\Enums\ValueListEnum;
 use App\Models\Contact;
@@ -53,6 +54,10 @@ class OwnedFields
 
     public static function propertyFor(Field $field): ?string
     {
+        if (DefaultFieldEnum::tryFrom($field->key)?->isKeptOffTheCard() === true) {
+            return null;
+        }
+
         return match ($field->type) {
             FieldTypeEnum::Email => 'EMAIL',
             FieldTypeEnum::Phone => 'TEL',

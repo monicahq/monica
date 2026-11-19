@@ -28,6 +28,7 @@ use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -150,8 +151,9 @@ class CreateDefaultTemplateTest extends TestCase
 
         $user = $this->userWithValueLists();
 
-        new CreateDefaultTemplate(user: $user)->handle();
-        new CreateDefaultTemplate(user: $user, supplied: DefaultTemplateEnum::BasicAnimal)->handle();
+        foreach (DefaultTemplateEnum::cases() as $supplied) {
+            new CreateDefaultTemplate(user: $user, supplied: $supplied)->handle();
+        }
 
         foreach (DefaultSectionEnum::cases() as $case) {
             $this->assertDatabaseHas('sections', [
@@ -178,8 +180,9 @@ class CreateDefaultTemplateTest extends TestCase
 
         $user = $this->userWithValueLists();
 
-        new CreateDefaultTemplate(user: $user)->handle();
-        new CreateDefaultTemplate(user: $user, supplied: DefaultTemplateEnum::BasicAnimal)->handle();
+        foreach (DefaultTemplateEnum::cases() as $supplied) {
+            new CreateDefaultTemplate(user: $user, supplied: $supplied)->handle();
+        }
 
         foreach (DefaultSectionEnum::cases() as $case) {
             $version = Section::query()->firstWhere('slug', $case->value)->publishedVersion;
@@ -707,6 +710,101 @@ class CreateDefaultTemplateTest extends TestCase
         $this->assertSame(1, Template::query()->where('account_id', $user->account_id)->count());
         $this->assertSame(4, Section::query()->where('account_id', $user->account_id)->count());
         $this->assertSame(1, VaultDefaultTemplate::query()->where('account_id', $user->account_id)->count());
+    }
+
+    /** @param  list<string>  $pages */
+    #[Test]
+    #[DataProvider('contactTemplates')]
+    public function it_lays_each_new_contact_template_out_in_the_pages_and_sections_supplied(DefaultTemplateEnum $supplied, array $pages, int $sections): void
+    {
+        Queue::fake();
+
+        $user = $this->userWithValueLists();
+
+        new CreateDefaultTemplate(user: $user, supplied: $supplied)->handle();
+
+        $version = Template::query()->where('slug', $supplied->value)->sole()->publishedVersion;
+
+        $this->assertSame(StructureAppliesToEnum::Contact, $version->structure->applies_to);
+        $this->assertEquals($pages, $version->pages->pluck('key')->all());
+        $this->assertCount($sections, $version->assembly);
+    }
+
+    /** @return array<string, array{DefaultTemplateEnum, list<string>, int}> */
+    public static function contactTemplates(): array
+    {
+        return [
+            'essentials' => [DefaultTemplateEnum::Essentials, ['everyday'], 4],
+            'friends and family' => [DefaultTemplateEnum::FriendsAndFamily, ['everyday', 'tastes-and-attentions'], 7],
+            'professional network' => [DefaultTemplateEnum::ProfessionalNetwork, ['professional-profile', 'relationship'], 7],
+            'full portrait' => [DefaultTemplateEnum::FullPortrait, ['profile', 'daily-life', 'memories'], 10],
+        ];
+    }
+
+    #[Test]
+    public function it_never_makes_a_new_contact_template_the_default_of_a_vault(): void
+    {
+        Queue::fake();
+
+        $user = $this->userWithValueLists();
+        Vault::factory()->create(['account_id' => $user->account_id]);
+
+        new CreateDefaultTemplate(user: $user, supplied: DefaultTemplateEnum::FullPortrait)->handle();
+
+        $this->assertSame(0, VaultDefaultTemplate::query()->where('account_id', $user->account_id)->count());
+    }
+
+    #[Test]
+    public function it_names_one_concept_the_way_each_template_words_it(): void
+    {
+        Queue::fake();
+
+        $user = $this->userWithValueLists();
+
+        new CreateDefaultTemplate(user: $user, supplied: DefaultTemplateEnum::ProfessionalNetwork)->handle();
+        new CreateDefaultTemplate(user: $user, supplied: DefaultTemplateEnum::FullPortrait)->handle();
+
+        $this->assertSame('Event or context', $this->labelOf(DefaultSectionEnum::ProfessionalFirstMeeting, DefaultFieldEnum::MetWhere));
+        $this->assertSame('Place', $this->labelOf(DefaultSectionEnum::PortraitHowWeMet, DefaultFieldEnum::MetWhere));
+        $this->assertSame('Free-form notes', $this->labelOf(DefaultSectionEnum::PortraitNotes, DefaultFieldEnum::Notes));
+    }
+
+    #[Test]
+    public function it_describes_a_new_contact_template_in_the_language_of_the_user(): void
+    {
+        Queue::fake();
+
+        $user = $this->userWithValueLists();
+        $user->update(['locale' => 'fr_FR']);
+
+        new CreateDefaultTemplate(user: $user, supplied: DefaultTemplateEnum::FullPortrait)->handle();
+
+        $this->assertDatabaseHas('templates', [
+            'account_id' => $user->account_id,
+            'slug' => DefaultTemplateEnum::FullPortrait->value,
+            'description' => __(DefaultTemplateEnum::FullPortrait->description(), locale: 'fr_FR'),
+        ]);
+    }
+
+    #[Test]
+    public function it_points_who_introduced_somebody_at_a_contact(): void
+    {
+        Queue::fake();
+
+        $user = $this->userWithValueLists();
+
+        new CreateDefaultTemplate(user: $user, supplied: DefaultTemplateEnum::Essentials)->handle();
+
+        $field = Field::query()->where('key', DefaultFieldEnum::IntroducedBy->value)->sole();
+
+        $this->assertSame(FieldTypeEnum::Relation, $field->type);
+        $this->assertSame(RelationTargetEnum::Contact, $field->relation_target);
+    }
+
+    private function labelOf(DefaultSectionEnum $section, DefaultFieldEnum $field): string
+    {
+        return Section::query()->where('slug', $section->value)->sole()->publishedVersion
+            ->fields()->where('key', $field->value)->sole()->label_translation_key;
     }
 
     private function animalTemplate(User $user): Template

@@ -86,6 +86,27 @@ class CreateDefaultValueListsTest extends TestCase
     }
 
     #[Test]
+    public function it_fills_the_lists_the_contact_templates_read_and_leaves_expertise_for_the_person(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+
+        new CreateDefaultValueLists(user: $user)->execute();
+
+        $counts = [
+            ValueListEnum::Hobbies->value => 15,
+            ValueListEnum::CommunicationChannels->value => 7,
+            ValueListEnum::Industries->value => 18,
+            ValueListEnum::AreasOfExpertise->value => 0,
+        ];
+
+        foreach ($counts as $key => $count) {
+            $this->assertCount($count, ValueList::query()->firstWhere('key', $key)->items);
+        }
+    }
+
+    #[Test]
     public function it_starts_the_long_lists_with_ten_choices_rather_than_all_there_are(): void
     {
         Queue::fake();
