@@ -6,6 +6,7 @@ namespace App\ViewModels\Vaults;
 
 use App\Helpers\FlagState;
 use App\Models\Contact;
+use App\Models\Template;
 use App\Models\User;
 use App\Models\Vault;
 
@@ -42,6 +43,24 @@ class ContactEditViewModel
         return __('What the template does not decide about :name.', [
             'name' => $this->contact->first_name ?? $this->contact->name,
         ]);
+    }
+
+    public function template(): ?Template
+    {
+        $owner = $this->contact->structureVersion->structure->owner;
+
+        return $owner instanceof Template ? $owner : null;
+    }
+
+    public function templateUrl(): ?string
+    {
+        $template = $this->template();
+
+        if (! $template instanceof Template) {
+            return null;
+        }
+
+        return route('settings.templateBuilder.index', $template);
     }
 
     public function action(): string

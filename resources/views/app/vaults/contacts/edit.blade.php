@@ -15,7 +15,24 @@
     <x-vault.sidebar :user="$viewModel->user()" :vault="$vault" current="contacts" />
   </x-slot:sidebar>
 
-  <x-page-header :title="$viewModel->title()" :description="$viewModel->description()" />
+  <x-page-header :title="$viewModel->title()" :description="$viewModel->description()">
+    @if ($viewModel->template())
+      <x-slot:actions>
+        <div class="flex flex-col items-end gap-1 max-sm:items-start">
+          <x-caption id="current-template" tone="muted">{{ __('Current template') }}</x-caption>
+          <a
+            href="{{ $viewModel->templateUrl() }}"
+            aria-describedby="current-template"
+            class="inline-flex max-w-full items-center gap-1.5 rounded-md border border-hairline bg-canvas px-2.5 py-1.5 text-sm font-medium text-ink no-underline transition-colors hover:bg-hover focus-ring"
+          >
+            <x-icon name="layers" :size="15" />
+            <span class="min-w-0 wrap-anywhere">{{ $viewModel->template()->name }}</span>
+            <x-icon name="arrow-right" :size="14" class="text-muted" />
+          </a>
+        </div>
+      </x-slot:actions>
+    @endif
+  </x-page-header>
 
   <x-panel
     :title="__('Photo')"

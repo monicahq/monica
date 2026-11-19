@@ -18,7 +18,7 @@ class DAVRedirectTest extends TestCase
     public function it_redirects_well_known_carddav_and_caldav_using_propfind(): void
     {
         $response = $this->call('PROPFIND', '/.well-known/carddav', server: [
-            'HTTP_DEPTH' => '0'
+            'HTTP_DEPTH' => '0',
         ]);
 
         $response->assertStatus(301);

@@ -503,7 +503,10 @@ class ContactControllerTest extends TestCase
             ->assertStatus(200)
             ->assertSee('Michael', false)
             ->assertSee('Scott', false)
-            ->assertSee(route('contacts.destroy', ['vault' => $vault, 'contact' => $michael]), false);
+            ->assertSee(route('contacts.destroy', ['vault' => $vault, 'contact' => $michael]), false)
+            ->assertSee('Current template')
+            ->assertSee('Basic contact')
+            ->assertSee(route('settings.templateBuilder.index', $michael->structureVersion->structure->owner), false);
     }
 
     #[Test]

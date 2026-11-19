@@ -55,20 +55,10 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # v2.40.0
-        with:
-          php-version: 8.5
+        uses: ./.github/actions/php
 
-      - name: Get pint version
-        id: pint
-        run: |
-          echo "version=$(composer show laravel/pint --locked --format=json | jq -r '.versions[0]' | sed 's/v//')" >> $GITHUB_OUTPUT
-
-      - name: laravel-pint
-        uses: aglipanci/laravel-pint-action@36de00d5f5a8a4e12d443e01671daa12a18f4c79 # v2.6.0
-        with:
-          configPath: pint.json
-          pintVersion: ${{ steps.pint.outputs.version }}
+      - name: Run pint
+        run: vendor/bin/pint --test
 
   assets:
     name: Build assets (Vite)
