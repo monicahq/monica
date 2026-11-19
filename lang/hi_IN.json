@@ -3158,6 +3158,7 @@
     "Oldest first": "सबसे पुराने पहले",
     "On": "चालू",
     "On behalf of": "की ओर से",
+    "On for :on of :count account|On for :on of :count accounts": ":count खाते में से :on के लिए चालू|:count खातों में से :on के लिए चालू",
     "On for every account": "हर खाते के लिए चालू",
     "On its way": "रास्ते में",
     "On its way.": "रास्ते में।",

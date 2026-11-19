@@ -3158,6 +3158,7 @@
     "Oldest first": "古い順",
     "On": "オン",
     "On behalf of": "依頼者",
+    "On for :on of :count account|On for :on of :count accounts": ":count 件中 :on 件のアカウントでオン",
     "On for every account": "すべてのアカウントでオン",
     "On its way": "送信中",
     "On its way.": "送信中です。",

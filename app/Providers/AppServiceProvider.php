@@ -27,8 +27,10 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Events\DiagnosingHealth;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Log\Context\Repository;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Context;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
@@ -223,6 +225,9 @@ class AppServiceProvider extends ServiceProvider
     private function configureFlags(): void
     {
         Feature::discover();
+
+        // The flags a request used are its own: a job it queues starts without them and names its own.
+        Context::dehydrating(fn (Repository $context) => $context->forget('flags'));
     }
 
     /**

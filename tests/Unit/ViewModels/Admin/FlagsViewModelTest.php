@@ -38,6 +38,7 @@ class FlagsViewModelTest extends TestCase
         $this->assertSame([[
             'name' => 'example-capability',
             'isOnForEveryAccount' => true,
+            'reach' => 'On for 1 of 1 account',
             'activateUrl' => route('admin.flags.activation.create', ['flag' => 'example-capability']),
             'deactivateUrl' => route('admin.flags.activation.destroy', ['flag' => 'example-capability']),
         ]], new FlagsViewModel(user: User::factory()->create())->flags());

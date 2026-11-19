@@ -12,7 +12,10 @@
   <x-list-panel :items="$viewModel->flags()">
     @foreach ($viewModel->flags() as $flag)
       <div class="flex flex-col gap-2 border-b border-hairline px-4 py-3.5 last:border-b-0 sm:flex-row sm:items-center sm:gap-4">
-        <p class="grow font-mono text-sm break-all text-ink">{{ $flag['name'] }}</p>
+        <div class="grow">
+          <p class="font-mono text-sm break-all text-ink">{{ $flag['name'] }}</p>
+          <p class="mt-1 text-xs text-muted">{{ $flag['reach'] }}</p>
+        </div>
 
         @if ($flag['isOnForEveryAccount'])
           <x-badge tone="success">{{ __('On for every account') }}</x-badge>

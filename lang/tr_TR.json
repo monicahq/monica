@@ -3158,6 +3158,7 @@
     "Oldest first": "Önce en eski",
     "On": "Açık",
     "On behalf of": "Adına",
+    "On for :on of :count account|On for :on of :count accounts": ":count hesabın :on tanesi için açık",
     "On for every account": "Her hesap için açık",
     "On its way": "Yolda",
     "On its way.": "Yolda.",

@@ -3158,6 +3158,7 @@
     "Oldest first": "最早优先",
     "On": "开启",
     "On behalf of": "代表",
+    "On for :on of :count account|On for :on of :count accounts": ":count 个账户中的 :on 个已开启",
     "On for every account": "所有账户均开启",
     "On its way": "发送中",
     "On its way.": "发送中。",

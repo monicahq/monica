@@ -3158,6 +3158,7 @@
     "Oldest first": "Vanhin ensin",
     "On": "Päällä",
     "On behalf of": "Puolesta",
+    "On for :on of :count account|On for :on of :count accounts": "Päällä :on tilillä :count tilistä|Päällä :on tilillä :count tilistä",
     "On for every account": "Päällä kaikilla tileillä",
     "On its way": "Matkalla",
     "On its way.": "Matkalla.",

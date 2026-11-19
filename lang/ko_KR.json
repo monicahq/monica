@@ -3158,6 +3158,7 @@
     "Oldest first": "오래된 순",
     "On": "켬",
     "On behalf of": "요청한 사람",
+    "On for :on of :count account|On for :on of :count accounts": "계정 :count개 중 :on개에서 켬",
     "On for every account": "모든 계정에서 켬",
     "On its way": "전송 중",
     "On its way.": "전송 중입니다.",

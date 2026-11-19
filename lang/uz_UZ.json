@@ -3158,6 +3158,7 @@
     "Oldest first": "Avval eskilari",
     "On": "Yoniq",
     "On behalf of": "Nomidan",
+    "On for :on of :count account|On for :on of :count accounts": ":count ta hisobdan :on tasi uchun yoniq",
     "On for every account": "Har bir hisob uchun yoniq",
     "On its way": "Yoʻlda",
     "On its way.": "Yoʻlda.",

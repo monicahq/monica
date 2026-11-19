@@ -3158,6 +3158,7 @@
     "Oldest first": "Сначала старые",
     "On": "Включено",
     "On behalf of": "От имени",
+    "On for :on of :count account|On for :on of :count accounts": "Включено для :on из :count аккаунта|Включено для :on из :count аккаунтов|Включено для :on из :count аккаунтов",
     "On for every account": "Включено для всех аккаунтов",
     "On its way": "В пути",
     "On its way.": "В пути.",

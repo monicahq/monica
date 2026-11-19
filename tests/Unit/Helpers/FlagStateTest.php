@@ -41,4 +41,38 @@ class FlagStateTest extends TestCase
         $this->assertTrue(FlagState::isOn('marketplace', $pam->account));
         $this->assertFalse(FlagState::isOn('marketplace', null));
     }
+
+    #[Test]
+    public function it_counts_the_accounts_switched_on_while_the_flag_is_off_for_every_account(): void
+    {
+        [$jim, $pam] = User::factory()->count(5)->create();
+        $jim->account->features()->activate('marketplace');
+        $pam->account->features()->activate('marketplace');
+
+        $this->assertSame(2, FlagState::accountsOn('marketplace'));
+    }
+
+    #[Test]
+    public function it_counts_every_account_once_the_flag_is_on_for_every_account_those_never_asked_included(): void
+    {
+        [$jim] = User::factory()->count(5)->create();
+        FlagState::isOn('marketplace', $jim->account);
+
+        Feature::for(null)->activate('marketplace');
+        Feature::activateForEveryone('marketplace');
+
+        $this->assertSame(5, FlagState::accountsOn('marketplace'));
+    }
+
+    #[Test]
+    public function it_leaves_out_an_account_switched_off_after_the_flag_went_on_for_every_account(): void
+    {
+        [$dwight] = User::factory()->count(5)->create();
+        Feature::for(null)->activate('marketplace');
+        Feature::activateForEveryone('marketplace');
+
+        $dwight->account->features()->deactivate('marketplace');
+
+        $this->assertSame(4, FlagState::accountsOn('marketplace'));
+    }
 }
