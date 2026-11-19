@@ -15,6 +15,17 @@ class DAVRedirectTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
+    public function it_redirects_well_known_carddav_and_caldav_using_propfind(): void
+    {
+        $response = $this->call('PROPFIND', '/.well-known/carddav', server: [
+            'HTTP_DEPTH' => '0'
+        ]);
+
+        $response->assertStatus(301);
+        $response->assertHeader('Location', route('sabre.dav'));
+    }
+
+    #[Test]
     public function it_sends_a_browser_back_to_the_home_screen(): void
     {
         $response = $this->davGet();

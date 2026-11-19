@@ -312,8 +312,8 @@ Route::get('/.well-known/webauthn', fn () => response()->json([
     'origins' => config('passkeys.allowed_origins'),
 ]));
 Route::middleware(['flag:carddav'])->group(function (): void {
-    Route::get('/.well-known/carddav', fn () => redirect('/dav', 301));
-    Route::get('/.well-known/caldav', fn () => redirect('/dav', 301));
+    Route::match(['GET', 'HEAD', 'PROPFIND', 'OPTIONS'], '/.well-known/carddav', fn () => redirect('/dav', 301));
+    Route::match(['GET', 'HEAD', 'PROPFIND', 'OPTIONS'], '/.well-known/caldav', fn () => redirect('/dav', 301));
 });
 
 /*
