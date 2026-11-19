@@ -39,6 +39,13 @@ return [
      * Socialite providers
      */
 
+    'authelia' => [
+        'client_id' => env('AUTHELIA_CLIENT_ID'),
+        'client_secret' => env('AUTHELIA_CLIENT_SECRET'),
+        'redirect' => env('AUTHELIA_REDIRECT_URI', '/auth/authelia/callback'),
+        'base_url' => env('AUTHELIA_BASE_URL'),
+    ],
+
     'azure' => [
         'client_id' => env('AZURE_CLIENT_ID'),
         'client_secret' => env('AZURE_CLIENT_SECRET'),

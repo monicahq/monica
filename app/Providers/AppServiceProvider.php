@@ -32,6 +32,7 @@ use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
 use League\CommonMark\Extension\ExternalLink\ExternalLinkExtension;
 use League\CommonMark\Extension\GithubFlavoredMarkdownExtension;
 use League\CommonMark\MarkdownConverter;
+use SocialiteProviders\Authelia\AutheliaExtendSocialite;
 use SocialiteProviders\Azure\AzureExtendSocialite;
 use SocialiteProviders\Facebook\FacebookExtendSocialite;
 use SocialiteProviders\GitHub\GitHubExtendSocialite;
@@ -163,6 +164,7 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(SocialiteWasCalled::class, LinkedInExtendSocialite::class);
         Event::listen(SocialiteWasCalled::class, KanidmExtendSocialite::class);
         Event::listen(SocialiteWasCalled::class, KeycloakExtendSocialite::class);
+        Event::listen(SocialiteWasCalled::class, AutheliaExtendSocialite::class);
 
         Vite::prefetch(concurrency: 3);
 
