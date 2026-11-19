@@ -164,6 +164,17 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(SocialiteWasCalled::class, KanidmExtendSocialite::class);
         Event::listen(SocialiteWasCalled::class, KeycloakExtendSocialite::class);
 
+        // OpenID Connect providers are registered by socialiteproviders/openidconnect
+        // from config/oidc.php, enable them as login providers.
+        Config::set('auth.login_providers', collect(Config::get('auth.login_providers'))
+            ->merge(collect(Config::get('oidc.connections'))
+                ->keys()
+                ->map(fn (string $id) => Config::get('oidc.driver_prefix').$id))
+            ->filter()
+            ->unique()
+            ->values()
+            ->all());
+
         Vite::prefetch(concurrency: 3);
 
         Gate::define('viewPulse', fn (User $user) => $user->is_instance_administrator || $this->app->environment('local'));
