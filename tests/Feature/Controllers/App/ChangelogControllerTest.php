@@ -37,6 +37,9 @@ class ChangelogControllerTest extends TestCase
         $response->assertSee('What changed in Monica, day by day.');
         $response->assertSee('Book the conference room from a contact');
         $response->assertSee('2 fixes');
+        $response->assertSee('images/panda-whats-new.webp');
+        $response->assertSee('images/panda-whats-new-dark.webp');
+        $response->assertDontSee('Do you like it?');
         $this->assertDatabaseHas('changelog_seen_entries', ['user_id' => $user->id, 'entry_id' => '01M7NBFWK5XNH908RFDGEAJXKN']);
     }
 

@@ -54,6 +54,7 @@
     'chevron-down' => '<path d="M4.4 6.4 8 10l3.6-3.6"></path>',
     'chevron-right' => '<path d="M6.4 4.4 10 8l-3.6 3.6"></path>',
     'thumbs-up' => '<path d="M5 7.2v6.2H2.8V7.2z"></path><path d="M5 7.2 7.6 2.6c.9 0 1.6.8 1.4 1.7L8.6 6.4h3.6c.9 0 1.5.8 1.3 1.6l-1 4.2c-.2.7-.8 1.2-1.5 1.2H5"></path>',
+    'comment' => '<path d="M3 3.5h10a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H7l-3 2.5v-2.5H3a1 1 0 0 1-1-1v-6a1 1 0 0 1 1-1z"></path>',
     'arrow-right' => '<line x1="2.8" y1="8" x2="12.8" y2="8"></line><path d="M9.2 4.4 12.8 8l-3.6 3.6"></path>',
     'enter' => '<path d="M12.8 3.2v4.4a1.6 1.6 0 0 1-1.6 1.6H3.6"></path><path d="M6.4 6.4 3.6 9.2 6.4 12"></path>',
     'sun' => '<circle cx="8" cy="8" r="3"></circle><line x1="8" y1="1.6" x2="8" y2="3"></line><line x1="8" y1="13" x2="8" y2="14.4"></line><line x1="1.6" y1="8" x2="3" y2="8"></line><line x1="13" y1="8" x2="14.4" y2="8"></line>',

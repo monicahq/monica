@@ -10,7 +10,27 @@
     <x-breadcrumb :items="[['label' => __('What’s new')]]" />
   </x-slot:breadcrumb>
 
-  <x-page-header :title="__('What’s new')" :description="$feedback ? __('What changed in Monica, day by day. Tell us which changes help you and which do not.') : __('What changed in Monica, day by day.')" />
+  <div class="flex items-center justify-between gap-6">
+    <x-page-header :title="__('What’s new')" :description="$feedback ? __('What changed in Monica, day by day. Tell us which changes help you and which do not.') : __('What changed in Monica, day by day.')" />
+
+    <img
+      src="{{ asset('images/panda-whats-new.webp') }}"
+      alt=""
+      width="360"
+      height="360"
+      decoding="async"
+      class="size-24 flex-none sm:size-45 dark:hidden"
+    />
+
+    <img
+      src="{{ asset('images/panda-whats-new-dark.webp') }}"
+      alt=""
+      width="360"
+      height="360"
+      decoding="async"
+      class="hidden size-24 flex-none sm:size-45 dark:block"
+    />
+  </div>
 
   <div class="flex flex-col gap-2.5">
     <nav aria-label="{{ __('Period') }}" class="flex gap-0.5 self-start rounded-lg border border-hairline bg-card p-0.5">

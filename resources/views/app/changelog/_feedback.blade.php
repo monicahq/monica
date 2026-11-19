@@ -9,45 +9,49 @@
       </a>
     @endif
 
-    <x-button.secondary
-      type="button"
-      size="small"
-      aria-expanded="false"
-      aria-controls="changelog-comments-{{ $entry['id'] }}"
-      x-bind:aria-expanded="open.toString()"
-      @click="open = ! open; if (open && ! loaded) { loaded = true; $ajax('{{ $entry['commentsUrl'] }}', { target: 'changelog-comments-{{ $entry['id'] }}', focus: false }) }"
-    >{{ $entry['commentLabel'] }}</x-button.secondary>
+    <div class="ml-auto flex items-center gap-1.5">
+      <x-icon-button
+        icon="comment"
+        :label="$entry['commentLabel']"
+        aria-expanded="false"
+        aria-controls="changelog-comments-{{ $entry['id'] }}"
+        x-bind:aria-expanded="open.toString()"
+        @click="open = ! open; if (open && ! loaded) { loaded = true; $ajax('{{ $entry['commentsUrl'] }}', { target: 'changelog-comments-{{ $entry['id'] }}', focus: false }) }"
+      />
 
-    <div id="changelog-vote-{{ $entry['id'] }}" role="group" aria-label="{{ __('Is this change useful to you?') }}" class="ml-auto flex items-center gap-1">
-      <span class="mr-1 text-sm text-muted" aria-live="polite">{{ $entry['vote'] === null ? __('Do you like it?') : __('Thanks, noted') }}</span>
+      <span class="mx-1 h-5 w-px bg-hairline" aria-hidden="true"></span>
 
-      @foreach ([['direction' => 'up', 'label' => __('I like this change')], ['direction' => 'down', 'label' => __('I do not like this change')]] as $choice)
-        @php
-          $pressed = $entry['vote'] === $choice['direction'];
-        @endphp
-        <form method="post" action="{{ $entry['voteUrl'] }}" x-target="changelog-vote-{{ $entry['id'] }}">
-          @csrf
-          @if ($pressed)
-            @method('DELETE')
-          @else
-            @method('PUT')
-            <input type="hidden" name="direction" value="{{ $choice['direction'] }}" />
-          @endif
+      <div id="changelog-vote-{{ $entry['id'] }}" role="group" aria-label="{{ __('Is this change useful to you?') }}" class="flex items-center gap-1.5">
+        <span class="sr-only" aria-live="polite">{{ $entry['vote'] === null ? '' : __('Thanks, noted') }}</span>
 
-          <button
-            type="submit"
-            aria-label="{{ $choice['label'] }}"
-            aria-pressed="{{ $pressed ? 'true' : 'false' }}"
-            @class([
-              'focus-ring flex size-7.5 cursor-pointer items-center justify-center rounded-md border',
-              'border-primary bg-primary text-on-primary' => $pressed,
-              'border-hairline bg-canvas text-body hover:bg-hover hover:text-ink' => ! $pressed,
-            ])
-          >
-            <x-icon name="thumbs-up" :size="15" :class="$choice['direction'] === 'down' ? 'rotate-180' : ''" />
-          </button>
-        </form>
-      @endforeach
+        @foreach ([['direction' => 'up', 'label' => __('I like this change')], ['direction' => 'down', 'label' => __('I do not like this change')]] as $choice)
+          @php
+            $pressed = $entry['vote'] === $choice['direction'];
+          @endphp
+          <form method="post" action="{{ $entry['voteUrl'] }}" x-target="changelog-vote-{{ $entry['id'] }}">
+            @csrf
+            @if ($pressed)
+              @method('DELETE')
+            @else
+              @method('PUT')
+              <input type="hidden" name="direction" value="{{ $choice['direction'] }}" />
+            @endif
+
+            <button
+              type="submit"
+              aria-label="{{ $choice['label'] }}"
+              aria-pressed="{{ $pressed ? 'true' : 'false' }}"
+              @class([
+                'focus-ring flex size-7.5 cursor-pointer items-center justify-center rounded-md border',
+                'border-primary bg-primary text-on-primary' => $pressed,
+                'border-hairline bg-canvas text-body hover:bg-hover hover:text-ink' => ! $pressed,
+              ])
+            >
+              <x-icon name="thumbs-up" :size="15" :class="$choice['direction'] === 'down' ? 'rotate-180' : ''" />
+            </button>
+          </form>
+        @endforeach
+      </div>
     </div>
   </div>
 
