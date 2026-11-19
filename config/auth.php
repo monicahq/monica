@@ -120,7 +120,8 @@ return [
     | List of available login providers, coma separated. This uses socialite
     | packages.
     |
-    | Supported: azure, facebook, github, google, linkedin, saml2.
+    | Supported: authelia, azure, facebook, github, google, kanidm, keycloak,
+    | linkedin, saml2.
     |
     */
 

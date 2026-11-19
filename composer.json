@@ -36,6 +36,7 @@
     "monicahq/laravel-sabre": "^1.9",
     "rinvex/countries": "^9.0",
     "sentry/sentry-laravel": "^4.3",
+    "socialiteproviders/authelia": "^4.0",
     "socialiteproviders/facebook": "^4.1",
     "socialiteproviders/github": "^4.1",
     "socialiteproviders/google": "^4.1",

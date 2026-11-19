@@ -5,6 +5,7 @@ declare(strict_types=1);
 return [
     'failed' => 'These credentials do not match our records.',
     'lang' => 'English',
+    'login_provider_authelia' => 'Authelia',
     'login_provider_azure' => 'Microsoft',
     'login_provider_facebook' => 'Facebook',
     'login_provider_github' => 'GitHub',

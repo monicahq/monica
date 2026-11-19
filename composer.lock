@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d0c42cfdee584404a612328a89f5d0a8",
+    "content-hash": "7cc64797c28fbcc01744c5fad48453c5",
     "packages": [
         {
             "name": "asbiin/laravel-localizer",
@@ -7616,6 +7616,57 @@
                 }
             ],
             "time": "2024-02-20T11:51:46+00:00"
+        },
+        {
+            "name": "socialiteproviders/authelia",
+            "version": "4.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SocialiteProviders/Authelia.git",
+                "reference": "6086d52a4471a4d29cd2eb03916e67af780d3ee3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SocialiteProviders/Authelia/zipball/6086d52a4471a4d29cd2eb03916e67af780d3ee3",
+                "reference": "6086d52a4471a4d29cd2eb03916e67af780d3ee3",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": "^8.2",
+                "socialiteproviders/manager": "^4.8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "SocialiteProviders\\Authelia\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "yajtpg",
+                    "email": "yajtpg@gmail.com"
+                }
+            ],
+            "description": "Authelia OAuth2 Provider for Laravel Socialite",
+            "keywords": [
+                "authelia",
+                "laravel",
+                "oauth",
+                "provider",
+                "socialite"
+            ],
+            "support": {
+                "docs": "https://socialiteproviders.com/authentik",
+                "issues": "https://github.com/socialiteproviders/providers/issues",
+                "source": "https://github.com/socialiteproviders/providers"
+            },
+            "time": "2025-02-02T20:59:01+00:00",
+            "published-time": "2025-02-02T21:49:29+00:00"
         },
         {
             "name": "socialiteproviders/facebook",
