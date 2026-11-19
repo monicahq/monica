@@ -120,7 +120,11 @@ return [
     | List of available login providers, coma separated. This uses socialite
     | packages.
     |
-    | Supported: azure, facebook, github, google, linkedin, saml2.
+    | Supported: azure, facebook, github, google, kanidm, keycloak, linkedin,
+    | saml2.
+    |
+    | OpenID Connect providers defined in config/oidc.php are added to this
+    | list automatically.
     |
     */
 

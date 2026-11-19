@@ -43,6 +43,7 @@
     "socialiteproviders/keycloak": "^5.3",
     "socialiteproviders/linkedin": "^5.0",
     "socialiteproviders/microsoft-azure": "^5.1",
+    "socialiteproviders/openidconnect": "^1.0",
     "stevebauman/location": "^7.0",
     "thecodingmachine/safe": "^3.0",
     "tightenco/ziggy": "2.5.3",
