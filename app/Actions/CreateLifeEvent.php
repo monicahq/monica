@@ -158,6 +158,14 @@ class CreateLifeEvent
             ->whereKey($person->id)
             ->where(fn (Builder $query): Builder => $query->whereNull('last_life_event_at')->orWhere('last_life_event_at', '<', $day))
             ->update(['last_life_event_at' => $day]);
+        if (! $this->lifeEventType->updates_last_in_touch || $day->isFuture()) {
+            return;
+        }
+
+        Contact::query()
+            ->whereKey($person->id)
+            ->where(fn (Builder $query): Builder => $query->whereNull('last_interaction_at')->orWhere('last_interaction_at', '<', $day))
+            ->update(['last_interaction_at' => $day]);
     }
 
     private function log(): void

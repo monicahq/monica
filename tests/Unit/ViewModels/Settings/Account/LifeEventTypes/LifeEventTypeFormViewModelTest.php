@@ -163,4 +163,14 @@ class LifeEventTypeFormViewModelTest extends TestCase
         $this->assertNotContains('rating', $offered);
         $this->assertSame(count(FieldTypeEnum::cases()), count($offered));
     }
+
+    #[Test]
+    public function it_reads_whether_the_type_updates_last_in_touch(): void
+    {
+        $user = User::factory()->create();
+        $type = LifeEventType::factory()->create(['account_id' => $user->account_id, 'name' => 'Move', 'updates_last_in_touch' => false]);
+
+        $this->assertFalse(new LifeEventTypeFormViewModel(user: $user, lifeEventType: $type)->updatesLastInTouch());
+        $this->assertTrue(new LifeEventTypeFormViewModel(user: $user)->updatesLastInTouch());
+    }
 }

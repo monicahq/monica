@@ -6,6 +6,19 @@ return [
     'date' => '2026-11-20',
     'entries' => [
         [
+            'id' => 'last-interaction-at-recorded',
+            'kind' => 'Changed',
+            'group' => 'Contacts',
+            'title' => 'Last in touch is recorded',
+            'summary' => 'A contact\'s last_interaction_at now holds the day of the latest life event they took part in that has already happened and whose nature has the new updates_last_in_touch. Natures carry that setting, readable and changeable, and the supplied ones answer false for news about one person such as a move.',
+            'why' => 'Nothing recorded the date, so it was null for every contact whatever life events they had.',
+            'breaking' => false,
+            'changes' => [
+                ['field' => 'last_interaction_at', 'change' => 'Changed', 'endpoints' => ['GET /vaults/{vault}/contacts', 'GET /vaults/{vault}/contacts/{contact}']],
+                ['field' => 'updates_last_in_touch', 'change' => 'Added', 'endpoints' => ['GET /life-event-types', 'GET /life-event-types/{lifeEventType}', 'POST /life-event-types', 'PUT /life-event-types/{lifeEventType}']],
+            ],
+        ],
+        [
             'id' => 'vault-create-owner-on-chosen-template',
             'kind' => 'Changed',
             'group' => 'Vaults',

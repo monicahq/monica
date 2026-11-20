@@ -31,6 +31,7 @@ class LifeEventTypeControllerTest extends TestCase
                 'position',
                 'is_system',
                 'is_active',
+                'updates_last_in_touch',
                 'created_at',
                 'updated_at',
             ],
@@ -263,6 +264,26 @@ class LifeEventTypeControllerTest extends TestCase
         $response->assertJsonPath('data.attributes.name', 'Games evening');
         $response->assertJsonPath('data.attributes.description', 'Cardboard and dice.');
         $this->assertDatabaseHas('life_event_types', ['id' => $type->id, 'name' => 'Games evening']);
+    }
+
+    #[Test]
+    public function it_changes_whether_the_type_updates_last_in_touch(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
+        $type = LifeEventType::factory()->create(['account_id' => $user->account_id, 'life_event_category_id' => $category->id, 'name' => 'Move']);
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', "/api/v1/life-event-types/{$type->uuid}", ['updates_last_in_touch' => false])
+            ->assertOk()
+            ->assertJsonPath('data.attributes.updates_last_in_touch', false);
+
+        $this->json('PUT', "/api/v1/life-event-types/{$type->uuid}", ['updates_last_in_touch' => 'often'])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['updates_last_in_touch']);
     }
 
     #[Test]

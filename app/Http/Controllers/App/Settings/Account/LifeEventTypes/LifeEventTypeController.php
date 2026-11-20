@@ -79,6 +79,7 @@ class LifeEventTypeController extends Controller
                     description: $validated['description'] ?? null,
                     icon: $validated['icon'] ?? null,
                     colour: $validated['colour'] ?? null,
+                    updatesLastInTouch: $request->boolean('updates_last_in_touch', true),
                 )->execute();
 
                 new ReplaceLifeEventTypeFields(
@@ -131,6 +132,7 @@ class LifeEventTypeController extends Controller
                     description: $validated['description'] ?? null,
                     icon: $validated['icon'] ?? null,
                     colour: $validated['colour'] ?? null,
+                    updatesLastInTouch: $request->has('updates_last_in_touch') ? $request->boolean('updates_last_in_touch') : null,
                 )->execute();
 
                 new ReplaceLifeEventTypeFields(
@@ -275,6 +277,7 @@ class LifeEventTypeController extends Controller
             'icon' => ['nullable', 'string', Rule::in(Section::ICONS)],
             'colour' => ['nullable', 'string', Rule::in(VaultColourEnum::values())],
             'is_active' => ['nullable', 'boolean'],
+            'updates_last_in_touch' => ['nullable', 'boolean'],
 
             'groups' => ['nullable', 'array'],
             'groups.*.placement_id' => ['nullable', 'integer'],

@@ -107,6 +107,35 @@ enum LifeEventTypeEnum: string implements Translatable
         };
     }
 
+    /** Whether a life event of this type is a moment shared with its participants, rather than news about one of them. */
+    public function updatesLastInTouch(): bool
+    {
+        return ! in_array($this, [
+            self::Marriage,
+            self::Birth,
+            self::Separation,
+            self::Interview,
+            self::NewJob,
+            self::SchoolClass,
+            self::Training,
+            self::Graduation,
+            self::MedicalAppointment,
+            self::Therapy,
+            self::Illness,
+            self::HospitalStay,
+            self::Move,
+            self::HomeImprovement,
+            self::MajorPurchase,
+            self::HouseholdTask,
+            self::Reading,
+            self::Reflection,
+            self::Decision,
+            self::Achievement,
+            self::Memory,
+            self::SpiritualEvent,
+        ], true);
+    }
+
     public function icon(): string
     {
         return match ($this) {

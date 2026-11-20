@@ -67,6 +67,11 @@ use Override;
  * main lists until they are filled in. Partial and nameless are independent:
  * either a partial or a regular contact may have no name.
  *
+ * Two dates are kept from the life events a contact took part in, and never
+ * typed in. `last_life_event_at` is the latest of any type. `last_interaction_at`
+ * is what the page calls Last in touch: the latest one already past whose type
+ * updates it, so news about the contact does not count as having seen them.
+ *
  * @property int $id
  * @property string $uuid
  * @property string $slug

@@ -36,6 +36,7 @@ class LifeEventTypeFactory extends Factory
             'colour' => null,
             'is_system' => false,
             'is_active' => true,
+            'updates_last_in_touch' => true,
             'position' => 1,
         ];
     }

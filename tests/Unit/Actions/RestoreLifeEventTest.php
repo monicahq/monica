@@ -57,6 +57,7 @@ class RestoreLifeEventTest extends TestCase
         foreach ([$jim, $pam] as $person) {
             $this->assertEquals(1, $person->refresh()->life_event_count);
             $this->assertEquals('2026-08-30', $person->last_life_event_at?->toDateString());
+            $this->assertEquals('2026-08-30', $person->last_interaction_at?->toDateString());
         }
 
         Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::LifeEventRestoration);

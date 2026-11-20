@@ -103,6 +103,7 @@ class CreateDefaultLifeEventTypes implements ShouldQueue
             'colour' => $case->colour()->value,
             'is_system' => true,
             'is_active' => true,
+            'updates_last_in_touch' => $case->updatesLastInTouch(),
             'position' => $this->positions[$key],
         ]);
 

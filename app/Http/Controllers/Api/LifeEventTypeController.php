@@ -64,6 +64,7 @@ class LifeEventTypeController extends Controller
             description: $validated['description'] ?? null,
             icon: $validated['icon'] ?? null,
             colour: $validated['colour'] ?? null,
+            updatesLastInTouch: $validated['updates_last_in_touch'] ?? true,
         )->execute();
 
         return new LifeEventTypeResource($lifeEventType)->response()->setStatusCode(201);
@@ -83,6 +84,7 @@ class LifeEventTypeController extends Controller
             description: array_key_exists('description', $validated) ? $validated['description'] : $type->description,
             icon: array_key_exists('icon', $validated) ? $validated['icon'] : $type->icon,
             colour: array_key_exists('colour', $validated) ? $validated['colour'] : $type->colour,
+            updatesLastInTouch: $validated['updates_last_in_touch'] ?? null,
         )->execute();
 
         return new LifeEventTypeResource($type->refresh())->response()->setStatusCode(200);
@@ -111,6 +113,7 @@ class LifeEventTypeController extends Controller
             'description' => ['nullable', 'string', 'max:255'],
             'icon' => ['nullable', 'string', Rule::in(Section::ICONS)],
             'colour' => ['nullable', 'string', Rule::in(VaultColourEnum::values())],
+            'updates_last_in_touch' => ['sometimes', 'boolean'],
         ];
     }
 

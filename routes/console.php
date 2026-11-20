@@ -8,6 +8,7 @@ use App\Jobs\GenerateDueReminderOccurrences;
 use App\Jobs\PurgeAbandonedAccountImports;
 use App\Jobs\PurgeExpiredAccountExports;
 use App\Jobs\PurgeOrphanedFiles;
+use App\Jobs\RecordLastInTouchOfTheDay;
 use App\Jobs\SendNotificationDigests;
 use Illuminate\Support\Facades\Schedule;
 
@@ -33,6 +34,8 @@ Schedule::job(new PurgeExpiredAccountExports, 'low')->dailyAt('03:30')->sentryMo
 Schedule::job(new PurgeAbandonedAccountImports, 'low')->dailyAt('03:35')->sentryMonitor();
 
 Schedule::job(new DetectDuplicateContacts, 'low')->dailyAt('03:40')->sentryMonitor();
+
+Schedule::job(new RecordLastInTouchOfTheDay, 'low')->dailyAt('02:15')->sentryMonitor();
 
 Schedule::job(new GenerateDueReminderOccurrences, 'low')->dailyAt('02:30')->sentryMonitor();
 

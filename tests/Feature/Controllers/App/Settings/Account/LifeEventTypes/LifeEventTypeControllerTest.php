@@ -210,6 +210,27 @@ class LifeEventTypeControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_saves_whether_the_type_updates_last_in_touch(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
+        $type = LifeEventType::factory()->create([
+            'account_id' => $user->account_id,
+            'life_event_category_id' => $category->id,
+        ]);
+
+        $this->actingAs($user)->put(route('settings.lifeEventTypes.update', $type), [
+            'name' => 'Move',
+            'life_event_category_id' => $category->id,
+            'updates_last_in_touch' => '0',
+        ])->assertRedirect(route('settings.lifeEventTypes.category', $category));
+
+        $this->assertFalse($type->refresh()->updates_last_in_touch);
+    }
+
+    #[Test]
     public function it_refuses_a_type_with_no_name(): void
     {
         Queue::fake();

@@ -39,6 +39,7 @@ class CreateLifeEventType
         private ?string $description = null,
         private readonly ?string $icon = null,
         private readonly ?string $colour = null,
+        private readonly bool $updatesLastInTouch = true,
     ) {}
 
     public function execute(): LifeEventType
@@ -82,6 +83,7 @@ class CreateLifeEventType
                 'colour' => $this->colour,
                 'is_system' => false,
                 'is_active' => true,
+                'updates_last_in_touch' => $this->updatesLastInTouch,
                 'position' => ($positions->max() ?? 0) + 1,
             ]);
 

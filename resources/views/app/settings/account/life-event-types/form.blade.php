@@ -120,6 +120,32 @@
         </div>
     </x-page-section>
 
+    <x-page-section :title="__('Last in touch')">
+      <x-slot:help>
+        <x-help
+          :label="__('Help about Last in touch')"
+          :title="__('What is Last in touch?')"
+          guide="customise.life-event-types#last-in-touch"
+        >{{ __('Every contact page shows Last in touch: the last time you saw or spoke to that person. Monica takes it from the life events you record with them, counting only the types where this switch is on.') }}</x-help>
+      </x-slot:help>
+
+      <div class="flex max-w-130 flex-col gap-0.5">
+        <input type="hidden" name="updates_last_in_touch" value="0" />
+
+        <label for="updates_last_in_touch" class="flex cursor-pointer items-center gap-3.5">
+          <x-switch
+            id="updates_last_in_touch"
+            :checked="$viewModel->updatesLastInTouch()"
+            aria-describedby="updates-last-in-touch-help"
+          />
+
+          <span class="text-base font-semibold text-ink">{{ __('Updates “Last in touch”') }}</span>
+        </label>
+
+        <p id="updates-last-in-touch-help" class="pl-13.5 text-sm text-pretty text-muted">{{ __('When you record this life event with somebody, its date becomes the one their page shows under Last in touch.') }}</p>
+      </div>
+    </x-page-section>
+
     {{-- The component sits on the section so that "Add a group", which the heading row holds, is inside the editor. --}}
     <x-page-section :title="__('Fields')" x-data="lifeEventTypeFields" data-field-editor>
       <x-slot:actions>

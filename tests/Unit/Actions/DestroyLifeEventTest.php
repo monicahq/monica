@@ -51,6 +51,7 @@ class DestroyLifeEventTest extends TestCase
         foreach ([$jim, $pam] as $person) {
             $this->assertEquals(0, $person->refresh()->life_event_count);
             $this->assertNull($person->last_life_event_at);
+            $this->assertNull($person->last_interaction_at);
         }
 
         Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::LifeEventDeletion);
@@ -70,6 +71,7 @@ class DestroyLifeEventTest extends TestCase
 
         $this->assertEquals(1, $jim->refresh()->life_event_count);
         $this->assertEquals('2026-02-14', $jim->last_life_event_at?->toDateString());
+        $this->assertEquals('2026-02-14', $jim->last_interaction_at?->toDateString());
     }
 
     #[Test]

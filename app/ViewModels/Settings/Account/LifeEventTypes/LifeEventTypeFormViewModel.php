@@ -189,6 +189,15 @@ class LifeEventTypeFormViewModel
         return $this->lifeEventType->is_active ?? true;
     }
 
+    public function updatesLastInTouch(): bool
+    {
+        if (old('updates_last_in_touch') !== null) {
+            return (bool) old('updates_last_in_touch');
+        }
+
+        return $this->lifeEventType->updates_last_in_touch ?? true;
+    }
+
     public function availabilityHelp(): string
     {
         if ($this->isActive()) {

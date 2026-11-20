@@ -46,6 +46,7 @@ class UpdateLifeEventTest extends TestCase
         $this->assertEquals('Call about the move', $lifeEvent->title);
         $this->assertDatabaseHas('field_values', ['valuable_id' => $lifeEvent->id, 'value_string' => 'Landline']);
         $this->assertEquals('2026-08-30', $jim->refresh()->last_life_event_at?->toDateString());
+        $this->assertEquals('2026-08-30', $jim->last_interaction_at?->toDateString());
 
         Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::LifeEventUpdate);
     }
@@ -63,7 +64,9 @@ class UpdateLifeEventTest extends TestCase
 
         $this->assertEquals(0, $pam->refresh()->life_event_count);
         $this->assertNull($pam->last_life_event_at);
-        $this->assertEquals(1, $dwight->refresh()->life_event_count);
+        $this->assertNull($pam->last_interaction_at);
+        $this->assertEquals('2026-07-03', $dwight->refresh()->last_interaction_at?->toDateString());
+        $this->assertEquals(1, $dwight->life_event_count);
         $this->assertEquals(1, $jim->refresh()->life_event_count);
         $this->assertEquals(2, $lifeEvent->refresh()->participant_count);
         $this->assertDatabaseHas('life_event_participants', ['life_event_id' => $lifeEvent->id, 'participant_id' => $jim->id, 'position' => 0]);

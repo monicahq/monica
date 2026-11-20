@@ -4,7 +4,7 @@ title: Add your own life event types
 description: Add the life event types you need, such as a Thanksgiving dinner, with an icon, a colour and a category.
 slug: life-event-types
 section: templates-and-customisation
-last_updated: 2026-09-29
+last_updated: 2026-11-20
 ---
 
 # Add your own life event types
@@ -42,6 +42,16 @@ Monica says **The type is added**. It is offered the next time you record a life
 Choose **Edit** on a type to change its name, category, mark or fields. You can change the supplied types too.
 
 Changing its fields never changes the life events already recorded: they keep the fields they were written with. Only life events you record from then on ask the new questions.
+
+## Last in touch
+
+Every contact page shows **Last in touch**: the day of the latest life event you recorded with that person. A life event counts only when its type says so. On a type, the switch **Updates “Last in touch”** decides it.
+
+- A moment you share with someone, such as a **Call**, a **Meal** or a **Meeting**, updates it. The types that came with your account start that way.
+- News about one person, such as a **Move**, a **New job** or an **Illness**, does not. Recording that Jim moved does not mean you saw Jim.
+- A type you add updates it until you switch it off.
+
+A life event dated in the future counts from its day. When you change the switch on a type, Monica works the date out again for everybody who took part in a life event of that type, which takes a moment.
 
 ## Stop offering a type, or delete it
 

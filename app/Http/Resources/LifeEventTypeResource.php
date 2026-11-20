@@ -28,6 +28,7 @@ class LifeEventTypeResource extends JsonResource
                 'position' => $this->position,
                 'is_system' => $this->is_system,
                 'is_active' => $this->is_active,
+                'updates_last_in_touch' => $this->updates_last_in_touch,
                 'created_at' => $this->created_at->timestamp,
                 'updated_at' => $this->updated_at?->timestamp,
             ],

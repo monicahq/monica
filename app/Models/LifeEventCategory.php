@@ -28,9 +28,9 @@ use Override;
  *
  * A category organises the vocabulary in settings and pickers, filters the
  * journal and gives aggregate statistics a level to count at. It never gives an
- * life event any behaviour: moving Call into Personal does not stop it counting
- * as an interaction, and moving Thought into Relationships and family does not
- * make it count as one.
+ * life event any behaviour: moving Call into Personal does not stop it updating
+ * Last in touch, and moving Reflection into Relationships and family does not
+ * make it update it. That is the type's own setting.
  *
  * A supplied category keeps its `key` for as long as it exists and cannot be
  * deleted. It may be renamed like any other, which is what the product

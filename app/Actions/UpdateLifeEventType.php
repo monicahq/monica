@@ -7,6 +7,7 @@ namespace App\Actions;
 use App\Enums\UserActionEnum;
 use App\Helpers\TextSanitizer;
 use App\Jobs\LogUserAction;
+use App\Jobs\RecountLastInTouchOfType;
 use App\Models\LifeEvent;
 use App\Models\LifeEventCategory;
 use App\Models\LifeEventType;
@@ -14,8 +15,8 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
- * Change what a nature is called, what it covers, how it is drawn and which category it is filed
- * under.
+ * Change what a nature is called, what it covers, how it is drawn, which category it is filed under
+ * and whether its life events update Last in touch.
  *
  * A nature the product supplied is changed like any other: being supplied governs deletion and
  * nothing else. Moving a nature to another category puts it last there, because the order inside a
@@ -32,6 +33,7 @@ class UpdateLifeEventType
         private ?string $description = null,
         private readonly ?string $icon = null,
         private readonly ?string $colour = null,
+        private readonly ?bool $updatesLastInTouch = null,
     ) {}
 
     public function execute(): LifeEventType
@@ -40,6 +42,7 @@ class UpdateLifeEventType
         $this->validate();
         $this->update();
         $this->resendItsUntitledLifeEvents();
+        $this->recountLastInTouch();
         $this->log();
 
         return $this->lifeEventType;
@@ -76,6 +79,15 @@ class UpdateLifeEventType
             ->whereNull('title'));
     }
 
+    private function recountLastInTouch(): void
+    {
+        if (! $this->lifeEventType->wasChanged('updates_last_in_touch')) {
+            return;
+        }
+
+        RecountLastInTouchOfType::dispatch(lifeEventType: $this->lifeEventType)->onQueue('low');
+    }
+
     private function update(): void
     {
         if ($this->lifeEventCategory->id !== $this->lifeEventType->life_event_category_id) {
@@ -88,6 +100,7 @@ class UpdateLifeEventType
         $this->lifeEventType->description = $this->description;
         $this->lifeEventType->icon = $this->icon;
         $this->lifeEventType->colour = $this->colour;
+        $this->lifeEventType->updates_last_in_touch = $this->updatesLastInTouch ?? $this->lifeEventType->updates_last_in_touch;
         $this->lifeEventType->save();
     }
 

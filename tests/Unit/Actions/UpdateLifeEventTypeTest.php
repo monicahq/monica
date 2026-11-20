@@ -7,6 +7,7 @@ namespace Tests\Unit\Actions;
 use App\Actions\UpdateLifeEventType;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
+use App\Jobs\RecountLastInTouchOfType;
 use App\Models\LifeEvent;
 use App\Models\LifeEventCategory;
 use App\Models\LifeEventType;
@@ -233,5 +234,46 @@ class UpdateLifeEventTypeTest extends TestCase
 
         $this->assertTrue($engine->wasSent($untitled));
         $this->assertFalse($engine->wasSent($titled));
+    }
+
+    #[Test]
+    public function it_works_last_in_touch_out_again_when_the_type_starts_or_stops_updating_it(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
+        $type = LifeEventType::factory()->create(['account_id' => $user->account_id, 'life_event_category_id' => $category->id, 'name' => 'Move']);
+
+        new UpdateLifeEventType(
+            user: $user,
+            lifeEventType: $type,
+            lifeEventCategory: $category,
+            name: 'Move',
+            updatesLastInTouch: false,
+        )->execute();
+
+        $this->assertFalse($type->refresh()->updates_last_in_touch);
+        Queue::assertPushedOn('low', RecountLastInTouchOfType::class, fn (RecountLastInTouchOfType $job): bool => $job->lifeEventType->is($type));
+    }
+
+    #[Test]
+    public function it_leaves_last_in_touch_alone_when_the_setting_does_not_change(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $category = LifeEventCategory::factory()->create(['account_id' => $user->account_id]);
+        $type = LifeEventType::factory()->create(['account_id' => $user->account_id, 'life_event_category_id' => $category->id, 'name' => 'Call']);
+
+        new UpdateLifeEventType(
+            user: $user,
+            lifeEventType: $type,
+            lifeEventCategory: $category,
+            name: 'Phone call',
+        )->execute();
+
+        $this->assertTrue($type->refresh()->updates_last_in_touch);
+        Queue::assertNotPushed(RecountLastInTouchOfType::class);
     }
 }

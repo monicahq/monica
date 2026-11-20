@@ -173,7 +173,7 @@ class CreateLifeEventTest extends TestCase
 
             $this->assertEquals(1, $person->life_event_count);
             $this->assertEquals('2026-10-10', $person->last_life_event_at?->toDateString());
-            $this->assertNull($person->last_interaction_at);
+            $this->assertEquals('2026-10-10', $person->last_interaction_at?->toDateString());
         }
     }
 
@@ -350,6 +350,73 @@ class CreateLifeEventTest extends TestCase
             happenedOn: CarbonImmutable::parse('2026-10-31'),
             group: $group,
         )->execute();
+    }
+
+    #[Test]
+    public function it_leaves_last_in_touch_alone_for_a_type_that_does_not_update_it(): void
+    {
+        Queue::fake();
+        $this->travelTo(CarbonImmutable::parse('2026-11-20'));
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $jim = $this->contactOn($vault, 'Jim');
+        $move = $this->lifeEventTypeAsking($user, 'Move');
+        $move->update(['updates_last_in_touch' => false]);
+
+        new CreateLifeEvent(
+            user: $user,
+            vault: $vault,
+            contact: $jim,
+            lifeEventType: $move,
+            happenedOn: CarbonImmutable::parse('2026-11-02'),
+        )->execute();
+
+        $this->assertNull($jim->refresh()->last_interaction_at);
+        $this->assertEquals('2026-11-02', $jim->last_life_event_at?->toDateString());
+    }
+
+    #[Test]
+    public function it_leaves_last_in_touch_alone_for_a_life_event_still_to_come(): void
+    {
+        Queue::fake();
+        $this->travelTo(CarbonImmutable::parse('2026-11-20'));
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $jim = $this->contactOn($vault, 'Jim');
+
+        new CreateLifeEvent(
+            user: $user,
+            vault: $vault,
+            contact: $jim,
+            lifeEventType: $this->lifeEventTypeAsking($user, 'Meal'),
+            happenedOn: CarbonImmutable::parse('2026-11-27'),
+        )->execute();
+
+        $this->assertNull($jim->refresh()->last_interaction_at);
+    }
+
+    #[Test]
+    public function it_keeps_a_later_last_in_touch_when_an_older_life_event_is_recorded(): void
+    {
+        Queue::fake();
+        $this->travelTo(CarbonImmutable::parse('2026-11-20'));
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $jim = $this->contactOn($vault, 'Jim');
+        $jim->update(['last_interaction_at' => '2026-11-03']);
+
+        new CreateLifeEvent(
+            user: $user,
+            vault: $vault,
+            contact: $jim,
+            lifeEventType: $this->lifeEventTypeAsking($user, 'Call'),
+            happenedOn: CarbonImmutable::parse('2026-10-01'),
+        )->execute();
+
+        $this->assertEquals('2026-11-03', $jim->refresh()->last_interaction_at?->toDateString());
     }
 
     private function contactOn(Vault $vault, string $firstName): Contact

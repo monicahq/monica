@@ -40,6 +40,7 @@ class CreateLifeEventType extends Tool
             'description' => $schema->string()->nullable()->description('A sentence saying what it is for.'),
             'icon' => $schema->string()->nullable()->enum(Section::ICONS)->description('The icon shown next to it.'),
             'colour' => $schema->string()->nullable()->enum(VaultColourEnum::values())->description('The colour it is drawn in.'),
+            'updates_last_in_touch' => $schema->boolean()->description('Whether its life events set Last in touch on the contacts they are recorded with. Defaults to true.'),
         ];
     }
 }

@@ -31,6 +31,11 @@ use Override;
  * template nor structure nor version reaches the user here, because neither is
  * what somebody came to this screen to manage.
  *
+ * Whether its life events update Last in touch is set here too. A call or a
+ * meal is a moment shared with the people it is recorded with and moves the
+ * date their page shows; a move or a new job is news about one of them and
+ * leaves it.
+ *
  * @property int $id
  * @property string $uuid
  * @property int $account_id
@@ -43,6 +48,7 @@ use Override;
  * @property string|null $colour
  * @property bool $is_system
  * @property bool $is_active
+ * @property bool $updates_last_in_touch
  * @property int $position
  * @property CarbonImmutable $created_at
  * @property CarbonImmutable|null $updated_at
@@ -62,6 +68,7 @@ use Override;
     'colour',
     'is_system',
     'is_active',
+    'updates_last_in_touch',
     'position',
 ])]
 class LifeEventType extends Model
@@ -84,6 +91,7 @@ class LifeEventType extends Model
         return [
             'is_system' => 'boolean',
             'is_active' => 'boolean',
+            'updates_last_in_touch' => 'boolean',
             'position' => 'integer',
         ];
     }
