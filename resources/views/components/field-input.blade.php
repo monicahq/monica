@@ -37,6 +37,7 @@
   use App\Enums\ValueListEnum;
   use App\Helpers\FieldValueFormatter;
   use App\Helpers\FlagState;
+  use App\Models\FieldValue;
   use App\Models\ValueList;
 
   $name ??= "fields[{$field->id}]";
@@ -436,7 +437,12 @@
           $type === FieldTypeEnum::Duration => null,
           default => $value?->value_string,
       }"
-      :min="$type === FieldTypeEnum::Duration ? 1 : null"
+      :min="match ($type) {
+          FieldTypeEnum::Duration => 1,
+          FieldTypeEnum::Number => -FieldValue::LARGEST_NUMBER,
+          default => null,
+      }"
+      :max="$type === FieldTypeEnum::Number ? FieldValue::LARGEST_NUMBER : null"
       :placeholder="$field->placeholder"
       :help="$field->help_text"
       :error="$error"

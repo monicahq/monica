@@ -13,6 +13,7 @@ use App\Models\Contact;
 use App\Models\Entity;
 use App\Models\EntityType;
 use App\Models\Field;
+use App\Models\FieldValue;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
 use App\Models\Vault;
@@ -51,6 +52,21 @@ class FieldValueRulesTest extends TestCase
 
         foreach ([0, 2.5, 'abc', 100001] as $refused) {
             $this->assertTrue(Validator::make(['fields' => [$duration->id => $refused]], $rules)->fails());
+        }
+    }
+
+    #[Test]
+    public function it_takes_a_number_only_within_what_the_column_holds(): void
+    {
+        $number = Field::factory()->create(['type' => FieldTypeEnum::Number]);
+        $rules = FieldValueRules::for(collect([$number]));
+
+        foreach ([FieldValue::LARGEST_NUMBER, -FieldValue::LARGEST_NUMBER, 2.5] as $accepted) {
+            $this->assertTrue(Validator::make(['fields' => [$number->id => $accepted]], $rules)->passes());
+        }
+
+        foreach ([1000000000000000, -1000000000000000, FieldValue::LARGEST_NUMBER + 1, '1e400'] as $refused) {
+            $this->assertTrue(Validator::make(['fields' => [$number->id => $refused]], $rules)->fails());
         }
     }
 

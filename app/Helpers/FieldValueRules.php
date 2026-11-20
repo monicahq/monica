@@ -144,7 +144,7 @@ class FieldValueRules
             FieldTypeEnum::Textarea => ['string', 'max:65535'],
             FieldTypeEnum::Url => ['string', 'url', 'max:1024'],
             FieldTypeEnum::Email => ['string', 'email', 'max:1024'],
-            FieldTypeEnum::Number => ['numeric'],
+            FieldTypeEnum::Number => ['numeric', 'min:-'.FieldValue::LARGEST_NUMBER, 'max:'.FieldValue::LARGEST_NUMBER],
             FieldTypeEnum::Duration => ['integer', 'min:1', 'max:100000'],
             FieldTypeEnum::Boolean => ['boolean'],
             FieldTypeEnum::Date, FieldTypeEnum::RecurringDate => ['date'],

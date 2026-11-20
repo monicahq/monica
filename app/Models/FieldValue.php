@@ -129,6 +129,13 @@ class FieldValue extends Model
     public const array ADDRESS_PARTS = ['po_box', 'extended', 'street', 'city', 'region', 'postal_code', 'country'];
 
     /**
+     * The largest number `value_number` holds, in either direction. The column
+     * is `decimal(20, 6)`, which leaves fourteen digits before the point, and a
+     * number past it is refused by the database rather than stored.
+     */
+    public const int LARGEST_NUMBER = 99999999999999;
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
