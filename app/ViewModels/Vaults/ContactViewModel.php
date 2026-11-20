@@ -6,6 +6,8 @@ namespace App\ViewModels\Vaults;
 
 use App\Enums\VaultColourEnum;
 use App\Enums\VersionStatusEnum;
+use App\Helpers\AvailableLocales;
+use App\Helpers\Birthday;
 use App\Helpers\FieldValueFormatter;
 use App\Helpers\FlagState;
 use App\Models\Contact;
@@ -571,6 +573,70 @@ class ContactViewModel
         return __('This page has no sections yet. What it asks about :name is decided on the template.', [
             'name' => $this->contact->first_name ?? $this->contact->name,
         ]);
+    }
+
+    /** @return array{age: string|null, upcoming: string|null}|null */
+    public function birthdayLine(): ?array
+    {
+        return once(function (): ?array {
+            $value = $this->contact->birthday;
+
+            if ($value === null) {
+                return null;
+            }
+
+            $birthday = new Birthday(value: $value, today: CarbonImmutable::now($this->user->timezone)->startOfDay());
+            $age = $birthday->age();
+            $upcoming = $birthday->isUpcoming() ? $this->upcomingLine($birthday, $age) : null;
+
+            if ($upcoming !== null && $age !== null && $birthday->daysUntilNext() === 0) {
+                $age = null;
+            }
+
+            $ageLine = $age === null ? null : trans_choice(':count year old|:count years old', $age);
+
+            if ($ageLine === null && $upcoming === null) {
+                return null;
+            }
+
+            return ['age' => $ageLine, 'upcoming' => $upcoming];
+        });
+    }
+
+    private function upcomingLine(Birthday $birthday, ?int $age): ?string
+    {
+        $next = $birthday->next();
+        $days = $birthday->daysUntilNext();
+
+        if ($next === null || $days === null) {
+            return null;
+        }
+
+        if ($age === null) {
+            return match ($days) {
+                0 => __('Birthday today'),
+                1 => __('Birthday tomorrow'),
+                default => trans_choice('Birthday in :count day, on :weekday :date|Birthday in :count days, on :weekday :date', $days, $this->birthdayWords($next)),
+            };
+        }
+
+        return match ($days) {
+            0 => trans_choice('Turns :count today|Turns :count today', $age),
+            1 => trans_choice('Turns :count tomorrow|Turns :count tomorrow', $age + 1),
+            default => trans_choice('Turns :age in :count day, on :weekday :date|Turns :age in :count days, on :weekday :date', $days, [...$this->birthdayWords($next), 'age' => $age + 1]),
+        };
+    }
+
+    /** @return array{weekday: string, date: string} */
+    private function birthdayWords(CarbonImmutable $next): array
+    {
+        $next = $next->locale(app()->getLocale());
+        $dateFormat = $this->user->date_format->value ?? (string) AvailableLocales::details(app()->getLocale())['date_format'];
+
+        return [
+            'weekday' => $next->isoFormat('dddd'),
+            'date' => $next->isoFormat(str_starts_with($dateFormat, 'm') ? 'MMMM D' : 'D MMMM'),
+        ];
     }
 
     /** @return array<int, array{icon: string, label: string, value: string, reminder: string|null, url?: string}> */

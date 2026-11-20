@@ -8,6 +8,7 @@ use App\Casts\CollationKey;
 use App\Enums\ContactGroupingEnum;
 use App\Enums\ContactNameKindEnum;
 use App\Enums\ContactSortEnum;
+use App\Enums\DefaultFieldEnum;
 use App\Enums\NameOrderEnum;
 use App\Enums\RelationshipBehaviorEnum;
 use App\Enums\RelationshipStatusEnum;
@@ -32,6 +33,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder as QueryBuilder;
@@ -540,6 +542,19 @@ class Contact extends Model
     public function fieldValues(): MorphMany
     {
         return $this->morphMany(FieldValue::class, 'valuable');
+    }
+
+    /**
+     * Get the main birthday of the contact: the attached value of the birthday field, outside any repeated row.
+     *
+     * @return MorphOne<FieldValue, $this>
+     */
+    public function birthday(): MorphOne
+    {
+        return $this->morphOne(FieldValue::class, 'valuable')
+            ->attached()
+            ->where('field_key', DefaultFieldEnum::Birthday->value)
+            ->whereNull('field_value_row_id');
     }
 
     /**

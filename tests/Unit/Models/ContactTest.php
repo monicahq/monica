@@ -7,6 +7,7 @@ namespace Tests\Unit\Models;
 use App\Enums\ContactGroupingEnum;
 use App\Enums\ContactNameKindEnum;
 use App\Enums\ContactSortEnum;
+use App\Enums\DefaultFieldEnum;
 use App\Enums\FieldTypeEnum;
 use App\Enums\NameOrderEnum;
 use App\Enums\RelationshipTypeEnum;
@@ -18,6 +19,7 @@ use App\Models\Contact;
 use App\Models\ContactNameRepresentation;
 use App\Models\Field;
 use App\Models\FieldValue;
+use App\Models\FieldValueRow;
 use App\Models\LifeEvent;
 use App\Models\LifeEventParticipant;
 use App\Models\Relationship;
@@ -1255,6 +1257,28 @@ class ContactTest extends TestCase
 
         $this->assertSame([$sales->id], $michael->heldCategories(false)->pluck('id')->all());
         $this->assertSame([$sales->id, $therapy->id], $michael->heldCategories(true)->pluck('id')->all());
+    }
+
+    #[Test]
+    public function it_returns_the_attached_top_level_birthday_and_ignores_the_rest(): void
+    {
+        $jim = Contact::factory()->create();
+        $birthdayField = Field::factory()->recurringDate()->create(['key' => DefaultFieldEnum::Birthday->value]);
+        $anniversaryField = Field::factory()->recurringDate()->create(['key' => 'anniversary']);
+
+        FieldValue::factory()->detached()->create(['valuable_id' => $jim->id, 'field_id' => $birthdayField->id, 'value_string' => null, 'value_date' => '1977-01-01']);
+        FieldValue::factory()->create(['valuable_id' => $jim->id, 'field_id' => $anniversaryField->id, 'value_string' => null, 'value_date' => '1976-01-01']);
+
+        $this->assertNull($jim->birthday()->first());
+
+        $row = FieldValueRow::factory()->create(['valuable_id' => $jim->id]);
+        FieldValue::factory()->create(['valuable_id' => $jim->id, 'field_id' => $birthdayField->id, 'field_value_row_id' => $row->id, 'value_string' => null, 'value_date' => '1975-01-01']);
+
+        $this->assertNull($jim->birthday()->first());
+
+        $kept = FieldValue::factory()->create(['valuable_id' => $jim->id, 'field_id' => $birthdayField->id, 'value_string' => null, 'value_date' => '1978-03-10']);
+
+        $this->assertSame($kept->id, $jim->birthday()->first()?->id);
     }
 
     /**

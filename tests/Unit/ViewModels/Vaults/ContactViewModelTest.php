@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\ViewModels\Vaults;
 
 use App\Enums\DateFormatEnum;
+use App\Enums\DefaultFieldEnum;
 use App\Enums\FieldTypeEnum;
 use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\VaultColourEnum;
@@ -273,6 +274,112 @@ class ContactViewModelTest extends TestCase
         );
 
         $this->assertNull($viewModel->sections()[0]['fields'][0]['value']);
+    }
+
+    #[Test]
+    public function the_header_gives_the_age_of_somebody_whose_birthday_is_far_away(): void
+    {
+        CarbonImmutable::setTestNow('2026-11-20');
+        $jim = $this->contactWithBirthday('1978-03-10');
+
+        $this->assertSame(['age' => '48 years old', 'upcoming' => null], $this->birthdayLineOf($jim));
+    }
+
+    #[Test]
+    public function the_header_says_nothing_when_there_is_no_birthday(): void
+    {
+        CarbonImmutable::setTestNow('2026-11-20');
+        $user = User::factory()->create();
+        $jim = Contact::factory()->create(['account_id' => $user->account_id]);
+
+        $this->assertNull(new ContactViewModel(user: $user, vault: $jim->vault, contact: $jim)->birthdayLine());
+    }
+
+    #[Test]
+    public function the_header_says_nothing_when_the_year_is_unknown_and_the_birthday_is_far_away(): void
+    {
+        CarbonImmutable::setTestNow('2026-11-20');
+
+        $this->assertNull($this->birthdayLineOf($this->contactWithBirthday('1900-03-10', yearIsUnknown: true)));
+    }
+
+    #[Test]
+    public function the_header_says_nothing_when_the_month_is_unknown_even_inside_the_window(): void
+    {
+        CarbonImmutable::setTestNow('2026-11-20');
+
+        $this->assertNull($this->birthdayLineOf($this->contactWithBirthday('1978-11-26', monthIsUnknown: true)));
+    }
+
+    #[Test]
+    public function the_header_counts_the_days_to_a_birthday_inside_the_window(): void
+    {
+        CarbonImmutable::setTestNow('2026-11-20');
+
+        $this->assertSame(
+            ['age' => '47 years old', 'upcoming' => 'Turns 48 in 6 days, on Thursday 26 November'],
+            $this->birthdayLineOf($this->contactWithBirthday('1978-11-26')),
+        );
+    }
+
+    #[Test]
+    public function the_header_says_tomorrow_when_the_birthday_is_the_next_day(): void
+    {
+        CarbonImmutable::setTestNow('2026-11-20');
+
+        $this->assertSame(
+            ['age' => '47 years old', 'upcoming' => 'Turns 48 tomorrow'],
+            $this->birthdayLineOf($this->contactWithBirthday('1978-11-21')),
+        );
+    }
+
+    #[Test]
+    public function the_header_says_today_without_the_age_on_the_day_of_the_birthday(): void
+    {
+        CarbonImmutable::setTestNow('2026-11-20');
+
+        $this->assertSame(
+            ['age' => null, 'upcoming' => 'Turns 48 today'],
+            $this->birthdayLineOf($this->contactWithBirthday('1978-11-20')),
+        );
+    }
+
+    #[Test]
+    public function the_header_gives_the_age_alone_when_the_birthday_is_eight_days_away(): void
+    {
+        CarbonImmutable::setTestNow('2026-11-20');
+
+        $this->assertSame(
+            ['age' => '47 years old', 'upcoming' => null],
+            $this->birthdayLineOf($this->contactWithBirthday('1978-11-28')),
+        );
+    }
+
+    #[Test]
+    public function the_header_gives_the_countdown_without_an_age_when_the_year_is_unknown(): void
+    {
+        CarbonImmutable::setTestNow('2026-11-20');
+
+        $this->assertSame(['age' => null, 'upcoming' => 'Birthday today'], $this->birthdayLineOf($this->contactWithBirthday('1900-11-20', yearIsUnknown: true)));
+        $this->assertSame(['age' => null, 'upcoming' => 'Birthday tomorrow'], $this->birthdayLineOf($this->contactWithBirthday('1900-11-21', yearIsUnknown: true)));
+        $this->assertSame(
+            ['age' => null, 'upcoming' => 'Birthday in 6 days, on Thursday 26 November'],
+            $this->birthdayLineOf($this->contactWithBirthday('1900-11-26', yearIsUnknown: true)),
+        );
+    }
+
+    #[Test]
+    public function the_header_writes_the_month_first_when_the_reader_prefers_it(): void
+    {
+        CarbonImmutable::setTestNow('2026-11-20');
+        $jim = $this->contactWithBirthday('1978-11-26');
+        $reader = $jim->account->user;
+        $reader->update(['date_format' => DateFormatEnum::MonthFirst]);
+
+        $this->assertSame(
+            'Turns 48 in 6 days, on Thursday November 26',
+            $this->birthdayLineOf($jim, $reader)['upcoming'] ?? null,
+        );
     }
 
     #[Test]
@@ -703,6 +810,32 @@ class ContactViewModelTest extends TestCase
             ->firstWhere('label', 'Reminders');
 
         $this->assertSame(route('contacts.reminders.index', ['vault' => $contact->vault, 'contact' => $contact]), $fact['url']);
+    }
+
+    private function contactWithBirthday(string $date, bool $yearIsUnknown = false, bool $monthIsUnknown = false): Contact
+    {
+        $user = User::factory()->create();
+        $jim = Contact::factory()->create(['account_id' => $user->account_id, 'first_name' => 'Jim', 'last_name' => 'Halpert']);
+        $field = Field::factory()->recurringDate()->create(['key' => DefaultFieldEnum::Birthday->value]);
+
+        FieldValue::factory()->create([
+            'valuable_id' => $jim->id,
+            'field_id' => $field->id,
+            'value_string' => null,
+            'value_date' => $date,
+            'year_is_unknown' => $yearIsUnknown,
+            'month_is_unknown' => $monthIsUnknown,
+        ]);
+
+        return $jim;
+    }
+
+    /** @return array{age: string|null, upcoming: string|null}|null */
+    private function birthdayLineOf(Contact $contact, ?User $user = null): ?array
+    {
+        $user ??= $contact->account->user;
+
+        return new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact)->birthdayLine();
     }
 
     /**

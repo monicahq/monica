@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\Api;
 
 use App\Enums\ContactListColumnSourceEnum;
+use App\Enums\DefaultFieldEnum;
 use App\Enums\FieldTypeEnum;
 use App\Enums\NameOrderEnum;
 use App\Enums\ValueListEnum;
@@ -54,6 +55,8 @@ class ContactControllerTest extends TestCase
                 'is_archived',
                 'is_partial',
                 'is_me',
+                'age',
+                'next_birthday_on',
                 'structure_version_id',
                 'template_name',
                 'categories',
@@ -640,5 +643,81 @@ class ContactControllerTest extends TestCase
             ->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts?categories[]={$therapy->id}")
             ->assertOk()
             ->assertJsonPath('data.0.attributes.categories', [['id' => $therapy->id, 'label' => 'In therapy']]);
+    }
+
+    #[Test]
+    public function it_gives_the_age_and_the_next_birthday_of_a_contact(): void
+    {
+        CarbonImmutable::setTestNow('2026-11-20');
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $jim = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'first_name' => 'Jim']);
+        $this->birthdayOf($jim, '1978-11-26');
+
+        Sanctum::actingAs($user);
+
+        $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts/{$jim->uuid}")
+            ->assertOk()
+            ->assertJsonPath('data.attributes.age', 47)
+            ->assertJsonPath('data.attributes.next_birthday_on', '2026-11-26');
+
+        $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts")
+            ->assertOk()
+            ->assertJsonPath('data.0.attributes.age', 47)
+            ->assertJsonPath('data.0.attributes.next_birthday_on', '2026-11-26');
+    }
+
+    #[Test]
+    public function it_gives_no_age_and_no_next_birthday_when_the_month_is_unknown(): void
+    {
+        CarbonImmutable::setTestNow('2026-11-20');
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $jim = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'first_name' => 'Jim']);
+        $this->birthdayOf($jim, '1978-11-26', monthIsUnknown: true);
+
+        Sanctum::actingAs($user);
+
+        $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts/{$jim->uuid}")
+            ->assertOk()
+            ->assertJsonPath('data.attributes.age', null)
+            ->assertJsonPath('data.attributes.next_birthday_on', null);
+    }
+
+    #[Test]
+    public function it_hides_a_sensitive_birthday_from_a_token_without_the_ability(): void
+    {
+        CarbonImmutable::setTestNow('2026-11-20');
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $jim = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'first_name' => 'Jim']);
+        $this->birthdayOf($jim, '1978-11-26', sensitive: true);
+
+        $this->withToken($user->createToken('Dwight’s script')->plainTextToken)
+            ->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts/{$jim->uuid}")
+            ->assertOk()
+            ->assertJsonPath('data.attributes.age', null)
+            ->assertJsonPath('data.attributes.next_birthday_on', null);
+
+        $this->app['auth']->forgetGuards();
+
+        $this->withToken($user->createToken('Dwight’s trusted script', ['sensitive-fields'])->plainTextToken)
+            ->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts/{$jim->uuid}")
+            ->assertOk()
+            ->assertJsonPath('data.attributes.age', 47)
+            ->assertJsonPath('data.attributes.next_birthday_on', '2026-11-26');
+    }
+
+    private function birthdayOf(Contact $contact, string $date, bool $monthIsUnknown = false, bool $sensitive = false): FieldValue
+    {
+        $field = Field::factory()->recurringDate()->create(['key' => DefaultFieldEnum::Birthday->value, 'is_sensitive' => $sensitive]);
+
+        return FieldValue::factory()->create([
+            'valuable_id' => $contact->id,
+            'field_id' => $field->id,
+            'value_string' => null,
+            'value_date' => $date,
+            'month_is_unknown' => $monthIsUnknown,
+        ]);
     }
 }

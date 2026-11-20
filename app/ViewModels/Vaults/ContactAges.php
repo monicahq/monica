@@ -16,8 +16,8 @@ class ContactAges
      *
      * A birthday is a field somebody's template may or may not ask for, so most
      * of them will have no row here at all. One recorded without a year is left
-     * out too: the column still holds a date, and it is a placeholder that must
-     * never reach an age.
+     * out too, and so is one recorded without a month: the column still holds a
+     * date, and it is a placeholder that must never reach an age.
      *
      * @param  array<int, mixed>  $ids
      * @return array<int, int>
@@ -35,6 +35,7 @@ class ContactAges
             ->where('field_key', DefaultFieldEnum::Birthday->value)
             ->whereNull('field_value_row_id')
             ->where('year_is_unknown', false)
+            ->where('month_is_unknown', false)
             ->whereNotNull('value_date')
             ->get(['valuable_id', 'value_date']);
 

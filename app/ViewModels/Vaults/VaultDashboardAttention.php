@@ -11,8 +11,6 @@ use Carbon\CarbonImmutable;
 
 class VaultDashboardAttention
 {
-    private const int DAYS_AHEAD = 7;
-
     /** @var list<array{title: string, icon: string, tone: string, isOverdue: bool, rows: list<ReminderRow>}>|null */
     private ?array $bands = null;
 
@@ -36,7 +34,7 @@ class VaultDashboardAttention
             ReminderOccurrenceCategoryEnum::Upcoming->value => [],
         ];
 
-        foreach (new VaultDeadlines(user: $this->user, vault: $this->vault)->rowsUntil($today->addDays(self::DAYS_AHEAD)) as $row) {
+        foreach (new VaultDeadlines(user: $this->user, vault: $this->vault)->rowsUntil($today->addDays(ReminderOccurrenceCategoryEnum::UpcomingDays)) as $row) {
             $rows[ReminderOccurrenceCategoryEnum::for($row->occurrence(), $today)->value][] = $row;
         }
 

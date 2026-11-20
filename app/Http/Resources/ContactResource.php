@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Http\Resources;
 
 use App\Enums\ApiKeyScopeEnum;
+use App\Helpers\Birthday;
 use App\Models\Contact;
 use App\Models\ValueListItem;
+use Carbon\CarbonImmutable;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Laravel\Sanctum\PersonalAccessToken;
@@ -19,6 +21,8 @@ class ContactResource extends JsonResource
     #[Override]
     public function toArray(Request $request): array
     {
+        $birthday = $this->birthdayFor($request);
+
         return [
             'type' => 'contact',
             'id' => $this->uuid,
@@ -42,6 +46,8 @@ class ContactResource extends JsonResource
                 'is_archived' => $this->is_archived,
                 'is_partial' => $this->is_partial,
                 'is_me' => $this->is_me,
+                'age' => $birthday?->age(),
+                'next_birthday_on' => $birthday?->next()?->format('Y-m-d'),
                 'structure_version_id' => $this->structure_version_id,
                 'template_name' => $this->structureVersion->structure->owner->name,
                 'categories' => $this->resource->heldCategories($this->reachesSensitiveFields($request))
@@ -59,6 +65,21 @@ class ContactResource extends JsonResource
                 'web' => route('contacts.show', [$this->vault, $this->resource]),
             ],
         ];
+    }
+
+    private function birthdayFor(Request $request): ?Birthday
+    {
+        $value = $this->birthday;
+
+        if ($value === null) {
+            return null;
+        }
+
+        if ($value->field->is_sensitive && ! $this->reachesSensitiveFields($request)) {
+            return null;
+        }
+
+        return new Birthday(value: $value, today: CarbonImmutable::now($request->user()->timezone)->startOfDay());
     }
 
     private function reachesSensitiveFields(Request $request): bool

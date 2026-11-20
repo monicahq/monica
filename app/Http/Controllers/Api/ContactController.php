@@ -70,7 +70,7 @@ class ContactController extends Controller
                 ContactSortEnum::fromValueOrName($validated['sort'] ?? null),
                 SortDirectionEnum::fromValueOrAscending($validated['direction'] ?? null),
             )
-            ->with(['vault', 'structureVersion.structure.owner', 'avatar', 'nameRepresentations'])
+            ->with(['vault', 'structureVersion.structure.owner', 'avatar', 'nameRepresentations', 'birthday.field'])
             ->paginate($perPage);
 
         $columns = new ContactListCatalogue($vault->account)->shownColumnsOf($vault);
@@ -186,7 +186,7 @@ class ContactController extends Controller
         return Contact::query()
             ->where('vault_id', $vault->id)
             ->addressedBy($address)
-            ->with(['vault', 'structureVersion.structure.owner', 'avatar'])
+            ->with(['vault', 'structureVersion.structure.owner', 'avatar', 'birthday.field'])
             ->firstOrFail();
     }
 

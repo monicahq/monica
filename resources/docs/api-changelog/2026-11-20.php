@@ -19,6 +19,19 @@ return [
             ],
         ],
         [
+            'id' => 'contact-age-and-next-birthday',
+            'kind' => 'Added',
+            'group' => 'Contacts',
+            'title' => 'A contact carries its age and next birthday',
+            'summary' => 'A contact now holds age, in whole years on the key owner\'s current day, and next_birthday_on, the next birthday written Y-m-d. Both are null when the birthday is not recorded, and age is also null when its year or month is unknown. Both are null for a sensitive birthday read without the sensitive-fields ability.',
+            'why' => 'A client had to work the age and the coming birthday out from the birthday field, and could not agree with the contact page on the day.',
+            'breaking' => false,
+            'changes' => [
+                ['field' => 'age', 'change' => 'Added', 'endpoints' => ['GET /vaults/{vault}/contacts', 'GET /vaults/{vault}/contacts/{contact}']],
+                ['field' => 'next_birthday_on', 'change' => 'Added', 'endpoints' => ['GET /vaults/{vault}/contacts', 'GET /vaults/{vault}/contacts/{contact}']],
+            ],
+        ],
+        [
             'id' => 'vault-create-owner-on-chosen-template',
             'kind' => 'Changed',
             'group' => 'Vaults',

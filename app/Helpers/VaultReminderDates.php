@@ -30,7 +30,7 @@ class VaultReminderDates
 
     public const string Birthdays = 'birthdays';
 
-    public const int DefaultDays = 7;
+    public const int DefaultDays = ReminderOccurrenceCategoryEnum::UpcomingDays;
 
     public const int MaximumDays = 365;
 
@@ -212,9 +212,9 @@ class VaultReminderDates
             ->get()
             ->reject(fn (FieldValue $birthday): bool => (bool) $birthday->field?->is_sensitive && ! $reachesSensitiveFields)
             ->map(function (FieldValue $birthday) use ($today, $lastDay, $reachesSensitiveFields): ?VaultReminderDate {
-                $date = self::nextAnniversary($birthday->value_date, $today);
+                $date = new Birthday(value: $birthday, today: $today)->next();
 
-                if ($date->toDateString() > $lastDay->toDateString()) {
+                if ($date === null || $date->toDateString() > $lastDay->toDateString()) {
                     return null;
                 }
 
@@ -227,21 +227,5 @@ class VaultReminderDates
             })
             ->filter()
             ->values();
-    }
-
-    private static function nextAnniversary(CarbonImmutable $birthday, CarbonImmutable $today): CarbonImmutable
-    {
-        $thisYear = self::inYear($birthday, $today->year, $today);
-
-        return $thisYear->toDateString() < $today->toDateString()
-            ? self::inYear($birthday, $today->year + 1, $today)
-            : $thisYear;
-    }
-
-    private static function inYear(CarbonImmutable $birthday, int $year, CarbonImmutable $today): CarbonImmutable
-    {
-        $daysInMonth = CarbonImmutable::create($year, $birthday->month, 1, 0, 0, 0, $today->timezone)->daysInMonth;
-
-        return CarbonImmutable::create($year, $birthday->month, min($birthday->day, $daysInMonth), 0, 0, 0, $today->timezone);
     }
 }
