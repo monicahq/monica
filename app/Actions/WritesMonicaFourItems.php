@@ -13,6 +13,7 @@ use App\Enums\ReminderCadenceEnum;
 use App\Enums\ReminderOccurrenceCancelledReasonEnum;
 use App\Enums\ValueListEnum;
 use App\Exceptions\NotEnoughStorageLeft;
+use App\Exceptions\RelationshipWouldLoopParentage;
 use App\Exceptions\ValueListItemIsStopped;
 use App\Helpers\MonicaFourVocabulary;
 use App\Models\AccountImportItem;
@@ -616,14 +617,18 @@ trait WritesMonicaFourItems
             )
             ->firstOrFail();
 
-        $this->record = new CreateRelationship(
-            user: $this->user,
-            vault: $this->vault(),
-            contact: $one,
-            relationshipType: $type,
-            otherContact: $other,
-            swapped: $shipped !== null ? $shipped[1] : MonicaFourVocabulary::isDirected($name) && $name !== $own,
-        )->execute();
+        try {
+            $this->record = new CreateRelationship(
+                user: $this->user,
+                vault: $this->vault(),
+                contact: $one,
+                relationshipType: $type,
+                otherContact: $other,
+                swapped: $shipped !== null ? $shipped[1] : MonicaFourVocabulary::isDirected($name) && $name !== $own,
+            )->execute();
+        } catch (RelationshipWouldLoopParentage) {
+            $this->leaveOut(AccountImportReasonEnum::ParentageLoop);
+        }
     }
 
     private function writeAJournalEntry(): void

@@ -7,6 +7,7 @@ namespace Tests\Unit\Actions;
 use App\Actions\CreateContact;
 use App\Actions\CreateDefaultValueLists;
 use App\Actions\CreateFieldValueRow;
+use App\Actions\CreateRelationship;
 use App\Actions\CreateStructureVersionDraft;
 use App\Actions\CreateVault;
 use App\Actions\PublishStructureVersion;
@@ -23,6 +24,7 @@ use App\Enums\AccountImportStatusEnum;
 use App\Enums\DatePrecisionEnum;
 use App\Enums\DefaultTemplateEnum;
 use App\Enums\LogSourceEnum;
+use App\Enums\RelationshipTypeEnum;
 use App\Enums\ReminderCadenceEnum;
 use App\Enums\ValueListEnum;
 use App\Enums\VersionStatusEnum;
@@ -53,6 +55,7 @@ use App\Models\Vault;
 use App\Notifications\AccountImportEnded;
 use Carbon\CarbonInterface;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Exceptions;
 use Illuminate\Support\Facades\Log as LogFacade;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
@@ -289,6 +292,70 @@ class WriteAccountImportItemTest extends TestCase
 
         $this->assertSame(AccountImportOutcomeEnum::Imported, $dwight->refresh()->outcome);
         LogFacade::shouldHaveReceived('warning')->with('Left out a value an import could not write.', Mockery::on(fn (array $context): bool => $context['item'] === $dwight->id && $context['field'] === 'photo/image'));
+    }
+
+    #[Test]
+    public function it_leaves_out_a_monica_4_relationship_that_would_make_somebody_their_own_ancestor(): void
+    {
+        Exceptions::fake();
+        $import = $this->started();
+        $godfather = $import->items()->where('kind', 'relationship')->where('source_uuid', 'a0000000-0000-4000-8000-000000000003')->firstOrFail();
+        $godfather->update(['payload' => [
+            ...$godfather->payload,
+            'type' => 'child',
+            'contact_is' => '10000000-0000-4000-8000-000000000003',
+            'of_contact' => '10000000-0000-4000-8000-000000000005',
+        ]]);
+
+        $this->writeEveryItem($import);
+
+        $godfather->refresh();
+
+        $this->assertSame(AccountImportOutcomeEnum::LeftOut, $godfather->outcome);
+        $this->assertSame(AccountImportReasonEnum::ParentageLoop->value, $godfather->reason);
+        $this->assertSame(1, Relationship::query()->where('vault_id', $import->vault_id)->count());
+        Exceptions::assertNothingReported();
+    }
+
+    #[Test]
+    public function it_leaves_out_a_relationship_that_would_make_somebody_their_own_ancestor(): void
+    {
+        Queue::fake();
+        Exceptions::fake();
+
+        $scranton = new CreateVault(user: $this->michael, name: 'Scranton')->execute();
+        $jim = new CreateContact(user: $this->michael, vault: $scranton, firstName: 'Jim', lastName: 'Halpert')->execute();
+        $cece = new CreateContact(user: $this->michael, vault: $scranton, firstName: 'Cece', lastName: 'Halpert')->execute();
+        new CreateRelationship(
+            user: $this->michael,
+            vault: $scranton,
+            contact: $jim,
+            relationshipType: RelationshipType::query()->where('account_id', $this->michael->account_id)->where('key', RelationshipTypeEnum::ParentChild->value)->firstOrFail(),
+            otherContact: $cece,
+        )->execute();
+
+        $pam = $this->accountHolder('Pam', 'Beesly');
+        $import = $this->readMonicaImport($pam, $this->exported($scranton));
+        $parentage = $import->items()->where('kind', 'relationship')->sole();
+        $reversed = $parentage->replicate();
+        $reversed->source_uuid = '50000000-0000-4000-8000-000000000001';
+        $reversed->payload = [
+            ...$parentage->payload,
+            'uuid' => '50000000-0000-4000-8000-000000000001',
+            'contact' => $parentage->payload['other_contact'],
+            'other_contact' => $parentage->payload['contact'],
+        ];
+        $reversed->save();
+        new StartAccountImport(user: $pam, import: $import, vaultName: 'Scranton')->execute();
+
+        $this->writeEveryItem($import);
+
+        $reversed->refresh();
+
+        $this->assertSame(AccountImportOutcomeEnum::LeftOut, $reversed->outcome);
+        $this->assertSame(AccountImportReasonEnum::ParentageLoop->value, $reversed->reason);
+        $this->assertSame(1, Relationship::query()->where('vault_id', $import->refresh()->vault_id)->count());
+        Exceptions::assertNothingReported();
     }
 
     #[Test]
