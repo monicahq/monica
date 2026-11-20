@@ -57,9 +57,12 @@
       <span class="block text-xs whitespace-nowrap text-muted">{{ $template['versionSubLabel'] }}</span>
     </span>
 
-    <x-form method="post" :action="route('settings.templateCopy.create', $template['slug'])">
-      <x-button.secondary size="small">{{ __('Copy') }}</x-button.secondary>
-    </x-form>
+    <x-button.secondary
+      size="small"
+      :href="route('settings.templateCopy.new', $template['slug'])"
+      :aria-label="__('Copy :name', ['name' => $template['name']])"
+      data-turbo="true"
+    >{{ __('Copy') }}</x-button.secondary>
 
     <x-button.secondary
       size="small"

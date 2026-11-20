@@ -67,6 +67,24 @@ class DuplicateTemplateTest extends TestCase
     }
 
     #[Test]
+    public function it_derives_the_slug_from_the_name_it_is_given(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $template = Template::factory()->create(['account_id' => $user->account_id]);
+        StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
+
+        $copy = new DuplicateTemplate(
+            user: $user,
+            template: $template,
+            name: 'Scranton branch',
+        )->execute();
+
+        $this->assertEquals('scranton-branch', $copy->slug);
+    }
+
+    #[Test]
     public function it_copies_a_supplied_template_into_an_ordinary_one(): void
     {
         Queue::fake();

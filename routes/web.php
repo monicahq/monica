@@ -820,6 +820,7 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::get('settings/account/templates/{template}/edit', [TemplateController::class, 'edit'])->name('settings.templates.edit');
     Route::put('settings/account/templates/{template}', [TemplateController::class, 'update'])->name('settings.templates.update');
     Route::delete('settings/account/templates/{template}', [TemplateController::class, 'destroy'])->name('settings.templates.destroy');
+    Route::get('settings/account/templates/{template}/copy', [TemplateCopyController::class, 'new'])->name('settings.templateCopy.new');
     Route::post('settings/account/templates/{template}/copy', [TemplateCopyController::class, 'create'])->name('settings.templateCopy.create');
     Route::put('settings/account/templates/{template}/active', [TemplateActivationController::class, 'update'])->name('settings.templateActivation.update');
 
