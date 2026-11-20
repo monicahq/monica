@@ -2717,6 +2717,8 @@
     "Merged :other into :name": "Cumascadh :other isteach i :name",
     "Merging a contact into one an import was still writing could lose what the merge had moved, if the import was then cancelled or failed, and the merge could not be undone. Monica now waits: while an import writes into a vault, its contacts cannot be merged, and you can merge them once the import has finished.": "Dá gcumascfaí teagmhálaí le teagmhálaí a raibh iompórtáil fós ag scríobh isteach ann, d’fhéadfaí an méid a bhog an cumasc a chailleadh, dá gcuirfí an iompórtáil ar ceal ina dhiaidh sin nó dá dteipfeadh uirthi, agus ní fhéadfaí an cumasc a chur ar ceal. Fanann Monica anois: fad is atá iompórtáil ag scríobh isteach i dtaisceadán, ní féidir a theagmhálaithe a chumasc, agus is féidir iad a chumasc nuair a bheidh an iompórtáil críochnaithe.",
     "Merging two contacts no longer fails when several merges run at once": "Ní theipeann ar chumasc dhá theagmhálaí a thuilleadh nuair a dhéantar roinnt cumaisc ag an am céanna",
+    "Merging two contacts showed an error page when both held the same email address, phone number or other repeated value, and nothing was merged. The merge now goes through.": "Léirigh cumaisc dhá theagmhálaí leathanach earráide nuair a bhí an seoladh ríomhphoist, an uimhir fóin nó luach athrá eile céanna ag an mbeirt acu, agus níor cumascadh faic. Téann an chumaisc ar aghaidh anois.",
+    "Merging two contacts that share an email or a phone number works again": "Oibríonn cumaisc dhá theagmhálaí a bhfuil an ríomhphost nó an uimhir fóin chéanna acu arís",
     "Message": "Teachtaireacht",
     "Messaging app": "Aip teachtaireachtaí",
     "Metal": "Miotal",

@@ -2717,6 +2717,8 @@
     "Merged :other into :name": "Mesclou :other em :name",
     "Merging a contact into one an import was still writing could lose what the merge had moved, if the import was then cancelled or failed, and the merge could not be undone. Monica now waits: while an import writes into a vault, its contacts cannot be merged, and you can merge them once the import has finished.": "Mesclar um contato com outro no qual uma importação ainda estava gravando podia fazer perder o que a mesclagem havia movido, se a importação fosse cancelada ou falhasse depois, e a mesclagem não podia ser desfeita. Agora o Monica espera: enquanto uma importação grava em um cofre, os contatos dele não podem ser mesclados, e poderão ser mesclados quando a importação terminar.",
     "Merging two contacts no longer fails when several merges run at once": "Mesclar dois contatos não falha mais quando várias mesclagens são executadas ao mesmo tempo",
+    "Merging two contacts showed an error page when both held the same email address, phone number or other repeated value, and nothing was merged. The merge now goes through.": "Mesclar dois contatos mostrava uma página de erro quando ambos tinham o mesmo endereço de e-mail, o mesmo número de telefone ou outro valor repetido, e nada era mesclado. Agora a mesclagem é concluída.",
+    "Merging two contacts that share an email or a phone number works again": "Mesclar dois contatos que compartilham um e-mail ou um número de telefone voltou a funcionar",
     "Message": "Mensagem",
     "Messaging app": "Aplicativo de mensagens",
     "Metal": "Metal",

@@ -45,7 +45,7 @@ class MergeContacts
     private array $ledger = [];
 
     /**
-     * @param  list<array{field_key: string, row?: int|null, keep: string}>  $resolutions
+     * @param  list<array{field_key: string, row?: int|string|null, keep: string}>  $resolutions
      */
     public function __construct(
         private readonly User $user,
@@ -129,7 +129,8 @@ class MergeContacts
         $given = [];
 
         foreach ($this->resolutions as $resolution) {
-            $key = $this->key($resolution['field_key'], $resolution['row'] ?? null);
+            $row = $resolution['row'] ?? null;
+            $key = $this->key($resolution['field_key'], $row === null ? null : (int) $row);
 
             if (! isset($asked[$key])) {
                 throw ValidationException::withMessages([

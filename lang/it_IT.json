@@ -2717,6 +2717,8 @@
     "Merged :other into :name": "Ha unito :other in :name",
     "Merging a contact into one an import was still writing could lose what the merge had moved, if the import was then cancelled or failed, and the merge could not be undone. Monica now waits: while an import writes into a vault, its contacts cannot be merged, and you can merge them once the import has finished.": "Unire un contatto a un altro in cui un’importazione stava ancora scrivendo poteva far perdere ciò che l’unione aveva spostato, se l’importazione veniva poi annullata o falliva, e l’unione non poteva essere annullata. Ora Monica attende: finché un’importazione scrive in una cassaforte, i suoi contatti non possono essere uniti e potranno esserlo quando l’importazione sarà terminata.",
     "Merging two contacts no longer fails when several merges run at once": "L’unione di due contatti non fallisce più quando più unioni vengono eseguite contemporaneamente",
+    "Merging two contacts showed an error page when both held the same email address, phone number or other repeated value, and nothing was merged. The merge now goes through.": "Unire due contatti mostrava una pagina di errore quando entrambi avevano lo stesso indirizzo email, lo stesso numero di telefono o un altro valore ripetuto, e non veniva unito nulla. Ora l’unione va a buon fine.",
+    "Merging two contacts that share an email or a phone number works again": "Unire due contatti che condividono un indirizzo email o un numero di telefono funziona di nuovo",
     "Message": "Messaggio",
     "Messaging app": "App di messaggistica",
     "Metal": "Metallo",

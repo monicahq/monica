@@ -2717,6 +2717,8 @@
     "Merged :other into :name": ":other을 :name에 병합했습니다",
     "Merging a contact into one an import was still writing could lose what the merge had moved, if the import was then cancelled or failed, and the merge could not be undone. Monica now waits: while an import writes into a vault, its contacts cannot be merged, and you can merge them once the import has finished.": "가져오기가 아직 기록 중인 연락처로 다른 연락처를 병합하면, 이후 가져오기가 취소되거나 실패했을 때 병합이 옮긴 내용이 사라질 수 있었고, 병합은 되돌릴 수 없었습니다. 이제 Monica는 기다립니다. 가져오기가 보관함에 기록하는 동안에는 그 보관함의 연락처를 병합할 수 없으며, 가져오기가 끝나면 병합할 수 있습니다.",
     "Merging two contacts no longer fails when several merges run at once": "여러 병합이 동시에 실행되어도 연락처 두 개를 병합할 수 있습니다",
+    "Merging two contacts showed an error page when both held the same email address, phone number or other repeated value, and nothing was merged. The merge now goes through.": "두 연락처가 같은 이메일 주소, 전화번호 또는 그 밖의 중복된 값을 가지고 있으면 병합할 때 오류 페이지가 표시되고 아무것도 병합되지 않았습니다. 이제 병합이 완료됩니다.",
+    "Merging two contacts that share an email or a phone number works again": "같은 이메일이나 전화번호를 가진 두 연락처의 병합이 다시 작동합니다",
     "Message": "메시지",
     "Messaging app": "메시지 앱",
     "Metal": "금속",

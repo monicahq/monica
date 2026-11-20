@@ -2717,6 +2717,8 @@
     "Merged :other into :name": ":other को :name में विलय किया",
     "Merging a contact into one an import was still writing could lose what the merge had moved, if the import was then cancelled or failed, and the merge could not be undone. Monica now waits: while an import writes into a vault, its contacts cannot be merged, and you can merge them once the import has finished.": "किसी संपर्क का ऐसे संपर्क में विलय करने पर, जिसमें आयात अभी लिख रहा था, विलय द्वारा स्थानांतरित किया गया डेटा खो सकता था, यदि आयात बाद में रद्द हो जाता या विफल हो जाता, और विलय को पूर्ववत नहीं किया जा सकता था। अब Monica प्रतीक्षा करती है: जब तक किसी तिजोरी में आयात लिखा जा रहा है, उसके संपर्कों का विलय नहीं किया जा सकता, और आयात पूरा होने के बाद उनका विलय किया जा सकता है।",
     "Merging two contacts no longer fails when several merges run at once": "कई विलय एक साथ चलने पर दो संपर्कों का विलय करना अब विफल नहीं होता",
+    "Merging two contacts showed an error page when both held the same email address, phone number or other repeated value, and nothing was merged. The merge now goes through.": "जब दोनों संपर्कों का ईमेल पता, फ़ोन नंबर या कोई अन्य दोहराया गया मान एक ही होता था, तो दो संपर्कों के विलय पर त्रुटि पृष्ठ दिखता था और कुछ भी विलय नहीं होता था। अब विलय पूरा हो जाता है।",
+    "Merging two contacts that share an email or a phone number works again": "एक ही ईमेल या फ़ोन नंबर वाले दो संपर्कों का विलय फिर से काम करता है",
     "Message": "संदेश",
     "Messaging app": "संदेश ऐप",
     "Metal": "धातु",

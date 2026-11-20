@@ -2717,6 +2717,8 @@
     "Merged :other into :name": "Merged :other into :name",
     "Merging a contact into one an import was still writing could lose what the merge had moved, if the import was then cancelled or failed, and the merge could not be undone. Monica now waits: while an import writes into a vault, its contacts cannot be merged, and you can merge them once the import has finished.": "Merging a contact into one an import was still writing could lose what the merge had moved, if the import was then cancelled or failed, and the merge could not be undone. Monica now waits: while an import writes into a vault, its contacts cannot be merged, and you can merge them once the import has finished.",
     "Merging two contacts no longer fails when several merges run at once": "Merging two contacts no longer fails when several merges run at once",
+    "Merging two contacts showed an error page when both held the same email address, phone number or other repeated value, and nothing was merged. The merge now goes through.": "Merging two contacts showed an error page when both held the same email address, phone number or other repeated value, and nothing was merged. The merge now goes through.",
+    "Merging two contacts that share an email or a phone number works again": "Merging two contacts that share an email or a phone number works again",
     "Message": "Message",
     "Messaging app": "Messaging app",
     "Metal": "Metal",

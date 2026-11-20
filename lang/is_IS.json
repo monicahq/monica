@@ -2717,6 +2717,8 @@
     "Merged :other into :name": "Sameinaði :other við :name",
     "Merging a contact into one an import was still writing could lose what the merge had moved, if the import was then cancelled or failed, and the merge could not be undone. Monica now waits: while an import writes into a vault, its contacts cannot be merged, and you can merge them once the import has finished.": "Að sameina tengilið við tengilið sem innflutningur var enn að skrifa í gat glatað því sem samruninn hafði flutt, ef innflutningnum var síðan hætt eða hann mistókst, og ekki var hægt að afturkalla samrunann. Monica bíður nú: Á meðan innflutningur skrifar í hvelfingu er ekki hægt að sameina tengiliði hennar, og hægt er að sameina þá þegar innflutningnum er lokið.",
     "Merging two contacts no longer fails when several merges run at once": "Það mistekst ekki lengur að sameina tvo tengiliði þegar nokkrar sameiningar keyra samtímis",
+    "Merging two contacts showed an error page when both held the same email address, phone number or other repeated value, and nothing was merged. The merge now goes through.": "Sameining tveggja tengiliða sýndi villusíðu þegar báðir voru með sama netfang, sama símanúmer eða annað endurtekið gildi og ekkert var sameinað. Nú tekst sameiningin.",
+    "Merging two contacts that share an email or a phone number works again": "Sameining tveggja tengiliða með sama netfang eða símanúmer virkar aftur",
     "Message": "Skilaboð",
     "Messaging app": "Skilaboðaforrit",
     "Metal": "Málmur",

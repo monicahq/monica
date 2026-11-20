@@ -2717,6 +2717,8 @@
     "Merged :other into :name": "Összevonta :other adatait :name névjegybe",
     "Merging a contact into one an import was still writing could lose what the merge had moved, if the import was then cancelled or failed, and the merge could not be undone. Monica now waits: while an import writes into a vault, its contacts cannot be merged, and you can merge them once the import has finished.": "Ha egy névjegyet olyanba vontak össze, amelybe egy importálás még írt, elveszhetett az, amit az összevonás áthelyezett, ha az importálást utána megszakították vagy meghiúsult, és az összevonást nem lehetett visszavonni. A Monica mostantól vár: amíg egy importálás egy széfbe ír, a névjegyei nem vonhatók össze, és az importálás befejezése után összevonhatók.",
     "Merging two contacts no longer fails when several merges run at once": "Két névjegy összevonása már nem hiúsul meg, ha több összevonás fut egyszerre",
+    "Merging two contacts showed an error page when both held the same email address, phone number or other repeated value, and nothing was merged. The merge now goes through.": "Két névjegy összevonásakor hibaoldal jelent meg, ha mindkettőnek ugyanaz volt az e-mail-címe, a telefonszáma vagy más ismétlődő értéke, és semmi sem lett összevonva. Az összevonás most lefut.",
+    "Merging two contacts that share an email or a phone number works again": "Az azonos e-mail-címmel vagy telefonszámmal rendelkező két névjegy összevonása újra működik",
     "Message": "Üzenet",
     "Messaging app": "Üzenetküldő alkalmazás",
     "Metal": "Fém",

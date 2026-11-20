@@ -2717,6 +2717,8 @@
     "Merged :other into :name": "Scalono :other z :name",
     "Merging a contact into one an import was still writing could lose what the merge had moved, if the import was then cancelled or failed, and the merge could not be undone. Monica now waits: while an import writes into a vault, its contacts cannot be merged, and you can merge them once the import has finished.": "Scalenie kontaktu z kontaktem, do którego import wciąż zapisywał dane, mogło spowodować utratę tego, co scalenie przeniosło, jeśli import został potem anulowany lub się nie powiódł, a scalenia nie dało się wycofać. Monica teraz czeka: dopóki do sejfu trwa import, jego kontaktów nie można scalać, a scalić je można, gdy import się zakończy.",
     "Merging two contacts no longer fails when several merges run at once": "Scalanie dwóch kontaktów nie kończy się już błędem, gdy kilka scaleń działa jednocześnie",
+    "Merging two contacts showed an error page when both held the same email address, phone number or other repeated value, and nothing was merged. The merge now goes through.": "Scalanie dwóch kontaktów pokazywało stronę błędu, gdy oba miały ten sam adres e-mail, numer telefonu lub inną powtarzającą się wartość, i nic nie zostało scalone. Teraz scalanie się udaje.",
+    "Merging two contacts that share an email or a phone number works again": "Scalanie dwóch kontaktów o tym samym adresie e-mail lub numerze telefonu znów działa",
     "Message": "Wiadomość",
     "Messaging app": "Komunikator",
     "Metal": "Metal",

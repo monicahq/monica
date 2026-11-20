@@ -2717,6 +2717,8 @@
     "Merged :other into :name": "Slo :other sammen i :name",
     "Merging a contact into one an import was still writing could lose what the merge had moved, if the import was then cancelled or failed, and the merge could not be undone. Monica now waits: while an import writes into a vault, its contacts cannot be merged, and you can merge them once the import has finished.": "Å slå sammen en kontakt med en kontakt som en import fortsatt skrev til, kunne føre til at det sammenslåingen hadde flyttet, gikk tapt, hvis importen deretter ble avbrutt eller mislyktes, og sammenslåingen kunne ikke angres. Monica venter nå: Mens en import skriver til et hvelv, kan kontaktene i det ikke slås sammen, og de kan slås sammen når importen er ferdig.",
     "Merging two contacts no longer fails when several merges run at once": "Det går ikke lenger i stykker å slå sammen to kontakter når flere sammenslåinger kjører samtidig",
+    "Merging two contacts showed an error page when both held the same email address, phone number or other repeated value, and nothing was merged. The merge now goes through.": "Sammenslåing av to kontakter viste en feilside når begge hadde samme e-postadresse, telefonnummer eller annen gjentatt verdi, og ingenting ble slått sammen. Nå går sammenslåingen gjennom.",
+    "Merging two contacts that share an email or a phone number works again": "Å slå sammen to kontakter med samme e-post eller telefonnummer fungerer igjen",
     "Message": "Melding",
     "Messaging app": "Meldingsapp",
     "Metal": "Metall",

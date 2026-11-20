@@ -2717,6 +2717,8 @@
     "Merged :other into :name": "Yhdisti :other tietueeseen :name",
     "Merging a contact into one an import was still writing could lose what the merge had moved, if the import was then cancelled or failed, and the merge could not be undone. Monica now waits: while an import writes into a vault, its contacts cannot be merged, and you can merge them once the import has finished.": "Yhteystiedon yhdistäminen toiseen, johon tuonti vielä kirjoitti, saattoi hävittää sen, minkä yhdistäminen oli siirtänyt, jos tuonti peruttiin tai epäonnistui sen jälkeen, eikä yhdistämistä voinut perua. Monica odottaa nyt: kun tuonti kirjoittaa holviin, sen yhteystietoja ei voi yhdistää, ja ne voi yhdistää, kun tuonti on valmis.",
     "Merging two contacts no longer fails when several merges run at once": "Kahden yhteystiedon yhdistäminen ei enää epäonnistu, kun useita yhdistämisiä suoritetaan yhtä aikaa",
+    "Merging two contacts showed an error page when both held the same email address, phone number or other repeated value, and nothing was merged. The merge now goes through.": "Kahden yhteystiedon yhdistäminen näytti virhesivun, kun molemmilla oli sama sähköpostiosoite, puhelinnumero tai muu toistuva arvo, eikä mitään yhdistetty. Nyt yhdistäminen onnistuu.",
+    "Merging two contacts that share an email or a phone number works again": "Kahden saman sähköpostiosoitteen tai puhelinnumeron jakavan yhteystiedon yhdistäminen toimii taas",
     "Message": "Viesti",
     "Messaging app": "Viestisovellus",
     "Metal": "Metalli",

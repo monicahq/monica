@@ -2717,6 +2717,8 @@
     "Merged :other into :name": ":other kişisini :name ile birleştirdi",
     "Merging a contact into one an import was still writing could lose what the merge had moved, if the import was then cancelled or failed, and the merge could not be undone. Monica now waits: while an import writes into a vault, its contacts cannot be merged, and you can merge them once the import has finished.": "Bir kişiyi, içe aktarmanın hâlâ yazdığı bir kişiyle birleştirmek, içe aktarma sonradan iptal edilirse ya da başarısız olursa birleştirmenin taşıdığı verilerin kaybolmasına yol açabiliyordu ve birleştirme geri alınamıyordu. Monica artık bekliyor: bir içe aktarma bir kasaya yazarken o kasadaki kişiler birleştirilemez, içe aktarma bittikten sonra birleştirilebilir.",
     "Merging two contacts no longer fails when several merges run at once": "Aynı anda birden fazla birleştirme çalışırken iki kişiyi birleştirmek artık başarısız olmuyor",
+    "Merging two contacts showed an error page when both held the same email address, phone number or other repeated value, and nothing was merged. The merge now goes through.": "İki kişiyi birleştirmek, ikisinde de aynı e-posta adresi, telefon numarası veya yinelenen başka bir değer olduğunda hata sayfası gösteriyordu ve hiçbir şey birleştirilmiyordu. Birleştirme artık tamamlanıyor.",
+    "Merging two contacts that share an email or a phone number works again": "Aynı e-posta adresini veya telefon numarasını paylaşan iki kişiyi birleştirmek yeniden çalışıyor",
     "Message": "Mesaj",
     "Messaging app": "Mesajlaşma uygulaması",
     "Metal": "Metal",

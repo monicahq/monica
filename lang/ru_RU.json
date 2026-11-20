@@ -2717,6 +2717,8 @@
     "Merged :other into :name": "Контакт :other объединён с :name",
     "Merging a contact into one an import was still writing could lose what the merge had moved, if the import was then cancelled or failed, and the merge could not be undone. Monica now waits: while an import writes into a vault, its contacts cannot be merged, and you can merge them once the import has finished.": "Объединение контакта с другим, в который импорт ещё записывал данные, могло привести к потере того, что перенесло объединение, если затем импорт отменяли или он завершался сбоем, а объединение нельзя было отменить. Теперь Monica ждёт: пока в хранилище выполняется импорт, его контакты нельзя объединять, а после завершения импорта их можно объединить.",
     "Merging two contacts no longer fails when several merges run at once": "Объединение двух контактов больше не завершается ошибкой, когда несколько объединений выполняются одновременно",
+    "Merging two contacts showed an error page when both held the same email address, phone number or other repeated value, and nothing was merged. The merge now goes through.": "При объединении двух контактов показывалась страница с ошибкой, если у обоих совпадали адрес электронной почты, номер телефона или другое повторяющееся значение, и ничего не объединялось. Теперь объединение выполняется.",
+    "Merging two contacts that share an email or a phone number works again": "Объединение двух контактов с одинаковым адресом электронной почты или номером телефона снова работает",
     "Message": "Сообщение",
     "Messaging app": "Мессенджер",
     "Metal": "Металл",

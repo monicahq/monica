@@ -23,6 +23,7 @@ use App\Models\ContactMerge;
 use App\Models\ContactNameRepresentation;
 use App\Models\Field;
 use App\Models\FieldValue;
+use App\Models\FieldValueRow;
 use App\Models\File;
 use App\Models\Group;
 use App\Models\GroupMember;
@@ -147,6 +148,29 @@ class MergeContactsTest extends TestCase
 
         $this->assertDatabaseHas('field_values', ['id' => $mine->id, 'valuable_id' => $jim->id, 'is_detached' => false]);
         $this->assertDatabaseHas('field_values', ['id' => $theirs->id, 'valuable_id' => $james->id]);
+    }
+
+    #[Test]
+    public function it_reads_a_row_sent_as_text_the_way_a_form_sends_it(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $version = $this->publishedContactVersion($user);
+        $field = $this->fieldCarriedBy($version);
+        $repeater = Field::factory()->repeater()->create(['account_id' => $user->account_id]);
+        [$jim, $james] = $this->twoContactsOf($user, $version);
+        $this->rowWithValueFor($jim, $repeater, $field, 'jim@dundermifflin.com');
+        $theirs = $this->rowWithValueFor($james, $repeater, $field, 'jim@dundermifflin.com');
+
+        new MergeContacts(
+            user: $user,
+            kept: $jim,
+            absorbed: $james,
+            resolutions: [['field_key' => $repeater->key, 'row' => (string) $theirs->id, 'keep' => 'kept']],
+        )->execute();
+
+        $this->assertDatabaseHas('field_value_rows', ['id' => $theirs->id, 'valuable_id' => $james->id]);
     }
 
     #[Test]
@@ -769,6 +793,27 @@ class MergeContactsTest extends TestCase
         $version->save();
 
         return $field;
+    }
+
+    private function rowWithValueFor(Contact $contact, Field $repeater, Field $field, string $value): FieldValueRow
+    {
+        $row = FieldValueRow::factory()->create([
+            'account_id' => $contact->account_id,
+            'valuable_type' => Contact::class,
+            'valuable_id' => $contact->id,
+            'field_id' => $repeater->id,
+        ]);
+
+        FieldValue::factory()->create([
+            'valuable_type' => Contact::class,
+            'valuable_id' => $contact->id,
+            'field_value_row_id' => $row->id,
+            'field_id' => $field->id,
+            'field_key' => $field->key,
+            'value_string' => $value,
+        ]);
+
+        return $row;
     }
 
     private function valueFor(Contact $contact, Field $field, string $value): FieldValue

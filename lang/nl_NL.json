@@ -2717,6 +2717,8 @@
     "Merged :other into :name": ":other samengevoegd in :name",
     "Merging a contact into one an import was still writing could lose what the merge had moved, if the import was then cancelled or failed, and the merge could not be undone. Monica now waits: while an import writes into a vault, its contacts cannot be merged, and you can merge them once the import has finished.": "Een contact samenvoegen met een contact waarin een import nog aan het schrijven was, kon verliezen wat de samenvoeging had verplaatst, als de import daarna werd geannuleerd of mislukte, en de samenvoeging kon niet ongedaan worden gemaakt. Monica wacht nu: zolang een import in een kluis schrijft, kunnen de contacten ervan niet worden samengevoegd, en ze kunnen worden samengevoegd zodra de import klaar is.",
     "Merging two contacts no longer fails when several merges run at once": "Twee contacten samenvoegen mislukt niet meer als er meerdere samenvoegingen tegelijk lopen",
+    "Merging two contacts showed an error page when both held the same email address, phone number or other repeated value, and nothing was merged. The merge now goes through.": "Het samenvoegen van twee contacten toonde een foutpagina als beide hetzelfde e-mailadres, telefoonnummer of een andere herhaalde waarde hadden, en er werd niets samengevoegd. Het samenvoegen lukt nu.",
+    "Merging two contacts that share an email or a phone number works again": "Twee contacten samenvoegen die hetzelfde e-mailadres of telefoonnummer hebben werkt weer",
     "Message": "Bericht",
     "Messaging app": "Berichtenapp",
     "Metal": "Metaal",

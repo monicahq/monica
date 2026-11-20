@@ -2717,6 +2717,8 @@
     "Merged :other into :name": ":other-কে :name-এ মেলানো হয়েছে",
     "Merging a contact into one an import was still writing could lose what the merge had moved, if the import was then cancelled or failed, and the merge could not be undone. Monica now waits: while an import writes into a vault, its contacts cannot be merged, and you can merge them once the import has finished.": "যে পরিচিতিতে আমদানি তখনও লিখছিল, তার সঙ্গে অন্য পরিচিতি মেলালে মেলানোর সময় সরানো তথ্য হারিয়ে যেতে পারত, যদি পরে আমদানি বাতিল হতো বা ব্যর্থ হতো, আর মেলানো ফিরিয়ে নেওয়া যেত না। Monica এখন অপেক্ষা করে: কোনো সিন্দুকে আমদানি লেখা চলাকালীন তার পরিচিতিগুলো মেলানো যায় না, আর আমদানি শেষ হলে সেগুলো মেলানো যাবে।",
     "Merging two contacts no longer fails when several merges run at once": "একসঙ্গে একাধিক মেলানো চললে দুটি পরিচিতি মেলানো আর ব্যর্থ হয় না",
+    "Merging two contacts showed an error page when both held the same email address, phone number or other repeated value, and nothing was merged. The merge now goes through.": "দুটি পরিচিতির একই ইমেইল ঠিকানা, ফোন নম্বর বা অন্য কোনো পুনরাবৃত্ত মান থাকলে তাদের মেলানোর সময় একটি ত্রুটির পৃষ্ঠা দেখা যেত এবং কিছুই মেলানো হতো না। এখন মেলানো সম্পন্ন হয়।",
+    "Merging two contacts that share an email or a phone number works again": "একই ইমেইল বা ফোন নম্বর থাকা দুটি পরিচিতি মেলানো আবার কাজ করছে",
     "Message": "বার্তা",
     "Messaging app": "বার্তা অ্যাপ",
     "Metal": "ধাতু",

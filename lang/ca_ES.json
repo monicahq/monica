@@ -2717,6 +2717,8 @@
     "Merged :other into :name": "Ha fusionat :other en :name",
     "Merging a contact into one an import was still writing could lose what the merge had moved, if the import was then cancelled or failed, and the merge could not be undone. Monica now waits: while an import writes into a vault, its contacts cannot be merged, and you can merge them once the import has finished.": "Fusionar un contacte amb un altre en què una importació encara escrivia podia fer perdre el que la fusió havia mogut, si després la importació es cancel·lava o fallava, i la fusió no es podia desfer. Ara Monica espera: mentre una importació escriu en una caixa forta, els seus contactes no es poden fusionar, i es podran fusionar quan la importació hagi acabat.",
     "Merging two contacts no longer fails when several merges run at once": "Fusionar dos contactes ja no falla quan s’executen diverses fusions alhora",
+    "Merging two contacts showed an error page when both held the same email address, phone number or other repeated value, and nothing was merged. The merge now goes through.": "Fusionar dos contactes mostrava una pàgina d’error quan tots dos tenien la mateixa adreça de correu, el mateix número de telèfon o un altre valor repetit, i no es fusionava res. Ara la fusió es completa.",
+    "Merging two contacts that share an email or a phone number works again": "Fusionar dos contactes que comparteixen un correu o un número de telèfon torna a funcionar",
     "Message": "Missatge",
     "Messaging app": "Missatgeria",
     "Metal": "Metall",

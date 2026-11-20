@@ -2717,6 +2717,8 @@
     "Merged :other into :name": "Sujungė :other į :name",
     "Merging a contact into one an import was still writing could lose what the merge had moved, if the import was then cancelled or failed, and the merge could not be undone. Monica now waits: while an import writes into a vault, its contacts cannot be merged, and you can merge them once the import has finished.": "Sujungus kontaktą su kontaktu, į kurį importavimas dar rašė, galėjo dingti tai, ką sujungimas perkėlė, jei importavimas vėliau būdavo atšauktas arba nepavykdavo, o sujungimo nebuvo galima atšaukti. Dabar Monica laukia: kol į seifą importuojama, jo kontaktų negalima sujungti, o kai importavimas baigsis, juos bus galima sujungti.",
     "Merging two contacts no longer fails when several merges run at once": "Dviejų kontaktų sujungimas nebenutrūksta, kai vienu metu vykdomi keli sujungimai",
+    "Merging two contacts showed an error page when both held the same email address, phone number or other repeated value, and nothing was merged. The merge now goes through.": "Sujungiant du kontaktus, kurių abiejų el. pašto adresas, telefono numeris ar kita kartojama reikšmė buvo tokia pati, būdavo rodomas klaidos puslapis ir niekas nebūdavo sujungta. Dabar sujungimas įvyksta.",
+    "Merging two contacts that share an email or a phone number works again": "Dviejų kontaktų, turinčių tą patį el. paštą ar telefono numerį, sujungimas vėl veikia",
     "Message": "Žinutė",
     "Messaging app": "Žinučių programėlė",
     "Metal": "Metalas",

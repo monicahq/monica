@@ -2717,6 +2717,8 @@
     "Merged :other into :name": ":other :name ga birlashtirildi",
     "Merging a contact into one an import was still writing could lose what the merge had moved, if the import was then cancelled or failed, and the merge could not be undone. Monica now waits: while an import writes into a vault, its contacts cannot be merged, and you can merge them once the import has finished.": "Import hali yozayotgan kontaktga boshqa kontaktni birlashtirish, agar import keyin bekor qilinsa yoki muvaffaqiyatsiz tugasa, birlashtirish koʻchirgan narsani yoʻqotishga olib kelishi mumkin edi, birlashtirishni esa bekor qilib boʻlmasdi. Monica endi kutadi: seyfga import yozilayotgan paytda uning kontaktlarini birlashtirib boʻlmaydi, import tugagach esa ularni birlashtirish mumkin.",
     "Merging two contacts no longer fails when several merges run at once": "Bir vaqtning oʻzida bir nechta birlashtirish bajarilganda ikki kontaktni birlashtirish endi xato bermaydi",
+    "Merging two contacts showed an error page when both held the same email address, phone number or other repeated value, and nothing was merged. The merge now goes through.": "Ikkala kontaktda bir xil elektron pochta manzili, telefon raqami yoki boshqa takrorlanuvchi qiymat boʻlsa, ularni birlashtirishda xato sahifasi chiqardi va hech narsa birlashtirilmasdi. Endi birlashtirish yakunlanadi.",
+    "Merging two contacts that share an email or a phone number works again": "Bir xil elektron pochta yoki telefon raqamiga ega ikkita kontaktni birlashtirish yana ishlaydi",
     "Message": "Xabar",
     "Messaging app": "Xabar ilovasi",
     "Metal": "Metall",

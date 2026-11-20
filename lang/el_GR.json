@@ -2717,6 +2717,8 @@
     "Merged :other into :name": "Συγχώνευσε τον :other στον :name",
     "Merging a contact into one an import was still writing could lose what the merge had moved, if the import was then cancelled or failed, and the merge could not be undone. Monica now waits: while an import writes into a vault, its contacts cannot be merged, and you can merge them once the import has finished.": "Η συγχώνευση μιας επαφής σε μια άλλη, στην οποία μια εισαγωγή εξακολουθούσε να γράφει, μπορούσε να οδηγήσει σε απώλεια όσων είχε μεταφέρει η συγχώνευση, αν η εισαγωγή ακυρωνόταν ή αποτύγχανε στη συνέχεια, και η συγχώνευση δεν μπορούσε να αναιρεθεί. Η Monica πλέον περιμένει: όσο μια εισαγωγή γράφει σε ένα θησαυροφυλάκιο, οι επαφές του δεν μπορούν να συγχωνευθούν, και μπορούν να συγχωνευθούν μόλις ολοκληρωθεί η εισαγωγή.",
     "Merging two contacts no longer fails when several merges run at once": "Η συγχώνευση δύο επαφών δεν αποτυγχάνει πλέον όταν εκτελούνται πολλές συγχωνεύσεις ταυτόχρονα",
+    "Merging two contacts showed an error page when both held the same email address, phone number or other repeated value, and nothing was merged. The merge now goes through.": "Η συγχώνευση δύο επαφών έδειχνε σελίδα σφάλματος όταν και οι δύο είχαν την ίδια διεύθυνση email, τον ίδιο αριθμό τηλεφώνου ή άλλη επαναλαμβανόμενη τιμή, και δεν συγχωνευόταν τίποτα. Τώρα η συγχώνευση ολοκληρώνεται.",
+    "Merging two contacts that share an email or a phone number works again": "Η συγχώνευση δύο επαφών με το ίδιο email ή τον ίδιο αριθμό τηλεφώνου λειτουργεί ξανά",
     "Message": "Μήνυμα",
     "Messaging app": "Εφαρμογή μηνυμάτων",
     "Metal": "Μέταλλο",

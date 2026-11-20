@@ -2717,6 +2717,8 @@
     "Merged :other into :name": "已把 :other 合并到 :name",
     "Merging a contact into one an import was still writing could lose what the merge had moved, if the import was then cancelled or failed, and the merge could not be undone. Monica now waits: while an import writes into a vault, its contacts cannot be merged, and you can merge them once the import has finished.": "将一个联系人合并到导入仍在写入的联系人中，如果导入随后被取消或失败，合并所移动的内容可能会丢失，而且合并无法撤销。Monica 现在会等待：导入正在写入某个保险库时，无法合并其中的联系人，导入完成后即可合并。",
     "Merging two contacts no longer fails when several merges run at once": "同时运行多个合并时，合并两个联系人不再失败",
+    "Merging two contacts showed an error page when both held the same email address, phone number or other repeated value, and nothing was merged. The merge now goes through.": "当两个联系人拥有相同的邮箱地址、电话号码或其他重复的值时，合并会显示错误页面，且不会合并任何内容。现在合并可以顺利完成。",
+    "Merging two contacts that share an email or a phone number works again": "合并共用同一邮箱或电话号码的两个联系人再次可用",
     "Message": "消息",
     "Messaging app": "即时通讯应用",
     "Metal": "金属",

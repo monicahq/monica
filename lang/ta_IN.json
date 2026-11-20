@@ -2717,6 +2717,8 @@
     "Merged :other into :name": ":other ஐ :name இல் இணைத்தது",
     "Merging a contact into one an import was still writing could lose what the merge had moved, if the import was then cancelled or failed, and the merge could not be undone. Monica now waits: while an import writes into a vault, its contacts cannot be merged, and you can merge them once the import has finished.": "இறக்குமதி இன்னும் எழுதிக்கொண்டிருந்த ஒரு தொடர்புடன் மற்றொரு தொடர்பை இணைத்தால், பின்னர் இறக்குமதி ரத்து செய்யப்பட்டாலோ தோல்வியடைந்தாலோ, இணைப்பு நகர்த்திய தரவு இழக்கப்படலாம், மேலும் இணைப்பைத் திரும்பப் பெற முடியாது. Monica இப்போது காத்திருக்கிறது: ஒரு இறக்குமதி பெட்டகத்தில் எழுதிக்கொண்டிருக்கும் வரை அதன் தொடர்புகளை இணைக்க முடியாது; இறக்குமதி முடிந்ததும் அவற்றை இணைக்கலாம்.",
     "Merging two contacts no longer fails when several merges run at once": "பல இணைப்புகள் ஒரே நேரத்தில் நடக்கும்போதும் இரண்டு தொடர்புகளை இணைப்பது இனி தோல்வியடையாது",
+    "Merging two contacts showed an error page when both held the same email address, phone number or other repeated value, and nothing was merged. The merge now goes through.": "இரண்டு தொடர்புகளுக்கும் ஒரே மின்னஞ்சல் முகவரி, தொலைபேசி எண் அல்லது மற்றொரு திரும்பத் திரும்ப வரும் மதிப்பு இருந்தபோது, அவற்றை இணைக்கும்போது பிழைப் பக்கம் காட்டப்பட்டது, எதுவும் இணைக்கப்படவில்லை. இப்போது இணைப்பு நிறைவடைகிறது.",
+    "Merging two contacts that share an email or a phone number works again": "ஒரே மின்னஞ்சல் அல்லது தொலைபேசி எண் உள்ள இரண்டு தொடர்புகளை இணைப்பது மீண்டும் வேலை செய்கிறது",
     "Message": "செய்தி",
     "Messaging app": "செய்தி செயலி",
     "Metal": "உலோகம்",

@@ -2717,6 +2717,8 @@
     "Merged :other into :name": ":other を :name に統合しました",
     "Merging a contact into one an import was still writing could lose what the merge had moved, if the import was then cancelled or failed, and the merge could not be undone. Monica now waits: while an import writes into a vault, its contacts cannot be merged, and you can merge them once the import has finished.": "インポートがまだ書き込んでいる連絡先に別の連絡先を統合すると、その後インポートがキャンセルまたは失敗した場合に、統合で移した内容が失われる可能性があり、統合は取り消せませんでした。Monica は現在、待機します。インポートが保管庫に書き込んでいる間は、その連絡先を統合できず、インポートが終わったら統合できます。",
     "Merging two contacts no longer fails when several merges run at once": "複数の統合が同時に実行されても、2件の連絡先の統合が失敗しなくなりました",
+    "Merging two contacts showed an error page when both held the same email address, phone number or other repeated value, and nothing was merged. The merge now goes through.": "2件の連絡先が同じメールアドレス、電話番号、またはその他の重複した値を持っていると、統合時にエラーページが表示され、何も統合されませんでした。現在は統合が完了します。",
+    "Merging two contacts that share an email or a phone number works again": "同じメールアドレスや電話番号を持つ2件の連絡先を統合できるようになりました",
     "Message": "メッセージ",
     "Messaging app": "メッセージアプリ",
     "Metal": "金属",
