@@ -372,8 +372,9 @@ class AppServiceProvider extends ServiceProvider
     /**
      * A trace carries what explains a request and nothing that names somebody. The session,
      * cache and queue tables are the framework's own traffic, a login throttle key holds an
-     * address, and a link token, a signature, a search term, the Telegram bot token or an
-     * address on a command line would otherwise leave with the trace. Who made a request is
+     * address, and a link token, a signature, a search term, the Telegram bot token, an
+     * address on a command line or the visitor's network address, in its own field or in a
+     * header a proxy adds, would otherwise leave with the trace. Who made a request is
      * sent as an id, and the health check opens no trace at all.
      */
     private function configureNightwatch(): void
@@ -393,6 +394,12 @@ class AppServiceProvider extends ServiceProvider
                 $request->url,
             ) ?? $request->url;
             $request->headers->remove('X-Telegram-Bot-Api-Secret-Token');
+            $request->ip = '';
+            $request->headers->remove('X-Forwarded-For');
+            $request->headers->remove('X-Real-IP');
+            $request->headers->remove('Forwarded');
+            $request->headers->remove('CF-Connecting-IP');
+            $request->headers->remove('True-Client-IP');
         });
 
         Nightwatch::redactOutgoingRequests(function (OutgoingRequest $outgoingRequest): void {

@@ -256,6 +256,42 @@ class AppServiceProviderTest extends TestCase
     }
 
     #[Test]
+    public function it_withholds_the_address_from_a_nightwatch_request(): void
+    {
+        $request = $this->nightwatchRequest('https://monica.test/vaults', [
+            'X-Forwarded-For' => '203.0.113.7, 10.0.0.1',
+            'X-Real-IP' => '203.0.113.7',
+            'Forwarded' => 'for=203.0.113.7',
+            'CF-Connecting-IP' => '203.0.113.7',
+            'True-Client-IP' => '203.0.113.7',
+            'Content-Type' => 'application/json',
+        ]);
+
+        $this->assertSame('', $request->ip);
+        $this->assertFalse($request->headers->has('X-Forwarded-For'));
+        $this->assertFalse($request->headers->has('X-Real-IP'));
+        $this->assertFalse($request->headers->has('Forwarded'));
+        $this->assertFalse($request->headers->has('CF-Connecting-IP'));
+        $this->assertFalse($request->headers->has('True-Client-IP'));
+        $this->assertSame('application/json', $request->headers->get('Content-Type'));
+    }
+
+    #[Test]
+    public function it_identifies_a_nightwatch_user_by_id_only(): void
+    {
+        $user = User::factory()->make([
+            'id' => 42,
+            'first_name' => 'Michael',
+            'last_name' => 'Scott',
+            'email' => 'michael@dundermifflin.com',
+        ]);
+
+        $resolver = $this->app->make(Core::class)->userDetailsResolver;
+
+        $this->assertSame(['id' => 42], $resolver($user));
+    }
+
+    #[Test]
     public function it_redacts_the_telegram_bot_token_from_an_outgoing_request_and_an_exception(): void
     {
         $outgoingRequest = new OutgoingRequest(
