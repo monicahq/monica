@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Helpers;
 
 use App\Models\Account;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 use Illuminate\Support\Facades\DB;
 use Laravel\Pennant\Feature;
 
@@ -40,5 +42,33 @@ class FlagState
         }
 
         return $storedOn + Account::query()->count() - $storedAnswers->count();
+    }
+
+    /**
+     * Narrow a query of accounts to those a flag is on for, by the rule {@see accountsOn()} counts
+     * with. Pennant stores an answer for every account it was asked about, so the stored scopes are
+     * matched in the database rather than gathered into a list of ids.
+     *
+     * @param  Builder<Account>  $accounts
+     * @return Builder<Account>
+     */
+    public static function whereOn(Builder $accounts, string $flag): Builder
+    {
+        $prefix = Feature::serializeScope(new Account);
+        $scope = in_array(DB::connection()->getDriverName(), ['mysql', 'mariadb'], true)
+            ? 'concat(?, accounts.id)'
+            : 'cast(? as text) || accounts.id';
+
+        $storedAnswer = fn (string $value) => fn (QueryBuilder $features) => $features
+            ->from('features')
+            ->where('name', $flag)
+            ->whereRaw("scope = {$scope}", [$prefix])
+            ->where('value', $value);
+
+        if (Feature::for(null)->active($flag)) {
+            return $accounts->whereNotExists($storedAnswer('false'));
+        }
+
+        return $accounts->whereExists($storedAnswer('true'));
     }
 }

@@ -33,6 +33,22 @@ class AccountControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_narrows_the_list_by_the_filters_in_the_address(): void
+    {
+        $toby = User::factory()->create(['first_name' => 'Toby', 'last_name' => 'Flenderson', 'is_active' => false]);
+        $toby->account->features()->activate('marketplace');
+        User::factory()->create(['first_name' => 'Jim', 'last_name' => 'Halpert', 'is_active' => false]);
+
+        $response = $this->actingAs($this->administrator())
+            ->get(route('admin.accounts.index', ['state' => 'deactivated', 'flag' => 'marketplace']));
+
+        $response->assertStatus(200);
+        $response->assertSee('Toby Flenderson');
+        $response->assertDontSee('Jim Halpert');
+        $response->assertSee('role="search"', escape: false);
+    }
+
+    #[Test]
     public function it_shows_what_an_operator_needs_to_answer_a_support_email(): void
     {
         $dwight = User::factory()->create([

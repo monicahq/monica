@@ -20,6 +20,10 @@ class AccountController extends Controller
             'viewModel' => new AccountsViewModel(
                 query: (string) $request->string('query'),
                 size: PageSize::from($request, AccountsViewModel::PER_PAGE),
+                state: (string) $request->string('state'),
+                access: (string) $request->string('access'),
+                joined: (string) $request->string('joined'),
+                flag: (string) $request->string('flag'),
             ),
         ]);
     }

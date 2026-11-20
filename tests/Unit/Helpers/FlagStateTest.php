@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Helpers;
 
 use App\Helpers\FlagState;
+use App\Models\Account;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Pennant\Feature;
@@ -43,17 +44,21 @@ class FlagStateTest extends TestCase
     }
 
     #[Test]
-    public function it_counts_the_accounts_switched_on_while_the_flag_is_off_for_every_account(): void
+    public function it_counts_and_lists_the_accounts_switched_on_while_the_flag_is_off_for_every_account(): void
     {
         [$jim, $pam] = User::factory()->count(5)->create();
         $jim->account->features()->activate('marketplace');
         $pam->account->features()->activate('marketplace');
 
         $this->assertSame(2, FlagState::accountsOn('marketplace'));
+        $this->assertEqualsCanonicalizing(
+            [$jim->account_id, $pam->account_id],
+            FlagState::whereOn(Account::query(), 'marketplace')->pluck('id')->all(),
+        );
     }
 
     #[Test]
-    public function it_counts_every_account_once_the_flag_is_on_for_every_account_those_never_asked_included(): void
+    public function it_counts_and_lists_every_account_once_the_flag_is_on_for_every_account_those_never_asked_included(): void
     {
         [$jim] = User::factory()->count(5)->create();
         FlagState::isOn('marketplace', $jim->account);
@@ -62,6 +67,7 @@ class FlagStateTest extends TestCase
         Feature::activateForEveryone('marketplace');
 
         $this->assertSame(5, FlagState::accountsOn('marketplace'));
+        $this->assertSame(5, FlagState::whereOn(Account::query(), 'marketplace')->count());
     }
 
     #[Test]
@@ -74,5 +80,7 @@ class FlagStateTest extends TestCase
         $dwight->account->features()->deactivate('marketplace');
 
         $this->assertSame(4, FlagState::accountsOn('marketplace'));
+        $this->assertNotContains($dwight->account_id, FlagState::whereOn(Account::query(), 'marketplace')->pluck('id')->all());
+        $this->assertSame(4, FlagState::whereOn(Account::query(), 'marketplace')->count());
     }
 }

@@ -170,6 +170,24 @@ class AccountTest extends TestCase
     }
 
     #[Test]
+    public function it_narrows_a_query_to_each_kind_of_access_as_it_reads_one_account(): void
+    {
+        Account::factory()->create();
+        StripeOrder::factory()->create(['account_id' => Account::factory()->create()->id]);
+        StripeOrder::factory()->settled()->create(['account_id' => Account::factory()->withGrantedAccess()->create()->id]);
+        Account::factory()->withGrantedAccess()->create();
+        $this->subscribeAccount(Account::factory()->create(), stripeId: 'sub_jim');
+        $this->subscribeAccount(Account::factory()->create(), status: 'past_due', stripeId: 'sub_pam');
+        $this->subscribeAccount(Account::factory()->create(), status: 'canceled', endsAt: now()->subDay(), stripeId: 'sub_dwight');
+
+        foreach ([null, ...AccessKindEnum::cases()] as $kind) {
+            $expected = Account::query()->get()->filter(fn (Account $account): bool => $account->accessKind() === $kind)->pluck('id')->sort()->values()->all();
+
+            $this->assertSame($expected, Account::query()->whereAccessKind($kind)->orderBy('id')->pluck('id')->all(), $kind->value ?? 'free');
+        }
+    }
+
+    #[Test]
     public function it_is_never_on_the_free_offer_on_a_self_hosted_instance(): void
     {
         config(['monica.self_hosted' => true]);

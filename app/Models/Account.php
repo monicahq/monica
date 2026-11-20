@@ -12,12 +12,14 @@ use Carbon\CarbonImmutable;
 use Database\Factories\AccountFactory;
 use Exception;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Cashier\Billable;
+use Laravel\Cashier\Subscription;
 use Laravel\Pennant\Concerns\HasFeatures;
 use Override;
 
@@ -536,6 +538,45 @@ class Account extends Model
         }
 
         return null;
+    }
+
+    /**
+     * Only the accounts holding access the way {@see accessKind()} names it, null meaning the free
+     * offer. It mirrors that method's order, so an account holding two kinds matches the first.
+     *
+     * @param  Builder<$this>  $query
+     */
+    public function scopeWhereAccessKind(Builder $query, ?AccessKindEnum $kind): void
+    {
+        $paidOrders = StripeOrder::query()->where('stripe_status', StripeOrder::PAID)->select('account_id');
+        $validSubscriptions = Subscription::query()
+            ->where('type', 'default')
+            ->where(fn (Builder $valid) => $valid->active()->orWhere(fn (Builder $onTrial) => $onTrial->onTrial()))
+            ->select('account_id');
+
+        if ($kind === AccessKindEnum::Lifetime) {
+            $query->whereIn('id', $paidOrders);
+
+            return;
+        }
+
+        $query->whereNotIn('id', $paidOrders);
+
+        if ($kind === AccessKindEnum::Granted) {
+            $query->whereNotNull('access_granted_at');
+
+            return;
+        }
+
+        $query->whereNull('access_granted_at');
+
+        if ($kind === AccessKindEnum::Subscription) {
+            $query->whereIn('id', $validSubscriptions);
+
+            return;
+        }
+
+        $query->whereNotIn('id', $validSubscriptions);
     }
 
     /**

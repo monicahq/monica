@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\ViewModels\Admin;
 
 use App\Models\Account;
+use App\Models\StripeOrder;
 use App\Models\User;
 use App\ViewModels\Admin\AccountsViewModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -135,5 +136,83 @@ class AccountsViewModelTest extends TestCase
 
         $this->assertStringContainsString('query=schrute', (string) $nextPageUrl);
         $this->assertStringContainsString('page=2', (string) $nextPageUrl);
+    }
+
+    #[Test]
+    public function it_narrows_the_list_to_one_state(): void
+    {
+        $jim = User::factory()->create(['first_name' => 'Jim']);
+        $toby = User::factory()->create(['is_active' => false]);
+        $angela = User::factory()->create();
+        $angela->delete();
+        $empty = Account::factory()->create();
+
+        $this->assertSame([$jim->account_id], new AccountsViewModel(state: 'active')->accounts()->pluck('id')->all());
+        $this->assertSame([$toby->account_id], new AccountsViewModel(state: 'deactivated')->accounts()->pluck('id')->all());
+        $this->assertSame([$angela->account_id], new AccountsViewModel(state: 'deleted')->accounts()->pluck('id')->all());
+        $this->assertSame([$empty->id], new AccountsViewModel(state: 'nobody')->accounts()->pluck('id')->all());
+        $this->assertCount(0, new AccountsViewModel(query: 'toby', state: 'active')->accounts());
+    }
+
+    #[Test]
+    public function it_says_whether_the_filters_or_the_search_found_nothing(): void
+    {
+        $this->assertSame('There are no accounts yet', new AccountsViewModel()->emptyTitle());
+        $this->assertSame('Nothing matches that', new AccountsViewModel(state: 'nobody')->emptyTitle());
+        $this->assertSame('No account matches all of these filters. Clear one of them, or clear them all.', new AccountsViewModel(query: 'dwight', state: 'nobody')->emptyBody());
+        $this->assertStringContainsString('dwight', new AccountsViewModel(query: 'dwight')->emptyBody());
+    }
+
+    #[Test]
+    public function it_ignores_a_value_it_does_not_offer(): void
+    {
+        User::factory()->count(2)->create();
+
+        $viewModel = new AccountsViewModel(state: 'sleeping', access: 'platinum', joined: 'forever', flag: 'removed-flag');
+
+        $this->assertFalse($viewModel->hasFilters());
+        $this->assertCount(2, $viewModel->accounts());
+    }
+
+    #[Test]
+    public function it_narrows_the_list_to_one_kind_of_access_on_a_hosted_instance_only(): void
+    {
+        $pam = Account::factory()->withGrantedAccess()->create();
+        StripeOrder::factory()->settled()->create(['account_id' => Account::factory()->create()->id]);
+        Account::factory()->create();
+
+        $this->assertSame([$pam->id], new AccountsViewModel(access: 'granted')->accounts()->pluck('id')->all());
+        $this->assertCount(1, new AccountsViewModel(access: 'free')->accounts());
+
+        config(['monica.self_hosted' => true]);
+
+        $selfHosted = new AccountsViewModel(access: 'granted');
+
+        $this->assertCount(3, $selfHosted->accounts());
+        $this->assertSame([], $selfHosted->accessOptions());
+    }
+
+    #[Test]
+    public function it_narrows_the_list_to_the_accounts_a_flag_is_on_for(): void
+    {
+        [$jim, $pam] = User::factory()->count(4)->create();
+        $jim->account->features()->activate('marketplace');
+        $pam->account->features()->activate('marketplace');
+
+        $accounts = new AccountsViewModel(flag: 'marketplace')->accounts();
+
+        $this->assertEqualsCanonicalizing([$jim->account_id, $pam->account_id], $accounts->pluck('id')->all());
+    }
+
+    #[Test]
+    public function it_narrows_the_list_to_the_accounts_that_joined_in_a_period(): void
+    {
+        $today = Account::factory()->create();
+        $tenDaysAgo = Account::factory()->create(['created_at' => now()->subDays(10)]);
+        Account::factory()->create(['created_at' => now()->subYears(2)]);
+
+        $this->assertSame([$today->id], new AccountsViewModel(joined: 'last-7-days')->accounts()->pluck('id')->all());
+        $this->assertSame([$today->id, $tenDaysAgo->id], new AccountsViewModel(joined: 'last-30-days')->accounts()->pluck('id')->all());
+        $this->assertCount(2, new AccountsViewModel(joined: 'last-12-months')->accounts());
     }
 }
