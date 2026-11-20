@@ -6,6 +6,18 @@ return [
     'date' => '2026-11-20',
     'entries' => [
         [
+            'id' => 'vault-create-owner-on-chosen-template',
+            'kind' => 'Changed',
+            'group' => 'Vaults',
+            'title' => 'Your contact starts on the template you choose',
+            'summary' => 'The contact standing for you, created with a new vault, now starts from the structure_version_id the request names. It used to start from Basic contact, and only the contacts added afterwards used the version chosen.',
+            'why' => 'The first contact of a new vault ignored the template chosen for it.',
+            'breaking' => false,
+            'changes' => [
+                ['field' => 'structure_version_id', 'change' => 'Changed', 'endpoints' => ['POST /vaults']],
+            ],
+        ],
+        [
             'id' => 'template-destroy-last-contact-template',
             'kind' => 'Changed',
             'group' => 'Templates',

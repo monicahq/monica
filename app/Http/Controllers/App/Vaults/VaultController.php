@@ -7,7 +7,6 @@ namespace App\Http\Controllers\App\Vaults;
 use App\Actions\CreateVault;
 use App\Actions\DestroyVault;
 use App\Actions\SetDefaultVault;
-use App\Actions\SetVaultDefaultTemplate;
 use App\Actions\UpdateVault;
 use App\Enums\VaultColourEnum;
 use App\Exceptions\VaultHasNoContactDefault;
@@ -81,14 +80,15 @@ class VaultController extends Controller
                 name: $validated['name'],
                 description: $validated['description'] ?? null,
                 colour: $validated['colour'],
+                structureVersion: $request->filled('structure_version_id')
+                    ? StructureVersion::query()->findOrFail($request->integer('structure_version_id'))
+                    : null,
             )->execute();
         } catch (AuthorizationException $e) {
             return back()->withErrors(['name' => $e->getMessage()])->withInput();
         } catch (VaultHasNoContactDefault) {
             return back()->withErrors(['name' => __('This account has no template for contacts to start from, so the vault cannot be created.')])->withInput();
         }
-
-        $this->settleWhatContactsStartFrom($request, $vault);
 
         if ($request->boolean('is_default')) {
             new SetDefaultVault(user: $request->user(), vault: $vault)->execute();
@@ -163,18 +163,5 @@ class VaultController extends Controller
                 new PublishedContactStructureVersion($request->user()->account_id),
             ],
         ];
-    }
-
-    private function settleWhatContactsStartFrom(Request $request, Vault $vault): void
-    {
-        if (! $request->filled('structure_version_id')) {
-            return;
-        }
-
-        new SetVaultDefaultTemplate(
-            user: $request->user(),
-            vault: $vault,
-            structureVersion: StructureVersion::query()->findOrFail($request->integer('structure_version_id')),
-        )->execute();
     }
 }

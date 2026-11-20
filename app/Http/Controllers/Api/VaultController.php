@@ -66,6 +66,9 @@ class VaultController extends Controller
                 name: $validated['name'],
                 description: $validated['description'] ?? null,
                 colour: $validated['colour'] ?? null,
+                structureVersion: $request->filled('structure_version_id')
+                    ? StructureVersion::query()->findOrFail($request->integer('structure_version_id'))
+                    : null,
             )->execute();
         } catch (AuthorizationException $e) {
             throw ValidationException::withMessages(['name' => $e->getMessage()]);
@@ -73,7 +76,9 @@ class VaultController extends Controller
             throw ValidationException::withMessages(['name' => __('This account has no template for contacts to start from, so the vault cannot be created.')]);
         }
 
-        $this->settleTheTwoDecisions($request, $vault);
+        if ($request->boolean('is_default')) {
+            new SetDefaultVault(user: $request->user(), vault: $vault)->execute();
+        }
 
         return new VaultResource($vault->refresh())->response()->setStatusCode(201);
     }

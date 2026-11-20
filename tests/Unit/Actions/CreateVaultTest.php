@@ -19,11 +19,13 @@ use App\Models\Template;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Queue;
+use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Test;
 use RuntimeException;
 use Tests\TestCase;
@@ -201,6 +203,69 @@ class CreateVaultTest extends TestCase
             'applies_to' => StructureAppliesToEnum::Contact->value,
             'structure_version_id' => $essentials->structure->published_version_id,
         ]);
+    }
+
+    #[Test]
+    public function it_starts_the_vault_and_its_owner_on_the_version_chosen(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        Template::factory()->published()->create(['account_id' => $user->account_id, 'is_system' => true, 'slug' => DefaultTemplateEnum::BasicContact->value]);
+        $chosen = Template::factory()->published()->create(['account_id' => $user->account_id, 'name' => 'Paper sales']);
+
+        $vault = new CreateVault(
+            user: $user,
+            name: 'Dunder Mifflin',
+            structureVersion: $chosen->structure->publishedVersion,
+        )->execute();
+
+        $this->assertDatabaseHas('vault_default_templates', [
+            'vault_id' => $vault->id,
+            'applies_to' => StructureAppliesToEnum::Contact->value,
+            'structure_version_id' => $chosen->structure->published_version_id,
+        ]);
+        $this->assertDatabaseHas('contacts', [
+            'vault_id' => $vault->id,
+            'is_me' => true,
+            'structure_version_id' => $chosen->structure->published_version_id,
+        ]);
+    }
+
+    #[Test]
+    public function it_refuses_a_version_of_another_account(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        Template::factory()->published()->create(['account_id' => $user->account_id]);
+        $elsewhere = Template::factory()->published()->create();
+
+        $this->expectException(ModelNotFoundException::class);
+
+        new CreateVault(
+            user: $user,
+            name: 'Dunder Mifflin',
+            structureVersion: $elsewhere->structure->publishedVersion,
+        )->execute();
+    }
+
+    #[Test]
+    public function it_refuses_a_version_of_an_animal_template(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        Template::factory()->published()->create(['account_id' => $user->account_id]);
+        $animal = Template::factory()->forEntity()->published()->create(['account_id' => $user->account_id]);
+
+        $this->expectException(InvalidArgumentException::class);
+
+        new CreateVault(
+            user: $user,
+            name: 'Dunder Mifflin',
+            structureVersion: $animal->structure->publishedVersion,
+        )->execute();
     }
 
     #[Test]

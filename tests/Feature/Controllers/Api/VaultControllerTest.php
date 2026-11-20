@@ -459,6 +459,11 @@ class VaultControllerTest extends TestCase
             'applies_to' => StructureAppliesToEnum::Contact->value,
             'structure_version_id' => $chosen->structure->published_version_id,
         ]);
+        $this->assertDatabaseHas('contacts', [
+            'vault_id' => Vault::query()->where('name', 'Dunder Mifflin')->sole()->id,
+            'is_me' => true,
+            'structure_version_id' => $chosen->structure->published_version_id,
+        ]);
     }
 
     #[Test]

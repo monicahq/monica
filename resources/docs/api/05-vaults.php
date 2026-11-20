@@ -181,7 +181,7 @@ return [
                     'name' => 'structure_version_id',
                     'type' => 'integer',
                     'required' => false,
-                    'description' => 'The published version of one of your active contact templates. A new contact in this vault starts from it. Contacts already created keep the version they were created on. A draft, a version belonging to somebody else, and a version describing something other than a contact are each refused.',
+                    'description' => 'The published version of one of your active contact templates. Every new contact in this vault starts from it, beginning with the contact standing for you, which is created with the vault. Left out, the vault starts from Basic contact, or from the next template Monica supplied when Basic contact is gone. A draft, a version belonging to somebody else, and a version describing something other than a contact are each refused.',
                 ],
             ],
             'returns' => 'The new vault object. Keep its id: every other call here names the vault by it.',

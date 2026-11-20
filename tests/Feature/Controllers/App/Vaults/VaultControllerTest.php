@@ -6,6 +6,7 @@ namespace Tests\Feature\Controllers\App\Vaults;
 
 use App\Jobs\CreateDefaultTemplate;
 use App\Jobs\RecordVaultVisit;
+use App\Models\Template;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -95,6 +96,36 @@ class VaultControllerTest extends TestCase
             'name' => 'Dunder Mifflin',
             'description' => 'Everybody at the Scranton branch',
             'colour' => '#4f8a49',
+        ]);
+    }
+
+    #[Test]
+    public function it_starts_the_vault_and_its_owner_on_the_template_chosen_on_the_form(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+
+        new CreateDefaultTemplate(user: $user)->handle();
+        $chosen = Template::factory()->published()->create(['account_id' => $user->account_id, 'name' => 'Paper sales']);
+
+        $this->actingAs($user)->post(route('vaults.create'), [
+            'name' => 'Dunder Mifflin',
+            'colour' => '#4f8a49',
+            'structure_version_id' => $chosen->structure->published_version_id,
+        ])->assertRedirect();
+
+        $vault = Vault::query()->where('name', 'Dunder Mifflin')->sole();
+
+        $this->assertDatabaseHas('vault_default_templates', [
+            'vault_id' => $vault->id,
+            'applies_to' => 'contact',
+            'structure_version_id' => $chosen->structure->published_version_id,
+        ]);
+        $this->assertDatabaseHas('contacts', [
+            'vault_id' => $vault->id,
+            'is_me' => true,
+            'structure_version_id' => $chosen->structure->published_version_id,
         ]);
     }
 
