@@ -85,6 +85,23 @@ enum DefaultFieldEnum: string implements Translatable
     case CulturalTastes = 'cultural_tastes';
     case Habits = 'habits';
     case Availability = 'availability';
+    case ColourAndMarkings = 'colour_and_markings';
+    case Character = 'character';
+    case Likes = 'likes';
+    case DislikesAndFears = 'dislikes_and_fears';
+    case ApproachAdvice = 'approach_advice';
+    case UsualFood = 'usual_food';
+    case FeedingTimesAndAmounts = 'feeding_times_and_amounts';
+    case FavouriteTreats = 'favourite_treats';
+    case RoutineAndActivities = 'routine_and_activities';
+    case PetSittingInstructions = 'pet_sitting_instructions';
+    case HealthIssues = 'health_issues';
+    case TreatmentsAndInstructions = 'treatments_and_instructions';
+    case NeuterStatus = 'neuter_status';
+    case OtherUsualCare = 'other_usual_care';
+    case OtherIdentification = 'other_identification';
+    case Insurance = 'insurance';
+    case InsurancePolicyNumber = 'insurance_policy_number';
 
     public function label(): string
     {
@@ -157,6 +174,23 @@ enum DefaultFieldEnum: string implements Translatable
             self::CulturalTastes => 'Cultural tastes',
             self::Habits => 'Habits to remember',
             self::Availability => 'Usual availability',
+            self::ColourAndMarkings => 'Colour and distinctive marks',
+            self::Character => 'Character',
+            self::Likes => 'What they like',
+            self::DislikesAndFears => 'What they dislike or fear',
+            self::ApproachAdvice => 'How to approach them',
+            self::UsualFood => 'Usual food',
+            self::FeedingTimesAndAmounts => 'Times and amounts',
+            self::FavouriteTreats => 'Favourite treats',
+            self::RoutineAndActivities => 'Routine and activities',
+            self::PetSittingInstructions => 'Pet sitting instructions',
+            self::HealthIssues => 'Health issues to know about',
+            self::TreatmentsAndInstructions => 'Treatments and instructions',
+            self::NeuterStatus => 'Neutered or spayed',
+            self::OtherUsualCare => 'Other usual care',
+            self::OtherIdentification => 'Other identification',
+            self::Insurance => 'Insurance',
+            self::InsurancePolicyNumber => 'Policy number',
         };
     }
 
@@ -164,7 +198,7 @@ enum DefaultFieldEnum: string implements Translatable
     {
         return match ($this) {
             self::Category, self::LanguagesSpoken, self::LanguagesToUse, self::Hobbies, self::Expertise => FieldTypeEnum::Multiselect,
-            self::Gender, self::Sex, self::PreferredChannel, self::Industry => FieldTypeEnum::Select,
+            self::Gender, self::Sex, self::PreferredChannel, self::Industry, self::NeuterStatus => FieldTypeEnum::Select,
             self::Birthday, self::AdoptionDate => FieldTypeEnum::RecurringDate,
             self::Emails, self::Phones, self::Addresses, self::Document, self::Photo, self::Notes, self::Caregivers,
             self::GiftIdeas, self::OutingIdeas, self::Experiences, self::OnlineProfiles, self::Education => FieldTypeEnum::Repeater,
@@ -176,11 +210,14 @@ enum DefaultFieldEnum: string implements Translatable
             self::Image => FieldTypeEnum::Image,
             self::Description, self::Caption, self::Species, self::Breed, self::MicrochipNumber, self::CaregiverRole,
             self::Pronouns, self::MetWhere, self::GiftIdea, self::OutingIdea, self::JobRole, self::Organisation,
-            self::ExperienceOrganisation, self::ExperienceRole, self::OnlineProfileLabel, self::School, self::FieldOfStudy => FieldTypeEnum::Text,
+            self::ExperienceOrganisation, self::ExperienceRole, self::OnlineProfileLabel, self::School, self::FieldOfStudy,
+            self::OtherIdentification, self::Insurance, self::InsurancePolicyNumber => FieldTypeEnum::Text,
             self::Note, self::FoodAndRoutine, self::HealthAndCare, self::AnimalNotes, self::MetContext, self::Passions,
             self::FavouriteDishes, self::FavouriteDrinks, self::DietaryPreferences, self::Allergies, self::GiftIdeaNote,
             self::OutingIdeaNote, self::SharedInterests, self::TopicsToDiscuss, self::HowToHelp, self::CulturalTastes,
-            self::Habits, self::Availability => FieldTypeEnum::Textarea,
+            self::Habits, self::Availability, self::ColourAndMarkings, self::Character, self::Likes, self::DislikesAndFears,
+            self::ApproachAdvice, self::UsualFood, self::FeedingTimesAndAmounts, self::FavouriteTreats, self::RoutineAndActivities,
+            self::PetSittingInstructions, self::HealthIssues, self::TreatmentsAndInstructions, self::OtherUsualCare => FieldTypeEnum::Textarea,
             self::MetOn, self::ExperienceStartedOn, self::ExperienceEndedOn, self::EducationStartedOn, self::EducationEndedOn => FieldTypeEnum::Date,
             self::CaregiverPerson, self::IntroducedBy => FieldTypeEnum::Relation,
         };
@@ -245,6 +282,7 @@ enum DefaultFieldEnum: string implements Translatable
             self::Phone => ValueListEnum::PhoneLabels,
             self::Address, self::WorkAddress => ValueListEnum::AddressLabels,
             self::Sex => ValueListEnum::AnimalSexes,
+            self::NeuterStatus => ValueListEnum::NeuterStatuses,
             self::LanguagesSpoken, self::LanguagesToUse => ValueListEnum::Languages,
             self::PreferredChannel => ValueListEnum::CommunicationChannels,
             self::Hobbies => ValueListEnum::Hobbies,

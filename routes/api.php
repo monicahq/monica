@@ -32,6 +32,7 @@ use App\Http\Controllers\Api\ContactCategoryController;
 use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\ContactDuplicateController;
 use App\Http\Controllers\Api\ContactDuplicateDismissalController;
+use App\Http\Controllers\Api\ContactEntityController;
 use App\Http\Controllers\Api\ContactFavouriteController;
 use App\Http\Controllers\Api\ContactGroupController;
 use App\Http\Controllers\Api\ContactListColumnController;
@@ -104,6 +105,7 @@ use App\Http\Controllers\Api\Possessions\PossessionLocationStayController;
 use App\Http\Controllers\Api\Possessions\PossessionMaintenanceRecordController;
 use App\Http\Controllers\Api\Possessions\PossessionPositionController;
 use App\Http\Controllers\Api\Possessions\PossessionProvenanceEventController;
+use App\Http\Controllers\Api\Possessions\PossessionTimelineController;
 use App\Http\Controllers\Api\Possessions\PossessionTransactionController;
 use App\Http\Controllers\Api\Possessions\PossessionTransactionDocumentController;
 use App\Http\Controllers\Api\Possessions\PossessionValuationController;
@@ -258,6 +260,8 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::put('entity-types/{entityType}/position', [EntityTypePositionController::class, 'update'])->where('entityType', '[0-9a-fA-F-]{36}')->name('entityTypes.position.update');
         Route::match(['GET', 'QUERY'], 'vaults/{vault}/entity-types/{entityType}/entities', [EntityController::class, 'index'])->where('entityType', '[0-9a-fA-F-]{36}')->name('entities');
         Route::post('vaults/{vault}/entity-types/{entityType}/entities', [EntityController::class, 'create'])->where('entityType', '[0-9a-fA-F-]{36}')->name('entities.create');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/entities/{entity}', [EntityController::class, 'show'])->where('entity', '[0-9a-fA-F-]{36}')->name('entities.show');
+        Route::put('vaults/{vault}/entities/{entity}', [EntityController::class, 'update'])->where('entity', '[0-9a-fA-F-]{36}')->name('entities.update');
 
         Route::match(['GET', 'QUERY'], 'life-event-categories', [LifeEventCategoryController::class, 'index'])->name('lifeEventCategories');
         Route::match(['GET', 'QUERY'], 'life-event-categories/{lifeEventCategory}', [LifeEventCategoryController::class, 'show'])->where('lifeEventCategory', '[0-9a-fA-F-]{36}')->name('lifeEventCategories.show');
@@ -382,6 +386,7 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::delete('vaults/{vault}/possessions/{possession}', [PossessionController::class, 'destroy'])->where('possession', '[0-9a-fA-F-]{36}')->name('possessions.destroy');
         Route::put('vaults/{vault}/possessions/{possession}/position', [PossessionPositionController::class, 'update'])->where('possession', '[0-9a-fA-F-]{36}')->name('possessions.position');
         Route::put('vaults/{vault}/possessions/{possession}/values', [PossessionFieldValueController::class, 'update'])->where('possession', '[0-9a-fA-F-]{36}')->name('possessions.values');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/possessions/{possession}/timeline', [PossessionTimelineController::class, 'index'])->where('possession', '[0-9a-fA-F-]{36}')->name('possessions.timeline');
         Route::match(['GET', 'QUERY'], 'vaults/{vault}/possessions/{possession}/transactions', [PossessionTransactionController::class, 'index'])->where('possession', '[0-9a-fA-F-]{36}')->name('possessions.transactions');
         Route::post('vaults/{vault}/possessions/{possession}/transactions', [PossessionTransactionController::class, 'create'])->where('possession', '[0-9a-fA-F-]{36}')->name('possessions.transactions.create');
         Route::match(['GET', 'QUERY'], 'vaults/{vault}/possessions/{possession}/transactions/{transaction}', [PossessionTransactionController::class, 'show'])->where(['possession' => '[0-9a-fA-F-]{36}', 'transaction' => '[0-9a-fA-F-]{36}'])->name('possessions.transactions.show');
@@ -482,6 +487,8 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::put('vaults/{vault}/contacts/{contact}/reminder-occurrences/{occurrence}/answer', [ReminderOccurrenceAnswerController::class, 'update'])
             ->where('occurrence', '[0-9a-fA-F-]{36}')
             ->name('contacts.reminderOccurrences.answer.update');
+
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/contacts/{contact}/entities', [ContactEntityController::class, 'index'])->name('contacts.entities');
 
         Route::match(['GET', 'QUERY'], 'vaults/{vault}/contacts/{contact}/relationships', [ContactRelationshipController::class, 'index'])->name('contacts.relationships');
         Route::post('vaults/{vault}/contacts/{contact}/relationships', [ContactRelationshipController::class, 'create'])->name('contacts.relationships.create');

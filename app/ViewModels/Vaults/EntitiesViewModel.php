@@ -71,7 +71,33 @@ class EntitiesViewModel
 
     public function emptyTitle(): string
     {
-        return __('No :name in this vault yet', ['name' => $this->entityType->name_plural]);
+        return __('Your :name will line up here', ['name' => $this->entityType->name_plural]);
+    }
+
+    public function emptyDescription(): string
+    {
+        $description = trim((string) $this->entityType->description);
+
+        if ($description !== '') {
+            return $description;
+        }
+
+        return __('The :name you add to this vault will appear here, one row each.', ['name' => $this->entityType->name_plural]);
+    }
+
+    public function firstAddLabel(): string
+    {
+        return __('Add your first :name', ['name' => $this->entityType->name_singular]);
+    }
+
+    public function icon(): string
+    {
+        return $this->entityType->icon ?? EntityType::DEFAULT_ICON;
+    }
+
+    public function colour(): string
+    {
+        return $this->entityType->colour;
     }
 
     public function size(): int|string
@@ -84,7 +110,7 @@ class EntitiesViewModel
         return self::PER_PAGE;
     }
 
-    /** @return LengthAwarePaginator<int, array{id: int, name: string, avatarUrl: string|null, isArchived: bool}> */
+    /** @return LengthAwarePaginator<int, array{id: int, name: string, url: string, avatarUrl: string|null, isArchived: bool}> */
     public function entities(): LengthAwarePaginator
     {
         $query = Entity::query()
@@ -97,6 +123,7 @@ class EntitiesViewModel
             ->through(fn (Entity $entity): array => [
                 'id' => $entity->id,
                 'name' => $entity->name,
+                'url' => route('entities.show', ['vault' => $this->vault, 'entityType' => $this->entityType, 'entity' => $entity]),
                 'avatarUrl' => $entity->avatar === null
                     ? null
                     : route('files.variants.show', ['vault' => $this->vault, 'file' => $entity->avatar, 'size' => Contact::AVATAR_THUMBNAIL_PIXELS]),

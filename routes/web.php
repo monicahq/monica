@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Enums\ContactGroupingEnum;
+use App\Enums\PossessionTimelineSectionEnum;
 use App\Enums\SsoProviderEnum;
 use App\Http\Controllers\App\ChangelogCommentController;
 use App\Http\Controllers\App\ChangelogController;
@@ -183,6 +184,7 @@ use App\Http\Controllers\App\Vaults\PossessionLocationStayController;
 use App\Http\Controllers\App\Vaults\PossessionMaintenanceRecordController;
 use App\Http\Controllers\App\Vaults\PossessionProvenanceEventController;
 use App\Http\Controllers\App\Vaults\PossessionTagAttachmentController;
+use App\Http\Controllers\App\Vaults\PossessionTimelineController;
 use App\Http\Controllers\App\Vaults\PossessionTransactionController;
 use App\Http\Controllers\App\Vaults\PossessionTransactionDocumentController;
 use App\Http\Controllers\App\Vaults\PossessionTypeFieldController;
@@ -368,8 +370,11 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
 
     Route::get('vaults/{vault}/entities/{entityType}', [EntityController::class, 'index'])->name('entities.index');
     Route::get('vaults/{vault}/fields/{field}/choices', [FieldChoiceController::class, 'index'])->whereNumber('field')->name('fields.choices.index');
-    Route::get('vaults/{vault}/entities/{entityType}/new', [EntityController::class, 'new'])->name('entities.new');
+    Route::get('vaults/{vault}/entities/{entityType}/new/{template?}', [EntityController::class, 'new'])->where('template', '[a-z0-9\-]+')->name('entities.new');
     Route::post('vaults/{vault}/entities/{entityType}', [EntityController::class, 'create'])->name('entities.create');
+    Route::get('vaults/{vault}/entities/{entityType}/{entity}/edit', [EntityController::class, 'edit'])->whereUuid('entity')->name('entities.edit');
+    Route::put('vaults/{vault}/entities/{entityType}/{entity}', [EntityController::class, 'update'])->whereUuid('entity')->name('entities.update');
+    Route::get('vaults/{vault}/entities/{entityType}/{entity}/{page?}', [EntityController::class, 'show'])->whereUuid('entity')->name('entities.show');
 
     Route::get('vaults/{vault}/groups', [GroupController::class, 'index'])->middleware('flag:groups')->name('groups.index');
     Route::get('vaults/{vault}/groups/new', [GroupController::class, 'new'])->middleware('flag:groups')->name('groups.new');
@@ -576,6 +581,7 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::post('vaults/{vault}/possessions/{possession}/tags', [PossessionTagAttachmentController::class, 'create'])->whereUuid('possession')->name('possessions.tags.create');
     Route::put('vaults/{vault}/possessions/{possession}/tags/{possessionTag}', [PossessionTagAttachmentController::class, 'update'])->whereUuid(['possession', 'possessionTag'])->name('possessions.tags.update');
     Route::delete('vaults/{vault}/possessions/{possession}/tags/{possessionTag}', [PossessionTagAttachmentController::class, 'destroy'])->whereUuid(['possession', 'possessionTag'])->name('possessions.tags.destroy');
+    Route::get('vaults/{vault}/possessions/{possession}/timeline/{section?}', [PossessionTimelineController::class, 'index'])->whereUuid('possession')->whereIn('section', PossessionTimelineSectionEnum::values())->name('possessions.timeline.index');
     Route::get('vaults/{vault}/possessions/{possession}/transactions', [PossessionTransactionController::class, 'index'])->whereUuid('possession')->name('possessions.transactions.index');
     Route::post('vaults/{vault}/possessions/{possession}/transactions', [PossessionTransactionController::class, 'create'])->whereUuid('possession')->name('possessions.transactions.create');
     Route::get('vaults/{vault}/possessions/{possession}/transactions/{possessionTransaction}/edit', [PossessionTransactionController::class, 'edit'])->whereUuid(['possession', 'possessionTransaction'])->name('possessions.transactions.edit');

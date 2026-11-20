@@ -479,6 +479,20 @@ class ContactControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_offers_a_partner_and_children_around_somebody_with_no_immediate_family(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+
+        $this->actingAs($user)->get(route('contacts.show', ['vault' => $vault, 'contact' => $michael]))
+            ->assertStatus(200)
+            ->assertSee('aria-label="Add a partner"', false)
+            ->assertSee('aria-label="Add children"', false)
+            ->assertDontSee('Add a relationship');
+    }
+
+    #[Test]
     public function it_writes_down_that_the_contact_was_opened(): void
     {
         Queue::fake();

@@ -32,8 +32,9 @@ use Illuminate\Support\Facades\DB;
  * Give a fresh account one of the templates it starts with, so the first contact or animal somebody
  * writes down has somewhere to go. Basic contact runs inline while the account is created, because
  * the contact standing for the user is written on it; the others are queued, since nobody is looking
- * at them yet. Only Basic contact and Basic animal become a vault default. It does nothing when the
- * account already has that template, so running it again is safe.
+ * at them yet. Only Basic contact and the animal templates become a vault default, and never in place
+ * of one a vault already has. An animal template joins the account's Animals kind when it holds one.
+ * It does nothing when the account already has that template, so running it again is safe.
  */
 class CreateDefaultTemplate implements ShouldQueue
 {
@@ -89,6 +90,15 @@ class CreateDefaultTemplate implements ShouldQueue
         $type = $this->supplied->entityType();
 
         if ($type === null) {
+            return;
+        }
+
+        $this->entityType = EntityType::query()
+            ->where('account_id', $this->user->account_id)
+            ->where('slug', $type['slug'])
+            ->first();
+
+        if ($this->entityType instanceof EntityType) {
             return;
         }
 
@@ -252,7 +262,7 @@ class CreateDefaultTemplate implements ShouldQueue
                 'position' => $position,
                 'is_required' => $field->isRequired(),
                 'is_sensitive' => false,
-                'is_highlighted' => $field->isHighlighted(),
+                'is_highlighted' => $section?->isHighlighted($field) ?? $field->isHighlighted(),
                 'is_unique' => false,
                 'is_identifying' => $field->isIdentifying(),
                 'value_list_id' => $this->valueListId($field),

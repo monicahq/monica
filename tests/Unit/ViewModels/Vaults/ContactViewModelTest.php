@@ -1097,6 +1097,16 @@ class ContactViewModelTest extends TestCase
         return $row;
     }
 
+    #[Test]
+    public function the_contact_page_shows_no_block_when_no_profile_names_the_contact(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $toby = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id]);
+
+        $this->assertNull(new ContactViewModel(user: $user, vault: $vault, contact: $toby)->profiles());
+    }
+
     private function contact(User $user, StructureVersion $version, array $attributes = []): Contact
     {
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);

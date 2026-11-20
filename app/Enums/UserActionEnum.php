@@ -183,6 +183,7 @@ enum UserActionEnum: string implements Translatable
     case ContactExportedAsMarkdown = 'contact_exported_as_markdown';
     case EntityCreation = 'entity_created';
     case EntityNameUpdate = 'entity_name_updated';
+    case EntityUpdate = 'entity_updated';
     case EntityArchived = 'entity_archived';
     case EntityUnarchived = 'entity_unarchived';
     case EntityDeletion = 'entity_deleted';
@@ -489,6 +490,7 @@ enum UserActionEnum: string implements Translatable
             self::ContactExportedAsMarkdown => 'Exported the contact :name as Markdown',
             self::EntityCreation => 'Created the record :name',
             self::EntityNameUpdate => 'Renamed a record to :name',
+            self::EntityUpdate => 'Updated the record :name',
             self::EntityArchived => 'Archived the record :name',
             self::EntityUnarchived => 'Restored the record :name to the lists',
             self::EntityDeletion => 'Deleted the record :name',

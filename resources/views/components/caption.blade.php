@@ -7,6 +7,7 @@
 @php
   $colour = match ($tone) {
       'muted' => 'text-muted',
+      'inherit' => '',
       default => 'text-muted-soft',
   };
 @endphp

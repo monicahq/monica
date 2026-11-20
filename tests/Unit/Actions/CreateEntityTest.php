@@ -9,6 +9,7 @@ use App\Enums\FieldTypeEnum;
 use App\Enums\UserActionEnum;
 use App\Exceptions\EntityNeedsAName;
 use App\Exceptions\EntityTemplateChanged;
+use App\Exceptions\EntityTemplateNotOffered;
 use App\Exceptions\FieldIsRequired;
 use App\Jobs\LogUserAction;
 use App\Models\Entity;
@@ -164,11 +165,32 @@ class CreateEntityTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_version_that_is_no_longer_the_default(): void
+    public function it_writes_the_record_on_another_template_of_the_type_somebody_picked(): void
+    {
+        Queue::fake();
+
+        [$user, $vault, $type, $default] = $this->farmWithGoats();
+        $picked = $this->otherTemplateOf($user, $type);
+
+        $entity = new CreateEntity(
+            user: $user,
+            vault: $vault,
+            entityType: $type,
+            name: 'Mose’s goat',
+            structureVersion: $picked,
+            values: [$this->field($picked, 'character')->id => 'Stubborn'],
+        )->execute();
+
+        $this->assertDatabaseHas('entities', ['id' => $entity->id, 'structure_version_id' => $picked->id]);
+        $this->assertSame(0, $default->refresh()->record_count);
+    }
+
+    #[Test]
+    public function it_refuses_a_version_of_another_account(): void
     {
         [$user, $vault, $type] = $this->farmWithGoats();
 
-        $this->expectException(EntityTemplateChanged::class);
+        $this->expectException(ModelNotFoundException::class);
 
         new CreateEntity(
             user: $user,
@@ -177,6 +199,47 @@ class CreateEntityTest extends TestCase
             name: 'Mose’s goat',
             structureVersion: StructureVersion::factory()->published()->create(),
         )->execute();
+    }
+
+    #[Test]
+    public function it_refuses_a_template_of_another_type(): void
+    {
+        [$user, $vault, $type] = $this->farmWithGoats();
+        $beets = EntityType::factory()->create(['account_id' => $user->account_id, 'name_plural' => 'Beets']);
+
+        $this->expectException(EntityTemplateNotOffered::class);
+
+        new CreateEntity(
+            user: $user,
+            vault: $vault,
+            entityType: $type,
+            name: 'Mose’s goat',
+            structureVersion: $this->otherTemplateOf($user, $beets),
+        )->execute();
+    }
+
+    #[Test]
+    public function it_refuses_a_template_turned_off(): void
+    {
+        [$user, $vault, $type] = $this->farmWithGoats();
+        $picked = $this->otherTemplateOf($user, $type);
+        $picked->structure->owner->update(['is_active' => false]);
+
+        $this->expectException(EntityTemplateNotOffered::class);
+
+        new CreateEntity(user: $user, vault: $vault, entityType: $type, name: 'Mose’s goat', structureVersion: $picked)->execute();
+    }
+
+    #[Test]
+    public function it_refuses_a_version_that_is_no_longer_the_published_one(): void
+    {
+        [$user, $vault, $type, $version] = $this->farmWithGoats();
+        $newer = StructureVersion::factory()->published()->create(['structure_id' => $version->structure_id, 'version_number' => 2]);
+        $version->structure->update(['published_version_id' => $newer->id]);
+
+        $this->expectException(EntityTemplateChanged::class);
+
+        new CreateEntity(user: $user, vault: $vault, entityType: $type, name: 'Mose’s goat', structureVersion: $version->refresh())->execute();
     }
 
     #[Test]
@@ -212,6 +275,13 @@ class CreateEntityTest extends TestCase
         ]);
 
         return [$user, $vault, $type, $version];
+    }
+
+    private function otherTemplateOf(User $user, EntityType $type): StructureVersion
+    {
+        $elsewhere = Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Dunder Mifflin']);
+
+        return $this->entityDefaultCarrying($elsewhere, $type, ['Character' => ['character' => FieldTypeEnum::Textarea]]);
     }
 
     private function field(StructureVersion $version, string $key): Field

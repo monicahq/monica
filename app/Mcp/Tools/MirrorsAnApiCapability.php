@@ -13,6 +13,7 @@ use App\Http\Resources\LifeEventResource;
 use App\Models\AgentFeedbackReport;
 use App\Models\Contact;
 use App\Models\EmailSent;
+use App\Models\Entity;
 use App\Models\EntityType;
 use App\Models\Field;
 use App\Models\Group;
@@ -317,6 +318,17 @@ trait MirrorsAnApiCapability
         }
 
         return $this->found($entityType);
+    }
+
+    protected function entity(Vault $vault, string $address): Entity
+    {
+        $entity = Str::isUuid($address) ? Entity::query()->where('vault_id', $vault->id)->where('uuid', $address)->first() : null;
+
+        if ($entity === null) {
+            throw $this->doesNotExist(__('That record does not exist.'));
+        }
+
+        return $this->found($entity);
     }
 
     protected function location(Request $request, string $address): Location

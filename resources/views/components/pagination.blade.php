@@ -92,7 +92,9 @@
         <option value="{{ \App\Helpers\PageSize::ALL }}" @selected($size === \App\Helpers\PageSize::ALL)>{{ __('All') }}</option>
       </x-select>
 
-      <x-button.secondary type="submit" size="small" x-show="false">{{ __('Apply') }}</x-button.secondary>
+      <noscript>
+        <x-button.secondary type="submit" size="small">{{ __('Apply') }}</x-button.secondary>
+      </noscript>
     </form>
   </nav>
 @endif

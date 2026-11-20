@@ -167,7 +167,7 @@ class PossessionViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_lists_ten_sections_with_the_overview_the_transactions_the_insurance_the_valuations_the_provenance_the_maintenance_the_loans_and_the_locations_available(): void
+    public function it_lists_ten_sections_with_the_overview_the_timeline_the_transactions_the_insurance_the_valuations_the_provenance_the_maintenance_the_loans_and_the_locations_available(): void
     {
         [$user, $vault] = $this->scranton();
         $dundie = Possession::factory()->create(['vault_id' => $vault->id]);
@@ -183,7 +183,9 @@ class PossessionViewModelTest extends TestCase
         $byKey = array_column($sections, null, 'key');
 
         $this->assertCount(10, $sections);
-        $this->assertCount(8, array_filter($sections, fn (array $section): bool => $section['url'] !== null));
+        $this->assertCount(9, array_filter($sections, fn (array $section): bool => $section['url'] !== null));
+        $this->assertSame(route('possessions.timeline.index', [$vault, $dundie]), $byKey['timeline']['url']);
+        $this->assertSame(21, $byKey['timeline']['count']);
         $this->assertSame(2, $byKey['transactions']['count']);
         $this->assertSame(1, $byKey['insurance']['count']);
         $this->assertSame(3, $byKey['maintenance']['count']);

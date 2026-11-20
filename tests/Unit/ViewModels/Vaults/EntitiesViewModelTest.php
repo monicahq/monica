@@ -28,6 +28,7 @@ class EntitiesViewModelTest extends TestCase
         $entities = new EntitiesViewModel(user: $user, vault: $vault, entityType: $type)->entities();
 
         $this->assertSame(['Garbage', 'Mose'], array_column($entities->items(), 'name'));
+        $this->assertSame(route('entities.show', ['vault' => $vault, 'entityType' => $type, 'entity' => Entity::query()->where('name', 'Garbage')->firstOrFail()]), $entities->items()[0]['url']);
     }
 
     #[Test]
@@ -56,7 +57,53 @@ class EntitiesViewModelTest extends TestCase
         $this->assertSame([false, true, false], array_column($entities, 'isArchived'));
     }
 
-    /** @return array{0: User, 1: Vault, 2: EntityType} */
+    #[Test]
+    public function it_names_the_type_on_its_empty_list(): void
+    {
+        [$user, $vault, $type] = $this->vaultWithType();
+        $type->update(['name_singular' => 'Animal']);
+
+        $viewModel = new EntitiesViewModel(user: $user, vault: $vault, entityType: $type);
+
+        $this->assertSame('Your Animals will line up here', $viewModel->emptyTitle());
+        $this->assertSame('Add your first Animal', $viewModel->firstAddLabel());
+    }
+
+    #[Test]
+    public function it_describes_the_empty_list_with_the_description_of_the_type(): void
+    {
+        [$user, $vault, $type] = $this->vaultWithType();
+        $type->update(['description' => '  Dwight’s beets keep the farm dogs busy.  ']);
+
+        $viewModel = new EntitiesViewModel(user: $user, vault: $vault, entityType: $type);
+
+        $this->assertSame('Dwight’s beets keep the farm dogs busy.', $viewModel->emptyDescription());
+    }
+
+    #[Test]
+    public function it_describes_the_empty_list_generically_when_the_type_has_no_description(): void
+    {
+        [$user, $vault, $type] = $this->vaultWithType();
+
+        $type->update(['description' => null]);
+        $withoutDescription = new EntitiesViewModel(user: $user, vault: $vault, entityType: $type)->emptyDescription();
+
+        $type->update(['description' => '   ']);
+        $withBlankDescription = new EntitiesViewModel(user: $user, vault: $vault, entityType: $type)->emptyDescription();
+
+        $this->assertSame('The Animals you add to this vault will appear here, one row each.', $withoutDescription);
+        $this->assertSame($withoutDescription, $withBlankDescription);
+    }
+
+    #[Test]
+    public function it_marks_the_empty_list_with_the_default_icon_when_the_type_has_none(): void
+    {
+        [$user, $vault, $type] = $this->vaultWithType();
+        $type->update(['icon' => null]);
+
+        $this->assertSame(EntityType::DEFAULT_ICON, new EntitiesViewModel(user: $user, vault: $vault, entityType: $type)->icon());
+    }
+
     #[Test]
     public function it_offers_the_way_to_add_one(): void
     {
@@ -70,6 +117,7 @@ class EntitiesViewModelTest extends TestCase
         $this->assertSame(route('entities.new', ['vault' => $vault, 'entityType' => $type]), $viewModel->addUrl());
     }
 
+    /** @return array{0: User, 1: Vault, 2: EntityType} */
     private function vaultWithType(): array
     {
         $user = User::factory()->create();

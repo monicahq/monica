@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Vaults;
 
+use App\Actions\CreateEntity;
 use App\Enums\FieldTypeEnum;
 use App\Models\EntityType;
 use App\Models\Field;
@@ -12,6 +13,7 @@ use App\Models\User;
 use App\Models\Vault;
 use App\ViewModels\Vaults\EntityFormViewModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -100,6 +102,71 @@ class EntityFormViewModelTest extends TestCase
 
         $this->assertSame('Mose’s goat', $viewModel->name());
         $this->assertSame('Goat', $viewModel->pages()[0]['sections'][0]['fields'][0]['rawValue']?->value_string);
+    }
+
+    #[Test]
+    public function it_starts_each_field_of_a_record_with_what_it_holds_and_sends_it_back_to_be_updated(): void
+    {
+        Queue::fake();
+
+        [$user, $vault, $type] = $this->farm();
+        $version = $this->entityDefaultCarrying($vault, $type, ['Animal details' => ['species' => FieldTypeEnum::Text]]);
+        $species = $version->inputFields()->firstOrFail();
+        $entity = new CreateEntity(user: $user, vault: $vault, entityType: $type, name: 'Mose’s goat', values: [$species->id => 'Goat'])->execute();
+
+        $viewModel = new EntityFormViewModel(user: $user, vault: $vault, entityType: $type, version: $version, entity: $entity);
+        $field = $viewModel->pages()[0]['sections'][0]['fields'][0];
+
+        $this->assertSame('Goat', $field['rawValue']->value_string);
+        $this->assertSame('Mose’s goat', $viewModel->name());
+        $this->assertSame('Edit Mose’s goat', $viewModel->title());
+        $this->assertSame('put', $viewModel->method());
+        $this->assertSame(route('entities.update', ['vault' => $vault, 'entityType' => $type, 'entity' => $entity]), $viewModel->action());
+        $this->assertSame(route('entities.show', ['vault' => $vault, 'entityType' => $type, 'entity' => $entity]), $viewModel->cancelUrl());
+    }
+
+    #[Test]
+    public function it_offers_the_templates_of_the_type_with_the_vault_default_first(): void
+    {
+        [$user, $vault, $type] = $this->farm();
+        $default = $this->entityDefaultCarrying($vault, $type, ['Animal details' => ['species' => FieldTypeEnum::Text]]);
+        $default->structure->owner->update(['name' => 'Farm animal', 'position' => 2]);
+        $other = $this->otherTemplateOf($user, $type, 'Show animal', 1);
+        $this->otherTemplateOf($user, $type, 'Retired animal', 3)->structure->owner->update(['is_active' => false]);
+        $this->otherTemplateOf($user, EntityType::factory()->create(['account_id' => $user->account_id]), 'Beet', 4);
+
+        $viewModel = $this->viewModel($user, $vault, $type, $other);
+
+        $this->assertSame(
+            [
+                ['name' => 'Farm animal', 'isCurrent' => false],
+                ['name' => 'Show animal', 'isCurrent' => true],
+            ],
+            array_map(fn (array $template): array => ['name' => $template['name'], 'isCurrent' => $template['isCurrent']], $viewModel->templates()),
+        );
+        $this->assertSame(
+            route('entities.new', ['vault' => $vault, 'entityType' => $type, 'template' => $other->structure->owner->slug]),
+            $viewModel->templates()[1]['url'],
+        );
+        $this->assertTrue($viewModel->showsTemplates());
+    }
+
+    #[Test]
+    public function it_offers_no_choice_when_the_type_has_one_template(): void
+    {
+        [$user, $vault, $type] = $this->farm();
+        $version = $this->entityDefaultCarrying($vault, $type, ['Animal details' => ['species' => FieldTypeEnum::Text]]);
+
+        $this->assertFalse($this->viewModel($user, $vault, $type, $version)->showsTemplates());
+    }
+
+    private function otherTemplateOf(User $user, EntityType $type, string $name, int $position): StructureVersion
+    {
+        $elsewhere = Vault::factory()->create(['account_id' => $user->account_id]);
+        $version = $this->entityDefaultCarrying($elsewhere, $type, ['Character' => ['character' => FieldTypeEnum::Textarea]]);
+        $version->structure->owner->update(['name' => $name, 'position' => $position]);
+
+        return $version;
     }
 
     /** @return array{0: User, 1: Vault, 2: EntityType} */

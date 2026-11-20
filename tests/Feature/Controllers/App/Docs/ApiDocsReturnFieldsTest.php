@@ -17,6 +17,7 @@ use App\Enums\LifeEventSourceEnum;
 use App\Enums\NotificationChannelEnum;
 use App\Enums\PossessionFieldKindEnum;
 use App\Enums\PossessionTransactionTypeEnum;
+use App\Enums\RelationTargetEnum;
 use App\Enums\ValueListEnum;
 use App\Enums\VersionStatusEnum;
 use App\Helpers\AvailableLocales;
@@ -36,7 +37,6 @@ use App\Models\Contact;
 use App\Models\ContactDuplicateCandidate;
 use App\Models\ContactListColumn;
 use App\Models\EmailSent;
-use App\Models\Entity;
 use App\Models\EntityType;
 use App\Models\Field;
 use App\Models\FieldValue;
@@ -1017,8 +1017,8 @@ class ApiDocsReturnFieldsTest extends TestCase
             'entities-index' => $this->asSomebody(function (User $user): TestResponse {
                 $vault = Vault::factory()->create(['account_id' => $user->account_id]);
                 $entityType = EntityType::factory()->create(['account_id' => $user->account_id]);
-                $this->entityDefaultCarrying($vault, $entityType, ['Animal details' => ['species' => FieldTypeEnum::Text]]);
-                Entity::factory()->create(['vault_id' => $vault->id, 'entity_type_id' => $entityType->id]);
+                $version = $this->entityDefaultCarrying($vault, $entityType, ['Animal details' => ['species' => FieldTypeEnum::Text]]);
+                $this->json('POST', "/api/v1/vaults/{$vault->uuid}/entity-types/{$entityType->uuid}/entities", ['name' => 'Mose’s goat', 'fields' => [$version->inputFields()->firstOrFail()->id => 'Goat']]);
 
                 return $this->json('GET', "/api/v1/vaults/{$vault->uuid}/entity-types/{$entityType->uuid}/entities");
             }),
@@ -1026,9 +1026,41 @@ class ApiDocsReturnFieldsTest extends TestCase
             'entities-create' => $this->asSomebody(function (User $user): TestResponse {
                 $vault = Vault::factory()->create(['account_id' => $user->account_id]);
                 $entityType = EntityType::factory()->create(['account_id' => $user->account_id]);
-                $this->entityDefaultCarrying($vault, $entityType, ['Animal details' => ['species' => FieldTypeEnum::Text]]);
+                $version = $this->entityDefaultCarrying($vault, $entityType, ['Animal details' => ['species' => FieldTypeEnum::Text]]);
 
-                return $this->json('POST', "/api/v1/vaults/{$vault->uuid}/entity-types/{$entityType->uuid}/entities", ['name' => 'Mose’s goat']);
+                return $this->json('POST', "/api/v1/vaults/{$vault->uuid}/entity-types/{$entityType->uuid}/entities", ['name' => 'Mose’s goat', 'fields' => [$version->inputFields()->firstOrFail()->id => 'Goat']]);
+            }),
+
+            'contacts-entities-index' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                $entityType = EntityType::factory()->create(['account_id' => $user->account_id]);
+                $version = $this->entityDefaultCarrying($vault, $entityType, ['People' => ['owner' => FieldTypeEnum::Relation]]);
+                $owner = $version->inputFields()->firstOrFail();
+                $owner->update(['relation_target' => RelationTargetEnum::Contact]);
+                $dwight = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id]);
+                $this->json('POST', "/api/v1/vaults/{$vault->uuid}/entity-types/{$entityType->uuid}/entities", ['name' => 'Mose’s goat', 'fields' => [$owner->id => $dwight->uuid]]);
+
+                return $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts/{$dwight->uuid}/entities");
+            }),
+
+            'entities-show' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                $entityType = EntityType::factory()->create(['account_id' => $user->account_id]);
+                $version = $this->entityDefaultCarrying($vault, $entityType, ['Animal details' => ['species' => FieldTypeEnum::Text]]);
+                $species = $version->inputFields()->firstOrFail();
+                $id = $this->json('POST', "/api/v1/vaults/{$vault->uuid}/entity-types/{$entityType->uuid}/entities", ['name' => 'Mose’s goat', 'fields' => [$species->id => 'Goat']])->json('data.id');
+
+                return $this->json('GET', "/api/v1/vaults/{$vault->uuid}/entities/{$id}");
+            }),
+
+            'entities-update' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                $entityType = EntityType::factory()->create(['account_id' => $user->account_id]);
+                $version = $this->entityDefaultCarrying($vault, $entityType, ['Animal details' => ['species' => FieldTypeEnum::Text]]);
+                $species = $version->inputFields()->firstOrFail();
+                $id = $this->json('POST', "/api/v1/vaults/{$vault->uuid}/entity-types/{$entityType->uuid}/entities", ['name' => 'Mose’s goat'])->json('data.id');
+
+                return $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/entities/{$id}", ['fields' => [$species->id => 'Sheep']]);
             }),
 
             'life-event-categories-index' => $this->asSomebody(function (User $user): TestResponse {
@@ -1560,6 +1592,13 @@ class ApiDocsReturnFieldsTest extends TestCase
                 $record = PossessionInsuranceRecord::factory()->create(['possession_id' => $mug->id]);
 
                 return $this->json('DELETE', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/insurance-records/{$record->uuid}");
+            }),
+
+            'possession-timeline-index' => $this->asSomebody(function (User $user): TestResponse {
+                $mug = $this->anAppraisalWithItsCertificate($user)->possession;
+                PossessionLoan::factory()->returned()->create(['possession_id' => $mug->id]);
+
+                return $this->json('GET', "/api/v1/vaults/{$mug->vault->slug}/possessions/{$mug->uuid}/timeline");
             }),
 
             'possession-valuations-index' => $this->asSomebody(function (User $user): TestResponse {

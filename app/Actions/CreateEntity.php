@@ -8,6 +8,7 @@ use App\Enums\FieldTypeEnum;
 use App\Enums\UserActionEnum;
 use App\Exceptions\EntityNeedsAName;
 use App\Exceptions\EntityTemplateChanged;
+use App\Exceptions\EntityTemplateNotOffered;
 use App\Helpers\TextSanitizer;
 use App\Jobs\LogUserAction;
 use App\Models\Entity;
@@ -22,7 +23,7 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Write down a record of a type the account invented, with everything its template was filled in
- * with, on the template the vault starts that type from.
+ * with, on the template the vault starts that type from or on another of that type somebody picked.
  */
 class CreateEntity
 {
@@ -107,17 +108,39 @@ class CreateEntity
 
         $this->user->authorize('addEntity', [$this->entityType, $this->vault]);
 
+        if ($this->structureVersion instanceof StructureVersion) {
+            $this->validateTheChosenVersion($this->structureVersion);
+            $this->version = $this->structureVersion;
+
+            return;
+        }
+
         $version = $this->entityType->defaultVersionIn($this->vault);
 
         if (! $version instanceof StructureVersion) {
             throw new ModelNotFoundException('This vault has no template for this type.');
         }
 
-        if ($this->structureVersion instanceof StructureVersion && $this->structureVersion->id !== $version->id) {
+        $this->version = $version;
+    }
+
+    private function validateTheChosenVersion(StructureVersion $version): void
+    {
+        if ($version->account_id !== $this->user->account_id) {
+            throw new ModelNotFoundException('This structure version is in another account.');
+        }
+
+        if ($version->structure->entity_type_id !== $this->entityType->id) {
+            throw new EntityTemplateNotOffered(__('This template cannot be used for this type.'));
+        }
+
+        if ($version->structure->published_version_id !== $version->id) {
             throw new EntityTemplateChanged(__('The template changed since the form was opened. Open the form again to see what it asks now.'));
         }
 
-        $this->version = $version;
+        if (! $this->entityType->versionsOnOfferIn($this->vault)->contains('id', $version->id)) {
+            throw new EntityTemplateNotOffered(__('This template cannot be used for this type.'));
+        }
     }
 
     /** @return array<int, mixed> */

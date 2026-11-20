@@ -88,7 +88,7 @@ The screens mention turning a template off instead of deleting it. There is no c
 
 ## Supplied templates
 
-**Basic contact** and **Basic animal** are listed under **Supplied with Monica**. They work as they are, and the list suggests copying one before you change it. Follow @doc(templates.build-your-own) to make a copy of your own.
+The templates Monica supplies, such as **Basic contact**, **Basic animal** and **Animal**, are listed under **Supplied with Monica**. They work as they are, and the list suggests copying one before you change it. Follow @doc(templates.build-your-own) to make a copy of your own.
 
 ## Next steps
 

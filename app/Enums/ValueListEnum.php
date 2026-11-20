@@ -20,6 +20,7 @@ enum ValueListEnum: string implements Translatable
     case AddressLabels = 'address_labels';
     case WebsiteLabels = 'website_labels';
     case AnimalSexes = 'animal_sexes';
+    case NeuterStatuses = 'neuter_statuses';
     case Hobbies = 'hobbies';
     case CommunicationChannels = 'communication_channels';
     case Industries = 'industries';
@@ -38,6 +39,7 @@ enum ValueListEnum: string implements Translatable
             self::AddressLabels => 'Address labels',
             self::WebsiteLabels => 'Website labels',
             self::AnimalSexes => 'Animal sexes',
+            self::NeuterStatuses => 'Neuter statuses',
             self::Hobbies => 'Hobbies',
             self::CommunicationChannels => 'Communication channels',
             self::Industries => 'Industries',
@@ -58,6 +60,7 @@ enum ValueListEnum: string implements Translatable
             self::AddressLabels => 'What an address is for',
             self::WebsiteLabels => 'What a link points at',
             self::AnimalSexes => 'Whether an animal is female or male',
+            self::NeuterStatuses => 'Whether an animal is neutered or spayed',
             self::Hobbies => 'What somebody enjoys doing in their free time',
             self::CommunicationChannels => 'How somebody prefers to be reached',
             self::Industries => 'The sector somebody works in',
@@ -79,6 +82,7 @@ enum ValueListEnum: string implements Translatable
             self::AddressLabels => AddressLabelEnum::cases(),
             self::WebsiteLabels => WebsiteLabelEnum::cases(),
             self::AnimalSexes => AnimalSexEnum::cases(),
+            self::NeuterStatuses => NeuterStatusEnum::cases(),
             self::Hobbies => HobbyEnum::cases(),
             self::CommunicationChannels => CommunicationChannelEnum::cases(),
             self::Industries => IndustryEnum::cases(),

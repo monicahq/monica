@@ -801,6 +801,138 @@ class CreateDefaultTemplateTest extends TestCase
         $this->assertSame(RelationTargetEnum::Contact, $field->relation_target);
     }
 
+    #[Test]
+    public function it_lays_the_animal_template_beside_basic_animal_out_as_supplied(): void
+    {
+        Queue::fake();
+
+        $user = $this->userWithValueLists();
+
+        new CreateDefaultTemplate(user: $user, supplied: DefaultTemplateEnum::Animal)->handle();
+
+        $version = Template::query()->where('slug', DefaultTemplateEnum::Animal->value)->sole()->structure->publishedVersion;
+
+        $this->assertSame(['profile', 'daily-life'], $version->pages()->orderBy('position')->pluck('key')->all());
+
+        $sections = $version->assembly()->get();
+
+        $this->assertSame(
+            [
+                'animal-identity', 'animal-linked-people', 'animal-character', 'animal-photos-and-notes',
+                'animal-food-and-habits', 'animal-health', 'animal-identification',
+            ],
+            $sections->map(fn ($row): string => $row->sectionVersion->section->slug)->all(),
+        );
+
+        $fields = $sections->flatMap(fn ($row) => $row->sectionVersion->fields()->get())
+            ->mapWithKeys(fn (Field $field): array => [$field->key => $field->type])
+            ->all();
+
+        $this->assertEquals([
+            'species' => FieldTypeEnum::Text,
+            'breed' => FieldTypeEnum::Text,
+            'sex' => FieldTypeEnum::Select,
+            'birthday' => FieldTypeEnum::RecurringDate,
+            'adoption_date' => FieldTypeEnum::RecurringDate,
+            'colour_and_markings' => FieldTypeEnum::Textarea,
+            'caregivers' => FieldTypeEnum::Repeater,
+            'caregiver_person' => FieldTypeEnum::Relation,
+            'caregiver_role' => FieldTypeEnum::Text,
+            'character' => FieldTypeEnum::Textarea,
+            'likes' => FieldTypeEnum::Textarea,
+            'dislikes_and_fears' => FieldTypeEnum::Textarea,
+            'approach_advice' => FieldTypeEnum::Textarea,
+            'photo' => FieldTypeEnum::Repeater,
+            'image' => FieldTypeEnum::Image,
+            'caption' => FieldTypeEnum::Text,
+            'notes' => FieldTypeEnum::Repeater,
+            'note' => FieldTypeEnum::Textarea,
+            'usual_food' => FieldTypeEnum::Textarea,
+            'feeding_times_and_amounts' => FieldTypeEnum::Textarea,
+            'favourite_treats' => FieldTypeEnum::Textarea,
+            'routine_and_activities' => FieldTypeEnum::Textarea,
+            'pet_sitting_instructions' => FieldTypeEnum::Textarea,
+            'allergies' => FieldTypeEnum::Textarea,
+            'health_issues' => FieldTypeEnum::Textarea,
+            'treatments_and_instructions' => FieldTypeEnum::Textarea,
+            'neuter_status' => FieldTypeEnum::Select,
+            'other_usual_care' => FieldTypeEnum::Textarea,
+            'microchip_number' => FieldTypeEnum::Text,
+            'other_identification' => FieldTypeEnum::Text,
+            'insurance' => FieldTypeEnum::Text,
+            'insurance_policy_number' => FieldTypeEnum::Text,
+            'document' => FieldTypeEnum::Repeater,
+            'file' => FieldTypeEnum::File,
+            'description' => FieldTypeEnum::Text,
+        ], $fields);
+
+        $this->assertSame('Breed or mix', $this->labelOf(DefaultSectionEnum::AnimalIdentity, DefaultFieldEnum::Breed));
+        $this->assertSame('Date of birth', $this->labelOf(DefaultSectionEnum::AnimalIdentity, DefaultFieldEnum::Birthday));
+        $this->assertSame('People linked to the animal', $this->labelOf(DefaultSectionEnum::AnimalLinkedPeople, DefaultFieldEnum::Caregivers));
+    }
+
+    #[Test]
+    public function it_highlights_species_breed_and_date_of_birth_in_the_animal_template_only(): void
+    {
+        Queue::fake();
+
+        $user = $this->userWithValueLists();
+
+        new CreateDefaultTemplate(user: $user, supplied: DefaultTemplateEnum::BasicAnimal)->handle();
+        new CreateDefaultTemplate(user: $user, supplied: DefaultTemplateEnum::Animal)->handle();
+
+        $highlighted = fn (DefaultTemplateEnum $supplied): array => Template::query()
+            ->where('slug', $supplied->value)
+            ->sole()
+            ->structure
+            ->publishedVersion
+            ->assembly()
+            ->get()
+            ->flatMap(fn ($row) => $row->sectionVersion->fields()->where('is_highlighted', true)->orderBy('position')->pluck('key'))
+            ->all();
+
+        $this->assertSame(['species', 'breed', 'birthday'], $highlighted(DefaultTemplateEnum::Animal));
+        $this->assertSame(['birthday'], $highlighted(DefaultTemplateEnum::BasicAnimal));
+    }
+
+    #[Test]
+    public function it_puts_the_animal_template_on_the_animal_type_the_account_already_holds(): void
+    {
+        Queue::fake();
+
+        $user = $this->userWithValueLists();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        new CreateDefaultTemplate(user: $user, supplied: DefaultTemplateEnum::BasicAnimal)->handle();
+        new CreateDefaultTemplate(user: $user, supplied: DefaultTemplateEnum::Animal)->handle();
+
+        $type = EntityType::query()->where('account_id', $user->account_id)->sole();
+        $basicAnimal = $this->animalTemplate($user);
+        $animal = Template::query()->where('slug', DefaultTemplateEnum::Animal->value)->sole();
+
+        $this->assertSame($type->id, $animal->structure->entity_type_id);
+        $this->assertSame(
+            $basicAnimal->structure->published_version_id,
+            VaultDefaultTemplate::query()->where('vault_id', $vault->id)->sole()->structure_version_id,
+        );
+    }
+
+    #[Test]
+    public function it_asks_whether_the_animal_is_neutered_from_the_list_of_the_account(): void
+    {
+        Queue::fake();
+
+        $user = $this->userWithValueLists();
+
+        new CreateDefaultTemplate(user: $user, supplied: DefaultTemplateEnum::Animal)->handle();
+
+        $neutered = Field::query()->where('account_id', $user->account_id)->where('key', 'neuter_status')->sole();
+
+        $this->assertNull($neutered->default_value);
+        $this->assertSame(ValueListEnum::NeuterStatuses->value, $neutered->valueList->key);
+        $this->assertSame(['yes', 'no', 'unknown'], $neutered->valueList->items()->orderBy('position')->pluck('key')->all());
+    }
+
     private function labelOf(DefaultSectionEnum $section, DefaultFieldEnum $field): string
     {
         return Section::query()->where('slug', $section->value)->sole()->publishedVersion

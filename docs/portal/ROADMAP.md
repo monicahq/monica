@@ -655,8 +655,8 @@ counts contacts across all vaults; partial contacts and Me are not counted.
 - **Need and success:** the reader adds an animal profile and links it to its caregivers.
 - **Applicability:** all; the Animals profile type is seeded.
 - **Scope:** the vault sidebar entry per active profile type; **Add :name**; the Basic animal template
-  (Animal details, Caregivers, Care, Notes); that a profile has no page of its own yet, so it cannot be
-  opened, edited or deleted from the web (partial). Excludes creating profile types (`customise.profile-types`).
+  (Animal details, Caregivers, Care, Notes); opening a profile on its own page and correcting it from
+  **Edit**; that it cannot be deleted from the web yet (partial). Excludes creating profile types (`customise.profile-types`).
 - **Links:** optional `concepts.model`.
 - **Evidence:** `EntityController`, `CreateEntity`, `SeedAnimalTemplate`; `EntityControllerTest`.
 - **Examples and assets:** Marcel the monkey, cared for by Ross Geller.

@@ -62,7 +62,7 @@ class ContactFieldRowsViewModel
         $query = $this->contact
             ->fieldValueRows()
             ->where('field_id', $this->field->id)
-            ->with(['values' => fn ($query) => $query->attached()->with(['field', 'valueListItem', 'file.vault', 'relatedContact', 'relatedEntity'])]);
+            ->with(['values' => fn ($query) => $query->attached()->with(['field', 'valueListItem', 'file.vault', 'relatedContact.vault', 'relatedEntity.vault', 'relatedEntity.entityType'])]);
 
         $query = $this->readsAsNotes()
             ? $query->orderByDesc('created_at')->orderByDesc('id')

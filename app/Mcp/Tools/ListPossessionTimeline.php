@@ -1,0 +1,46 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Mcp\Tools;
+
+use App\Enums\PossessionTimelineSectionEnum;
+use Illuminate\Contracts\JsonSchema\JsonSchema;
+use Illuminate\JsonSchema\Types\Type;
+use Laravel\Mcp\Request;
+use Laravel\Mcp\Response;
+use Laravel\Mcp\Server\Attributes\Description;
+use Laravel\Mcp\Server\Tool;
+use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
+
+#[Description('List the timeline of a possession, the newest first and undated last: one entry per transaction, insurance record, valuation, provenance event, maintenance record and location stay, and two for a loan that came back, each with its section, its date and the record it is read from. A section narrows it to that section.')]
+#[IsReadOnly]
+class ListPossessionTimeline extends Tool
+{
+    use MirrorsAnApiCapability;
+
+    protected string $mirrors = 'api.v1.possessions.timeline';
+
+    public function handle(Request $request): Response
+    {
+        $validated = $request->validate([
+            'vault' => ['required', 'string'],
+            'possession' => ['required', 'string'],
+        ]);
+
+        $vault = $this->vault($request, $validated['vault']);
+        $possession = $this->possession($vault, $validated['possession']);
+
+        return $this->answerThroughApi($request, $vault->uuid, $possession->uuid);
+    }
+
+    /** @return array<string, Type> */
+    public function schema(JsonSchema $schema): array
+    {
+        return [
+            'vault' => $schema->string()->description('The id of the vault, as list-vaults gives it.')->required(),
+            'possession' => $schema->string()->description('The id of the possession, as list-possessions gives it.')->required(),
+            'section' => $schema->string()->enum(PossessionTimelineSectionEnum::values())->description('Show only the entries of this section.'),
+        ];
+    }
+}

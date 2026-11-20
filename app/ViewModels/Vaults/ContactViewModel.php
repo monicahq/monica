@@ -65,7 +65,7 @@ class ContactViewModel
             ->fieldValues()
             ->attached()
             ->whereNull('field_value_row_id')
-            ->with(['field', 'valueListItem', 'file.vault', 'relatedContact', 'relatedEntity'])
+            ->with(['field', 'valueListItem', 'file.vault', 'relatedContact.vault', 'relatedEntity.vault', 'relatedEntity.entityType'])
             ->get()
             ->keyBy('field_id'));
     }
@@ -736,7 +736,7 @@ class ContactViewModel
     {
         return once(fn (): Collection => $this->contact
             ->fieldValueRows()
-            ->with(['values' => fn ($query) => $query->attached()->with(['field', 'valueListItem', 'file.vault', 'relatedContact', 'relatedEntity'])])
+            ->with(['values' => fn ($query) => $query->attached()->with(['field', 'valueListItem', 'file.vault', 'relatedContact.vault', 'relatedEntity.vault', 'relatedEntity.entityType'])])
             ->orderBy('position')
             ->orderBy('id')
             ->get()
@@ -821,6 +821,16 @@ class ContactViewModel
             user: $this->user,
             contact: $this->contact,
         ));
+
+        return $block->isEmpty() ? null : $block;
+    }
+
+    /**
+     * The profiles that name the contact, such as an animal they look after, or null when none does.
+     */
+    public function profiles(): ?ContactProfilesBlock
+    {
+        $block = once(fn (): ContactProfilesBlock => new ContactProfilesBlock(contact: $this->contact));
 
         return $block->isEmpty() ? null : $block;
     }

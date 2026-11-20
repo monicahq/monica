@@ -9,6 +9,7 @@ use App\Enums\VaultColourEnum;
 use App\Helpers\AvailableLocales;
 use App\Helpers\FieldValueFormatter;
 use App\Helpers\LocationTree;
+use App\Helpers\PossessionTimeline;
 use App\Helpers\PossessionValueFormatter;
 use App\Models\Location;
 use App\Models\Possession;
@@ -289,7 +290,7 @@ class PossessionViewModel
     {
         $sections = [
             ['key' => 'overview', 'label' => __('Overview'), 'icon' => 'info', 'colour' => null, 'url' => $this->url(), 'count' => null],
-            ['key' => 'timeline', 'label' => __('Timeline'), 'icon' => 'timeline', 'colour' => null, 'url' => null, 'count' => null],
+            ['key' => 'timeline', 'label' => __('Timeline'), 'icon' => 'timeline', 'colour' => null, 'url' => $this->timelineUrl(), 'count' => array_sum(new PossessionTimeline($this->possession)->counts())],
             ['key' => 'transactions', 'label' => __('Transactions'), 'icon' => 'coin', 'colour' => VaultColourEnum::Green, 'url' => $this->transactionsUrl(), 'count' => $this->transactionCount()],
             ['key' => 'insurance', 'label' => __('Insurance'), 'icon' => 'lock', 'colour' => VaultColourEnum::Rust, 'url' => $this->insuranceUrl(), 'count' => $this->possession->insuranceRecords->count()],
             ['key' => 'valuations', 'label' => __('Valuations'), 'icon' => 'activity', 'colour' => VaultColourEnum::Blue, 'url' => $this->valuationsUrl(), 'count' => $this->possession->valuations->count()],
@@ -324,6 +325,11 @@ class PossessionViewModel
     public function url(): string
     {
         return route('possessions.show', [$this->possession->vault, $this->possession]);
+    }
+
+    public function timelineUrl(): string
+    {
+        return route('possessions.timeline.index', [$this->possession->vault, $this->possession]);
     }
 
     public function transactionsUrl(): string

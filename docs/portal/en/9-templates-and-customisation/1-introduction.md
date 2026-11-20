@@ -29,6 +29,13 @@ Every account starts with these templates for contacts. **Basic contact** is the
 
 A contact can move to another template at any time. What both templates have in common, such as a birthday or an email address, comes along with it. What the new template has no place for is kept aside, and comes back if the contact returns to a template that has it.
 
+Every account also starts with two templates for animals. **Basic animal** is the one a new animal starts from, and you can pick **Animal** instead when you add one.
+
+| Template | What it is for |
+| --- | --- |
+| **Basic animal** | The essentials on one page: who the animal is, who looks after it, its care and a note. |
+| **Animal** | Remember the animals that matter, their habits and the people who look after them. |
+
 1. @doc(templates.versions)
 2. @doc(templates.build-your-own)
 3. @doc(templates.change)

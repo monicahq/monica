@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Tests\Unit\ViewModels\Vaults;
 
 use App\Enums\DefaultFieldEnum;
+use App\Enums\RelationshipTypeEnum;
 use App\Models\Contact;
 use App\Models\FieldValue;
 use App\Models\Relationship;
+use App\Models\RelationshipType;
 use App\Models\Vault;
 use App\ViewModels\Vaults\ImmediateFamilyBlock;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -168,6 +170,47 @@ class ImmediateFamilyBlockTest extends TestCase
         $this->assertTrue($block->holdsNothing());
         $this->assertSame(0, $block->childCount());
         $this->assertSame(0, $block->currentPartnerCount());
+    }
+
+    #[Test]
+    public function it_opens_the_form_on_the_partner_type_and_on_the_parent_type(): void
+    {
+        $vault = Vault::factory()->create();
+        $michael = $this->personIn($vault, 'Michael', 'Scott');
+        $partner = RelationshipType::factory()->system(RelationshipTypeEnum::Partner)->create(['account_id' => $vault->account_id, 'position' => 1]);
+        RelationshipType::factory()->system(RelationshipTypeEnum::Spouse)->create(['account_id' => $vault->account_id, 'position' => 2]);
+        $parentage = RelationshipType::factory()->system(RelationshipTypeEnum::ParentChild)->create(['account_id' => $vault->account_id]);
+
+        $block = new ImmediateFamilyBlock(vault: $vault, contact: $michael);
+
+        $this->assertSame(route('contacts.relationships.new', ['vault' => $vault, 'contact' => $michael, 'type' => $partner->id]), $block->addPartnerUrl());
+        $this->assertSame(route('contacts.relationships.new', ['vault' => $vault, 'contact' => $michael, 'type' => $parentage->id]), $block->addChildUrl());
+    }
+
+    #[Test]
+    public function it_opens_the_form_without_a_type_when_the_account_no_longer_offers_one(): void
+    {
+        $vault = Vault::factory()->create();
+        $michael = $this->personIn($vault, 'Michael', 'Scott');
+        RelationshipType::factory()->system(RelationshipTypeEnum::Partner)->inactive()->create(['account_id' => $vault->account_id]);
+
+        $block = new ImmediateFamilyBlock(vault: $vault, contact: $michael);
+
+        $this->assertSame(route('contacts.relationships.new', ['vault' => $vault, 'contact' => $michael]), $block->addPartnerUrl());
+        $this->assertSame(route('contacts.relationships.new', ['vault' => $vault, 'contact' => $michael]), $block->addChildUrl());
+    }
+
+    #[Test]
+    public function it_names_the_contact_by_first_name_and_draws_their_initials_from_the_whole_name(): void
+    {
+        $vault = Vault::factory()->create();
+        $michael = $this->personIn($vault, 'Michael', 'Scott');
+
+        $block = new ImmediateFamilyBlock(vault: $vault, contact: $michael);
+
+        $this->assertSame('Michael', $block->contactName());
+        $this->assertSame($michael->name, $block->contactFullName());
+        $this->assertNull($block->contactAvatarUrl());
     }
 
     #[Test]

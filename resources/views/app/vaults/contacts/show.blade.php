@@ -141,6 +141,10 @@
         @if ($loans = $viewModel->loans())
           @include('app.vaults.contacts._loans', ['loans' => $loans])
         @endif
+
+        @if ($profiles = $viewModel->profiles())
+          @include('app.vaults.contacts._profiles', ['profiles' => $profiles])
+        @endif
       </div>
     </div>
   @else

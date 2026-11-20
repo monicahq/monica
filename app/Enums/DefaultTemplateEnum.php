@@ -15,6 +15,7 @@ enum DefaultTemplateEnum: string implements Translatable
     case FriendsAndFamily = 'friends-and-family';
     case ProfessionalNetwork = 'professional-network';
     case FullPortrait = 'full-portrait';
+    case Animal = 'animal';
 
     public function label(): string
     {
@@ -25,6 +26,7 @@ enum DefaultTemplateEnum: string implements Translatable
             self::FriendsAndFamily => 'Friends and family',
             self::ProfessionalNetwork => 'Professional network',
             self::FullPortrait => 'Full portrait',
+            self::Animal => 'Animal',
         };
     }
 
@@ -36,6 +38,7 @@ enum DefaultTemplateEnum: string implements Translatable
             self::FriendsAndFamily => 'Remember the small things that matter, to take care of your relationships.',
             self::ProfessionalNetwork => 'Remember people, their work and the common ground that feeds the relationship.',
             self::FullPortrait => 'Build a rich record over time.',
+            self::Animal => 'Remember the animals that matter, their habits and the people who look after them.',
         };
     }
 
@@ -48,7 +51,7 @@ enum DefaultTemplateEnum: string implements Translatable
     public function appliesTo(): StructureAppliesToEnum
     {
         return match ($this) {
-            self::BasicAnimal => StructureAppliesToEnum::Entity,
+            self::BasicAnimal, self::Animal => StructureAppliesToEnum::Entity,
             default => StructureAppliesToEnum::Contact,
         };
     }
@@ -81,6 +84,10 @@ enum DefaultTemplateEnum: string implements Translatable
                 DefaultPageEnum::PortraitDailyLife,
                 DefaultPageEnum::PortraitMemories,
             ],
+            self::Animal => [
+                DefaultPageEnum::AnimalProfile,
+                DefaultPageEnum::AnimalDailyLife,
+            ],
         };
     }
 
@@ -90,7 +97,7 @@ enum DefaultTemplateEnum: string implements Translatable
     public function entityType(): ?array
     {
         return match ($this) {
-            self::BasicAnimal => [
+            self::BasicAnimal, self::Animal => [
                 'slug' => 'animals',
                 'singular' => 'Animal',
                 'plural' => 'Animals',

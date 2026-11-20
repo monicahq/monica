@@ -1,4 +1,4 @@
-{{-- The form that writes down a record of an entity type, drawn from the template the vault uses. --}}
+{{-- The form that writes down or corrects a record of an entity type, drawn from its template. --}}
 {{-- @var \App\ViewModels\Vaults\EntityFormViewModel $viewModel --}}
 @php
   $vault = $viewModel->vault();
@@ -16,8 +16,28 @@
   <x-page-header :title="$viewModel->title()" />
 
   <div class="flex flex-col gap-8">
-    <x-form id="entity-form" method="post" :action="$viewModel->action()" :upload="$viewModel->holdsAFile()" class="flex flex-col gap-8">
-      <input type="hidden" name="structure_version_id" value="{{ $viewModel->structureVersionId() }}" />
+    @if ($viewModel->showsTemplates())
+      <x-page-section :title="__('What this record starts from')" :description="__('The template decides which fields this record holds. The vault’s own template is chosen unless you pick another.')">
+        <nav aria-label="{{ __('Template') }}">
+          <ul role="list" class="flex list-none flex-wrap gap-2">
+            @foreach ($viewModel->templates() as $template)
+              <li class="min-w-0">
+                @if ($template['isCurrent'])
+                  <x-button :href="$template['url']" aria-current="page" data-turbo="true">{{ $template['name'] }}</x-button>
+                @else
+                  <x-button.secondary :href="$template['url']" data-turbo="true">{{ $template['name'] }}</x-button.secondary>
+                @endif
+              </li>
+            @endforeach
+          </ul>
+        </nav>
+      </x-page-section>
+    @endif
+
+    <x-form id="entity-form" :method="$viewModel->method()" :action="$viewModel->action()" :upload="$viewModel->holdsAFile()" class="flex flex-col gap-8">
+      @unless ($viewModel->isEditing())
+        <input type="hidden" name="structure_version_id" value="{{ $viewModel->structureVersionId() }}" />
+      @endunless
 
       @if ($errors->has('fields'))
         <x-notice tone="danger">{{ $errors->first('fields') }}</x-notice>
@@ -31,7 +51,7 @@
             :label="__('Name')"
             :error="$errors->get('name')"
             maxlength="255"
-            autofocus
+            :autofocus="! $viewModel->showsTemplates()"
             required
             required-mark
             class="max-w-105"
@@ -48,6 +68,8 @@
                   <x-field-input
                     :field="$field['field']"
                     :value="$field['rawValue']"
+                    :formatted="$field['formatted']"
+                    :rows="$field['rows']"
                     :reminder="null"
                     :messages="$errors"
                     :error="$errors->get('fields.'.$field['id'])"
@@ -62,7 +84,7 @@
     </x-form>
 
     <div class="flex flex-wrap items-center justify-end gap-3 border-t border-hairline pt-4.5">
-      <x-button.secondary :href="$viewModel->listUrl()" data-turbo="true">{{ __('Cancel') }}</x-button.secondary>
+      <x-button.secondary :href="$viewModel->cancelUrl()" data-turbo="true">{{ __('Cancel') }}</x-button.secondary>
 
       <x-button form="entity-form">{{ __('Save') }}</x-button>
     </div>

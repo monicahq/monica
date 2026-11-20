@@ -41,23 +41,51 @@
 
   <x-list-panel :items="$entities" :paginator="$entities" :size="$viewModel->size()" :default="$viewModel->defaultSize()">
     @foreach ($entities as $entity)
-      <div class="flex min-w-0 items-center gap-3 border-b border-hairline px-4 py-2.75 last:border-b-0">
-        <x-contact-avatar :name="$entity['name']" :url="$entity['avatarUrl']" :size="32" />
+      <a
+        href="{{ $entity['url'] }}"
+        data-turbo="true"
+        class="flex min-w-0 items-center gap-3 border-b border-hairline px-4 py-2.75 no-underline transition-colors duration-(--duration-fast) ease-out last:border-b-0 hover:bg-hover focus-ring-inset"
+      >
+        <x-contact-avatar :name="$entity['name']" :url="$entity['avatarUrl']" :size="32" alt="" />
 
         <span class="truncate text-base font-semibold text-ink">{{ $entity['name'] }}</span>
 
         @if ($entity['isArchived'])
           <x-badge>{{ __('Archived') }}</x-badge>
         @endif
-      </div>
+      </a>
     @endforeach
 
     <x-slot:empty>
-      <x-empty-state
-        :title="$viewModel->emptyTitle()"
-        :href="$addRefusal === null ? $viewModel->addUrl() : null"
-        :link-label="$viewModel->addLabel()"
-      />
+      <div aria-hidden="true">
+        @foreach ([['opacity-90', 'w-30', 'w-18'], ['opacity-55', 'w-22.5', 'w-14'], ['opacity-25', 'w-35', 'w-16']] as [$fade, $nameWidth, $dateWidth])
+          <div class="flex items-center gap-3 border-b border-hairline px-4 py-3.5 {{ $fade }}">
+            <span class="flex size-8 shrink-0 items-center justify-center rounded-full" style="color: {{ $viewModel->colour() }}; background: color-mix(in srgb, {{ $viewModel->colour() }} 14%, var(--canvas))">
+              <x-entity-icon :name="$viewModel->icon()" :size="16" />
+            </span>
+            <span class="h-2.5 rounded bg-hairline {{ $nameWidth }}"></span>
+            <span class="flex-1"></span>
+            <span class="h-2 rounded bg-hairline {{ $dateWidth }}"></span>
+          </div>
+        @endforeach
+      </div>
+
+      <x-empty-state :title="$viewModel->emptyTitle()">
+        {{ $viewModel->emptyDescription() }}
+
+        <x-slot:action>
+          <x-button
+            :href="$addRefusal === null ? $viewModel->addUrl() : null"
+            type="button"
+            variant="secondary"
+            :aria-disabled="$addRefusal !== null ? 'true' : null"
+            :aria-describedby="$addRefusal !== null ? 'entity-add-refusal' : null"
+            data-turbo="true"
+          >
+            {{ $viewModel->firstAddLabel() }}
+          </x-button>
+        </x-slot:action>
+      </x-empty-state>
     </x-slot:empty>
   </x-list-panel>
 </x-shell>

@@ -6,6 +6,8 @@ use App\ViewModels\Docs\ApiDocsFields;
 use App\ViewModels\Docs\ApiDocsViewModel;
 
 $base = ApiDocsViewModel::baseUrl();
+$application = rtrim((string) config('app.url'), '/');
+$entityWebLink = 'The page of the record in the application, which opens for somebody signed in rather than for a key. It is the link to give a person.';
 
 $entityType = [
     'type' => 'entity_type',
@@ -105,8 +107,15 @@ $entity = [
         'is_archived' => false,
         'structure_version_id' => 12,
         'template_name' => 'Basic animal',
+        'fields' => [
+            ['field_id' => '381', 'key' => 'species', 'label' => 'Species', 'type' => 'text', 'row' => null, 'value' => 'Goat', 'is_hidden' => false],
+        ],
         'created_at' => 1758844800,
         'updated_at' => 1758844800,
+    ],
+    'links' => [
+        'self' => $base.'/vaults/schrute-farms/entities/9b1e6c42-7a35-4f08-b2d9-5c8e41a7f031',
+        'web' => $application.'/vaults/schrute-farms/entities/animals/9b1e6c42-7a35-4f08-b2d9-5c8e41a7f031',
     ],
 ];
 
@@ -119,8 +128,32 @@ $entityAttributes = [
     ['name' => 'is_archived', 'type' => 'boolean', 'description' => 'Whether the record was put away. An archived record is still listed.'],
     ['name' => 'structure_version_id', 'type' => 'integer', 'description' => 'The exact version of the template the record was written on. A record stays on that version until somebody moves it.'],
     ['name' => 'template_name', 'type' => 'string', 'description' => 'The name of the template that version belongs to.'],
+    ['name' => 'fields', 'type' => 'array', 'description' => 'The values the record holds, in no particular order. A field left empty is not listed.'],
+    ['name' => 'fields[]', 'type' => 'object', 'description' => 'One value.'],
+    ['name' => 'fields[].field_id', 'type' => 'string', 'description' => 'The id of the field, which is the key a value is written under when the record is updated.'],
+    ['name' => 'fields[].key', 'type' => 'string', 'description' => 'How the field is named in an import or an export. It is unique inside its section only.'],
+    ['name' => 'fields[].label', 'type' => 'string', 'description' => 'What the field is called on the record.'],
+    ['name' => 'fields[].type', 'type' => 'string', 'description' => 'The kind of field: text, date, select, address and so on.'],
+    ['name' => 'fields[].row', 'type' => 'integer', 'description' => 'For a field inside a repeating group, the id of the repetition it belongs to, which is the id an update keeps that repetition by. Null otherwise.'],
+    ['name' => 'fields[].value', 'type' => 'string', 'description' => 'The value, written as the page of the record shows it. A file field gives the name of the file. Null when hidden.'],
+    ['name' => 'fields[].is_hidden', 'type' => 'boolean', 'description' => 'Whether the value was held back because the field is sensitive and the key does not hold the sensitive-fields scope.'],
     ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When the record was written down, as a count of seconds since 1970.'],
     ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When it last changed, as a count of seconds, or null.'],
+];
+
+$recordPathParams = [
+    [
+        'name' => 'vault',
+        'type' => 'string',
+        'required' => true,
+        'description' => 'The vault the record lives in, named either by the readable name it reports as slug or by its id. Both answer.',
+    ],
+    [
+        'name' => 'entity',
+        'type' => 'uuid',
+        'required' => true,
+        'description' => 'The id of the record, as the list of records gives it.',
+    ],
 ];
 
 $entityPathParams = [
@@ -383,7 +416,7 @@ return [
         ],
         [
             'id' => 'entities-index',
-            'returnFields' => ApiDocsFields::page('entity', 'record', 'records', $entityAttributes, false),
+            'returnFields' => ApiDocsFields::page('entity', 'record', 'records', $entityAttributes, webLink: $entityWebLink),
             'title' => 'List the records of a kind',
             'label' => 'List records',
             'method' => 'GET',
@@ -407,8 +440,64 @@ return [
             ],
         ],
         [
+            'id' => 'contacts-entities-index',
+            'returnFields' => ApiDocsFields::page('entity', 'record', 'records', $entityAttributes, webLink: $entityWebLink),
+            'title' => 'List the records naming a contact',
+            'label' => 'Records naming a contact',
+            'method' => 'GET',
+            'path' => '/vaults/{vault}/contacts/{contact}/entities',
+            'examplePath' => '/vaults/schrute-farms/contacts/dwight-schrute/entities',
+            'description' => 'List the records of any kind, such as an animal, that name one contact in one of their relation fields, by name.',
+            'body' => [
+                'A record is listed when one of its relation fields names the contact, inside a repeating group or not. A value set aside by a change of template does not count. Only records of the contact’s own vault are listed, since a relation never crosses vaults.',
+                'This is what the contact’s page shows under Profiles.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
+            'pathParams' => [
+                [
+                    'name' => 'vault',
+                    'type' => 'string',
+                    'required' => true,
+                    'description' => 'The vault the contact lives in, named either by the readable name it reports as slug or by its id. Both answer.',
+                ],
+                [
+                    'name' => 'contact',
+                    'type' => 'string',
+                    'required' => true,
+                    'description' => 'The contact, named either by its slug or by its id.',
+                ],
+            ],
+            'queryParams' => $pageParams,
+            'returns' => 'A page of entity objects, and how many there are in all. A vault or a contact belonging to somebody else answers 404.',
+            'response' => [
+                'data' => [$entity],
+                'meta' => [
+                    'page' => 1,
+                    'per_page' => 25,
+                    'total' => 1,
+                ],
+            ],
+        ],
+        [
+            'id' => 'entities-show',
+            'returnFields' => ApiDocsFields::one('entity', 'record', $entityAttributes, webLink: $entityWebLink),
+            'title' => 'Get a record',
+            'label' => 'Get a record',
+            'method' => 'GET',
+            'path' => '/vaults/{vault}/entities/{entity}',
+            'examplePath' => '/vaults/schrute-farms/entities/9b1e6c42-7a35-4f08-b2d9-5c8e41a7f031',
+            'description' => 'Read one record with every value it holds.',
+            'body' => [
+                'The values are those of the template version the record was written on, even when the template has moved on since.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
+            'pathParams' => $recordPathParams,
+            'returns' => 'The entity object. A record in another vault, or belonging to somebody else, answers 404.',
+            'response' => ['data' => $entity],
+        ],
+        [
             'id' => 'entities-create',
-            'returnFields' => ApiDocsFields::one('entity', 'record', $entityAttributes, false),
+            'returnFields' => ApiDocsFields::one('entity', 'record', $entityAttributes, webLink: $entityWebLink),
             'title' => 'Create a record',
             'label' => 'Create a record',
             'method' => 'POST',
@@ -416,9 +505,9 @@ return [
             'examplePath' => '/vaults/schrute-farms/entity-types/4c2b9f10-5e37-4a6d-8b91-0f7c3d2a8e64/entities',
             'description' => 'Write down a record of one kind in one vault, with what its template asks.',
             'body' => [
-                'The record is written on the published version of the template the vault uses for this kind. Everything is written together or nothing is: a value refused in any section leaves no record behind.',
+                'The record is written on the published version of the template the vault uses for this kind, or on the one you name in structure_version_id. Everything is written together or nothing is: a value refused in any section leaves no record behind.',
                 'A field you leave out starts with the default its template gives it, as it would on a new contact. Send it empty to leave it empty.',
-                'A type the vault does not show answers 404. A type the vault still shows because it holds records of it answers 422 with the reason on name when the type was turned off, when the vault has no published template for it, or when that template requires something that cannot be filled in here.',
+                'A type the vault does not show answers 404. A type the vault still shows because it holds records of it answers 422 with the reason on name when the type was turned off, when the vault has no published template for it and you name none, or when that template requires something that cannot be filled in here.',
                 'A relation field takes the id of the record it names: a contact, or a record of the kind the field points at. It has to be in the same vault, and anything else answers 422 on that field.',
             ],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
@@ -430,6 +519,13 @@ return [
                     'required' => true,
                     'description' => 'What the record is called, up to 255 characters.',
                     'example' => 'Mose’s goat',
+                ],
+                [
+                    'name' => 'structure_version_id',
+                    'type' => 'integer',
+                    'required' => false,
+                    'description' => 'The published version of one of your active templates for this kind, which says what the record holds. Left out, the record starts from the template the vault uses for this kind. A version of another kind, of a template turned off or belonging to somebody else answers 422 on this field, and so does a version that is no longer the one its template publishes.',
+                    'example' => 12,
                 ],
                 [
                     'name' => 'fields',
@@ -465,6 +561,65 @@ return [
             ],
             'returns' => 'The entity object that was written down. A vault or a type belonging to somebody else answers 404.',
             'responseStatus' => 201,
+            'response' => ['data' => $entity],
+        ],
+        [
+            'id' => 'entities-update',
+            'returnFields' => ApiDocsFields::one('entity', 'record', $entityAttributes, webLink: $entityWebLink),
+            'title' => 'Update a record',
+            'label' => 'Update a record',
+            'method' => 'PUT',
+            'path' => '/vaults/{vault}/entities/{entity}',
+            'examplePath' => '/vaults/schrute-farms/entities/9b1e6c42-7a35-4f08-b2d9-5c8e41a7f031',
+            'description' => 'Correct the name of a record and the values its template holds.',
+            'body' => [
+                'What you leave out is kept: a name not sent stays as it is, and so does every field not named in fields. A field sent as null is emptied.',
+                'The record stays on the template version it was written on. Only the fields of that version can be written, and each value is checked against what its field accepts.',
+                'A name sent empty answers 422 on name. A value refused by its field answers 422 on that field, and a required field emptied answers 422 on fields.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
+            'pathParams' => $recordPathParams,
+            'bodyParams' => [
+                [
+                    'name' => 'name',
+                    'type' => 'string',
+                    'required' => false,
+                    'description' => 'What the record is called, up to 255 characters. It cannot be emptied.',
+                    'example' => 'Mose’s best goat',
+                ],
+                [
+                    'name' => 'fields',
+                    'type' => 'object',
+                    'required' => false,
+                    'description' => 'The values to write, keyed by the id of the field they fill in, as the fields of the record give it. A repeating group takes a list of repetitions, each holding its id when it already exists and its values keyed by the ids of the fields inside the group.',
+                    'example' => ['381' => 'Sheep'],
+                ],
+                [
+                    'name' => 'labels',
+                    'type' => 'object',
+                    'required' => false,
+                    'description' => 'The label picked beside a value, keyed by field id, for a field that carries one.',
+                ],
+                [
+                    'name' => 'label_wordings',
+                    'type' => 'object',
+                    'required' => false,
+                    'description' => 'The wording typed when the picked label is the open one, keyed by field id.',
+                ],
+                [
+                    'name' => 'year_is_unknown',
+                    'type' => 'object',
+                    'required' => false,
+                    'description' => 'True for a recurring date whose year nobody knows, keyed by field id.',
+                ],
+                [
+                    'name' => 'month_is_unknown',
+                    'type' => 'object',
+                    'required' => false,
+                    'description' => 'True for a recurring date whose month nobody knows, keyed by field id.',
+                ],
+            ],
+            'returns' => 'The entity object as it now reads. A record in another vault, or belonging to somebody else, answers 404.',
             'response' => ['data' => $entity],
         ],
     ],

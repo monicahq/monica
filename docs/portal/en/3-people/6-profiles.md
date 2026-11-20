@@ -4,7 +4,7 @@ title: Keep a record of a pet or anything else
 description: Record a pet or anything else that is not a person as a profile, and see how it differs from a contact.
 slug: keep-a-record-of-a-pet
 section: people
-last_updated: 2026-10-26
+last_updated: 2026-11-19
 ---
 
 # Keep a record of a pet or anything else
@@ -17,7 +17,7 @@ A profile is a record of something that is not a person. Each profile belongs to
 
 A profile differs from a contact in two ways:
 
-- Relationships connect contacts only, so a profile never appears on a contact’s **Relationships** tab. A pet is linked to its people through its own fields instead, such as **Caregivers**.
+- Relationships connect contacts only, so a profile never appears on a contact’s **Relationships** tab. A pet is linked to its people through its own fields instead, such as **Caregivers**. The contact’s page then lists the pet under **Profiles**, with what the person is to it, such as **Owner**.
 - Profiles do not count toward the free plan on monicahq.com, which counts contacts.
 
 @doc(concepts.model) explains how profiles fit with vaults and contacts.
@@ -29,6 +29,10 @@ Each kind of profile has its own entry in the vault’s sidebar, under **Your re
 ::::steps
 :::step title="Open the list of animals"
 In the vault’s sidebar, choose **Animals**, then **Add Animal**.
+:::
+
+:::step title="Pick the template"
+Under **What this record starts from**, Monica has chosen **Basic animal**, the vault’s template. Choose **Animal** instead to keep more about Marcel: his character, what he likes and fears, his food and routine, his health and his documents. The form changes to show what the template you picked asks. This step stays here only when there is more than one template to pick from.
 :::
 
 :::step title="Enter the name"
@@ -50,15 +54,36 @@ Choose **Save**.
 :::
 ::::
 
-Monica says **Marcel is written down** and lists him under **Animals**. The form also offers **Care**, for food, routine and health notes, and **Notes**. These sections come from the **Basic animal** template.
+Monica says **Marcel is written down** and lists him under **Animals**. The form also offers **Care**, for food, routine and health notes, and **Notes**. These sections come from the **Basic animal** template. On the **Animal** template, the same details sit under **Identity** and the form has two pages, **Profile** and **Daily life and care**.
 
-## What you can do with a profile today
+## Open a profile
 
-:::note
-A profile has no page of its own yet. Once saved, it appears in its list, but you cannot open it, change it or delete it from the web.
+In the list of **Animals**, choose **Marcel**. His page shows everything written down about him, laid out the way his template arranges it. Under his name, Monica repeats the few fields his template highlights: on **Animal**, his species, breed and date of birth.
+
+- On the left, **Pages** lists the pages of the template, with how many fields each holds. Choose one to see its sections. Under the list, Monica names the template and the version Marcel was written with.
+- On the right, each section is a box of labelled lines, such as **Species** and **Birthday** in **Animal details**. A field nobody filled in stays on its line and reads **Not recorded**, so you can see what is still missing.
+
+A caregiver you named is a link to their contact page, and Marcel appears under **Profiles** on that page, so you can go from one to the other.
+
+## Correct a profile
+
+::::steps
+:::step title="Open the form"
+On Marcel’s page, choose **Edit**. The form shows every field of his template, filled with what is written down.
 :::
 
-Write down everything you know before you choose **Save**. The information stays safe, and becomes reachable as soon as profiles get a page.
+:::step title="Change what is wrong"
+Correct the name or any field. Empty a field to remove what it held.
+:::
+
+:::step title="Save"
+Choose **Save**. Monica says **Marcel is saved** and shows his page again.
+:::
+::::
+
+Correcting a profile never moves it to a newer version of its template. If the **Basic animal** template gained a field since Marcel was written down, his form still asks what his own version asks.
+
+You cannot delete a profile from the web yet.
 
 ## When a kind of profile is missing from the sidebar
 

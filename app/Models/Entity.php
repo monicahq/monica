@@ -281,6 +281,20 @@ class Entity extends Model
     }
 
     /**
+     * Scope the query to the records of the contact's vault that one of their relation fields names
+     * the contact in, leaving out a value a change of template set aside.
+     *
+     * @param  Builder<$this>  $query
+     */
+    public function scopeNaming(Builder $query, Contact $contact): void
+    {
+        $query->where('vault_id', $contact->vault_id)
+            ->whereHas('fieldValues', function (Builder $query) use ($contact): void {
+                $query->attached()->where('related_contact_id', $contact->id);
+            });
+    }
+
+    /**
      * Scope the query to the records whose name holds the given term, folded
      * for the language it is read in, the same way a contact is searched. A
      * blank term leaves the query as it is.

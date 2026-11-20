@@ -31,6 +31,15 @@
 
   $kind = $type->usesALabelList() ? ($value?->label_wording ?: $value?->valueListItem?->label) : null;
 
+  $relatedContact = $type->isRelation() ? $value?->relatedContact : null;
+  $relatedEntity = $type->isRelation() ? $value?->relatedEntity : null;
+
+  $relationUrl = match (true) {
+      $relatedContact !== null && ! $relatedContact->is_partial => route('contacts.show', ['vault' => $relatedContact->vault, 'contact' => $relatedContact]),
+      $relatedEntity !== null => route('entities.show', ['vault' => $relatedEntity->vault, 'entityType' => $relatedEntity->entityType, 'entity' => $relatedEntity]),
+      default => null,
+  };
+
   $line = $type === FieldTypeEnum::Address
       ? FieldValueFormatter::addressLine($value?->value_json)
       : $value?->value_string;
@@ -67,6 +76,10 @@
 
   @case($type->holdsAFile() && $fileUrl !== null)
     <x-link :href="$fileUrl" target="_blank" rel="noopener">{{ $held->original_name }}</x-link>
+    @break
+
+  @case($relationUrl !== null && $formatted !== null)
+    <x-link :href="$relationUrl" class="text-base">{{ $formatted }}</x-link>
     @break
 
   @case($type === FieldTypeEnum::Multiselect && $chosen->isNotEmpty())

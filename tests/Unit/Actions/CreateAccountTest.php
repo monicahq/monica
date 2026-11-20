@@ -17,6 +17,7 @@ use App\Jobs\SeedNotificationPreference;
 use App\Jobs\SeedPossessionConditions;
 use App\Jobs\SeedPossessionTypes;
 use App\Jobs\SeedRelationshipTypes;
+use App\Jobs\SupplyAnimalTemplate;
 use App\Jobs\SupplyContactTemplates;
 use App\Models\Field;
 use App\Models\LifeEventType;
@@ -178,6 +179,7 @@ class CreateAccountTest extends TestCase
         Queue::assertPushedWithChain(SeedNotificationPreference::class, [
             new SeedLifeEventCategories(user: $user),
             new CreateDefaultTemplate(user: $user, supplied: DefaultTemplateEnum::BasicAnimal),
+            new SupplyAnimalTemplate(user: $user),
             new CreateDefaultLifeEventTypes(user: $user),
             new SeedRelationshipTypes(user: $user),
             new SeedPossessionTypes(user: $user),

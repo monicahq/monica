@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Tests\Feature\Views\Components;
 
 use App\Enums\FieldTypeEnum;
+use App\Models\Contact;
+use App\Models\Entity;
 use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\File;
@@ -115,6 +117,44 @@ class FieldValueTest extends TestCase
                 'reminder' => $reminder,
             ],
         );
+    }
+
+    #[Test]
+    public function a_contact_named_in_a_relation_reads_as_a_link_to_their_page(): void
+    {
+        $angela = Contact::factory()->create(['first_name' => 'Angela', 'is_partial' => false]);
+
+        $value = new FieldValue;
+        $value->setRelation('relatedContact', $angela);
+
+        $this->render(new Field(['type' => FieldTypeEnum::Relation, 'label' => 'Person']), $value, 'Angela')
+            ->assertSee(route('contacts.show', ['vault' => $angela->vault, 'contact' => $angela]), escape: false);
+    }
+
+    #[Test]
+    public function a_partial_contact_named_in_a_relation_reads_as_a_name_alone(): void
+    {
+        $angela = Contact::factory()->create(['first_name' => 'Angela', 'is_partial' => true]);
+
+        $value = new FieldValue;
+        $value->setRelation('relatedContact', $angela);
+
+        $this->render(new Field(['type' => FieldTypeEnum::Relation, 'label' => 'Person']), $value, 'Angela')
+            ->assertSee('Angela')
+            ->assertDontSee(route('contacts.show', ['vault' => $angela->vault, 'contact' => $angela]), escape: false);
+    }
+
+    #[Test]
+    public function a_record_named_in_a_relation_reads_as_a_link_to_its_page(): void
+    {
+        $sprinkles = Entity::factory()->create(['name' => 'Sprinkles']);
+
+        $value = new FieldValue;
+        $value->setRelation('relatedContact', null);
+        $value->setRelation('relatedEntity', $sprinkles);
+
+        $this->render(new Field(['type' => FieldTypeEnum::Relation, 'label' => 'Pet']), $value, 'Sprinkles')
+            ->assertSee(route('entities.show', ['vault' => $sprinkles->vault, 'entityType' => $sprinkles->entityType, 'entity' => $sprinkles]), escape: false);
     }
 
     private function file(string $name, string $mime): File

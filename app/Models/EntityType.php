@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 use Override;
 
 /**
@@ -175,6 +176,42 @@ class EntityType extends Model
             })
             ->first()
             ?->structureVersion;
+    }
+
+    /**
+     * Get the published versions a new record of this kind may start from in the vault, one per
+     * active template of the kind, the vault's default first and the others in the order the
+     * account keeps its templates. This is what the form that adds a record offers.
+     *
+     * @return Collection<int, StructureVersion>
+     */
+    public function versionsOnOfferIn(Vault $vault): Collection
+    {
+        $default = $this->defaultVersionIn($vault);
+
+        $versions = StructureVersion::query()
+            ->where('account_id', $this->account_id)
+            ->where('status', VersionStatusEnum::Published)
+            ->whereHas('structure', function (Builder $query): void {
+                $query->where('entity_type_id', $this->id)
+                    ->whereColumn('published_version_id', 'structure_versions.id')
+                    ->whereHasMorph('owner', [Template::class], function (Builder $query): void {
+                        $query->where('is_active', true);
+                    });
+            })
+            ->with('structure.owner')
+            ->get()
+            ->sortBy(fn (StructureVersion $version): int => $version->structure->owner->position ?? 0)
+            ->values();
+
+        if (! $default instanceof StructureVersion) {
+            return $versions;
+        }
+
+        return $versions
+            ->reject(fn (StructureVersion $version): bool => $version->id === $default->id)
+            ->prepend($default)
+            ->values();
     }
 
     /**

@@ -16,6 +16,7 @@ use App\Mcp\Tools\ChangeSupportRequestStatus;
 use App\Mcp\Tools\CreateContact;
 use App\Mcp\Tools\CreateContactRelationship;
 use App\Mcp\Tools\CreateContactReminder;
+use App\Mcp\Tools\CreateEntity;
 use App\Mcp\Tools\CreateEntityType;
 use App\Mcp\Tools\CreateGroup;
 use App\Mcp\Tools\CreateGroupLifeEvent;
@@ -89,6 +90,7 @@ use App\Mcp\Tools\GetContactMarkdown;
 use App\Mcp\Tools\GetContactRelationship;
 use App\Mcp\Tools\GetContactReminder;
 use App\Mcp\Tools\GetEmailSent;
+use App\Mcp\Tools\GetEntity;
 use App\Mcp\Tools\GetEntityType;
 use App\Mcp\Tools\GetGroup;
 use App\Mcp\Tools\GetGroupNote;
@@ -122,6 +124,7 @@ use App\Mcp\Tools\GetTemplateVersion;
 use App\Mcp\Tools\ImportPossessionType;
 use App\Mcp\Tools\ListAgentFeedback;
 use App\Mcp\Tools\ListContactCategories;
+use App\Mcp\Tools\ListContactEntities;
 use App\Mcp\Tools\ListContactGroups;
 use App\Mcp\Tools\ListContactNameRepresentations;
 use App\Mcp\Tools\ListContactRelationships;
@@ -129,6 +132,7 @@ use App\Mcp\Tools\ListContactReminderOccurrences;
 use App\Mcp\Tools\ListContactReminders;
 use App\Mcp\Tools\ListContacts;
 use App\Mcp\Tools\ListEmailsSent;
+use App\Mcp\Tools\ListEntities;
 use App\Mcp\Tools\ListEntityTypes;
 use App\Mcp\Tools\ListGroupFiles;
 use App\Mcp\Tools\ListGroupLifeEvents;
@@ -152,6 +156,7 @@ use App\Mcp\Tools\ListPossessionMaintenanceRecords;
 use App\Mcp\Tools\ListPossessionProvenanceEvents;
 use App\Mcp\Tools\ListPossessions;
 use App\Mcp\Tools\ListPossessionTags;
+use App\Mcp\Tools\ListPossessionTimeline;
 use App\Mcp\Tools\ListPossessionTransactions;
 use App\Mcp\Tools\ListPossessionTypes;
 use App\Mcp\Tools\ListPossessionValuations;
@@ -203,6 +208,7 @@ use App\Mcp\Tools\UpdateContactName;
 use App\Mcp\Tools\UpdateContactNameRepresentations;
 use App\Mcp\Tools\UpdateContactRelationship;
 use App\Mcp\Tools\UpdateContactReminder;
+use App\Mcp\Tools\UpdateEntity;
 use App\Mcp\Tools\UpdateEntityType;
 use App\Mcp\Tools\UpdateGroup;
 use App\Mcp\Tools\UpdateGroupMember;
@@ -369,6 +375,10 @@ class MonicaServer extends Server
         SetEntityTypeActivation::class,
         SetEntityTypePosition::class,
         DeleteEntityType::class,
+        ListEntities::class,
+        GetEntity::class,
+        CreateEntity::class,
+        UpdateEntity::class,
         ListRelationshipCategories::class,
         GetRelationshipCategory::class,
         ListRelationshipCategoryTypes::class,
@@ -421,6 +431,7 @@ class MonicaServer extends Server
         CreatePossessionInsuranceRecord::class,
         UpdatePossessionInsuranceRecord::class,
         DeletePossessionInsuranceRecord::class,
+        ListPossessionTimeline::class,
         ListPossessionValuations::class,
         GetPossessionValuation::class,
         CreatePossessionValuation::class,
@@ -501,6 +512,7 @@ class MonicaServer extends Server
         DeleteGroupReminder::class,
         ListGroupReminderOccurrences::class,
         AnswerGroupReminderOccurrence::class,
+        ListContactEntities::class,
         ListContactRelationships::class,
         GetContactRelationship::class,
         CreateContactRelationship::class,

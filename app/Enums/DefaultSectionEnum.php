@@ -47,6 +47,13 @@ enum DefaultSectionEnum: string implements Translatable
     case PortraitPhotos = 'portrait-photos';
     case PortraitDocuments = 'portrait-documents';
     case PortraitNotes = 'portrait-notes';
+    case AnimalIdentity = 'animal-identity';
+    case AnimalLinkedPeople = 'animal-linked-people';
+    case AnimalCharacter = 'animal-character';
+    case AnimalPhotosAndNotes = 'animal-photos-and-notes';
+    case AnimalFoodAndHabits = 'animal-food-and-habits';
+    case AnimalHealth = 'animal-health';
+    case AnimalIdentification = 'animal-identification';
 
     public function label(): string
     {
@@ -77,6 +84,13 @@ enum DefaultSectionEnum: string implements Translatable
             self::PortraitTastesAndHabits => 'Tastes and habits',
             self::PortraitCommunication => 'Communication',
             self::PortraitAttentions => 'Thoughtful gestures',
+            self::AnimalIdentity => 'Identity',
+            self::AnimalLinkedPeople => 'People',
+            self::AnimalCharacter => 'Character and preferences',
+            self::AnimalPhotosAndNotes => 'Photos and notes',
+            self::AnimalFoodAndHabits => 'Food and habits',
+            self::AnimalHealth => 'Health and care',
+            self::AnimalIdentification => 'Identification and documents',
         };
     }
 
@@ -103,6 +117,13 @@ enum DefaultSectionEnum: string implements Translatable
             self::ProfessionalCommonGround => 'target',
             self::PortraitWorkAndStudies => 'graduation',
             self::PortraitCommunication => 'phone',
+            self::AnimalIdentity => 'pet',
+            self::AnimalLinkedPeople => 'people',
+            self::AnimalCharacter => 'heart',
+            self::AnimalPhotosAndNotes => 'memory',
+            self::AnimalFoodAndHabits => 'food',
+            self::AnimalHealth => 'health',
+            self::AnimalIdentification => 'file',
         };
     }
 
@@ -123,6 +144,12 @@ enum DefaultSectionEnum: string implements Translatable
             self::ProfessionalFirstMeeting, self::PortraitHowWeMet => VaultColourEnum::Violet,
             self::FriendsInterests, self::ProfessionalCommonGround => VaultColourEnum::Plum,
             self::FriendsGiftIdeas, self::PortraitAttentions => VaultColourEnum::Rust,
+            self::AnimalIdentity, self::AnimalFoodAndHabits => VaultColourEnum::Amber,
+            self::AnimalLinkedPeople => VaultColourEnum::Blue,
+            self::AnimalCharacter => VaultColourEnum::Plum,
+            self::AnimalPhotosAndNotes => VaultColourEnum::Violet,
+            self::AnimalHealth => VaultColourEnum::Teal,
+            self::AnimalIdentification => VaultColourEnum::Slate,
         };
     }
 
@@ -271,6 +298,48 @@ enum DefaultSectionEnum: string implements Translatable
                 DefaultFieldEnum::GiftIdeas,
                 DefaultFieldEnum::OutingIdeas,
             ],
+            self::AnimalIdentity => [
+                DefaultFieldEnum::Species,
+                DefaultFieldEnum::Breed,
+                DefaultFieldEnum::Sex,
+                DefaultFieldEnum::Birthday,
+                DefaultFieldEnum::AdoptionDate,
+                DefaultFieldEnum::ColourAndMarkings,
+            ],
+            self::AnimalLinkedPeople => [
+                DefaultFieldEnum::Caregivers,
+            ],
+            self::AnimalCharacter => [
+                DefaultFieldEnum::Character,
+                DefaultFieldEnum::Likes,
+                DefaultFieldEnum::DislikesAndFears,
+                DefaultFieldEnum::ApproachAdvice,
+            ],
+            self::AnimalPhotosAndNotes => [
+                DefaultFieldEnum::Photo,
+                DefaultFieldEnum::Notes,
+            ],
+            self::AnimalFoodAndHabits => [
+                DefaultFieldEnum::UsualFood,
+                DefaultFieldEnum::FeedingTimesAndAmounts,
+                DefaultFieldEnum::FavouriteTreats,
+                DefaultFieldEnum::RoutineAndActivities,
+                DefaultFieldEnum::PetSittingInstructions,
+            ],
+            self::AnimalHealth => [
+                DefaultFieldEnum::Allergies,
+                DefaultFieldEnum::HealthIssues,
+                DefaultFieldEnum::TreatmentsAndInstructions,
+                DefaultFieldEnum::NeuterStatus,
+                DefaultFieldEnum::OtherUsualCare,
+            ],
+            self::AnimalIdentification => [
+                DefaultFieldEnum::MicrochipNumber,
+                DefaultFieldEnum::OtherIdentification,
+                DefaultFieldEnum::Insurance,
+                DefaultFieldEnum::InsurancePolicyNumber,
+                DefaultFieldEnum::Document,
+            ],
         };
     }
 
@@ -295,7 +364,42 @@ enum DefaultSectionEnum: string implements Translatable
             self::PortraitWorkAndStudies => [DefaultFieldEnum::JobRole->value => 'Current job role'],
             self::ProfessionalDocuments, self::PortraitDocuments => [DefaultFieldEnum::Document->value => 'Documents'],
             self::PortraitPhotos => [DefaultFieldEnum::Photo->value => 'Photos'],
+            self::AnimalIdentity => [
+                DefaultFieldEnum::Breed->value => 'Breed or mix',
+                DefaultFieldEnum::Birthday->value => 'Date of birth',
+            ],
+            self::AnimalLinkedPeople => [DefaultFieldEnum::Caregivers->value => 'People linked to the animal'],
+            self::AnimalPhotosAndNotes => [
+                DefaultFieldEnum::Photo->value => 'Photos',
+                DefaultFieldEnum::Notes->value => 'Free-form notes',
+            ],
+            self::AnimalHealth => [DefaultFieldEnum::Allergies->value => 'Known allergies and intolerances'],
+            self::AnimalIdentification => [DefaultFieldEnum::Document->value => 'Documents'],
             default => [],
+        };
+    }
+
+    /**
+     * Whether a top level field shows in the header of a record. A section may choose its own,
+     * since one concept is highlighted in one template and not in another.
+     */
+    public function isHighlighted(DefaultFieldEnum $field): bool
+    {
+        $highlighted = $this->highlightedFields();
+
+        if ($highlighted === null) {
+            return $field->isHighlighted();
+        }
+
+        return in_array($field, $highlighted, true);
+    }
+
+    /** @return list<DefaultFieldEnum>|null */
+    private function highlightedFields(): ?array
+    {
+        return match ($this) {
+            self::AnimalIdentity => [DefaultFieldEnum::Species, DefaultFieldEnum::Breed, DefaultFieldEnum::Birthday],
+            default => null,
         };
     }
 

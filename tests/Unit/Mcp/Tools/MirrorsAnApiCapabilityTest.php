@@ -7,10 +7,12 @@ namespace Tests\Unit\Mcp\Tools;
 use App\Mcp\Servers\MonicaServer;
 use App\Mcp\Tools\CreateLocation;
 use App\Mcp\Tools\CreatePossessionMaintenanceRecord;
+use App\Mcp\Tools\GetEntity;
 use App\Mcp\Tools\GetLocation;
 use App\Mcp\Tools\ListLogs;
 use App\Mcp\Tools\SearchRecords;
 use App\Mcp\Tools\UpdateLocation;
+use App\Models\Entity;
 use App\Models\Location;
 use App\Models\Log;
 use App\Models\Possession;
@@ -91,6 +93,18 @@ class MirrorsAnApiCapabilityTest extends TestCase
 
         MonicaServer::actingAs($user)->tool(GetLocation::class, ['location' => $elsewhere->uuid])
             ->assertHasErrors([__('That location does not exist.')]);
+    }
+
+    #[Test]
+    public function it_reports_a_record_of_another_vault_as_not_existing(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $stamford = Vault::factory()->create(['account_id' => $user->account_id]);
+        $elsewhere = Entity::factory()->create(['vault_id' => $stamford->id]);
+
+        MonicaServer::actingAs($user)->tool(GetEntity::class, ['vault' => $vault->uuid, 'entity' => $elsewhere->uuid])
+            ->assertHasErrors([__('That record does not exist.')]);
     }
 
     #[Test]

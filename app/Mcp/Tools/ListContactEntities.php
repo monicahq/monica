@@ -1,0 +1,49 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Mcp\Tools;
+
+use Illuminate\Contracts\JsonSchema\JsonSchema;
+use Illuminate\JsonSchema\Types\Type;
+use Laravel\Mcp\Request;
+use Laravel\Mcp\Response;
+use Laravel\Mcp\Server\Attributes\Description;
+use Laravel\Mcp\Server\Tool;
+use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
+
+#[Description('List the records of any kind, such as an animal, that name one contact in one of their relation fields, a page at a time, each with its values.')]
+#[IsReadOnly]
+class ListContactEntities extends Tool
+{
+    use MirrorsAnApiCapability;
+
+    protected string $mirrors = 'api.v1.contacts.entities';
+
+    public function handle(Request $request): Response
+    {
+        $validated = $request->validate([
+            'vault' => ['required', 'string'],
+            'contact' => ['required', 'string'],
+        ]);
+
+        $vault = $this->vault($request, $validated['vault']);
+        $contact = $this->contact($vault, $validated['contact']);
+
+        return $this->answerThroughApi($request, $vault->uuid, $contact->uuid);
+    }
+
+    /** @return array<string, Type> */
+    public function schema(JsonSchema $schema): array
+    {
+        $default = (int) config('monica.api_default_items_per_page');
+        $maximum = (int) config('monica.api_maximum_items_per_page');
+
+        return [
+            'vault' => $schema->string()->description('The id of the vault, as list-vaults gives it.')->required(),
+            'contact' => $schema->string()->description('The id of the contact, as list-contacts gives it.')->required(),
+            'page' => $schema->integer()->description('The page to read, starting at 1.'),
+            'per_page' => $schema->integer()->description("How many records a page holds: {$default} unless asked, {$maximum} at most."),
+        ];
+    }
+}

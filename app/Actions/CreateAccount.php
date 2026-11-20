@@ -16,6 +16,7 @@ use App\Jobs\SeedNotificationPreference;
 use App\Jobs\SeedPossessionConditions;
 use App\Jobs\SeedPossessionTypes;
 use App\Jobs\SeedRelationshipTypes;
+use App\Jobs\SupplyAnimalTemplate;
 use App\Jobs\SupplyContactTemplates;
 use App\Models\Account;
 use App\Models\PreviewListEntry;
@@ -124,6 +125,7 @@ class CreateAccount
             new SeedNotificationPreference(user: $this->user),
             new SeedLifeEventCategories(user: $this->user),
             new CreateDefaultTemplate(user: $this->user, supplied: DefaultTemplateEnum::BasicAnimal),
+            new SupplyAnimalTemplate(user: $this->user),
             new CreateDefaultLifeEventTypes(user: $this->user),
             new SeedRelationshipTypes(user: $this->user),
             new SeedPossessionTypes(user: $this->user),

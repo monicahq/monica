@@ -22,6 +22,8 @@ enum DefaultPageEnum: string implements Translatable
     case PortraitProfile = 'portrait-profile';
     case PortraitDailyLife = 'portrait-daily-life';
     case PortraitMemories = 'portrait-memories';
+    case AnimalProfile = 'animal-profile';
+    case AnimalDailyLife = 'animal-daily-life';
 
     public function label(): string
     {
@@ -37,6 +39,8 @@ enum DefaultPageEnum: string implements Translatable
             self::PortraitProfile => 'Profile',
             self::PortraitDailyLife => 'Daily life',
             self::PortraitMemories => 'Memories',
+            self::AnimalProfile => 'Profile',
+            self::AnimalDailyLife => 'Daily life and care',
         };
     }
 
@@ -54,6 +58,8 @@ enum DefaultPageEnum: string implements Translatable
             self::PortraitProfile => 'profile',
             self::PortraitDailyLife => 'daily-life',
             self::PortraitMemories => 'memories',
+            self::AnimalProfile => 'profile',
+            self::AnimalDailyLife => 'daily-life',
             default => $this->value,
         };
     }
@@ -123,6 +129,17 @@ enum DefaultPageEnum: string implements Translatable
                 DefaultSectionEnum::PortraitPhotos,
                 DefaultSectionEnum::PortraitDocuments,
                 DefaultSectionEnum::PortraitNotes,
+            ],
+            self::AnimalProfile => [
+                DefaultSectionEnum::AnimalIdentity,
+                DefaultSectionEnum::AnimalLinkedPeople,
+                DefaultSectionEnum::AnimalCharacter,
+                DefaultSectionEnum::AnimalPhotosAndNotes,
+            ],
+            self::AnimalDailyLife => [
+                DefaultSectionEnum::AnimalFoodAndHabits,
+                DefaultSectionEnum::AnimalHealth,
+                DefaultSectionEnum::AnimalIdentification,
             ],
         };
     }

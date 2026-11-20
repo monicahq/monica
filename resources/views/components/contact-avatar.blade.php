@@ -3,17 +3,19 @@
   @var string $name
   @var string|null $url
   @var int $size
+  @var string|null $alt  empty where the name is already written beside the picture
 --}}
 @props([
   'name',
   'url' => null,
   'size' => 34,
+  'alt' => null,
 ])
 
 @if ($url)
   <x-image
     :src="$url"
-    :alt="$name"
+    :alt="$alt ?? $name"
     :width="$size"
     :height="$size"
     {{ $attributes->class(['shrink-0 rounded-full object-cover']) }}

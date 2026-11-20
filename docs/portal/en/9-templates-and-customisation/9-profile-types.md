@@ -4,7 +4,7 @@ title: Create a kind of profile
 description: Create a kind of profile for things that are not people, such as plants or companies, next to the built in Animals.
 slug: profile-types
 section: templates-and-customisation
-last_updated: 2026-09-29
+last_updated: 2026-11-19
 ---
 
 # Create a kind of profile
@@ -36,10 +36,10 @@ Leave **New records of this type can be created** on, and choose **Create type**
 Monica says **The type is created**.
 
 :::note
-A new kind of profile appears in a vault’s sidebar only once that vault has a published template for it, and there is no screen yet to give a vault that template. Today, only **Animals** is set up in every vault, with the **Basic animal** template.
+A new kind of profile appears in a vault’s sidebar only once that vault has a published template for it, and there is no screen yet to give a vault that template. Today, only **Animals** is set up in every vault, with the **Basic animal** template, and **Animal** to pick instead.
 :::
 
-A profile also has no page of its own yet: once saved, it appears in its list, but it cannot be opened or changed from the web.
+Once saved, a profile appears in its list and opens on a page of its own, where you can read and correct it. @doc(profiles.add) shows how.
 
 ## Reorder, switch off or delete
 

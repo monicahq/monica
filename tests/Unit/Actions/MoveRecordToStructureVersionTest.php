@@ -500,6 +500,75 @@ class MoveRecordToStructureVersionTest extends TestCase
         $this->assertDatabaseHas('field_values', ['id' => $beetFacts->id, 'field_id' => $carried->id, 'is_detached' => false]);
     }
 
+    #[Test]
+    public function it_carries_what_basic_animal_and_animal_share_and_sets_aside_the_rest(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        new CreateDefaultValueLists(user: $user)->execute();
+        new CreateDefaultTemplate(user: $user, supplied: DefaultTemplateEnum::BasicAnimal)->handle();
+        new CreateDefaultTemplate(user: $user, supplied: DefaultTemplateEnum::Animal)->handle();
+
+        $sprinkles = Entity::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => Vault::factory()->create(['account_id' => $user->account_id])->id,
+            'entity_type_id' => EntityType::query()->where('account_id', $user->account_id)->sole()->id,
+            'structure_version_id' => $this->versionOf(DefaultTemplateEnum::BasicAnimal)->id,
+            'name' => 'Sprinkles',
+        ]);
+
+        $shared = [
+            DefaultFieldEnum::Species->value => ['value_string' => 'Cat'],
+            DefaultFieldEnum::Breed->value => ['value_string' => 'Persian'],
+            DefaultFieldEnum::Birthday->value => ['value_date' => '2001-04-01'],
+            DefaultFieldEnum::AdoptionDate->value => ['value_date' => '2002-06-15'],
+            DefaultFieldEnum::MicrochipNumber->value => ['value_string' => '250269604123456'],
+        ];
+        $kept = [];
+
+        foreach ($shared as $key => $attributes) {
+            $kept[$key] = $this->valueOnEntity($sprinkles, $this->fieldOf(DefaultTemplateEnum::BasicAnimal, DefaultFieldEnum::from($key)), $attributes);
+        }
+
+        $row = FieldValueRow::factory()->create([
+            'account_id' => $sprinkles->account_id,
+            'valuable_type' => Entity::class,
+            'valuable_id' => $sprinkles->id,
+            'field_id' => $this->fieldOf(DefaultTemplateEnum::BasicAnimal, DefaultFieldEnum::Caregivers)->id,
+        ]);
+        $role = $this->valueOnEntity($sprinkles, $this->fieldOf(DefaultTemplateEnum::BasicAnimal, DefaultFieldEnum::CaregiverRole), ['value_string' => 'Owner', 'field_value_row_id' => $row->id]);
+        $care = $this->valueOnEntity($sprinkles, $this->fieldOf(DefaultTemplateEnum::BasicAnimal, DefaultFieldEnum::HealthAndCare), ['value_text' => 'Brushed every morning']);
+
+        new MoveRecordToStructureVersion(user: $user, record: $sprinkles, structureVersion: $this->versionOf(DefaultTemplateEnum::Animal))->execute();
+
+        foreach ($kept as $key => $value) {
+            $this->assertDatabaseHas('field_values', [
+                'id' => $value->id,
+                'field_id' => $this->fieldOf(DefaultTemplateEnum::Animal, DefaultFieldEnum::from($key))->id,
+                'is_detached' => false,
+            ]);
+        }
+
+        $this->assertDatabaseHas('field_value_rows', ['id' => $row->id, 'field_id' => $this->fieldOf(DefaultTemplateEnum::Animal, DefaultFieldEnum::Caregivers)->id]);
+        $this->assertDatabaseHas('field_values', ['id' => $role->id, 'field_id' => $this->fieldOf(DefaultTemplateEnum::Animal, DefaultFieldEnum::CaregiverRole)->id, 'is_detached' => false]);
+        $this->assertDatabaseHas('field_values', ['id' => $care->id, 'is_detached' => true]);
+    }
+
+    /** @param  array<string, mixed>  $attributes */
+    private function valueOnEntity(Entity $entity, Field $field, array $attributes): FieldValue
+    {
+        return FieldValue::factory()->create([
+            'account_id' => $entity->account_id,
+            'vault_id' => $entity->vault_id,
+            'valuable_type' => Entity::class,
+            'valuable_id' => $entity->id,
+            'field_id' => $field->id,
+            'value_string' => null,
+            ...$attributes,
+        ]);
+    }
+
     private function userWithSuppliedTemplates(): User
     {
         $user = User::factory()->create();

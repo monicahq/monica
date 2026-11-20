@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Vaults;
 
+use App\Enums\RelationshipBehaviorEnum;
 use App\Models\Contact;
+use App\Models\RelationshipType;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -42,11 +44,33 @@ class ImmediateFamilyBlock
         return $this->children() === [] && $this->currentPartners() === [];
     }
 
-    public function emptyLine(): string
+    public function contactName(): string
     {
-        return __(':name’s children and current partner land here, once you write down who they are. This says nothing about the family :name has.', [
-            'name' => $this->contact->first_name ?? $this->contact->name,
-        ]);
+        return $this->contact->first_name ?? $this->contact->name;
+    }
+
+    public function contactFullName(): string
+    {
+        return $this->contact->name;
+    }
+
+    public function contactAvatarUrl(): ?string
+    {
+        if ($this->contact->avatar === null) {
+            return null;
+        }
+
+        return route('files.variants.show', ['vault' => $this->vault, 'file' => $this->contact->avatar, 'size' => Contact::AVATAR_THUMBNAIL_PIXELS]);
+    }
+
+    public function addPartnerUrl(): string
+    {
+        return $this->addRelationshipUrlFor(RelationshipBehaviorEnum::Romantic);
+    }
+
+    public function addChildUrl(): string
+    {
+        return $this->addRelationshipUrlFor(RelationshipBehaviorEnum::GenealogyParentage);
     }
 
     public function noChildrenLine(): string
@@ -65,6 +89,26 @@ class ImmediateFamilyBlock
             'vault' => $this->vault,
             'contact' => $this->contact,
         ]);
+    }
+
+    /**
+     * The form opens on the first type the account still offers with that behaviour. The person on
+     * screen stands on side A, which is the parent side of Parent / Child, so a child needs no swap.
+     */
+    private function addRelationshipUrlFor(RelationshipBehaviorEnum $behavior): string
+    {
+        $type = RelationshipType::query()
+            ->where('account_id', $this->contact->account_id)
+            ->where('system_behavior', $behavior)
+            ->where('is_active', true)
+            ->orderBy('position')
+            ->first();
+
+        return route('contacts.relationships.new', array_filter([
+            'vault' => $this->vault,
+            'contact' => $this->contact,
+            'type' => $type?->id,
+        ]));
     }
 
     /**

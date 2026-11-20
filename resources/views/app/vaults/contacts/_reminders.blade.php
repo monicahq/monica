@@ -71,9 +71,9 @@
               <div class="flex min-w-0 flex-1 flex-col gap-1.25">
                 <div class="flex flex-wrap items-center gap-2">
                   @if ($row->reminderUrl() !== null)
-                    <a href="{{ $row->reminderUrl() }}" data-turbo="true" class="font-semibold text-pretty text-ink no-underline hover:underline focus-ring rounded-xs">{{ $row->text() }}</a>
+                    <a href="{{ $row->reminderUrl() }}" data-turbo="true" class="text-sm font-semibold text-pretty text-ink no-underline hover:underline focus-ring rounded-xs">{{ $row->text() }}</a>
                   @else
-                    <span class="font-semibold text-pretty text-ink">{{ $row->text() }}</span>
+                    <span class="text-sm font-semibold text-pretty text-ink">{{ $row->text() }}</span>
                   @endif
 
                   @if ($deadline['category'] === 'overdue')

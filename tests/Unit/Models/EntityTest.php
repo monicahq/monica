@@ -6,7 +6,9 @@ namespace Tests\Unit\Models;
 
 use App\Exceptions\EntityNeedsAName;
 use App\Helpers\LocaleCollation;
+use App\Models\Contact;
 use App\Models\Entity;
+use App\Models\FieldValue;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -28,6 +30,21 @@ class EntityTest extends TestCase
         $entity->save();
 
         $this->assertEquals('vance refrigeration', $entity->fresh()->sort_name);
+    }
+
+    #[Test]
+    public function it_finds_the_records_of_the_contact_vault_naming_the_contact(): void
+    {
+        $vault = Vault::factory()->create();
+        $angela = Contact::factory()->create(['account_id' => $vault->account_id, 'vault_id' => $vault->id]);
+        $sprinkles = Entity::factory()->create(['account_id' => $vault->account_id, 'vault_id' => $vault->id, 'name' => 'Sprinkles']);
+        $bandit = Entity::factory()->create(['account_id' => $vault->account_id, 'vault_id' => $vault->id, 'name' => 'Bandit']);
+        $elsewhere = Entity::factory()->create(['account_id' => $vault->account_id, 'name' => 'Garbage']);
+        $this->naming($sprinkles, $angela);
+        $this->naming($bandit, $angela, isDetached: true);
+        $this->naming($elsewhere, $angela);
+
+        $this->assertSame(['Sprinkles'], Entity::query()->naming($angela)->pluck('name')->all());
     }
 
     #[Test]
@@ -114,5 +131,18 @@ class EntityTest extends TestCase
         $this->assertSame($entity->entity_type_id, $document['entity_type_id']);
         $this->assertSame($entity->vault_id, $document['vault_id']);
         $this->assertSame('', $document['linked_names']);
+    }
+
+    private function naming(Entity $entity, Contact $contact, bool $isDetached = false): void
+    {
+        FieldValue::factory()->create([
+            'account_id' => $entity->account_id,
+            'vault_id' => $entity->vault_id,
+            'valuable_type' => Entity::class,
+            'valuable_id' => $entity->id,
+            'value_string' => null,
+            'related_contact_id' => $contact->id,
+            'is_detached' => $isDetached,
+        ]);
     }
 }
