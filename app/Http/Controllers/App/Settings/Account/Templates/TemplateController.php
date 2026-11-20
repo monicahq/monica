@@ -8,12 +8,12 @@ use App\Actions\CreateTemplate;
 use App\Actions\DestroyTemplate;
 use App\Actions\UpdateTemplate;
 use App\Enums\StructureAppliesToEnum;
-use App\Exceptions\CannotDeleteATemplateInUse;
 use App\Http\Controllers\Controller;
 use App\Models\EntityType;
 use App\Models\Template;
 use App\ViewModels\Settings\Account\Templates\TemplateFormViewModel;
 use App\ViewModels\Settings\Account\Templates\TemplatesViewModel;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -104,9 +104,9 @@ class TemplateController extends Controller
                 user: $request->user(),
                 template: $template,
             )->execute();
-        } catch (CannotDeleteATemplateInUse) {
+        } catch (AuthorizationException $e) {
             return redirect()->route('settings.templates.index')
-                ->with('error', __('The template still renders records and stays.'))
+                ->with('error', $e->getMessage())
                 ->with('error_description', __('Turn it off instead, and every record already on it keeps what it has.'));
         }
 

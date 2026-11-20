@@ -131,6 +131,7 @@ class TemplateControllerTest extends TestCase
         Queue::fake();
 
         $user = User::factory()->create();
+        Template::factory()->published()->create(['account_id' => $user->account_id]);
         $template = Template::factory()->create(['account_id' => $user->account_id]);
 
         $this->actingAs($user)->delete(route('settings.templates.destroy', $template))

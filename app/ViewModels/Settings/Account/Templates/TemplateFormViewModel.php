@@ -98,6 +98,17 @@ class TemplateFormViewModel
             : __('Left empty, it is made from the name. Lowercase letters, numbers and dashes.');
     }
 
+    public function deleteRefusal(): ?string
+    {
+        if ($this->template === null) {
+            return null;
+        }
+
+        $response = $this->user->inspect('delete', $this->template);
+
+        return $response->denied() ? (string) $response->message() : null;
+    }
+
     public function template(): ?Template
     {
         return $this->template;

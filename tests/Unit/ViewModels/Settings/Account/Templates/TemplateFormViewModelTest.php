@@ -68,4 +68,26 @@ class TemplateFormViewModelTest extends TestCase
 
         $this->assertFalse((new TemplateFormViewModel(user: $michael))->hasEntityTypes());
     }
+
+    #[Test]
+    public function it_gives_the_reason_the_last_template_for_contacts_stays(): void
+    {
+        $user = User::factory()->create();
+        $template = Template::factory()->published()->create(['account_id' => $user->account_id]);
+
+        $this->assertSame(
+            'This is the last template for contacts, and a new vault needs one, so it stays.',
+            new TemplateFormViewModel(user: $user, template: $template)->deleteRefusal(),
+        );
+    }
+
+    #[Test]
+    public function it_gives_no_reason_when_the_template_can_be_deleted(): void
+    {
+        $user = User::factory()->create();
+        Template::factory()->published()->create(['account_id' => $user->account_id]);
+        $template = Template::factory()->published()->create(['account_id' => $user->account_id]);
+
+        $this->assertNull(new TemplateFormViewModel(user: $user, template: $template)->deleteRefusal());
+    }
 }

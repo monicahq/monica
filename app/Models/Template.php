@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\DefaultTemplateEnum;
+use App\Enums\StructureAppliesToEnum;
 use App\Models\Concerns\HasUuids;
 use App\Models\Concerns\ResolvesModelInAccount;
 use Carbon\CarbonImmutable;
 use Database\Factories\TemplateFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\RouteKey;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -161,6 +164,49 @@ class Template extends Model
             'id',
             'published_version_id',
         )->where('structures.owner_type', self::class);
+    }
+
+    /**
+     * Find the template a new record of one kind starts from when nobody picks
+     * one: what a new vault is given as its default, and what a vault falls back
+     * to when the template it used is deleted.
+     *
+     * Only a template with a published version qualifies. An active one comes
+     * before one turned off, then the templates the product supplied in the order
+     * of DefaultTemplateEnum, which puts Basic contact and Basic animal first,
+     * then any other system template, then the account's own in the order of the
+     * picker. A turned off template is
+     * still returned when nothing else is left, because a vault with no default
+     * refuses every new record.
+     */
+    public static function startingPointFor(
+        int $accountId,
+        StructureAppliesToEnum $appliesTo,
+        ?int $entityTypeId = null,
+        ?int $exceptTemplateId = null,
+    ): ?self {
+        $suppliedOrder = array_map(fn (DefaultTemplateEnum $supplied): string => $supplied->value, DefaultTemplateEnum::cases());
+
+        return self::query()
+            ->where('account_id', $accountId)
+            ->when($exceptTemplateId !== null, fn (Builder $query) => $query->whereKeyNot($exceptTemplateId))
+            ->whereHas('structure', function (Builder $query) use ($appliesTo, $entityTypeId): void {
+                $query->where('applies_to', $appliesTo)
+                    ->where('entity_type_id', $entityTypeId)
+                    ->whereNotNull('published_version_id');
+            })
+            ->with('structure')
+            ->get()
+            ->sortBy(fn (self $template): array => [
+                $template->is_active ? 0 : 1,
+                match (true) {
+                    $template->is_system && in_array($template->slug, $suppliedOrder, true) => (int) array_search($template->slug, $suppliedOrder, true),
+                    $template->is_system => count($suppliedOrder),
+                    default => count($suppliedOrder) + 1,
+                },
+                $template->position,
+            ])
+            ->first();
     }
 
     /**

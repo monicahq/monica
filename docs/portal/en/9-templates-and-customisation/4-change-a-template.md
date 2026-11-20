@@ -84,6 +84,8 @@ On the template, choose **Edit** to change its **Name** and **Description**. Its
 
 To delete a template, choose **Delete the template** on the same screen, then confirm. Monica refuses while any contact still uses one of its versions, and says **The template still renders records and stays**. Move those contacts to another template first. A deleted template’s slug stays taken, so an old link can never reach something else.
 
+Your last template for contacts cannot be deleted, because a new vault starts your own contact from it. The screen says so in place of the button. When you delete a template a vault starts its new records from, that vault moves to **Basic contact**, or to the next template Monica supplied when Basic contact is gone, then to one of your own.
+
 The screens mention turning a template off instead of deleting it. There is no control for that on the web yet.
 
 ## Supplied templates

@@ -8,11 +8,11 @@ use App\Actions\CreateTemplate;
 use App\Actions\DestroyTemplate;
 use App\Actions\UpdateTemplate;
 use App\Enums\StructureAppliesToEnum;
-use App\Exceptions\CannotDeleteATemplateInUse;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TemplateResource;
 use App\Models\EntityType;
 use App\Models\Template;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -107,7 +107,7 @@ class TemplateController extends Controller
                 user: $request->user(),
                 template: $this->find($request, $template),
             )->execute();
-        } catch (CannotDeleteATemplateInUse $e) {
+        } catch (AuthorizationException $e) {
             throw ValidationException::withMessages(['template' => $e->getMessage()]);
         }
 

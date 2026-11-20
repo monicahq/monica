@@ -475,12 +475,14 @@ return [
             'examplePath' => '/templates/'.$templateId,
             'description' => 'Delete a template that no record is rendered from.',
             'body' => [
-                'A template still rendering records is refused rather than deleted, and the answer says how many are on it. Move those records to another template first, or stop offering this one instead, which takes it out of the way without touching anything already using it.',
+                'A template still rendering records is refused rather than deleted. Move those records to another template first, or stop offering this one instead, which takes it out of the way without touching anything already using it.',
+                'The last contact template of the account is refused too, because a new vault starts its owner’s contact from one.',
+                'A vault starting new records from the deleted template moves to Basic contact or Basic animal, then to the next template the product supplied, then to one of the account’s own. It loses its default only when no template of that kind is left.',
                 'The deletion is recoverable, and the slug stays taken so a link that already went out cannot later land on a different template.',
             ],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [$templateParam],
-            'returns' => 'Nothing. A template still rendering records answers 422, and one belonging to somebody else answers 404.',
+            'returns' => 'Nothing. A template still rendering records, or the last contact template, answers 422, and one belonging to somebody else answers 404.',
             'responseStatus' => 204,
         ],
         [

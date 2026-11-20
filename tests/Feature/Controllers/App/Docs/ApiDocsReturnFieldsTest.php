@@ -786,6 +786,7 @@ class ApiDocsReturnFieldsTest extends TestCase
             }),
 
             'templates-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                Template::factory()->published()->create(['account_id' => $user->account_id]);
                 $template = Template::factory()->create(['account_id' => $user->account_id]);
 
                 return $this->json('DELETE', "/api/v1/templates/{$template->uuid}");

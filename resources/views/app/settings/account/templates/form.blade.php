@@ -148,7 +148,17 @@
       </div>
     </div>
 
-    @if ($viewModel->isEdit())
+    @if ($viewModel->isEdit() && $viewModel->deleteRefusal() !== null)
+      <x-delete-section :title="__('Delete the template')">
+        <p id="template-delete-reason">{{ $viewModel->deleteRefusal() }}</p>
+
+        <x-slot:trigger>
+          <x-button.danger type="button" aria-disabled="true" aria-describedby="template-delete-reason">
+            {{ __('Delete the template') }}
+          </x-button.danger>
+        </x-slot:trigger>
+      </x-delete-section>
+    @elseif ($viewModel->isEdit())
       <x-delete-section :title="__('Delete the template')">
         <x-slot:trigger>
           <x-modal.warning

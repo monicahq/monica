@@ -8,6 +8,7 @@ use App\Enums\StructureAppliesToEnum;
 use App\Models\Account;
 use App\Models\EntityType;
 use App\Models\Structure;
+use App\Models\StructureVersion;
 use App\Models\Template;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -76,6 +77,15 @@ class TemplateFactory extends Factory
             'name_translation_key' => 'Contact',
             'is_system' => true,
         ]);
+    }
+
+    public function published(): static
+    {
+        return $this->afterCreating(function (Template $template): void {
+            $version = StructureVersion::factory()->published()->create(['structure_id' => $template->structure->id]);
+
+            $template->structure->update(['published_version_id' => $version->id]);
+        });
     }
 
     public function inactive(): static

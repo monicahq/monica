@@ -179,6 +179,31 @@ class CreateVaultTest extends TestCase
     }
 
     #[Test]
+    public function it_gives_the_vault_the_next_supplied_contact_template_once_basic_contact_is_deleted(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        new CreateDefaultValueLists(user: $user)->execute();
+
+        foreach ([DefaultTemplateEnum::FullPortrait, DefaultTemplateEnum::Essentials, DefaultTemplateEnum::BasicContact] as $supplied) {
+            new CreateDefaultTemplate(user: $user, supplied: $supplied)->handle();
+        }
+
+        Template::query()->where('slug', DefaultTemplateEnum::BasicContact->value)->sole()->delete();
+
+        $vault = new CreateVault(user: $user, name: 'Scranton')->execute();
+
+        $essentials = Template::query()->where('slug', DefaultTemplateEnum::Essentials->value)->sole();
+
+        $this->assertDatabaseHas('vault_default_templates', [
+            'vault_id' => $vault->id,
+            'applies_to' => StructureAppliesToEnum::Contact->value,
+            'structure_version_id' => $essentials->structure->published_version_id,
+        ]);
+    }
+
+    #[Test]
     public function it_gives_a_new_vault_the_animal_default(): void
     {
         Queue::fake();

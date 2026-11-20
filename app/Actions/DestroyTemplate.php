@@ -4,25 +4,22 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
-use App\Enums\DefaultTemplateEnum;
 use App\Enums\UserActionEnum;
-use App\Exceptions\CannotDeleteATemplateInUse;
 use App\Jobs\LogUserAction;
 use App\Models\Template;
 use App\Models\User;
 use App\Models\VaultDefaultTemplate;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Delete a template, which is only allowed while no record points at any of its versions.
+ * Delete a template, which TemplatePolicy allows while no record points at any of its versions and
+ * the account keeps another contact template.
  *
  * The delete is soft and the structure stays with it. A vault default naming one of its versions is
- * moved, in the same transaction, to the account's system template for the same kind of record,
- * which is what a new vault starts from. Without that, the vault would have nothing for a new
- * contact to start from, and every way of adding one would be refused. The default is removed only
- * when the account has no such template left.
+ * moved, in the same transaction, to the template a new vault would start from for the same kind of
+ * record. Without that, the vault would have nothing for a new record to start from, and every way of
+ * adding one would be refused. The default is removed only when no such template is left.
  */
 class DestroyTemplate
 {
@@ -46,11 +43,7 @@ class DestroyTemplate
             throw new ModelNotFoundException('This template is in another account.');
         }
 
-        $records = (int) $this->template->versions()->sum('record_count');
-
-        if ($records > 0) {
-            throw new CannotDeleteATemplateInUse("This template still renders {$records} records.");
-        }
+        $this->user->authorize('delete', $this->template);
     }
 
     private function destroy(): void
@@ -63,37 +56,29 @@ class DestroyTemplate
                 ->get();
 
             foreach ($defaults as $default) {
-                $this->fallBackToTheSystemTemplate($default);
+                $this->fallBackToTheStartingPoint($default);
             }
 
             $this->template->delete();
         });
     }
 
-    private function fallBackToTheSystemTemplate(VaultDefaultTemplate $default): void
+    private function fallBackToTheStartingPoint(VaultDefaultTemplate $default): void
     {
-        $systemTemplate = Template::query()
-            ->where('account_id', $this->user->account_id)
-            ->where('is_system', true)
-            ->whereIn('slug', array_map(
-                fn (DefaultTemplateEnum $supplied): string => $supplied->value,
-                array_filter(DefaultTemplateEnum::cases(), fn (DefaultTemplateEnum $supplied): bool => $supplied->isVaultDefault()),
-            ))
-            ->whereKeyNot($this->template->id)
-            ->whereHas('structure', function (Builder $query) use ($default): void {
-                $query->where('applies_to', $default->applies_to)
-                    ->where('entity_type_id', $default->entity_type_id)
-                    ->whereNotNull('published_version_id');
-            })
-            ->first();
+        $startingPoint = Template::startingPointFor(
+            accountId: $this->user->account_id,
+            appliesTo: $default->applies_to,
+            entityTypeId: $default->entity_type_id,
+            exceptTemplateId: $this->template->id,
+        );
 
-        if ($systemTemplate === null) {
+        if ($startingPoint === null) {
             $default->delete();
 
             return;
         }
 
-        $default->update(['structure_version_id' => $systemTemplate->structure->published_version_id]);
+        $default->update(['structure_version_id' => $startingPoint->structure->published_version_id]);
     }
 
     private function log(): void
