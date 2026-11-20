@@ -4,7 +4,7 @@ title: Change, set or remove your password
 description: Change your password when you know it, set one if your account has none, or remove it and rely on other ways to sign in.
 slug: your-password
 section: your-account-and-security
-last_updated: 2026-11-01
+last_updated: 2026-11-20
 ---
 
 # Change, set or remove your password
@@ -18,6 +18,8 @@ Choose one you use nowhere else. A long password is better than a complicated on
 ::::steps
 :::step title="Enter the current one"
 Type it in **Current password**.
+
+::screenshot{label="The Password section of the security settings, with fields for the current, new and confirmed password and a Save button" src="1-settings.security.index.webp"}
 :::
 
 :::step title="Enter the new one"

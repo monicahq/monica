@@ -4,7 +4,7 @@ title: Record who has a possession
 description: Record a possession lent to somebody or borrowed from them, see who has it now, and mark it as returned.
 slug: possession-loans
 section: templates-and-customisation
-last_updated: 2026-11-12
+last_updated: 2026-11-20
 ---
 
 # Record who has a possession
@@ -34,6 +34,8 @@ When a loan is active, a panel at the top of the section says who has had the po
 ::::steps
 :::step title="Open the form"
 In **Loans**, choose **Add a loan**.
+
+::screenshot{label="The Loans page of the Engagement ring, with the Add a loan button and the loan to Rachel Green listed as returned" src="1-possessions.loans.index.webp"}
 :::
 
 :::step title="Say which way it goes"
@@ -46,6 +48,8 @@ Type a name under **Contact** and pick the person from your contacts in this vau
 
 :::step title="Add the details"
 **Started on** starts on today. Add the day it is **Due back**, the condition it left in, a deposit and its currency, and a **Purpose** if they are worth remembering. A line under the form sums up what the loan records.
+
+::screenshot{label="The loan form, filled in with the loan of the engagement ring to Rachel Green, with its dates, conditions and purpose" src="2-possessions.loans.edit.webp"}
 :::
 
 :::step title="Save the loan"

@@ -4,7 +4,7 @@ title: Record the work done on a possession
 description: Record the work done on a possession, one record per job, and see when the next one is due.
 slug: possession-maintenance
 section: templates-and-customisation
-last_updated: 2026-10-27
+last_updated: 2026-11-20
 ---
 
 # Record the work done on a possession
@@ -35,6 +35,8 @@ The cost is kept on the record only. It is not counted in the @doc(customise.pos
 ::::steps
 :::step title="Open the form"
 In **Maintenance**, choose **Maintenance record**. The form **New maintenance record** opens above the list.
+
+::screenshot{label="The Maintenance page of the Engagement ring, with the Maintenance record button and the cleaning and prong check listed" src="1-possessions.maintenanceRecords.index.webp"}
 :::
 
 :::step title="Say what was done"
@@ -43,6 +45,8 @@ Pick a **Type**, write a **Title**, and enter the day it was **Performed**.
 
 :::step title="Add the details you have"
 Fill in **Performed by**, the **Cost** and its **Currency**, the **Condition before** and **Condition after**, the day the job is **Next due**, and a **Description**, if you know them.
+
+::screenshot{label="The maintenance record form, filled in with the cleaning and prong check of the engagement ring, with its cost, conditions and next due date" src="2-possessions.maintenanceRecords.edit.webp"}
 :::
 
 :::step title="Save it"

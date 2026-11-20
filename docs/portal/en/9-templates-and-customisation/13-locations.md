@@ -4,7 +4,7 @@ title: The places your things are kept in
 description: Describe the places your things are kept in, from a house down to the box on a shelf.
 slug: locations
 section: templates-and-customisation
-last_updated: 2026-11-12
+last_updated: 2026-11-20
 ---
 
 # The places your things are kept in
@@ -26,6 +26,8 @@ Choose **New location**. A form opens above the list.
 
 :::step title="Name it and place it"
 In **Name**, type `Living room`. Under **Sits inside**, pick the location it belongs to, or leave **Nothing, at the top level** for a building or a home.
+
+::screenshot{label="The Locations screen with the New location form open, showing the name, the Sits inside list, the emoji choices and the address, above the list of locations in My house" src="1-settings.locations.new.webp"}
 :::
 
 :::step title="Give it a face"

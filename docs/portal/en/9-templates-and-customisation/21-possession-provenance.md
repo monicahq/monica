@@ -4,7 +4,7 @@ title: Record where a possession comes from
 description: Record where a possession was made, who has owned or held it, and what proves it, in the order it happened.
 slug: possession-provenance
 section: templates-and-customisation
-last_updated: 2026-11-12
+last_updated: 2026-11-20
 ---
 
 # Record where a possession comes from
@@ -38,6 +38,8 @@ Choose **All events**, **Ownership**, **Custody** or **Authenticity** above the 
 ::::steps
 :::step title="Open the form"
 In **Provenance**, choose **Add an event**.
+
+::screenshot{label="The Provenance page of the Engagement ring, with the Add an event button and three events listed" src="1-possessions.provenance.index.webp"}
 :::
 
 :::step title="Say what happened"
@@ -46,6 +48,8 @@ Pick a **Type**, then give it a **Title** if you like. Left empty, the event tak
 
 :::step title="Say when, as precisely as you know"
 Pick a **Date precision**: an exact date, a month and year, a year, around a year, or unknown. The date field changes to match, and an event around a year reads “About 1940”.
+
+::screenshot{label="The provenance event form, filled in with the origin of the engagement ring, set by hand in New York around the year 2000" src="2-possessions.provenance.edit.webp"}
 :::
 
 :::step title="Say who and where"

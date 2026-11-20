@@ -4,7 +4,7 @@ title: Write notes
 description: Write free text in a folder, with headings, bullets and tasks you can tick while reading.
 slug: notes
 section: knowledge
-last_updated: 2026-10-27
+last_updated: 2026-11-20
 ---
 
 # Write notes
@@ -20,6 +20,8 @@ Choose **New note** in the **+** menu of the folder column, or **Write a first n
 
 :::step title="Give it a title and a folder"
 Type a title, and pick the folder it belongs in.
+
+::screenshot{label="The note editor, showing the About me note with its title, its folder and its text" src="1-knowledge.notes.edit.webp"}
 :::
 
 :::step title="Write the text"

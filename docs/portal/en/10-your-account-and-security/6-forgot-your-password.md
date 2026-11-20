@@ -4,7 +4,7 @@ title: Choose a new password when you forgot it
 description: Ask for an email link that lets you choose a new password, and learn how long the link lasts and what Monica does next.
 slug: forgot-your-password
 section: your-account-and-security
-last_updated: 2026-09-29
+last_updated: 2026-11-20
 ---
 
 # Choose a new password when you forgot it
@@ -16,6 +16,8 @@ If you only want to get in, a link that signs you in is faster: see @doc(signin.
 ::::steps
 :::step title="Ask for a link"
 On the sign in screen, choose **Forgot your password?** Type your **Email address**, then choose **Email me a link**.
+
+::screenshot{label="The Forgot your password form, with an email address field and the Email me a link button" src="1-auth.password.new.webp"}
 :::
 
 :::step title="Open the email"

@@ -4,7 +4,7 @@ title: Record how a possession is insured
 description: Record who insures a possession, for how much and until when, one record per policy period.
 slug: possession-insurance
 section: templates-and-customisation
-last_updated: 2026-11-12
+last_updated: 2026-11-20
 ---
 
 # Record how a possession is insured
@@ -32,6 +32,8 @@ The **Overview** of the possession reads its **Insured** line from the same reco
 ::::steps
 :::step title="Open the form"
 In **Insurance**, choose **Add an insurance record**.
+
+::screenshot{label="The Insurance page of the Engagement ring, with the Add an insurance record button and the Chubb policy listed" src="1-possessions.insuranceRecords.index.webp"}
 :::
 
 :::step title="Name the insurer and the status"
@@ -40,6 +42,8 @@ Write the **Insurer** and pick a **Status**: active, pending, expired or cancell
 
 :::step title="Enter the value and the dates"
 Fill in the **Insured value** and its **Currency**, and the **Excess** if there is one. Add the day the period **Starts** and the day it **Ends or renews**, or leave the end empty for a policy with no end date.
+
+::screenshot{label="The insurance record form, filled in with the Chubb policy of the engagement ring, its insured value, currency, excess and start date" src="2-possessions.insuranceRecords.edit.webp"}
 :::
 
 :::step title="Save it"

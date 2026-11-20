@@ -4,7 +4,7 @@ title: Record what a possession is worth
 description: Record estimates of what a possession is worth, each on its date, and read how its value moved over the years.
 slug: possession-valuations
 section: templates-and-customisation
-last_updated: 2026-11-12
+last_updated: 2026-11-20
 ---
 
 # Record what a possession is worth
@@ -38,6 +38,8 @@ The **Overview** of the possession shows the same current value, where it comes 
 ::::steps
 :::step title="Open the form"
 In **Valuations**, choose **Record a valuation**. You can also choose **Record a valuation** in the menu beside **Edit**, at the top of the possession.
+
+::screenshot{label="The Valuations page of the Engagement ring, with the Record a valuation button and its history of three valuations" src="1-possessions.valuations.index.webp"}
 :::
 
 :::step title="Say where the figure comes from"

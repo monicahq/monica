@@ -4,7 +4,7 @@ title: Record where a possession is kept
 description: Record where a possession is kept now, move it elsewhere, and keep track of everywhere it has been.
 slug: possession-locations
 section: templates-and-customisation
-last_updated: 2026-11-12
+last_updated: 2026-11-20
 ---
 
 # Record where a possession is kept
@@ -36,6 +36,8 @@ Moving a possession closes the stay where it is now and opens the next one, on t
 ::::steps
 :::step title="Open the form"
 In **Locations**, choose **Move elsewhere**.
+
+::screenshot{label="The Locations page of the Engagement ring, with the Move elsewhere button and its stay in the Bedroom of My house" src="1-possessions.locationStays.index.webp"}
 :::
 
 :::step title="Choose where it goes"

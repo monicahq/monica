@@ -4,7 +4,7 @@ title: Review possible duplicates
 description: See which contacts Monica suggests might be the same person, why it suggested them, and mark the pairs that are not.
 slug: review-possible-duplicates
 section: keeping-records-tidy
-last_updated: 2026-09-29
+last_updated: 2026-11-20
 ---
 
 # Review possible duplicates
@@ -33,6 +33,8 @@ In the vault’s sidebar, choose **People**.
 
 :::step title="Open the duplicates"
 Open the menu next to **Add somebody**, then choose **Manage duplicates**. The screen **People who might be the same person** lists every pair under **Possible duplicates**.
+
+::screenshot{label="The People who might be the same person screen, listing Joey Tribbiani and Joseph Tribbiani as a possible duplicate with a Compare them button" src="1-vaults.duplicates.index.webp"}
 :::
 ::::
 

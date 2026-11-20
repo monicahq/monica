@@ -4,7 +4,7 @@ title: Sign in with GitHub, Google, Apple, Microsoft or Facebook
 description: Use a GitHub, Google, Apple, Microsoft or Facebook account to sign in, and connect one to an account you already have.
 slug: sign-in-with-a-provider
 section: your-account-and-security
-last_updated: 2026-11-11
+last_updated: 2026-11-20
 ---
 
 # Sign in with GitHub, Google, Apple, Microsoft or Facebook
@@ -34,6 +34,8 @@ Open your settings and choose **Security and access**.
 
 :::step title="Connect"
 Under **Outside providers**, choose **Connect** next to the service. Monica asks you to confirm it is you first.
+
+::screenshot{label="The Outside providers section of the security settings, listing Google with a Connect button" src="1-settings.security.index.webp"}
 :::
 
 :::step title="Allow it"

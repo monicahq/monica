@@ -4,7 +4,7 @@ title: Export a contact as Markdown
 description: Download or copy everything you recorded about one contact as a text document, to keep it or hand it to an AI assistant.
 slug: export-as-markdown
 section: sharing-export-and-sync
-last_updated: 2026-11-13
+last_updated: 2026-11-20
 ---
 
 # Export a contact as Markdown
@@ -20,6 +20,8 @@ Open the page of the person you want to export, such as Pam Beesly.
 
 :::step title="Download the file"
 Open the menu next to **Edit contact** and choose **Export as Markdown**. Your browser downloads a file named after the contact, such as `pam-beesly.md`.
+
+::screenshot{label="The top of Phoebe Buffay’s page, with the Edit contact button and the menu button beside it" src="1-contacts.show.webp"}
 :::
 
 :::step title="Or copy the text"

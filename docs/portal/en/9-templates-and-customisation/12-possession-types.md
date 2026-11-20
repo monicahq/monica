@@ -4,7 +4,7 @@ title: Describe the things you own
 description: Set up the kinds of things you own and the details each kind carries, shared by every vault of your account.
 slug: possession-types
 section: templates-and-customisation
-last_updated: 2026-10-26
+last_updated: 2026-11-20
 ---
 
 # Describe the things you own
@@ -34,6 +34,8 @@ In **Name**, type `Office equipment`, then leave the field. Pick a colour under 
 
 :::step title="Add its fields"
 Choose **Add a field**. A text field appears; name it `Serial number`. Choose **Add a field** again for `Condition`, set its **Kind** to **Choice from a list**, and add the choices `New`, `Used` and `Broken`.
+
+::screenshot{label="The Electronics and computers possession type, showing its name, colour and icon, and its field groups with their fields and kinds" src="1-settings.possessionTypes.edit.webp"}
 :::
 ::::
 

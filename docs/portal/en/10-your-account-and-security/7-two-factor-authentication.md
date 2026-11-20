@@ -4,7 +4,7 @@ title: Turn on two factor authentication
 description: Add a six digit code from an authenticator app to your sign in, so a stolen password alone cannot open your account.
 slug: two-factor-authentication
 section: your-account-and-security
-last_updated: 2026-10-27
+last_updated: 2026-11-20
 ---
 
 # Turn on two factor authentication
@@ -18,6 +18,8 @@ You need an authenticator app on your phone, and any app works. A security key d
 ::::steps
 :::step title="Open your security settings"
 Open your settings and choose **Security and access**. Under **Two-factor authentication**, next to **Authenticator app**, choose **Turn it on**. Monica asks you to confirm it is you first.
+
+::screenshot{label="The Two-factor authentication section of the security settings, with an Authenticator app row and its Turn it on button" src="1-settings.security.index.webp"}
 :::
 
 :::step title="Pair your app"

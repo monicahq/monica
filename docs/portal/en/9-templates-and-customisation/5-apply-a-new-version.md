@@ -4,7 +4,7 @@ title: Move a contact to a new template version
 description: Move a contact to a newer template version when you want their page to show the new sections and fields.
 slug: apply-a-new-version
 section: templates-and-customisation
-last_updated: 2026-09-29
+last_updated: 2026-11-20
 ---
 
 # Move a contact to a new template version
@@ -18,6 +18,8 @@ When a newer version of a contact’s template is published, their page says **V
 ::::steps
 :::step title="Read the banner"
 Open the contact’s page. The banner explains that nothing changes until you apply the new version, and that everything already written down stays.
+
+::screenshot{label="Rachel Green’s page with a banner saying version 2 of the Basic contact template is ready, and an Apply version 2 button" src="1-contacts.show.webp"}
 :::
 
 :::step title="Apply it"

@@ -4,7 +4,7 @@ title: Create a kind of profile
 description: Create a kind of profile for things that are not people, such as plants or companies, next to the built in Animals.
 slug: profile-types
 section: templates-and-customisation
-last_updated: 2026-11-19
+last_updated: 2026-11-20
 ---
 
 # Create a kind of profile
@@ -22,6 +22,8 @@ Choose **Create a profile type**.
 
 :::step title="Name it"
 In **Name, singular**, type `Plant`, and in **Name, plural**, type `Plants`. The **Slug** is made from the name if you leave it empty.
+
+::screenshot{label="The Create a kind of record form, with the singular and plural names, the slug, the icon and colour pickers, and the availability checkbox" src="1-settings.entityTypes.new.webp"}
 :::
 
 :::step title="Choose how it looks"

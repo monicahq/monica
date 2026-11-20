@@ -4,7 +4,7 @@ title: Sign in with a link sent by email
 description: Get a one time link by email that signs you in without a password, and learn how long it lasts and why it works only once.
 slug: sign-in-with-a-link
 section: your-account-and-security
-last_updated: 2026-09-29
+last_updated: 2026-11-20
 ---
 
 # Sign in with a link sent by email
@@ -18,6 +18,8 @@ On the sign in screen, under **Sign in without a password?**, choose **Send me a
 
 :::step title="Enter your address"
 Type your **Email address**, then choose **Email me a link**.
+
+::screenshot{label="The Get a link to sign in form, with an email address field and the Email me a link button" src="1-auth.magicLink.new.webp"}
 :::
 
 :::step title="Open the email"

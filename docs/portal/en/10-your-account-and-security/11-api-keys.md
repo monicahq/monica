@@ -4,7 +4,7 @@ title: Create an API key
 description: Create a key that lets a script, an AI assistant or your phone’s address book act as you, and learn why Monica shows it only once.
 slug: api-keys
 section: your-account-and-security
-last_updated: 2026-09-29
+last_updated: 2026-11-20
 ---
 
 # Create an API key
@@ -16,6 +16,8 @@ An API key lets a script, an AI assistant or the contacts app on your phone act 
 ::::steps
 :::step title="Open your security settings"
 Open your settings, choose **Security and access**, and under **API keys** choose **Create key**.
+
+::screenshot{label="The API keys section of the security settings, with a Create key button and no keys yet" src="1-settings.security.index.webp"}
 :::
 
 :::step title="Name it"

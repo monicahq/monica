@@ -4,7 +4,7 @@ title: Add something you own
 description: Record something you own in a vault, with its type, where it is kept, what it is worth and its tags.
 slug: possessions
 section: templates-and-customisation
-last_updated: 2026-11-12
+last_updated: 2026-11-20
 ---
 
 # Add something you own
@@ -60,6 +60,8 @@ Open **Type** and choose one. Type a few letters to narrow the list, move with t
 
 :::step title="Fill in its fields"
 The fields of the type appear under the picker, in the groups the type defines. They are all optional. Choosing another type replaces them.
+
+::screenshot{label="The Add a possession form for a Jewellery possession, showing the name, the type and its fields, the location, the declared value and the tags" src="1-possessions.new.webp"}
 :::
 ::::
 

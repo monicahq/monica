@@ -4,7 +4,7 @@ title: Record what changed hands
 description: Record each time money or ownership changed hands for a possession, and see how its acquisition is read from them.
 slug: possession-transactions
 section: templates-and-customisation
-last_updated: 2026-11-12
+last_updated: 2026-11-20
 ---
 
 # Record what changed hands
@@ -32,6 +32,8 @@ Amounts are never converted. Costs in another currency than the acquisition are 
 ::::steps
 :::step title="Open the form"
 In **Transactions**, choose **Add a transaction**.
+
+::screenshot{label="The Transactions page of the Engagement ring, with the Add a transaction button and the Tiffany purchase listed" src="1-possessions.transactions.index.webp"}
 :::
 
 :::step title="Say what happened"

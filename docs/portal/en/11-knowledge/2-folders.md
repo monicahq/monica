@@ -4,7 +4,7 @@ title: Organise Knowledge in folders
 description: Group the notes and lists of Knowledge by theme, and add, rename, reorder or delete folders.
 slug: folders
 section: knowledge
-last_updated: 2026-10-27
+last_updated: 2026-11-20
 ---
 
 # Organise Knowledge in folders
@@ -18,6 +18,8 @@ The column on the left of every Knowledge page lists your folders in the order y
 ::::steps
 :::step title="Open the menu"
 Click the **+** button at the top of the column, next to **Knowledge**.
+
+::screenshot{label="The Knowledge contents screen, with the folder tree on the left and the notes and lists of each folder" src="1-knowledge.index.webp"}
 :::
 
 :::step title="Choose New folder"

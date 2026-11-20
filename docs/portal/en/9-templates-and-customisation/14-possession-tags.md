@@ -4,7 +4,7 @@ title: Tag the things you own
 description: Create the words you put on your possessions to sort them across their types and places.
 slug: possession-tags
 section: templates-and-customisation
-last_updated: 2026-10-26
+last_updated: 2026-11-20
 ---
 
 # Tag the things you own
@@ -20,6 +20,8 @@ You put tags on a possession when you @doc(customise.possessions, "add it"), and
 ::::steps
 :::step title="Name it"
 Under **Add a tag**, type `Insured` in **Name**. A tag holds up to 50 characters.
+
+::screenshot{label="The Possession tags screen, with the Add a tag form above the list of six existing tags" src="1-settings.possessionTags.index.webp"}
 :::
 
 :::step title="Pick its colour"

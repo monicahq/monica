@@ -4,7 +4,7 @@ title: Export a contact as a vCard
 description: Download one contact as a .vcf file that any address book can import, to hand it over once.
 slug: export-a-vcard
 section: sharing-export-and-sync
-last_updated: 2026-09-29
+last_updated: 2026-11-20
 ---
 
 # Export a contact as a vCard
@@ -20,6 +20,8 @@ Open the page of the person you want to export, such as Joey Tribbiani.
 
 :::step title="Export"
 Open the menu next to **Edit contact** and choose **Export as vCard**. Your browser downloads a file named after the contact, such as `joey-tribbiani.vcf`.
+
+::screenshot{label="The top of Joey Tribbiani’s page, with the Edit contact button and the menu button beside it" src="1-contacts.show.webp"}
 :::
 
 :::step title="Open it elsewhere"

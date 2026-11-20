@@ -4,7 +4,7 @@ title: Say what state your things are in
 description: Set the states a possession can be in, from best to worst, each with its colour.
 slug: possession-conditions
 section: templates-and-customisation
-last_updated: 2026-10-26
+last_updated: 2026-11-20
 ---
 
 # Say what state your things are in
@@ -22,6 +22,8 @@ Giving a possession its condition comes in a later release. For now you prepare 
 ::::steps
 :::step title="Name it"
 Under **Add a condition**, type `Mint` in **Name**. A condition holds up to 50 characters.
+
+::screenshot{label="The Possession conditions screen, with the Add a condition form above the list of conditions from New to Broken" src="1-settings.possessionConditions.index.webp"}
 :::
 
 :::step title="Pick its icon and colour"

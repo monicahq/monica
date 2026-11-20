@@ -4,7 +4,7 @@ title: Delete your account
 description: Learn what deleting your account removes for good, what to keep first, and the steps to delete it.
 slug: delete-your-account
 section: your-account-and-security
-last_updated: 2026-09-29
+last_updated: 2026-11-20
 ---
 
 # Delete your account
@@ -23,6 +23,8 @@ Deleting your account deletes everything in it: every vault, every person in the
 ::::steps
 :::step title="Open the deletion"
 Open your settings and choose **Profile**. At the bottom, under **Delete your account**, choose **Delete your account**. The settings home also has a **Delete this account** link that leads here.
+
+::screenshot{label="The Delete your account section at the bottom of the profile settings, with a Delete your account button" src="1-settings.profile.index.webp"}
 :::
 
 :::step title="Type your address"
