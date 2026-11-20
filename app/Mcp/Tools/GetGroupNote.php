@@ -12,10 +12,14 @@ use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
+use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
+use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
 use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
 #[Description('Return one note written about a group: what it says and when it was written.')]
 #[IsReadOnly]
+#[IsDestructive(false)]
+#[IsOpenWorld(false)]
 class GetGroupNote extends Tool
 {
     use MirrorsAnApiCapability;

@@ -12,8 +12,14 @@ use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
+use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
+use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
+use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
 #[Description('Record one moment in the provenance of a possession: where it was made, a change of owner or of custody, a loss or a recovery, or what authenticated, exhibited or published it. Only the type is required. The date is written in the shape its precision gives. An event holds no money: point it at the transaction that records what it cost. The change is written to the account log.')]
+#[IsReadOnly(false)]
+#[IsDestructive(false)]
+#[IsOpenWorld(false)]
 class CreatePossessionProvenanceEvent extends Tool
 {
     use MirrorsAnApiCapability;

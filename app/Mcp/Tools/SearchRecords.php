@@ -10,10 +10,14 @@ use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
+use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
+use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
 use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
 #[Description('Search the people, entities and life events of a vault, or of every vault, for every word given, typing mistakes tolerated. The results come back in result groups, one per kind of record.')]
 #[IsReadOnly]
+#[IsDestructive(false)]
+#[IsOpenWorld(false)]
 class SearchRecords extends Tool
 {
     use MirrorsAnApiCapability;

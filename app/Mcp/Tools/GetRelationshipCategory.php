@@ -10,10 +10,14 @@ use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
+use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
+use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
 use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
 #[Description('Read one category of relationship types: its name, position, whether it is offered, whether it came with the account and how many types it holds.')]
 #[IsReadOnly]
+#[IsDestructive(false)]
+#[IsOpenWorld(false)]
 class GetRelationshipCategory extends Tool
 {
     use MirrorsAnApiCapability;

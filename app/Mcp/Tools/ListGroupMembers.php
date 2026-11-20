@@ -12,10 +12,14 @@ use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
+use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
+use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
 use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
 #[Description('List the memberships of a group, the people in it today first and then those who left, each with their role and dates, a page at a time.')]
 #[IsReadOnly]
+#[IsDestructive(false)]
+#[IsOpenWorld(false)]
 class ListGroupMembers extends Tool
 {
     use MirrorsAnApiCapability;

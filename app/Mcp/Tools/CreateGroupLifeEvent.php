@@ -12,8 +12,14 @@ use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
+use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
+use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
+use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
 #[Description('Record a life event on a group, such as a meeting or an outing, on a date, with the members who were there. It shows on the group page and on the timeline of every one of them, the first being the person it is recorded for. Read the custom fields of the type with get-life-event-type-fields first: values are keyed by field id. A file field cannot be written. The change is written to the account log.')]
+#[IsReadOnly(false)]
+#[IsDestructive(false)]
+#[IsOpenWorld(false)]
 class CreateGroupLifeEvent extends Tool
 {
     use MirrorsAnApiCapability;

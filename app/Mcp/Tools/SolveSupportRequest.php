@@ -11,8 +11,14 @@ use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
+use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
+use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
+use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
 #[Description('Tell the support team a request needs nothing more. Writing in it again reopens it.')]
+#[IsReadOnly(false)]
+#[IsDestructive]
+#[IsOpenWorld(false)]
 class SolveSupportRequest extends Tool
 {
     use MirrorsAnApiCapability;

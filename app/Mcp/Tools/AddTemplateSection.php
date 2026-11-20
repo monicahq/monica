@@ -12,8 +12,14 @@ use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
+use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
+use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
+use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
 #[Description('Add a section to a draft of a template: give name to create a new section, or section_id to place one the account already has. The change is written to the account log.')]
+#[IsReadOnly(false)]
+#[IsDestructive(false)]
+#[IsOpenWorld(false)]
 class AddTemplateSection extends Tool
 {
     use MirrorsAnApiCapability;

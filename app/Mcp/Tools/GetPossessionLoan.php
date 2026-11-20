@@ -10,10 +10,14 @@ use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
+use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
+use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
 use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
 #[Description('Return one loan of a possession: the contact, the direction, the status, the days it started, is due back and came back, the conditions, the deposit and the purpose.')]
 #[IsReadOnly]
+#[IsDestructive(false)]
+#[IsOpenWorld(false)]
 class GetPossessionLoan extends Tool
 {
     use MirrorsAnApiCapability;

@@ -11,9 +11,13 @@ use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
+use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
+use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
 #[Description('Delete a provenance event of a possession. The transaction it points at, if any, stays. No tool brings the event back. The change is written to the account log.')]
+#[IsReadOnly(false)]
 #[IsDestructive]
+#[IsOpenWorld(false)]
 class DeletePossessionProvenanceEvent extends Tool
 {
     use MirrorsAnApiCapability;

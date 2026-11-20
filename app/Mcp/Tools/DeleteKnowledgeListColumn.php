@@ -11,9 +11,13 @@ use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
+use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
+use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
 #[Description('Remove a column from a list of a vault\'s Knowledge, with what every item holds in it. No tool brings it back. The last column of a list cannot be removed. The change is written to the account log.')]
+#[IsReadOnly(false)]
 #[IsDestructive]
+#[IsOpenWorld(false)]
 class DeleteKnowledgeListColumn extends Tool
 {
     use MirrorsAnApiCapability;

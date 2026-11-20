@@ -10,8 +10,14 @@ use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
+use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
+use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
+use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
 #[Description('Write the values a possession holds for fields of its type, keyed by the id of the field as get-possession-type gives it. Only the fields named change. Null or an empty string removes a value. Text holds up to 2,000 characters, a number is a number, a date is written YYYY-MM-DD, yes or no is true or false, a choice is one of the field’s own choices, a rating is 1 to 5. Nothing is written unless every value fits. The change is written to the account log.')]
+#[IsReadOnly(false)]
+#[IsDestructive]
+#[IsOpenWorld(false)]
 class SetPossessionValues extends Tool
 {
     use MirrorsAnApiCapability;

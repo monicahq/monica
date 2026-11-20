@@ -11,9 +11,13 @@ use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
+use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
+use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
 #[Description('Delete one loan of a possession, with the provenance events it wrote. The contact stays. No tool brings the loan back. The change is written to the account log.')]
+#[IsReadOnly(false)]
 #[IsDestructive]
+#[IsOpenWorld(false)]
 class DeletePossessionLoan extends Tool
 {
     use MirrorsAnApiCapability;

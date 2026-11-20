@@ -10,8 +10,14 @@ use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
+use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
+use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
+use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
 #[Description('Correct one stay of a possession: its location, the day it arrived, the day it left, the reason or the note. The stays before and after it are not moved. A past stay keeps a day it left. The stay where it is now cannot be given a day it left: move the possession instead. The change is written to the account log.')]
+#[IsReadOnly(false)]
+#[IsDestructive]
+#[IsOpenWorld(false)]
 class UpdatePossessionLocationStay extends Tool
 {
     use MirrorsAnApiCapability;

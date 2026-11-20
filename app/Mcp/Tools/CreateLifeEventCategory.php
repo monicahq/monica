@@ -10,8 +10,14 @@ use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
+use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
+use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
+use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
 #[Description('Create a category to file kinds of life event under, such as Sport. It is added at the end of the list. The change is written to the account log.')]
+#[IsReadOnly(false)]
+#[IsDestructive(false)]
+#[IsOpenWorld(false)]
 class CreateLifeEventCategory extends Tool
 {
     use MirrorsAnApiCapability;

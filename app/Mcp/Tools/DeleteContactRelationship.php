@@ -11,9 +11,13 @@ use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
+use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
+use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
 #[Description('Delete a relationship. It leaves both contacts at once. Neither person is deleted, including somebody who existed only through it. The change is written to the account log.')]
+#[IsReadOnly(false)]
 #[IsDestructive]
+#[IsOpenWorld(false)]
 class DeleteContactRelationship extends Tool
 {
     use MirrorsAnApiCapability;

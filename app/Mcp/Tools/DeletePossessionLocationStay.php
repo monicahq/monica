@@ -11,9 +11,13 @@ use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
+use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
+use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
 #[Description('Delete one stay of a possession. The other stays are not moved, so its period shows as unrecorded. Deleting the stay where it is now leaves the possession with no current location until it is moved. No tool brings the stay back. The change is written to the account log.')]
+#[IsReadOnly(false)]
 #[IsDestructive]
+#[IsOpenWorld(false)]
 class DeletePossessionLocationStay extends Tool
 {
     use MirrorsAnApiCapability;

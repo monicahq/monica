@@ -12,8 +12,14 @@ use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
+use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
+use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
+use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
 #[Description('Put a contact of the vault in a group, optionally with a role and the dates they joined and left. Somebody already in the group today cannot be added twice. The change is written to the account log.')]
+#[IsReadOnly(false)]
+#[IsDestructive(false)]
+#[IsOpenWorld(false)]
 class AddGroupMember extends Tool
 {
     use MirrorsAnApiCapability;

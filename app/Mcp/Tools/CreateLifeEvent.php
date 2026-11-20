@@ -10,8 +10,14 @@ use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
+use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
+use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
+use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
 #[Description('Write down something that happened, on a date, with the people who were there. It goes on the timeline of every one of them, the first being the person it is recorded for. Read the custom fields of the type with get-life-event-type-fields first: values are keyed by field id. A file field cannot be written. The change is written to the account log.')]
+#[IsReadOnly(false)]
+#[IsDestructive(false)]
+#[IsOpenWorld(false)]
 class CreateLifeEvent extends Tool
 {
     use MirrorsAnApiCapability;

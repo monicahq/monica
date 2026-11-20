@@ -12,8 +12,14 @@ use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
+use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
+use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
+use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
 #[Description('Report a problem with this MCP server to the administrators of this Monica instance: a tool that failed or returned something wrong, a tool that was missing, a description that misled you, or an improvement. Call it at most once per task, and only when a tool got in the way. Never call it to log progress, to test it, or when the task went fine. Paraphrase what the person asked, and use placeholders such as <contact> or <date> instead of names, dates and other details from their vault. Never include secrets.')]
+#[IsReadOnly(false)]
+#[IsDestructive]
+#[IsOpenWorld]
 class SubmitFeedback extends Tool
 {
     use MirrorsAnApiCapability;

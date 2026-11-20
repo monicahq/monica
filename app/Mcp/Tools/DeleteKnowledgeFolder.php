@@ -11,9 +11,13 @@ use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
+use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
+use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
 #[Description('Delete a folder of a vault\'s Knowledge. Its notes and lists move to the folder given as move_to. Without move_to, they are deleted with the folder, and no tool brings them back. The last folder of a vault cannot be deleted. The change is written to the account log.')]
+#[IsReadOnly(false)]
 #[IsDestructive]
+#[IsOpenWorld(false)]
 class DeleteKnowledgeFolder extends Tool
 {
     use MirrorsAnApiCapability;

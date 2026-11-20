@@ -10,8 +10,14 @@ use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
+use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
+use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
+use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
 #[Description('Add a partner, a family member or any other relative to a contact, with or without a record of their own, by linking them with a relationship type. The other person is an existing contact, a new person named here, or somebody whose name is unknown. One relationship holds both sides, so there is no reverse to add. The change is written to the account log.')]
+#[IsReadOnly(false)]
+#[IsDestructive(false)]
+#[IsOpenWorld(false)]
 class CreateContactRelationship extends Tool
 {
     use MirrorsAnApiCapability;

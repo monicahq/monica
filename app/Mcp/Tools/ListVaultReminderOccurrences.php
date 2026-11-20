@@ -12,10 +12,14 @@ use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
+use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
+use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
 use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
 #[Description('List the dates of a whole vault that fall in a window: what is overdue, what falls today and what comes in the next 7 days unless days asks for more (up to 365), for every contact, group and record of the vault, as the vault dashboard shows them. An empty list means nothing falls in that window, not that the vault has no reminders: list-vault-reminders lists every reminder whatever its date. Ask kind=birthdays to know whose birthday it is today or soon: it also lists the birthdays nobody asked to be reminded of, with the age being reached when the year of birth is known.')]
 #[IsReadOnly]
+#[IsDestructive(false)]
+#[IsOpenWorld(false)]
 class ListVaultReminderOccurrences extends Tool
 {
     use MirrorsAnApiCapability;

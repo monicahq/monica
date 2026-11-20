@@ -13,10 +13,14 @@ use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
+use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
+use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
 use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
 #[Description('List the dates the reminders about a group produced, with what the user answered for each: remembered, forgotten, or no answer. A missing answer never means forgotten, and a notification sent or read never means remembered.')]
 #[IsReadOnly]
+#[IsDestructive(false)]
+#[IsOpenWorld(false)]
 class ListGroupReminderOccurrences extends Tool
 {
     use MirrorsAnApiCapability;

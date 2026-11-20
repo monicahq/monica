@@ -11,8 +11,14 @@ use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
+use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
+use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
+use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
 #[Description('Write to the support team in a request already opened. The request goes back to the support team, and a solved request is reopened under the same number. Files cannot be sent from here.')]
+#[IsReadOnly(false)]
+#[IsDestructive]
+#[IsOpenWorld]
 class AddSupportMessage extends Tool
 {
     use MirrorsAnApiCapability;

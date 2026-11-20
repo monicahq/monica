@@ -13,8 +13,14 @@ use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
+use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
+use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
+use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
 #[Description('Record what a possession is worth on a date: the type, the date and the amount in its currency are required. A valuation is never changed afterwards. To correct one, record a new valuation. The latest by date becomes the current value of the possession. The change is written to the account log.')]
+#[IsReadOnly(false)]
+#[IsDestructive(false)]
+#[IsOpenWorld(false)]
 class CreatePossessionValuation extends Tool
 {
     use MirrorsAnApiCapability;

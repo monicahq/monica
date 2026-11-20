@@ -13,8 +13,14 @@ use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
+use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
+use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
+use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
 #[Description('Ask the people who run this instance for help. Pick a category, write a subject and a message of at least 10 characters. A person reads it and replies by email and in the request. The user is sent a copy. Files cannot be sent from here.')]
+#[IsReadOnly(false)]
+#[IsDestructive]
+#[IsOpenWorld]
 class CreateSupportRequest extends Tool
 {
     use MirrorsAnApiCapability;

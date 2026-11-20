@@ -11,10 +11,14 @@ use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
+use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
+use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
 use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
 #[Description('Return everything recorded about one contact as a single Markdown document: names, fields, relationships, life events, groups, reminders and loans. The values of sensitive fields are given only to a key holding the sensitive fields scope. The export is written to the account log.')]
-#[IsReadOnly]
+#[IsReadOnly(false)]
+#[IsDestructive(false)]
+#[IsOpenWorld(false)]
 class GetContactMarkdown extends Tool
 {
     use MirrorsAnApiCapability;

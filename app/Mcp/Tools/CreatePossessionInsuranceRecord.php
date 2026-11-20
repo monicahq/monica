@@ -12,8 +12,14 @@ use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
+use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
+use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
+use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
 #[Description('Record one policy period covering a possession: the insurer, the status and the insured value in its currency are required. When a policy renews with a new insured value, or the insurer changes, record a new one rather than changing the old one, so the history of the coverage is kept. The change is written to the account log.')]
+#[IsReadOnly(false)]
+#[IsDestructive(false)]
+#[IsOpenWorld(false)]
 class CreatePossessionInsuranceRecord extends Tool
 {
     use MirrorsAnApiCapability;

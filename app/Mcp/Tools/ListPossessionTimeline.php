@@ -11,10 +11,14 @@ use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
+use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
+use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
 use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
 #[Description('List the timeline of a possession, the newest first and undated last: one entry per transaction, insurance record, valuation, provenance event, maintenance record and location stay, and two for a loan that came back, each with its section, its date and the record it is read from. A section narrows it to that section.')]
 #[IsReadOnly]
+#[IsDestructive(false)]
+#[IsOpenWorld(false)]
 class ListPossessionTimeline extends Tool
 {
     use MirrorsAnApiCapability;

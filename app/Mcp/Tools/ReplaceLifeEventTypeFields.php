@@ -12,9 +12,13 @@ use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
+use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
+use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
 #[Description('Replace the groups of fields, the fields nobody grouped, or both, that a kind of life event asks for. Each of groups and fields that is sent replaces what was there, and each that is left out keeps what it holds. A field sent with its key keeps its identity, and a field missing from a list that is sent is no longer asked for. Life events already recorded keep what they were written with. The change is written to the account log.')]
+#[IsReadOnly(false)]
 #[IsDestructive]
+#[IsOpenWorld(false)]
 class ReplaceLifeEventTypeFields extends Tool
 {
     use MirrorsAnApiCapability;

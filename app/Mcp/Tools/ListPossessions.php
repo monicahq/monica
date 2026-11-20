@@ -11,10 +11,14 @@ use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
+use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
+use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
 use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
 #[Description('List the possessions of one vault, a page at a time, by name. The list can be narrowed by type, status, location or whether they are featured. Each possession carries its type, its location, the values of its fields and its current value. In compact form it carries only its name, status, type, location and current value.')]
 #[IsReadOnly]
+#[IsDestructive(false)]
+#[IsOpenWorld(false)]
 class ListPossessions extends Tool
 {
     use MirrorsAnApiCapability;

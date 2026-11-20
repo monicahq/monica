@@ -13,10 +13,14 @@ use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
+use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
+use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
 use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
 #[Description('For an administrator of the instance: list the reports AI agents sent with submit-feedback, newest first, in one status (new by default, accepted, fixed, dismissed or all), with the count of each status. Filter by text, kind or severity.')]
 #[IsReadOnly]
+#[IsDestructive(false)]
+#[IsOpenWorld(false)]
 class ListAgentFeedback extends Tool
 {
     use MirrorsAnApiCapability;

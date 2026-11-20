@@ -10,8 +10,14 @@ use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
+use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
+use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
+use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
 #[Description('Write a note in a vault\'s Knowledge. The text is Markdown: # for a heading, - for a bullet, - [ ] for a task, > for a quote. Without a folder it goes to the first folder, and a vault without any gets "General". A note links to no contact, possession or other note. The change is written to the account log.')]
+#[IsReadOnly(false)]
+#[IsDestructive(false)]
+#[IsOpenWorld(false)]
 class CreateKnowledgeNote extends Tool
 {
     use MirrorsAnApiCapability;

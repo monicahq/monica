@@ -10,10 +10,14 @@ use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
+use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
+use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
 use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
 #[Description('List every reminder of a vault, about its contacts and its groups, whatever its date: what it says, whom it is about, how often it comes back and its next date. Use it to answer "what are my reminders". To know what falls in the coming days instead, use list-vault-reminder-occurrences.')]
 #[IsReadOnly]
+#[IsDestructive(false)]
+#[IsOpenWorld(false)]
 class ListVaultReminders extends Tool
 {
     use MirrorsAnApiCapability;

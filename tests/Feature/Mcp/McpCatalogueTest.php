@@ -71,6 +71,12 @@ class McpCatalogueTest extends TestCase
         $response->assertOk();
         $response->assertJsonCount(count($this->registeredTools()), 'result.tools');
         $response->assertJsonMissingPath('result.nextCursor');
+
+        foreach ($response->json('result.tools') as $tool) {
+            foreach (['readOnlyHint', 'destructiveHint', 'openWorldHint'] as $hint) {
+                $this->assertIsBool($tool['annotations'][$hint] ?? null, "{$tool['name']} must declare {$hint}");
+            }
+        }
     }
 
     #[Test]
@@ -94,7 +100,10 @@ class McpCatalogueTest extends TestCase
             $tool = app($class);
             $annotations = $tool->annotations();
 
-            if (preg_match('/^(get|list)-/', $tool->name()) && ($annotations['readOnlyHint'] ?? false) !== true) {
+            // These reads also record a visit or an export in the account, beyond the MCP audit trail.
+            $recordsActivity = in_array($tool->name(), ['get-contact', 'get-contact-markdown'], true);
+
+            if (preg_match('/^(get|list|search|export)-/', $tool->name()) && ! $recordsActivity && ($annotations['readOnlyHint'] ?? false) !== true) {
                 $mislabelled[] = "{$tool->name()} only reads but is not marked read only";
             }
 
@@ -104,6 +113,65 @@ class McpCatalogueTest extends TestCase
         }
 
         $this->assertSame([], $mislabelled);
+    }
+
+    #[Test]
+    public function annotations_describe_mutations_and_external_effects_not_just_tool_names(): void
+    {
+        // Columns: read-only, destructive, open-world. A recorded transaction never sends money.
+        $expected = [
+            'list-vaults' => [true, false, false],
+            'search-records' => [true, false, false],
+            'export-possession-type' => [true, false, false],
+            'get-contact' => [false, true, false],
+            'get-contact-markdown' => [false, false, false],
+            'create-contact' => [false, false, false],
+            'create-knowledge-note' => [false, false, false],
+            'create-possession-transaction' => [false, false, false],
+            'import-possession-type' => [false, false, false],
+            'update-contact-name' => [false, true, false],
+            'update-contact-name-representations' => [false, true, false],
+            'update-possession-field' => [false, true, false],
+            'replace-life-event-type-fields' => [false, true, false],
+            'set-possession-values' => [false, true, false],
+            'move-possession' => [false, true, false],
+            'delete-group' => [false, true, false],
+            'restore-group' => [false, false, false],
+            'publish-template-version' => [false, true, false],
+            'answer-reminder-occurrence' => [false, true, false],
+            'answer-group-reminder-occurrence' => [false, true, false],
+            'create-contact-reminder' => [false, true, true],
+            'create-group-reminder' => [false, true, true],
+            'update-contact-reminder' => [false, true, true],
+            'update-group-reminder' => [false, true, true],
+            'create-support-request' => [false, true, true],
+            'add-support-message' => [false, true, true],
+            'send-support-reply' => [false, true, true],
+            'submit-feedback' => [false, true, true],
+            'add-support-note' => [false, false, false],
+            'change-support-request-status' => [false, true, false],
+            'solve-support-request' => [false, true, false],
+        ];
+
+        foreach ($this->registeredTools() as $class) {
+            $tool = app($class);
+
+            if (! isset($expected[$tool->name()])) {
+                continue;
+            }
+
+            $annotations = $tool->toArray()['annotations'];
+
+            $this->assertSame($expected[$tool->name()], [
+                $annotations['readOnlyHint'] ?? null,
+                $annotations['destructiveHint'] ?? null,
+                $annotations['openWorldHint'] ?? null,
+            ], $tool->name());
+
+            unset($expected[$tool->name()]);
+        }
+
+        $this->assertSame([], $expected, 'Every annotation example must refer to a registered tool.');
     }
 
     #[Test]

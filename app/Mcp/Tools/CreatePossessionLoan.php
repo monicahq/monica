@@ -13,8 +13,14 @@ use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
+use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
+use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
+use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
 #[Description('Record a possession lent to a contact of its vault, or borrowed from one, without any change of owner. Give an existing contact in contact_id, or a new contact to write down with the loan in new_contact. Only one loan of a possession can be active at a time. A loan in the provenance also records a change of custody when it starts and when it ends. The change is written to the account log.')]
+#[IsReadOnly(false)]
+#[IsDestructive(false)]
+#[IsOpenWorld(false)]
 class CreatePossessionLoan extends Tool
 {
     use MirrorsAnApiCapability;

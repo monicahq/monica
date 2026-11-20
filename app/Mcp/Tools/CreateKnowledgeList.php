@@ -10,8 +10,14 @@ use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
+use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
+use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
+use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
 #[Description('Start a list in a vault\'s Knowledge, with the columns "Name" and "Note". Rename or add columns with update-knowledge-list-column and create-knowledge-list-column, then add items with create-knowledge-list-item. Without a folder it goes to the first folder. The change is written to the account log.')]
+#[IsReadOnly(false)]
+#[IsDestructive(false)]
+#[IsOpenWorld(false)]
 class CreateKnowledgeList extends Tool
 {
     use MirrorsAnApiCapability;
