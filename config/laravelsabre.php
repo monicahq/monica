@@ -62,7 +62,7 @@ return [
     'middleware' => [
         StartSessionInLocalEnvironment::class,
         AuthenticateWithApiKeyOnBasicAuth::class,
-        Sample::rate(env('NIGHTWATCH_FEATURE_SAMPLE_RATE', env('NIGHTWATCH_REQUEST_SAMPLE_RATE', 1.0))),
+        Sample::rate((float) env('NIGHTWATCH_FEATURE_SAMPLE_RATE', env('NIGHTWATCH_REQUEST_SAMPLE_RATE', 1.0))),
         'flag:carddav',
         SetApiLocale::class,
         'throttle:api',
