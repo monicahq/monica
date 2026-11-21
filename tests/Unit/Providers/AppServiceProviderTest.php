@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Foundation\Events\DiagnosingHealth;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
@@ -24,6 +26,10 @@ use Laravel\Nightwatch\Records\Exception as ExceptionRecord;
 use Laravel\Nightwatch\Records\OutgoingRequest;
 use Laravel\Nightwatch\Records\Query;
 use Laravel\Nightwatch\Records\Request as RequestRecord;
+use Laravel\Nightwatch\SensorManager;
+use Laravel\Nightwatch\Sensors\RequestSensor;
+use Laravel\Nightwatch\State\RequestState;
+use Laravel\Nightwatch\UserProvider;
 use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use ReflectionProperty;
@@ -184,14 +190,17 @@ class AppServiceProviderTest extends TestCase
     }
 
     #[Test]
-    public function it_sends_nightwatch_the_id_of_who_is_signed_in_and_nothing_else(): void
+    public function it_sends_nightwatch_the_signed_in_user_infos(): void
     {
         $michael = User::factory()->create();
 
         $resolver = $this->app->make(Core::class)->userDetailsResolver;
 
         $this->assertIsCallable($resolver);
-        $this->assertSame(['id' => $michael->id], $resolver($michael));
+        $this->assertSame([
+            'id' => $michael->id,
+            'email' => $michael->email,
+        ], $resolver($michael));
     }
 
     #[Test]
@@ -244,51 +253,49 @@ class AppServiceProviderTest extends TestCase
     }
 
     #[Test]
-    public function it_drops_the_telegram_secret_header_from_a_nightwatch_request(): void
+    public function it_redacts_the_telegram_secret_and_the_address_headers_from_a_nightwatch_trace(): void
     {
-        $request = $this->nightwatchRequest('https://monica.test/telegram/webhook', [
-            'X-Telegram-Bot-Api-Secret-Token' => 'secret',
-            'Content-Type' => 'application/json',
+        $core = $this->app->make(Core::class);
+
+        $sensor = new RequestSensor(
+            requestState: new RequestState(
+                timestamp: 0,
+                trace: 'trace',
+                id: 'trace',
+                deploy: '',
+                server: '',
+                currentExecutionStageStartedAtMicrotime: 0,
+                user: new UserProvider(
+                    withAuth: fn (callable $callback): mixed => $callback($this->app->make('auth')),
+                    userDetailsResolverResolver: fn (): null => null,
+                    reportResolver: fn (): null => null,
+                ),
+            ),
+            capturePayload: false,
+            redactPayloadFields: [],
+            redactHeaders: new ReflectionProperty(SensorManager::class, 'redactHeaders')->getValue($core->sensor),
+        );
+
+        $request = Request::create('https://monica.test/telegram/webhook', 'POST', server: [
+            'HTTP_X_TELEGRAM_BOT_API_SECRET_TOKEN' => 'secret',
+            'HTTP_X_FORWARDED_FOR' => '203.0.113.7, 10.0.0.1',
+            'HTTP_X_REAL_IP' => '203.0.113.7',
+            'HTTP_FORWARDED' => 'for=203.0.113.7',
+            'HTTP_CF_CONNECTING_IP' => '203.0.113.7',
+            'HTTP_TRUE_CLIENT_IP' => '203.0.113.7',
+            'CONTENT_TYPE' => 'application/json',
         ]);
 
-        $this->assertFalse($request->headers->has('X-Telegram-Bot-Api-Secret-Token'));
-        $this->assertSame('application/json', $request->headers->get('Content-Type'));
-    }
+        [, $trace] = $sensor($request, new Response);
+        $headers = json_decode((string) $trace()['headers'], true);
 
-    #[Test]
-    public function it_withholds_the_address_from_a_nightwatch_request(): void
-    {
-        $request = $this->nightwatchRequest('https://monica.test/vaults', [
-            'X-Forwarded-For' => '203.0.113.7, 10.0.0.1',
-            'X-Real-IP' => '203.0.113.7',
-            'Forwarded' => 'for=203.0.113.7',
-            'CF-Connecting-IP' => '203.0.113.7',
-            'True-Client-IP' => '203.0.113.7',
-            'Content-Type' => 'application/json',
-        ]);
-
-        $this->assertSame('', $request->ip);
-        $this->assertFalse($request->headers->has('X-Forwarded-For'));
-        $this->assertFalse($request->headers->has('X-Real-IP'));
-        $this->assertFalse($request->headers->has('Forwarded'));
-        $this->assertFalse($request->headers->has('CF-Connecting-IP'));
-        $this->assertFalse($request->headers->has('True-Client-IP'));
-        $this->assertSame('application/json', $request->headers->get('Content-Type'));
-    }
-
-    #[Test]
-    public function it_identifies_a_nightwatch_user_by_id_only(): void
-    {
-        $user = User::factory()->make([
-            'id' => 42,
-            'first_name' => 'Michael',
-            'last_name' => 'Scott',
-            'email' => 'michael@dundermifflin.com',
-        ]);
-
-        $resolver = $this->app->make(Core::class)->userDetailsResolver;
-
-        $this->assertSame(['id' => 42], $resolver($user));
+        $this->assertSame(['[6 bytes redacted]'], $headers['x-telegram-bot-api-secret-token']);
+        $this->assertSame(['[21 bytes redacted]'], $headers['x-forwarded-for']);
+        $this->assertSame(['[11 bytes redacted]'], $headers['x-real-ip']);
+        $this->assertSame(['[15 bytes redacted]'], $headers['forwarded']);
+        $this->assertSame(['[11 bytes redacted]'], $headers['cf-connecting-ip']);
+        $this->assertSame(['[11 bytes redacted]'], $headers['true-client-ip']);
+        $this->assertSame(['application/json'], $headers['content-type']);
     }
 
     #[Test]

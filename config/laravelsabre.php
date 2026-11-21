@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Http\Middleware\AuthenticateWithApiKeyOnBasicAuth;
 use App\Http\Middleware\SetApiLocale;
 use App\Http\Middleware\StartSessionInLocalEnvironment;
+use Laravel\Nightwatch\Http\Middleware\Sample;
 
 return [
 
@@ -61,6 +62,7 @@ return [
     'middleware' => [
         StartSessionInLocalEnvironment::class,
         AuthenticateWithApiKeyOnBasicAuth::class,
+        Sample::rate(env('NIGHTWATCH_FEATURE_SAMPLE_RATE', env('NIGHTWATCH_REQUEST_SAMPLE_RATE', 1.0))),
         'flag:carddav',
         SetApiLocale::class,
         'throttle:api',

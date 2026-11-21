@@ -382,7 +382,10 @@ class AppServiceProvider extends ServiceProvider
      */
     private function configureNightwatch(): void
     {
-        Nightwatch::user(fn (Authenticatable $user): array => ['id' => $user->getAuthIdentifier()]);
+        Nightwatch::user(fn (Authenticatable $user): array => $user instanceof User ? [
+            'id' => $user->getAuthIdentifier(),
+            'email' => $user->email,
+        ] : []);
 
         Event::listen(DiagnosingHealth::class, fn () => Nightwatch::dontSample());
 
@@ -396,13 +399,7 @@ class AppServiceProvider extends ServiceProvider
                 ['***', '$1***'],
                 $request->url,
             ) ?? $request->url;
-            $request->headers->remove('X-Telegram-Bot-Api-Secret-Token');
-            $request->ip = '';
-            $request->headers->remove('X-Forwarded-For');
-            $request->headers->remove('X-Real-IP');
-            $request->headers->remove('Forwarded');
-            $request->headers->remove('CF-Connecting-IP');
-            $request->headers->remove('True-Client-IP');
+            $request->ip = '[redacted]';
         });
 
         Nightwatch::redactOutgoingRequests(function (OutgoingRequest $outgoingRequest): void {

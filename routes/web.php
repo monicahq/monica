@@ -376,35 +376,40 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::put('vaults/{vault}/entities/{entityType}/{entity}', [EntityController::class, 'update'])->whereUuid('entity')->name('entities.update');
     Route::get('vaults/{vault}/entities/{entityType}/{entity}/{page?}', [EntityController::class, 'show'])->whereUuid('entity')->name('entities.show');
 
-    Route::get('vaults/{vault}/groups', [GroupController::class, 'index'])->middleware('flag:groups')->name('groups.index');
-    Route::get('vaults/{vault}/groups/new', [GroupController::class, 'new'])->middleware('flag:groups')->name('groups.new');
-    Route::post('vaults/{vault}/groups', [GroupController::class, 'create'])->middleware('flag:groups')->name('groups.create');
-    Route::get('vaults/{vault}/groups/{group}', [GroupController::class, 'show'])->middleware('flag:groups')->name('groups.show');
-    Route::get('vaults/{vault}/groups/{group}/edit', [GroupController::class, 'edit'])->middleware('flag:groups')->name('groups.edit');
-    Route::put('vaults/{vault}/groups/{group}', [GroupController::class, 'update'])->middleware('flag:groups')->name('groups.update');
-    Route::delete('vaults/{vault}/groups/{group}', [GroupController::class, 'destroy'])->middleware('flag:groups')->name('groups.destroy');
-    Route::get('vaults/{vault}/groups/{group}/vcard', [GroupVCardController::class, 'show'])->middleware(['flag:groups', 'flag:vcard-export'])->name('groups.vcard.show');
-    Route::put('vaults/{vault}/groups/{groupUuid}/restoration', [GroupRestorationController::class, 'update'])->middleware('flag:groups')->whereUuid('groupUuid')->name('groups.restoration.update');
-    Route::get('vaults/{vault}/groups/{group}/members', [GroupMemberController::class, 'index'])->middleware('flag:groups')->name('groups.members.index');
-    Route::get('vaults/{vault}/groups/{group}/members/new', [GroupMemberController::class, 'new'])->middleware('flag:groups')->name('groups.members.new');
-    Route::get('vaults/{vault}/groups/{group}/members/candidates', [GroupMemberCandidateController::class, 'index'])->middleware('flag:groups')->name('groups.memberCandidates.index');
-    Route::post('vaults/{vault}/groups/{group}/members', [GroupMemberController::class, 'create'])->middleware('flag:groups')->name('groups.members.create');
-    Route::get('vaults/{vault}/groups/{group}/members/{membership}/edit', [GroupMemberController::class, 'edit'])->middleware('flag:groups')->name('groups.members.edit');
-    Route::put('vaults/{vault}/groups/{group}/members/{membership}', [GroupMemberController::class, 'update'])->middleware('flag:groups')->name('groups.members.update');
-    Route::delete('vaults/{vault}/groups/{group}/members/{membership}', [GroupMemberController::class, 'destroy'])->middleware('flag:groups')->name('groups.members.destroy');
-    Route::post('vaults/{vault}/groups/{group}/life-events', [GroupLifeEventController::class, 'create'])->middleware('flag:groups')->name('groups.lifeEvents.create');
-    Route::post('vaults/{vault}/groups/{group}/notes', [GroupNoteController::class, 'create'])->middleware('flag:groups')->name('groups.notes.create');
-    Route::get('vaults/{vault}/groups/{group}/notes/{groupNote}/edit', [GroupNoteController::class, 'edit'])->middleware('flag:groups')->name('groups.notes.edit');
-    Route::put('vaults/{vault}/groups/{group}/notes/{groupNote}', [GroupNoteController::class, 'update'])->middleware('flag:groups')->name('groups.notes.update');
-    Route::delete('vaults/{vault}/groups/{group}/notes/{groupNote}', [GroupNoteController::class, 'destroy'])->middleware('flag:groups')->name('groups.notes.destroy');
-    Route::get('vaults/{vault}/groups/{group}/reminders/new', [GroupReminderController::class, 'new'])->middleware('flag:groups')->name('groups.reminders.new');
-    Route::post('vaults/{vault}/groups/{group}/reminders', [GroupReminderController::class, 'create'])->middleware('flag:groups')->name('groups.reminders.create');
-    Route::get('vaults/{vault}/groups/{group}/reminders/{reminder}/edit', [GroupReminderController::class, 'edit'])->middleware('flag:groups')->whereUuid('reminder')->name('groups.reminders.edit');
-    Route::put('vaults/{vault}/groups/{group}/reminders/{reminder}', [GroupReminderController::class, 'update'])->middleware('flag:groups')->whereUuid('reminder')->name('groups.reminders.update');
-    Route::delete('vaults/{vault}/groups/{group}/reminders/{reminder}', [GroupReminderController::class, 'destroy'])->middleware('flag:groups')->whereUuid('reminder')->name('groups.reminders.destroy');
-    Route::get('vaults/{vault}/groups/{group}/files', [GroupFileController::class, 'index'])->middleware(['flag:groups', 'flag:file-upload'])->name('groups.files.index');
-    Route::post('vaults/{vault}/groups/{group}/files', [GroupFileController::class, 'create'])->middleware(['flag:groups', 'flag:file-upload'])->name('groups.files.create');
-    Route::delete('vaults/{vault}/groups/{group}/files/{groupFile}', [GroupFileController::class, 'destroy'])->middleware(['flag:groups', 'flag:file-upload'])->name('groups.files.destroy');
+    Route::middleware(['flag:groups'])->group(function () {
+        Route::get('vaults/{vault}/groups', [GroupController::class, 'index'])->name('groups.index');
+        Route::get('vaults/{vault}/groups/new', [GroupController::class, 'new'])->name('groups.new');
+        Route::post('vaults/{vault}/groups', [GroupController::class, 'create'])->name('groups.create');
+        Route::get('vaults/{vault}/groups/{group}', [GroupController::class, 'show'])->name('groups.show');
+        Route::get('vaults/{vault}/groups/{group}/edit', [GroupController::class, 'edit'])->name('groups.edit');
+        Route::put('vaults/{vault}/groups/{group}', [GroupController::class, 'update'])->name('groups.update');
+        Route::delete('vaults/{vault}/groups/{group}', [GroupController::class, 'destroy'])->name('groups.destroy');
+        Route::get('vaults/{vault}/groups/{group}/vcard', [GroupVCardController::class, 'show'])->middleware(['flag:vcard-export'])->name('groups.vcard.show');
+        Route::put('vaults/{vault}/groups/{groupUuid}/restoration', [GroupRestorationController::class, 'update'])->whereUuid('groupUuid')->name('groups.restoration.update');
+        Route::get('vaults/{vault}/groups/{group}/members', [GroupMemberController::class, 'index'])->name('groups.members.index');
+        Route::get('vaults/{vault}/groups/{group}/members/new', [GroupMemberController::class, 'new'])->name('groups.members.new');
+        Route::get('vaults/{vault}/groups/{group}/members/candidates', [GroupMemberCandidateController::class, 'index'])->name('groups.memberCandidates.index');
+        Route::post('vaults/{vault}/groups/{group}/members', [GroupMemberController::class, 'create'])->name('groups.members.create');
+        Route::get('vaults/{vault}/groups/{group}/members/{membership}/edit', [GroupMemberController::class, 'edit'])->name('groups.members.edit');
+        Route::put('vaults/{vault}/groups/{group}/members/{membership}', [GroupMemberController::class, 'update'])->name('groups.members.update');
+        Route::delete('vaults/{vault}/groups/{group}/members/{membership}', [GroupMemberController::class, 'destroy'])->name('groups.members.destroy');
+        Route::post('vaults/{vault}/groups/{group}/life-events', [GroupLifeEventController::class, 'create'])->name('groups.lifeEvents.create');
+        Route::post('vaults/{vault}/groups/{group}/notes', [GroupNoteController::class, 'create'])->name('groups.notes.create');
+        Route::get('vaults/{vault}/groups/{group}/notes/{groupNote}/edit', [GroupNoteController::class, 'edit'])->name('groups.notes.edit');
+        Route::put('vaults/{vault}/groups/{group}/notes/{groupNote}', [GroupNoteController::class, 'update'])->name('groups.notes.update');
+        Route::delete('vaults/{vault}/groups/{group}/notes/{groupNote}', [GroupNoteController::class, 'destroy'])->name('groups.notes.destroy');
+        Route::get('vaults/{vault}/groups/{group}/reminders/new', [GroupReminderController::class, 'new'])->name('groups.reminders.new');
+        Route::post('vaults/{vault}/groups/{group}/reminders', [GroupReminderController::class, 'create'])->name('groups.reminders.create');
+        Route::get('vaults/{vault}/groups/{group}/reminders/{reminder}/edit', [GroupReminderController::class, 'edit'])->whereUuid('reminder')->name('groups.reminders.edit');
+        Route::put('vaults/{vault}/groups/{group}/reminders/{reminder}', [GroupReminderController::class, 'update'])->whereUuid('reminder')->name('groups.reminders.update');
+        Route::delete('vaults/{vault}/groups/{group}/reminders/{reminder}', [GroupReminderController::class, 'destroy'])->whereUuid('reminder')->name('groups.reminders.destroy');
+
+        Route::middleware('flag:file-upload')->group(function () {
+            Route::get('vaults/{vault}/groups/{group}/files', [GroupFileController::class, 'index'])->name('groups.files.index');
+            Route::post('vaults/{vault}/groups/{group}/files', [GroupFileController::class, 'create'])->name('groups.files.create');
+            Route::delete('vaults/{vault}/groups/{group}/files/{groupFile}', [GroupFileController::class, 'destroy'])->name('groups.files.destroy');
+        });
+    });
 
     Route::get('vaults/{vault}/contacts/new', [ContactController::class, 'new'])->name('contacts.new');
     Route::post('vaults/{vault}/contacts', [ContactController::class, 'create'])->name('contacts.create');
@@ -524,10 +529,12 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::delete('vaults/{vault}/contacts/{contact}/relationships/{relationship}', [ContactRelationshipController::class, 'destroy'])
         ->name('contacts.relationships.destroy');
 
-    Route::get('vaults/{vault}/contacts/{contact}/groups/edit', [ContactGroupController::class, 'edit'])->middleware('flag:groups')->name('contacts.groups.edit');
-    Route::put('vaults/{vault}/contacts/{contact}/groups', [ContactGroupController::class, 'update'])->middleware('flag:groups')->name('contacts.groups.update');
-    Route::get('vaults/{vault}/contacts/{contact}/groups/new', [ContactGroupController::class, 'new'])->middleware('flag:groups')->name('contacts.groups.new');
-    Route::post('vaults/{vault}/contacts/{contact}/groups', [ContactGroupController::class, 'create'])->middleware('flag:groups')->name('contacts.groups.create');
+    Route::middleware('flag:groups')->group(function () {
+        Route::get('vaults/{vault}/contacts/{contact}/groups/edit', [ContactGroupController::class, 'edit'])->name('contacts.groups.edit');
+        Route::put('vaults/{vault}/contacts/{contact}/groups', [ContactGroupController::class, 'update'])->name('contacts.groups.update');
+        Route::get('vaults/{vault}/contacts/{contact}/groups/new', [ContactGroupController::class, 'new'])->name('contacts.groups.new');
+        Route::post('vaults/{vault}/contacts/{contact}/groups', [ContactGroupController::class, 'create'])->name('contacts.groups.create');
+    });
 
     Route::get('vaults/{vault}/contacts/{contact}/reminders/new', [ContactReminderController::class, 'new'])->name('contacts.reminders.new');
     Route::get('vaults/{vault}/contacts/{contact}/reminder-form', [ContactReminderFormController::class, 'new'])->name('contacts.reminderForm.new');
