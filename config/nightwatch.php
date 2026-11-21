@@ -13,11 +13,11 @@ return [
     'redact_headers' => explode(',', env('NIGHTWATCH_REDACT_HEADERS', 'Authorization,Cookie,Proxy-Authorization,X-XSRF-TOKEN,X-Telegram-Bot-Api-Secret-Token,X-Forwarded-For,X-Real-IP,Forwarded,CF-Connecting-IP,True-Client-IP,')),
 
     'sampling' => [
-        'requests' => env('NIGHTWATCH_REQUEST_SAMPLE_RATE', 1.0),
-        'commands' => env('NIGHTWATCH_COMMAND_SAMPLE_RATE', 1.0),
-        'exceptions' => env('NIGHTWATCH_EXCEPTION_SAMPLE_RATE', 1.0),
-        'scheduled_tasks' => env('NIGHTWATCH_SCHEDULED_TASK_SAMPLE_RATE', 1.0),
-        'features' => env('NIGHTWATCH_FEATURE_SAMPLE_RATE', env('NIGHTWATCH_REQUEST_SAMPLE_RATE', 1.0)),
+        'requests' => (float) env('NIGHTWATCH_REQUEST_SAMPLE_RATE', 1.0),
+        'commands' => (float) env('NIGHTWATCH_COMMAND_SAMPLE_RATE', 1.0),
+        'exceptions' => (float) env('NIGHTWATCH_EXCEPTION_SAMPLE_RATE', 1.0),
+        'scheduled_tasks' => (float) env('NIGHTWATCH_SCHEDULED_TASK_SAMPLE_RATE', 1.0),
+        'features' => (float) env('NIGHTWATCH_FEATURE_SAMPLE_RATE', env('NIGHTWATCH_REQUEST_SAMPLE_RATE', 1.0)),
     ],
 
     'filtering' => [
