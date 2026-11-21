@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models;
 
+use App\Actions\CreateStructureVersionDraft;
+use App\Actions\PublishStructureVersion;
+use App\Enums\FieldTypeEnum;
 use App\Models\Entity;
 use App\Models\EntityType;
 use App\Models\StructureVersion;
+use App\Models\User;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -111,6 +116,22 @@ class EntityTypeTest extends TestCase
         VaultDefaultTemplate::factory()->forEntity($type)->create(['vault_id' => $vault->id]);
 
         $this->assertFalse($this->isConfigured($type, $vault));
+    }
+
+    #[Test]
+    public function it_starts_a_new_record_on_the_version_the_default_template_publishes_today(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $type = $this->typeIn($vault);
+        $first = $this->entityDefaultCarrying($vault, $type, ['Animal details' => ['species' => FieldTypeEnum::Text]]);
+        $second = new CreateStructureVersionDraft(user: $user, structureVersion: $first)->execute();
+        new PublishStructureVersion(user: $user, structureVersion: $second, changeNote: 'Dwight wants the breed too.')->execute();
+
+        $this->assertSame($second->id, $type->defaultVersionIn($vault)?->id);
+        $this->assertSame([$second->id], $type->versionsOnOfferIn($vault)->pluck('id')->all());
     }
 
     /** @param  array<string, mixed>  $attributes */

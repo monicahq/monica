@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\App\Vaults;
 
 use App\Actions\CreateEntity;
+use App\Actions\CreateStructureVersionDraft;
+use App\Actions\PublishStructureVersion;
 use App\Enums\FieldTypeEnum;
 use App\Models\Entity;
 use App\Models\EntityType;
@@ -238,6 +240,31 @@ class EntityControllerTest extends TestCase
         ])->assertRedirect(route('entities.index', ['vault' => $vault, 'entityType' => $type]));
 
         $this->assertDatabaseHas('entities', ['name' => 'Mose’s goat', 'structure_version_id' => $picked->id]);
+    }
+
+    #[Test]
+    public function it_writes_the_record_on_the_newest_version_of_the_vault_default(): void
+    {
+        Queue::fake();
+
+        [$user, $vault, $type] = $this->vaultWithType();
+        $first = $this->entityDefaultCarrying($vault, $type, ['Animal details' => ['species' => FieldTypeEnum::Text]]);
+        $second = new CreateStructureVersionDraft(user: $user, structureVersion: $first)->execute();
+        new PublishStructureVersion(user: $user, structureVersion: $second, changeNote: 'Dwight wants the breed too.')->execute();
+
+        $this->actingAs($user)->get(route('entities.new', ['vault' => $vault, 'entityType' => $type]))
+            ->assertStatus(200)
+            ->assertSee('name="structure_version_id" value="'.$second->id.'"', false);
+
+        $this->actingAs($user)->post(route('entities.create', ['vault' => $vault, 'entityType' => $type]), [
+            'name' => 'Mose’s goat',
+            'structure_version_id' => $second->id,
+            'fields' => [$second->inputFields()->firstOrFail()->id => 'Goat'],
+        ])
+            ->assertRedirect(route('entities.index', ['vault' => $vault, 'entityType' => $type]))
+            ->assertSessionHasNoErrors();
+
+        $this->assertDatabaseHas('entities', ['name' => 'Mose’s goat', 'structure_version_id' => $second->id]);
     }
 
     #[Test]

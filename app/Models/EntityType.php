@@ -160,6 +160,10 @@ class EntityType extends Model
      * when the vault has no default for it or when that default can no longer be used: a version
      * that is not published, or a template that was turned off. The type being turned off is a
      * separate question, asked by the policy.
+     *
+     * The vault default names one version, and publishing a newer version of the same template
+     * does not move it. A new record still starts on the version the template publishes today,
+     * which is the only one the form that adds a record can submit.
      */
     public function defaultVersionIn(Vault $vault): ?StructureVersion
     {
@@ -174,8 +178,11 @@ class EntityType extends Model
                         });
                     });
             })
+            ->with('structureVersion.structure.publishedVersion')
             ->first()
-            ?->structureVersion;
+            ?->structureVersion
+            ->structure
+            ->publishedVersion;
     }
 
     /**
