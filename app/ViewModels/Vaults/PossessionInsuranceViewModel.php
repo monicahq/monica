@@ -8,6 +8,7 @@ use App\Enums\CurrencyEnum;
 use App\Enums\DateFormatEnum;
 use App\Enums\PossessionInsuranceStatusEnum;
 use App\Helpers\AvailableLocales;
+use App\Helpers\FieldValueFormatter;
 use App\Helpers\PossessionValueFormatter;
 use App\Models\Possession;
 use App\Models\PossessionInsuranceRecord;
@@ -138,7 +139,7 @@ class PossessionInsuranceViewModel
                 'contactName' => $record->contact_name,
                 'avatarName' => $record->contact_name ?? $record->insurer,
                 'email' => $record->contact_email,
-                'phone' => $record->contact_phone,
+                'phone' => $record->contact_phone === null ? null : FieldValueFormatter::phone($record->contact_phone),
                 'tel' => $record->contact_phone === null ? null : str_replace(' ', '', $record->contact_phone),
                 'note' => $record->note,
                 'stamp' => $this->stamp($record),

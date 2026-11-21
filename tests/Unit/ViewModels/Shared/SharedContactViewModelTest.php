@@ -40,7 +40,7 @@ class SharedContactViewModelTest extends TestCase
         $sections = $this->viewModel($link, $contact)->sections();
 
         $this->assertSame(['Facts', 'Doctors'], array_column($sections, 'name'));
-        $this->assertSame([['label' => 'Lives', 'value' => 'Scranton']], $sections[0]['fields']);
+        $this->assertSame([['label' => 'Lives', 'value' => 'Scranton', 'lines' => [], 'kind' => null]], $sections[0]['fields']);
     }
 
     #[Test]
@@ -63,7 +63,7 @@ class SharedContactViewModelTest extends TestCase
 
         $sections = $this->viewModel($this->linkOnto($contact), $contact)->sections();
 
-        $this->assertSame([['label' => 'Lives', 'value' => 'Scranton']], $sections[0]['fields']);
+        $this->assertSame([['label' => 'Lives', 'value' => 'Scranton', 'lines' => [], 'kind' => null]], $sections[0]['fields']);
     }
 
     #[Test]
@@ -127,7 +127,7 @@ class SharedContactViewModelTest extends TestCase
 
         $sections = $this->viewModel($link, $contact, 'work')->sections();
 
-        $this->assertSame([['label' => 'Employer', 'value' => 'Dunder Mifflin']], $sections[0]['fields']);
+        $this->assertSame([['label' => 'Employer', 'value' => 'Dunder Mifflin', 'lines' => [], 'kind' => null]], $sections[0]['fields']);
     }
 
     #[Test]
@@ -203,6 +203,23 @@ class SharedContactViewModelTest extends TestCase
         $viewModel = $this->viewModel($link, $contact);
 
         $this->assertStringContainsString(now()->addDays(30)->isoFormat('LL'), $viewModel->terms());
+    }
+
+    #[Test]
+    public function it_hands_an_address_over_as_the_lines_of_its_country(): void
+    {
+        $contact = $this->sharedContact();
+        $field = Field::query()->where('label', 'Lives')->firstOrFail();
+        $field->update(['type' => FieldTypeEnum::Address]);
+        FieldValue::query()->where('field_id', $field->id)->update([
+            'value_string' => null,
+            'value_json' => ['street' => '1725 Slough Avenue', 'city' => 'Scranton', 'region' => 'PA', 'postal_code' => '18505', 'country' => 'United States'],
+        ]);
+        $link = $this->linkOnto($contact);
+
+        $fields = $this->viewModel($link, $contact->refresh())->sections()[0]['fields'];
+
+        $this->assertSame(['1725 Slough Avenue', 'Scranton, PA 18505', 'United States'], $fields[0]['lines']);
     }
 
     #[Test]

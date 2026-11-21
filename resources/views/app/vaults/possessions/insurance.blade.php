@@ -160,7 +160,7 @@
                   @if ($record['phone'] !== null)
                     <span class="flex items-center gap-1.5">
                       <span class="text-muted">{{ __('Phone') }}</span>
-                      <x-link :href="'tel:'.$record['tel']" :turbo="false">{{ $record['phone'] }}</x-link>
+                      <x-link :href="'tel:'.$record['tel']" :turbo="false" dir="ltr">{{ $record['phone'] }}</x-link>
                     </span>
                   @endif
                 </div>

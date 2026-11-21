@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Api;
 
+use App\Enums\ValueListEnum;
 use App\Models\User;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
@@ -42,8 +43,8 @@ class ValueListControllerTest extends TestCase
             'attributes' => [
                 'name' => 'Departments',
                 'items' => [
-                    ['id' => $departments->items()->where('label', 'Sales')->value('id'), 'label' => 'Sales'],
-                    ['id' => $departments->items()->where('label', 'Accounting')->value('id'), 'label' => 'Accounting'],
+                    ['id' => $departments->items()->where('label', 'Sales')->value('id'), 'label' => 'Sales', 'country_code' => null],
+                    ['id' => $departments->items()->where('label', 'Accounting')->value('id'), 'label' => 'Accounting', 'country_code' => null],
                 ],
             ],
         ]);
@@ -62,5 +63,21 @@ class ValueListControllerTest extends TestCase
             ->assertOk()
             ->assertDontSee('Vance Refrigeration models')
             ->assertDontSee('beet varieties');
+    }
+
+    #[Test]
+    public function it_gives_each_country_its_code(): void
+    {
+        $user = User::factory()->create();
+        $countries = ValueList::factory()->create(['account_id' => $user->account_id, 'key' => ValueListEnum::Countries->value]);
+        $japan = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $countries->id, 'label' => 'Japan', 'country_code' => 'JP']);
+        $france = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $countries->id, 'key' => 'fr', 'label' => 'France']);
+
+        Sanctum::actingAs($user);
+
+        $this->json('GET', '/api/v1/value-lists', ['per_page' => 100])
+            ->assertOk()
+            ->assertJsonFragment(['id' => $japan->id, 'label' => 'Japan', 'country_code' => 'JP'])
+            ->assertJsonFragment(['id' => $france->id, 'label' => 'France', 'country_code' => 'FR']);
     }
 }

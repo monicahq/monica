@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Actions;
 
 use App\Enums\UserActionEnum;
+use App\Enums\ValueListEnum;
 use App\Helpers\TextSanitizer;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
@@ -15,6 +16,7 @@ use App\Models\User;
 use App\Models\ValueListItem;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use InvalidArgumentException;
 
 /**
  * Rename a choice, or change how it is drawn.
@@ -31,6 +33,7 @@ class UpdateValueListItem
         private ?string $description = null,
         private ?string $colour = null,
         private ?string $icon = null,
+        private ?string $countryCode = null,
     ) {}
 
     public function execute(): ValueListItem
@@ -50,12 +53,17 @@ class UpdateValueListItem
         $this->description = TextSanitizer::nullablePlainText($this->description);
         $this->colour = mb_strtolower(TextSanitizer::nullablePlainText($this->colour) ?? '') ?: null;
         $this->icon = TextSanitizer::nullablePlainText($this->icon);
+        $this->countryCode = mb_strtoupper(TextSanitizer::nullablePlainText($this->countryCode) ?? '') ?: null;
     }
 
     private function validate(): void
     {
         if ($this->item->account_id !== $this->user->account_id) {
             throw new ModelNotFoundException('This value is in another account.');
+        }
+
+        if ($this->countryCode !== null && $this->item->valueList->key !== ValueListEnum::Countries->value) {
+            throw new InvalidArgumentException('Only a country carries a country code.');
         }
     }
 
@@ -92,6 +100,7 @@ class UpdateValueListItem
             'description' => $this->item->description,
             'colour' => $this->item->colour,
             'icon' => $this->item->icon,
+            'country_code' => $this->item->country_code,
         ];
 
         $this->item->label = $this->label;
@@ -99,6 +108,7 @@ class UpdateValueListItem
         $this->item->description = $this->description;
         $this->item->colour = $this->colour;
         $this->item->icon = $this->icon;
+        $this->item->country_code = $this->countryCode;
         $this->item->save();
 
         foreach ($before as $field => $value) {

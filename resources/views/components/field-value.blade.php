@@ -40,9 +40,15 @@
       default => null,
   };
 
-  $line = $type === FieldTypeEnum::Address
-      ? FieldValueFormatter::addressLine($value?->value_json)
-      : $value?->value_string;
+  $addressLines = $type === FieldTypeEnum::Address && $value !== null
+      ? FieldValueFormatter::addressLines($value->value_json, (int) $value->account_id)
+      : [];
+
+  $line = match (true) {
+      $type === FieldTypeEnum::Address => $addressLines === [] ? null : implode(', ', $addressLines),
+      $type === FieldTypeEnum::Phone && filled($value?->value_string) => FieldValueFormatter::phone($value->value_string),
+      default => $value?->value_string,
+  };
 @endphp
 
 @switch(true)
@@ -106,7 +112,15 @@
 
   @case($type->usesALabelList() && $line !== null)
     <span class="flex flex-wrap items-center gap-1.75">
-      <span class="text-base text-ink">{{ $line }}</span>
+      @if ($addressLines !== [])
+        <span class="flex flex-col text-base text-ink">
+          @foreach ($addressLines as $addressLine)
+            <span>{{ $addressLine }}</span>
+          @endforeach
+        </span>
+      @else
+        <span class="text-base text-ink" @if ($type === FieldTypeEnum::Phone) dir="ltr" @endif>{{ $line }}</span>
+      @endif
 
       @if ($kind !== null)
         <x-badge>{{ $kind }}</x-badge>

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Shared;
 
+use App\Enums\FieldTypeEnum;
 use App\Enums\VaultColourEnum;
 use App\Helpers\FieldValueFormatter;
 use App\Helpers\FlagState;
@@ -193,13 +194,14 @@ class SharedContactViewModel
             ->values();
     }
 
-    /** @return array<int, array{label: string, value: string}> */
+    /** @return array<int, array{label: string, value: string, lines: list<string>, kind: string|null}> */
     private function fieldsIn(StructureVersionSection $row): array
     {
         return $this->readableIn($row)
             ->map(fn (Field $field): array => [
                 'label' => $field->label,
                 'value' => $this->valueOf($field),
+                ...$this->addressOf($field),
             ])
             ->filter(fn (array $field): bool => $field['value'] !== '')
             ->values()
@@ -235,6 +237,25 @@ class SharedContactViewModel
         }
 
         return $this->formatter()?->format($value) ?? '';
+    }
+
+    /**
+     * An address reads on its own lines, with what it is for beside it.
+     *
+     * @return array{lines: list<string>, kind: string|null}
+     */
+    private function addressOf(Field $field): array
+    {
+        $value = $this->values()->get($field->id);
+
+        if ($field->type !== FieldTypeEnum::Address || $value === null) {
+            return ['lines' => [], 'kind' => null];
+        }
+
+        return [
+            'lines' => FieldValueFormatter::addressLines(is_array($value->value_json) ? $value->value_json : null, $value->account_id),
+            'kind' => $value->label_wording ?: $value->valueListItem?->label,
+        ];
     }
 
     /** @return Collection<int, FieldValue> */

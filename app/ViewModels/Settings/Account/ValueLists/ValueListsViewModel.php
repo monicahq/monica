@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Settings\Account\ValueLists;
 
+use App\Enums\ValueListEnum;
 use App\Models\User;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
@@ -35,6 +36,7 @@ class ValueListsViewModel
                 'canBeDeleted' => $this->user->can('delete', $list),
                 'deleteReason' => $this->reason('delete', $list),
                 'countLabel' => $this->countLabel($list->items->count()),
+                'holdsCountries' => $list->key === ValueListEnum::Countries->value,
                 'values' => $list->items
                     ->map(fn (ValueListItem $item): array => [
                         'id' => $item->id,
@@ -44,6 +46,8 @@ class ValueListsViewModel
                         'usageLabel' => $this->usageLabel($item),
                         'isEditing' => $this->editingItem?->is($item) ?? false,
                         'editUrl' => route('settings.valueListItems.edit', $item->id),
+                        'holdsACountry' => $list->key === ValueListEnum::Countries->value,
+                        'countryCode' => $list->key === ValueListEnum::Countries->value ? mb_strtoupper((string) ($item->country_code ?? $item->key)) : null,
                     ])
                     ->all(),
             ])

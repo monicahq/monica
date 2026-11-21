@@ -959,6 +959,7 @@ return [
                 ['name' => 'data[].attributes.items[]', 'type' => 'object', 'description' => 'One choice.'],
                 ['name' => 'data[].attributes.items[].id', 'type' => 'integer', 'description' => 'The id of the choice, which is what a field offering this list stores as its value.'],
                 ['name' => 'data[].attributes.items[].label', 'type' => 'string', 'description' => 'What the choice says.'],
+                ['name' => 'data[].attributes.items[].country_code', 'type' => 'string', 'description' => 'For a choice of the Countries list, its two letter ISO 3166 code, which picks the layout an address in that country is shown in. Null on every other list, and on a country nobody gave a code yet.'],
                 ['name' => 'meta', 'type' => 'object', 'description' => 'Where you are in the collection.'],
                 ['name' => 'meta.page', 'type' => 'integer', 'description' => 'The page this is, counting from 1.'],
                 ['name' => 'meta.per_page', 'type' => 'integer', 'description' => 'How many one page holds, which is the size that was asked for once it has been brought into the allowed range.'],
@@ -984,9 +985,9 @@ return [
                         'attributes' => [
                             'name' => 'Genders',
                             'items' => [
-                                ['id' => 11, 'label' => 'Woman'],
-                                ['id' => 12, 'label' => 'Man'],
-                                ['id' => 13, 'label' => 'Non-binary'],
+                                ['id' => 11, 'label' => 'Woman', 'country_code' => null],
+                                ['id' => 12, 'label' => 'Man', 'country_code' => null],
+                                ['id' => 13, 'label' => 'Non-binary', 'country_code' => null],
                             ],
                         ],
                     ],

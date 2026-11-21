@@ -9,7 +9,7 @@
 <div
   id="{{ $target }}"
   x-merge="replace"
-  x-data="{ renaming: {{ $listErrors->has('name') ? 'true' : 'false' }}, adding: {{ $newValueErrors->has('label') ? 'true' : 'false' }} }"
+  x-data="{ renaming: {{ $listErrors->has('name') ? 'true' : 'false' }}, adding: {{ $newValueErrors->any() ? 'true' : 'false' }} }"
   class="dim-when-busy"
 >
   <x-panel :title="$list['name']" :subtitle="$list['countLabel']" :flush="true">
@@ -139,6 +139,19 @@
             maxlength="255"
             required
           />
+
+          @if ($list['holdsCountries'])
+            <x-input
+              :id="'list-'.$list['id'].'-country-code'"
+              name="country_code"
+              size="small"
+              :aria-label="__('Country code')"
+              :placeholder="__('Country code, such as JP')"
+              :error="$newValueErrors->get('country_code')"
+              class="max-w-48"
+              maxlength="2"
+            />
+          @endif
 
           <div class="flex items-center gap-2">
             <x-button size="small">{{ __('Add') }}</x-button>

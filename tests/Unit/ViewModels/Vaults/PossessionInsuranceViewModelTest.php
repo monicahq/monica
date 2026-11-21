@@ -134,6 +134,18 @@ class PossessionInsuranceViewModelTest extends TestCase
         $this->assertSame('Sabre Insurance covers $500. The latest valuation of this possession is $650. Ask Sabre Insurance to update the insured value before the next renewal.', $viewModel->underInsuranceWarning());
     }
 
+    #[Test]
+    public function it_groups_the_phone_number_of_the_insurer_and_dials_it_as_stored(): void
+    {
+        [$user, $dundie] = $this->dundie();
+        PossessionInsuranceRecord::factory()->create(['possession_id' => $dundie->id, 'contact_phone' => '+15705550123']);
+
+        $record = new PossessionInsuranceViewModel(user: $user, possession: $dundie)->records()[0];
+
+        $this->assertSame('+1 570-555-0123', $record['phone']);
+        $this->assertSame('+15705550123', $record['tel']);
+    }
+
     /** @return array{0: User, 1: Possession} */
     private function dundie(): array
     {

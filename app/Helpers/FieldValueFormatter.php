@@ -14,6 +14,10 @@ use App\Models\User;
 use App\Models\ValueListItem;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
+use CommerceGuys\Addressing\AddressFormat\AddressFormatRepository;
+use libphonenumber\NumberParseException;
+use libphonenumber\PhoneNumberFormat;
+use libphonenumber\PhoneNumberUtil;
 
 class FieldValueFormatter
 {
@@ -33,15 +37,89 @@ class FieldValueFormatter
         ];
     }
 
-    /** @param  array<string, mixed>|null  $parts */
-    public static function addressLine(?array $parts): ?string
+    /**
+     * The lines of an address in the layout of its country, with the stored country text last.
+     * An address whose country has no known code keeps the order its parts are stored in.
+     *
+     * @param  array<string, mixed>|null  $parts
+     * @return list<string>
+     */
+    public static function addressLines(?array $parts, int $accountId): array
     {
-        $filled = array_filter(array_map(
-            fn (string $part): string => mb_trim((string) ($parts[$part] ?? '')),
-            FieldValue::ADDRESS_PARTS,
-        ));
+        $filled = [];
 
-        return $filled === [] ? null : implode(', ', $filled);
+        foreach (FieldValue::ADDRESS_PARTS as $part) {
+            $text = mb_trim((string) ($parts[$part] ?? ''));
+
+            if ($text !== '') {
+                $filled[$part] = $text;
+            }
+        }
+
+        $code = isset($filled['country']) ? app(CountryCodes::class)->codeFor($accountId, $filled['country']) : null;
+
+        if ($code === null) {
+            return array_values($filled);
+        }
+
+        $tokens = [
+            '%addressLine1' => 'street',
+            '%addressLine2' => 'extended',
+            '%addressLine3' => 'po_box',
+            '%locality' => 'city',
+            '%administrativeArea' => 'region',
+            '%postalCode' => 'postal_code',
+        ];
+        $format = new AddressFormatRepository()->get($code)->getFormat();
+        $values = array_map(fn (string $part): string => $filled[$part] ?? '', $tokens);
+        $lines = [];
+
+        foreach (explode("\n", $format) as $formatLine) {
+            $line = self::fillFormatLine($formatLine, $values);
+
+            if ($line !== '') {
+                $lines[] = $line;
+            }
+        }
+
+        foreach ($tokens as $token => $part) {
+            if (isset($filled[$part]) && ! str_contains($format, $token)) {
+                $lines[] = $filled[$part];
+            }
+        }
+
+        $lines[] = $filled['country'];
+
+        return $lines;
+    }
+
+    /** @param  array<string, mixed>|null  $parts */
+    public static function addressLine(?array $parts, int $accountId): ?string
+    {
+        $lines = self::addressLines($parts, $accountId);
+
+        return $lines === [] ? null : implode(', ', $lines);
+    }
+
+    /**
+     * A number written with its international prefix, grouped the way its country groups it.
+     * Anything else, a number holding words included, reads as it was typed.
+     */
+    public static function phone(string $text): string
+    {
+        if (preg_match('/^\+[\d\s().\/-]+$/', mb_trim($text)) !== 1) {
+            return $text;
+        }
+
+        $numbers = PhoneNumberUtil::getInstance();
+
+        try {
+            $number = $numbers->parse($text, null);
+        } catch (NumberParseException) {
+            return $text;
+        }
+
+        return $numbers->isValidNumber($number) ? $numbers->format($number, PhoneNumberFormat::INTERNATIONAL) : $text;
     }
 
     public function format(FieldValue $value): ?string
@@ -97,9 +175,11 @@ class FieldValueFormatter
 
     private function labelled(FieldValue $value): ?string
     {
-        $written = $value->field->type === FieldTypeEnum::Address
-            ? self::addressLine(is_array($value->value_json) ? $value->value_json : null)
-            : $this->blankToNull($value->value_string);
+        $written = match ($value->field->type) {
+            FieldTypeEnum::Address => self::addressLine(is_array($value->value_json) ? $value->value_json : null, $value->account_id),
+            FieldTypeEnum::Phone => $this->blankToNull($value->value_string) === null ? null : self::phone((string) $value->value_string),
+            default => $this->blankToNull($value->value_string),
+        };
         $label = $this->blankToNull($value->label_wording) ?? $value->valueListItem?->label;
 
         if ($written === null || $label === null) {
@@ -107,6 +187,47 @@ class FieldValueFormatter
         }
 
         return __(':value (:label)', ['value' => $written, 'label' => $label]);
+    }
+
+    /**
+     * Fills one line of a postal format, dropping the separator an empty part leaves behind, the
+     * way the package's own formatter does.
+     *
+     * @param  array<string, string>  $values
+     */
+    private static function fillFormatLine(string $formatLine, array $values): string
+    {
+        $line = '';
+        $separator = '';
+        $skipped = false;
+
+        foreach (preg_split('/(%[a-zA-Z0-9]+)/', $formatLine, -1, PREG_SPLIT_DELIM_CAPTURE) ?: [] as $piece) {
+            if (! str_starts_with($piece, '%')) {
+                if (! $skipped) {
+                    $separator = $piece;
+                }
+
+                continue;
+            }
+
+            $value = $values[$piece] ?? '';
+
+            if ($value === '') {
+                $skipped = true;
+
+                continue;
+            }
+
+            if ($line !== '' || ! $skipped) {
+                $line .= $separator;
+            }
+
+            $line .= $value;
+            $separator = '';
+            $skipped = false;
+        }
+
+        return mb_trim((string) preg_replace('/\s\s+/', ' ', $line), ' -,');
     }
 
     private function blankToNull(?string $value): ?string

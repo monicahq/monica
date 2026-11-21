@@ -5,7 +5,7 @@
 --}}
 @php
   $valueErrors = $errors->getBag('value'.$value['id']);
-  $isEditing = $value['isEditing'] || $valueErrors->has('label');
+  $isEditing = $value['isEditing'] || $valueErrors->has('label') || $valueErrors->has('country_code');
   $rowId = 'value-'.$value['id'];
 @endphp
 
@@ -33,6 +33,20 @@
           required
           x-autofocus
         />
+
+        @if ($value['holdsACountry'])
+          <x-input
+            :id="'value-'.$value['id'].'-country-code'"
+            name="country_code"
+            size="small"
+            :value="$value['countryCode']"
+            :aria-label="__('Country code')"
+            :placeholder="__('Country code, such as JP')"
+            :error="$valueErrors->get('country_code')"
+            class="max-w-48"
+            maxlength="2"
+          />
+        @endif
 
         <div class="flex items-center gap-2">
           <x-button size="small">{{ __('Save') }}</x-button>

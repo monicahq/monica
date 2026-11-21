@@ -4,7 +4,7 @@ title: Change the choices a list offers
 description: Add, rename or retire the choices a field offers, such as contact categories and phone labels.
 slug: value-lists
 section: templates-and-customisation
-last_updated: 2026-09-29
+last_updated: 2026-11-19
 ---
 
 # Change the choices a list offers
@@ -22,6 +22,12 @@ Say you want a category for the people you know from Central Perk. In **Contact 
 ## Rename a value
 
 Choose **Edit** on the value, and type the new name. Everything that offers it, and every contact that already has it, shows the new name straight away.
+
+## Give a country its code
+
+Monica shows an address the way its country writes it: the postcode before the town in France, the town, state and ZIP code on one line in the United States. To know which country an address is in, it reads the country you picked, so each value of **Countries** carries the two letter code of its country.
+
+The countries that came with your account already have theirs. When you add one, such as Japan, type its code (`JP`) in **Country code** beside the name. You can add or change it later with **Edit**. An address in a country without a code keeps its parts in the order you typed them.
 
 ## Retire a value
 

@@ -44,6 +44,23 @@ class SharedContactControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_shows_an_address_on_the_lines_of_its_country(): void
+    {
+        $contact = $this->sharedContact();
+        $field = Field::query()->where('label', 'Lives')->firstOrFail();
+        $field->update(['type' => FieldTypeEnum::Address]);
+        FieldValue::query()->where('field_id', $field->id)->firstOrFail()->update([
+            'value_string' => null,
+            'value_json' => ['street' => '1725 Slough Avenue', 'city' => 'Scranton', 'region' => 'PA', 'postal_code' => '18505', 'country' => 'United States'],
+        ]);
+        $this->linkOnto($contact);
+
+        $this->get(route('share.show', ['token' => self::TOKEN]))
+            ->assertStatus(200)
+            ->assertSeeInOrder(['1725 Slough Avenue', 'Scranton, PA 18505', 'United States']);
+    }
+
+    #[Test]
     public function it_says_the_same_thing_about_an_unknown_token(): void
     {
         $this->get(route('share.show', ['token' => str_repeat('a', 64)]))

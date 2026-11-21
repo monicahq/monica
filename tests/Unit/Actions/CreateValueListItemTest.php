@@ -6,6 +6,7 @@ namespace Tests\Unit\Actions;
 
 use App\Actions\CreateValueListItem;
 use App\Enums\UserActionEnum;
+use App\Enums\ValueListEnum;
 use App\Jobs\LogUserAction;
 use App\Models\User;
 use App\Models\ValueList;
@@ -14,6 +15,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
+use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -133,5 +135,31 @@ class CreateValueListItemTest extends TestCase
         $this->assertEquals('Beet farmer', $item->label);
         $this->assertNull($item->description);
         $this->assertNull($item->colour);
+    }
+
+    #[Test]
+    public function it_stores_the_code_of_a_country_in_capitals(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $list = ValueList::factory()->create(['account_id' => $user->account_id, 'key' => ValueListEnum::Countries->value]);
+
+        $item = new CreateValueListItem(user: $user, valueList: $list, label: 'Japan', countryCode: 'jp')->execute();
+
+        $this->assertDatabaseHas('value_list_items', ['id' => $item->id, 'country_code' => 'JP']);
+    }
+
+    #[Test]
+    public function it_refuses_a_country_code_on_a_list_that_holds_no_countries(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $list = ValueList::factory()->create(['account_id' => $user->account_id, 'key' => ValueListEnum::Genders->value]);
+
+        $this->expectException(InvalidArgumentException::class);
+
+        new CreateValueListItem(user: $user, valueList: $list, label: 'Japan', countryCode: 'JP')->execute();
     }
 }

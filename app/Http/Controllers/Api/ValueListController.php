@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\ValueListEnum;
 use App\Http\Controllers\Controller;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
@@ -35,6 +36,9 @@ class ValueListController extends Controller
                     'items' => $list->items->map(fn (ValueListItem $item): array => [
                         'id' => $item->id,
                         'label' => $item->label,
+                        'country_code' => $list->key === ValueListEnum::Countries->value && ($item->country_code ?? $item->key) !== null
+                            ? mb_strtoupper((string) ($item->country_code ?? $item->key))
+                            : null,
                     ])->all(),
                 ],
             ], $lists->items()),

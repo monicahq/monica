@@ -7,6 +7,7 @@ namespace Tests\Unit\Actions;
 use App\Actions\UpdateValueListItem;
 use App\Enums\PhoneLabelEnum;
 use App\Enums\UserActionEnum;
+use App\Enums\ValueListEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
 use App\Models\Entity;
@@ -18,6 +19,7 @@ use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
+use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -137,5 +139,38 @@ class UpdateValueListItemTest extends TestCase
         $this->assertTrue($engine->wasSent($dwight));
         $this->assertTrue($engine->wasSent($farm));
         $this->assertFalse($engine->wasSent($jim));
+    }
+
+    #[Test]
+    public function it_gives_a_country_its_code_and_logs_it(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $list = ValueList::factory()->create(['account_id' => $user->account_id, 'key' => ValueListEnum::Countries->value]);
+        $item = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'label' => 'Japan']);
+
+        new UpdateValueListItem(user: $user, item: $item, label: 'Japan', countryCode: 'jp')->execute();
+
+        $this->assertDatabaseHas('value_list_items', ['id' => $item->id, 'country_code' => 'JP']);
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->changes === ['country_code' => ['before' => null, 'after' => 'JP']],
+        );
+    }
+
+    #[Test]
+    public function it_refuses_a_country_code_on_a_list_that_holds_no_countries(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $list = ValueList::factory()->create(['account_id' => $user->account_id, 'key' => ValueListEnum::Genders->value]);
+        $item = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id]);
+
+        $this->expectException(InvalidArgumentException::class);
+
+        new UpdateValueListItem(user: $user, item: $item, label: 'Japan', countryCode: 'JP')->execute();
     }
 }

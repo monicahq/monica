@@ -82,7 +82,7 @@ class FieldValueTest extends TestCase
         $value->value_list_item_id = $work->id;
 
         $this->render($field, $value, '1725 Slough Avenue, Scranton, USA (Work)')
-            ->assertSeeInOrder(['1725 Slough Avenue, Scranton, USA', 'Work'])
+            ->assertSeeInOrder(['1725 Slough Avenue', 'Scranton', 'USA', 'Work'])
             ->assertDontSee('(Work)');
     }
 
@@ -95,7 +95,7 @@ class FieldValueTest extends TestCase
         $value->value_json = ['street' => '1725 Slough Avenue', 'city' => 'Scranton'];
 
         $this->render($field, $value, '1725 Slough Avenue, Scranton')
-            ->assertSee('1725 Slough Avenue, Scranton');
+            ->assertSeeInOrder(['1725 Slough Avenue', 'Scranton']);
     }
 
     #[Test]

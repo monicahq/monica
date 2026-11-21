@@ -29,6 +29,7 @@ use Override;
  * @property int $account_id
  * @property int $value_list_id
  * @property string|null $key
+ * @property string|null $country_code
  * @property string $label
  * @property string|null $label_translation_key
  * @property string|null $description
@@ -48,6 +49,7 @@ use Override;
     'account_id',
     'value_list_id',
     'key',
+    'country_code',
     'label',
     'label_translation_key',
     'description',

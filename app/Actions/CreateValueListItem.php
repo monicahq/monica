@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace App\Actions;
 
 use App\Enums\UserActionEnum;
+use App\Enums\ValueListEnum;
 use App\Helpers\TextSanitizer;
 use App\Jobs\LogUserAction;
 use App\Models\User;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use InvalidArgumentException;
 
 /**
  * Add a choice to a list.
@@ -26,6 +28,7 @@ class CreateValueListItem
         private ?string $description = null,
         private ?string $colour = null,
         private ?string $icon = null,
+        private ?string $countryCode = null,
     ) {}
 
     public function execute(): ValueListItem
@@ -44,6 +47,7 @@ class CreateValueListItem
         $this->description = TextSanitizer::nullablePlainText($this->description);
         $this->colour = mb_strtolower(TextSanitizer::nullablePlainText($this->colour) ?? '') ?: null;
         $this->icon = TextSanitizer::nullablePlainText($this->icon);
+        $this->countryCode = mb_strtoupper(TextSanitizer::nullablePlainText($this->countryCode) ?? '') ?: null;
     }
 
     private function validate(): void
@@ -53,6 +57,10 @@ class CreateValueListItem
         }
 
         $this->user->authorize('addItem', $this->valueList);
+
+        if ($this->countryCode !== null && $this->valueList->key !== ValueListEnum::Countries->value) {
+            throw new InvalidArgumentException('Only a country carries a country code.');
+        }
     }
 
     private function create(): void
@@ -64,6 +72,7 @@ class CreateValueListItem
         $this->item = $this->valueList->items()->create([
             'account_id' => $this->user->account_id,
             'key' => null,
+            'country_code' => $this->countryCode,
             'label' => $this->label,
             'label_translation_key' => null,
             'description' => $this->description,

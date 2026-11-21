@@ -275,9 +275,94 @@ class FieldValueFormatterTest extends TestCase
     #[Test]
     public function it_joins_nothing_out_of_an_address_whose_parts_are_all_empty(): void
     {
-        $this->assertNull(FieldValueFormatter::addressLine(['street' => '', 'city' => ' ']));
-        $this->assertNull(FieldValueFormatter::addressLine([]));
-        $this->assertNull(FieldValueFormatter::addressLine(null));
+        $this->assertNull(FieldValueFormatter::addressLine(parts: ['street' => '', 'city' => ' '], accountId: 1));
+        $this->assertNull(FieldValueFormatter::addressLine(parts: [], accountId: 1));
+        $this->assertNull(FieldValueFormatter::addressLine(parts: null, accountId: 1));
+    }
+
+    #[Test]
+    public function it_lays_an_address_out_the_way_its_country_writes_it(): void
+    {
+        $user = User::factory()->create();
+        $parts = ['street' => '1725 Slough Avenue', 'city' => 'Scranton', 'region' => 'PA', 'postal_code' => '18505'];
+
+        $this->assertEquals(
+            ['1725 Slough Avenue', 'Scranton, PA 18505', 'United States'],
+            FieldValueFormatter::addressLines(parts: [...$parts, 'country' => 'United States'], accountId: $user->account_id),
+        );
+        $this->assertEquals(
+            ['1725 Slough Avenue', '18505 Scranton', 'PA', 'France'],
+            FieldValueFormatter::addressLines(parts: [...$parts, 'country' => 'France'], accountId: $user->account_id),
+        );
+    }
+
+    #[Test]
+    public function it_drops_the_separator_a_missing_part_leaves_in_a_layout(): void
+    {
+        $user = User::factory()->create();
+
+        $this->assertEquals(
+            ['Scranton, 18505', 'US'],
+            FieldValueFormatter::addressLines(parts: ['city' => 'Scranton', 'postal_code' => '18505', 'country' => 'US'], accountId: $user->account_id),
+        );
+        $this->assertEquals(
+            ['Paris', 'France'],
+            FieldValueFormatter::addressLines(parts: ['city' => 'Paris', 'country' => 'France'], accountId: $user->account_id),
+        );
+    }
+
+    #[Test]
+    public function it_keeps_the_stored_order_of_an_address_whose_country_is_unknown(): void
+    {
+        $user = User::factory()->create();
+        $parts = ['street' => 'Cair Paravel', 'city' => 'Narnia City', 'postal_code' => '18505'];
+
+        $this->assertEquals(
+            ['Cair Paravel', 'Narnia City', '18505', 'Narnia'],
+            FieldValueFormatter::addressLines(parts: [...$parts, 'country' => 'Narnia'], accountId: $user->account_id),
+        );
+        $this->assertEquals(
+            ['Cair Paravel', 'Narnia City', '18505'],
+            FieldValueFormatter::addressLines(parts: $parts, accountId: $user->account_id),
+        );
+    }
+
+    #[Test]
+    public function it_reads_an_address_on_one_line_in_the_order_of_its_lines(): void
+    {
+        $user = User::factory()->create();
+
+        $this->assertEquals('1725 Slough Avenue, 18505 Scranton, France', new FieldValueFormatter($user)->format(
+            $this->value($user, FieldTypeEnum::Address, [
+                'value_json' => ['street' => '1725 Slough Avenue', 'city' => 'Scranton', 'postal_code' => '18505', 'country' => 'France'],
+            ]),
+        ));
+    }
+
+    #[Test]
+    public function it_groups_a_phone_number_written_with_its_international_prefix(): void
+    {
+        $this->assertEquals('+33 6 12 34 56 78', FieldValueFormatter::phone('+33612345678'));
+        $this->assertEquals('+1 570-555-0123', FieldValueFormatter::phone('+15705550123'));
+    }
+
+    #[Test]
+    public function it_reads_any_other_phone_number_as_it_was_typed(): void
+    {
+        $this->assertEquals('06 12 34 56 78', FieldValueFormatter::phone('06 12 34 56 78'));
+        $this->assertEquals('ask Pam', FieldValueFormatter::phone('ask Pam'));
+        $this->assertEquals('+33612345678 (ask Pam)', FieldValueFormatter::phone('+33612345678 (ask Pam)'));
+        $this->assertEquals('+999123', FieldValueFormatter::phone('+999123'));
+    }
+
+    #[Test]
+    public function it_reads_a_phone_number_grouped_beside_its_label(): void
+    {
+        $user = User::factory()->create();
+
+        $this->assertEquals('+33 6 12 34 56 78', new FieldValueFormatter($user)->format(
+            $this->value($user, FieldTypeEnum::Phone, ['value_string' => '+33612345678']),
+        ));
     }
 
     #[Test]

@@ -59,7 +59,21 @@
         <x-panel :title="$section['name']" :icon="$section['icon']" :tint="$section['tint']" :flush="true">
           <x-detail-list label-width="minmax(0,170px)" label-style="caption">
             @foreach ($section['fields'] as $field)
-              <x-detail-list.row :label="$field['label']">{{ $field['value'] }}</x-detail-list.row>
+              <x-detail-list.row :label="$field['label']">
+                @if ($field['lines'] !== [])
+                  <span class="flex flex-col">
+                    @foreach ($field['lines'] as $addressLine)
+                      <span>{{ $addressLine }}</span>
+                    @endforeach
+
+                    @if ($field['kind'] !== null)
+                      <span class="text-muted">{{ $field['kind'] }}</span>
+                    @endif
+                  </span>
+                @else
+                  {{ $field['value'] }}
+                @endif
+              </x-detail-list.row>
             @endforeach
           </x-detail-list>
         </x-panel>

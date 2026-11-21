@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Settings\Account\ValueLists;
 
+use App\Enums\ValueListEnum;
 use App\Models\User;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
@@ -48,6 +49,62 @@ class ValueListItemControllerTest extends TestCase
 
         $this->actingAs($user)->post(route('settings.valueListItems.create', $list->id), [])
             ->assertSessionHasErrors('label', errorBag: "newValue{$list->id}");
+    }
+
+    #[Test]
+    public function it_refuses_a_country_code_that_names_no_country(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $list = ValueList::factory()->create(['account_id' => $user->account_id, 'key' => ValueListEnum::Countries->value]);
+
+        $this->actingAs($user)->post(route('settings.valueListItems.create', $list->id), ['label' => 'Japan', 'country_code' => 'XX1'])
+            ->assertSessionHasErrors('country_code', errorBag: "newValue{$list->id}");
+    }
+
+    #[Test]
+    public function it_gives_a_country_its_code_when_it_is_added_and_when_it_is_edited(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $list = ValueList::factory()->create(['account_id' => $user->account_id, 'key' => ValueListEnum::Countries->value]);
+
+        $this->actingAs($user)->post(route('settings.valueListItems.create', $list->id), ['label' => 'Japan', 'country_code' => 'jp'])
+            ->assertRedirect(route('settings.valueLists.index'));
+
+        $japan = ValueListItem::query()->where('value_list_id', $list->id)->where('label', 'Japan')->firstOrFail();
+        $this->assertSame('JP', $japan->country_code);
+
+        $this->actingAs($user)->put(route('settings.valueListItems.update', $japan->id), ['label' => 'Japan', 'country_code' => 'KR'])
+            ->assertRedirect(route('settings.valueLists.index'));
+
+        $this->assertSame('KR', $japan->refresh()->country_code);
+    }
+
+    #[Test]
+    public function it_asks_for_a_country_code_on_the_countries_list_only(): void
+    {
+        $user = User::factory()->create();
+        $countries = ValueList::factory()->create(['account_id' => $user->account_id, 'key' => ValueListEnum::Countries->value]);
+        $genders = ValueList::factory()->create(['account_id' => $user->account_id, 'key' => ValueListEnum::Genders->value]);
+        $japan = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $countries->id, 'label' => 'Japan', 'country_code' => 'JP']);
+        $woman = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $genders->id]);
+
+        $this->actingAs($user)->get(route('settings.valueLists.index'))
+            ->assertOk()
+            ->assertSee('id="list-'.$countries->id.'-country-code"', escape: false)
+            ->assertDontSee('id="list-'.$genders->id.'-country-code"', escape: false);
+
+        $this->actingAs($user)->get(route('settings.valueListItems.edit', $japan->id))
+            ->assertOk()
+            ->assertSee('id="value-'.$japan->id.'-country-code"', escape: false)
+            ->assertSee('value="JP"', escape: false);
+
+        $this->actingAs($user)->get(route('settings.valueListItems.edit', $woman->id))
+            ->assertOk()
+            ->assertDontSee('id="value-'.$woman->id.'-country-code"', escape: false);
     }
 
     #[Test]

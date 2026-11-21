@@ -6,6 +6,7 @@ namespace App\Providers;
 
 use App\Actions\VerifyPasskey;
 use App\Enums\SsoProviderEnum;
+use App\Helpers\CountryCodes;
 use App\Helpers\FlagState;
 use App\Helpers\InstanceSettings;
 use App\Helpers\LocaleCollation;
@@ -85,6 +86,8 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->configurePasskeys();
+
+        $this->app->scoped(CountryCodes::class);
 
         Passport::$deviceCodeGrantEnabled = false;
     }

@@ -7,6 +7,7 @@ namespace App\Http\Controllers\App\Settings\Account\ValueLists;
 use App\Actions\CreateValueListItem;
 use App\Actions\DestroyValueListItem;
 use App\Actions\UpdateValueListItem;
+use App\Helpers\CountryCodes;
 use App\Http\Controllers\Controller;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
@@ -14,20 +15,25 @@ use App\ViewModels\Settings\Account\ValueLists\ValueListsViewModel;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class ValueListItemController extends Controller
 {
     public function create(Request $request, ValueList $valueList): RedirectResponse
     {
+        $request->merge(['country_code' => mb_strtoupper($request->string('country_code')->trim()->value()) ?: null]);
+
         $validated = $request->validateWithBag("newValue{$valueList->id}", [
             'label' => ['required', 'string', 'max:255'],
+            'country_code' => ['nullable', 'string', 'size:2', Rule::in(CountryCodes::known())],
         ]);
 
         new CreateValueListItem(
             user: $request->user(),
             valueList: $valueList,
             label: $validated['label'],
+            countryCode: $validated['country_code'] ?? null,
         )->execute();
 
         return redirect()->route('settings.valueLists.index')
@@ -49,8 +55,11 @@ class ValueListItemController extends Controller
 
     public function update(Request $request, ValueListItem $valueListItem): RedirectResponse
     {
+        $request->merge(['country_code' => mb_strtoupper($request->string('country_code')->trim()->value()) ?: null]);
+
         $validated = $request->validateWithBag("value{$valueListItem->id}", [
             'label' => ['required', 'string', 'max:255'],
+            'country_code' => ['nullable', 'string', 'size:2', Rule::in(CountryCodes::known())],
         ]);
 
         new UpdateValueListItem(
@@ -60,6 +69,7 @@ class ValueListItemController extends Controller
             description: $valueListItem->description,
             colour: $valueListItem->colour,
             icon: $valueListItem->icon,
+            countryCode: $validated['country_code'] ?? null,
         )->execute();
 
         return redirect()->route('settings.valueLists.index')

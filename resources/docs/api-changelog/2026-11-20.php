@@ -67,5 +67,17 @@ return [
                 ['field' => 'value of a number field', 'change' => 'Changed', 'endpoints' => ['PUT /vaults/{vault}/contacts/{contact}/sections/{section}', 'POST /vaults/{vault}/life-events', 'PUT /vaults/{vault}/life-events/{lifeEvent}', 'POST /vaults/{vault}/groups/{group}/life-events', 'POST /vaults/{vault}/entity-types/{entityType}/entities']],
             ],
         ],
+        [
+            'id' => 'value-list-country-code',
+            'kind' => 'Added',
+            'group' => 'Templates',
+            'title' => 'Countries carry their code',
+            'summary' => 'Each choice returned by GET /value-lists now carries country_code: the two letter ISO 3166 code of a choice of the Countries list, and null on every other list. Addresses are shown in the layout of that country.',
+            'why' => 'An address reads the way its country writes it, and a country somebody added needed a way to say which country it is.',
+            'breaking' => false,
+            'changes' => [
+                ['field' => 'country_code', 'change' => 'Added', 'endpoints' => ['GET /value-lists']],
+            ],
+        ],
     ],
 ];
