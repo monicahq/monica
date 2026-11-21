@@ -35,11 +35,6 @@
         "artifact": "spec.md",
         "node": "draft-spec",
         "conditional": false
-      },
-      {
-        "artifact": "checklists/requirements.md",
-        "node": "quality-checklist",
-        "conditional": true
       }
     ],
     "tasks": [
@@ -50,5 +45,5 @@
       }
     ]
   },
-  "artifactCount": 8
+  "artifactCount": 7
 }

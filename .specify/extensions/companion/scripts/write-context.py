@@ -661,9 +661,8 @@ def mark_spec_complete(feature_dir: Path, by: str) -> Path | None:
     reaches it from the after-converge hook; the manual mark-complete command
     calls it too. The AI never hand-writes `completed`. `update_context` deliberately
     refuses to advance a spec whose status is already terminal (`implemented`),
-    so the final promotion needs this dedicated path. `currentStep` stays at
-    `implement` (the last real step), keeping the canonical invariant that the
-    last `history` entry's step equals `currentStep`.
+    so the final promotion needs this dedicated path. `currentStep` stays where
+    it was: `converge` when converge completes the spec, `implement` otherwise.
 
     Source state: promotes a spec that has finished implement (`status ==
     "implemented"`), and also one still `implementing` whose tasks are **all
@@ -701,9 +700,12 @@ def mark_spec_complete(feature_dir: Path, by: str) -> Path | None:
     # Fold any still-pending appended finishes into the json before the GC below
     # removes the events log — a straggler line appended after step-close would
     # otherwise be dropped. Idempotent and quiet (internal prerequisite); re-read
-    # so the folded entries are in scope.
+    # so the folded entries are in scope. A fold resets currentStep to implement, so the step that was current comes back.
+    step_before = ctx.get("currentStep")
     materialize_log(feature_dir, by, quiet=True)
     ctx = read_ctx(target)
+    if step_before:
+        ctx["currentStep"] = step_before
 
     log = canonical_log(ctx)
     fill_required(ctx, feature_dir, branch)
@@ -1457,6 +1459,8 @@ def main() -> int:
     _EVENT_NOOP = False
     event = _has_flag(argv, "--event")
     hook = event or _has_flag(argv, "--hook")
+    # Asking for the usage records nothing, so it leaves no trace line in whichever spec is active.
+    help_only = any(a in ("-h", "--help") for a in argv)
     # An event handler's stdout reaches the model and its stderr the person, so it keeps both to the trace.
     sys.stdout, sys.stderr = ((out_buf, err_buf) if event
                               else (_Tee(real_out, out_buf), _Tee(real_err, err_buf)))
@@ -1473,7 +1477,7 @@ def main() -> int:
         code = 1
     finally:
         sys.stdout, sys.stderr = real_out, real_err
-        if not _EVENT_NOOP:
+        if not _EVENT_NOOP and not help_only:
             _trace_call(argv, out_buf.getvalue(), err_buf.getvalue(),
                         int((time.monotonic() - started) * 1000))
     # A lifecycle hook is bookkeeping: it never fails the spec-kit command that fired it.

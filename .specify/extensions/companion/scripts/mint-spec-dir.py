@@ -88,7 +88,20 @@ class _ProjectLock:
         self.fh.close()
 
 
-def mint(root: Path, short_name: str, now: datetime | None = None, branches: bool = False) -> Path:
+def _claim(specs: Path, number: int, name: str) -> Path:
+    """The folder for a number the request named: refused when another folder already holds that number."""
+    taken = [e.name for e in specs.iterdir() if (m := SEQUENTIAL.match(e.name)) and int(m.group(1)) == number]
+    folder = specs / f"{number:03d}-{name}"
+    if any(t != folder.name for t in taken):
+        raise SystemExit(f"[companion] Spec number {number} is already taken by specs/{taken[0]}; no folder minted.")
+    if (folder / "spec.md").exists():
+        raise SystemExit(f"[companion] {folder.name} already holds a spec; no folder minted.")
+    folder.mkdir(exist_ok=True)
+    return folder
+
+
+def mint(root: Path, short_name: str, now: datetime | None = None, branches: bool = False,
+         number: int | None = None) -> Path:
     if not (root / ".specify").is_dir():
         raise SystemExit(f"[companion] {root} is not a Spec Kit project (no .specify/); no folder minted.")
     specs = root / "specs"
@@ -97,6 +110,10 @@ def mint(root: Path, short_name: str, now: datetime | None = None, branches: boo
     timestamped = _numbering(root) == "timestamp"
     claimed = _branch_names(root) if branches else []
     with _ProjectLock(root):
+        if number is not None:
+            folder = _claim(specs, number, name)
+            atomic_write(root / ".specify" / "feature.json", {"feature_directory": folder.relative_to(root).as_posix()})
+            return folder
         for _ in range(50):
             prefix = (now or datetime.now()).strftime("%Y%m%d-%H%M%S") if timestamped else f"{_next_number(specs, claimed):03d}"
             folder = specs / f"{prefix}-{name}"
@@ -118,9 +135,10 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--short-name", required=True, help="2–4 words naming the change")
     parser.add_argument("--branches", action="store_true", help="also count numbers that git branches already claim")
+    parser.add_argument("--number", type=int, help="the spec number the request named, used as given")
     args = parser.parse_args()
     root = _repo_root()
-    print(mint(root, args.short_name, branches=args.branches).relative_to(root).as_posix())
+    print(mint(root, args.short_name, branches=args.branches, number=args.number).relative_to(root).as_posix())
     return 0
 
 

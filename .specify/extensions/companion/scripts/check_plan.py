@@ -579,6 +579,10 @@ def check_text(text: str, label: str, root: Path, size: str | None = None, calls
         add("WARNING", "too-many-blocks", blocks[MAX_BLOCKS]["start"],
             f"{len(blocks)} call-path blocks, the budget is {MAX_BLOCKS}")
 
+    # A file the plan creates is cited with `**new**` once; every other line naming it, in any block, is accepted.
+    planned = {p[3] for b in blocks for _n, row in b["rows"]
+               if not isinstance(p := parse_row(row), str) and p[5]}
+
     cache: dict = {}
     for block in blocks:
         start = block["start"]
@@ -617,6 +621,11 @@ def check_text(text: str, label: str, root: Path, size: str | None = None, calls
                 if target.exists():
                     add("ERROR", "new-exists", lineno,
                         f"`{path}` already exists: drop `**new**` and cite the line")
+                continue
+            if path in planned and not target.exists():
+                if line is not None:
+                    add("ERROR", "malformed", lineno,
+                        f"`{path}` is created by this plan, so it has no line yet: write `@ {path}` alone")
                 continue
             if not target.is_file():
                 add("ERROR", "missing-file", lineno,

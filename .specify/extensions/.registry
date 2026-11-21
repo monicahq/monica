@@ -2,9 +2,9 @@
   "schema_version": "1.0",
   "extensions": {
     "companion": {
-      "version": "0.27.0",
+      "version": "0.28.0",
       "source": "local",
-      "manifest_hash": "sha256:1659a88136635fccc4ac2e84a1fffba1005cb378a50631e5a00dad05c0122e88",
+      "manifest_hash": "sha256:fd7829e5f90bfdfd9a8f8a918d44356b45a24db03ac75cfea0fbad7565dc7beb",
       "enabled": true,
       "priority": 10,
       "registered_commands": {
@@ -31,7 +31,7 @@
         ]
       },
       "registered_skills": [],
-      "installed_at": "2026-11-14T18:30:08.089602+00:00"
+      "installed_at": "2026-11-21T10:43:27.441067+00:00"
     },
     "bug": {
       "version": "1.0.2",
@@ -47,7 +47,7 @@
         ]
       },
       "registered_skills": [],
-      "installed_at": "2026-11-14T18:30:08.440281+00:00"
+      "installed_at": "2026-11-21T10:43:28.086460+00:00"
     },
     "assess": {
       "version": "1.0.2",
@@ -65,7 +65,7 @@
         ]
       },
       "registered_skills": [],
-      "installed_at": "2026-11-14T18:30:08.770628+00:00"
+      "installed_at": "2026-11-21T10:43:28.573744+00:00"
     },
     "archive": {
       "version": "1.4.0",
@@ -79,7 +79,7 @@
         ]
       },
       "registered_skills": [],
-      "installed_at": "2026-11-14T18:30:11.365111+00:00"
+      "installed_at": "2026-11-21T10:43:31.403529+00:00"
     }
   }
 }

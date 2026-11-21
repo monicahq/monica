@@ -34,4 +34,6 @@ Let `<step>` be this command's phase: `specify`, `plan`, `tasks`, or `implement`
 
   Those labels are the **before** pass's. In the **after** pass drop `Pre-` from the label and drop the closing wait line.
 
-For `specify`, branch creation is normally one of these `before_specify` hooks (the git extension); the spec directory and its files are always created by the command body itself.
+For `specify`, branch creation is normally one of these `before_specify` hooks (the git extension); the spec directory and its files are always created by the command body itself. **Skip a branch-creating hook (`speckit.git.feature`) when the run is already on a branch of its own**: `git rev-parse --abbrev-ref HEAD` names something other than the default branch (`main`, `master`, or what `origin/HEAD` points at), as in a worktree cut for this work. Say `stayed on <branch>` instead of emitting its block; a second branch would strand the work.
+
+For `implement`, the `after_` pass emits only the mandatory hooks. **Hold every optional one (a commit, a pull request) until converge has finished**, because converge can still append and build tasks; emit those blocks once converge reports, not before it.
