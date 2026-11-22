@@ -1,10 +1,10 @@
 ---
 id: life-events.timeline
 title: How the timeline works
-description: Learn why one life event appears on the page of everybody who took part, and in what order the timeline shows entries.
+description: Learn why one life event appears on the page of everybody who took part, how the timeline of a vault is organised, and in what order entries are shown.
 slug: the-timeline
 section: relationships-and-life-events
-last_updated: 2026-09-29
+last_updated: 2026-11-22
 ---
 
 # How the timeline works
@@ -29,9 +29,19 @@ Each contact’s timeline is on the **Overview** tab of their page, under **Time
 
 ::screenshot{label="The Overview tab of Chandler Bing’s page, with the Timeline grouped under 2010, 2009 and 2007, each entry showing its date, place, description and who else was there" src="1-contacts.show--timeline.webp"}
 
+## The timeline of a whole vault
+
+The dashboard of a vault has a timeline of its own, under **Timeline**. It holds the life events of everybody in the vault, one period at a time.
+
+On the left, a short list of periods: **Upcoming** first, for what is planned from today on, then every year that holds a life event, the most recent first. Each one says how many entries it holds. Choose a period to see only its life events, grouped by month. Upcoming events come nearest first, and the events of a year come most recent first. At the bottom, **Newer** and **Older** take you to the next period either way.
+
+Above the list, two choices narrow it down. **With anyone** lets you type a name and keep only the life events that person took part in. **All event types** keeps only one type, such as a wedding. The counts beside each period follow these choices, so you can see at once which years hold something. **Clear filters** puts both back.
+
+The dashboard only shows life events. To change or delete one, choose **Edit** on its entry: it opens the page of a person who took part.
+
 ## What order it is in
 
-The newest event comes first. Events are grouped by year, and each year says how many entries it holds. Within a year, the most recent date comes first.
+On a person’s page, the newest event comes first. Events are grouped by year, and each year says how many entries it holds. Within a year, the most recent date comes first.
 
 The timeline shows a page of entries at a time. At the bottom, choose **Load more** to go further back.
 

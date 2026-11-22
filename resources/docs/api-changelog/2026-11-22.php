@@ -6,6 +6,20 @@ return [
     'date' => '2026-11-22',
     'entries' => [
         [
+            'id' => 'life-event-slices',
+            'kind' => 'Added',
+            'group' => 'Life events',
+            'title' => 'Life events by year, by type, and what is coming up',
+            'summary' => 'GET /vaults/{vault}/life-events takes slice, upcoming or a year, and life_event_type, beside contact. GET /vaults/{vault}/life-event-slices counts the life events of every slice under the same filters, in one answer.',
+            'why' => 'The dashboard of a vault now shows its timeline a year at a time, filtered by a person and a type, and the API offers the same reading.',
+            'breaking' => false,
+            'changes' => [
+                ['field' => 'slice', 'change' => 'Added', 'endpoints' => ['GET /vaults/{vault}/life-events']],
+                ['field' => 'life_event_type', 'change' => 'Added', 'endpoints' => ['GET /vaults/{vault}/life-events']],
+                ['field' => 'life-event-slices', 'change' => 'Added', 'endpoints' => ['GET /vaults/{vault}/life-event-slices']],
+            ],
+        ],
+        [
             'id' => 'countries-listed-and-picked-by-code',
             'kind' => 'Added',
             'group' => 'Templates',

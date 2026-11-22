@@ -10,6 +10,7 @@ use App\Actions\SetDefaultVault;
 use App\Actions\UpdateVault;
 use App\Enums\VaultColourEnum;
 use App\Exceptions\VaultHasNoContactDefault;
+use App\Helpers\AlpineAjaxTargets;
 use App\Http\Controllers\Controller;
 use App\Jobs\RecordVaultVisit;
 use App\Models\StructureVersion;
@@ -50,15 +51,25 @@ class VaultController extends Controller
 
     public function show(Request $request, Vault $vault): View
     {
+        $viewModel = new VaultDashboardViewModel(
+            user: $request->user(),
+            vault: $vault,
+            lifeEventJustAddedId: $request->session()->get('lifeEventJustAdded'),
+            timelineSlice: $request->string('slice')->toString() ?: null,
+            timelineContact: $request->string('contact')->toString() ?: null,
+            timelineType: $request->string('type')->toString() ?: null,
+            timelinePage: max(1, $request->integer('page', 1)),
+        );
+
+        $targets = AlpineAjaxTargets::from($request);
+
+        if ($targets !== [] && array_all($targets, fn (string $target): bool => str_starts_with($target, 'dashboard-timeline'))) {
+            return view('app.vaults._timeline', ['timeline' => $viewModel->timeline()]);
+        }
+
         RecordVaultVisit::dispatch(vault: $vault)->onQueue('low');
 
-        return view('app.vaults.show', [
-            'viewModel' => new VaultDashboardViewModel(
-                user: $request->user(),
-                vault: $vault,
-                lifeEventJustAddedId: $request->session()->get('lifeEventJustAdded'),
-            ),
-        ]);
+        return view('app.vaults.show', ['viewModel' => $viewModel]);
     }
 
     public function new(Request $request): View

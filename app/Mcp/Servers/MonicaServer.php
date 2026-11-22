@@ -147,6 +147,7 @@ use App\Mcp\Tools\ListKnowledge;
 use App\Mcp\Tools\ListLifeEventCategories;
 use App\Mcp\Tools\ListLifeEventCategoryTypes;
 use App\Mcp\Tools\ListLifeEvents;
+use App\Mcp\Tools\ListLifeEventSlices;
 use App\Mcp\Tools\ListLifeEventTypes;
 use App\Mcp\Tools\ListLocations;
 use App\Mcp\Tools\ListLogs;
@@ -525,6 +526,7 @@ class MonicaServer extends Server
         UpdateContactRelationship::class,
         DeleteContactRelationship::class,
         ListLifeEvents::class,
+        ListLifeEventSlices::class,
         GetLifeEvent::class,
         CreateLifeEvent::class,
         UpdateLifeEvent::class,

@@ -78,6 +78,7 @@ use App\Http\Controllers\Api\LifeEventCategoryPositionController;
 use App\Http\Controllers\Api\LifeEventCategoryTypeController;
 use App\Http\Controllers\Api\LifeEventController;
 use App\Http\Controllers\Api\LifeEventRestorationController;
+use App\Http\Controllers\Api\LifeEventSliceController;
 use App\Http\Controllers\Api\LifeEventTypeActivationController;
 use App\Http\Controllers\Api\LifeEventTypeController;
 use App\Http\Controllers\Api\LifeEventTypeFieldController;
@@ -507,6 +508,7 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
             ->name('contacts.relationships.destroy');
 
         Route::match(['GET', 'QUERY'], 'vaults/{vault}/life-events', [LifeEventController::class, 'index'])->name('lifeEvents');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/life-event-slices', [LifeEventSliceController::class, 'index'])->name('lifeEventSlices');
         Route::match(['GET', 'QUERY'], 'vaults/{vault}/life-events/{lifeEvent}', [LifeEventController::class, 'show'])->where('lifeEvent', '[0-9a-fA-F-]{36}')->name('lifeEvents.show');
         Route::post('vaults/{vault}/life-events', [LifeEventController::class, 'create'])->name('lifeEvents.create');
         Route::put('vaults/{vault}/life-events/{lifeEvent}', [LifeEventController::class, 'update'])->where('lifeEvent', '[0-9a-fA-F-]{36}')->name('lifeEvents.update');

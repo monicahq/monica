@@ -112,13 +112,15 @@ return [
             'examplePath' => '/vaults/'.$vaultSlug.'/life-events',
             'description' => 'List the life events of a vault, the most recent first.',
             'body' => [
-                'Deleted life events are left out. Narrow the list to one person with contact.',
+                'Deleted life events are left out. Narrow the list to one person with contact, to one type with life_event_type, and to one slice of the timeline with slice. The slices and how many life events each holds are listed by the next endpoint.',
                 $sensitiveNote,
             ],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $vaultIdentifier,
             'queryParams' => [
                 ['name' => 'contact', 'type' => 'string', 'required' => false, 'description' => 'Only the life events this contact took part in, named by its slug or its id. A contact of another vault answers 404.'],
+                ['name' => 'life_event_type', 'type' => 'string', 'required' => false, 'description' => 'Only the life events of this type, named by its id. A type deleted since still narrows the list to the life events recorded as it. A type of another account answers 404.'],
+                ['name' => 'slice', 'type' => 'string', 'required' => false, 'description' => 'upcoming, for the life events dated today or later, the nearest first, or a year such as 2024, for that year up to yesterday, the most recent first. Today is the key owner’s, in their time zone. Any other value answers 422.', 'example' => '2024'],
                 ['name' => 'page', 'type' => 'integer', 'required' => false, 'description' => 'Which page to answer with.', 'default' => '1'],
                 ['name' => 'per_page', 'type' => 'integer', 'required' => false, 'description' => 'How many records one page holds, between 1 and 100. A number outside the range is brought back into it rather than refused.', 'default' => '25'],
             ],
@@ -126,6 +128,43 @@ return [
             'response' => [
                 'data' => [$lifeEvent],
                 'meta' => ['page' => 1, 'per_page' => 25, 'total' => 1],
+            ],
+        ],
+        [
+            'id' => 'life-event-slices-index',
+            'returnFields' => [
+                ['name' => 'data', 'type' => 'array', 'description' => 'The slices of the timeline: upcoming first, then every year holding a life event before today, the most recent first.'],
+                ['name' => 'data[]', 'type' => 'object', 'description' => 'One slice.'],
+                ['name' => 'data[].slice', 'type' => 'string', 'description' => 'upcoming, or a year written with four digits. Pass it as slice to the list of life events.'],
+                ['name' => 'data[].count', 'type' => 'integer', 'description' => 'How many life events the slice holds under contact and life_event_type.'],
+                ['name' => 'data[].total', 'type' => 'integer', 'description' => 'How many life events the slice holds without them, so a year they empty is still listed.'],
+                ['name' => 'meta', 'type' => 'object', 'description' => 'What holds for the whole vault.'],
+                ['name' => 'meta.total', 'type' => 'integer', 'description' => 'How many life events the vault holds.'],
+                ['name' => 'meta.today', 'type' => 'string', 'description' => 'The key owner’s today, written Y-m-d, which separates what is upcoming from the past.'],
+            ],
+            'title' => 'Count the life events of each slice',
+            'label' => 'Count life events by slice',
+            'method' => 'GET',
+            'path' => '/vaults/{vault}/life-event-slices',
+            'examplePath' => '/vaults/'.$vaultSlug.'/life-event-slices',
+            'description' => 'Count the life events of a vault in each slice of its timeline: what is upcoming, then each year before today.',
+            'body' => [
+                'Every count comes from one reading of the vault, so the answer costs the same however many years it holds. Deleted life events are left out.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
+            'pathParams' => $vaultIdentifier,
+            'queryParams' => [
+                ['name' => 'contact', 'type' => 'string', 'required' => false, 'description' => 'Count only the life events this contact took part in, named by its slug or its id. A contact of another vault answers 404.'],
+                ['name' => 'life_event_type', 'type' => 'string', 'required' => false, 'description' => 'Count only the life events of this type, named by its id. A type deleted since still counts the life events recorded as it. A type of another account answers 404.'],
+            ],
+            'returns' => 'The slices and their counts. A vault of another account answers 404.',
+            'response' => [
+                'data' => [
+                    ['slice' => 'upcoming', 'count' => 2, 'total' => 2],
+                    ['slice' => '2025', 'count' => 14, 'total' => 18],
+                    ['slice' => '2024', 'count' => 0, 'total' => 9],
+                ],
+                'meta' => ['total' => 29, 'today' => '2026-11-22'],
             ],
         ],
         [

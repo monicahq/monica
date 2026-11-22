@@ -1194,6 +1194,12 @@ class ApiDocsReturnFieldsTest extends TestCase
                 return $this->json('GET', "/api/v1/vaults/{$lifeEvent->vault->uuid}/life-events");
             }),
 
+            'life-event-slices-index' => $this->asSomebody(function (User $user): TestResponse {
+                $lifeEvent = $this->aLifeEventWithAValue($user);
+
+                return $this->json('GET', "/api/v1/vaults/{$lifeEvent->vault->uuid}/life-event-slices");
+            }),
+
             'life-events-show' => $this->asSomebody(function (User $user): TestResponse {
                 $lifeEvent = $this->aLifeEventWithAValue($user);
 

@@ -6,7 +6,6 @@
   $ceiling = $viewModel->ceilingMessage();
   $favourites = $viewModel->favourites();
   $recentlyViewed = $viewModel->recentlyViewed();
-  $lifeEvents = $viewModel->lifeEvents();
   $lifeEventForm = $viewModel->lifeEventForm();
   $row = 'flex items-center gap-3 border-b border-hairline-soft px-4 py-2.5 text-base text-ink no-underline transition-colors duration-(--duration-fast) last:border-b-0 hover:bg-hover focus-ring-inset';
 @endphp
@@ -83,7 +82,7 @@
                 class="inline-flex gap-0.5 rounded-lg border border-hairline bg-card p-0.75"
               >
                 @foreach ([
-                  'timeline' => ['label' => __('Your timeline'), 'icon' => 'timeline', 'count' => $viewModel->timelineCount()],
+                  'timeline' => ['label' => __('Timeline'), 'icon' => 'timeline', 'count' => $viewModel->timelineCount()],
                   'attention' => ['label' => __('Needs your attention'), 'icon' => 'reminder', 'count' => $viewModel->attention()->count()],
                 ] as $view => $tab)
                   <button
@@ -124,13 +123,7 @@
                 @include('app.vaults.contacts._life-event-panel', ['form' => $lifeEventForm])
               @endif
 
-              @include('app.vaults.contacts._timeline', ['timeline' => $viewModel->timeline(), 'form' => $lifeEventForm])
-
-              @unless ($viewModel->timeline()->holdsNothing())
-                <div>
-                  <x-link :href="$viewModel->fullTimelineUrl()" :turbo="true">{{ __('View full timeline') }}</x-link>
-                </div>
-              @endunless
+              @include('app.vaults._timeline', ['timeline' => $viewModel->timeline()])
             </div>
 
             <div role="tabpanel" id="dashboard-panel-attention" aria-labelledby="dashboard-tab-attention" x-show="view === 'attention'" x-cloak>
@@ -140,6 +133,8 @@
         </section>
       @else
         @include('app.vaults._attention', ['attention' => $viewModel->attention()])
+
+        @include('app.vaults._timeline', ['timeline' => $viewModel->timeline()])
       @endif
     </div>
 
@@ -185,41 +180,6 @@
 
                     <span class="shrink-0 text-sm text-muted">{{ $person['when'] }}</span>
                   </a>
-                </li>
-              @endforeach
-            </ul>
-          @endif
-        </x-panel>
-      </x-page-section>
-
-      <x-page-section :title="__('Recent life events')" icon="timeline">
-        <x-panel :flush="true">
-          @if ($lifeEvents === [])
-            <p class="px-4 py-3 text-sm text-pretty text-muted">{{ __('What happens with the people in this vault, once you write it down.') }}</p>
-          @else
-            <ul>
-              @foreach ($lifeEvents as $lifeEvent)
-                <li>
-                  <{{ $lifeEvent['url'] === null ? 'div' : 'a' }}
-                    @if ($lifeEvent['url'] !== null) href="{{ $lifeEvent['url'] }}" data-turbo="true" @endif
-                    class="{{ $row }}"
-                  >
-                    <span class="flex size-9 shrink-0 items-center justify-center rounded-lg border {{ $lifeEvent['tint'] }}">
-                      <x-icon :name="$lifeEvent['icon']" :size="18" :stroke-width="1.5" />
-                    </span>
-
-                    <span class="flex min-w-0 flex-1 flex-col">
-                      <span class="flex items-baseline justify-between gap-3">
-                        <span class="min-w-0 font-semibold text-pretty">{{ $lifeEvent['title'] }}</span>
-
-                        <span class="shrink-0 text-xs text-muted">{{ $lifeEvent['date'] }}</span>
-                      </span>
-
-                      @if ($lifeEvent['who'] !== '')
-                        <span class="line-clamp-2 text-sm text-pretty text-muted">{{ $lifeEvent['who'] }}</span>
-                      @endif
-                    </span>
-                  </{{ $lifeEvent['url'] === null ? 'div' : 'a' }}>
                 </li>
               @endforeach
             </ul>

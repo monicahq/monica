@@ -37,17 +37,7 @@ class ContactTimelineBlock
         private readonly ?int $editingId = null,
         private readonly ?int $editedId = null,
         private readonly int $perPage = self::PER_PAGE,
-        private readonly bool $isReadOnly = false,
     ) {}
-
-    /**
-     * Whether the timeline is shown away from the contact's page, as on the
-     * vault dashboard, where it is only read and leads to the page for more.
-     */
-    public function isReadOnly(): bool
-    {
-        return $this->isReadOnly;
-    }
 
     /** @return array<int, array{year: int, countLabel: string, showsHeading: bool, entries: array<int, array{kind: string, id: int|string, icon: string, tint: string, title: string, date: string, details: array<int, string>, narrative: string|null, with: array<int, array{name: string, url: string|null}>, group: array{name: string, url: string}|null, isJustAdded: bool, isEditing: bool, isEdited: bool, editUrl: string, destroyUrl: string|null, deleteLine: string|null}>}> */
     public function years(): array
@@ -100,10 +90,6 @@ class ContactTimelineBlock
 
     public function nextPageUrl(): ?string
     {
-        if ($this->isReadOnly) {
-            return null;
-        }
-
         return $this->paginator()->nextPageUrl();
     }
 

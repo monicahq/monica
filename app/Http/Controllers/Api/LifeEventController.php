@@ -17,6 +17,7 @@ use App\Exceptions\NotEnoughRepetitions;
 use App\Exceptions\NotEnoughStorageLeft;
 use App\Exceptions\TooManyRepetitions;
 use App\Helpers\FieldValueRules;
+use App\Helpers\LifeEventTimeline;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\LifeEventResource;
 use App\Models\Contact;
@@ -28,7 +29,6 @@ use App\Models\StructureVersion;
 use App\Models\User;
 use App\Models\Vault;
 use Carbon\CarbonImmutable;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -44,10 +44,16 @@ class LifeEventController extends Controller
 
         $validated = $request->validate([
             'contact' => ['nullable', 'string'],
+            'life_event_type' => ['nullable', 'string'],
+            'slice' => ['nullable', 'string', 'regex:/^(upcoming|\d{4})$/'],
         ]);
 
         $contact = isset($validated['contact'])
             ? Contact::query()->where('vault_id', $vault->id)->addressedBy($validated['contact'])->firstOrFail()
+            : null;
+
+        $lifeEventType = isset($validated['life_event_type'])
+            ? $request->user()->account->lifeEventTypes()->withTrashed()->where('uuid', $validated['life_event_type'])->firstOrFail()
             : null;
 
         $perPage = max(1, min(
@@ -55,14 +61,15 @@ class LifeEventController extends Controller
             (int) config('monica.api_maximum_items_per_page'),
         ));
 
-        $lifeEvents = LifeEvent::query()
-            ->where('vault_id', $vault->id)
-            ->when($contact, fn (Builder $query, Contact $contact): Builder => $query->whereHas('participants', fn (Builder $query): Builder => $query
-                ->where('participant_type', $contact->getMorphClass())
-                ->where('participant_id', $contact->id)))
+        $timeline = new LifeEventTimeline(
+            vault: $vault,
+            today: CarbonImmutable::now($request->user()->timezone)->startOfDay(),
+            type: $lifeEventType,
+            contact: $contact,
+        );
+
+        $lifeEvents = $timeline->query($validated['slice'] ?? LifeEventTimeline::EVERYTHING)
             ->with(LifeEventResource::RELATIONS)
-            ->orderByDesc('happened_on')
-            ->orderByDesc('id')
             ->paginate($perPage);
 
         $withSensitive = $this->reachesSensitiveFields($request->user());

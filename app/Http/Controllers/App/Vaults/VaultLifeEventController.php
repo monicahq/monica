@@ -12,6 +12,7 @@ use App\Exceptions\LifeEventTypeIsNotAvailable;
 use App\Exceptions\NotEnoughRepetitions;
 use App\Exceptions\NotEnoughStorageLeft;
 use App\Exceptions\TooManyRepetitions;
+use App\Helpers\LifeEventTimeline;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SaveLifeEventRequest;
 use App\Models\Contact;
@@ -76,7 +77,9 @@ class VaultLifeEventController extends Controller
             return back()->withInput()->withErrors(['fields' => $e->getMessage()]);
         }
 
-        return redirect()->route('vaults.show', $vault)
+        $slice = LifeEventTimeline::sliceOf($lifeEvent->happened_on, CarbonImmutable::now($request->user()->timezone)->startOfDay());
+
+        return redirect()->route('vaults.show', ['vault' => $vault, 'slice' => $slice])
             ->with('status', __(':type, :date, is on the timeline of :names.', $lifeEvent->confirmationParts($request->user())))
             ->with('lifeEventJustAdded', $lifeEvent->id);
     }

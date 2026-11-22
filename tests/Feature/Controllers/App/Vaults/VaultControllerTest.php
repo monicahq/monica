@@ -6,6 +6,7 @@ namespace Tests\Feature\Controllers\App\Vaults;
 
 use App\Jobs\CreateDefaultTemplate;
 use App\Jobs\RecordVaultVisit;
+use App\Models\LifeEvent;
 use App\Models\Template;
 use App\Models\User;
 use App\Models\Vault;
@@ -63,6 +64,27 @@ class VaultControllerTest extends TestCase
             ->assertSee('Dunder Mifflin')
             ->assertSee('Everybody at the Scranton branch')
             ->assertSee('148 people');
+    }
+
+    #[Test]
+    public function it_draws_the_timeline_alone_when_only_the_timeline_is_asked_for(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        LifeEvent::factory()->create(['vault_id' => $vault->id, 'title' => 'Dundies', 'happened_on' => '2019-05-01']);
+
+        $this->actingAs($user)
+            ->withHeaders(['X-Alpine-Request' => 'true', 'X-Alpine-Target' => 'dashboard-timeline'])
+            ->get(route('vaults.show', ['vault' => $vault, 'slice' => '2019']))
+            ->assertOk()
+            ->assertSee('id="dashboard-timeline"', escape: false)
+            ->assertSee('Dundies')
+            ->assertDontSee('Needs your attention')
+            ->assertDontSee('Favourite people');
+
+        Queue::assertNotPushed(RecordVaultVisit::class);
     }
 
     #[Test]

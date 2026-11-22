@@ -14,7 +14,7 @@ use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
 use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
 use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
-#[Description('List the life events of one vault, the most recent first, a page at a time, optionally only those one contact took part in. The values of sensitive fields are given only to a key holding the sensitive fields scope.')]
+#[Description('List the life events of one vault, the most recent first, a page at a time, optionally only those one contact took part in, of one type, or in one slice: what is upcoming, nearest first, or one year before today. list-life-event-slices counts each slice. The values of sensitive fields are given only to a key holding the sensitive fields scope.')]
 #[IsReadOnly]
 #[IsDestructive(false)]
 #[IsOpenWorld(false)]
@@ -44,6 +44,8 @@ class ListLifeEvents extends Tool
         return [
             'vault' => $schema->string()->description('The id of the vault, as list-vaults gives it.')->required(),
             'contact' => $schema->string()->description('The id of a contact, as list-contacts gives it. Only the life events this contact took part in are listed.'),
+            'life_event_type' => $schema->string()->description('The id of a life event type, as list-life-event-types gives it. Only life events of this type are listed.'),
+            'slice' => $schema->string()->description('upcoming, for what is dated today or later, nearest first, or a year such as 2024, for that year up to yesterday, most recent first.'),
             'page' => $schema->integer()->description('The page to read, starting at 1.'),
             'per_page' => $schema->integer()->description("How many life events a page holds: {$default} unless asked, {$maximum} at most."),
         ];

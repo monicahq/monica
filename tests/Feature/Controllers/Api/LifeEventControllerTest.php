@@ -72,6 +72,53 @@ class LifeEventControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_narrows_the_list_to_a_slice_and_a_type(): void
+    {
+        [$user, $vault, $jim] = $this->office();
+        $prank = $this->lifeEventOn($vault, '2025-03-01', [$jim], 'Jello stapler');
+        $this->lifeEventOn($vault, '2025-05-01', [$jim], 'Dundies');
+        $this->lifeEventOn($vault, '2023-04-01', [$jim], 'Fun run')->update(['life_event_type_id' => $prank->life_event_type_id]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('GET', "/api/v1/vaults/{$vault->uuid}/life-events", ['slice' => '2025', 'life_event_type' => $prank->lifeEventType->uuid])
+            ->assertOk()
+            ->assertJsonCount(1, 'data')
+            ->assertJsonPath('data.0.attributes.title', 'Jello stapler');
+    }
+
+    #[Test]
+    public function it_narrows_the_list_to_a_type_deleted_since(): void
+    {
+        [$user, $vault, $jim] = $this->office();
+        $prank = $this->lifeEventOn($vault, '2025-03-01', [$jim], 'Jello stapler');
+        $this->lifeEventOn($vault, '2025-05-01', [$jim], 'Dundies');
+        $prank->lifeEventType->delete();
+
+        Sanctum::actingAs($user);
+
+        $this->json('GET', "/api/v1/vaults/{$vault->uuid}/life-events", ['life_event_type' => $prank->lifeEventType->uuid])
+            ->assertOk()
+            ->assertJsonCount(1, 'data')
+            ->assertJsonPath('data.0.attributes.title', 'Jello stapler');
+    }
+
+    #[Test]
+    public function it_refuses_a_slice_it_does_not_know_and_a_type_of_another_account(): void
+    {
+        [$user, $vault] = $this->office();
+
+        Sanctum::actingAs($user);
+
+        $this->json('GET', "/api/v1/vaults/{$vault->uuid}/life-events", ['slice' => 'next'])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors('slice');
+
+        $this->json('GET', "/api/v1/vaults/{$vault->uuid}/life-events", ['life_event_type' => LifeEventType::factory()->create()->uuid])
+            ->assertNotFound();
+    }
+
+    #[Test]
     public function it_lists_the_life_events_one_contact_took_part_in(): void
     {
         [$user, $vault, $jim, $pam] = $this->office();

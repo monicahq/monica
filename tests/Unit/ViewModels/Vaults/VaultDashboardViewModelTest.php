@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Vaults;
 
-use App\Enums\DatePrecisionEnum;
 use App\Models\Contact;
 use App\Models\LifeEvent;
-use App\Models\LifeEventParticipant;
 use App\Models\User;
 use App\Models\Vault;
 use App\ViewModels\Vaults\VaultDashboardViewModel;
@@ -69,59 +67,6 @@ class VaultDashboardViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_lists_the_latest_life_events_with_everybody_who_was_there(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $wedding = LifeEvent::factory()->create(['vault_id' => $vault->id, 'title' => 'Wedding', 'happened_on' => '2026-09-02']);
-        $jim = Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Jim', 'last_name' => 'Halpert']);
-        $pam = Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Pam', 'last_name' => 'Beesly']);
-        LifeEventParticipant::factory()->create(['life_event_id' => $wedding->id, 'participant_id' => $jim->id]);
-        LifeEventParticipant::factory()->create(['life_event_id' => $wedding->id, 'participant_id' => $pam->id, 'position' => 1]);
-
-        LifeEvent::factory()->count(5)->create(['vault_id' => $vault->id, 'happened_on' => '2026-09-20']);
-        LifeEvent::factory()->create(['vault_id' => Vault::factory()->create(['account_id' => $user->account_id])->id, 'happened_on' => '2026-09-25']);
-
-        $events = new VaultDashboardViewModel(user: $user, vault: $vault)->lifeEvents();
-
-        $this->assertCount(5, $events);
-        $this->assertNotContains('Wedding', array_column($events, 'title'));
-
-        LifeEvent::query()->where('id', '!=', $wedding->id)->delete();
-
-        $events = new VaultDashboardViewModel(user: $user, vault: $vault)->lifeEvents();
-
-        $this->assertSame('Wedding', $events[0]['title']);
-        $this->assertSame('Jim Halpert, Pam Beesly', $events[0]['who']);
-        $this->assertSame(route('contacts.show', ['vault' => $vault, 'contact' => $jim]), $events[0]['url']);
-    }
-
-    #[Test]
-    public function it_leads_nowhere_from_a_life_event_whose_people_are_only_names(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        $lunch = LifeEvent::factory()->create(['vault_id' => $vault->id, 'title' => 'Lunch']);
-        $todd = Contact::factory()->partial()->create(['vault_id' => $vault->id, 'first_name' => 'Todd']);
-        LifeEventParticipant::factory()->create(['life_event_id' => $lunch->id, 'participant_id' => $todd->id]);
-
-        $this->assertNull(new VaultDashboardViewModel(user: $user, vault: $vault)->lifeEvents()[0]['url']);
-    }
-
-    #[Test]
-    public function it_writes_a_life_event_date_no_more_precisely_than_it_was_recorded(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-
-        LifeEvent::factory()->create(['vault_id' => $vault->id, 'happened_on' => '1994-06-01', 'date_precision' => DatePrecisionEnum::Year]);
-
-        $this->assertSame('1994', new VaultDashboardViewModel(user: $user, vault: $vault)->lifeEvents()[0]['date']);
-    }
-
-    #[Test]
     public function it_offers_to_write_down_a_life_event_for_the_signed_in_person(): void
     {
         $user = User::factory()->create();
@@ -145,41 +90,13 @@ class VaultDashboardViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_shows_the_ten_latest_life_events_of_the_signed_in_person(): void
-    {
-        $user = User::factory()->create();
-        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
-        $michael = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'first_name' => 'Michael', 'is_me' => true]);
-        $jim = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'first_name' => 'Jim']);
-
-        for ($day = 1; $day <= 12; $day++) {
-            $lifeEvent = LifeEvent::factory()->create(['vault_id' => $vault->id, 'title' => "Meeting {$day}", 'happened_on' => sprintf('2026-09-%02d', $day)]);
-            LifeEventParticipant::factory()->create(['life_event_id' => $lifeEvent->id, 'participant_id' => $michael->id]);
-        }
-
-        $prank = LifeEvent::factory()->create(['vault_id' => $vault->id, 'title' => 'Prank on Dwight', 'happened_on' => '2026-09-30']);
-        LifeEventParticipant::factory()->create(['life_event_id' => $prank->id, 'participant_id' => $jim->id]);
-
-        $viewModel = new VaultDashboardViewModel(user: $user, vault: $vault, lifeEventJustAddedId: $lifeEvent->id);
-        $entries = $viewModel->timeline()?->years()[0]['entries'] ?? [];
-
-        $this->assertCount(10, $entries);
-        $this->assertSame('Meeting 12', $entries[0]['title']);
-        $this->assertTrue($entries[0]['isJustAdded']);
-        $this->assertNotContains('Prank on Dwight', array_column($entries, 'title'));
-        $this->assertTrue($viewModel->timeline()?->isReadOnly());
-        $this->assertSame(route('contacts.show', ['vault' => $vault, 'contact' => $michael]), $viewModel->fullTimelineUrl());
-    }
-
-    #[Test]
-    public function it_shows_no_timeline_in_a_vault_without_the_signed_in_person(): void
+    public function it_counts_every_life_event_of_the_vault_on_the_timeline_tab(): void
     {
         $user = User::factory()->create();
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
 
-        $viewModel = new VaultDashboardViewModel(user: $user, vault: $vault);
+        LifeEvent::factory()->count(3)->create(['vault_id' => $vault->id]);
 
-        $this->assertNull($viewModel->timeline());
-        $this->assertNull($viewModel->fullTimelineUrl());
+        $this->assertSame(3, new VaultDashboardViewModel(user: $user, vault: $vault)->timelineCount());
     }
 }

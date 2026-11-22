@@ -6,13 +6,9 @@ namespace App\ViewModels\Vaults;
 
 use App\Enums\ContactGroupingEnum;
 use App\Enums\DateFormatEnum;
-use App\Enums\DatePrecisionEnum;
-use App\Enums\VaultColourEnum;
 use App\Helpers\AvailableLocales;
 use App\Models\Contact;
 use App\Models\LifeEvent;
-use App\Models\LifeEventParticipant;
-use App\Models\Section;
 use App\Models\User;
 use App\Models\Vault;
 use Carbon\CarbonImmutable;
@@ -25,10 +21,6 @@ class VaultDashboardViewModel
 
     private const int RECENTLY_VIEWED_SHOWN = 5;
 
-    private const int LIFE_EVENTS_SHOWN = 5;
-
-    private const int TIMELINE_SHOWN = 10;
-
     private ?VaultDashboardAttention $attention = null;
 
     /** @var Collection<int, Contact>|null */
@@ -39,6 +31,10 @@ class VaultDashboardViewModel
         private readonly Vault $vault,
         private readonly bool $opensLifeEventPanel = false,
         private readonly ?int $lifeEventJustAddedId = null,
+        private readonly ?string $timelineSlice = null,
+        private readonly ?string $timelineContact = null,
+        private readonly ?string $timelineType = null,
+        private readonly int $timelinePage = 1,
     ) {}
 
     public function vault(): Vault
@@ -151,40 +147,6 @@ class VaultDashboardViewModel
             ->all();
     }
 
-    /** @return list<array{title: string, icon: string, tint: string, date: string, who: string, url: string|null}> */
-    public function lifeEvents(): array
-    {
-        return LifeEvent::query()
-            ->where('account_id', $this->vault->account_id)
-            ->where('vault_id', $this->vault->id)
-            ->with(['lifeEventType', 'participants.participant'])
-            ->orderByDesc('happened_on')
-            ->orderByDesc('id')
-            ->limit(self::LIFE_EVENTS_SHOWN)
-            ->get()
-            ->map(function (LifeEvent $lifeEvent): array {
-                $people = $lifeEvent->participants
-                    ->map(fn (LifeEventParticipant $participant): mixed => $participant->participant)
-                    ->filter(fn (mixed $participant): bool => $participant instanceof Contact)
-                    ->values();
-
-                $linked = $people->first(fn (Contact $contact): bool => ! $contact->is_partial);
-                $icon = $lifeEvent->lifeEventType->icon;
-
-                return [
-                    'title' => $lifeEvent->name,
-                    'icon' => in_array($icon, Section::ICONS, true) ? $icon : Section::DEFAULT_ICON,
-                    'tint' => VaultColourEnum::tintFor($lifeEvent->lifeEventType->colour),
-                    'date' => $this->lifeEventDate($lifeEvent),
-                    'who' => $people->map(fn (Contact $contact): string => $contact->name)->implode(__(', ')),
-                    'url' => $linked === null
-                        ? null
-                        : route('contacts.show', ['vault' => $this->vault, 'contact' => $linked]),
-                ];
-            })
-            ->all();
-    }
-
     /**
      * The panel that writes down a life event, for the signed in person unless
      * somebody else is chosen. A vault without its Me contact offers none.
@@ -206,38 +168,22 @@ class VaultDashboardViewModel
         ));
     }
 
-    /**
-     * The latest life events of the signed in person, read only. Their page
-     * holds the rest, and the way to change one.
-     */
-    public function timeline(): ?ContactTimelineBlock
+    public function timeline(): DashboardTimelineBlock
     {
-        $me = $this->meContact();
-
-        if (! $me instanceof Contact) {
-            return null;
-        }
-
-        return once(fn (): ContactTimelineBlock => new ContactTimelineBlock(
+        return once(fn (): DashboardTimelineBlock => new DashboardTimelineBlock(
             user: $this->user,
             vault: $this->vault,
-            contact: $me,
+            slice: $this->timelineSlice,
+            contact: $this->timelineContact,
+            type: $this->timelineType,
+            page: $this->timelinePage,
             justAddedId: $this->lifeEventJustAddedId,
-            perPage: self::TIMELINE_SHOWN,
-            isReadOnly: true,
         ));
     }
 
     public function timelineCount(): int
     {
-        return $this->meContact()->life_event_count ?? 0;
-    }
-
-    public function fullTimelineUrl(): ?string
-    {
-        $me = $this->meContact();
-
-        return $me instanceof Contact ? route('contacts.show', ['vault' => $this->vault, 'contact' => $me]) : null;
+        return $this->timeline()->total();
     }
 
     private function meContact(): ?Contact
@@ -281,19 +227,6 @@ class VaultDashboardViewModel
             ->where('happened_on', '>=', $day->toDateString())
             ->where('happened_on', '<', $this->today()->addDay()->toDateString())
             ->count();
-    }
-
-    private function lifeEventDate(LifeEvent $lifeEvent): string
-    {
-        $day = $lifeEvent->happened_on;
-
-        return match ($lifeEvent->date_precision) {
-            DatePrecisionEnum::Day => $this->write($day),
-            DatePrecisionEnum::Month => DateFormatEnum::write($day, 'F Y'),
-            DatePrecisionEnum::Year => (string) $day->year,
-            DatePrecisionEnum::Decade => __('Between :start and :end', ['start' => intdiv($day->year, 10) * 10, 'end' => intdiv($day->year, 10) * 10 + 9]),
-            DatePrecisionEnum::Unknown => __('Date unknown'),
-        };
     }
 
     private function day(CarbonImmutable $moment): string

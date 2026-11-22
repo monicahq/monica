@@ -43,7 +43,7 @@ class VaultLifeEventControllerTest extends TestCase
                 'life_event_type_id' => $promotion->id,
                 'happened_on' => '2026-10-11',
             ])
-            ->assertRedirect(route('vaults.show', $vault))
+            ->assertRedirect(route('vaults.show', ['vault' => $vault, 'slice' => '2026']))
             ->assertSessionHas('status')
             ->assertSessionHas('lifeEventJustAdded', LifeEvent::query()->sole()->id);
 
@@ -82,6 +82,23 @@ class VaultLifeEventControllerTest extends TestCase
             ->assertSessionHasErrors('contact_id');
 
         $this->assertSame(0, LifeEvent::query()->count());
+    }
+
+    #[Test]
+    public function it_opens_the_timeline_on_what_is_coming_up_after_recording_a_life_event_still_to_come(): void
+    {
+        Queue::fake();
+
+        [$user, $vault, $michael] = $this->michael();
+        $party = $this->lifeEventTypeAsking($user, 'Party');
+
+        $this->actingAs($user)
+            ->post(route('vaults.lifeEvents.create', $vault), [
+                'contact_id' => $michael->id,
+                'life_event_type_id' => $party->id,
+                'happened_on' => now()->addMonth()->toDateString(),
+            ])
+            ->assertRedirect(route('vaults.show', ['vault' => $vault, 'slice' => 'upcoming']));
     }
 
     #[Test]
