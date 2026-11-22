@@ -1975,6 +1975,68 @@ class SetFieldValuesTest extends TestCase
     }
 
     #[Test]
+    public function it_keeps_the_reminder_of_a_date_the_caller_says_nothing_about(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $field = $this->fieldOn($contact, ['type' => FieldTypeEnum::RecurringDate]);
+        $section = $this->sectionOf($field);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $section,
+            values: [$field->id => '1984-02-03'],
+            reminders: [$field->id => $this->asked()],
+        )->execute();
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $section,
+            values: [$field->id => '1984-03-15'],
+            keptReminderFieldIds: [$field->id],
+        )->execute();
+
+        $this->assertDatabaseHas('reminders', ['field_id' => $field->id, 'name' => 'Ring Pam', 'is_active' => true]);
+        $this->assertDatabaseHas('field_values', ['field_id' => $field->id, 'value_date' => '1984-03-15 00:00:00']);
+    }
+
+    #[Test]
+    public function it_writes_a_reminder_on_a_date_the_caller_keeps(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $field = $this->fieldOn($contact, ['type' => FieldTypeEnum::RecurringDate]);
+        $section = $this->sectionOf($field);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $section,
+            values: [$field->id => '1984-02-03'],
+        )->execute();
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $section,
+            values: [],
+            reminders: [$field->id => $this->asked()],
+            keptFieldIds: [$field->id],
+        )->execute();
+
+        $value = FieldValue::query()->firstWhere('field_id', $field->id);
+
+        $this->assertDatabaseHas('reminders', ['field_value_id' => $value->id, 'name' => 'Ring Pam', 'is_active' => true]);
+        $this->assertDatabaseHas('field_values', ['field_id' => $field->id, 'value_date' => '1984-02-03 00:00:00']);
+    }
+
+    #[Test]
     public function it_leaves_the_reminder_quiet_and_saying_why_when_the_date_is_cleared(): void
     {
         Queue::fake();

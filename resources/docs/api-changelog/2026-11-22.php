@@ -31,5 +31,17 @@ return [
                 ['field' => 'contact-summaries', 'change' => 'Added', 'endpoints' => ['GET /vaults/{vault}/contact-summaries']],
             ],
         ],
+        [
+            'id' => 'section-date-reminders',
+            'kind' => 'Added',
+            'group' => 'Contacts',
+            'title' => 'A reminder on a date, such as a birthday',
+            'summary' => 'Saving a section of a contact now takes reminders, keyed by the id of a date field: an object turns on or changes the reminder of that date, and null takes it away. The date does not have to be sent again. A date left out of reminders keeps its reminder.',
+            'why' => 'A reminder on a date could only be turned on from the page, and saving a date through the API took away the reminder it carried.',
+            'breaking' => false,
+            'changes' => [
+                ['field' => 'reminders', 'change' => 'Added', 'endpoints' => ['PUT /vaults/{vault}/contacts/{contact}/sections/{section}']],
+            ],
+        ],
     ],
 ];

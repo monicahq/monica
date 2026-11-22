@@ -51,6 +51,7 @@ class SetFieldValues
      * @param  array<int, array<string, mixed>>  $reminders  what was asked of each date, keyed by field id
      * @param  array<int, int>  $keptFieldIds  the fields to leave exactly as they are, such as the sensitive ones the caller cannot see
      * @param  array<int, array<int, string>>  $newChoices  the wordings typed beside a multiselect, keyed by field id, found or added to its list
+     * @param  array<int, int>  $keptReminderFieldIds  the dates whose reminder is left exactly as it is, because the caller said nothing about it
      */
     public function __construct(
         private readonly User $user,
@@ -64,6 +65,7 @@ class SetFieldValues
         private readonly array $reminders = [],
         private readonly array $keptFieldIds = [],
         private readonly array $newChoices = [],
+        private readonly array $keptReminderFieldIds = [],
     ) {}
 
     public function execute(): int
@@ -74,7 +76,7 @@ class SetFieldValues
 
         $this->refuseAnEmptyRequiredField($fields);
         $this->refuseARowMissingARequiredField($fields);
-        $this->refuseAReminderWithNoDate($fields);
+        $this->refuseAReminderWithNoDate();
 
         DB::transaction(function () use ($fields): void {
             Model::withoutTouchingOn([$this->record::class], function () use ($fields): void {
@@ -82,7 +84,7 @@ class SetFieldValues
                     $this->save($field);
                 }
 
-                foreach ($fields as $field) {
+                foreach ($this->datesWhoseReminderMayChange() as $field) {
                     $this->saveTheReminder($field);
                 }
             });
@@ -156,18 +158,35 @@ class SetFieldValues
         }
     }
 
-    /** @param  Collection<int, Field>  $fields */
-    private function refuseAReminderWithNoDate(Collection $fields): void
+    /** @return Collection<int, Field> */
+    private function datesWhoseReminderMayChange(): Collection
     {
-        $asked = $fields->first(
-            fn (Field $field): bool => $field->type->canDriveAReminder()
-                && $this->wantsAReminderOn($field)
-                && $this->isBlank($this->given($field)),
+        return $this->section->sectionVersion->fields
+            ->whereNull('parent_field_id')
+            ->filter(fn (Field $field): bool => $field->type->canDriveAReminder())
+            ->reject(fn (Field $field): bool => in_array($field->id, $this->keptReminderFieldIds, true))
+            ->reject(fn (Field $field): bool => in_array($field->id, $this->keptFieldIds, true) && ! array_key_exists($field->id, $this->reminders))
+            ->values();
+    }
+
+    private function refuseAReminderWithNoDate(): void
+    {
+        $asked = $this->datesWhoseReminderMayChange()->first(
+            fn (Field $field): bool => $this->wantsAReminderOn($field) && $this->hasNoDate($field),
         );
 
         if ($asked instanceof Field) {
             throw new ReminderNeedsADate("There is no date in {$asked->label} to be reminded of.");
         }
+    }
+
+    private function hasNoDate(Field $field): bool
+    {
+        if (in_array($field->id, $this->keptFieldIds, true)) {
+            return $this->valueOn($field)?->value_date === null;
+        }
+
+        return $this->isBlank($this->given($field));
     }
 
     private function saveTheReminder(Field $field): void

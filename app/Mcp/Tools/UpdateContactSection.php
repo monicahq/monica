@@ -14,7 +14,7 @@ use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
 use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
 use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
-#[Description('Write the values of one section of a contact, such as an address or a phone number. The change is written to the account log.')]
+#[Description('Write the values of one section of a contact, such as an address or a phone number, and the reminders its dates carry. The change is written to the account log.')]
 #[IsReadOnly(false)]
 #[IsDestructive]
 #[IsOpenWorld(false)]
@@ -52,6 +52,7 @@ class UpdateContactSection extends Tool
             'year_is_unknown' => $schema->object()->description('For a date, true when its year is not known, keyed by the id of the field.'),
             'month_is_unknown' => $schema->object()->description('For a date, true when its month is not known either, keyed by the id of the field.'),
             'new_choices' => $schema->object()->description('Wordings to add to the list of a multiple choice field and pick, keyed by the id of the field.'),
+            'reminders' => $schema->object()->description('For a date, such as a birthday, the reminder it carries, keyed by the id of the field, or null to take it away. The object takes cadence (once, weekly, monthly or yearly, yearly when left out), interval, time (HH:MM, 09:00 when left out), timezone and name. An empty object turns on a yearly reminder. The date need not be sent again in fields, and a date left out of reminders keeps its reminder.'),
         ];
     }
 }

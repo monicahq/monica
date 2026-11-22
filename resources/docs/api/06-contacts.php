@@ -718,6 +718,7 @@ return [
             'body' => [
                 'The section is named by its id, and it has to be one the contact\'s template version places. A field left out of fields keeps its value, and a field sent as null is emptied. A file cannot be sent here.',
                 'A multiple choice field also takes new_choices, wordings to add to its list as the contact is saved. A wording naming a choice the list holds, whatever its case and the spaces around it, picks that choice rather than adding a second one. Nothing is added unless the whole section is saved.',
+                'A date can carry a reminder, as the box under a date on the page does. A date sent in reminders as an object gets that reminder, or has its reminder changed to it, and the date does not have to be sent again in fields. A date sent as null loses its reminder and keeps its value. A date left out of reminders keeps its reminder as it is, even when its value changes. List the reminders of a contact to read them: a reminder on a date has its source set to field.',
             ],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [...$identifier, ['name' => 'section', 'type' => 'integer', 'required' => true, 'description' => 'The id of the section.']],
@@ -728,8 +729,9 @@ return [
                 ['name' => 'year_is_unknown', 'type' => 'object', 'required' => false, 'description' => 'For a date, true when its year is not known, keyed by field.'],
                 ['name' => 'month_is_unknown', 'type' => 'object', 'required' => false, 'description' => 'For a date, true when its month is not known either, keyed by field.'],
                 ['name' => 'new_choices', 'type' => 'object', 'required' => false, 'description' => 'For a multiple choice field, an array of wordings to find or add to its list, each up to 255 characters, keyed by field.', 'example' => ['118' => ['Finer Things Club']]],
+                ['name' => 'reminders', 'type' => 'object', 'required' => false, 'description' => 'For a date, the reminder it carries, keyed by field, or null to take it away. The object takes cadence (once, weekly, monthly or yearly, yearly when left out), interval (how many of those between two reminders, 1 when left out), time (HH:MM, 09:00 when left out), timezone (the timezone of the user when left out) and name, up to 255 characters (the label of the field and the name of the contact when left out). An empty object turns on a yearly reminder at 09:00.', 'example' => ['121' => ['cadence' => 'yearly', 'time' => '08:30']]],
             ],
-            'returns' => 'The contact object as it now reads. A contact, a vault or a section belonging to somebody else answers 404. A wording naming a choice that is no longer offered, and a list that does not take choices of its own, answer 422 on fields, and nothing is written.',
+            'returns' => 'The contact object as it now reads. A contact, a vault or a section belonging to somebody else answers 404. A wording naming a choice that is no longer offered, a list that does not take choices of its own, and a reminder asked for on a date that holds no value, answer 422 on fields. A reminder on a field that holds no date answers 422 on reminders. Nothing is written when the call is refused.',
             'response' => ['data' => [...$contact, 'attributes' => [...$contact['attributes'], 'categories' => [['id' => 12, 'label' => 'Colleague'], ['id' => 31, 'label' => 'Finer Things Club']]]]],
         ],
         [

@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\Api;
 
 use App\Enums\FieldTypeEnum;
+use App\Enums\ReminderCadenceEnum;
 use App\Enums\ValueListEnum;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
+use App\Models\Reminder;
 use App\Models\StructureVersionSection;
 use App\Models\User;
 use App\Models\ValueList;
@@ -160,6 +162,99 @@ class ContactSectionControllerTest extends TestCase
 
         $this->json('PUT', "/api/v1/vaults/{$otherVault->uuid}/contacts/{$dwight->uuid}/sections/{$section->id}", [])
             ->assertNotFound();
+    }
+
+    #[Test]
+    public function it_turns_on_the_reminder_of_a_date_already_saved(): void
+    {
+        Queue::fake();
+
+        [$user, $url, $birthday] = $this->dwightWithABirthday();
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', $url, ['fields' => [$birthday->id => '1970-01-20']])->assertOk();
+        $this->json('PUT', $url, ['reminders' => [$birthday->id => ['time' => '08:30']]])->assertOk();
+
+        $this->assertDatabaseHas('reminders', [
+            'field_id' => $birthday->id,
+            'cadence' => ReminderCadenceEnum::Yearly->value,
+            'time_of_day' => '08:30',
+            'is_active' => true,
+        ]);
+        $this->assertDatabaseHas('field_values', ['field_id' => $birthday->id, 'value_date' => '1970-01-20 00:00:00']);
+    }
+
+    #[Test]
+    public function it_keeps_the_reminder_of_a_date_left_out_of_the_reminders(): void
+    {
+        Queue::fake();
+
+        [$user, $url, $birthday] = $this->dwightWithABirthday();
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', $url, ['fields' => [$birthday->id => '1970-01-20'], 'reminders' => [$birthday->id => []]])->assertOk();
+        $this->json('PUT', $url, ['fields' => [$birthday->id => '1970-01-21']])->assertOk();
+
+        $this->assertDatabaseHas('reminders', ['field_id' => $birthday->id, 'is_active' => true]);
+    }
+
+    #[Test]
+    public function it_takes_away_the_reminder_of_a_date_sent_as_null(): void
+    {
+        Queue::fake();
+
+        [$user, $url, $birthday] = $this->dwightWithABirthday();
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', $url, ['fields' => [$birthday->id => '1970-01-20'], 'reminders' => [$birthday->id => []]])->assertOk();
+        $this->json('PUT', $url, ['reminders' => [$birthday->id => null]])->assertOk();
+
+        $this->assertEquals(0, Reminder::query()->count());
+        $this->assertDatabaseHas('field_values', ['field_id' => $birthday->id, 'value_date' => '1970-01-20 00:00:00']);
+    }
+
+    #[Test]
+    public function it_refuses_a_reminder_on_a_field_that_holds_no_date(): void
+    {
+        [$user, $url, , $nickname] = $this->dwightWithABirthday();
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', $url, ['reminders' => [$nickname->id => []]])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors('reminders');
+    }
+
+    #[Test]
+    public function it_refuses_a_reminder_on_a_date_nobody_gave(): void
+    {
+        [$user, $url, $birthday] = $this->dwightWithABirthday();
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', $url, ['reminders' => [$birthday->id => []]])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors('fields');
+    }
+
+    /** @return array{0: User, 1: string, 2: Field, 3: Field} */
+    private function dwightWithABirthday(): array
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $version = Structure::withFields($user, [['type' => FieldTypeEnum::RecurringDate, 'label' => 'Birthday'], ['type' => FieldTypeEnum::Text, 'label' => 'Nickname']]);
+        $section = StructureVersionSection::query()->where('structure_version_id', $version->id)->sole();
+        $dwight = Contact::factory()->create([
+            'vault_id' => $vault->id,
+            'account_id' => $user->account_id,
+            'structure_version_id' => $version->id,
+        ]);
+        [$birthday, $nickname] = $section->sectionVersion->fields->sortBy('position')->values()->all();
+
+        return [$user, "/api/v1/vaults/{$vault->uuid}/contacts/{$dwight->uuid}/sections/{$section->id}", $birthday, $nickname];
     }
 
     /** @return array{0: User, 1: string, 2: Field, 3: Field} */
