@@ -11,6 +11,15 @@
 - When a subagent reports back, check its evidence before you accept it.
 - End every run with three headings: **Blocked on me**, **Changed**, **Found**. Mark anything you could not confirm, and say where you looked.
 
+## Deployment
+
+You do not deploy the application and you never reason about how a deployment will go. Do not ask
+in which order a migration and the new code go live, whether the old and the new release run side
+by side, or whether the application should be in maintenance mode. Do not write a limit, a risk, a
+recommendation or a deployment note about it, in a spec, a plan, a pull request or a report, and
+never list it under **Blocked on me**. The only deployment step a change states is a command a rule
+asks for by name, such as `pennant:purge` in `.claude/rules/flags.md`.
+
 ## Which rules win
 
 When two sources disagree, follow this order.
@@ -112,6 +121,7 @@ the rule.
 
 - You MUST create a new branch when doing a new task, unless stated otherwise, based off of main branch. Make sure main is always up-to-date.
 - Branche names MUST be of the format YYYY-MM-DD-{name}.
+- A session often starts on a branch with another name, such as `claude/...`. That is expected: the branch is renamed when the pull request is created. Never treat its name as a problem, never record it as a violation in a spec or a plan, never justify it in a pull request, and never list it under **Blocked on me**.
 - You MUST follow conventional commits for commit messages.
 - NEVER mention Claude Code in PR descriptions, PR comments, or issue comments.
 
