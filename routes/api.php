@@ -46,6 +46,7 @@ use App\Http\Controllers\Api\ContactReminderController;
 use App\Http\Controllers\Api\ContactReminderOccurrenceController;
 use App\Http\Controllers\Api\ContactSectionController;
 use App\Http\Controllers\Api\ContactStructureVersionController;
+use App\Http\Controllers\Api\ContactSummaryController;
 use App\Http\Controllers\Api\ContactVCardController;
 use App\Http\Controllers\Api\CountryController;
 use App\Http\Controllers\Api\EmailSentController;
@@ -451,6 +452,7 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
 
         Route::match(['GET', 'QUERY'], 'vaults/{vault}/contacts', [ContactController::class, 'index'])->name('contacts');
         Route::match(['GET', 'QUERY'], 'vaults/{vault}/contact-categories', [ContactCategoryController::class, 'index'])->name('contactCategories');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/contact-summaries', [ContactSummaryController::class, 'index'])->name('contactSummaries');
         Route::match(['GET', 'QUERY'], 'vaults/{vault}/reminder-occurrences', [VaultReminderOccurrenceController::class, 'index'])->name('reminderOccurrences');
         Route::match(['GET', 'QUERY'], 'vaults/{vault}/reminders', [VaultReminderController::class, 'index'])->name('reminders');
         Route::match(['GET', 'QUERY'], 'vaults/{vault}/search', [SearchController::class, 'index'])->name('search');

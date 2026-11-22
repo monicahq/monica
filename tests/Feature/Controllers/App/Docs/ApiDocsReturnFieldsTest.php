@@ -2091,6 +2091,13 @@ class ApiDocsReturnFieldsTest extends TestCase
                 return $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts");
             }),
 
+            'contacts-summaries-index' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'first_name' => 'Pam', 'last_name' => 'Beesly']);
+
+                return $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contact-summaries");
+            }),
+
             'contacts-sections-update' => $this->asSomebody(function (User $user): TestResponse {
                 $vault = Vault::factory()->create(['account_id' => $user->account_id]);
                 [$version, $field] = $this->categoriesTemplate($user);

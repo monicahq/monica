@@ -19,5 +19,17 @@ return [
                 ['field' => 'fields.{id}.country_name', 'change' => 'Added', 'endpoints' => ['PUT /vaults/{vault}/contacts/{contact}/sections/{section}']],
             ],
         ],
+        [
+            'id' => 'contact-summaries-listed',
+            'kind' => 'Added',
+            'group' => 'Contacts',
+            'title' => 'A lightweight list of every contact of a vault',
+            'summary' => 'GET /vaults/{vault}/contact-summaries lists every contact of a vault with only its id, its name, whether it is partial and whether it is archived, up to five hundred a page. Partial and full contacts come back together, filter keeps one kind, and archived=included adds the archived contacts.',
+            'why' => 'Listing everybody meant several heavy pages of the contact list, which never returns partial and full contacts together and never returns archived ones.',
+            'breaking' => false,
+            'changes' => [
+                ['field' => 'contact-summaries', 'change' => 'Added', 'endpoints' => ['GET /vaults/{vault}/contact-summaries']],
+            ],
+        ],
     ],
 ];

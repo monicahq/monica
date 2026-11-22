@@ -328,6 +328,10 @@ return [
 
     'api_maximum_items_per_page' => env('MONICA_API_MAXIMUM_ITEMS_PER_PAGE', 100),
 
+    'api_default_contact_summaries_per_page' => env('MONICA_API_DEFAULT_CONTACT_SUMMARIES_PER_PAGE', 100),
+
+    'api_maximum_contact_summaries_per_page' => env('MONICA_API_MAXIMUM_CONTACT_SUMMARIES_PER_PAGE', 500),
+
     /*
     |--------------------------------------------------------------------------
     | The queue behind each priority

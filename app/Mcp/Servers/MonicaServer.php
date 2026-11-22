@@ -131,6 +131,7 @@ use App\Mcp\Tools\ListContactRelationships;
 use App\Mcp\Tools\ListContactReminderOccurrences;
 use App\Mcp\Tools\ListContactReminders;
 use App\Mcp\Tools\ListContacts;
+use App\Mcp\Tools\ListContactSummaries;
 use App\Mcp\Tools\ListCountries;
 use App\Mcp\Tools\ListEmailsSent;
 use App\Mcp\Tools\ListEntities;
@@ -369,6 +370,7 @@ class MonicaServer extends Server
         ListEmailsSent::class,
         GetEmailSent::class,
         ListContacts::class,
+        ListContactSummaries::class,
         SearchRecords::class,
         ListEntityTypes::class,
         GetEntityType::class,
