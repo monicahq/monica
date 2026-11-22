@@ -1,13 +1,13 @@
 {{-- The flags this instance declares, and whether each is on for every account. --}}
 {{-- @var \App\ViewModels\Admin\FlagsViewModel $viewModel --}}
-<x-admin-layout :title="__('Flags')">
+<x-admin-layout :title="__('Feature flags')">
   <x-modal.confirm-password
     :offers-password="$viewModel->credentials()->offersPassword()"
     :offers-passkey="$viewModel->credentials()->offersPasskey()"
     :description="__('What you are about to change decides how this instance behaves for everybody, so we ask for a credential first. You will not be asked again for a little while.')"
   />
 
-  <x-page-header :title="__('Flags')" :description="__('A flag keeps a capability that is still being built out of sight until it is switched on. Switch one for every account here, or for one account from its own screen.')" />
+  <x-page-header :title="__('Feature flags')" :description="__('A flag keeps a capability that is still being built out of sight until it is switched on. Switch one for every account here, or for one account from its own screen.')" />
 
   <x-list-panel :items="$viewModel->flags()">
     @foreach ($viewModel->flags() as $flag)

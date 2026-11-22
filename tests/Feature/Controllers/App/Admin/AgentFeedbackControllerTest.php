@@ -23,7 +23,7 @@ class AgentFeedbackControllerTest extends TestCase
 
         $this->actingAs($this->administrator())->get(route('admin.agentFeedback.index'))
             ->assertStatus(200)
-            ->assertSee('Agent feedback')
+            ->assertSee('Agent reports')
             ->assertSee('Search ignores accents in one direction');
     }
 

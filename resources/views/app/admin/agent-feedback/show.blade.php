@@ -9,7 +9,7 @@
 
 <x-admin-layout :title="$report['title']">
   <x-breadcrumb :items="[
-    ['label' => __('Agent feedback'), 'url' => route('admin.agentFeedback.index')],
+    ['label' => __('Agent reports'), 'url' => route('admin.agentFeedback.index')],
     ['label' => $report['number']],
   ]" />
 

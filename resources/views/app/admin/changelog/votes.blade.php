@@ -4,9 +4,9 @@
   $rows = $viewModel->rows();
 @endphp
 
-<x-admin-layout :title="__('Changelog')">
+<x-admin-layout :title="__('Changelog feedback')">
   <header class="flex flex-col gap-1.5">
-    <h1 class="text-page-title text-ink">{{ __('Changelog') }}</h1>
+    <h1 class="text-page-title text-ink">{{ __('Changelog feedback') }}</h1>
     <p class="max-w-prose text-base text-pretty text-body">{{ __('Comments and votes people left on What’s new. Public comments appear under the change; private ones only reach administrators.') }}</p>
   </header>
 

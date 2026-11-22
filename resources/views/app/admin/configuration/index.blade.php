@@ -1,6 +1,6 @@
 {{-- How this instance behaves, and the only screen that changes it without a terminal. --}}
 {{-- @var \App\ViewModels\Admin\ConfigurationViewModel $viewModel --}}
-<x-admin-layout :title="__('Configuration')">
+<x-admin-layout :title="__('Instance settings')">
   <x-modal.confirm-password
     :offers-password="$viewModel->credentials()->offersPassword()"
     :offers-passkey="$viewModel->credentials()->offersPasskey()"
@@ -8,7 +8,7 @@
   />
 
   <x-page-header
-    :title="__('Configuration')"
+    :title="__('Instance settings')"
     :description="__('What governs this instance. A change takes effect on the next request, and work already running finishes under the value it started with.')"
   />
 

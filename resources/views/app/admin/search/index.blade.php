@@ -1,13 +1,13 @@
 {{-- Whether the search engine answers, and what each index holds beside what the instance holds. --}}
 {{-- @var \App\ViewModels\Admin\SearchEngineViewModel $viewModel --}}
-<x-admin-layout :title="__('Search')">
+<x-admin-layout :title="__('Search engine')">
   <x-modal.confirm-password
     :offers-password="$viewModel->credentials()->offersPassword()"
     :offers-passkey="$viewModel->credentials()->offersPasskey()"
     :description="__('What you are about to change decides how this instance behaves for everybody, so we ask for a credential first. You will not be asked again for a little while.')"
   />
 
-  <x-page-header :title="__('Search')" :description="__('Which search engine this instance uses, whether it answers, and what each index holds beside what the instance holds.')">
+  <x-page-header :title="__('Search engine')" :description="__('Which search engine this instance uses, whether it answers, and what each index holds beside what the instance holds.')">
     <x-slot:actions>
       <x-button.secondary :href="route('admin.search.index')">{{ __('Check again') }}</x-button.secondary>
     </x-slot:actions>

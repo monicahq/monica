@@ -8,39 +8,56 @@
   $changelogToReview = \App\Helpers\ChangelogAvailability::isEnabled() ? $navigation->changelogToReviewCount() : 0;
   $newAgentFeedback = $navigation->newAgentFeedbackCount();
 
-  $sections = [
-    ['label' => __('Overview'), 'route' => 'admin.overview.index', 'section' => 'admin.overview.*', 'icon' => 'activity'],
-    ['label' => __('Moderation'), 'route' => 'admin.moderation.index', 'section' => 'admin.moderation.*', 'icon' => 'tasks'],
-    ...(\App\Helpers\SupportAvailability::isEnabled() ? [['label' => __('Support'), 'route' => 'admin.support.index', 'section' => 'admin.support.*', 'icon' => 'mail', 'count' => $supportToHandle, 'countLabel' => trans_choice(':count request to handle|:count requests to handle', $supportToHandle)]] : []),
-    ...(\App\Helpers\ChangelogAvailability::isEnabled() ? [['label' => __('Changelog'), 'route' => 'admin.changelog.index', 'section' => 'admin.changelog.*', 'icon' => 'journal', 'count' => $changelogToReview, 'countLabel' => trans_choice(':count comment to review|:count comments to review', $changelogToReview)]] : []),
-    ['label' => __('Agent feedback'), 'route' => 'admin.agentFeedback.index', 'section' => 'admin.agentFeedback.*', 'icon' => 'memory', 'count' => $newAgentFeedback, 'countLabel' => trans_choice(':count new report|:count new reports', $newAgentFeedback)],
-    ['label' => __('Accounts'), 'route' => 'admin.accounts.index', 'section' => 'admin.accounts.*', 'icon' => 'people'],
-    ['label' => __('Waiting list'), 'route' => 'admin.previewList.index', 'section' => 'admin.previewList.*', 'icon' => 'profile'],
-    ['label' => __('Configuration'), 'route' => 'admin.configuration.index', 'section' => 'admin.configuration.*', 'icon' => 'settings'],
-    ['label' => __('Search'), 'route' => 'admin.search.index', 'section' => 'admin.search.*', 'icon' => 'search'],
-    ['label' => __('Billing'), 'route' => 'admin.billing.index', 'section' => 'admin.billing.*', 'icon' => 'credit-card'],
-    ['label' => __('Flags'), 'route' => 'admin.flags.index', 'section' => 'admin.flags.*', 'icon' => 'tag'],
-    ['label' => __('Administrators'), 'route' => 'admin.administrators.index', 'section' => 'admin.administrators.*', 'icon' => 'key'],
-    ['label' => __('Record'), 'route' => 'admin.logs.index', 'section' => 'admin.logs.*', 'icon' => 'timeline'],
+  $groups = [
+    [
+      ['label' => __('Overview'), 'route' => 'admin.overview.index', 'section' => 'admin.overview.*', 'icon' => 'activity'],
+    ],
+    [
+      ['label' => __('Marketplace review'), 'route' => 'admin.moderation.index', 'section' => 'admin.moderation.*', 'icon' => 'tasks'],
+      ...(\App\Helpers\SupportAvailability::isEnabled() ? [['label' => __('Support requests'), 'route' => 'admin.support.index', 'section' => 'admin.support.*', 'icon' => 'mail', 'count' => $supportToHandle, 'countLabel' => trans_choice(':count request to handle|:count requests to handle', $supportToHandle)]] : []),
+      ['label' => __('Agent reports'), 'route' => 'admin.agentFeedback.index', 'section' => 'admin.agentFeedback.*', 'icon' => 'bug', 'count' => $newAgentFeedback, 'countLabel' => trans_choice(':count new report|:count new reports', $newAgentFeedback)],
+      ...(\App\Helpers\ChangelogAvailability::isEnabled() ? [['label' => __('Changelog feedback'), 'route' => 'admin.changelog.index', 'section' => 'admin.changelog.*', 'icon' => 'journal', 'count' => $changelogToReview, 'countLabel' => trans_choice(':count comment to review|:count comments to review', $changelogToReview)]] : []),
+      ['label' => __('Waiting list'), 'route' => 'admin.previewList.index', 'section' => 'admin.previewList.*', 'icon' => 'clock'],
+    ],
+    [
+      ['label' => __('Accounts'), 'route' => 'admin.accounts.index', 'section' => 'admin.accounts.*', 'icon' => 'people'],
+      ['label' => __('Administrators'), 'route' => 'admin.administrators.index', 'section' => 'admin.administrators.*', 'icon' => 'key'],
+    ],
+    [
+      ['label' => __('Instance settings'), 'route' => 'admin.configuration.index', 'section' => 'admin.configuration.*', 'icon' => 'settings'],
+      ['label' => __('Search engine'), 'route' => 'admin.search.index', 'section' => 'admin.search.*', 'icon' => 'search'],
+      ['label' => __('Billing'), 'route' => 'admin.billing.index', 'section' => 'admin.billing.*', 'icon' => 'credit-card'],
+      ['label' => __('Feature flags'), 'route' => 'admin.flags.index', 'section' => 'admin.flags.*', 'icon' => 'tag'],
+      ['label' => __('Administrator log'), 'route' => 'admin.logs.index', 'section' => 'admin.logs.*', 'icon' => 'timeline'],
+    ],
   ];
+  $groupTitles = [null, __('To handle'), __('People'), __('Instance')];
 
   $current = '';
-  $entries = [];
+  $navigationGroups = [];
 
-  foreach ($sections as $section) {
-    if (request()->routeIs($section['section'])) {
-      $current = $section['route'];
+  foreach ($groups as $index => $sections) {
+    $entries = [];
+
+    foreach ($sections as $section) {
+      if (request()->routeIs($section['section'])) {
+        $current = $section['route'];
+      }
+
+      $entries[] = [
+        'key' => $section['route'],
+        'label' => $section['label'],
+        'icon' => $section['icon'],
+        'url' => route($section['route']),
+        'currentIsDescendant' => ! request()->routeIs($section['route']),
+        'count' => $section['count'] ?? 0,
+        'countLabel' => $section['countLabel'] ?? '',
+      ];
     }
 
-    $entries[] = [
-      'key' => $section['route'],
-      'label' => $section['label'],
-      'icon' => $section['icon'],
-      'url' => route($section['route']),
-      'currentIsDescendant' => ! request()->routeIs($section['route']),
-      'count' => $section['count'] ?? 0,
-      'countLabel' => $section['countLabel'] ?? '',
-    ];
+    $navigationGroups[] = $groupTitles[$index] === null
+      ? ['entries' => $entries]
+      : ['title' => $groupTitles[$index], 'entries' => $entries];
   }
 @endphp
 <!DOCTYPE html>
@@ -94,7 +111,7 @@
       <div class="grid grid-cols-1 lg:grid-cols-[248px_minmax(0,1fr)] lg:items-start print:block">
         <div class="lg:sticky lg:top-0 lg:h-dvh">
           <x-nav-drawer
-            :groups="[['entries' => $entries]]"
+            :groups="$navigationGroups"
             :current="$current"
             :label="__('Admin sections')"
           />

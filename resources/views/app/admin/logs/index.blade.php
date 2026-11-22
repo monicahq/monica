@@ -1,8 +1,8 @@
 {{-- Everything anybody with the administrator capacity has done to this instance, newest first. --}}
 {{-- @var \App\ViewModels\Admin\AdministratorLogsViewModel $viewModel --}}
-<x-admin-layout :title="__('Record of administrator actions')">
+<x-admin-layout :title="__('Administrator log')">
   <div class="mx-auto flex w-full max-w-240 flex-col gap-6">
-    <x-page-header :title="__('Record of administrator actions')" :description="__('Everything done in the admin space, newest first, with who did it. Nothing here can be changed or removed.')">
+    <x-page-header :title="__('Administrator log')" :description="__('Everything done in the admin space, newest first, with who did it. Nothing here can be changed or removed.')">
       <x-slot:actions>
         <x-badge icon="lock">{{ __('Write once') }}</x-badge>
       </x-slot:actions>

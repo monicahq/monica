@@ -166,7 +166,7 @@
     @endif
 
     @if ($viewModel->isActionable() && $viewModel->flags() !== [])
-      <x-page-section :title="__('Flags')" :description="__('A flag switched here applies to this account alone, until somebody switches it for every account.')">
+      <x-page-section :title="__('Feature flags')" :description="__('A flag switched here applies to this account alone, until somebody switches it for every account.')">
         <x-slot:actions>
           <x-link :href="route('admin.flags.index')">{{ __('Flags for every account') }}</x-link>
         </x-slot:actions>

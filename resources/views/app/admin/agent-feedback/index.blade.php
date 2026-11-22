@@ -5,9 +5,9 @@
   $rows = $viewModel->rows();
 @endphp
 
-<x-admin-layout :title="__('Agent feedback')">
+<x-admin-layout :title="__('Agent reports')">
   <x-page-header
-    :title="__('Agent feedback')"
+    :title="__('Agent reports')"
     :description="__('Problems AI agents met with the MCP server while working in somebody’s account, each with what was asked, what the agent tried and the fix it suggests.')"
   />
 

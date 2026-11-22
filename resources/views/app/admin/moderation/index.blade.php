@@ -1,8 +1,8 @@
 {{-- Every marketplace submission waiting for a decision, oldest first. --}}
 {{-- @var \App\ViewModels\Admin\ModerationQueueViewModel $viewModel --}}
-<x-admin-layout :title="__('Moderation')">
+<x-admin-layout :title="__('Marketplace review')">
   <header class="flex flex-col gap-2">
-    <h1 class="text-page-title text-ink">{{ __('Moderation') }}</h1>
+    <h1 class="text-page-title text-ink">{{ __('Marketplace review') }}</h1>
 
     <p class="max-w-prose text-base text-pretty text-body">
       @if ($viewModel->waitingCount() === 0)

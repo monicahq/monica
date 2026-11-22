@@ -6,9 +6,9 @@
   $context = $viewModel->context();
 @endphp
 
-<x-admin-layout :title="__('Support')">
+<x-admin-layout :title="__('Support requests')">
   <header class="flex flex-col gap-1.5">
-    <h1 class="text-page-title text-ink">{{ __('Support') }}</h1>
+    <h1 class="text-page-title text-ink">{{ __('Support requests') }}</h1>
     <p class="max-w-prose text-base text-pretty text-body">{{ __('Requests people opened from the support area. Replies go to them by email and appear in their requests.') }}</p>
   </header>
 
