@@ -101,7 +101,7 @@ class AddressBookTest extends TestCase
         $this->assertStringContainsString('NICKNAME:Beet farmer', (string) $card);
         $this->assertStringContainsString('dwight@dundermifflin.test', (string) $card);
         $this->assertStringContainsString('+15705551212', (string) $card);
-        $this->assertStringNotContainsString('4000', (string) $card);
+        $this->assertStringNotContainsString('4000', (string) preg_replace('/^(UID|REV):.*$/m', '', (string) $card));
     }
 
     #[Test]
