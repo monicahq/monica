@@ -36,7 +36,7 @@ class UpdateContactSection extends Tool
         $contact = $this->contact($vault, $validated['contact']);
         $section = $this->section($contact->structureVersion, (string) $validated['section']);
 
-        return $this->answerThroughApi($request, $vault->uuid, $contact->uuid, $section->id);
+        return $this->answerThroughApi($request, $vault->uuid, $contact->uuid, (string) $section->id);
     }
 
     /** @return array<string, Type> */
