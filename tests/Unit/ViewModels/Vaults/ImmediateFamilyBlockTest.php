@@ -173,7 +173,7 @@ class ImmediateFamilyBlockTest extends TestCase
     }
 
     #[Test]
-    public function it_opens_the_form_on_the_partner_type_and_on_the_parent_type(): void
+    public function it_opens_the_form_on_the_partner_type_and_on_the_parent_type_from_either_side(): void
     {
         $vault = Vault::factory()->create();
         $michael = $this->personIn($vault, 'Michael', 'Scott');
@@ -185,6 +185,7 @@ class ImmediateFamilyBlockTest extends TestCase
 
         $this->assertSame(route('contacts.relationships.new', ['vault' => $vault, 'contact' => $michael, 'type' => $partner->id]), $block->addPartnerUrl());
         $this->assertSame(route('contacts.relationships.new', ['vault' => $vault, 'contact' => $michael, 'type' => $parentage->id]), $block->addChildUrl());
+        $this->assertSame(route('contacts.relationships.new', ['vault' => $vault, 'contact' => $michael, 'type' => $parentage->id, 'swapped' => 1]), $block->addParentUrl());
     }
 
     #[Test]
@@ -198,6 +199,7 @@ class ImmediateFamilyBlockTest extends TestCase
 
         $this->assertSame(route('contacts.relationships.new', ['vault' => $vault, 'contact' => $michael]), $block->addPartnerUrl());
         $this->assertSame(route('contacts.relationships.new', ['vault' => $vault, 'contact' => $michael]), $block->addChildUrl());
+        $this->assertSame(route('contacts.relationships.new', ['vault' => $vault, 'contact' => $michael]), $block->addParentUrl());
     }
 
     #[Test]

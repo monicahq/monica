@@ -57,12 +57,14 @@
           @if ($tree->currentPartners() === [])
             <span></span>
           @else
-            <div>
+            <div class="pl-6">
               <h4 class="sr-only">{{ __('Current partners') }}</h4>
 
+              {{-- A partner line spans the 24px gap plus the empty margin of each node (22px beside a 36px
+                avatar, 18px beside the subject's ring), so it runs from avatar edge to avatar edge. --}}
               <ul class="flex list-none justify-start gap-6">
                 @foreach ($tree->currentPartners() as $partner)
-                  <li class="relative before:absolute before:top-4.5 before:-left-6 before:h-px before:w-6 before:bg-hairline-strong">
+                  <li class="relative before:absolute before:top-4.5 before:-left-11.5 before:h-px before:w-17 before:bg-hairline-strong first:before:-left-10.5 first:before:w-16">
                     @include('app.vaults.contacts._family-tree-node', $node($partner))
                   </li>
                 @endforeach

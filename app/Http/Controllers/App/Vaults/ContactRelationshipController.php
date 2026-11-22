@@ -42,6 +42,7 @@ class ContactRelationshipController extends Controller
                 contact: $contact,
                 query: (string) $request->string('query'),
                 preselectedTypeId: (string) $request->string('type'),
+                opensSwapped: $request->boolean('swapped'),
             ),
         ]);
     }

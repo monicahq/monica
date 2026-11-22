@@ -73,6 +73,11 @@ class ImmediateFamilyBlock
         return $this->addRelationshipUrlFor(RelationshipBehaviorEnum::GenealogyParentage);
     }
 
+    public function addParentUrl(): string
+    {
+        return $this->addRelationshipUrlFor(RelationshipBehaviorEnum::GenealogyParentage, swapped: true);
+    }
+
     public function noChildrenLine(): string
     {
         return __('No children recorded');
@@ -93,9 +98,10 @@ class ImmediateFamilyBlock
 
     /**
      * The form opens on the first type the account still offers with that behaviour. The person on
-     * screen stands on side A, which is the parent side of Parent / Child, so a child needs no swap.
+     * screen stands on side A, which is the parent side of Parent / Child, so a child needs no swap
+     * and a parent needs one.
      */
-    private function addRelationshipUrlFor(RelationshipBehaviorEnum $behavior): string
+    private function addRelationshipUrlFor(RelationshipBehaviorEnum $behavior, bool $swapped = false): string
     {
         $type = RelationshipType::query()
             ->where('account_id', $this->contact->account_id)
@@ -108,6 +114,7 @@ class ImmediateFamilyBlock
             'vault' => $this->vault,
             'contact' => $this->contact,
             'type' => $type?->id,
+            'swapped' => $type !== null && $swapped ? 1 : null,
         ]));
     }
 

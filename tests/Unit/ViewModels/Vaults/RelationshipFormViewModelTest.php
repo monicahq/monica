@@ -150,6 +150,40 @@ class RelationshipFormViewModelTest extends TestCase
     }
 
     #[Test]
+    public function it_opens_with_the_roles_swapped_when_asked(): void
+    {
+        $user = User::factory()->create();
+        $parentage = $this->typeOn($this->categoryOf($user, 'Family', 1), RelationshipTypeEnum::ParentChild);
+
+        $viewModel = $this->viewModelFor($user, (string) $parentage->id, opensSwapped: true);
+
+        $this->assertTrue($viewModel->values()['swapped']);
+        $this->assertTrue($viewModel->projection()['swapped']);
+    }
+
+    #[Test]
+    public function it_opens_unswapped_when_the_type_has_the_same_role_on_both_sides(): void
+    {
+        $user = User::factory()->create();
+        $sibling = $this->typeOn($this->categoryOf($user, 'Family', 1), RelationshipTypeEnum::Sibling);
+
+        $viewModel = $this->viewModelFor($user, (string) $sibling->id, opensSwapped: true);
+
+        $this->assertFalse($viewModel->values()['swapped']);
+    }
+
+    #[Test]
+    public function it_opens_unswapped_without_a_type(): void
+    {
+        $user = User::factory()->create();
+        $this->typeOn($this->categoryOf($user, 'Family', 1), RelationshipTypeEnum::ParentChild);
+
+        $viewModel = $this->viewModelFor($user, opensSwapped: true);
+
+        $this->assertFalse($viewModel->values()['swapped']);
+    }
+
+    #[Test]
     public function it_ignores_a_type_it_does_not_offer(): void
     {
         $user = User::factory()->create();
@@ -193,7 +227,7 @@ class RelationshipFormViewModelTest extends TestCase
         $this->assertSame(['Erin Élan', 'Dwight Schrute'], array_column($candidates, 'name'));
     }
 
-    private function viewModelFor(User $user, string $preselectedTypeId = ''): RelationshipFormViewModel
+    private function viewModelFor(User $user, string $preselectedTypeId = '', bool $opensSwapped = false): RelationshipFormViewModel
     {
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
 
@@ -202,6 +236,7 @@ class RelationshipFormViewModelTest extends TestCase
             vault: $vault,
             contact: $this->contactOn($vault, 'Michael', 'Scott'),
             preselectedTypeId: $preselectedTypeId,
+            opensSwapped: $opensSwapped,
         );
     }
 

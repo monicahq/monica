@@ -20,12 +20,30 @@
 
   @if ($family->holdsNothing())
     <div class="flex justify-center bg-[#9a6a24]/4 px-4 pt-6 pb-5">
-      <div class="grid grid-cols-[repeat(3,minmax(0,6rem))] grid-rows-[auto_1.5rem_auto] items-start justify-items-center">
+      <div class="grid grid-cols-[repeat(3,minmax(0,6rem))] grid-rows-[auto_1.5rem_auto_1.5rem_auto] items-start justify-items-center">
+        <a
+          href="{{ $family->addParentUrl() }}"
+          data-turbo="true"
+          aria-label="{{ __('Add a parent') }}"
+          class="group col-start-2 row-start-1 flex flex-col items-center gap-1.5 rounded-md no-underline focus-ring"
+        >
+          <span
+            class="flex size-13 items-center justify-center rounded-full border-[1.5px] border-dashed border-[#9a6a24] bg-[#9a6a24]/10 text-[#7f571d] transition-colors duration-(--duration-fast) ease-out group-hover:border-solid group-hover:bg-[#9a6a24] group-hover:text-white dark:border-[#d9a441] dark:text-[#d9a441] dark:group-hover:text-[#09090b]"
+            aria-hidden="true"
+          >
+            <x-icon name="plus" :size="18" :stroke-width="1.6" />
+          </span>
+
+          <span class="text-xs font-medium text-[#7f571d] dark:text-[#d9a441]">{{ __('Parent') }}</span>
+        </a>
+
+        <span class="col-start-2 row-start-2 h-full border-l-[1.5px] border-dashed border-[#9a6a24]/50" aria-hidden="true"></span>
+
         <a
           href="{{ $family->addPartnerUrl() }}"
           data-turbo="true"
           aria-label="{{ __('Add a partner') }}"
-          class="group col-start-1 row-start-1 mt-1 flex flex-col items-center gap-1.5 rounded-md no-underline focus-ring"
+          class="group col-start-1 row-start-3 mt-1 flex flex-col items-center gap-1.5 rounded-md no-underline focus-ring"
         >
           <span
             class="flex size-13 items-center justify-center rounded-full border-[1.5px] border-dashed border-[#a8447a] bg-[#a8447a]/10 text-[#8e3866] transition-colors duration-(--duration-fast) ease-out group-hover:border-solid group-hover:bg-[#a8447a] group-hover:text-white dark:border-[#e08ab8] dark:text-[#e08ab8] dark:group-hover:text-[#09090b]"
@@ -37,21 +55,21 @@
           <span class="text-xs font-medium text-[#8e3866] dark:text-[#e08ab8]">{{ __('Partner') }}</span>
         </a>
 
-        <span class="col-span-2 col-start-1 row-start-1 mt-7.25 w-10 border-t-[1.5px] border-dashed border-[#a8447a]/50" aria-hidden="true"></span>
+        <span class="col-span-2 col-start-1 row-start-3 mt-7.25 w-10 border-t-[1.5px] border-dashed border-[#a8447a]/50" aria-hidden="true"></span>
 
-        <div class="col-start-2 row-start-1 flex min-w-0 flex-col items-center gap-1.5">
+        <div class="col-start-2 row-start-3 flex min-w-0 flex-col items-center gap-1.5">
           <x-contact-avatar :name="$family->contactFullName()" :url="$family->contactAvatarUrl()" :size="60" alt="" />
 
           <span class="max-w-full truncate text-xs font-semibold text-ink">{{ $family->contactName() }}</span>
         </div>
 
-        <span class="col-start-2 row-start-2 h-full border-l-[1.5px] border-dashed border-[#2f7f86]/50" aria-hidden="true"></span>
+        <span class="col-start-2 row-start-4 h-full border-l-[1.5px] border-dashed border-[#2f7f86]/50" aria-hidden="true"></span>
 
         <a
           href="{{ $family->addChildUrl() }}"
           data-turbo="true"
           aria-label="{{ __('Add children') }}"
-          class="group col-start-2 row-start-3 flex flex-col items-center gap-1.5 rounded-md no-underline focus-ring"
+          class="group col-start-2 row-start-5 flex flex-col items-center gap-1.5 rounded-md no-underline focus-ring"
         >
           <span
             class="flex size-13 items-center justify-center rounded-full border-[1.5px] border-dashed border-[#2f7f86] bg-[#2f7f86]/10 text-[#26686e] transition-colors duration-(--duration-fast) ease-out group-hover:border-solid group-hover:bg-[#2f7f86] group-hover:text-white dark:border-[#5fb3bb] dark:text-[#5fb3bb] dark:group-hover:text-[#09090b]"

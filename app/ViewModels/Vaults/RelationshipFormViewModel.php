@@ -18,6 +18,7 @@ class RelationshipFormViewModel
         private readonly Contact $contact,
         private readonly string $query = '',
         private readonly string $preselectedTypeId = '',
+        private readonly bool $opensSwapped = false,
     ) {}
 
     public function user(): User
@@ -138,7 +139,7 @@ class RelationshipFormViewModel
             'firstName' => (string) old('first_name', ''),
             'lastName' => (string) old('last_name', ''),
             'otherContactId' => (string) old('other_contact_id', ''),
-            'swapped' => (bool) old('swapped'),
+            'swapped' => session()->hasOldInput() ? (bool) old('swapped') : $this->offeredSwap(),
             'createsRecord' => $this->ticked('creates_record'),
         ];
     }
@@ -185,6 +186,25 @@ class RelationshipFormViewModel
         }
 
         return $this->preselectedTypeId;
+    }
+
+    /**
+     * The form opens with the roles swapped only when asked to and when the type it opens on has two
+     * different roles, since a type whose roles are the same has nothing to swap.
+     */
+    private function offeredSwap(): bool
+    {
+        if (! $this->opensSwapped) {
+            return false;
+        }
+
+        $typeId = $this->offeredTypeId();
+
+        if ($typeId === '') {
+            return false;
+        }
+
+        return ! $this->typeMap()[(int) $typeId]['isSymmetric'];
     }
 
     private function otherContactName(string $id): string

@@ -41,6 +41,20 @@ class ContactRelationshipControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_opens_the_form_with_the_roles_swapped_when_asked(): void
+    {
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user, 'Michael', 'Scott');
+        $types = $this->typesOf($user);
+
+        $response = $this->actingAs($user)
+            ->get(route('contacts.relationships.new', ['vault' => $contact->vault, 'contact' => $contact, 'type' => $types['parent']->id, 'swapped' => 1]))
+            ->assertStatus(200);
+
+        $this->assertTrue($response->viewData('viewModel')->values()['swapped']);
+    }
+
+    #[Test]
     public function it_records_a_relationship_to_somebody_already_written_down(): void
     {
         Queue::fake();
