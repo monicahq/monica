@@ -47,7 +47,7 @@ class ListContacts extends Tool
         return [
             'vault' => $schema->string()->description('The id of the vault, as list-vaults gives it.')->required(),
             'query' => $schema->string()->description('Words to search the contacts of the vault for.'),
-            'filter' => $schema->string()->enum(ContactGroupingEnum::values())->description('Only the contacts of one grouping.'),
+            'filter' => $schema->string()->enum(ContactGroupingEnum::values())->description('Only the contacts of one grouping. all, the default, leaves out archived contacts and people without a record of their own; names-only lists only the people without a record of their own; favourites lists only the favourites.'),
             'sort' => $schema->string()->enum(ContactSortEnum::values())->description('What the list is ordered by.'),
             'direction' => $schema->string()->enum(SortDirectionEnum::values())->description('The direction of the order.'),
             'categories' => $schema->array()->items($schema->integer())->description('The ids of contact categories, as list-contact-categories gives them; only the people holding any of them.'),
