@@ -84,6 +84,19 @@ class ValueListItemControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_returns_a_country_already_on_the_list_as_an_error_on_the_form(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $list = ValueList::factory()->create(['account_id' => $user->account_id, 'key' => ValueListEnum::Countries->value]);
+        ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'label' => null, 'country_code' => 'JP']);
+
+        $this->actingAs($user)->post(route('settings.valueListItems.create', $list->id), ['label' => '', 'country_code' => 'JP'])
+            ->assertSessionHasErrors('country_code', errorBag: "newValue{$list->id}");
+    }
+
+    #[Test]
     public function it_asks_for_a_country_code_on_the_countries_list_only(): void
     {
         $user = User::factory()->create();

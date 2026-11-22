@@ -58,12 +58,12 @@
   $chosen = $value?->value_list_item_id;
   $chosenMany = $value?->value_list_item_ids ?? [];
 
-  $countries = collect();
-  $chosenCountry = null;
-  $keptCountry = null;
+  $favouriteCountries = [];
+  $countryExtras = [];
+  $chosenCountry = '';
 
   if ($type === FieldTypeEnum::Address) {
-      $countries = ValueList::query()
+      $favourites = ValueList::query()
           ->where('account_id', $field->account_id)
           ->where('key', ValueListEnum::Countries->value)
           ->first()
@@ -72,9 +72,25 @@
           ->sortBy('position')
           ->values() ?? collect();
 
+      $favouriteCountries = $favourites->map(fn ($item): array => ['value' => (string) $item->id, 'label' => $item->label])->all();
+
       $storedCountry = mb_trim((string) ($value?->value_json['country'] ?? ''));
-      $chosenCountry = $countries->first(fn ($item): bool => mb_strtolower($item->label) === mb_strtolower($storedCountry));
-      $keptCountry = $storedCountry !== '' && $chosenCountry === null ? $storedCountry : null;
+      $storedCode = $value?->value_json['country_code'] ?? null;
+      $favouriteOfTheCode = $favourites->first(fn ($item): bool => $item->readsAsItsCountry() && $item->countryCode() === $storedCode);
+      $keepsItsText = $storedCode === null && $storedCountry !== '';
+
+      $countryExtras = [['value' => '', 'label' => __('Not recorded')]];
+
+      if ($keepsItsText) {
+          $countryExtras[] = ['value' => 'keep', 'label' => $storedCountry];
+      }
+
+      $chosenCountry = match (true) {
+          $favouriteOfTheCode !== null => (string) $favouriteOfTheCode->id,
+          $storedCode !== null => $storedCode,
+          $keepsItsText => 'keep',
+          default => '',
+      };
   }
 
   $errorKey = str_replace(['][', '[', ']'], ['.', '.', ''], $name);
@@ -338,22 +354,16 @@
         @foreach (FieldValueFormatter::addressPartNames() as $part => $partName)
           <div @class(['sm:col-span-2' => $part === 'street'])>
             @if ($part === 'country')
-              <x-select
+              <x-country-picker
                 :id="$id.'-country'"
                 :name="$name.'[country]'"
+                :typed-name="$name.'[country_name]'"
                 :label="$partName"
+                :extras="$countryExtras"
+                :favourites="$favouriteCountries"
+                :value="$chosenCountry"
                 :error="$messages?->get($errorKey.'.country')"
-              >
-                <option value="">{{ __('Not recorded') }}</option>
-
-                @if ($keptCountry !== null)
-                  <option value="keep" selected>{{ $keptCountry }}</option>
-                @endif
-
-                @foreach ($countries as $country)
-                  <option value="{{ $country->id }}" @selected($chosenCountry?->id === $country->id)>{{ $country->label }}</option>
-                @endforeach
-              </x-select>
+              />
             @else
               <x-input
                 :type="$field->is_sensitive ? 'password' : 'text'"

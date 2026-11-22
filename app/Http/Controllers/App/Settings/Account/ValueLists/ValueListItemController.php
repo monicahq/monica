@@ -16,6 +16,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class ValueListItemController extends Controller
@@ -24,17 +25,22 @@ class ValueListItemController extends Controller
     {
         $request->merge(['country_code' => mb_strtoupper($request->string('country_code')->trim()->value()) ?: null]);
 
-        $validated = $request->validateWithBag("newValue{$valueList->id}", [
-            'label' => ['required', 'string', 'max:255'],
-            'country_code' => ['nullable', 'string', 'size:2', Rule::in(CountryCodes::known())],
+        $bag = "newValue{$valueList->id}";
+        $validated = $request->validateWithBag($bag, [
+            'label' => ['nullable', 'required_without:country_code', 'string', 'max:255'],
+            'country_code' => ['nullable', 'required_without:label', 'string', 'size:2', Rule::in(CountryCodes::known())],
         ]);
 
-        new CreateValueListItem(
-            user: $request->user(),
-            valueList: $valueList,
-            label: $validated['label'],
-            countryCode: $validated['country_code'] ?? null,
-        )->execute();
+        try {
+            new CreateValueListItem(
+                user: $request->user(),
+                valueList: $valueList,
+                label: $validated['label'] ?? null,
+                countryCode: $validated['country_code'] ?? null,
+            )->execute();
+        } catch (ValidationException $e) {
+            throw $e->errorBag($bag);
+        }
 
         return redirect()->route('settings.valueLists.index')
             ->with('status', __('The value is added.'))
@@ -57,20 +63,25 @@ class ValueListItemController extends Controller
     {
         $request->merge(['country_code' => mb_strtoupper($request->string('country_code')->trim()->value()) ?: null]);
 
-        $validated = $request->validateWithBag("value{$valueListItem->id}", [
-            'label' => ['required', 'string', 'max:255'],
-            'country_code' => ['nullable', 'string', 'size:2', Rule::in(CountryCodes::known())],
+        $bag = "value{$valueListItem->id}";
+        $validated = $request->validateWithBag($bag, [
+            'label' => ['nullable', 'required_without:country_code', 'string', 'max:255'],
+            'country_code' => ['nullable', 'required_without:label', 'string', 'size:2', Rule::in(CountryCodes::known())],
         ]);
 
-        new UpdateValueListItem(
-            user: $request->user(),
-            item: $valueListItem,
-            label: $validated['label'],
-            description: $valueListItem->description,
-            colour: $valueListItem->colour,
-            icon: $valueListItem->icon,
-            countryCode: $validated['country_code'] ?? null,
-        )->execute();
+        try {
+            new UpdateValueListItem(
+                user: $request->user(),
+                item: $valueListItem,
+                label: $validated['label'] ?? null,
+                description: $valueListItem->description,
+                colour: $valueListItem->colour,
+                icon: $valueListItem->icon,
+                countryCode: $validated['country_code'] ?? null,
+            )->execute();
+        } catch (ValidationException $e) {
+            throw $e->errorBag($bag);
+        }
 
         return redirect()->route('settings.valueLists.index')
             ->with('status', __('The value is renamed.'))

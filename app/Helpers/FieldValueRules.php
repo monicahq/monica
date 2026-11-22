@@ -191,10 +191,16 @@ class FieldValueRules
             ->where('key', ValueListEnum::Countries->value)
             ->first();
 
+        $rules["{$prefix}.country_name"] = ['nullable', 'string', 'max:255'];
+
         $rules["{$prefix}.country"] = [
             'nullable',
             function (string $attribute, mixed $value, Closure $fail) use ($countries): void {
                 if ($value === 'keep') {
+                    return;
+                }
+
+                if (is_string($value) && in_array(mb_strtoupper($value), CountryCodes::known(), true)) {
                     return;
                 }
 

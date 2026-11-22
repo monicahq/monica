@@ -83,6 +83,27 @@ class ContactSectionControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_saves_an_address_naming_its_country_by_its_code(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $version = Structure::withFields($user, [['type' => FieldTypeEnum::Address, 'label' => 'Office']]);
+        $section = StructureVersionSection::query()->where('structure_version_id', $version->id)->sole();
+        $dwight = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'structure_version_id' => $version->id]);
+        $address = $section->sectionVersion->fields->sole();
+        $url = "/api/v1/vaults/{$vault->uuid}/contacts/{$dwight->uuid}/sections/{$section->id}";
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', $url, ['fields' => [$address->id => ['city' => 'Tokyo', 'country' => 'JP']]])->assertOk();
+        $this->json('PUT', $url, ['fields' => [$address->id => ['city' => 'Tokyo', 'country' => 'QQ']]])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors("fields.{$address->id}.country");
+    }
+
+    #[Test]
     public function it_refuses_a_new_category_naming_one_no_longer_offered(): void
     {
         Queue::fake();

@@ -143,16 +143,29 @@ class FieldInputTest extends TestCase
     }
 
     #[Test]
-    public function it_picks_the_stored_country_whatever_its_case(): void
+    public function it_opens_a_country_saved_without_a_code_on_its_text_as_written(): void
     {
         $field = $this->addressField();
         $canada = $this->countryOf($field, CountryEnum::Canada);
-        $value = $this->addressValue($field, ['city' => 'Toronto', 'country' => 'CANADA']);
+        $value = $this->addressValue($field, ['city' => 'Toronto', 'country' => 'Canada']);
 
         $rendered = $this->render($field, $value);
 
-        $rendered->assertSee('value="'.$canada->id.'" selected', escape: false);
-        $rendered->assertDontSee('value="keep"', escape: false);
+        $rendered->assertSee('<option value="keep" selected>Canada</option>', escape: false);
+        $rendered->assertDontSee('value="'.$canada->id.'" selected', escape: false);
+    }
+
+    #[Test]
+    public function it_opens_a_country_saved_with_its_code_on_the_favourite_carrying_it(): void
+    {
+        $field = $this->addressField();
+        $canada = $this->countryOf($field, CountryEnum::Canada);
+
+        $this->render($field, $this->addressValue($field, ['country' => 'Canada', 'country_code' => 'CA']))
+            ->assertSee('<option value="'.$canada->id.'" selected>', escape: false);
+
+        $this->render($field, $this->addressValue($field, ['country' => 'Japan', 'country_code' => 'JP']))
+            ->assertSee('<option value="JP" selected>Japan</option>', escape: false);
     }
 
     #[Test]

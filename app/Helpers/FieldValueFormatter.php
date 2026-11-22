@@ -56,7 +56,18 @@ class FieldValueFormatter
             }
         }
 
-        $code = isset($filled['country']) ? app(CountryCodes::class)->codeFor($accountId, $filled['country']) : null;
+        $recordedCode = is_string($parts['country_code'] ?? null) ? mb_strtoupper($parts['country_code']) : null;
+        $recordedName = $recordedCode === null ? null : CountryCodes::nameOf($recordedCode, app()->getLocale());
+
+        if ($recordedName !== null) {
+            $filled['country'] = $recordedName;
+        }
+
+        $code = match (true) {
+            $recordedName !== null => $recordedCode,
+            isset($filled['country']) => app(CountryCodes::class)->codeFor($accountId, $filled['country']),
+            default => null,
+        };
 
         if ($code === null) {
             return array_values($filled);

@@ -72,7 +72,7 @@ class McpDocsViewModel
         'text' => 'Your assistant can use every tool in every vault in your account, whether it connects with a key or through OAuth. Choosing “AI Assistant” when creating an API key only labels the key—it does not limit what your assistant can access or change.',
     ];
 
-    public const string LAST_UPDATED = '2026-11-17';
+    public const string LAST_UPDATED = '2026-11-21';
 
     public const string SOURCE_URL = 'https://github.com/monicahq/monica';
 
@@ -249,12 +249,12 @@ class McpDocsViewModel
     public const array FAMILIES = [
         'Vaults' => ['list-vaults'],
         'Search' => ['search-records'],
-        'Contacts' => ['list-contacts', 'list-contact-categories', 'get-contact', 'get-contact-markdown', 'get-me-contact', 'list-contact-name-representations', 'create-contact', 'update-contact-name', 'update-contact-name-representations', 'set-contact-favourite'],
+        'Contacts' => ['list-contacts', 'list-contact-categories', 'get-contact', 'get-contact-markdown', 'get-me-contact', 'list-contact-name-representations', 'create-contact', 'update-contact-name', 'update-contact-name-representations', 'update-contact-section', 'set-contact-favourite'],
         'Reminders' => ['list-vault-reminders', 'list-vault-reminder-occurrences', 'list-contact-reminders', 'get-contact-reminder', 'list-contact-reminder-occurrences', 'list-group-reminders', 'get-group-reminder', 'list-group-reminder-occurrences', 'create-contact-reminder', 'update-contact-reminder', 'delete-contact-reminder', 'answer-reminder-occurrence', 'create-group-reminder', 'update-group-reminder', 'delete-group-reminder', 'answer-group-reminder-occurrence'],
         'Relationships' => ['list-contact-relationships', 'get-contact-relationship', 'create-contact-relationship', 'update-contact-relationship', 'delete-contact-relationship'],
         'Life events' => ['list-life-events', 'get-life-event', 'create-life-event', 'update-life-event', 'delete-life-event', 'restore-life-event'],
         'Groups' => ['list-groups', 'get-group', 'list-group-members', 'list-contact-groups', 'list-group-files', 'list-group-notes', 'get-group-note', 'list-group-life-events', 'create-group', 'update-group', 'delete-group', 'restore-group', 'add-group-member', 'update-group-member', 'remove-group-member', 'remove-group-file', 'create-group-note', 'update-group-note', 'delete-group-note', 'create-group-life-event'],
-        'Templates' => ['list-templates', 'get-template', 'list-template-versions', 'get-template-version', 'list-value-lists', 'create-template', 'update-template', 'duplicate-template', 'set-template-activation', 'set-template-position', 'delete-template', 'create-template-draft', 'publish-template-version', 'delete-template-draft', 'add-template-section', 'update-template-section', 'remove-template-section', 'set-template-section-position', 'create-template-field', 'update-template-field', 'delete-template-field', 'set-template-field-position'],
+        'Templates' => ['list-templates', 'get-template', 'list-template-versions', 'get-template-version', 'list-value-lists', 'list-countries', 'create-template', 'update-template', 'duplicate-template', 'set-template-activation', 'set-template-position', 'delete-template', 'create-template-draft', 'publish-template-version', 'delete-template-draft', 'add-template-section', 'update-template-section', 'remove-template-section', 'set-template-section-position', 'create-template-field', 'update-template-field', 'delete-template-field', 'set-template-field-position'],
         'Entity types' => ['list-entity-types', 'get-entity-type', 'create-entity-type', 'update-entity-type', 'set-entity-type-activation', 'set-entity-type-position', 'delete-entity-type'],
         'Entities' => ['list-entities', 'get-entity', 'create-entity', 'update-entity'],
         'Relationship vocabulary' => ['list-relationship-types', 'get-relationship-type', 'list-relationship-categories', 'get-relationship-category', 'list-relationship-category-types', 'create-relationship-type', 'update-relationship-type', 'set-relationship-type-activation', 'set-relationship-type-position', 'delete-relationship-type', 'create-relationship-category', 'update-relationship-category', 'set-relationship-category-activation', 'set-relationship-category-position', 'delete-relationship-category'],

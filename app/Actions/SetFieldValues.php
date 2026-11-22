@@ -12,6 +12,8 @@ use App\Enums\UserActionEnum;
 use App\Enums\ValueListEnum;
 use App\Exceptions\FieldIsRequired;
 use App\Exceptions\ReminderNeedsADate;
+use App\Helpers\CountryCodes;
+use App\Helpers\TextSanitizer;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
 use App\Models\Entity;
@@ -600,6 +602,11 @@ class SetFieldValues
     private function addressFor(Field $field, array $given, ?FieldValueRow $row): array
     {
         $country = $given['country'] ?? '';
+        $typedName = TextSanitizer::nullablePlainText(is_string($given['country_name'] ?? null) ? $given['country_name'] : null);
+
+        if ($typedName !== null) {
+            return array_merge($given, ['country' => $typedName, 'country_code' => null]);
+        }
 
         if ($country === 'keep') {
             $stored = FieldValue::query()
@@ -609,11 +616,41 @@ class SetFieldValues
                 ->where('field_value_row_id', $row?->id)
                 ->first();
 
-            return array_merge($given, ['country' => (string) ($stored->value_json['country'] ?? '')]);
+            return array_merge($given, [
+                'country' => (string) ($stored->value_json['country'] ?? ''),
+                'country_code' => $stored->value_json['country_code'] ?? null,
+            ]);
         }
 
         if ($country === '') {
-            return array_merge($given, ['country' => '']);
+            return array_merge($given, ['country' => '', 'country_code' => null]);
+        }
+
+        $countries = ValueList::query()
+            ->where('account_id', $this->user->account_id)
+            ->where('key', ValueListEnum::Countries->value)
+            ->first();
+
+        if (is_string($country) && preg_match('/^[A-Za-z]{2}$/', $country) === 1) {
+            $code = mb_strtoupper($country);
+            $name = CountryCodes::nameOf($code, app()->getLocale());
+
+            if ($name === null) {
+                throw new InvalidArgumentException("{$country} is not a country code.");
+            }
+
+            $favourite = ValueListItem::query()
+                ->where('value_list_id', $countries?->id)
+                ->where('is_active', true)
+                ->orderBy('position')
+                ->get()
+                ->first(fn (ValueListItem $item): bool => $item->readsAsItsCountry() && $item->countryCode() === $code);
+
+            if ($favourite === null) {
+                return array_merge($given, ['country' => $name, 'country_code' => $code]);
+            }
+
+            $country = $favourite->id;
         }
 
         if (filter_var($country, FILTER_VALIDATE_INT) === false) {
@@ -629,16 +666,14 @@ class SetFieldValues
             throw new ModelNotFoundException('This country is in another account.');
         }
 
-        $countries = ValueList::query()
-            ->where('account_id', $this->user->account_id)
-            ->where('key', ValueListEnum::Countries->value)
-            ->first();
-
         if ($item->value_list_id !== $countries?->id) {
             throw new InvalidArgumentException("The item {$item->label} is not on the list of countries.");
         }
 
-        return array_merge($given, ['country' => $item->label]);
+        return array_merge($given, [
+            'country' => $item->label,
+            'country_code' => $item->readsAsItsCountry() ? $item->countryCode() : null,
+        ]);
     }
 
     private function chosenLabel(Field $field, mixed $label): ?ValueListItem

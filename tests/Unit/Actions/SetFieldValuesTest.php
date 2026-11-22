@@ -757,6 +757,157 @@ class SetFieldValuesTest extends TestCase
     }
 
     #[Test]
+    public function it_writes_a_country_of_the_full_list_with_its_code(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $this->countryOf($user, CountryEnum::Canada);
+        $address = $this->fieldOn($contact, ['type' => FieldTypeEnum::Address]);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($address),
+            values: [$address->id => ['city' => 'Tokyo', 'country' => 'JP']],
+        )->execute();
+
+        $stored = FieldValue::query()->where('field_id', $address->id)->sole()->value_json;
+
+        $this->assertSame('Japan', $stored['country']);
+        $this->assertSame('JP', $stored['country_code']);
+    }
+
+    #[Test]
+    public function it_writes_a_typed_country_name_as_written_and_without_a_code(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $canada = $this->countryOf($user, CountryEnum::Canada);
+        $address = $this->fieldOn($contact, ['type' => FieldTypeEnum::Address]);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($address),
+            values: [$address->id => ['city' => 'Nashua', 'country' => (string) $canada->id, 'country_name' => '  Sabre Republic  ']],
+        )->execute();
+
+        $stored = FieldValue::query()->where('field_id', $address->id)->sole()->value_json;
+
+        $this->assertSame('Sabre Republic', $stored['country']);
+        $this->assertNull($stored['country_code'] ?? null);
+    }
+
+    #[Test]
+    public function it_writes_a_code_carried_by_a_favourite_as_that_favourite(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $france = $this->countryOf($user, CountryEnum::France);
+        $address = $this->fieldOn($contact, ['type' => FieldTypeEnum::Address]);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($address),
+            values: [$address->id => ['city' => 'Paris', 'country' => 'fr']],
+        )->execute();
+
+        $stored = FieldValue::query()->where('field_id', $address->id)->sole()->value_json;
+
+        $this->assertSame($france->label, $stored['country']);
+        $this->assertSame('FR', $stored['country_code']);
+    }
+
+    #[Test]
+    public function it_keeps_a_favourite_whose_label_the_account_wrote_apart_from_its_country(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $usa = $this->countryOf($user, CountryEnum::UnitedStates);
+        $usa->update(['label' => 'Home of Dunder Mifflin']);
+        $address = $this->fieldOn($contact, ['type' => FieldTypeEnum::Address]);
+        $section = $this->sectionOf($address);
+
+        new SetFieldValues(user: $user, record: $contact, section: $section, values: [$address->id => ['city' => 'Scranton', 'country' => (string) $usa->id]])->execute();
+        $favourite = FieldValue::query()->where('field_id', $address->id)->sole()->value_json;
+
+        new SetFieldValues(user: $user, record: $contact, section: $section, values: [$address->id => ['city' => 'Scranton', 'country' => 'US']])->execute();
+        $country = FieldValue::query()->where('field_id', $address->id)->sole()->value_json;
+
+        $this->assertSame('Home of Dunder Mifflin', $favourite['country']);
+        $this->assertArrayNotHasKey('country_code', $favourite);
+        $this->assertSame('United States', $country['country']);
+        $this->assertSame('US', $country['country_code']);
+    }
+
+    #[Test]
+    public function it_keeps_the_code_of_a_country_it_is_asked_to_keep(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $address = $this->fieldOn($contact, ['type' => FieldTypeEnum::Address]);
+        $section = $this->sectionOf($address);
+
+        new SetFieldValues(user: $user, record: $contact, section: $section, values: [$address->id => ['city' => 'Tokyo', 'country' => 'JP']])->execute();
+        new SetFieldValues(user: $user, record: $contact, section: $section, values: [$address->id => ['city' => 'Osaka', 'country' => 'keep']])->execute();
+
+        $stored = FieldValue::query()->where('field_id', $address->id)->sole()->value_json;
+
+        $this->assertSame('Osaka', $stored['city']);
+        $this->assertSame('Japan', $stored['country']);
+        $this->assertSame('JP', $stored['country_code']);
+    }
+
+    #[Test]
+    public function it_ignores_a_country_code_sent_beside_the_country(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $address = $this->fieldOn($contact, ['type' => FieldTypeEnum::Address]);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($address),
+            values: [$address->id => ['city' => 'Tokyo', 'country' => 'JP', 'country_code' => 'DE']],
+        )->execute();
+
+        $this->assertSame('JP', FieldValue::query()->where('field_id', $address->id)->sole()->value_json['country_code']);
+    }
+
+    #[Test]
+    public function it_refuses_two_letters_that_name_no_country(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $address = $this->fieldOn($contact, ['type' => FieldTypeEnum::Address]);
+
+        $this->expectException(InvalidArgumentException::class);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($address),
+            values: [$address->id => ['city' => 'Scranton', 'country' => 'QQ']],
+        )->execute();
+    }
+
+    #[Test]
     public function it_carries_the_unknown_year_of_a_date_that_comes_round_again(): void
     {
         Queue::fake();

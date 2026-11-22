@@ -15,6 +15,15 @@
   <x-panel :title="$list['name']" :subtitle="$list['countLabel']" :flush="true">
     <x-slot:action>
       <div x-show="! renaming" class="flex items-center gap-0.5">
+        @if ($list['holdsCountries'])
+          <x-help
+            :label="__('Help about the favourite countries')"
+            :title="__('Why pick a country rather than type a name?')"
+            guide="customise.value-lists#choose-your-favourite-countries"
+            align="right"
+          >{{ __('A country picked from the list is named in the language of whoever reads it, and its addresses are laid out the way that country writes them. A name you type is shown exactly as written, and its addresses keep the order you typed.') }}</x-help>
+        @endif
+
         <x-button.ghost
           size="small"
           type="button"
@@ -110,7 +119,7 @@
           size="small"
           type="button"
           x-show="! adding"
-          @click="adding = true; $nextTick(() => $refs.label.focus())"
+          @click="adding = true; $nextTick(() => (document.getElementById('list-{{ $list['id'] }}-country-code') ?? $refs.label).focus())"
         >
           <x-slot:icon>
             <x-icon name="plus" :size="15" :stroke-width="1.6" />
@@ -127,29 +136,29 @@
           :x-target="$target"
           class="flex flex-wrap items-start gap-3 px-1 py-1"
         >
-          <x-input
-            :id="'list-'.$list['id'].'-label'"
-            name="label"
-            x-ref="label"
-            size="small"
-            :aria-label="__('Name of the value')"
-            :placeholder="__('Name of the value')"
-            :error="$newValueErrors->get('label')"
-            class="max-w-80"
-            maxlength="255"
-            required
-          />
-
           @if ($list['holdsCountries'])
-            <x-input
+            <x-country-picker
               :id="'list-'.$list['id'].'-country-code'"
               name="country_code"
+              typed-name="label"
+              :label="__('Country')"
+              :placeholder="__('Choose a country')"
+              :hint="__('Pick a country, or type a name for a place not in the list.')"
+              :error="[...$newValueErrors->get('country_code'), ...$newValueErrors->get('label')]"
+              class="w-full max-w-80"
+            />
+          @else
+            <x-input
+              :id="'list-'.$list['id'].'-label'"
+              name="label"
+              x-ref="label"
               size="small"
-              :aria-label="__('Country code')"
-              :placeholder="__('Country code, such as JP')"
-              :error="$newValueErrors->get('country_code')"
-              class="max-w-48"
-              maxlength="2"
+              :aria-label="__('Name of the value')"
+              :placeholder="__('Name of the value')"
+              :error="$newValueErrors->get('label')"
+              class="max-w-80"
+              maxlength="255"
+              required
             />
           @endif
 

@@ -47,6 +47,7 @@ use App\Http\Controllers\Api\ContactReminderOccurrenceController;
 use App\Http\Controllers\Api\ContactSectionController;
 use App\Http\Controllers\Api\ContactStructureVersionController;
 use App\Http\Controllers\Api\ContactVCardController;
+use App\Http\Controllers\Api\CountryController;
 use App\Http\Controllers\Api\EmailSentController;
 use App\Http\Controllers\Api\EntityController;
 use App\Http\Controllers\Api\EntityTypeActivationController;
@@ -339,6 +340,7 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::put('relationship-types/{relationshipType}/activation', [RelationshipTypeActivationController::class, 'update'])->where('relationshipType', '[0-9a-fA-F-]{36}')->name('relationshipTypes.activation.update');
         Route::put('relationship-types/{relationshipType}/position', [RelationshipTypePositionController::class, 'update'])->where('relationshipType', '[0-9a-fA-F-]{36}')->name('relationshipTypes.position.update');
 
+        Route::match(['GET', 'QUERY'], 'countries', [CountryController::class, 'index'])->name('countries');
         Route::match(['GET', 'QUERY'], 'value-lists', [ValueListController::class, 'index'])->name('valueLists');
         Route::match(['GET', 'QUERY'], 'templates', [TemplateController::class, 'index'])->name('templates');
         Route::match(['GET', 'QUERY'], 'templates/{template}', [TemplateController::class, 'show'])->where('template', '[0-9a-fA-F-]{36}')->name('templates.show');

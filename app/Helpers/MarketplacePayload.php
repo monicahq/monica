@@ -244,13 +244,28 @@ class MarketplacePayload
                 'name_translation_key' => $list['name_translation_key'],
                 'items' => array_map(fn (array $item): array => [
                     'key' => $item['key'],
-                    'label' => $item['label'],
+                    'label' => $item['label'] ?? $this->countryNameOf($item),
                     'label_translation_key' => $item['label_translation_key'],
                     'position' => $item['position'],
                     'is_active' => $item['is_active'],
                 ], $list['items']),
             ];
         }
+    }
+
+    /**
+     * A country picked in the settings has neither label nor translation key, and an installer has
+     * nothing else to read it by.
+     *
+     * @param  array<string, mixed>  $item
+     */
+    private function countryNameOf(array $item): ?string
+    {
+        if ($item['label_translation_key'] !== null || ! is_string($item['country_code'] ?? null)) {
+            return null;
+        }
+
+        return CountryCodes::nameOf($item['country_code'], app()->getLocale());
     }
 
     /** @param  array<string, mixed>  $list */

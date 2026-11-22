@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Actions;
 
 use App\Actions\CreateValueListItem;
+use App\Enums\CountryEnum;
 use App\Enums\UserActionEnum;
 use App\Enums\ValueListEnum;
 use App\Jobs\LogUserAction;
@@ -15,6 +16,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Validation\ValidationException;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -161,5 +163,50 @@ class CreateValueListItemTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
 
         new CreateValueListItem(user: $user, valueList: $list, label: 'Japan', countryCode: 'JP')->execute();
+    }
+
+    #[Test]
+    public function it_stores_a_picked_country_without_a_label_of_its_own(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $list = ValueList::factory()->create(['account_id' => $user->account_id, 'key' => ValueListEnum::Countries->value]);
+
+        $item = new CreateValueListItem(user: $user, valueList: $list, label: null, countryCode: 'lt')->execute();
+
+        $this->assertDatabaseHas('value_list_items', ['id' => $item->id, 'label' => null, 'label_translation_key' => null, 'country_code' => 'LT']);
+        $this->assertEquals('Lithuania', $item->label);
+    }
+
+    #[Test]
+    public function it_refuses_a_country_the_list_already_offers(): void
+    {
+        $user = User::factory()->create();
+        $list = ValueList::factory()->create(['account_id' => $user->account_id, 'key' => ValueListEnum::Countries->value]);
+        ValueListItem::factory()->supplied(CountryEnum::France)->create(['account_id' => $user->account_id, 'value_list_id' => $list->id]);
+        ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'label' => null, 'country_code' => 'JP']);
+
+        foreach (['FR', 'jp'] as $code) {
+            try {
+                new CreateValueListItem(user: $user, valueList: $list, label: null, countryCode: $code)->execute();
+                $this->fail("{$code} was added twice.");
+            } catch (ValidationException $e) {
+                $this->assertArrayHasKey('country_code', $e->errors());
+            }
+        }
+
+        $this->assertEquals(2, ValueListItem::query()->where('value_list_id', $list->id)->count());
+    }
+
+    #[Test]
+    public function it_refuses_a_value_with_neither_a_label_nor_a_country(): void
+    {
+        $user = User::factory()->create();
+        $list = ValueList::factory()->create(['account_id' => $user->account_id, 'key' => ValueListEnum::Countries->value]);
+
+        $this->expectException(InvalidArgumentException::class);
+
+        new CreateValueListItem(user: $user, valueList: $list, label: '  ', countryCode: null)->execute();
     }
 }

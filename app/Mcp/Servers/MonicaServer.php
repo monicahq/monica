@@ -131,6 +131,7 @@ use App\Mcp\Tools\ListContactRelationships;
 use App\Mcp\Tools\ListContactReminderOccurrences;
 use App\Mcp\Tools\ListContactReminders;
 use App\Mcp\Tools\ListContacts;
+use App\Mcp\Tools\ListCountries;
 use App\Mcp\Tools\ListEmailsSent;
 use App\Mcp\Tools\ListEntities;
 use App\Mcp\Tools\ListEntityTypes;
@@ -208,6 +209,7 @@ use App\Mcp\Tools\UpdateContactName;
 use App\Mcp\Tools\UpdateContactNameRepresentations;
 use App\Mcp\Tools\UpdateContactRelationship;
 use App\Mcp\Tools\UpdateContactReminder;
+use App\Mcp\Tools\UpdateContactSection;
 use App\Mcp\Tools\UpdateEntity;
 use App\Mcp\Tools\UpdateEntityType;
 use App\Mcp\Tools\UpdateGroup;
@@ -493,6 +495,7 @@ class MonicaServer extends Server
         CreateContact::class,
         UpdateContactName::class,
         UpdateContactNameRepresentations::class,
+        UpdateContactSection::class,
         SetContactFavourite::class,
         ListContactReminders::class,
         GetContactReminder::class,
@@ -503,6 +506,7 @@ class MonicaServer extends Server
         ListVaultReminderOccurrences::class,
         ListVaultReminders::class,
         ListContactCategories::class,
+        ListCountries::class,
         ListValueLists::class,
         AnswerReminderOccurrence::class,
         ListGroupReminders::class,

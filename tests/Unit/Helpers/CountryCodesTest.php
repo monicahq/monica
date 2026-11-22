@@ -18,6 +18,26 @@ class CountryCodesTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
+    public function it_lists_every_country_named_and_sorted_in_a_language(): void
+    {
+        $countries = CountryCodes::all('fr_FR');
+        $names = array_values($countries);
+
+        $this->assertCount(256, $countries);
+        $this->assertEquals('Allemagne', $countries['DE']);
+        $this->assertEquals('Kosovo', $countries['XK']);
+        $this->assertLessThan(array_search('Espagne', $names, true), array_search('Égypte', $names, true));
+        $this->assertGreaterThan(array_search('Dominique', $names, true), array_search('Égypte', $names, true));
+    }
+
+    #[Test]
+    public function it_names_one_country_in_a_language(): void
+    {
+        $this->assertEquals('Allemagne', CountryCodes::nameOf(code: 'de', locale: 'fr_FR'));
+        $this->assertNull(CountryCodes::nameOf(code: 'QQ', locale: 'en'));
+    }
+
+    #[Test]
     public function it_reads_the_code_of_a_country_somebody_added(): void
     {
         $account = Account::factory()->create();

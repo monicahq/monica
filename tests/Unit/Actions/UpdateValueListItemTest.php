@@ -19,6 +19,7 @@ use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Validation\ValidationException;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -172,5 +173,35 @@ class UpdateValueListItemTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
 
         new UpdateValueListItem(user: $user, item: $item, label: 'Japan', countryCode: 'JP')->execute();
+    }
+
+    #[Test]
+    public function it_names_a_country_by_its_code_alone_or_by_a_label_written_beside_it(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $list = ValueList::factory()->create(['account_id' => $user->account_id, 'key' => ValueListEnum::Countries->value]);
+        $picked = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'label' => 'Lithuania', 'country_code' => 'LT']);
+        $named = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'label' => 'Schrute Farms', 'country_code' => null]);
+
+        new UpdateValueListItem(user: $user, item: $picked, label: null, countryCode: 'LV')->execute();
+        new UpdateValueListItem(user: $user, item: $named, label: 'Schrute Farms', countryCode: 'US')->execute();
+
+        $this->assertDatabaseHas('value_list_items', ['id' => $picked->id, 'label' => null, 'country_code' => 'LV']);
+        $this->assertDatabaseHas('value_list_items', ['id' => $named->id, 'label' => 'Schrute Farms', 'country_code' => 'US']);
+    }
+
+    #[Test]
+    public function it_refuses_a_country_another_value_of_the_list_carries(): void
+    {
+        $user = User::factory()->create();
+        $list = ValueList::factory()->create(['account_id' => $user->account_id, 'key' => ValueListEnum::Countries->value]);
+        ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'label' => null, 'country_code' => 'JP']);
+        $item = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'label' => 'Nagoya', 'country_code' => null]);
+
+        $this->expectException(ValidationException::class);
+
+        new UpdateValueListItem(user: $user, item: $item, label: 'Nagoya', countryCode: 'JP')->execute();
     }
 }

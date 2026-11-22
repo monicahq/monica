@@ -167,6 +167,42 @@ class MarketplacePayloadTest extends TestCase
     }
 
     #[Test]
+    public function it_names_a_country_picked_in_the_settings_for_whoever_installs_it(): void
+    {
+        $section = Section::factory()->create();
+        $version = SectionVersion::factory()->create(['section_id' => $section->id]);
+        $list = ValueList::query()->create([
+            'account_id' => $section->account_id,
+            'key' => 'branches',
+            'name' => 'Branches',
+            'name_translation_key' => null,
+            'description' => null,
+            'is_system' => false,
+            'allows_user_values' => true,
+            'position' => 1,
+        ]);
+        ValueListItem::factory()->create([
+            'account_id' => $section->account_id,
+            'value_list_id' => $list->id,
+            'key' => null,
+            'label' => null,
+            'label_translation_key' => null,
+            'country_code' => 'LT',
+        ]);
+        Field::factory()->create([
+            'account_id' => $section->account_id,
+            'section_version_id' => $version->id,
+            'value_list_id' => $list->id,
+        ]);
+        $version->resolved_value_lists = ValueListSnapshot::of($version);
+        $this->publish($section, $version);
+
+        $payload = MarketplacePayload::of($section);
+
+        $this->assertEquals('Lithuania', $payload['value_lists']['branches']['items'][0]['label']);
+    }
+
+    #[Test]
     public function it_names_the_parent_of_a_nested_field_by_key(): void
     {
         $section = Section::factory()->create();

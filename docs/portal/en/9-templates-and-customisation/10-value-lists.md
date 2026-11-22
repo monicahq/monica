@@ -4,7 +4,7 @@ title: Change the choices a list offers
 description: Add, rename or retire the choices a field offers, such as contact categories and phone labels.
 slug: value-lists
 section: templates-and-customisation
-last_updated: 2026-11-19
+last_updated: 2026-11-21
 ---
 
 # Change the choices a list offers
@@ -23,11 +23,19 @@ Say you want a category for the people you know from Central Perk. In **Contact 
 
 Choose **Edit** on the value, and type the new name. Everything that offers it, and every contact that already has it, shows the new name straight away.
 
-## Give a country its code
+## Choose your favourite countries
 
-Monica shows an address the way its country writes it: the postcode before the town in France, the town, state and ZIP code on one line in the United States. To know which country an address is in, it reads the country you picked, so each value of **Countries** carries the two letter code of its country.
+The country of an address is picked from a list of every country in the world, each named in your language. Your **Countries** list decides which ones come first: these are your favourites, so the countries you use most are always one keystroke away. Typing in the box narrows the list, so `jap` finds Japan whether or not it is a favourite.
 
-The countries that came with your account already have theirs. When you add one, such as Japan, type its code (`JP`) in **Country code** beside the name. You can add or change it later with **Edit**. An address in a country without a code keeps its parts in the order you typed them.
+To add a favourite, choose **Add a value** in **Countries**, pick the country in **Country**, and choose **Add**. It is named in the language of whoever reads it, so Monica shows Lithuania to you and Lituanie to somebody reading in French. A country already in the list cannot be added twice.
+
+Monica also uses the country to lay the address out the way that country writes it: the postcode before the town in France, the town, state and ZIP code on one line in the United States.
+
+For a place that is not a country, such as a region you want to treat as one, type its name in **Country** and choose **Add** followed by that name, at the end of the list. It is shown exactly as you wrote it, and an address there keeps its parts in the order you typed them. The country of an address works the same way: a name that matches no country can still be recorded, as written.
+
+:::note
+An address saved before you could pick from every country keeps the country it holds, shown as it was written, until you pick another one.
+:::
 
 ## Retire a value
 

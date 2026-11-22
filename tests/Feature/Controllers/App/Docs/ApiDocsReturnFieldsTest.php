@@ -961,6 +961,13 @@ class ApiDocsReturnFieldsTest extends TestCase
                 return $this->json('GET', '/api/v1/value-lists');
             }),
 
+            'countries-index' => $this->asSomebody(function (User $user): TestResponse {
+                $list = ValueList::factory()->create(['account_id' => $user->account_id, 'key' => ValueListEnum::Countries->value]);
+                ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'label' => null, 'country_code' => 'JP']);
+
+                return $this->json('GET', '/api/v1/countries');
+            }),
+
             'fields-position-update' => $this->asSomebody(function (User $user): TestResponse {
                 [$template, , $row] = $this->aPlacement($user);
                 $field = Field::factory()->create(['section_version_id' => $row->section_version_id, 'position' => 1]);

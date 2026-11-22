@@ -235,7 +235,7 @@ class FieldValueRulesTest extends TestCase
     }
 
     #[Test]
-    public function it_accepts_a_country_the_account_offers_and_the_word_that_keeps_the_stored_one(): void
+    public function it_accepts_a_country_the_account_offers_a_country_code_and_the_word_that_keeps_the_stored_one(): void
     {
         $address = Field::factory()->create(['type' => FieldTypeEnum::Address]);
         $canada = $this->countryOf($address, CountryEnum::Canada);
@@ -244,10 +244,12 @@ class FieldValueRulesTest extends TestCase
         $picked = Validator::make(['fields' => [$address->id => ['country' => (string) $canada->id]]], $rules);
         $kept = Validator::make(['fields' => [$address->id => ['country' => 'keep']]], $rules);
         $empty = Validator::make(['fields' => [$address->id => ['country' => '']]], $rules);
+        $byCode = Validator::make(['fields' => [$address->id => ['country' => 'jp']]], $rules);
 
         $this->assertFalse($picked->fails());
         $this->assertFalse($kept->fails());
         $this->assertFalse($empty->fails());
+        $this->assertFalse($byCode->fails());
     }
 
     #[Test]
@@ -259,7 +261,7 @@ class FieldValueRulesTest extends TestCase
         $mobile = ValueListItem::factory()->create(['account_id' => $address->account_id, 'value_list_id' => $phoneLabels->id]);
         $rules = FieldValueRules::for(collect([$address]));
 
-        foreach ([(string) $retired->id, (string) $mobile->id, 'Canada'] as $country) {
+        foreach ([(string) $retired->id, (string) $mobile->id, 'Canada', 'QQ'] as $country) {
             $validator = Validator::make(['fields' => [$address->id => ['country' => $country]]], $rules);
 
             $this->assertTrue($validator->fails(), "The country {$country} was accepted.");

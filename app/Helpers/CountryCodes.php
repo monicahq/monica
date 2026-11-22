@@ -21,10 +21,32 @@ class CountryCodes
     /** @var array<string, string>|null */
     private ?array $suppliedCodes = null;
 
+    /** @var array<string, array<string, string>> */
+    private static array $namesByLocale = [];
+
     /** @return list<string> */
     public static function known(): array
     {
         return once(fn (): array => array_map(strval(...), array_keys(new CountryRepository()->getList())));
+    }
+
+    /** @return array<string, string> */
+    public static function all(string $locale): array
+    {
+        if (array_key_exists($locale, self::$namesByLocale)) {
+            return self::$namesByLocale[$locale];
+        }
+
+        $names = array_map(strval(...), new CountryRepository()->getList($locale));
+        $collator = LocaleCollation::getCollator($locale);
+        uasort($names, fn (string $a, string $b): int => (int) $collator->compare($a, $b));
+
+        return self::$namesByLocale[$locale] = $names;
+    }
+
+    public static function nameOf(string $code, string $locale): ?string
+    {
+        return self::all($locale)[mb_strtoupper($code)] ?? null;
     }
 
     public function codeFor(int $accountId, string $country): ?string
@@ -58,7 +80,6 @@ class CountryCodes
             return $this->codesByAccount[$accountId];
         }
 
-        $known = self::known();
         $codes = [];
 
         $items = ValueListItem::withTrashed()
@@ -69,9 +90,9 @@ class CountryCodes
             ->get();
 
         foreach ($items as $item) {
-            $code = mb_strtoupper((string) ($item->country_code ?? $item->key));
+            $code = $item->countryCode();
 
-            if (in_array($code, $known, true)) {
+            if ($code !== null) {
                 $codes[mb_strtolower(mb_trim($item->label))] = $code;
             }
         }

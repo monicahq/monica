@@ -6,6 +6,7 @@ namespace App\Actions;
 
 use App\Enums\UserActionEnum;
 use App\Enums\ValueListEnum;
+use App\Helpers\CountryCodes;
 use App\Helpers\TextSanitizer;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
@@ -16,6 +17,7 @@ use App\Models\User;
 use App\Models\ValueListItem;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Validation\ValidationException;
 use InvalidArgumentException;
 
 /**
@@ -29,7 +31,7 @@ class UpdateValueListItem
     public function __construct(
         private readonly User $user,
         private readonly ValueListItem $item,
-        private string $label,
+        private ?string $label,
         private ?string $description = null,
         private ?string $colour = null,
         private ?string $icon = null,
@@ -49,7 +51,7 @@ class UpdateValueListItem
 
     private function sanitize(): void
     {
-        $this->label = TextSanitizer::plainText($this->label);
+        $this->label = TextSanitizer::nullablePlainText($this->label);
         $this->description = TextSanitizer::nullablePlainText($this->description);
         $this->colour = mb_strtolower(TextSanitizer::nullablePlainText($this->colour) ?? '') ?: null;
         $this->icon = TextSanitizer::nullablePlainText($this->icon);
@@ -64,6 +66,36 @@ class UpdateValueListItem
 
         if ($this->countryCode !== null && $this->item->valueList->key !== ValueListEnum::Countries->value) {
             throw new InvalidArgumentException('Only a country carries a country code.');
+        }
+
+        if ($this->label === null && $this->countryCode === null) {
+            throw new InvalidArgumentException('A value needs a label, or a country picked from the list.');
+        }
+
+        if ($this->countryCode === null) {
+            return;
+        }
+
+        if (! in_array($this->countryCode, CountryCodes::known(), true)) {
+            throw new InvalidArgumentException("{$this->countryCode} is not a country code.");
+        }
+
+        $this->refuseACountryAlreadyOnTheList();
+    }
+
+    private function refuseACountryAlreadyOnTheList(): void
+    {
+        $isAlreadyOnTheList = ValueListItem::query()
+            ->where('value_list_id', $this->item->valueList->id)
+            ->whereKeyNot($this->item->id)
+            ->where('is_active', true)
+            ->get()
+            ->contains(fn (ValueListItem $item): bool => $item->countryCode() === $this->countryCode);
+
+        if ($isAlreadyOnTheList) {
+            throw ValidationException::withMessages([
+                'country_code' => __('This country is already on the list.'),
+            ]);
         }
     }
 

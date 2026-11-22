@@ -36,9 +36,7 @@ class ValueListController extends Controller
                     'items' => $list->items->map(fn (ValueListItem $item): array => [
                         'id' => $item->id,
                         'label' => $item->label,
-                        'country_code' => $list->key === ValueListEnum::Countries->value && ($item->country_code ?? $item->key) !== null
-                            ? mb_strtoupper((string) ($item->country_code ?? $item->key))
-                            : null,
+                        'country_code' => $list->key === ValueListEnum::Countries->value ? $item->countryCode() : null,
                     ])->all(),
                 ],
             ], $lists->items()),

@@ -30,6 +30,7 @@ class ValueListSnapshot
                     'key' => $item->key,
                     'label' => $item->getRawOriginal('label'),
                     'label_translation_key' => $item->label_translation_key,
+                    'country_code' => $item->country_code,
                     'position' => $item->position,
                     'is_active' => $item->is_active,
                 ])->all(),

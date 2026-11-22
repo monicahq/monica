@@ -995,5 +995,34 @@ return [
                 'meta' => ['page' => 1, 'per_page' => 25, 'total' => 1],
             ],
         ],
+        [
+            'id' => 'countries-index',
+            'returnFields' => [
+                ['name' => 'data', 'type' => 'array', 'description' => 'The favourite countries of the account, then every country.'],
+                ['name' => 'data[]', 'type' => 'object', 'description' => 'One country.'],
+                ['name' => 'data[].code', 'type' => 'string', 'description' => 'Its two letter ISO 3166 code, which is what the country of an address takes.'],
+                ['name' => 'data[].name', 'type' => 'string', 'description' => 'Its name in the language of the request. A favourite whose name the account wrote reads as written.'],
+                ['name' => 'data[].favourite_id', 'type' => 'integer', 'description' => 'The id of the favourite of the Countries list standing for this country, or null when it is not a favourite. A favourite whose name the account wrote is listed first but stands only for itself, so its country is listed with null.'],
+            ],
+            'title' => 'List countries',
+            'label' => 'List countries',
+            'method' => 'GET',
+            'path' => '/countries',
+            'description' => 'List every country an address can be in, named in the language of the request, in the order the address form offers them.',
+            'body' => [
+                'The active favourites of the Countries value list come first, in their order, then the 256 countries and territories of the standard, sorted the way that language sorts. A favourite is listed again at its place among every country, so deduplicate on code if you want one entry per country.',
+                'A favourite typed as a name, with no country code, is not listed here. It is still listed by List value lists. The language comes from the Accept-Language header, and falls back to English names where a language has none.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
+            'returns' => 'Every country, not paged. The favourites of another account are never included.',
+            'response' => [
+                'data' => [
+                    ['code' => 'US', 'name' => 'United States', 'favourite_id' => 12],
+                    ['code' => 'CA', 'name' => 'Canada', 'favourite_id' => 13],
+                    ['code' => 'AF', 'name' => 'Afghanistan', 'favourite_id' => null],
+                    ['code' => 'US', 'name' => 'United States', 'favourite_id' => 12],
+                ],
+            ],
+        ],
     ],
 ];

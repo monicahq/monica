@@ -140,4 +140,20 @@ class ValueListsViewModelTest extends TestCase
         $this->assertFalse($values[1]['isEditing']);
         $this->assertSame(route('settings.valueListItems.edit', $salesman->id), $values[0]['editUrl']);
     }
+
+    #[Test]
+    public function it_gives_each_country_its_code_and_the_label_the_account_wrote(): void
+    {
+        $user = User::factory()->create();
+        $countries = ValueList::factory()->create(['account_id' => $user->account_id, 'key' => ValueListEnum::Countries->value]);
+        ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $countries->id, 'label' => null, 'country_code' => 'LT', 'position' => 1]);
+        ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $countries->id, 'label' => 'Schrute Farms', 'country_code' => null, 'position' => 2]);
+
+        app()->setLocale('fr_FR');
+
+        $values = new ValueListsViewModel(user: $user)->lists()[0]['values'];
+
+        $this->assertSame(['Lituanie', 'LT', null], [$values[0]['label'], $values[0]['countryCode'], $values[0]['writtenLabel']]);
+        $this->assertSame(['Schrute Farms', null, 'Schrute Farms'], [$values[1]['label'], $values[1]['countryCode'], $values[1]['writtenLabel']]);
+    }
 }

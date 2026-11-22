@@ -61,11 +61,36 @@ class ValueListSnapshotTest extends TestCase
                 'key' => 'sales',
                 'label' => 'Sales',
                 'label_translation_key' => null,
+                'country_code' => null,
                 'position' => 1,
                 'is_active' => true,
             ]],
             $snapshot[$list->id]['items'],
         );
+    }
+
+    #[Test]
+    public function it_copies_the_code_of_a_country_picked_in_the_settings(): void
+    {
+        $version = SectionVersion::factory()->create();
+        $item = ValueListItem::factory()->create([
+            'account_id' => $version->account_id,
+            'key' => null,
+            'label' => null,
+            'label_translation_key' => null,
+            'country_code' => 'LT',
+        ]);
+
+        Field::factory()->create([
+            'account_id' => $version->account_id,
+            'section_version_id' => $version->id,
+            'value_list_id' => $item->value_list_id,
+        ]);
+
+        $copied = ValueListSnapshot::of($version)[$item->value_list_id]['items'][0];
+
+        $this->assertNull($copied['label']);
+        $this->assertEquals('LT', $copied['country_code']);
     }
 
     #[Test]

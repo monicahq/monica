@@ -21,30 +21,31 @@
   @if ($isEditing)
     <div class="min-w-0 flex-1">
       <x-form method="put" :action="route('settings.valueListItems.update', $value['id'])" :x-target="$target" class="flex flex-wrap items-start gap-3">
-        <x-input
-          :id="'value-'.$value['id'].'-label'"
-          name="label"
-          size="small"
-          :value="$value['label']"
-          :aria-label="__('Name of the value')"
-          :error="$valueErrors->get('label')"
-          class="max-w-80"
-          maxlength="255"
-          required
-          x-autofocus
-        />
-
         @if ($value['holdsACountry'])
-          <x-input
+          <x-country-picker
             :id="'value-'.$value['id'].'-country-code'"
             name="country_code"
+            typed-name="label"
+            :label="__('Country')"
+            :extras="$value['writtenLabel'] === null ? [] : [['value' => 'written', 'label' => $value['writtenLabel'], 'submits' => $value['countryCode'] ?? '', 'typed' => $value['writtenLabel']]]"
+            :value="$value['writtenLabel'] === null ? ($value['countryCode'] ?? '') : 'written'"
+            :hint="__('Pick a country, or type a name for a place not in the list.')"
+            :error="[...$valueErrors->get('country_code'), ...$valueErrors->get('label')]"
+            class="w-full max-w-80"
+            autofocus
+          />
+        @else
+          <x-input
+            :id="'value-'.$value['id'].'-label'"
+            name="label"
             size="small"
-            :value="$value['countryCode']"
-            :aria-label="__('Country code')"
-            :placeholder="__('Country code, such as JP')"
-            :error="$valueErrors->get('country_code')"
-            class="max-w-48"
-            maxlength="2"
+            :value="$value['label']"
+            :aria-label="__('Name of the value')"
+            :error="$valueErrors->get('label')"
+            class="max-w-80"
+            maxlength="255"
+            required
+            x-autofocus
           />
         @endif
 

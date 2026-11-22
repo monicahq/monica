@@ -297,6 +297,22 @@ class FieldValueFormatterTest extends TestCase
     }
 
     #[Test]
+    public function it_names_a_country_recorded_by_its_code_in_the_language_of_the_reader(): void
+    {
+        $user = User::factory()->create();
+        $parts = ['street' => '1-1 Marunouchi', 'city' => 'Tokyo', 'postal_code' => '100-0005'];
+        $laidOutInEnglish = FieldValueFormatter::addressLines(parts: [...$parts, 'country' => 'Japan'], accountId: $user->account_id);
+
+        app()->setLocale('fr_FR');
+
+        $recorded = FieldValueFormatter::addressLines(parts: [...$parts, 'country' => 'Japan', 'country_code' => 'JP'], accountId: $user->account_id);
+        $written = FieldValueFormatter::addressLines(parts: [...$parts, 'country' => 'Japan'], accountId: $user->account_id);
+
+        $this->assertEquals([...array_slice($laidOutInEnglish, 0, -1), 'Japon'], $recorded);
+        $this->assertEquals($laidOutInEnglish, $written);
+    }
+
+    #[Test]
     public function it_drops_the_separator_a_missing_part_leaves_in_a_layout(): void
     {
         $user = User::factory()->create();

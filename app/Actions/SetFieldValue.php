@@ -9,6 +9,7 @@ use App\Enums\RelationTargetEnum;
 use App\Enums\ReminderOccurrenceCancelledReasonEnum;
 use App\Enums\UserActionEnum;
 use App\Exceptions\FieldValueIsNotUnique;
+use App\Helpers\CountryCodes;
 use App\Helpers\TextSanitizer;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
@@ -311,6 +312,12 @@ class SetFieldValue
             $address[$part] = is_scalar($given[$part] ?? null)
                 ? TextSanitizer::plainText((string) $given[$part])
                 : '';
+        }
+
+        $code = is_string($given['country_code'] ?? null) ? mb_strtoupper($given['country_code']) : null;
+
+        if (in_array($code, CountryCodes::known(), true)) {
+            $address['country_code'] = $code;
         }
 
         return $address;

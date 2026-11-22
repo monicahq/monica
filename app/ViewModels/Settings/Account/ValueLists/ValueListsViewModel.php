@@ -17,7 +17,7 @@ class ValueListsViewModel
     ) {}
 
     /**
-     * @return array<int, array{id: int, name: string, description: ?string, allowsUserValues: bool, addValueReason: ?string, canBeDeleted: bool, deleteReason: ?string, countLabel: string, values: array<int, array{id: int, label: string, isActive: bool, canBeDeleted: bool, usageLabel: string, isEditing: bool, editUrl: string}>}>
+     * @return array<int, array{id: int, name: string, description: ?string, allowsUserValues: bool, addValueReason: ?string, canBeDeleted: bool, deleteReason: ?string, countLabel: string, values: array<int, array{id: int, label: string, isActive: bool, canBeDeleted: bool, usageLabel: string, isEditing: bool, editUrl: string, holdsACountry: bool, countryCode: ?string, writtenLabel: ?string}>, holdsCountries: bool}>
      */
     public function lists(): array
     {
@@ -47,7 +47,8 @@ class ValueListsViewModel
                         'isEditing' => $this->editingItem?->is($item) ?? false,
                         'editUrl' => route('settings.valueListItems.edit', $item->id),
                         'holdsACountry' => $list->key === ValueListEnum::Countries->value,
-                        'countryCode' => $list->key === ValueListEnum::Countries->value ? mb_strtoupper((string) ($item->country_code ?? $item->key)) : null,
+                        'countryCode' => $list->key === ValueListEnum::Countries->value ? $item->countryCode() : null,
+                        'writtenLabel' => $item->getRawOriginal('label'),
                     ])
                     ->all(),
             ])
