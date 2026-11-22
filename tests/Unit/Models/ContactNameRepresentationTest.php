@@ -6,8 +6,10 @@ namespace Tests\Unit\Models;
 
 use App\Enums\NameOrderEnum;
 use App\Helpers\LocaleCollation;
+use App\Models\Account;
 use App\Models\Contact;
 use App\Models\ContactNameRepresentation;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -29,6 +31,43 @@ class ContactNameRepresentationTest extends TestCase
         $this->assertSame('schrute dwight kurt', $representation->sort_name);
         $this->assertSame(LocaleCollation::foldForSearch('Dwight Kurt Schrute'), $representation->search_key);
         $this->assertSame(LocaleCollation::matchKey('Schrute'), $representation->match_key);
+    }
+
+    #[Test]
+    public function it_refiles_its_contact_when_a_pronunciation_comes_and_goes_in_a_language_ordered_by_pronunciation(): void
+    {
+        $account = Account::factory()->create();
+        User::factory()->create(['account_id' => $account->id, 'locale' => 'ja_JP']);
+        $contact = Contact::factory()->create(['account_id' => $account->id, 'first_name' => '太郎', 'middle_name' => null, 'last_name' => '山田']);
+        $before = $contact->refresh()->only(['sort_name', 'sort_key', 'search_key']);
+
+        $pronunciation = ContactNameRepresentation::factory()->phonetic('x-other')->create(['contact_id' => $contact->id, 'script_code' => 'Hira', 'family_name' => 'やまだ', 'given_name' => 'たろう']);
+
+        $contact->refresh();
+        $this->assertSame('やまだ たろう', $contact->sort_name);
+        $this->assertSame(LocaleCollation::sortKey('やまだ たろう', 'ja_JP'), $contact->sort_key);
+        $this->assertSame($before['search_key'], $contact->search_key);
+
+        $pronunciation->delete();
+
+        $this->assertSame($before, $contact->refresh()->only(['sort_name', 'sort_key', 'search_key']));
+    }
+
+    #[Test]
+    public function it_leaves_its_contact_unwritten_in_a_language_ordered_by_spelling(): void
+    {
+        $account = Account::factory()->create();
+        User::factory()->create(['account_id' => $account->id, 'locale' => 'en']);
+        $contact = Contact::factory()->create(['account_id' => $account->id, 'first_name' => 'Kevin', 'middle_name' => null, 'last_name' => 'Malone']);
+        $updatedAt = $contact->refresh()->updated_at;
+
+        $this->travel(1)->minutes();
+
+        $pronunciation = ContactNameRepresentation::factory()->phonetic('ipa')->create(['contact_id' => $contact->id, 'script_code' => 'Hira', 'family_name' => 'まろーん', 'given_name' => 'けびん']);
+        $pronunciation->delete();
+
+        $this->assertEquals($updatedAt, $contact->refresh()->updated_at);
+        $this->assertSame('malone kevin', $contact->sort_name);
     }
 
     #[Test]

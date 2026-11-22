@@ -26,7 +26,7 @@ class ContactLifeEventCandidateController extends Controller
                 ->where('vault_id', $vault->id)
                 ->whereKeyNot([$contact->id, ...$except])
                 ->matchingSearch((string) $request->string('query'), $request->user()->locale)
-                ->orderBy('sort_name')
+                ->orderBy('sort_key')
                 ->limit(self::LIMIT)
                 ->get()
                 ->map(fn (Contact $candidate): array => ['id' => $candidate->id, 'name' => $candidate->name])

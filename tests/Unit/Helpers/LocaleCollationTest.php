@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Tests\Unit\Helpers;
 
 use App\Helpers\LocaleCollation;
+use Collator;
+use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -30,6 +32,32 @@ class LocaleCollationTest extends TestCase
         $key = LocaleCollation::sortKey(str_repeat('é', 511), 'fr_FR');
 
         $this->assertLessThanOrEqual(LocaleCollation::SORT_KEY_LENGTH, strlen($key));
+    }
+
+    #[Test]
+    public function it_lowers_a_turkish_capital_to_its_own_small_letter(): void
+    {
+        $this->assertSame('ırmak', LocaleCollation::lower('Irmak', 'tr_TR'));
+        $this->assertSame('ipek', LocaleCollation::lower('İpek', 'tr_TR'));
+        $this->assertSame('irmak', LocaleCollation::lower('Irmak', 'en'));
+    }
+
+    /**
+     * @param  list<array{0: string, 1: string, 2: string|null}>  $names
+     * @param  list<string>  $expectedGivenNames
+     */
+    #[Test]
+    #[DataProviderExternal(NameFilingTest::class, 'filedNames')]
+    public function it_changes_the_case_of_a_letter_and_never_the_letter(string $locale, array $names, array $expectedGivenNames): void
+    {
+        $collator = new Collator(locale: $locale);
+        $collator->setStrength(Collator::SECONDARY);
+
+        foreach ($names as $parts) {
+            foreach (array_filter($parts) as $part) {
+                $this->assertSame(0, $collator->compare($part, LocaleCollation::lower($part, $locale)), "{$locale}: {$part}");
+            }
+        }
     }
 
     #[Test]

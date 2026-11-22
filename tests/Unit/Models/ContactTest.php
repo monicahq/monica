@@ -318,16 +318,82 @@ class ContactTest extends TestCase
     {
         $account = Account::factory()->create();
         $user = User::factory()->create(['account_id' => $account->id, 'locale' => 'tr_TR']);
-        $contact = Contact::factory()->create(['account_id' => $account->id, 'last_name' => 'Irmak']);
+        $contact = Contact::factory()->create(['account_id' => $account->id, 'last_name' => 'Irmak', 'first_name' => null, 'middle_name' => null]);
 
         $this->app->setLocale('fr_FR');
         $contact->save();
 
         $this->assertSame($user->locale, $account->locale());
-        $this->assertSame(
-            LocaleCollation::foldForSearch($contact->sort_name, 'tr_TR'),
-            $contact->fresh()->search_key,
-        );
+        $this->assertSame('ırmak', $contact->fresh()->sort_name);
+        $this->assertSame($contact->searchKeyFor('tr_TR'), $contact->fresh()->search_key);
+    }
+
+    #[Test]
+    public function it_files_and_searches_a_name_in_english_as_it_always_did(): void
+    {
+        $account = Account::factory()->create();
+        User::factory()->create(['account_id' => $account->id, 'locale' => 'en']);
+
+        $contact = Contact::factory()->create(['account_id' => $account->id, 'first_name' => 'Jim', 'last_name' => 'Halpert', 'middle_name' => null]);
+
+        $this->assertSame('halpert jim', $contact->sort_name);
+        $this->assertSame(LocaleCollation::foldForSearch('halpert jim', 'en'), $contact->search_key);
+    }
+
+    #[Test]
+    public function it_files_an_icelandic_name_under_its_given_name_and_searches_it_as_before(): void
+    {
+        $account = Account::factory()->create();
+        User::factory()->create(['account_id' => $account->id, 'locale' => 'is_IS']);
+
+        $contact = Contact::factory()->create(['account_id' => $account->id, 'first_name' => 'Björk', 'last_name' => 'Guðmundsdóttir', 'middle_name' => null]);
+
+        $this->assertStringStartsWith('björk', $contact->sort_name);
+        $this->assertSame(LocaleCollation::foldForSearch('guðmundsdóttir björk', 'is_IS'), $contact->search_key);
+    }
+
+    #[Test]
+    public function it_files_a_japanese_name_under_its_pronunciation_in_kana(): void
+    {
+        $account = Account::factory()->create();
+        User::factory()->create(['account_id' => $account->id, 'locale' => 'ja_JP']);
+        $contact = Contact::factory()->create(['account_id' => $account->id, 'first_name' => '太郎', 'middle_name' => null, 'last_name' => '山田']);
+
+        $this->assertStringStartsWith('山田', $contact->sortNameFor('ja_JP'));
+
+        ContactNameRepresentation::factory()->phonetic('x-romaji')->create(['contact_id' => $contact->id, 'script_code' => 'Latn', 'family_name' => 'Yamada', 'given_name' => 'Tarō']);
+
+        $this->assertStringStartsWith('山田', $contact->fresh()->sortNameFor('ja_JP'));
+
+        ContactNameRepresentation::factory()->phonetic('x-other')->create(['contact_id' => $contact->id, 'script_code' => 'Hira', 'family_name' => 'やまだ', 'given_name' => 'たろう', 'position' => 3]);
+
+        $this->assertSame('やまだ たろう', $contact->fresh()->sortNameFor('ja_JP'));
+        $this->assertStringStartsWith('山田', $contact->fresh()->sortNameFor('en'));
+    }
+
+    #[Test]
+    public function it_files_a_japanese_name_under_the_first_of_its_pronunciations(): void
+    {
+        $account = Account::factory()->create();
+        User::factory()->create(['account_id' => $account->id, 'locale' => 'ja_JP']);
+        $contact = Contact::factory()->create(['account_id' => $account->id, 'first_name' => '太郎', 'middle_name' => null, 'last_name' => '山田']);
+
+        ContactNameRepresentation::factory()->phonetic('x-other')->create(['contact_id' => $contact->id, 'script_code' => 'Kana', 'family_name' => 'ヤマダ', 'given_name' => 'タロウ', 'position' => 4]);
+        ContactNameRepresentation::factory()->phonetic('x-other')->create(['contact_id' => $contact->id, 'script_code' => 'Hira', 'family_name' => 'やまだ', 'given_name' => 'たろう', 'position' => 3]);
+
+        $this->assertSame('やまだ たろう', $contact->fresh()->sortNameFor('ja_JP'));
+    }
+
+    #[Test]
+    public function it_files_a_japanese_name_under_a_pronunciation_written_only_as_a_whole(): void
+    {
+        $account = Account::factory()->create();
+        User::factory()->create(['account_id' => $account->id, 'locale' => 'ja_JP']);
+        $contact = Contact::factory()->create(['account_id' => $account->id, 'first_name' => '太郎', 'middle_name' => null, 'last_name' => '山田']);
+
+        ContactNameRepresentation::factory()->phonetic('x-other')->create(['contact_id' => $contact->id, 'script_code' => 'Hira', 'family_name' => null, 'given_name' => null, 'formatted_name' => 'やまだ たろう']);
+
+        $this->assertSame('やまだ たろう', $contact->fresh()->sortNameFor('ja_JP'));
     }
 
     #[Test]

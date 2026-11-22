@@ -128,6 +128,12 @@ class UpdatePreferencesTest extends TestCase
             'middle_name' => null,
             'last_name' => 'Ñuñez',
         ]);
+        $particle = Contact::factory()->create([
+            'account_id' => $account->id,
+            'first_name' => 'Juana',
+            'middle_name' => null,
+            'last_name' => 'de la Cruz',
+        ]);
 
         DB::listen(function ($query) {
             if (preg_match('/^update\s+"?contacts"?/i', $query->sql) === 1) {
@@ -147,6 +153,7 @@ class UpdatePreferencesTest extends TestCase
 
         $this->assertSame('fr_FR', $user->fresh()->locale);
         $this->assertSame('nunez', $contact->fresh()->search_key);
+        $this->assertSame('la cruz juana de', $particle->fresh()->sort_name);
     }
 
     #[Test]

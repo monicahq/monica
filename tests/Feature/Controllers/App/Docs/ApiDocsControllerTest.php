@@ -124,6 +124,6 @@ class ApiDocsControllerTest extends TestCase
         $response->assertSee(route('docs.api.changelog.index'), escape: false);
         $response->assertSee('Read the changelog');
         $response->assertSee(route('support.requests.new'), escape: false);
-        $response->assertSee('datetime="2026-11-20"', escape: false);
+        $response->assertSee('datetime="2026-11-22"', escape: false);
     }
 }

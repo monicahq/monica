@@ -28,6 +28,14 @@ return [
     | characters are escaped rather than pasted, because a non-breaking space is
     | invisible and an apostrophe has a twin that is wrong.
     |
+    | The name filing is how that language orders the names of people, read
+    | when a contact's sort name is built. files_under says which part comes
+    | first (family or given), skipped_particles lists the words a family name
+    | opening with them is filed after, and phonetic_scripts the scripts of a
+    | pronunciation the name is filed under instead. A locale that declares
+    | none files family name first and skips nothing. The sources of each rule
+    | are in specs/145-contact-sort-name-languages/research.md.
+    |
     | It sits here rather than in config/monica.php because it answers the same
     | question as the settings below, which laravel-lang reads.
     |
@@ -84,6 +92,9 @@ return [
                     'close' => '“',
                 ],
             ],
+            'name_filing' => [
+                'skipped_particles' => ['von und zu', 'von der', 'von dem', 'von den', 'von', 'zu', 'van der', 'van den', 'van de', 'van'],
+            ],
         ],
         'el_GR' => [
             'label' => 'Ελληνικά',
@@ -104,6 +115,9 @@ return [
                     'open' => '«',
                     'close' => '»',
                 ],
+            ],
+            'name_filing' => [
+                'skipped_particles' => ['de la', 'de las', 'de los', 'del', 'de'],
             ],
         ],
         'fi_FI' => [
@@ -142,6 +156,9 @@ return [
                 ],
                 'forbidden_words' => ['tu', 'toi', 'tes'],
             ],
+            'name_filing' => [
+                'skipped_particles' => ['de', "d'", "d\u{2019}"],
+            ],
         ],
         'ga_IE' => [
             'label' => 'Gaeilge',
@@ -170,6 +187,9 @@ return [
             'date_format' => 'j.n.Y',
             'number_format' => 'dot_comma',
             'flag' => 'linear-gradient(to bottom, transparent 43%, #d72828 43% 57%, transparent 57%), linear-gradient(to right, transparent 33.5%, #d72828 33.5% 41.5%, transparent 41.5%), linear-gradient(to bottom, transparent 36%, #fff 36% 64%, transparent 64%), linear-gradient(to right, transparent 28%, #fff 28% 47%, transparent 47%), #02529c',
+            'name_filing' => [
+                'files_under' => 'given',
+            ],
         ],
         'it_IT' => [
             'label' => 'Italiano',
@@ -192,6 +212,9 @@ return [
             'date_format' => 'Y/m/d',
             'number_format' => 'comma_dot',
             'flag' => 'radial-gradient(circle at 50% 50%, #bc002d 0 35%, #fff 35%)',
+            'name_filing' => [
+                'phonetic_scripts' => ['Hira', 'Kana'],
+            ],
         ],
         'ko_KR' => [
             'label' => '한국어',
@@ -228,6 +251,9 @@ return [
                 ],
             ],
             'flag' => 'linear-gradient(to bottom, #ae1c28 0 33%, #fff 33% 66%, #21468b 66%)',
+            'name_filing' => [
+                'skipped_particles' => ['af', 'aan', 'bij', 'de', 'den', 'der', 'het', "'t", "\u{2019}t", 'in', 'onder', 'op', 'over', "'s", "\u{2019}s", 'te', 'ten', 'ter', 'tot', 'uit', 'uijt', 'van', 'voor'],
+            ],
         ],
         'pl_PL' => [
             'label' => 'Polski',
@@ -251,6 +277,9 @@ return [
                     'close' => '”',
                 ],
             ],
+            'name_filing' => [
+                'skipped_particles' => ['da', 'das', 'de', 'do', 'dos', "d'", "d\u{2019}"],
+            ],
         ],
         'pt_PT' => [
             'label' => 'Português',
@@ -264,6 +293,9 @@ return [
                     'open' => '«',
                     'close' => '»',
                 ],
+            ],
+            'name_filing' => [
+                'skipped_particles' => ['da', 'das', 'de', 'do', 'dos', "d'", "d\u{2019}"],
             ],
         ],
         'ru_RU' => [
@@ -279,6 +311,9 @@ return [
             'date_format' => 'Y-m-d',
             'number_format' => 'comma_dot',
             'flag' => 'linear-gradient(to right, #ffbe29 0 6%, #00534e 6% 20%, #eb7400 20% 34%, #ffbe29 34% 40%, #8d2029 40%)',
+            'name_filing' => [
+                'files_under' => 'given',
+            ],
         ],
         'sv_SE' => [
             'label' => 'Svenska',
@@ -293,6 +328,9 @@ return [
             'date_format' => 'd/m/Y',
             'number_format' => 'comma_dot',
             'flag' => 'radial-gradient(circle at 50% 50%, transparent 0 5%, #000080 5% 7%, transparent 7%), linear-gradient(to bottom, #ff9933 0 33.33%, #fff 33.33% 66.66%, #138808 66.66%)',
+            'name_filing' => [
+                'files_under' => 'given',
+            ],
         ],
         'th_TH' => [
             'label' => 'ไทย',
@@ -330,6 +368,9 @@ return [
             'date_format' => 'd/m/Y',
             'number_format' => 'dot_comma',
             'flag' => 'conic-gradient(from 180deg, transparent 0 18deg, #ffff00 18deg 54deg, transparent 54deg 90deg, #ffff00 90deg 126deg, transparent 126deg 162deg, #ffff00 162deg 198deg, transparent 198deg 234deg, #ffff00 234deg 270deg, transparent 270deg 306deg, #ffff00 306deg 342deg, transparent 342deg) 50% 50% / 46% 62% no-repeat, #da251d',
+            'name_filing' => [
+                'files_under' => 'given',
+            ],
         ],
         'zh_CN' => [
             'label' => '简体中文',

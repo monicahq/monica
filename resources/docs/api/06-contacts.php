@@ -172,7 +172,7 @@ $listParams = [
         'name' => 'sort',
         'type' => 'string',
         'required' => false,
-        'description' => 'Which order to answer in: name, nickname, last-spoke or added. A contact the order knows nothing about, somebody with no nickname when sorting by nickname, is at the end whichever direction is asked for.',
+        'description' => 'Which order to answer in: name, nickname, last-spoke or added. Name follows the way the language of your account files people: by family name or by given name, after a particle such as van or de where that language skips it, and by the pronunciation written in kana where it orders by one. A contact the order knows nothing about, somebody with no nickname when sorting by nickname, is at the end whichever direction is asked for.',
         'default' => 'name',
     ],
     [
@@ -223,7 +223,7 @@ $nameRepresentationFields = [
 
 $contactAttributes = [
     ['name' => 'slug', 'type' => 'string', 'description' => 'The readable name the contact is addressed by, built from the whole name above and unique within the vault. It keeps the alphabet the name is written in, so a name in Japanese is addressed in Japanese, sent as its own characters or percent encoded. It is not stable: correcting the name rebuilds it and the previous one stops answering, which is why a stored reference should be the id. Nothing lets you choose or edit it.'],
-    ['name' => 'name', 'type' => 'string', 'description' => 'The name the contact is shown under: the formatted name of the way of writing it chosen for display, else its parts in the order it reads in. It is what the lists sort on, and it is built rather than stored, so it cannot be written directly.'],
+    ['name' => 'name', 'type' => 'string', 'description' => 'The name the contact is shown under: the formatted name of the way of writing it chosen for display, else its parts in the order it reads in. It is built rather than stored, so it cannot be written directly. The lists do not sort on it: they sort on the parts of the name, in the order the language of your account files people in.'],
     ['name' => 'formatted_name', 'type' => 'string', 'description' => 'The full name exactly as written for the way of writing it chosen for display, or null when that way is only parts.'],
     ['name' => 'name_representations', 'type' => 'array', 'description' => 'Every way the current name is written: in its own script, transliterated into another, or as it is pronounced, in the order the owner put them. Every one of them finds the contact in a search. Nothing is transliterated for you.'],
     ['name' => 'name_representations[]', 'type' => 'object', 'description' => 'One way of writing the name.'],
@@ -504,7 +504,7 @@ return [
                 'It changes the way of writing the name chosen for display, and leaves every other way alone. A contact with none is given one. To change the others, or which one is shown, replace the list of ways below.',
                 'Send only the parts that change. A part left out keeps its value, and a part sent as null is cleared, so a request carrying nothing but a new last name changes the last name alone.',
                 'Every part may be null, including all of them together. A contact with no name still sorts, still searches and still draws initials: the product falls back to whatever it has rather than refusing you.',
-                'What the lists sort and search on is rebuilt from the new name as it is written, in the language of your account, so the contact moves to its new place in the list at once.',
+                'What the lists sort and search on is rebuilt from the new name as it is written, so the contact moves to its new place in the list at once. The sort follows the way the language of your account files people, and the search matches the name as it always did.',
             ],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,

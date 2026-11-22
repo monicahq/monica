@@ -259,3 +259,4 @@ A chronological list of every feature and improvement shipped during development
 * Admin/billing: Added a screen showing what is on sale through Stripe, and which confirmations Stripe sends and has sent to the instance.
 * Admin/billing: Showed the figures of the business on that screen: who holds full access and through what, the state of the subscriptions, the payments of this month and the last, and the refunds and disputes that ended access.
 * Admin/billing: Let an administrator read the Stripe catalogue again instead of waiting for the hour, written down in the administrator record.
+* Vaults/people: The list of people, its pickers and the API order names the way the language of the account files them: by given name, after a particle, with each letter of the language kept apart, or by a kana reading.

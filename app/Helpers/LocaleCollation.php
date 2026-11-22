@@ -64,7 +64,7 @@ class LocaleCollation
         $locale ??= App::getLocale();
         $language = self::language($locale);
 
-        $lowered = (string) self::caser($locale, 'Lower')->transliterate($text);
+        $lowered = self::lower($text, $locale);
         $characters = preg_split('//u', $lowered, -1, PREG_SPLIT_NO_EMPTY) ?: [];
 
         $folded = '';
@@ -74,6 +74,11 @@ class LocaleCollation
         }
 
         return mb_substr($folded, 0, 511);
+    }
+
+    public static function lower(string $text, ?string $locale = null): string
+    {
+        return (string) self::caser($locale ?? App::getLocale(), 'Lower')->transliterate($text);
     }
 
     public static function headingLetter(string $text, ?string $locale = null): string

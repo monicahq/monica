@@ -15,6 +15,7 @@ use App\Enums\RelationshipStatusEnum;
 use App\Enums\SortDirectionEnum;
 use App\Enums\ValueListEnum;
 use App\Helpers\LocaleCollation;
+use App\Helpers\NameFiling;
 use App\Helpers\ReservedAddressWords;
 use App\Helpers\SlugBuilder;
 use App\Models\Concerns\HasUuids;
@@ -231,7 +232,7 @@ class Contact extends Model
     ];
 
     /**
-     * Write the string the lists sort on and the two keys derived from it, here
+     * Write the string the lists sort on and the keys derived from the name, here
      * rather than in the actions: sorting thousands of contacts cannot
      * concatenate at read time, and every path that writes a name meets here.
      *
@@ -252,11 +253,10 @@ class Contact extends Model
 
             $contact->isCopyingTheDisplayName = false;
 
-            $contact->sort_name = $contact->buildSortName();
-
             $locale = $contact->account->locale();
+            $contact->sort_name = $contact->sortNameFor($locale);
             $contact->sort_key = LocaleCollation::sortKey($contact->sort_name, $locale);
-            $contact->search_key = LocaleCollation::foldForSearch($contact->sort_name, $locale);
+            $contact->search_key = $contact->searchKeyFor($locale);
             $contact->match_key = LocaleCollation::matchKey($contact->buildMatchToken(), $locale);
 
             if (($contact->slug ?? '') === '' || $contact->isDirty(self::NAME_PARTS)) {
@@ -1074,12 +1074,63 @@ class Contact extends Model
     }
 
     /**
-     * Build the string the lists sort on. It reads family name first whatever
-     * the contact reads as, because a list sorted one way for some rows and
-     * another way for others is sorted no way at all, and it is lowercased so
-     * the order does not depend on the collation of the database underneath.
+     * Build the string the lists sort on, by the filing rule of the language
+     * given: one rule for every row, whatever order each contact reads in,
+     * because a list sorted one way for some rows and another way for others
+     * is sorted no way at all. Where the language orders names by how they are
+     * read, the first pronunciation written in a script it reads by stands in
+     * for the name. It is lowercased in that language, so the order
+     * does not depend on the collation of the database underneath. A contact
+     * with no name part at all sorts on an empty string, which is what lets
+     * somebody be written down before their name is known.
+     */
+    public function sortNameFor(string $locale): string
+    {
+        $scripts = NameFiling::phoneticScripts($locale);
+
+        $pronunciation = $scripts === [] || ! $this->exists
+            ? null
+            : $this->nameRepresentations->first(fn (ContactNameRepresentation $representation): bool => $representation->kind === ContactNameKindEnum::Phonetic
+                && in_array($representation->script_code, $scripts, true));
+
+        if ($pronunciation !== null) {
+            return NameFiling::sortName(
+                locale: $locale,
+                family: $pronunciation->family_name,
+                given: $pronunciation->given_name,
+                additional: $pronunciation->additional_name,
+                fallback: (string) $pronunciation->formatted_name,
+            );
+        }
+
+        return NameFiling::sortName(
+            locale: $locale,
+            family: $this->last_name,
+            given: $this->first_name,
+            additional: $this->middle_name,
+            fallback: (string) ($this->formatted_name ?? $this->nickname ?? $this->maiden_name),
+        );
+    }
+
+    /**
+     * Build the text a search matches against: the name family first, folded
+     * in the language given. It does not follow the filing rule, so a search
+     * finds exactly what it found before that rule existed.
+     */
+    public function searchKeyFor(string $locale): string
+    {
+        $parts = collect([$this->last_name, $this->first_name, $this->middle_name])
+            ->filter()
+            ->implode(' ');
+
+        $text = mb_trim($parts !== '' ? $parts : (string) ($this->formatted_name ?? $this->nickname ?? $this->maiden_name));
+
+        return LocaleCollation::foldForSearch(mb_substr(mb_strtolower($text), 0, 511), $locale);
+    }
+
+    /**
      * The one part of the name detection groups contacts by: the family name where there is one.
-     **/
+     */
     private function buildMatchToken(): string
     {
         return mb_trim((string) ($this->last_name
@@ -1087,20 +1138,5 @@ class Contact extends Model
             ?? $this->formatted_name
             ?? $this->nickname
             ?? $this->maiden_name));
-    }
-
-    /**
-     * A contact with no name part at all sorts and searches on an empty string,
-     * which is what lets somebody be written down before their name is known.
-     */
-    private function buildSortName(): string
-    {
-        $parts = collect([$this->last_name, $this->first_name, $this->middle_name])
-            ->filter()
-            ->implode(' ');
-
-        $sortName = mb_trim($parts !== '' ? $parts : (string) ($this->formatted_name ?? $this->nickname ?? $this->maiden_name));
-
-        return mb_substr(mb_strtolower($sortName), 0, 511);
     }
 }

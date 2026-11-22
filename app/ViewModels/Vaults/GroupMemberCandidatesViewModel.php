@@ -31,7 +31,7 @@ class GroupMemberCandidatesViewModel
             ->where('vault_id', $this->vault->id)
             ->whereDoesntHave('groupMembers', fn ($query) => $query->where('group_id', $this->group->id)->whereNull('left_on'))
             ->matchingSearch($this->query, $this->user->locale)
-            ->orderBy('sort_name')
+            ->orderBy('sort_key')
             ->limit(self::CANDIDATE_LIMIT)
             ->get()
             ->map(fn (Contact $contact): array => ['uuid' => $contact->uuid, 'name' => $contact->name])

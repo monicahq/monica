@@ -8,6 +8,7 @@ use App\Actions\RebuildOrderingKeys;
 use App\Helpers\LocaleCollation;
 use App\Models\Account;
 use App\Models\Contact;
+use App\Models\ContactNameRepresentation;
 use App\Models\Entity;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
@@ -28,7 +29,7 @@ class RebuildOrderingKeysTest extends TestCase
         $fresh = $contact->fresh();
 
         $this->assertSame(LocaleCollation::sortKey($fresh->sort_name, 'tr_TR'), $fresh->sort_key);
-        $this->assertSame(LocaleCollation::foldForSearch($fresh->sort_name, 'tr_TR'), $fresh->search_key);
+        $this->assertSame($fresh->searchKeyFor('tr_TR'), $fresh->search_key);
     }
 
     #[Test]
@@ -107,6 +108,46 @@ class RebuildOrderingKeysTest extends TestCase
         $trashed = Contact::withTrashed()->find($contact->id);
 
         $this->assertSoftDeleted($contact);
-        $this->assertSame(LocaleCollation::foldForSearch($trashed->sort_name, 'tr_TR'), $trashed->search_key);
+        $this->assertSame($trashed->searchKeyFor('tr_TR'), $trashed->search_key);
+    }
+
+    #[Test]
+    public function it_refiles_every_contact_for_a_language_that_files_another_way(): void
+    {
+        $account = Account::factory()->create();
+        $contact = Contact::factory()->create(['account_id' => $account->id, 'first_name' => 'Björk', 'middle_name' => null, 'last_name' => 'Guðmundsdóttir']);
+
+        new RebuildOrderingKeys(account: $account, locale: 'is_IS')->execute();
+
+        $rebuilt = $contact->fresh();
+
+        $this->assertSame($rebuilt->sortNameFor('is_IS'), $rebuilt->sort_name);
+        $this->assertStringStartsWith('björk', $rebuilt->sort_name);
+        $this->assertSame(LocaleCollation::sortKey($rebuilt->sort_name, 'is_IS'), $rebuilt->sort_key);
+        $this->assertSame($rebuilt->searchKeyFor('is_IS'), $rebuilt->search_key);
+    }
+
+    #[Test]
+    public function it_refiles_a_contact_under_its_pronunciation_for_a_language_ordered_by_pronunciation(): void
+    {
+        $account = Account::factory()->create();
+        $contact = Contact::factory()->create(['account_id' => $account->id, 'first_name' => '太郎', 'middle_name' => null, 'last_name' => '山田']);
+        ContactNameRepresentation::factory()->phonetic('x-other')->create(['contact_id' => $contact->id, 'script_code' => 'Hira', 'family_name' => 'やまだ', 'given_name' => 'たろう']);
+
+        new RebuildOrderingKeys(account: $account, locale: 'ja_JP')->execute();
+
+        $this->assertSame('やまだ たろう', $contact->fresh()->sort_name);
+    }
+
+    #[Test]
+    public function it_leaves_the_sort_name_of_an_entity_as_it_is(): void
+    {
+        $account = Account::factory()->create();
+        $entity = Entity::factory()->create(['account_id' => $account->id, 'name' => 'Dunder Mifflin']);
+        $sortName = $entity->fresh()->sort_name;
+
+        new RebuildOrderingKeys(account: $account, locale: 'is_IS')->execute();
+
+        $this->assertSame($sortName, $entity->fresh()->sort_name);
     }
 }

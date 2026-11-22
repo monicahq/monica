@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Enums\ContactNameKindEnum;
 use App\Enums\NameOrderEnum;
 use App\Helpers\LocaleCollation;
+use App\Helpers\NameFiling;
 use App\Models\Concerns\HasUuids;
 use Carbon\CarbonImmutable;
 use Database\Factories\ContactNameRepresentationFactory;
@@ -81,8 +82,9 @@ class ContactNameRepresentation extends Model
 
     /**
      * Write the keys the lists, the search and the duplicate detection read, in the account's
-     * language, and keep the contact in step once the row is written: its copy of the display name
-     * when this is the one shown, its place in the search otherwise.
+     * language, and keep the contact in step once the row is written or deleted: its copy of the
+     * display name when this is the one shown, its place in the search otherwise, and its place in
+     * the lists when its language files a name under a pronunciation.
      */
     #[Override]
     protected static function booted(): void
@@ -106,6 +108,11 @@ class ContactNameRepresentation extends Model
 
         static::deleted(function (ContactNameRepresentation $representation): void {
             $contact = $representation->contact;
+            $contact->unsetRelation('nameRepresentations');
+
+            if (NameFiling::phoneticScripts($contact->account->locale()) !== []) {
+                $contact->save();
+            }
 
             Contact::sendToSearch(Contact::query()->whereKey($contact->id));
             $contact->resendTheRecordsNamingIt();
@@ -214,12 +221,17 @@ class ContactNameRepresentation extends Model
     private function keepTheContactInStep(): void
     {
         $contact = $this->contact;
+        $contact->unsetRelation('nameRepresentations');
 
         if ($contact->display_name_representation_id === $this->id) {
             $contact->copyDisplayName($this);
             $contact->save();
 
             return;
+        }
+
+        if (NameFiling::phoneticScripts($contact->account->locale()) !== []) {
+            $contact->save();
         }
 
         Contact::sendToSearch(Contact::query()->whereKey($contact->id));

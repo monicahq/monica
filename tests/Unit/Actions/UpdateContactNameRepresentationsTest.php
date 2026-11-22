@@ -222,6 +222,31 @@ class UpdateContactNameRepresentationsTest extends TestCase
     }
 
     #[Test]
+    public function it_files_a_contact_under_a_kana_pronunciation_added_and_removed_in_a_japanese_account(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create(['locale' => 'ja_JP']);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'first_name' => '太郎', 'middle_name' => null, 'last_name' => '山田']);
+        $written = ['id' => $contact->displayNameRepresentation->uuid, 'kind' => 'written', 'language' => 'ja', 'given_name' => '太郎', 'family_name' => '山田', 'name_order' => 'family_first'];
+        $contact->load('nameRepresentations');
+
+        new UpdateContactNameRepresentations(user: $user, contact: $contact, nameRepresentations: [
+            $written,
+            ['kind' => 'phonetic', 'script' => 'Hira', 'phonetic_system' => 'x-other', 'given_name' => 'たろう', 'family_name' => 'やまだ'],
+        ], display: 0, nickname: null, maidenName: null)->execute();
+
+        $this->assertSame('やまだ たろう', $contact->refresh()->sort_name);
+
+        $contact->load('nameRepresentations');
+
+        new UpdateContactNameRepresentations(user: $user, contact: $contact, nameRepresentations: [$written], display: 0, nickname: null, maidenName: null)->execute();
+
+        $this->assertSame('山田 太郎', $contact->refresh()->sort_name);
+    }
+
+    #[Test]
     public function it_looks_for_no_duplicate_while_an_import_writes_into_the_vault(): void
     {
         Queue::fake();

@@ -66,6 +66,20 @@ class FieldChoicesViewModelTest extends TestCase
         $this->assertCount(25, $candidates);
     }
 
+    #[Test]
+    public function it_offers_the_people_in_the_order_of_the_language_of_the_account(): void
+    {
+        $user = User::factory()->create(['locale' => 'fr_FR']);
+        $scranton = Vault::factory()->create(['account_id' => $user->account_id]);
+        $field = Field::factory()->relation()->create(['account_id' => $user->account_id]);
+        Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $scranton->id, 'first_name' => 'Dwight', 'middle_name' => null, 'last_name' => 'Schrute']);
+        Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $scranton->id, 'first_name' => 'Erin', 'middle_name' => null, 'last_name' => 'Élan']);
+
+        $candidates = new FieldChoicesViewModel(user: $user, vault: $scranton, field: $field, query: '')->candidates();
+
+        $this->assertSame(['Erin Élan', 'Dwight Schrute'], array_column($candidates, 'name'));
+    }
+
     /** @return array{0: User, 1: Vault} */
     private function vaultOf(): array
     {

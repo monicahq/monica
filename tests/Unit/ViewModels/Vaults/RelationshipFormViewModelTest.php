@@ -179,6 +179,20 @@ class RelationshipFormViewModelTest extends TestCase
         $this->assertSame((string) $parent->id, $this->viewModelFor($user, (string) $sibling->id)->values()['typeId']);
     }
 
+    #[Test]
+    public function it_offers_the_people_in_the_order_of_the_language_of_the_account(): void
+    {
+        $user = User::factory()->create(['locale' => 'fr_FR']);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $michael = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'first_name' => 'Michael', 'middle_name' => null, 'last_name' => 'Scott']);
+        Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'first_name' => 'Dwight', 'middle_name' => null, 'last_name' => 'Schrute']);
+        Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'first_name' => 'Erin', 'middle_name' => null, 'last_name' => 'Élan']);
+
+        $candidates = new RelationshipFormViewModel(user: $user, vault: $vault, contact: $michael)->candidates();
+
+        $this->assertSame(['Erin Élan', 'Dwight Schrute'], array_column($candidates, 'name'));
+    }
+
     private function viewModelFor(User $user, string $preselectedTypeId = ''): RelationshipFormViewModel
     {
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);

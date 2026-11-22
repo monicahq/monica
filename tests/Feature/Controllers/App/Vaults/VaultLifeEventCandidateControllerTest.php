@@ -65,6 +65,20 @@ class VaultLifeEventCandidateControllerTest extends TestCase
             ->assertSessionHasErrors('list');
     }
 
+    #[Test]
+    public function it_lists_the_people_in_the_order_of_the_language_of_the_account(): void
+    {
+        $user = User::factory()->create(['locale' => 'fr_FR']);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $this->contactOn($vault, 'Dwight', 'Schrute');
+        $this->contactOn($vault, 'Erin', 'Élan');
+
+        $this->actingAs($user)
+            ->get(route('vaults.lifeEventCandidates.index', $vault))
+            ->assertOk()
+            ->assertSeeInOrder(['Erin Élan', 'Dwight Schrute']);
+    }
+
     private function contactOn(Vault $vault, string $firstName, string $lastName): Contact
     {
         return Contact::factory()->create([

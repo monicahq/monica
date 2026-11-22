@@ -4,7 +4,7 @@ title: Find people in a vault
 description: Search the people in a vault by name or nickname, filter the list, sort it and choose which columns it shows.
 slug: find-people
 section: people
-last_updated: 2026-09-29
+last_updated: 2026-11-22
 ---
 
 # Find people in a vault
@@ -34,6 +34,8 @@ Search works inside the filter you chose. To find a partial contact by name, cho
 ## Sort the list
 
 Choose a column heading to sort by it: **Name**, **Nickname**, **Last spoke** or **Added**, when those columns are shown. Choose the same heading again to reverse the order. The heading you sorted by is marked with an arrow.
+
+Sorting by **Name** follows the language you read Monica in. Most languages list people by family name. Icelandic, Sinhala, Tamil and Vietnamese list them by given name. Dutch, German, French, Spanish and Portuguese list a family name such as van Gogh or de la Cruz under its first word that is not a small word such as van, de or la. Japanese lists somebody by the pronunciation of their name, when it is written in hiragana or katakana. @doc(account.preferences) explains how to change the language.
 
 Monica remembers your filter and your sort, and opens the list the same way next time.
 

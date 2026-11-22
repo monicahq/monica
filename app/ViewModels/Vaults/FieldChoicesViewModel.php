@@ -39,7 +39,7 @@ class FieldChoicesViewModel
             return Contact::query()
                 ->where('vault_id', $this->vault->id)
                 ->matchingSearch($this->query, $this->user->locale)
-                ->orderBy('sort_name')
+                ->orderBy('sort_key')
                 ->limit(self::CANDIDATE_LIMIT)
                 ->get()
                 ->map(fn (Contact $contact): array => ['uuid' => $contact->uuid, 'name' => $contact->name])

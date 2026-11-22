@@ -41,7 +41,7 @@ updated_at                  datetime
 deleted_at                  datetime
 ```
 
-`account_id` is unique: one account holds one user (4.1), and the database enforces it rather than the application. `password` is the column Laravel authenticates against by default, so nothing has to tell the guard where to look. `timezone` is not a nicety: section 10.3 says a reminder rule freezes the time zone it was created in and that changing the personal time zone later never shifts an existing reminder, and neither half of that can be implemented without a stored time zone. Name order cannot be derived from the interface language, since somebody reading Monica in English may still want their family name first.
+`account_id` is unique: one account holds one user (4.1), and the database enforces it rather than the application. `password` is the column Laravel authenticates against by default, so nothing has to tell the guard where to look. `timezone` is not a nicety: section 10.3 says a reminder rule freezes the time zone it was created in and that changing the personal time zone later never shifts an existing reminder, and neither half of that can be implemented without a stored time zone. Name order cannot be derived from the interface language, since somebody reading Monica in English may still want their family name first. That is the order a name is displayed in. The order a list files people in is a different thing, and it does follow the interface language, since it is where that language's readers look for a name (spec 145).
 
 No role, no permission, no invitation, no membership. Section 4.1 removes them, and nothing should be added that quietly reintroduces them.
 
