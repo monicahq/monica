@@ -107,6 +107,21 @@ class LifeEventFormBlockTest extends TestCase
     }
 
     #[Test]
+    public function it_lists_the_people_in_the_order_they_were_chosen(): void
+    {
+        [$user, $vault, $jim] = $this->jim();
+        $pam = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'first_name' => 'Pam', 'last_name' => 'Beesly']);
+        $dwight = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'first_name' => 'Dwight', 'last_name' => 'Schrute']);
+
+        $this->withOldInput(['participants' => [(string) $dwight->id, (string) $pam->id]]);
+
+        $this->assertSame([
+            ['id' => $dwight->id, 'name' => 'Dwight Schrute'],
+            ['id' => $pam->id, 'name' => 'Pam Beesly'],
+        ], $this->block($user, $vault, $jim)->oldParticipants());
+    }
+
+    #[Test]
     public function it_opens_filled_in_for_the_life_event_being_corrected(): void
     {
         Queue::fake();

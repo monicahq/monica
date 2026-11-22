@@ -257,6 +257,7 @@ class LifeEventFormBlock
             ->get()
             ->sortBy(fn (Contact $contact): int|false => array_search($contact->id, array_values($ids)))
             ->map(fn (Contact $contact): array => ['id' => $contact->id, 'name' => $contact->name])
+            ->values()
             ->all();
     }
 
