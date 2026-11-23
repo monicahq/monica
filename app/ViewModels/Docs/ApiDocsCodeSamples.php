@@ -230,6 +230,13 @@ class ApiDocsCodeSamples
 
     private function url(): string
     {
-        return ApiDocsViewModel::baseUrl().$this->section->examplePath;
+        $query = $this->section->exampleQuery();
+        $url = ApiDocsViewModel::baseUrl().$this->section->examplePath;
+
+        if ($query === []) {
+            return $url;
+        }
+
+        return $url.'?'.http_build_query($query, encoding_type: PHP_QUERY_RFC3986);
     }
 }

@@ -78,7 +78,7 @@ return [
                 ['name' => 'possession', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the possession. A possession of another vault or of another account answers 404.'],
             ],
             'queryParams' => [
-                ['name' => 'section', 'type' => 'string', 'required' => false, 'description' => 'Only the entries of this section: transactions, insurance, valuations, provenance, maintenance, loans or locations. Anything else answers 422.'],
+                ['name' => 'section', 'type' => 'string', 'required' => false, 'description' => 'Only the entries of this section: transactions, insurance, valuations, provenance, maintenance, loans or locations. Anything else answers 422.', 'example' => 'valuations'],
             ],
             'returns' => 'Every entry of the timeline, or an empty list. A vault or a possession of another account answers 404.',
             'response' => ['data' => [$returned, $cleaning]],

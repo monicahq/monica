@@ -139,9 +139,9 @@ return [
             'description' => 'List the support requests of your account, the most recently active first. The messages are left out of a list. Read one request to get its thread.',
             'rateLimit' => $rateLimit,
             'queryParams' => [
-                ['name' => 'status', 'type' => 'string', 'required' => false, 'description' => 'Keep only the requests in this status: to_handle, waiting_on_user or solved. Any other value answers 422 on status.'],
-                ['name' => 'page', 'type' => 'integer', 'required' => false, 'description' => 'Which page to answer with.', 'default' => '1'],
-                ['name' => 'per_page', 'type' => 'integer', 'required' => false, 'description' => 'How many records one page holds, between 1 and 100. A number outside the range is brought back into it rather than refused.', 'default' => '25'],
+                ['name' => 'status', 'type' => 'string', 'required' => false, 'description' => 'Keep only the requests in this status: to_handle, waiting_on_user or solved. Any other value answers 422 on status.', 'example' => 'waiting_on_user'],
+                ['name' => 'page', 'type' => 'integer', 'required' => false, 'description' => 'Which page to answer with.', 'default' => '1', 'example' => 2],
+                ['name' => 'per_page', 'type' => 'integer', 'required' => false, 'description' => 'How many records one page holds, between 1 and 100. A number outside the range is brought back into it rather than refused.', 'default' => '25', 'example' => 10],
             ],
             'returns' => 'A page of support request objects, and how many there are in all. Only the requests of your account are listed.',
             'response' => [

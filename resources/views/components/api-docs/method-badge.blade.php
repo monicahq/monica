@@ -13,6 +13,7 @@
     'POST' => 'text-success',
     'PUT', 'PATCH' => 'text-warning',
     'DELETE' => 'text-error',
+    'QUERY' => 'text-query',
     default => 'text-body',
   };
 
@@ -20,6 +21,7 @@
     'POST' => 'border-success-edge bg-success-tint',
     'PUT', 'PATCH' => 'border-warning-edge bg-warning-tint',
     'DELETE' => 'border-error-edge bg-error-tint',
+    'QUERY' => 'border-query-edge bg-query-tint',
     default => 'border-hairline bg-card',
   };
 @endphp

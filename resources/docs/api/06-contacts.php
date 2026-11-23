@@ -161,12 +161,14 @@ $listParams = [
         'required' => false,
         'description' => 'Which people to list: all, favourites or names-only. Partial contacts are only in names-only, so all does not mean everybody the vault holds.',
         'default' => 'all',
+        'example' => 'favourites',
     ],
     [
         'name' => 'query',
         'type' => 'string',
         'required' => false,
         'description' => 'A search term, up to 255 characters. It is matched against the whole name, ignoring what the language of the account calls a minor difference, so elodie finds Élodie in French. It is also matched against the nickname as it was typed, ignoring case.',
+        'example' => 'Dwight',
     ],
     [
         'name' => 'sort',
@@ -174,6 +176,7 @@ $listParams = [
         'required' => false,
         'description' => 'Which order to answer in: name, nickname, last-spoke or added. Name follows the way the language of your account files people: by family name or by given name, after a particle such as van or de where that language skips it, and by the pronunciation written in kana where it orders by one. A contact the order knows nothing about, somebody with no nickname when sorting by nickname, is at the end whichever direction is asked for.',
         'default' => 'name',
+        'example' => 'added',
     ],
     [
         'name' => 'direction',
@@ -181,6 +184,7 @@ $listParams = [
         'required' => false,
         'description' => 'Either asc or desc.',
         'default' => 'asc',
+        'example' => 'desc',
     ],
     [
         'name' => 'page',
@@ -188,6 +192,7 @@ $listParams = [
         'required' => false,
         'description' => 'Which page to answer with.',
         'default' => '1',
+        'example' => 2,
     ],
     [
         'name' => 'per_page',
@@ -195,6 +200,7 @@ $listParams = [
         'required' => false,
         'description' => 'How many contacts one page holds, between 1 and 100. A number outside the range is brought back into it rather than refused.',
         'default' => '25',
+        'example' => 10,
     ],
     [
         'name' => 'categories[]',
@@ -426,8 +432,8 @@ return [
             'queryParams' => [
                 ['name' => 'filter', 'type' => 'string', 'required' => false, 'description' => 'partial keeps only the partial contacts, full keeps only the others. Both when left out.', 'example' => 'partial'],
                 ['name' => 'archived', 'type' => 'string', 'required' => false, 'description' => 'included adds the archived contacts.', 'default' => 'excluded'],
-                ['name' => 'page', 'type' => 'integer', 'required' => false, 'description' => 'The page to read, starting at 1.', 'default' => '1'],
-                ['name' => 'per_page', 'type' => 'integer', 'required' => false, 'description' => 'How many contacts a page holds, five hundred at most.', 'default' => '100'],
+                ['name' => 'page', 'type' => 'integer', 'required' => false, 'description' => 'The page to read, starting at 1.', 'default' => '1', 'example' => 2],
+                ['name' => 'per_page', 'type' => 'integer', 'required' => false, 'description' => 'How many contacts a page holds, five hundred at most.', 'default' => '100', 'example' => 10],
             ],
             'returns' => 'A page of contact summaries, and how many there are in all. A filter or an archived value other than the ones above answers 422, naming the parameter. A vault belonging to somebody else answers 404.',
             'response' => [
@@ -769,7 +775,7 @@ return [
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => [$vaultParam],
             'queryParams' => [
-                ['name' => 'filter', 'type' => 'string', 'required' => false, 'description' => 'Count only the people of one grouping: all, favourites or names-only.', 'default' => 'all'],
+                ['name' => 'filter', 'type' => 'string', 'required' => false, 'description' => 'Count only the people of one grouping: all, favourites or names-only.', 'default' => 'all', 'example' => 'favourites'],
             ],
             'returns' => 'Every category held in the vault, with how many people hold it. A vault belonging to somebody else answers 404.',
             'returnFields' => [

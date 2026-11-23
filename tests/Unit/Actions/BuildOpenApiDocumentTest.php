@@ -109,10 +109,6 @@ class BuildOpenApiDocumentTest extends TestCase
 
         foreach (new ApiDocsViewModel()->registeredRoutes() as $route) {
             $registered[] = "{$route['method']} {$route['path']}";
-
-            if ($route['method'] === 'GET') {
-                $registered[] = "QUERY {$route['path']}";
-            }
         }
 
         return $registered;

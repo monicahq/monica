@@ -121,8 +121,8 @@ return [
                 ['name' => 'contact', 'type' => 'string', 'required' => false, 'description' => 'Only the life events this contact took part in, named by its slug or its id. A contact of another vault answers 404.'],
                 ['name' => 'life_event_type', 'type' => 'string', 'required' => false, 'description' => 'Only the life events of this type, named by its id. A type deleted since still narrows the list to the life events recorded as it. A type of another account answers 404.'],
                 ['name' => 'slice', 'type' => 'string', 'required' => false, 'description' => 'upcoming, for the life events dated today or later, the nearest first, or a year such as 2024, for that year up to yesterday, the most recent first. Today is the key owner’s, in their time zone. Any other value answers 422.', 'example' => '2024'],
-                ['name' => 'page', 'type' => 'integer', 'required' => false, 'description' => 'Which page to answer with.', 'default' => '1'],
-                ['name' => 'per_page', 'type' => 'integer', 'required' => false, 'description' => 'How many records one page holds, between 1 and 100. A number outside the range is brought back into it rather than refused.', 'default' => '25'],
+                ['name' => 'page', 'type' => 'integer', 'required' => false, 'description' => 'Which page to answer with.', 'default' => '1', 'example' => 2],
+                ['name' => 'per_page', 'type' => 'integer', 'required' => false, 'description' => 'How many records one page holds, between 1 and 100. A number outside the range is brought back into it rather than refused.', 'default' => '25', 'example' => 10],
             ],
             'returns' => 'A page of life event objects, and how many there are in all. A vault of another account answers 404.',
             'response' => [

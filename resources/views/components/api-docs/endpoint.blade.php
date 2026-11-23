@@ -18,6 +18,9 @@
 
     <div class="mb-4 flex items-center gap-2 rounded-md border border-hairline bg-sunken px-3 py-2.25 font-mono text-sm">
       <x-api-docs.method-badge :method="$section->method" tinted />
+      @if ($section->querySection !== null)
+        <x-api-docs.method-badge :method="$section->querySection->method" tinted />
+      @endif
       <span class="break-all text-ink">/api/v1{{ $section->path }}</span>
       @unless ($section->auth)
         <span class="ml-auto shrink-0 text-2xs text-muted">no token</span>
@@ -30,9 +33,9 @@
       <p class="mt-3.5 text-[14px] leading-[1.65] text-pretty text-body">{{ $paragraph }}</p>
     @endforeach
 
-    @if ($section->method === 'GET')
+    @if ($section->querySection !== null)
       <p class="mt-3.5 text-[14px] leading-[1.65] text-pretty text-body">
-        This endpoint also answers QUERY, with the same parameters sent in the request body.
+        {{ $section->answersGetAndQuery() }}
         <a href="{{ route('docs.api.show', ['section' => 'query-method']) }}" class="underline decoration-hairline-strong underline-offset-3 hover:decoration-ink focus-ring">How QUERY works</a>.
       </p>
     @endif
@@ -49,6 +52,9 @@
   <div class="min-w-0 max-w-135 flex-1 basis-[400px]">
     <div class="flex flex-col gap-4 lg:sticky lg:top-4">
       <x-api-docs.code-panel :section="$section" />
+      @if ($section->querySection !== null)
+        <x-api-docs.code-panel :section="$section->querySection" />
+      @endif
       <x-api-docs.response-panel :section="$section" />
 
       <p class="text-xs leading-[1.6] text-muted">

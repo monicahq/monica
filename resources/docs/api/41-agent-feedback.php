@@ -114,11 +114,11 @@ return [
             'body' => [$administrationNote],
             'rateLimit' => $rateLimit,
             'queryParams' => [
-                ['name' => 'status', 'type' => 'string', 'required' => false, 'description' => 'Which reports to list: new, accepted, fixed, dismissed or all. Any other value is taken as new.', 'default' => 'new'],
-                ['name' => 'q', 'type' => 'string', 'required' => false, 'description' => 'Keep only the reports whose title, tool, or user name or email holds this text.'],
-                ['name' => 'kind', 'type' => 'string', 'required' => false, 'description' => 'Keep only one kind: bug, missing_tool, unclear_description or improvement.'],
-                ['name' => 'severity', 'type' => 'string', 'required' => false, 'description' => 'Keep only one severity: blocks_task, needs_workaround or minor.'],
-                ['name' => 'page', 'type' => 'integer', 'required' => false, 'description' => 'Which page to answer with.', 'default' => '1'],
+                ['name' => 'status', 'type' => 'string', 'required' => false, 'description' => 'Which reports to list: new, accepted, fixed, dismissed or all. Any other value is taken as new.', 'default' => 'new', 'example' => 'all'],
+                ['name' => 'q', 'type' => 'string', 'required' => false, 'description' => 'Keep only the reports whose title, tool, or user name or email holds this text.', 'example' => 'get-contact'],
+                ['name' => 'kind', 'type' => 'string', 'required' => false, 'description' => 'Keep only one kind: bug, missing_tool, unclear_description or improvement.', 'example' => 'bug'],
+                ['name' => 'severity', 'type' => 'string', 'required' => false, 'description' => 'Keep only one severity: blocks_task, needs_workaround or minor.', 'example' => 'minor'],
+                ['name' => 'page', 'type' => 'integer', 'required' => false, 'description' => 'Which page to answer with.', 'default' => '1', 'example' => 2],
             ],
             'returns' => 'A page of report objects, how many there are in all, and in meta.counts how many each status holds.',
             'response' => [

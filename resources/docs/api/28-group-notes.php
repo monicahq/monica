@@ -69,8 +69,8 @@ return [
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $groupIdentifier,
             'queryParams' => [
-                ['name' => 'page', 'type' => 'integer', 'required' => false, 'description' => 'Which page to answer with.', 'default' => '1'],
-                ['name' => 'per_page', 'type' => 'integer', 'required' => false, 'description' => 'How many records one page holds, between 1 and 100. A number outside the range is brought back into it rather than refused.', 'default' => '25'],
+                ['name' => 'page', 'type' => 'integer', 'required' => false, 'description' => 'Which page to answer with.', 'default' => '1', 'example' => 2],
+                ['name' => 'per_page', 'type' => 'integer', 'required' => false, 'description' => 'How many records one page holds, between 1 and 100. A number outside the range is brought back into it rather than refused.', 'default' => '25', 'example' => 10],
             ],
             'returns' => 'A page of note objects, and how many there are in all.',
             'response' => [

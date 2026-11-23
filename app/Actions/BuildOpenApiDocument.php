@@ -57,7 +57,7 @@ class BuildOpenApiDocument
                 continue;
             }
 
-            $sections = ApiDocsViewModel::offeredToEveryAccount($group['sections']);
+            $sections = ApiDocsViewModel::withQuerySections(ApiDocsViewModel::offeredToEveryAccount($group['sections']));
 
             if ($sections === []) {
                 continue;
@@ -117,13 +117,8 @@ class BuildOpenApiDocument
             foreach ($group['sections'] as $section) {
                 $paths[$section['path']][mb_strtolower($section['method'])] = $this->operation($section, $group['name']);
 
-                if ($section['method'] === 'GET') {
-                    $paths[$section['path']]['query'] = $this->operation([
-                        ...$section,
-                        'id' => "{$section['id']}-query",
-                        'queryParams' => [],
-                        'bodyParams' => $section['queryParams'] ?? [],
-                    ], $group['name']);
+                if (isset($section['querySection'])) {
+                    $paths[$section['path']]['query'] = $this->operation($section['querySection'], $group['name']);
                 }
             }
         }

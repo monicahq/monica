@@ -14,7 +14,7 @@ return [
             'label' => 'Search a vault',
             'method' => 'GET',
             'path' => '/vaults/{vault}/search',
-            'examplePath' => '/vaults/'.$vaultSlug.'/search?query=farms',
+            'examplePath' => '/vaults/'.$vaultSlug.'/search',
             'description' => 'Search the records of one of your vaults, or of all of them, for every word you type.',
             'body' => [
                 'A record is found when it holds every word, in any order, in its name, in any value written on it, or in the name of somebody linked to it: who took part in a life event, or who a contact has a relationship with. Case and accents are ignored, and a typing mistake is tolerated.',
@@ -30,8 +30,8 @@ return [
                 ['name' => 'query', 'type' => 'string', 'required' => true, 'description' => 'The words to find, at least two characters and at most 255.', 'example' => 'farms'],
                 ['name' => 'scope', 'type' => 'string', 'required' => false, 'default' => 'vault', 'description' => 'vault to search the vault named in the path, account to search every vault of the account.'],
                 ['name' => 'group', 'type' => 'string', 'required' => false, 'description' => 'One group only, by the key a previous answer gave it, to page through it.'],
-                ['name' => 'page', 'type' => 'integer', 'required' => false, 'default' => '1', 'description' => 'The page of the group asked for.'],
-                ['name' => 'per_page', 'type' => 'integer', 'required' => false, 'default' => '25', 'description' => 'How many results per group, at most 100.'],
+                ['name' => 'page', 'type' => 'integer', 'required' => false, 'default' => '1', 'description' => 'The page of the group asked for.', 'example' => 2],
+                ['name' => 'per_page', 'type' => 'integer', 'required' => false, 'default' => '25', 'description' => 'How many results per group, at most 100.', 'example' => 10],
             ],
             'returnFields' => [
                 ['name' => 'data', 'type' => 'array', 'description' => 'The groups holding at least one result, in the order the product shows them.'],

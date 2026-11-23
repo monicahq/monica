@@ -84,8 +84,8 @@ $reminderIdentifier = [
 ];
 
 $pageParams = [
-    ['name' => 'page', 'type' => 'integer', 'required' => false, 'description' => 'Which page to answer with.', 'default' => '1'],
-    ['name' => 'per_page', 'type' => 'integer', 'required' => false, 'description' => 'How many records one page holds, between 1 and 100. A number outside the range is brought back into it rather than refused.', 'default' => '25'],
+    ['name' => 'page', 'type' => 'integer', 'required' => false, 'description' => 'Which page to answer with.', 'default' => '1', 'example' => 2],
+    ['name' => 'per_page', 'type' => 'integer', 'required' => false, 'description' => 'How many records one page holds, between 1 and 100. A number outside the range is brought back into it rather than refused.', 'default' => '25', 'example' => 10],
 ];
 
 $reminderAttributes = [
@@ -243,7 +243,7 @@ return [
             'label' => 'List reminder dates',
             'method' => 'GET',
             'path' => '/vaults/{vault}/contacts/{contact}/reminder-occurrences',
-            'examplePath' => '/vaults/'.$vaultSlug.'/contacts/'.$contactSlug.'/reminder-occurrences?category=history',
+            'examplePath' => '/vaults/'.$vaultSlug.'/contacts/'.$contactSlug.'/reminder-occurrences',
             'description' => 'List the dates the reminders about a contact produced, with what was answered for each.',
             'body' => [
                 'Without a category, every date is listed, newest first, so any date can be looked up: remembered, forgotten, or never answered.',
@@ -253,7 +253,7 @@ return [
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'queryParams' => [
-                ['name' => 'category', 'type' => 'string', 'required' => false, 'description' => 'One of overdue, today, upcoming or history.'],
+                ['name' => 'category', 'type' => 'string', 'required' => false, 'description' => 'One of overdue, today, upcoming or history.', 'example' => 'history'],
                 ...$pageParams,
             ],
             'returns' => 'A page of reminder date objects, and how many there are in all.',
@@ -303,7 +303,7 @@ return [
             'label' => 'List a vault\'s reminders',
             'method' => 'GET',
             'path' => '/vaults/{vault}/reminders',
-            'examplePath' => '/vaults/'.$vaultSlug.'/reminders?about=contact',
+            'examplePath' => '/vaults/'.$vaultSlug.'/reminders',
             'description' => 'List every reminder of a vault about a contact or a group, whatever its date: the ones still producing dates, the ones that stopped, and the ones whose next date is far off.',
             'body' => [
                 'Each reminder names who it is about: contact holds the contact, group holds the group, and the other one is null. The reminders are listed in the order they were made.',
@@ -315,7 +315,7 @@ return [
                 ['name' => 'vault', 'type' => 'string', 'required' => true, 'description' => 'The vault, named either by the readable name it reports as slug or by its id. A vault of another account answers 404.'],
             ],
             'queryParams' => [
-                ['name' => 'about', 'type' => 'string', 'required' => false, 'description' => 'contact keeps the reminders about a contact, group the reminders about a group. Left out, both are listed. Anything else answers 422.'],
+                ['name' => 'about', 'type' => 'string', 'required' => false, 'description' => 'contact keeps the reminders about a contact, group the reminders about a group. Left out, both are listed. Anything else answers 422.', 'example' => 'contact'],
                 ...$pageParams,
             ],
             'returns' => 'A page of reminder objects, and how many there are in all. A vault of another account answers 404.',
@@ -343,7 +343,7 @@ return [
             'label' => 'List a vault\'s dates',
             'method' => 'GET',
             'path' => '/vaults/{vault}/reminder-occurrences',
-            'examplePath' => '/vaults/'.$vaultSlug.'/reminder-occurrences?kind=birthdays&days=30',
+            'examplePath' => '/vaults/'.$vaultSlug.'/reminder-occurrences',
             'description' => 'List the dates of a whole vault, for every contact, group and record in it: what is overdue, what falls today and what comes next. The same dates as the vault dashboard.',
             'body' => [
                 'Without a category, the dates overdue, today and upcoming are listed together, earliest first, as the vault dashboard lists them. This differs from the dates of one contact, which list every date newest first.',
@@ -357,8 +357,8 @@ return [
             ],
             'queryParams' => [
                 ['name' => 'category', 'type' => 'string', 'required' => false, 'description' => 'One of overdue, today, upcoming or history.'],
-                ['name' => 'kind', 'type' => 'string', 'required' => false, 'description' => 'all for every reminder, birthdays for birthdays only.', 'default' => 'all'],
-                ['name' => 'days', 'type' => 'integer', 'required' => false, 'description' => 'How many days ahead upcoming reaches, between 1 and 365.', 'default' => '7'],
+                ['name' => 'kind', 'type' => 'string', 'required' => false, 'description' => 'all for every reminder, birthdays for birthdays only.', 'default' => 'all', 'example' => 'birthdays'],
+                ['name' => 'days', 'type' => 'integer', 'required' => false, 'description' => 'How many days ahead upcoming reaches, between 1 and 365.', 'default' => '7', 'example' => 30],
                 ...$pageParams,
             ],
             'returns' => 'A page of reminder date objects, and of birthdays when they are asked for, and how many there are in all.',

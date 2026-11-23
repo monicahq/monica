@@ -36,6 +36,10 @@ class ApiDocsMarkdown
             '`'.$section->method.' /api/v1'.$section->path.'`',
         ];
 
+        if ($section->querySection !== null) {
+            $blocks[1] = '`'.$section->method.' /api/v1'.$section->path.'` and `'.$section->querySection->method.' /api/v1'.$section->path.'`';
+        }
+
         if (! $section->auth) {
             $blocks[] = 'No token required.';
         }
@@ -46,8 +50,8 @@ class ApiDocsMarkdown
             $blocks[] = $paragraph;
         }
 
-        if ($section->method === 'GET') {
-            $blocks[] = 'This endpoint also answers QUERY, with the same parameters sent in the request body. [How QUERY works]('.route('docs.api.show', ['section' => 'query-method']).').';
+        if ($section->querySection !== null) {
+            $blocks[] = $section->answersGetAndQuery().' [How QUERY works]('.route('docs.api.show', ['section' => 'query-method']).').';
         }
 
         foreach ([$this->params($section), $this->returns($section), $this->statusCodes($section)] as $part) {
@@ -59,7 +63,13 @@ class ApiDocsMarkdown
         $blocks[] = '## Rate limit';
         $blocks[] = $section->rateLimit.' Every answer carries the budget left in `X-RateLimit-Remaining`.';
 
-        $blocks = array_merge($blocks, $this->request($section), $this->response($section));
+        $blocks = array_merge($blocks, $this->request($section));
+
+        if ($section->querySection !== null) {
+            $blocks = array_merge($blocks, ['## Request with QUERY'], array_slice($this->request($section->querySection), 1));
+        }
+
+        $blocks = array_merge($blocks, $this->response($section));
 
         return implode(self::BETWEEN_BLOCKS, $blocks);
     }

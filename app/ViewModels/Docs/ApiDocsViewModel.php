@@ -41,6 +41,76 @@ class ApiDocsViewModel
         ));
     }
 
+    /**
+     * Gives every GET section the section of its QUERY request, derived from it rather than written,
+     * so the two cannot drift and share one page. The parameters GET reads from the address travel in
+     * the body.
+     *
+     * @param  list<array<string, mixed>>  $sections
+     * @return list<array<string, mixed>>
+     */
+    public static function withQuerySections(array $sections): array
+    {
+        $withQuerySections = [];
+
+        foreach ($sections as $section) {
+            if ($section['method'] !== 'GET') {
+                $withQuerySections[] = $section;
+
+                continue;
+            }
+
+            $bodyParams = $section['queryParams'] ?? [];
+            $statusCodes = $section['statusCodes'] ?? [];
+
+            if ($bodyParams !== []) {
+                $statusCodes = self::withRefusalOfParameterSentTwice($statusCodes);
+            }
+
+            $querySection = [
+                ...$section,
+                'id' => "{$section['id']}-query",
+                'method' => 'QUERY',
+                'title' => "{$section['title']} with QUERY",
+                'label' => $section['label'] ?? $section['title'],
+                'queryParams' => [],
+                'bodyParams' => $bodyParams,
+                'statusCodes' => $statusCodes,
+            ];
+
+            $withQuerySections[] = [...$section, 'querySection' => $querySection];
+        }
+
+        return $withQuerySections;
+    }
+
+    /**
+     * The table of status codes holds one row per status, so the refusal joins an existing 422 row
+     * rather than adding a second one.
+     *
+     * @param  list<array{status: int, name: string, when: string, body: string}>  $statusCodes
+     * @return list<array{status: int, name: string, when: string, body: string}>
+     */
+    private static function withRefusalOfParameterSentTwice(array $statusCodes): array
+    {
+        foreach ($statusCodes as $index => $statusCode) {
+            if ($statusCode['status'] === 422) {
+                $statusCodes[$index]['when'] = "{$statusCode['when']} Or, with QUERY, a parameter was sent both in the address and in the body.";
+
+                return $statusCodes;
+            }
+        }
+
+        $statusCodes[] = [
+            'status' => 422,
+            'name' => 'Unprocessable Content',
+            'when' => 'With QUERY, a parameter was sent both in the address and in the body.',
+            'body' => 'A message, and an errors object naming each parameter sent twice.',
+        ];
+
+        return $statusCodes;
+    }
+
     /** @return list<array{name: string, guide: bool, sections: list<ApiDocsSection>}> */
     public function groups(): array
     {
@@ -53,13 +123,15 @@ class ApiDocsViewModel
 
         $this->groups = array_map(function (string $file): array {
             $group = require $file;
+            $guide = $group['guide'] ?? false;
+            $sections = self::offeredToEveryAccount($group['sections']);
 
             return [
                 'name' => $group['name'],
-                'guide' => $group['guide'] ?? false,
+                'guide' => $guide,
                 'sections' => array_map(
                     fn (array $section): ApiDocsSection => new ApiDocsSection($section),
-                    self::offeredToEveryAccount($group['sections']),
+                    $guide ? $sections : self::withQuerySections($sections),
                 ),
             ];
         }, $files);
@@ -103,6 +175,10 @@ class ApiDocsViewModel
 
             foreach ($group['sections'] as $section) {
                 if ($section->method === $method && $section->path === $path) {
+                    return $section;
+                }
+
+                if ($section->querySection?->method === $method && $section->path === $path) {
                     return $section;
                 }
             }
@@ -152,7 +228,7 @@ class ApiDocsViewModel
     }
 
     /**
-     * @return array{guides: list<array{id: string, label: string, url: string}>, resources: list<array{name: string, items: list<array{id: string, label: string, method: string}>}>}
+     * @return array{guides: list<array{id: string, label: string, url: string}>, resources: list<array{name: string, items: list<array{id: string, label: string, methods: list<string>}>}>}
      */
     public function navigation(): array
     {
@@ -175,7 +251,7 @@ class ApiDocsViewModel
                 'items' => array_map(fn (ApiDocsSection $section): array => [
                     'id' => $section->id,
                     'label' => $section->label,
-                    'method' => $section->method,
+                    'methods' => $section->querySection === null ? [$section->method] : [$section->method, $section->querySection->method],
                 ], $group['sections']),
             ];
         }
@@ -202,6 +278,10 @@ class ApiDocsViewModel
 
             foreach ($group['sections'] as $section) {
                 $routes[] = ['method' => $section->method, 'path' => $section->path];
+
+                if ($section->querySection !== null) {
+                    $routes[] = ['method' => $section->querySection->method, 'path' => $section->path];
+                }
             }
         }
 
@@ -219,7 +299,7 @@ class ApiDocsViewModel
             }
 
             foreach ($route->methods() as $method) {
-                if (in_array($method, ['HEAD', 'OPTIONS', 'QUERY'], true)) {
+                if (in_array($method, ['HEAD', 'OPTIONS'], true)) {
                     continue;
                 }
 

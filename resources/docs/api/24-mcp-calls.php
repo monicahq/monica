@@ -132,6 +132,7 @@ return [
                     'required' => false,
                     'description' => 'How far back to look: day for the last 24 hours, week for the last 7 days, month for the last 30 days, or all for everything still kept. Any other value answers 422.',
                     'default' => 'all',
+                    'example' => 'week',
                 ],
                 [
                     'name' => 'connection',
@@ -144,12 +145,14 @@ return [
                     'type' => 'string',
                     'required' => false,
                     'description' => 'Only the calls with one result: succeeded, refused, invalid_parameters, error or interrupted. Any other value answers 422.',
+                    'example' => 'refused',
                 ],
                 [
                     'name' => 'tool',
                     'type' => 'string',
                     'required' => false,
                     'description' => 'Only the calls to one tool, by its name, such as get-contact.',
+                    'example' => 'get-contact',
                 ],
                 [
                     'name' => 'page',
@@ -157,6 +160,7 @@ return [
                     'required' => false,
                     'description' => 'Which page to answer with.',
                     'default' => '1',
+                    'example' => 2,
                 ],
                 [
                     'name' => 'per_page',
@@ -164,6 +168,7 @@ return [
                     'required' => false,
                     'description' => 'How many calls one page holds, between 1 and 100. A number outside the range is brought back into it rather than refused.',
                     'default' => '25',
+                    'example' => 10,
                 ],
             ],
             'returns' => 'A page of calls, and how many there are in all.',

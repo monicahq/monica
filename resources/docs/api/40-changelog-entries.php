@@ -152,9 +152,9 @@ return [
             'body' => ['Within a day, features and improvements come before fixes, each newest first. A change scheduled for later is left out until it is published. Reading the list does not mark anything as seen.'],
             'rateLimit' => $rateLimit,
             'queryParams' => [
-                ['name' => 'period', 'type' => 'integer', 'required' => false, 'description' => 'How many days back to reach: 30 or 90. Any other value reads as 30.', 'default' => '30'],
-                ['name' => 'page', 'type' => 'integer', 'required' => false, 'description' => 'Which page to answer with.', 'default' => '1'],
-                ['name' => 'per_page', 'type' => 'integer', 'required' => false, 'description' => 'How many records one page holds, between 1 and 100. A number outside the range is brought back into it rather than refused.', 'default' => '25'],
+                ['name' => 'period', 'type' => 'integer', 'required' => false, 'description' => 'How many days back to reach: 30 or 90. Any other value reads as 30.', 'default' => '30', 'example' => 90],
+                ['name' => 'page', 'type' => 'integer', 'required' => false, 'description' => 'Which page to answer with.', 'default' => '1', 'example' => 2],
+                ['name' => 'per_page', 'type' => 'integer', 'required' => false, 'description' => 'How many records one page holds, between 1 and 100. A number outside the range is brought back into it rather than refused.', 'default' => '25', 'example' => 10],
             ],
             'returns' => 'A page of change objects, how many there are in all, and in meta what the period holds.',
             'response' => [

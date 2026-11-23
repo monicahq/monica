@@ -49,8 +49,16 @@ class ApiDocsSection
     /** @var array<string, mixed>|null */
     public readonly ?array $response;
 
+    public readonly ?ApiDocsSection $querySection;
+
     /** @var array<string, mixed>|null */
     private readonly ?array $overriddenBody;
+
+    /** @var array<string, mixed> */
+    private readonly array $queryExamples;
+
+    /** @var array<string, mixed> */
+    private readonly array $bodyExamples;
 
     /** @param  array<string, mixed>  $section */
     public function __construct(array $section)
@@ -72,10 +80,24 @@ class ApiDocsSection
         $this->response = $section['response'] ?? null;
         $this->overriddenBody = $section['exampleBody'] ?? null;
         $this->returnFields = $section['returnFields'] ?? [];
-        $this->statusCodes = $section['statusCodes'] ?? [];
+        // One page shows both requests, so it lists the refusal only QUERY can meet.
+        $this->statusCodes = $section['querySection']['statusCodes'] ?? $section['statusCodes'] ?? [];
+        $this->querySection = isset($section['querySection']) ? new self($section['querySection']) : null;
+
+        $this->queryExamples = self::examples($section['queryParams'] ?? []);
+        $this->bodyExamples = self::examples($section['bodyParams'] ?? []);
 
         $this->params = $this->mergeParams($section);
         $this->paramsTitle = $section['paramsTitle'] ?? $this->titleForParams($section);
+    }
+
+    public function answersGetAndQuery(): string
+    {
+        if (! $this->hasParams()) {
+            return 'This endpoint answers GET and QUERY alike. It takes no parameters, so both requests return the same answer.';
+        }
+
+        return 'This endpoint answers GET and QUERY alike, and both return the same answer. GET sends the parameters in the address, QUERY in the request body.';
     }
 
     public function hasParams(): bool
@@ -124,21 +146,35 @@ class ApiDocsSection
     /** @return array<string, mixed> */
     public function exampleBody(): array
     {
-        if ($this->overriddenBody !== null) {
-            return $this->overriddenBody;
-        }
+        return $this->overriddenBody ?? $this->bodyExamples;
+    }
 
-        $body = [];
+    /** @return array<string, mixed> */
+    public function exampleQuery(): array
+    {
+        return $this->queryExamples;
+    }
 
-        foreach ($this->params as $param) {
-            if ($param['example'] === null) {
+    /**
+     * The example values a sample sends, taken from one kind of parameter only, so a path or query
+     * parameter never lands in a body.
+     *
+     * @param  list<array<string, mixed>>  $params
+     * @return array<string, mixed>
+     */
+    private static function examples(array $params): array
+    {
+        $examples = [];
+
+        foreach ($params as $param) {
+            if (($param['example'] ?? null) === null) {
                 continue;
             }
 
-            $body[$param['name']] = $param['example'];
+            $examples[$param['name']] = $param['example'];
         }
 
-        return $body;
+        return $examples;
     }
 
     /**

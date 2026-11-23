@@ -33,7 +33,7 @@
   @foreach ($navigation['resources'] as $group)
     <div
       class="mb-4.5"
-      x-show="{{ collect($group['items'])->map(fn (array $item): string => '!query || '.Js::from(mb_strtolower($item['label'].' '.$item['method'])).'.includes(query.toLowerCase())')->implode(' || ') }}"
+      x-show="{{ collect($group['items'])->map(fn (array $item): string => '!query || '.Js::from(mb_strtolower($item['label'].' '.implode(' ', $item['methods']))).'.includes(query.toLowerCase())')->implode(' || ') }}"
     >
       <h3 class="mb-1 ml-2.5 text-card-title text-ink">{{ $group['name'] }}</h3>
 
@@ -42,11 +42,15 @@
           <a
             href="{{ route('docs.api.show', ['section' => $item['id']]) }}"
             data-turbo="true"
-            x-show="!query || {{ Js::from(mb_strtolower($item['label'].' '.$item['method'])) }}.includes(query.toLowerCase())"
+            x-show="!query || {{ Js::from(mb_strtolower($item['label'].' '.implode(' ', $item['methods']))) }}.includes(query.toLowerCase())"
             @if ($current === $item['id']) aria-current="page" @endif
             class="grid grid-cols-[3.5rem_1fr] items-center gap-2 {{ $entry }} {{ $current === $item['id'] ? 'bg-canvas font-medium text-ink inset-ring inset-ring-hairline-strong' : 'text-body hover:bg-hover hover:text-ink' }}"
           >
-            <x-api-docs.method-badge :method="$item['method']" />
+            <span class="flex flex-col">
+              @foreach ($item['methods'] as $method)
+                <x-api-docs.method-badge :method="$method" />
+              @endforeach
+            </span>
             <span class="truncate">{{ $item['label'] }}</span>
           </a>
         @endforeach

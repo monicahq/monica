@@ -86,6 +86,23 @@ class ApiDocsMarkdownTest extends TestCase
         $this->assertSame("\n", new ApiDocsMarkdown([])->render());
     }
 
+    #[Test]
+    public function it_writes_get_and_query_on_one_section_when_they_share_a_page(): void
+    {
+        $written = $this->render(['querySection' => [
+            'id' => 'widget-show-query',
+            'title' => 'Get a widget with QUERY',
+            'method' => 'QUERY',
+            'path' => '/widgets/{widget}',
+            'description' => 'The widget itself.',
+            'rateLimit' => 'Sixty a minute.',
+        ]]);
+
+        $this->assertStringContainsString('`GET /api/v1/widgets/{widget}` and `QUERY /api/v1/widgets/{widget}`', $written);
+        $this->assertStringContainsString('This endpoint answers GET and QUERY alike', $written);
+        $this->assertStringContainsString('## Request with QUERY', $written);
+    }
+
     /** @param  array<string, mixed>  $overrides */
     private function render(array $overrides = []): string
     {

@@ -98,6 +98,7 @@ return [
                     'required' => false,
                     'description' => 'Which page to answer with.',
                     'default' => '1',
+                    'example' => 2,
                 ],
                 [
                     'name' => 'per_page',
@@ -105,6 +106,7 @@ return [
                     'required' => false,
                     'description' => 'How many emails one page holds, between 1 and 100. A number outside the range is brought back into it rather than refused.',
                     'default' => '25',
+                    'example' => 10,
                 ],
             ],
             'returns' => 'A page of emails we sent, and how many there are in all. An account that has never had an email leave gets an empty list rather than an error.',

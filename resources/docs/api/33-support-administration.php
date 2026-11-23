@@ -196,12 +196,12 @@ return [
             'body' => [$administrationNote],
             'rateLimit' => $rateLimit,
             'queryParams' => [
-                ['name' => 'view', 'type' => 'string', 'required' => false, 'description' => 'Which requests to list: to_handle, waiting_on_user, solved or all. Any other value is taken as to_handle.', 'default' => 'to_handle'],
-                ['name' => 'q', 'type' => 'string', 'required' => false, 'description' => 'Keep only the requests that mention this text.'],
-                ['name' => 'category', 'type' => 'string', 'required' => false, 'description' => 'Keep only one category: feature, billing, email, question or technical.'],
+                ['name' => 'view', 'type' => 'string', 'required' => false, 'description' => 'Which requests to list: to_handle, waiting_on_user, solved or all. Any other value is taken as to_handle.', 'default' => 'to_handle', 'example' => 'all'],
+                ['name' => 'q', 'type' => 'string', 'required' => false, 'description' => 'Keep only the requests that mention this text.', 'example' => 'Dundie'],
+                ['name' => 'category', 'type' => 'string', 'required' => false, 'description' => 'Keep only one category: feature, billing, email, question or technical.', 'example' => 'billing'],
                 ['name' => 'user', 'type' => 'integer', 'required' => false, 'description' => 'Keep only the requests of the user with this id.'],
-                ['name' => 'age', 'type' => 'string', 'required' => false, 'description' => 'Keep only the requests of one age: day for under 24 hours, week for 1 to 7 days, old for older than 7 days.'],
-                ['name' => 'page', 'type' => 'integer', 'required' => false, 'description' => 'Which page to answer with.', 'default' => '1'],
+                ['name' => 'age', 'type' => 'string', 'required' => false, 'description' => 'Keep only the requests of one age: day for under 24 hours, week for 1 to 7 days, old for older than 7 days.', 'example' => 'week'],
+                ['name' => 'page', 'type' => 'integer', 'required' => false, 'description' => 'Which page to answer with.', 'default' => '1', 'example' => 2],
             ],
             'returns' => 'A page of support request objects, how many there are in all, and in meta.counts how many each view holds.',
             'response' => [

@@ -109,6 +109,100 @@ class ApiDocsViewModelTest extends TestCase
     }
 
     #[Test]
+    public function it_gives_every_get_section_its_query_section(): void
+    {
+        $sections = ApiDocsViewModel::withQuerySections($this->employeeSections());
+
+        $this->assertSame(['employees-index', 'employees-create'], array_column($sections, 'id'));
+        $this->assertSame('employees-index-query', $sections[0]['querySection']['id']);
+        $this->assertSame('QUERY', $sections[0]['querySection']['method']);
+        $this->assertSame('List employees with QUERY', $sections[0]['querySection']['title']);
+        $this->assertArrayNotHasKey('querySection', $sections[1]);
+    }
+
+    #[Test]
+    public function it_sends_the_query_parameters_in_the_body_of_the_query_section(): void
+    {
+        $query = ApiDocsViewModel::withQuerySections($this->employeeSections())[0]['querySection'];
+        $section = new ApiDocsSection($query);
+
+        $this->assertSame([], $query['queryParams']);
+        $this->assertSame('branch', $query['bodyParams'][0]['name']);
+        $this->assertSame('company', $query['pathParams'][0]['name']);
+        $this->assertSame(['branch' => 'Scranton'], $section->exampleBody());
+        $this->assertSame('Parameters', $section->paramsTitle);
+    }
+
+    #[Test]
+    public function it_puts_the_example_query_of_a_get_request_in_its_address_and_sends_no_body(): void
+    {
+        $sections = $this->employeeSections();
+        $sections[0]['pathParams'][0]['example'] = 'dunder-mifflin';
+
+        $curl = new ApiDocsSection($sections[0])->samples()['curl']['code'];
+
+        $this->assertStringContainsString('/employees?branch=Scranton', $curl);
+        $this->assertStringNotContainsString('-d', $curl);
+        $this->assertStringNotContainsString('dunder-mifflin', $curl);
+    }
+
+    #[Test]
+    public function it_sends_the_example_query_of_a_query_request_in_its_body_only(): void
+    {
+        $curl = new ApiDocsSection(ApiDocsViewModel::withQuerySections($this->employeeSections())[0]['querySection'])->samples()['curl']['code'];
+
+        $this->assertStringContainsString('-X QUERY', $curl);
+        $this->assertStringContainsString('"branch": "Scranton"', $curl);
+        $this->assertStringNotContainsString('?branch=', $curl);
+    }
+
+    #[Test]
+    public function it_adds_the_refusal_of_a_parameter_sent_twice_to_the_status_codes_of_query_only(): void
+    {
+        $sections = $this->employeeSections();
+
+        $page = ApiDocsViewModel::withQuerySections($sections)[0];
+
+        $this->assertSame([200], array_column($page['statusCodes'], 'status'));
+        $this->assertSame([200, 422], array_column($page['querySection']['statusCodes'], 'status'));
+        $this->assertSame('With QUERY, a parameter was sent both in the address and in the body.', $page['querySection']['statusCodes'][1]['when']);
+        $this->assertSame([200, 422], array_column(new ApiDocsSection($page)->statusCodes, 'status'));
+
+        $sections[0]['statusCodes'][] = ['status' => 422, 'name' => 'Unprocessable Content', 'when' => 'The branch does not exist.', 'body' => 'A message.'];
+
+        $extended = ApiDocsViewModel::withQuerySections($sections)[0]['querySection']['statusCodes'];
+
+        $this->assertSame([200, 422], array_column($extended, 'status'));
+        $this->assertSame('The branch does not exist. Or, with QUERY, a parameter was sent both in the address and in the body.', $extended[1]['when']);
+    }
+
+    #[Test]
+    public function it_adds_no_refusal_when_the_endpoint_takes_no_query_parameters(): void
+    {
+        $sections = $this->employeeSections();
+        unset($sections[0]['queryParams']);
+
+        $query = ApiDocsViewModel::withQuerySections($sections)[0]['querySection'];
+
+        $this->assertSame([200], array_column($query['statusCodes'], 'status'));
+        $this->assertSame([], $query['bodyParams']);
+    }
+
+    #[Test]
+    public function it_derives_no_query_section_in_a_guide(): void
+    {
+        foreach (new ApiDocsViewModel()->groups() as $group) {
+            if (! $group['guide']) {
+                continue;
+            }
+
+            foreach ($group['sections'] as $section) {
+                $this->assertNull($section->querySection, $section->id);
+            }
+        }
+    }
+
+    #[Test]
     public function it_gives_every_section_a_unique_id(): void
     {
         $ids = array_map(fn (ApiDocsSection $section): string => $section->id, new ApiDocsViewModel()->sections());
@@ -277,6 +371,18 @@ class ApiDocsViewModelTest extends TestCase
     }
 
     #[Test]
+    public function it_describes_get_and_query_on_one_page(): void
+    {
+        $viewModel = new ApiDocsViewModel;
+        $profile = collect($viewModel->navigation()['resources'])->firstWhere('name', 'Your profile');
+
+        $this->assertSame(['GET', 'QUERY'], collect($profile['items'])->firstWhere('id', 'me-show')['methods']);
+        $this->assertNull($viewModel->section('me-show-query'));
+        $this->assertSame('me-show', $viewModel->sectionFor('QUERY', '/me')?->id);
+        $this->assertStringContainsString('-X QUERY', $viewModel->section('me-show')->querySection->samples()['curl']['code']);
+    }
+
+    #[Test]
     public function it_names_both_neighbours_of_a_page_in_the_middle(): void
     {
         $viewModel = new ApiDocsViewModel;
@@ -295,5 +401,38 @@ class ApiDocsViewModelTest extends TestCase
 
         $this->assertNull($viewModel->previous($first));
         $this->assertEquals('authentication-guide', $viewModel->next($first)->id);
+    }
+
+    /** @return list<array<string, mixed>> */
+    private function employeeSections(): array
+    {
+        return [
+            [
+                'id' => 'employees-index',
+                'title' => 'List employees',
+                'label' => 'Employees',
+                'method' => 'GET',
+                'path' => '/companies/{company}/employees',
+                'description' => 'Lists the employees of a branch.',
+                'rateLimit' => 'Sixty requests per minute, per token.',
+                'pathParams' => [
+                    ['name' => 'company', 'type' => 'string', 'required' => true, 'description' => 'The company.'],
+                ],
+                'queryParams' => [
+                    ['name' => 'branch', 'type' => 'string', 'required' => false, 'description' => 'The branch.', 'example' => 'Scranton'],
+                ],
+                'statusCodes' => [
+                    ['status' => 200, 'name' => 'OK', 'when' => 'The request worked.', 'body' => 'The employees.'],
+                ],
+            ],
+            [
+                'id' => 'employees-create',
+                'title' => 'Hire an employee',
+                'method' => 'POST',
+                'path' => '/companies/{company}/employees',
+                'description' => 'Hires somebody.',
+                'rateLimit' => 'Sixty requests per minute, per token.',
+            ],
+        ];
     }
 }

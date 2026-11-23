@@ -63,8 +63,8 @@ return [
             'body' => ['A possession tag belongs to the account, not to a vault, as possession types do.'],
             'rateLimit' => $rateLimit,
             'queryParams' => [
-                ['name' => 'page', 'type' => 'integer', 'required' => false, 'description' => 'Which page to answer with.', 'default' => '1'],
-                ['name' => 'per_page', 'type' => 'integer', 'required' => false, 'description' => 'How many tags one page holds, between 1 and 100. A number outside the range is brought back into it.', 'default' => '25'],
+                ['name' => 'page', 'type' => 'integer', 'required' => false, 'description' => 'Which page to answer with.', 'default' => '1', 'example' => 2],
+                ['name' => 'per_page', 'type' => 'integer', 'required' => false, 'description' => 'How many tags one page holds, between 1 and 100. A number outside the range is brought back into it.', 'default' => '25', 'example' => 10],
             ],
             'returns' => 'A page of possession tag objects, and how many there are in all. An account with none answers an empty list.',
             'response' => ['data' => [$insured], 'meta' => ['page' => 1, 'per_page' => 25, 'total' => 1]],

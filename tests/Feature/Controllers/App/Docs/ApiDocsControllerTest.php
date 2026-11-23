@@ -39,6 +39,15 @@ class ApiDocsControllerTest extends TestCase
     }
 
     #[Test]
+    public function the_profile_page_shows_both_requests_it_answers(): void
+    {
+        $response = $this->get(route('docs.api.show', ['section' => 'me-show']));
+
+        $response->assertSee('This endpoint answers GET and QUERY alike. It takes no parameters, so both requests return the same answer.');
+        $response->assertSee('-X QUERY');
+    }
+
+    #[Test]
     public function it_keeps_where_the_reader_had_scrolled_the_menu_to(): void
     {
         $response = $this->get(route('docs.api.show', ['section' => 'vaults-index']));
@@ -85,19 +94,20 @@ class ApiDocsControllerTest extends TestCase
     }
 
     #[Test]
-    public function a_page_reading_records_says_it_also_answers_query(): void
+    public function a_page_reading_records_with_parameters_says_where_query_sends_them(): void
     {
         $response = $this->get(route('docs.api.show', ['section' => 'contacts-index']));
 
-        $response->assertSee('This endpoint also answers QUERY');
-        $response->assertSee(route('docs.api.show', ['section' => 'query-method']), escape: false);
+        $response->assertSee('GET sends the parameters in the address, QUERY in the request body.');
+        $response->assertSee('GET sends the others in the address too, QUERY sends them as JSON in the request body.');
+        $response->assertSee('-X QUERY');
     }
 
     #[Test]
     public function a_page_writing_records_says_nothing_about_query(): void
     {
         $this->get(route('docs.api.show', ['section' => 'contacts-create']))
-            ->assertDontSee('This endpoint also answers QUERY');
+            ->assertDontSee('This endpoint answers GET and QUERY alike');
     }
 
     #[Test]

@@ -123,6 +123,9 @@
     --color-success: var(--success);
     --color-success-tint: var(--success-tint);
     --color-success-edge: var(--success-edge);
+    --color-query: var(--query);
+    --color-query-tint: var(--query-tint);
+    --color-query-edge: var(--query-edge);
     --color-warning: var(--warning);
     --color-warning-tint: var(--warning-tint);
     --color-warning-edge: var(--warning-edge);
@@ -248,6 +251,9 @@
     --success: #15803d;
     --success-tint: #f0fdf4;
     --success-edge: #bbf7d0;
+    --query: #1d4ed8;
+    --query-tint: #eff6ff;
+    --query-edge: #bfdbfe;
     --warning: #b45309;
     --warning-tint: #fffbeb;
     --warning-edge: #fde68a;
@@ -318,6 +324,9 @@
         --success: #4ade80;
         --success-tint: #0c2318;
         --success-edge: #14532d;
+        --query: #60a5fa;
+        --query-tint: #0b1a33;
+        --query-edge: #1e3a8a;
         --warning: #fbbf24;
         --warning-tint: #271a06;
         --warning-edge: #78350f;

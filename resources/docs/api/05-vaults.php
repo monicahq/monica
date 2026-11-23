@@ -57,6 +57,7 @@ $pageParams = [
         'required' => false,
         'description' => 'Which page to answer with.',
         'default' => '1',
+        'example' => 2,
     ],
     [
         'name' => 'per_page',
@@ -64,6 +65,7 @@ $pageParams = [
         'required' => false,
         'description' => 'How many vaults one page holds, between 1 and 100. A number outside the range is brought back into it rather than refused.',
         'default' => '25',
+        'example' => 10,
     ],
 ];
 

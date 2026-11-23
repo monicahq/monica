@@ -113,8 +113,8 @@ $itemAttributes = [
 ];
 
 $pageParams = [
-    ['name' => 'page', 'type' => 'integer', 'required' => false, 'description' => 'Which page to answer with.', 'default' => '1'],
-    ['name' => 'per_page', 'type' => 'integer', 'required' => false, 'description' => 'How many records one page holds, between 1 and 100. A number outside the range is brought back into it rather than refused.', 'default' => '25'],
+    ['name' => 'page', 'type' => 'integer', 'required' => false, 'description' => 'Which page to answer with.', 'default' => '1', 'example' => 2],
+    ['name' => 'per_page', 'type' => 'integer', 'required' => false, 'description' => 'How many records one page holds, between 1 and 100. A number outside the range is brought back into it rather than refused.', 'default' => '25', 'example' => 10],
 ];
 
 return [
@@ -220,7 +220,7 @@ return [
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $importIdentifier,
             'queryParams' => [
-                ['name' => 'search', 'type' => 'string', 'required' => false, 'description' => 'Only the contacts whose name holds these letters, in capitals or not.'],
+                ['name' => 'search', 'type' => 'string', 'required' => false, 'description' => 'Only the contacts whose name holds these letters, in capitals or not.', 'example' => 'Schrute'],
                 ...$pageParams,
             ],
             'returns' => 'A page of the contacts of the file, sorted by name. An import of another account answers 404.',

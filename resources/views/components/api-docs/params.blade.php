@@ -16,7 +16,11 @@
 
 @if ($section->hasParams())
   <h2 class="mt-9 mb-1 text-xl text-ink">{{ $section->paramsTitle }}</h2>
-  <p class="mb-4 text-sm text-muted">Sent as JSON. Anything not listed here is ignored.</p>
+  @if ($section->querySection !== null)
+    <p class="mb-4 text-sm text-muted">Path parameters go in the address. GET sends the others in the address too, QUERY sends them as JSON in the request body. Anything not listed here is ignored.</p>
+  @else
+    <p class="mb-4 text-sm text-muted">Sent as JSON. Anything not listed here is ignored.</p>
+  @endif
 
   <div class="overflow-hidden rounded-lg border border-hairline shadow-panel">
     @foreach ($section->params as $param)
