@@ -44,6 +44,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->preventRequestForgery(except: [
             'stripe/*',
             'telegram/webhook',
+            // '.well-known/carddav',
+            // '.well-known/caldav',
         ]);
         $middleware->trustProxies(headers: Request::HEADER_X_FORWARDED_FOR |
             Request::HEADER_X_FORWARDED_HOST |
