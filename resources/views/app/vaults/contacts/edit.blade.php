@@ -134,6 +134,10 @@
     </div>
   </x-form>
 
+  @if ($demotion = $viewModel->demotion())
+    @include('app.vaults.contacts._demotion', ['demotion' => $demotion])
+  @endif
+
   <x-delete-section :title="__('Delete contact')" icon="people">
     <p id="delete-contact-reason">{{ $viewModel->deleteDescription() }}</p>
 

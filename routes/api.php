@@ -41,6 +41,7 @@ use App\Http\Controllers\Api\ContactMeController;
 use App\Http\Controllers\Api\ContactMergeController;
 use App\Http\Controllers\Api\ContactNameController;
 use App\Http\Controllers\Api\ContactNameRepresentationController;
+use App\Http\Controllers\Api\ContactPartialController;
 use App\Http\Controllers\Api\ContactRelationshipController;
 use App\Http\Controllers\Api\ContactReminderController;
 use App\Http\Controllers\Api\ContactReminderOccurrenceController;
@@ -472,6 +473,7 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::put('vaults/{vault}/contacts/{contact}/name-representations', [ContactNameRepresentationController::class, 'update'])->name('contacts.nameRepresentations.update');
 
         Route::put('vaults/{vault}/contacts/{contact}/favourite', [ContactFavouriteController::class, 'update'])->name('contacts.favourite.update');
+        Route::put('vaults/{vault}/contacts/{contact}/partial', [ContactPartialController::class, 'update'])->name('contacts.partial.update');
         Route::post('vaults/{vault}/contacts/{contact}/avatar', [ContactAvatarController::class, 'update'])->middleware('flag:file-upload')->name('contacts.avatar.update');
         Route::delete('vaults/{vault}/contacts/{contact}/avatar', [ContactAvatarController::class, 'destroy'])->name('contacts.avatar.destroy');
         Route::put('vaults/{vault}/contacts/{contact}/template-version', [ContactStructureVersionController::class, 'update'])->name('contacts.templateVersion.update');

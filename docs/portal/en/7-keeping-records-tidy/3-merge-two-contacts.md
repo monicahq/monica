@@ -4,7 +4,7 @@ title: Merge two contacts
 description: Merge two records of one person into one, choose what to keep where they disagree, and undo the merge if needed.
 slug: merge-two-contacts
 section: keeping-records-tidy
-last_updated: 2026-09-29
+last_updated: 2026-11-23
 ---
 
 # Merge two contacts
@@ -63,7 +63,7 @@ Monica says **Phoebe Buffay is one contact now**, and that everything the other 
 - Its answers, its photo, its reminders and its sharing links now belong to the record that stays, and its sharing links keep working. A field elsewhere that named it, such as a pet’s **Caregivers**, now names the record that stays.
 - Answers to questions the record that stays does not ask are set aside, not thrown away. Monica lists them under **Set aside rather than shown** before you merge, and you find them later in **Answers to questions no longer asked**. @doc(contacts.edit) shows where.
 - Its old address still works. It opens a page saying where the person is now, with a button to open the record that stays.
-- If the record that stays was a partial contact, it becomes a full one.
+- If the record that stays was a partial contact, it becomes a full one. When both were partial contacts, this counts one more contact toward the free plan on monicahq.com, so the merge is refused when the plan has no place left.
 
 ## Undo a merge
 

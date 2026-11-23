@@ -144,6 +144,7 @@ use App\Http\Controllers\App\Vaults\ContactListColumnController;
 use App\Http\Controllers\App\Vaults\ContactMarkdownController;
 use App\Http\Controllers\App\Vaults\ContactMergeController;
 use App\Http\Controllers\App\Vaults\ContactNameController;
+use App\Http\Controllers\App\Vaults\ContactPartialController;
 use App\Http\Controllers\App\Vaults\ContactRelationshipController;
 use App\Http\Controllers\App\Vaults\ContactReminderController;
 use App\Http\Controllers\App\Vaults\ContactReminderFormController;
@@ -438,6 +439,9 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
 
     Route::put('vaults/{vault}/contacts/{contact}/favourite', [ContactFavouriteController::class, 'update'])
         ->name('contacts.favourite.update');
+
+    Route::put('vaults/{vault}/contacts/{contact}/partial', [ContactPartialController::class, 'update'])
+        ->name('contacts.partial.update');
 
     Route::delete('vaults/{vault}/contacts/{contact}', [ContactController::class, 'destroy'])
         ->name('contacts.destroy');

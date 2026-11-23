@@ -49,7 +49,7 @@ class CreateContact extends Tool
             'maiden_name' => $schema->string()->description('Their name before marriage.'),
             'nickname' => $schema->string()->description('What they are actually called.'),
             'name_order' => $schema->string()->enum(array_column(NameOrderEnum::cases(), 'value'))->description('Which part of the name reads first. Left out, the reader decides.'),
-            'is_partial' => $schema->boolean()->description('True for somebody you know of rather than somebody you have written down. A partial contact is off every list until they are more than a first name. False when left out.'),
+            'is_partial' => $schema->boolean()->description('True for somebody you know of rather than somebody you have written down. A partial contact is off the list of people and out of the count of the plan until they are made full. False when left out.'),
             'is_favourite' => $schema->boolean()->description('True to put the contact at the top of the list. False when left out.'),
             'structure_version_id' => $schema->integer()->description('The id of the published version of one of your active contact templates, as list-template-versions gives it, which says what the page of the contact holds. Left out, the contact starts from the template the vault uses for new contacts.'),
         ];

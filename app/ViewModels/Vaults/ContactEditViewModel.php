@@ -6,9 +6,11 @@ namespace App\ViewModels\Vaults;
 
 use App\Helpers\FlagState;
 use App\Models\Contact;
+use App\Models\Relationship;
 use App\Models\Template;
 use App\Models\User;
 use App\Models\Vault;
+use Illuminate\Database\Eloquent\Builder;
 
 class ContactEditViewModel
 {
@@ -121,6 +123,39 @@ class ContactEditViewModel
         return $response->denied()
             ? (string) $response->message()
             : __('Taking them off the list can be undone.');
+    }
+
+    /** @return array{title: string, lead: string, lines: list<array{icon: string, text: string}>, url: string, confirmTitle: string, confirmBody: string, reachabilityLine: string|null, refusal: string|null}|null */
+    public function demotion(): ?array
+    {
+        if ($this->contact->is_partial) {
+            return null;
+        }
+
+        $name = $this->contact->name;
+        $answer = $this->user->inspect('demote', $this->contact);
+        $isReached = Relationship::query()
+            ->where(fn (Builder $query): Builder => $query
+                ->where('contact_a_id', $this->contact->id)
+                ->orWhere('contact_b_id', $this->contact->id))
+            ->exists();
+
+        return [
+            'title' => __('Keep :name as a partial contact', ['name' => $name]),
+            'lead' => __('For somebody you only need to know through another person, like a colleague’s partner or a friend’s child.'),
+            'lines' => [
+                ['icon' => 'people', 'text' => __(':name leaves your list of people and no longer counts towards your plan.', ['name' => $name])],
+                ['icon' => 'check', 'text' => __('Everything written about :name stays, and so do their relationships.', ['name' => $name])],
+                ['icon' => 'arrow-right', 'text' => __('You can make :name a full contact again at any time.', ['name' => $name])],
+            ],
+            'url' => route('contacts.partial.update', ['vault' => $this->vault, 'contact' => $this->contact]),
+            'confirmTitle' => __('Make :name a partial contact?', ['name' => $name]),
+            'confirmBody' => __(':name leaves the list of people and the address books synchronised to your phones, and their birthday leaves your birthday calendar. Everything written about them stays, and they can still be found in search.', ['name' => $name]),
+            'reachabilityLine' => $isReached
+                ? null
+                : __(':name has no relationship, so you will find them only under Partial contacts in the list of people, or in search.', ['name' => $name]),
+            'refusal' => $answer->allowed() ? null : $answer->message(),
+        ];
     }
 
     public function contactUrl(): string

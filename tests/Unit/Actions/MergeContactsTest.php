@@ -42,6 +42,7 @@ use App\Models\StructureVersionSection;
 use App\Models\Template;
 use App\Models\User;
 use App\Models\Vault;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\DeadlockException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
@@ -328,6 +329,44 @@ class MergeContactsTest extends TestCase
         [$jim, $james] = $this->twoContactsOf($user);
         $jim->is_partial = true;
         $jim->save();
+
+        new MergeContacts(user: $user, kept: $jim, absorbed: $james)->execute();
+
+        $this->assertFalse($jim->refresh()->is_partial);
+    }
+
+    #[Test]
+    public function it_refuses_to_make_one_full_contact_of_two_partial_ones_past_the_ceiling(): void
+    {
+        Queue::fake();
+        config(['monica.self_hosted' => false, 'monica.free_contact_limit' => 1]);
+
+        $user = User::factory()->create();
+        [$jim, $james] = $this->twoContactsOf($user);
+        $jim->update(['is_partial' => true]);
+        $james->update(['is_partial' => true]);
+        Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $jim->vault_id]);
+
+        try {
+            new MergeContacts(user: $user, kept: $jim, absorbed: $james)->execute();
+            $this->fail('The merge made a counted contact past the ceiling of the free plan.');
+        } catch (AuthorizationException) {
+            $this->assertTrue($jim->refresh()->is_partial);
+            $this->assertNotSoftDeleted($james);
+            $this->assertDatabaseMissing('contact_merges', ['kept_contact_id' => $jim->id]);
+        }
+    }
+
+    #[Test]
+    public function it_makes_one_full_contact_of_two_partial_ones_below_the_ceiling(): void
+    {
+        Queue::fake();
+        config(['monica.self_hosted' => false, 'monica.free_contact_limit' => 1]);
+
+        $user = User::factory()->create();
+        [$jim, $james] = $this->twoContactsOf($user);
+        $jim->update(['is_partial' => true]);
+        $james->update(['is_partial' => true]);
 
         new MergeContacts(user: $user, kept: $jim, absorbed: $james)->execute();
 

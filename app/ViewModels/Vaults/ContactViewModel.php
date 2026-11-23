@@ -119,6 +119,34 @@ class ContactViewModel
         return $this->contact->is_me;
     }
 
+    public function isPartial(): bool
+    {
+        return $this->contact->is_partial;
+    }
+
+    /** @return array{title: string, body: string, url: string, confirmTitle: string, confirmBody: string, refusal: string|null}|null */
+    public function promotion(): ?array
+    {
+        if (! $this->contact->is_partial) {
+            return null;
+        }
+
+        $name = $this->contact->name;
+        $limit = $this->user->account->contactLimit();
+        $answer = $this->user->inspect('create', Contact::class);
+
+        return [
+            'title' => __(':name is a partial contact', ['name' => $name]),
+            'body' => __(':name was written down while a relationship was being entered, and stays off the list of people. Make :name a full contact to list them with everybody else.', ['name' => $name]),
+            'url' => route('contacts.partial.update', ['vault' => $this->vault, 'contact' => $this->contact]),
+            'confirmTitle' => __('Make :name a full contact?', ['name' => $name]),
+            'confirmBody' => $limit === null
+                ? __(':name will appear on the list of people, and everything written about them stays where it is.', ['name' => $name])
+                : trans_choice(':name will appear on the list of people and count towards the free plan, which holds :count contact.|:name will appear on the list of people and count towards the free plan, which holds :count contacts.', $limit, ['name' => $name]),
+            'refusal' => $answer->allowed() ? null : $answer->message(),
+        ];
+    }
+
     public function peopleUrl(): string
     {
         return route('contacts.index', $this->vault);

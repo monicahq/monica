@@ -2263,6 +2263,13 @@ class ApiDocsReturnFieldsTest extends TestCase
                 return $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/favourite", ['favourite' => true]);
             }),
 
+            'contacts-partial-update' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                $contact = $this->contactWithAPicture($vault);
+
+                return $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/partial", ['partial' => true]);
+            }),
+
             'contacts-avatar-update' => $this->asSomebody(function (User $user): TestResponse {
                 Storage::fake('local');
                 $vault = Vault::factory()->create(['account_id' => $user->account_id]);

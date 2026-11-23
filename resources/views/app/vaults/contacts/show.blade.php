@@ -13,6 +13,12 @@
     <x-vault.sidebar :user="$viewModel->user()" :vault="$vault" current="contacts" />
   </x-slot:sidebar>
 
+  @if ($promotion = $viewModel->promotion())
+    <x-slot:banner>
+      @include('app.vaults.contacts._promotion', ['promotion' => $promotion])
+    </x-slot:banner>
+  @endif
+
   <header class="flex flex-wrap items-start gap-5.5">
     @include('app.vaults.contacts._favourite', ['viewModel' => $viewModel])
 
@@ -22,6 +28,10 @@
 
         @if ($viewModel->isMe())
           <x-badge tone="accent">{{ __('You') }}</x-badge>
+        @endif
+
+        @if ($viewModel->isPartial())
+          <x-badge tone="warning">{{ __('Partial contact') }}</x-badge>
         @endif
       </div>
 
@@ -35,7 +45,7 @@
     </div>
 
     <div class="ml-auto flex flex-wrap items-center gap-2.5">
-      <x-button :href="$viewModel->editUrl()" data-turbo="true" size="small">
+      <x-button :href="$viewModel->editUrl()" :variant="$viewModel->isPartial() ? 'secondary' : 'primary'" data-turbo="true" size="small">
         <x-slot:icon>
           <x-icon name="profile" :size="15" :stroke-width="1.6" />
         </x-slot:icon>

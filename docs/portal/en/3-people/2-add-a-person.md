@@ -4,7 +4,7 @@ title: Add a person
 description: Write somebody down in a vault as a full contact or a partial one, so you have a page to keep what you know about them.
 slug: add-a-person
 section: people
-last_updated: 2026-09-29
+last_updated: 2026-11-23
 ---
 
 # Add a person
@@ -59,7 +59,9 @@ A partial contact:
 - stays off the **Everybody** and **Favourites** lists, and appears only under **Partial contacts**;
 - does not count toward the free plan on monicahq.com.
 
-Most partial contacts are created for you when you link somebody to a person who is not in Monica yet, and leave **Create a contact record for this person** off. To turn a partial contact into a full one later, open the **Relationships** tab of the person they are linked to, choose **Manage**, then **Edit** on their row, and tick **Create a contact record for this person**.
+Most partial contacts are created for you when you link somebody to a person who is not in Monica yet, and leave **Create a contact record for this person** off. A partial contact’s page says so in a band at the top. To make them a full contact later, choose **Make a full contact** in that band and confirm. On the free plan, this needs a place left in it.
+
+You can also make a full contact partial again. @doc(contacts.edit) explains how.
 
 ## Add several people in a row
 

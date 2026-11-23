@@ -185,7 +185,7 @@ class ContactController extends Controller
         return $destination
             ->with('status', __(':name is written down.', ['name' => $contact->name]))
             ->with('status_description', $contact->is_partial
-                ? __('A partial contact stays off the list of contacts until they are more than a first name.')
+                ? __('A partial contact stays off the list of people until you make them a full contact from their page.')
                 : __('The rest of the page is yours to fill in whenever you know it.'));
     }
 

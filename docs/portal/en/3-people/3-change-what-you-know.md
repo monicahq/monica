@@ -4,7 +4,7 @@ title: Change what you know about somebody
 description: Edit one section of a contact’s page at a time, add a second phone number or correct a name, and learn how the tabs are arranged.
 slug: change-what-you-know
 section: people
-last_updated: 2026-09-29
+last_updated: 2026-11-23
 ---
 
 # Change what you know about somebody
@@ -98,6 +98,25 @@ To see these answers, open the menu next to **Edit contact**, choose **Version h
 ## When a new version of the template is ready
 
 When the template a contact uses has a newer version, their page shows **Version 2 of the Basic contact template is ready**, with the numbers and name of your own template. Nothing changes on the page until you choose **Apply version 2**. Applying it changes which sections and fields the contact shows, and everything already written down stays.
+
+## Make somebody a partial contact
+
+A partial contact is for somebody you only need to know through another person, like a colleague’s partner or a friend’s child. To make a full contact partial:
+
+1. Open their page and choose **Edit contact**.
+2. Above **Delete contact**, choose **Make a partial contact**.
+3. Read what changes, then choose **Make a partial contact** again.
+
+The person then:
+
+- leaves the **Everybody** and **Favourites** lists, and appears under **Partial contacts**;
+- no longer counts toward the free plan on monicahq.com;
+- leaves the address books and the birthday calendar your phones synchronise, until they are a full contact again;
+- keeps everything written about them, including their relationships, life events and reminders, and is still found by search.
+
+When nobody is linked to them, the confirmation says you will find them only under **Partial contacts** or through search.
+
+The contact that stands for you is always a full contact, so the button stays unavailable on it. To make somebody a full contact again, use the band at the top of their page. @doc(contacts.add) explains partial contacts.
 
 ## Next steps
 

@@ -59,7 +59,7 @@
 
             <div class="mt-4">
               <x-checkbox id="creates_record" :checked="$values['createsRecord']" :error="$errors->get('creates_record')">
-                <span class="text-sm text-ink">{{ __('Create a contact record for this person') }}</span>
+                <span class="text-sm text-ink">{{ __('Make a full contact') }}</span>
               </x-checkbox>
             </div>
           </fieldset>
@@ -83,7 +83,7 @@
               </div>
 
               <x-checkbox id="creates_record" :checked="$values['createsRecord']" :error="$errors->get('creates_record')">
-                <span class="text-sm text-ink">{{ __('Create a contact record for this person') }}</span>
+                <span class="text-sm text-ink">{{ __('Make a full contact') }}</span>
               </x-checkbox>
             @endif
           </div>

@@ -333,6 +333,8 @@ class UpdateRelationshipTest extends TestCase
             'id' => $relationship->contact_b_id,
             'is_partial' => false,
         ]);
+
+        Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::ContactPromoted);
     }
 
     #[Test]

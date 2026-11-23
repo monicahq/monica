@@ -177,6 +177,8 @@ enum UserActionEnum: string implements Translatable
     case ContactUnarchived = 'contact_unarchived';
     case ContactFavourited = 'contact_favourited';
     case ContactUnfavourited = 'contact_unfavourited';
+    case ContactPromoted = 'contact_promoted';
+    case ContactDemoted = 'contact_demoted';
     case ContactDeletion = 'contact_deleted';
     case ContactRestoration = 'contact_restored';
     case ContactExported = 'contact_exported';
@@ -484,6 +486,8 @@ enum UserActionEnum: string implements Translatable
             self::ContactUnarchived => 'Restored the contact :name to the lists',
             self::ContactFavourited => 'Pinned the contact :name to the top of the list',
             self::ContactUnfavourited => 'Unpinned the contact :name',
+            self::ContactPromoted => 'Made :name a full contact',
+            self::ContactDemoted => 'Made :name a partial contact',
             self::ContactDeletion => 'Deleted the contact :name',
             self::ContactRestoration => 'Restored the contact :name',
             self::ContactExported => 'Exported the contact :name as a card',

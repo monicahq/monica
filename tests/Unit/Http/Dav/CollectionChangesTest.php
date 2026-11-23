@@ -121,6 +121,26 @@ class CollectionChangesTest extends TestCase
     }
 
     #[Test]
+    public function it_reads_a_contact_made_partial_as_one_that_is_gone(): void
+    {
+        $vault = $this->vault();
+        $contact = Contact::factory()->create([...$this->inVault($vault), 'is_partial' => false]);
+
+        $this->travel(5)->seconds();
+
+        $token = $this->changesIn($vault)->token();
+
+        $this->travel(5)->seconds();
+
+        $contact->update(['is_partial' => true]);
+
+        $changes = $this->changesIn($vault)->since($token);
+
+        $this->assertEquals([$contact->uuid], $changes['deleted']);
+        $this->assertEmpty($changes['modified']);
+    }
+
+    #[Test]
     public function it_hands_back_a_change_that_shares_the_second_of_the_token(): void
     {
         $this->freezeSecond();

@@ -101,6 +101,27 @@ class ContactMergeControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_refuses_to_merge_two_partial_contacts_past_the_ceiling_of_the_free_plan(): void
+    {
+        Queue::fake();
+        config(['monica.self_hosted' => false, 'monica.free_contact_limit' => 1]);
+
+        $user = User::factory()->create();
+        [$jim, $james] = $this->twoContactsOf($user);
+        $jim->update(['is_partial' => true]);
+        $james->update(['is_partial' => true]);
+        Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $jim->vault_id]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('POST', $this->url($jim, $james));
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors('other');
+        $this->assertNotSoftDeleted($james);
+    }
+
+    #[Test]
     public function it_refuses_a_resolution_it_cannot_read(): void
     {
         Queue::fake();

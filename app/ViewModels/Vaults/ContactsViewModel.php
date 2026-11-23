@@ -265,7 +265,7 @@ class ContactsViewModel
             return __('This vault holds nobody so far. Everybody you write down here appears on this list.');
         }
 
-        return trans_choice('{1}One person here was written down as a partial contact and stays off this list until they are more than a first name.|:count people here were written down as partial contacts and stay off this list until they are more than a first name.', $this->waitingCount());
+        return trans_choice('{1}One person here is a partial contact and stays off this list until they are made a full contact.|:count people here are partial contacts and stay off this list until they are made full contacts.', $this->waitingCount());
     }
 
     private function waitingCount(): int

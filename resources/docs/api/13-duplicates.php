@@ -251,7 +251,7 @@ return [
                 ['name' => 'resolutions[].row', 'type' => 'integer', 'required' => false, 'description' => 'The repeater entry, for a collision. Null or absent for a plain difference.', 'example' => null],
                 ['name' => 'resolutions[].keep', 'type' => 'string', 'required' => true, 'description' => 'kept or other for a difference. kept or both for a collision.', 'example' => null],
             ],
-            'returns' => 'The record of the merge. A contact belonging to somebody else answers 404. A resolution the preview never reported, one left undecided, and absorbing the contact representing you each answer 422. A contact changed since the preview answers 409, and nothing is written. So does a merge asked for while an import writes into the vault or rolls back what it wrote.',
+            'returns' => 'The record of the merge. A contact belonging to somebody else answers 404. A resolution the preview never reported, one left undecided, and absorbing the contact representing you each answer 422. Merging two partial contacts makes the survivor a full one, so on the free plan it answers 422, under other, with the wording of the plan, when the account already holds every contact the plan allows. A contact changed since the preview answers 409, and nothing is written. So does a merge asked for while an import writes into the vault or rolls back what it wrote.',
             'responseStatus' => 201,
             'response' => ['data' => $merge],
         ],

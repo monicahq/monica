@@ -1240,6 +1240,46 @@ class ContactViewModelTest extends TestCase
         $this->assertNull(new ContactViewModel(user: $user, vault: $vault, contact: $toby)->profiles());
     }
 
+    #[Test]
+    public function a_full_contact_is_offered_no_promotion(): void
+    {
+        $user = User::factory()->create();
+        $contact = $this->contact($user, $this->version($user, []), ['is_partial' => false]);
+
+        $this->assertNull((new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact))->promotion());
+    }
+
+    #[Test]
+    public function a_partial_contact_is_offered_the_promotion(): void
+    {
+        config(['monica.self_hosted' => true]);
+
+        $user = User::factory()->create();
+        $contact = $this->contact($user, $this->version($user, []), ['is_partial' => true]);
+
+        $promotion = (new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact))->promotion();
+
+        $this->assertSame('Michael Scott is a partial contact', $promotion['title']);
+        $this->assertSame(route('contacts.partial.update', ['vault' => $contact->vault, 'contact' => $contact]), $promotion['url']);
+        $this->assertSame('Michael Scott will appear on the list of people, and everything written about them stays where it is.', $promotion['confirmBody']);
+        $this->assertNull($promotion['refusal']);
+    }
+
+    #[Test]
+    public function the_promotion_names_the_ceiling_of_the_free_plan_and_the_refusal_once_it_is_reached(): void
+    {
+        config(['monica.self_hosted' => false, 'monica.free_contact_limit' => 1]);
+
+        $user = User::factory()->create();
+        $contact = $this->contact($user, $this->version($user, []), ['is_partial' => true]);
+        Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $contact->vault_id]);
+
+        $promotion = (new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact))->promotion();
+
+        $this->assertSame('Michael Scott will appear on the list of people and count towards the free plan, which holds 1 contact.', $promotion['confirmBody']);
+        $this->assertNotNull($promotion['refusal']);
+    }
+
     private function contact(User $user, StructureVersion $version, array $attributes = []): Contact
     {
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);

@@ -4,7 +4,7 @@ title: Words Monica uses
 description: Look up what each word Monica uses means, from account and administrator to template and vault.
 slug: glossary
 section: reference
-last_updated: 2026-09-29
+last_updated: 2026-11-23
 ---
 
 # Words Monica uses
@@ -25,7 +25,7 @@ last_updated: 2026-09-29
 | **Me contact** | A contact that stands for you. No screen creates it yet. |
 | **Merge** | Making two records of one person into one. It can be undone. See @doc(duplicates.merge). |
 | **Page** | A tab on a contact’s page, such as **General** or **Ways to connect**. |
-| **Partial contact** | Somebody written down with a name only, kept out of the list of people. See @doc(contacts.add). |
+| **Partial contact** | Somebody you know through another person, kept out of the list of people and out of the count of the free plan. Their page keeps everything written about them. See @doc(contacts.add). |
 | **Profile** | A record of something that is not a person, such as a pet. See @doc(profiles.add). |
 | **Profile type** | A kind of profile, such as **Animals**. Also called a kind of profile. See @doc(customise.profile-types). |
 | **Relationship** | How two people are connected, such as **Friend** or **Parent / Child**. See @doc(relationships.add). |

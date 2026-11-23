@@ -736,6 +736,48 @@ class ContactControllerTest extends TestCase
         );
     }
 
+    #[Test]
+    public function the_page_of_a_partial_contact_offers_to_make_them_a_full_one(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $holly = Contact::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $vault->id,
+            'structure_version_id' => StructureVersion::factory()->published()->create(['account_id' => $user->account_id]),
+            'first_name' => 'Holly',
+            'last_name' => 'Flax',
+            'is_partial' => true,
+        ]);
+
+        $this->actingAs($user)
+            ->get(route('contacts.show', ['vault' => $vault, 'contact' => $holly]))
+            ->assertOk()
+            ->assertSee('Holly Flax is a partial contact')
+            ->assertSee(route('contacts.partial.update', ['vault' => $vault, 'contact' => $holly]));
+    }
+
+    #[Test]
+    public function the_edit_page_of_a_full_contact_offers_to_make_them_partial(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $holly = Contact::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $vault->id,
+            'structure_version_id' => StructureVersion::factory()->published()->create(['account_id' => $user->account_id]),
+            'first_name' => 'Holly',
+            'last_name' => 'Flax',
+            'is_partial' => false,
+        ]);
+
+        $this->actingAs($user)
+            ->get(route('contacts.edit', ['vault' => $vault, 'contact' => $holly]))
+            ->assertOk()
+            ->assertSee('Keep Holly Flax as a partial contact')
+            ->assertSee(route('contacts.partial.update', ['vault' => $vault, 'contact' => $holly]));
+    }
+
     private function contactOnAVersionOf(User $user, Vault $vault, int $sections, int $choiceFields = 0): Contact
     {
         $template = Template::factory()->create(['account_id' => $user->account_id]);

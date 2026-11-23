@@ -18,6 +18,7 @@ use App\Http\Resources\ContactMergeResource;
 use App\Models\Contact;
 use App\Models\ContactMerge;
 use App\Models\Vault;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -66,7 +67,7 @@ class ContactMergeController extends Controller
             )->execute();
         } catch (ContactChangedSinceThePreview|VaultIsBeingImportedInto $e) {
             return response()->json(['message' => $e->getMessage()], 409);
-        } catch (CannotAbsorbTheMeContact|CannotMergeAContactWithItself $e) {
+        } catch (CannotAbsorbTheMeContact|CannotMergeAContactWithItself|AuthorizationException $e) {
             throw ValidationException::withMessages(['other' => $e->getMessage()]);
         }
 

@@ -7,6 +7,7 @@
   @var \Illuminate\View\ComponentSlot $sidebar
   @var \Illuminate\View\ComponentSlot|null $breadcrumb
   @var \Illuminate\View\ComponentSlot|null $actions
+  @var \Illuminate\View\ComponentSlot|null $banner
   @var \Illuminate\View\ComponentSlot|null $footer
 --}}
 <!DOCTYPE html>
@@ -76,6 +77,10 @@
         @if ($fullAccessOffer !== null)
           <x-full-access-offer :viewModel="$fullAccessOffer" />
         @endif
+
+        @isset($banner)
+          {{ $banner }}
+        @endisset
 
         <div
           @class([

@@ -33,4 +33,17 @@ class ContactPolicy
 
         return Response::allow();
     }
+
+    public function demote(User $user, Contact $contact): Response
+    {
+        if ($contact->is_me) {
+            return Response::deny(__('This is the contact that represents you, and it stays a full contact.'));
+        }
+
+        if ($contact->is_archived) {
+            return Response::deny(__(':name is archived, so they cannot become a partial contact.', ['name' => $contact->name]));
+        }
+
+        return Response::allow();
+    }
 }

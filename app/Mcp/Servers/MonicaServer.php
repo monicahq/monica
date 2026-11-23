@@ -186,6 +186,7 @@ use App\Mcp\Tools\SearchKnowledge;
 use App\Mcp\Tools\SearchRecords;
 use App\Mcp\Tools\SendSupportReply;
 use App\Mcp\Tools\SetContactFavourite;
+use App\Mcp\Tools\SetContactPartial;
 use App\Mcp\Tools\SetEntityTypeActivation;
 use App\Mcp\Tools\SetEntityTypePosition;
 use App\Mcp\Tools\SetLifeEventCategoryActivation;
@@ -500,6 +501,7 @@ class MonicaServer extends Server
         UpdateContactNameRepresentations::class,
         UpdateContactSection::class,
         SetContactFavourite::class,
+        SetContactPartial::class,
         ListContactReminders::class,
         GetContactReminder::class,
         CreateContactReminder::class,

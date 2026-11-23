@@ -10,6 +10,7 @@ use App\Enums\SnapshotReasonEnum;
 use App\Enums\UserActionEnum;
 use App\Exceptions\ContactChangedSinceThePreview;
 use App\Jobs\LogUserAction;
+use App\Models\Account;
 use App\Models\Contact;
 use App\Models\ContactMerge;
 use App\Models\ContactNameRepresentation;
@@ -71,6 +72,8 @@ class MergeContacts
             $this->ledger = [];
             $this->kept->refresh();
             $this->absorbed->refresh();
+
+            $this->stayUnderTheCeiling();
 
             $this->snapshot = new CreateRecordSnapshot(
                 user: $this->user,
@@ -516,6 +519,20 @@ class MergeContacts
 
             $this->ledger[] = ['kind' => 'value_set_aside', 'id' => $value->id, 'from' => $this->absorbed->id];
         }
+    }
+
+    private function stayUnderTheCeiling(): void
+    {
+        if (! $this->kept->is_partial) {
+            return;
+        }
+
+        if (! $this->absorbed->is_partial) {
+            return;
+        }
+
+        Account::query()->whereKey($this->user->account_id)->lockForUpdate()->first();
+        $this->user->authorize('create', Contact::class);
     }
 
     private function stopBeingPartial(): void

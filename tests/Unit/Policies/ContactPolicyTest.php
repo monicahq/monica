@@ -88,4 +88,46 @@ class ContactPolicyTest extends TestCase
         $this->assertFalse(Gate::forUser(null)->allows('create', Contact::class));
         $this->assertFalse(Gate::forUser(null)->allows('delete', $dwight));
     }
+
+    #[Test]
+    public function it_allows_making_any_other_contact_partial(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $toby = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id]);
+
+        $this->assertTrue(Gate::forUser($user)->allows('demote', $toby));
+    }
+
+    #[Test]
+    public function it_refuses_making_the_contact_representing_the_account_holder_partial(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $me = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'is_me' => true]);
+
+        $response = Gate::forUser($user)->inspect('demote', $me);
+
+        $this->assertTrue($response->denied());
+    }
+
+    #[Test]
+    public function it_refuses_making_an_archived_contact_partial(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $toby = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'is_archived' => true]);
+
+        $this->assertTrue(Gate::forUser($user)->inspect('demote', $toby)->denied());
+    }
+
+    #[Test]
+    public function it_refuses_making_a_contact_partial_when_nobody_is_signed_in(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $toby = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id]);
+
+        $this->assertFalse(Gate::forUser(null)->allows('demote', $toby));
+    }
 }

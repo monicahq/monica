@@ -9,7 +9,6 @@ use App\Enums\UserActionEnum;
 use App\Exceptions\RelationshipDatesAreOutOfOrder;
 use App\Exceptions\RelationshipTypeIsNotAvailable;
 use App\Jobs\LogUserAction;
-use App\Models\Account;
 use App\Models\Contact;
 use App\Models\Relationship;
 use App\Models\RelationshipType;
@@ -21,8 +20,8 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Correct a link as seen from one of its two people: its nature, the role that person holds,
- * whether it is still going, when it ran, and, when the other person has no record of their own,
- * their name and whether they get one. Which two people it joins is not correctable.
+ * whether it is still going, when it ran, and, when the other person is a partial contact,
+ * their name and whether they become a full contact. Which two people it joins is not correctable.
  */
 class UpdateRelationship
 {
@@ -147,11 +146,10 @@ class UpdateRelationship
             return;
         }
 
-        Account::query()->whereKey($this->user->account_id)->lockForUpdate()->first();
-        $this->user->authorize('create', Contact::class);
-
-        $this->other->is_partial = false;
-        $this->other->save();
+        new PromotePartialContact(
+            user: $this->user,
+            contact: $this->other,
+        )->execute();
     }
 
     private function renameTheOtherSide(): void

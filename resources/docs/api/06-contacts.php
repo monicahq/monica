@@ -304,7 +304,7 @@ $writeParams = [
     ['name' => 'maiden_name', 'type' => 'string', 'required' => false, 'description' => 'Up to 255 characters.'],
     ['name' => 'nickname', 'type' => 'string', 'required' => false, 'description' => 'What this person is actually called, up to 255 characters.'],
     ['name' => 'name_order', 'type' => 'string', 'required' => false, 'description' => 'Either given_first or family_first. Left out, the reader decides.'],
-    ['name' => 'is_partial', 'type' => 'boolean', 'required' => false, 'description' => 'Whether this is somebody you know of rather than somebody you have written down. A partial contact is off every list until they are more than a first name. False when nothing says.'],
+    ['name' => 'is_partial', 'type' => 'boolean', 'required' => false, 'description' => 'Whether this is somebody you know of rather than somebody you have written down. A partial contact is off the list of people and out of the count of the plan until they are made full. False when nothing says.'],
     ['name' => 'is_favourite', 'type' => 'boolean', 'required' => false, 'description' => 'Whether the contact sits at the top of the list. False when nothing says.'],
     ['name' => 'structure_version_id', 'type' => 'integer', 'required' => false, 'description' => 'The published version of one of your active contact templates, which says what the contact\'s page holds. Left out, the contact starts from whatever this vault publishes for contacts. A draft, a version belonging to somebody else, and a version describing something other than a contact are each refused.'],
 ];
@@ -640,6 +640,27 @@ return [
                 ['name' => 'favourite', 'type' => 'boolean', 'required' => true, 'description' => 'True to mark the contact a favourite, false to take the mark off. Sending the state it is already in is allowed and changes nothing.', 'example' => true],
             ],
             'returns' => 'The contact object as it now reads. A contact belonging to somebody else, or reached through the wrong vault, answers 404 and is left as it was.',
+            'response' => ['data' => $contact],
+        ],
+        [
+            'id' => 'contacts-partial-update',
+            'returnFields' => ApiDocsFields::one('contact', 'contact', $contactAttributes, webLink: $webLink),
+            'title' => 'Make a contact partial or full',
+            'label' => 'Make a contact partial or full',
+            'method' => 'PUT',
+            'path' => '/vaults/{vault}/contacts/{contact}/partial',
+            'examplePath' => '/vaults/'.$vaultId.'/contacts/'.$contactId.'/partial',
+            'description' => 'Say whether a contact is partial: off the list of people, out of the count of the free plan, and left out of the address books and the birthday calendar synchronised to phones.',
+            'body' => [
+                'Nothing written about the contact changes in either direction. Their values, relationships, life events, reminders, groups, shared links and favourite mark all stay, and a partial contact is still found by search.',
+                'Making a partial contact full counts them again, so on the free plan it is refused when the account already holds every contact the plan allows.',
+            ],
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
+            'pathParams' => $identifier,
+            'bodyParams' => [
+                ['name' => 'partial', 'type' => 'boolean', 'required' => true, 'description' => 'True to make the contact partial, false to make them full.', 'example' => true],
+            ],
+            'returns' => 'The contact object as it now reads. A contact belonging to somebody else, or reached through the wrong vault, answers 404. Each of these answers 422 under partial, and leaves the contact as it was: the contact representing you, which stays a full contact; a contact already in the state you asked for; an archived contact; and, on the free plan, making a contact full when the account already holds every contact the plan allows.',
             'response' => ['data' => $contact],
         ],
         [

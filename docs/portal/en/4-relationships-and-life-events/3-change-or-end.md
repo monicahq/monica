@@ -57,10 +57,10 @@ In **Relationship**, choose another type, or the same type read the other way ro
 
 ## Name somebody you did not know
 
-When the other person was written down without a name, or without a record of their own, the edit screen also lets you fix that:
+When the other person was written down without a name, or is a partial contact, the edit screen also lets you fix that:
 
 - Choose **I know their name now** and type their name.
-- Tick **Create a contact record for this person** to move them from the partial contacts into your list of people.
+- Tick **Make a full contact** to move them from the partial contacts into your list of people.
 
 ## Remove a relationship
 

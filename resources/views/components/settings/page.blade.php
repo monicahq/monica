@@ -37,6 +37,10 @@
     <x-slot:actions>{{ $actions }}</x-slot:actions>
   @endisset
 
+  @isset($banner)
+    <x-slot:banner>{{ $banner }}</x-slot:banner>
+  @endisset
+
   @isset($footer)
     <x-slot:footer>{{ $footer }}</x-slot:footer>
   @endisset

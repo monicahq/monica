@@ -151,7 +151,7 @@ class RelationshipEditViewModel
 
     public function renameLine(): string
     {
-        return __(':name has no contact record, so their name is changed here.', [
+        return __(':name is a partial contact, so their name is changed here.', [
             'name' => $this->otherSide()->first_name,
         ]);
     }

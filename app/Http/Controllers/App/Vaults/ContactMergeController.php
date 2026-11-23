@@ -17,6 +17,7 @@ use App\Models\Contact;
 use App\Models\ContactMerge;
 use App\Models\Vault;
 use App\ViewModels\Vaults\ContactMergeViewModel;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -86,7 +87,7 @@ class ContactMergeController extends Controller
                 resolutions: array_values($validated['resolutions'] ?? []),
                 fingerprint: $validated['fingerprint'],
             )->execute();
-        } catch (ContactChangedSinceThePreview $e) {
+        } catch (ContactChangedSinceThePreview|AuthorizationException $e) {
             return redirect()
                 ->route('contacts.merge.show', ['vault' => $vault, 'contact' => $contact, 'other' => $other])
                 ->withErrors(['fingerprint' => $e->getMessage()]);

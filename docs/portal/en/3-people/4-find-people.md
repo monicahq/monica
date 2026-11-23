@@ -4,7 +4,7 @@ title: Find people in a vault
 description: Search the people in a vault by name or nickname, filter the list, sort it and choose which columns it shows.
 slug: find-people
 section: people
-last_updated: 2026-11-22
+last_updated: 2026-11-23
 ---
 
 # Find people in a vault
@@ -27,7 +27,7 @@ The buttons above the list choose who it shows:
 
 - **Everybody** shows every full contact in the vault. Favourites come first, under their own heading, then **Everybody else**.
 - **Favourites** shows only the people you marked as favourites.
-- **Partial contacts** shows the people written down with a name only. They appear nowhere else in the list. @doc(contacts.add) explains partial contacts.
+- **Partial contacts** shows the people you know through somebody else and keep off the main list. They appear nowhere else in the list. @doc(contacts.add) explains partial contacts.
 
 Search works inside the filter you chose. To find a partial contact by name, choose **Partial contacts** first.
 
