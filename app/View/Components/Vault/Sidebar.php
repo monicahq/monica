@@ -28,14 +28,14 @@ class Sidebar extends Component
     #[Override]
     public function render(): View
     {
-        $hasPossessionTypes = PossessionType::query()->where('account_id', $this->vault->account_id)->exists();
+        $showsThings = $this->vault->shows_things && PossessionType::query()->where('account_id', $this->vault->account_id)->exists();
 
         return view('components.vault.sidebar', [
             'reminderCount' => $this->reminderCount(),
-            'entityTypes' => $this->entityTypes(),
-            'hasPossessionTypes' => $hasPossessionTypes,
-            'possessionCount' => $hasPossessionTypes ? Possession::query()->where('vault_id', $this->vault->id)->count() : 0,
-            'knowledgeCount' => KnowledgeNote::query()->where('vault_id', $this->vault->id)->count() + KnowledgeList::query()->where('vault_id', $this->vault->id)->count(),
+            'entityTypes' => $this->vault->shows_people ? $this->entityTypes() : [],
+            'showsThings' => $showsThings,
+            'possessionCount' => $showsThings ? Possession::query()->where('vault_id', $this->vault->id)->count() : 0,
+            'knowledgeCount' => $this->vault->shows_knowledge ? KnowledgeNote::query()->where('vault_id', $this->vault->id)->count() + KnowledgeList::query()->where('vault_id', $this->vault->id)->count() : 0,
             'searchShortcut' => $this->searchShortcut(),
         ]);
     }

@@ -245,6 +245,7 @@ use App\Mcp\Tools\UpdateRelationshipType;
 use App\Mcp\Tools\UpdateTemplate;
 use App\Mcp\Tools\UpdateTemplateField;
 use App\Mcp\Tools\UpdateTemplateSection;
+use App\Mcp\Tools\UpdateVault;
 use Laravel\Mcp\Server;
 use Laravel\Mcp\Server\Attributes\Instructions;
 use Laravel\Mcp\Server\Attributes\Name;
@@ -496,6 +497,7 @@ class MonicaServer extends Server
         ListTemplates::class,
         GetTemplate::class,
         ListVaults::class,
+        UpdateVault::class,
         CreateContact::class,
         UpdateContactName::class,
         UpdateContactNameRepresentations::class,

@@ -9,6 +9,7 @@ use App\Models\EntityType;
 use App\Models\KnowledgeFolder;
 use App\Models\KnowledgeList;
 use App\Models\KnowledgeNote;
+use App\Models\PossessionType;
 use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
 use App\Models\User;
@@ -38,6 +39,49 @@ class SidebarTest extends TestCase
 
         $rendered->assertDontSee('Groups');
         $rendered->assertDontSee(route('groups.index', $vault), escape: false);
+    }
+
+    #[Test]
+    public function the_vault_column_leaves_out_every_section_the_vault_hides(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create([
+            'account_id' => $user->account_id,
+            'shows_people' => false,
+            'shows_things' => false,
+            'shows_knowledge' => false,
+        ]);
+        PossessionType::factory()->create(['account_id' => $user->account_id]);
+
+        $rendered = $this->actingAs($user)->blade(
+            '<x-vault.sidebar :user="$user" :vault="$vault" current="dashboard" />',
+            ['user' => $user, 'vault' => $vault],
+        );
+
+        $rendered->assertDontSee(route('contacts.index', $vault), escape: false);
+        $rendered->assertDontSee(route('groups.index', $vault), escape: false);
+        $rendered->assertDontSee(route('possessions.index', $vault), escape: false);
+        $rendered->assertDontSee(route('knowledge.index', $vault), escape: false);
+        $rendered->assertSee(route('reminders.index', $vault), escape: false);
+        $rendered->assertSee(route('vaults.settings.index', $vault), escape: false);
+    }
+
+    #[Test]
+    public function the_vault_column_shows_the_sections_another_vault_hides(): void
+    {
+        $user = User::factory()->create();
+        Vault::factory()->create(['account_id' => $user->account_id, 'shows_people' => false]);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        PossessionType::factory()->create(['account_id' => $user->account_id]);
+
+        $rendered = $this->actingAs($user)->blade(
+            '<x-vault.sidebar :user="$user" :vault="$vault" current="dashboard" />',
+            ['user' => $user, 'vault' => $vault],
+        );
+
+        $rendered->assertSee(route('contacts.index', $vault), escape: false);
+        $rendered->assertSee(route('possessions.index', $vault), escape: false);
+        $rendered->assertSee(route('knowledge.index', $vault), escape: false);
     }
 
     #[Test]

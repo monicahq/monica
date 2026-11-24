@@ -32,6 +32,9 @@ class VaultControllerTest extends TestCase
                 'position',
                 'is_default',
                 'contact_count',
+                'shows_people',
+                'shows_things',
+                'shows_knowledge',
                 'created_at',
                 'updated_at',
             ],
@@ -516,6 +519,53 @@ class VaultControllerTest extends TestCase
             'description' => 'The Scranton branch.',
             'colour' => '#9a3f2b',
         ]);
+    }
+
+    #[Test]
+    public function it_hides_one_section_and_keeps_the_rest(): void
+    {
+        Queue::fake();
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create([
+            'account_id' => $user->account_id,
+            'name' => 'Dunder Mifflin',
+            'shows_knowledge' => false,
+        ]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('PUT', "/api/v1/vaults/{$vault->uuid}", [
+            'shows_things' => false,
+        ]);
+
+        $response->assertOk();
+        $response->assertJsonPath('data.attributes.shows_people', true);
+        $response->assertJsonPath('data.attributes.shows_things', false);
+        $response->assertJsonPath('data.attributes.shows_knowledge', false);
+        $this->assertDatabaseHas('vaults', [
+            'id' => $vault->id,
+            'name' => 'Dunder Mifflin',
+            'shows_people' => true,
+            'shows_things' => false,
+            'shows_knowledge' => false,
+        ]);
+    }
+
+    #[Test]
+    public function it_refuses_a_section_visibility_that_is_not_true_or_false(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('PUT', "/api/v1/vaults/{$vault->uuid}", [
+            'shows_people' => 'maybe',
+        ]);
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors('shows_people');
+        $this->assertDatabaseHas('vaults', ['id' => $vault->id, 'shows_people' => true]);
     }
 
     #[Test]

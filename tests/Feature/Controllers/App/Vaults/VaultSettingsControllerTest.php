@@ -30,6 +30,19 @@ class VaultSettingsControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_offers_to_choose_what_the_vault_shows(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $this->actingAs($user)->get(route('vaults.settings.index', $vault))
+            ->assertSee('What this vault shows')
+            ->assertSee('action="'.route('vaults.sectionVisibility.update', $vault).'"', false)
+            ->assertSee('role="group" aria-labelledby="section-visibility-title"', false)
+            ->assertSee('Hidden here, still available elsewhere');
+    }
+
+    #[Test]
     public function it_offers_to_export_the_vault_behind_a_password(): void
     {
         $user = User::factory()->create();

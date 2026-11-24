@@ -1,19 +1,19 @@
 ---
 id: vaults.settings
-title: Change a vault’s name, colour and default template
-description: Rename a vault, change its colour and description, and choose the template that new contacts in it start from.
+title: Change a vault’s name, colour, default template and sections
+description: Rename a vault, change its colour and description, choose the template that new contacts in it start from, and choose which sections it shows.
 slug: vault-settings
 section: vaults
-last_updated: 2026-09-29
+last_updated: 2026-11-24
 ---
 
-# Change a vault’s name, colour and default template
+# Change a vault’s name, colour, default template and sections
 
-Each vault has its own settings: what it is called, its colour, and the template new contacts in it start from.
+Each vault has its own settings: what it is called, its colour, the template new contacts in it start from, and which sections it shows.
 
 To open them, go to the vault and choose **Vault settings** in its sidebar.
 
-::screenshot{label="The Vault settings screen of the Personal vault, with What this vault is called, What a new contact starts from and Delete this vault" src="1-vaults.settings.index.webp"}
+::screenshot{label="The Vault settings screen of the Personal vault, with What this vault is called, What a new contact starts from, What this vault shows and Delete this vault" src="1-vaults.settings.index.webp"}
 
 ## Rename it or change its colour
 
@@ -48,6 +48,36 @@ Monica says **The template is saved**. Only contacts you add from now on start f
 Only published versions appear in the list. A draft you are still working on is not offered until you publish it.
 
 If you delete a template that a vault uses as its default, the vault is left without one. The form for a new contact then says **This vault has no template for new contacts to start from** until you pick another default here.
+
+## Choose which sections the vault shows
+
+A vault’s sidebar has three sections below **Dashboard**, **Reminders** and **Vault settings**:
+
+| Section | What it holds |
+| --- | --- |
+| **People** | The contacts of the vault, the kinds of records you invented, and its groups |
+| **Things** | The possessions of the vault. It appears only once your account has a possession type |
+| **Knowledge** | The notes and lists of the vault |
+
+If you never use one of them in this vault, you can hide it.
+
+::::steps
+:::step title="Flip the switches"
+In **What this vault shows**, turn off each section you do not use. The word beside each switch says **Shown** or **Hidden**.
+:::
+
+:::step title="Save"
+Choose **Save changes** under that panel.
+:::
+::::
+
+Monica says **The vault is saved**. The hidden sections leave the sidebar of this vault, and a hidden **People** section also leaves search: the people of this vault are not found from its search, nor when you search every vault. The sidebars of your other vaults are not affected.
+
+Hiding a section deletes nothing, and it is never a way to keep something private:
+
+- A contact, a possession or a note still opens from a link, a reminder or a bookmark.
+- The API and the assistants you connect still read and change everything in the section.
+- Turning the switch back on and saving brings the section back as it was.
 
 ## Next steps
 

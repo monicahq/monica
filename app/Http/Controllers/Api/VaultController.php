@@ -9,6 +9,7 @@ use App\Actions\DestroyVault;
 use App\Actions\SetDefaultVault;
 use App\Actions\SetVaultDefaultTemplate;
 use App\Actions\UpdateVault;
+use App\Actions\UpdateVaultSectionVisibility;
 use App\Enums\VaultColourEnum;
 use App\Exceptions\VaultHasNoContactDefault;
 use App\Http\Controllers\Controller;
@@ -91,6 +92,9 @@ class VaultController extends Controller
             'name' => ['sometimes', 'required', 'string', 'max:255'],
             'description' => ['sometimes', 'nullable', 'string', 'max:65535'],
             'colour' => ['sometimes', 'required', 'string', Rule::in(VaultColourEnum::values())],
+            'shows_people' => ['sometimes', 'boolean'],
+            'shows_things' => ['sometimes', 'boolean'],
+            'shows_knowledge' => ['sometimes', 'boolean'],
         ], $this->decisionRules($request)));
 
         new UpdateVault(
@@ -100,6 +104,16 @@ class VaultController extends Controller
             description: array_key_exists('description', $validated) ? $validated['description'] : $vault->description,
             colour: $validated['colour'] ?? $vault->colour,
         )->execute();
+
+        if ($request->hasAny(['shows_people', 'shows_things', 'shows_knowledge'])) {
+            new UpdateVaultSectionVisibility(
+                user: $request->user(),
+                vault: $vault,
+                showsPeople: $request->boolean('shows_people', $vault->shows_people),
+                showsThings: $request->boolean('shows_things', $vault->shows_things),
+                showsKnowledge: $request->boolean('shows_knowledge', $vault->shows_knowledge),
+            )->execute();
+        }
 
         $this->settleTheTwoDecisions($request, $vault);
 

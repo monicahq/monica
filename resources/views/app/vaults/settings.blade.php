@@ -156,6 +156,52 @@
   </x-panel>
 
   <x-panel
+    :title="__('What this vault shows')"
+    title-id="section-visibility-title"
+    :subtitle="__('Turn off a section you do not use in this vault, so the sidebar and search only hold what you need.')"
+    icon="layers"
+    :flush="true"
+  >
+    <x-form id="section-visibility-form" method="put" :action="$viewModel->sectionVisibilityAction()">
+      <div role="group" aria-labelledby="section-visibility-title">
+        @foreach ($viewModel->sections() as $section)
+          <x-row :title="$section['label']" :description="$section['description']" :icon="$section['icon']">
+            <x-slot:end>
+              <div x-data="{ shown: @js($section['shown']) }" x-on:change="shown = $event.target.checked" class="flex items-center gap-2.5">
+                <span
+                  aria-hidden="true"
+                  x-text="shown ? @js(__('Shown')) : @js(__('Hidden'))"
+                  class="min-w-11 text-right text-xs font-medium text-muted"
+                >{{ $section['shown'] ? __('Shown') : __('Hidden') }}</span>
+
+                <label for="{{ $section['field'] }}" class="flex cursor-pointer items-center">
+                  <x-switch
+                    :id="$section['field']"
+                    :checked="$section['shown']"
+                    :aria-label="$section['label']"
+                  />
+                </label>
+              </div>
+            </x-slot:end>
+          </x-row>
+        @endforeach
+      </div>
+
+      <div class="p-4">
+        <x-notice tone="quiet" :title="__('Hidden here, still available elsewhere')">
+          {{ __('Hiding a section only removes it from the interface. Nothing is deleted, and People, Things and Knowledge stay fully available through the API and MCP.') }}
+        </x-notice>
+      </div>
+    </x-form>
+
+    <x-slot:footer>
+      <div class="flex justify-end">
+        <x-button size="small" form="section-visibility-form">{{ __('Save changes') }}</x-button>
+      </div>
+    </x-slot:footer>
+  </x-panel>
+
+  <x-panel
     :title="__('Export this vault')"
     icon="file"
   >

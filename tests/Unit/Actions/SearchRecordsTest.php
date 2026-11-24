@@ -121,6 +121,25 @@ class SearchRecordsTest extends TestCase
     }
 
     #[Test]
+    public function it_leaves_out_the_people_of_a_vault_hiding_them_only_when_asked(): void
+    {
+        if (DB::connection()->getDriverName() !== 'sqlite') {
+            $this->markTestSkipped('A full-text index sees only committed rows, and RefreshDatabase never commits.');
+        }
+
+        config(['scout.driver' => 'database']);
+        [$user, $office] = $this->dunderMifflin();
+        $office->update(['shows_people' => false]);
+        $farm = Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Schrute Farms']);
+        $atTheOffice = $this->contact($office, 'Dwight', 'Schrute');
+        $atTheFarm = $this->contact($farm, 'Mose', 'Schrute');
+
+        $this->assertSame([$atTheOffice->id], $this->found($user, $office, 'schrute'));
+        $this->assertSame([], $this->found($user, $office, 'schrute', respectsHiddenSections: true));
+        $this->assertSame([$atTheFarm->id], $this->found($user, $office, 'schrute', acrossAccount: true, respectsHiddenSections: true));
+    }
+
+    #[Test]
     public function it_finds_a_contact_once_by_each_way_its_name_is_written(): void
     {
         if (DB::connection()->getDriverName() !== 'sqlite') {
@@ -282,9 +301,9 @@ class SearchRecordsTest extends TestCase
     }
 
     /** @return list<int> */
-    private function found(User $user, Vault $vault, string $query, bool $acrossAccount = false, bool $withSensitive = true): array
+    private function found(User $user, Vault $vault, string $query, bool $acrossAccount = false, bool $withSensitive = true, bool $respectsHiddenSections = false): array
     {
-        $result = new SearchRecords(user: $user, vault: $vault, query: $query, acrossAccount: $acrossAccount, withSensitive: $withSensitive)->execute();
+        $result = new SearchRecords(user: $user, vault: $vault, query: $query, acrossAccount: $acrossAccount, withSensitive: $withSensitive, respectsHiddenSections: $respectsHiddenSections)->execute();
 
         $this->assertSame(SearchRecords::SEARCHED, $result['status']);
 

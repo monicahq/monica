@@ -44,7 +44,7 @@ class VaultSettingsViewModel
 
     public function description(): string
     {
-        return __('What :name is called, what a new contact in it starts from, how to export it, and how to delete it.', [
+        return __('What :name is called, what a new contact in it starts from, which sections it shows, how to export it, and how to delete it.', [
             'name' => $this->vault->name,
         ]);
     }
@@ -81,6 +81,39 @@ class VaultSettingsViewModel
     public function defaultTemplateAction(): string
     {
         return route('vaults.defaultTemplate.update', $this->vault);
+    }
+
+    public function sectionVisibilityAction(): string
+    {
+        return route('vaults.sectionVisibility.update', $this->vault);
+    }
+
+    /** @return list<array{field: string, label: string, description: string, icon: string, shown: bool}> */
+    public function sections(): array
+    {
+        return [
+            [
+                'field' => 'shows_people',
+                'label' => __('People'),
+                'description' => __('Contacts, their relationships and everything written about them.'),
+                'icon' => 'people',
+                'shown' => $this->vault->shows_people,
+            ],
+            [
+                'field' => 'shows_things',
+                'label' => __('Things'),
+                'description' => __('The possessions of this vault.'),
+                'icon' => 'key',
+                'shown' => $this->vault->shows_things,
+            ],
+            [
+                'field' => 'shows_knowledge',
+                'label' => __('Knowledge'),
+                'description' => __('Notes and what you have written down outside a contact.'),
+                'icon' => 'journal',
+                'shown' => $this->vault->shows_knowledge,
+            ],
+        ];
     }
 
     public function destroyAction(): string

@@ -54,6 +54,7 @@ enum UserActionEnum: string implements Translatable
     case UserSsoDisconnected = 'user_sso_disconnected';
     case VaultCreation = 'vault_created';
     case VaultUpdate = 'vault_updated';
+    case VaultSectionVisibilityUpdate = 'vault_section_visibility_updated';
     case VaultPositionUpdate = 'vault_position_updated';
     case VaultDefaultSet = 'vault_default_set';
     case VaultDeletion = 'vault_deleted';
@@ -355,6 +356,7 @@ enum UserActionEnum: string implements Translatable
             self::UserSsoDisconnected => 'Disconnected :name as a way to sign in',
             self::VaultCreation => 'Created the vault :name',
             self::VaultUpdate => 'Updated the vault :name',
+            self::VaultSectionVisibilityUpdate => 'Changed which sections the vault :name shows',
             self::VaultPositionUpdate => 'Moved the vault :name in the list',
             self::VaultDefaultSet => 'Made :name the vault new records go to',
             self::VaultDeletion => 'Deleted the vault :name',

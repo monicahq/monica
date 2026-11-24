@@ -54,6 +54,9 @@ use Override;
  * @property int $position
  * @property bool $is_default
  * @property int $contact_count
+ * @property bool $shows_people Whether the People section appears in the sidebar and in the search of the vault.
+ * @property bool $shows_things Whether the Things section appears in the sidebar of the vault.
+ * @property bool $shows_knowledge Whether the Knowledge section appears in the sidebar of the vault.
  * @property CarbonImmutable|null $last_visited_at
  * @property CarbonImmutable $created_at
  * @property CarbonImmutable|null $updated_at
@@ -70,6 +73,9 @@ use Override;
     'position',
     'is_default',
     'contact_count',
+    'shows_people',
+    'shows_things',
+    'shows_knowledge',
     'last_visited_at',
 ])]
 class Vault extends Model
@@ -93,6 +99,18 @@ class Vault extends Model
     public const int SLUG_LENGTH = 128;
 
     public const string SLUG_WHEN_EMPTY = 'vault';
+
+    /**
+     * Every section is shown until somebody hides it, so a vault built in memory says so before it is
+     * saved, as the database default does after.
+     *
+     * @var array<string, bool>
+     */
+    protected $attributes = [
+        'shows_people' => true,
+        'shows_things' => true,
+        'shows_knowledge' => true,
+    ];
 
     /**
      * Give the vault the address it is read at, here rather than in the actions, because every path
@@ -210,6 +228,9 @@ class Vault extends Model
             'position' => 'integer',
             'is_default' => 'boolean',
             'contact_count' => 'integer',
+            'shows_people' => 'boolean',
+            'shows_things' => 'boolean',
+            'shows_knowledge' => 'boolean',
             'last_visited_at' => 'datetime',
         ];
     }

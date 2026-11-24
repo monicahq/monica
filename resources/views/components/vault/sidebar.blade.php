@@ -5,7 +5,7 @@
   @var string $current
   @var int $reminderCount
   @var list<array{key: string, label: string, icon: string, url: string, badge: null, colour: string}> $entityTypes
-  @var bool $hasPossessionTypes
+  @var bool $showsThings
   @var int $possessionCount
   @var int $knowledgeCount
   @var array{url: string, usesCommandKey: bool, keys: string, label: string} $searchShortcut
@@ -23,7 +23,7 @@
         ['key' => 'vault-settings', 'label' => __('Vault settings'), 'icon' => 'vault', 'url' => route('vaults.settings.index', $vault), 'badge' => null, 'colour' => null],
       ],
     ],
-    [
+    ...($vault->shows_people ? [[
       'title' => __('People'),
       'entries' => [
         ['key' => 'contacts', 'label' => __('People'), 'icon' => 'people', 'url' => route('contacts.index', $vault), 'badge' => $vault->contact_count > 0 ? (string) $vault->contact_count : null, 'colour' => null],
@@ -32,19 +32,19 @@
           ['key' => 'groups', 'label' => __('Groups'), 'icon' => 'family', 'url' => route('groups.index', $vault), 'badge' => null, 'colour' => null],
         ] : []),
       ],
-    ],
-    ...($hasPossessionTypes ? [[
+    ]] : []),
+    ...($showsThings ? [[
       'title' => __('Things'),
       'entries' => [
         ['key' => 'possessions', 'label' => __('All possessions'), 'icon' => 'key', 'url' => route('possessions.index', $vault), 'badge' => $possessionCount > 0 ? (string) $possessionCount : null, 'colour' => null],
       ],
     ]] : []),
-    [
+    ...($vault->shows_knowledge ? [[
       'title' => __('Knowledge'),
       'entries' => [
         ['key' => 'knowledge', 'label' => __('Knowledge'), 'icon' => 'journal', 'url' => route('knowledge.index', $vault), 'badge' => $knowledgeCount > 0 ? (string) $knowledgeCount : null, 'colour' => null],
       ],
-    ],
+    ]] : []),
   ];
 @endphp
 

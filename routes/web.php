@@ -200,6 +200,7 @@ use App\Http\Controllers\App\Vaults\VaultDefaultTemplateController;
 use App\Http\Controllers\App\Vaults\VaultLifeEventCandidateController;
 use App\Http\Controllers\App\Vaults\VaultLifeEventController;
 use App\Http\Controllers\App\Vaults\VaultReminderController;
+use App\Http\Controllers\App\Vaults\VaultSectionVisibilityController;
 use App\Http\Controllers\App\Vaults\VaultSettingsController;
 use App\Http\Controllers\App\Vaults\VaultTimelineContactCandidateController;
 use App\Http\Controllers\App\WelcomeController;
@@ -676,6 +677,7 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
 
     Route::get('vaults/{vault}/settings', [VaultSettingsController::class, 'index'])->name('vaults.settings.index');
     Route::put('vaults/{vault}/settings/default-template', [VaultDefaultTemplateController::class, 'update'])->name('vaults.defaultTemplate.update');
+    Route::put('vaults/{vault}/settings/sections', [VaultSectionVisibilityController::class, 'update'])->name('vaults.sectionVisibility.update');
 
     // What's new, switched on per instance with MONICA_CHANGELOG_ENABLED
     Route::middleware(['changelog'])->group(function (): void {

@@ -38,6 +38,9 @@ class SearchRecords
     /** @var list<int>|null */
     private ?array $vaultIds = null;
 
+    /** @var list<int>|null */
+    private ?array $peopleVaultIds = null;
+
     public function __construct(
         private readonly User $user,
         private readonly Vault $vault,
@@ -47,6 +50,7 @@ class SearchRecords
         private readonly bool $withSensitive = true,
         private readonly int $page = 1,
         private readonly int $perPage = self::PER_PAGE,
+        private readonly bool $respectsHiddenSections = false,
     ) {}
 
     /** @return array{status: string, words: list<string>, groups: list<array{key: string, label: string, results: LengthAwarePaginator<int, Contact|Entity|LifeEvent>}>} */
@@ -129,8 +133,8 @@ class SearchRecords
     {
         $groups = ['people' => [
             'label' => __('People'),
-            'records' => Contact::query()->where('account_id', $this->user->account_id)->whereIn('vault_id', $this->vaultIds()),
-            'builder' => $this->scoped(Contact::search($this->query)),
+            'records' => Contact::query()->where('account_id', $this->user->account_id)->whereIn('vault_id', $this->peopleVaultIds()),
+            'builder' => $this->scoped(Contact::search($this->query), $this->peopleVaultIds()),
         ]];
 
         $entityTypes = EntityType::query()
@@ -141,15 +145,15 @@ class SearchRecords
         foreach ($entityTypes as $entityType) {
             $groups["entity-type-{$entityType->slug}"] = [
                 'label' => $entityType->name_plural,
-                'records' => Entity::query()->where('entity_type_id', $entityType->id)->whereIn('vault_id', $this->vaultIds()),
-                'builder' => $this->scoped(Entity::search($this->query))->where('entity_type_id', $entityType->id),
+                'records' => Entity::query()->where('entity_type_id', $entityType->id)->whereIn('vault_id', $this->peopleVaultIds()),
+                'builder' => $this->scoped(Entity::search($this->query), $this->peopleVaultIds())->where('entity_type_id', $entityType->id),
             ];
         }
 
         $groups['life-events'] = [
             'label' => __('Life events'),
             'records' => LifeEvent::query()->where('account_id', $this->user->account_id)->whereIn('vault_id', $this->vaultIds()),
-            'builder' => $this->scoped(LifeEvent::search($this->query)),
+            'builder' => $this->scoped(LifeEvent::search($this->query), $this->vaultIds()),
         ];
 
         return $groups;
@@ -159,13 +163,14 @@ class SearchRecords
      * @template TModel of Model
      *
      * @param  Builder<TModel>  $builder
+     * @param  list<int>  $vaultIds
      * @return Builder<TModel>
      */
-    private function scoped(Builder $builder): Builder
+    private function scoped(Builder $builder, array $vaultIds): Builder
     {
         return $builder
             ->where('account_id', $this->user->account_id)
-            ->whereIn('vault_id', $this->vaultIds())
+            ->whereIn('vault_id', $vaultIds)
             ->options($this->engineOptions());
     }
 
@@ -175,6 +180,20 @@ class SearchRecords
         return $this->vaultIds ??= $this->acrossAccount
             ? Vault::query()->where('account_id', $this->user->account_id)->pluck('id')->all()
             : [$this->vault->id];
+    }
+
+    /** @return list<int> */
+    private function peopleVaultIds(): array
+    {
+        if (! $this->respectsHiddenSections) {
+            return $this->vaultIds();
+        }
+
+        return $this->peopleVaultIds ??= Vault::query()
+            ->whereIn('id', $this->vaultIds())
+            ->where('shows_people', true)
+            ->pluck('id')
+            ->all();
     }
 
     /**

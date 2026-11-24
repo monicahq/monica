@@ -111,6 +111,21 @@ class VaultSettingsViewModelTest extends TestCase
     }
 
     #[Test]
+    public function it_says_which_sections_the_vault_shows(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'shows_things' => false]);
+
+        $sections = new VaultSettingsViewModel(user: $user, vault: $vault->refresh())->sections();
+
+        $this->assertSame(
+            ['shows_people' => true, 'shows_things' => false, 'shows_knowledge' => true],
+            array_column($sections, 'shown', 'field'),
+        );
+        $this->assertSame(['People', 'Things', 'Knowledge'], array_column($sections, 'label'));
+    }
+
+    #[Test]
     public function it_knows_when_the_vault_is_the_only_one_the_account_has(): void
     {
         $user = User::factory()->create();

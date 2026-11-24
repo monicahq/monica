@@ -216,6 +216,7 @@ class SearchViewModel
             group: $this->group,
             withSensitive: true,
             page: $this->page,
+            respectsHiddenSections: true,
         )->execute();
     }
 }
