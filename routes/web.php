@@ -359,6 +359,7 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::get('vaults/{vault}/life-events/new', [VaultLifeEventController::class, 'new'])->name('vaults.lifeEvents.new');
     Route::post('vaults/{vault}/life-events', [VaultLifeEventController::class, 'create'])->name('vaults.lifeEvents.create');
     Route::get('vaults/{vault}/life-events/candidates', [VaultLifeEventCandidateController::class, 'index'])->name('vaults.lifeEventCandidates.index');
+    Route::get('vaults/{vault}/life-events/{lifeEvent}', [VaultLifeEventController::class, 'show'])->name('vaults.lifeEvents.show');
     Route::get('vaults/{vault}/timeline/candidates', [VaultTimelineContactCandidateController::class, 'index'])->name('vaults.timelineContactCandidates.index');
 
     Route::get('vaults/{vault}/files/{file}', [FileController::class, 'show'])

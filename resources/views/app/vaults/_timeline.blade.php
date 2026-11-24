@@ -134,7 +134,30 @@
                   class="relative flex list-none flex-col before:absolute before:top-5 before:bottom-5 before:start-3.75 before:w-px before:bg-hairline"
                 >
                   @foreach ($month['entries'] as $entry)
-                    <li class="relative grid grid-cols-[2rem_minmax(0,1fr)] gap-x-3.5 py-2">
+                    <li
+                      x-data="{
+                        open: false,
+                        loaded: false,
+                        loading: false,
+                        failed: null,
+                        detailsUrl: @js($entry['detailsUrl']),
+                        detailsId: @js($entry['detailsId']),
+                        load() {
+                          this.loading = true;
+                          this.failed = null;
+                          this.$ajax(this.detailsUrl, { target: this.detailsId, focus: false })
+                            .catch(() => this.fail(0))
+                            .finally(() => this.loading = false);
+                        },
+                        fail(status) {
+                          this.failed = status;
+                          document.getElementById(this.detailsId)?.removeAttribute('aria-busy');
+                        },
+                      }"
+                      x-on:ajax:error.stop="fail($event.detail.status)"
+                      x-on:ajax:missing.stop.prevent
+                      class="relative grid grid-cols-[2rem_minmax(0,1fr)] gap-x-3.5 py-2"
+                    >
                       <span class="relative flex size-8 rounded-full bg-canvas" aria-hidden="true">
                         <span class="flex size-full items-center justify-center rounded-full border {{ $entry['tint'] }}">
                           <x-icon :name="$entry['icon']" :size="15" />
@@ -173,11 +196,56 @@
                           @endif
                         </div>
 
-                        @if ($entry['editUrl'] !== null)
-                          <div class="flex shrink-0 transition-opacity motion-reduce:transition-none opacity-0 group-focus-within:opacity-100 group-hover:opacity-100 pointer-coarse:opacity-100">
+                        <div
+                          x-bind:data-open="open"
+                          class="flex shrink-0 gap-1 opacity-0 transition-opacity motion-reduce:transition-none data-open:opacity-100 group-focus-within:opacity-100 group-hover:opacity-100 pointer-coarse:opacity-100"
+                        >
+                          <x-button.ghost
+                            type="button"
+                            size="small"
+                            x-ref="detailsToggle"
+                            aria-expanded="false"
+                            aria-controls="{{ $entry['detailsId'] }}"
+                            x-bind:aria-expanded="open.toString()"
+                            x-on:click="open = ! open; if (open && ! loaded) { loaded = true; load() }"
+                          >
+                            <span x-text="open ? @js(__('Hide details')) : @js(__('Details'))">{{ __('Details') }}</span>
+                            <span class="sr-only">{{ $entry['title'] }}, {{ $entry['date'] }}</span>
+                            <x-icon name="chevron-down" :size="14" x-bind:class="open && 'rotate-180'" class="motion-safe:transition-transform" />
+                          </x-button.ghost>
+
+                          @if ($entry['editUrl'] !== null)
                             <x-button.ghost :href="$entry['editUrl']" data-turbo="true" size="small" aria-label="{{ __('Edit :name', ['name' => $entry['title']]) }}">{{ __('Edit') }}</x-button.ghost>
+                          @endif
+                        </div>
+                      </div>
+
+                      <p
+                        role="status"
+                        class="sr-only"
+                        x-text="loading ? @js(__('Loading the details')) : (failed === null ? '' : (failed === 404 ? @js(__('This life event no longer exists.')) : @js(__('The details could not be loaded.'))))"
+                      ></p>
+
+                      <div x-show="open" x-cloak class="col-start-2 pt-2">
+                        <div id="{{ $entry['detailsId'] }}">
+                          <div x-show="failed === null" class="flex flex-col gap-2.5 rounded-lg border border-hairline p-4 motion-safe:animate-pulse">
+                            <span class="h-2.5 w-2/5 rounded-sm bg-hover" aria-hidden="true"></span>
+                            <span class="h-2.5 w-4/5 rounded-sm bg-hover" aria-hidden="true"></span>
+                            <span class="h-2.5 w-3/5 rounded-sm bg-hover" aria-hidden="true"></span>
                           </div>
-                        @endif
+
+                          <div x-show="failed !== null" x-cloak class="flex flex-wrap items-center gap-3 rounded-lg border border-hairline p-4 text-sm text-body">
+                            <span x-show="failed === 404">{{ __('This life event no longer exists.') }}</span>
+                            <span x-show="failed !== 404">{{ __('The details could not be loaded.') }}</span>
+
+                            <x-button.secondary
+                              type="button"
+                              size="small"
+                              x-show="failed !== 404"
+                              x-on:click="$refs.detailsToggle.focus(); load()"
+                            >{{ __('Try again') }}</x-button.secondary>
+                          </div>
+                        </div>
                       </div>
                     </li>
                   @endforeach

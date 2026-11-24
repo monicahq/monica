@@ -206,6 +206,19 @@ class DashboardTimelineBlockTest extends TestCase
     }
 
     #[Test]
+    public function it_offers_the_details_of_every_entry_even_one_nobody_can_edit(): void
+    {
+        $golf = $this->lifeEvent('2025-05-01', 'Golf', [$this->jim]);
+        $nobody = $this->lifeEvent('2025-04-01', 'Nobody left', []);
+
+        $months = $this->block(slice: '2025')->months();
+
+        $this->assertSame(route('vaults.lifeEvents.show', ['vault' => $this->vault, 'lifeEvent' => $golf]), $months[0]['entries'][0]['detailsUrl']);
+        $this->assertSame("life-event-details-{$golf->uuid}", $months[0]['entries'][0]['detailsId']);
+        $this->assertSame(route('vaults.lifeEvents.show', ['vault' => $this->vault, 'lifeEvent' => $nobody]), $months[1]['entries'][0]['detailsUrl']);
+    }
+
+    #[Test]
     public function it_lists_a_hundred_at_a_time_and_continues_a_month_without_its_heading(): void
     {
         $rows = [];

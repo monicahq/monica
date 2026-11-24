@@ -4,7 +4,7 @@ title: How the timeline works
 description: Learn why one life event appears on the page of everybody who took part, how the timeline of a vault is organised, and in what order entries are shown.
 slug: the-timeline
 section: relationships-and-life-events
-last_updated: 2026-11-22
+last_updated: 2026-11-24
 ---
 
 # How the timeline works
@@ -36,6 +36,8 @@ The dashboard of a vault has a timeline of its own, under **Timeline**. It holds
 On the left, a short list of periods: **Upcoming** first, for what is planned from today on, then every year that holds a life event, the most recent first. Each one says how many entries it holds. Choose a period to see only its life events, grouped by month. Upcoming events come nearest first, and the events of a year come most recent first. At the bottom, **Newer** and **Older** take you to the next period either way.
 
 Above the list, two choices narrow it down. **With anyone** lets you type a name and keep only the life events that person took part in. **All event types** keeps only one type, such as a wedding. The counts beside each period follow these choices, so you can see at once which years hold something. **Clear filters** puts both back.
+
+Each entry shows its title, its date and who was there. To read the rest, choose **Details** on the entry. A panel opens under it with everything you wrote down: the type and its category, the description, the time and how long it lasted, the place, the group it belongs to, every field of its type that you filled in, the files attached to it, and each person who was there with the part they played and how they are related to you. Monica reads these details only when you ask, so a vault holding hundreds of life events opens just as fast. Choose **Hide details** or **Close** to fold the panel away. For example, choose **Details** on Monica and Chandler’s wedding to read that it took place in a ballroom in Manhattan, that Joey officiated, and who else was there.
 
 The dashboard only shows life events. To change or delete one, choose **Edit** on its entry: it opens the page of a person who took part.
 

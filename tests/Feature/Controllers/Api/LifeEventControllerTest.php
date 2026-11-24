@@ -7,6 +7,8 @@ namespace Tests\Feature\Controllers\Api;
 use App\Actions\CreateLifeEvent;
 use App\Enums\FieldTypeEnum;
 use App\Models\Contact;
+use App\Models\Entity;
+use App\Models\EntityType;
 use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\FieldValueRow;
@@ -38,10 +40,15 @@ class LifeEventControllerTest extends TestCase
             'life_event_type' => ['id', 'name'],
             'group',
             'happened_on',
+            'date_precision',
+            'ended_on',
+            'happened_at_time',
+            'timezone',
             'duration_in_minutes',
             'narrative',
             'location',
             'participants',
+            'entity_participants',
             'fields',
             'created_from',
             'deleted_at',
@@ -165,6 +172,33 @@ class LifeEventControllerTest extends TestCase
         $response->assertJsonPath('data.attributes.fields.0.label', 'Boat');
         $response->assertJsonPath('data.attributes.fields.0.value', 'Lake Wallenpaupack');
         $response->assertJsonPath('data.links.web', route('contacts.show', [$vault, $jim]));
+    }
+
+    #[Test]
+    public function it_shows_when_a_life_event_happened_and_the_part_each_participant_took(): void
+    {
+        [$user, $vault, $jim] = $this->office();
+        $lifeEvent = $this->lifeEventOn($vault, '2026-03-01', [$jim], 'Beet harvest');
+        $lifeEvent->update(['ended_on' => '2026-03-03', 'happened_at_time' => '06:30:00', 'timezone' => 'America/New_York']);
+        $lifeEvent->participants()->first()->update(['role' => 'Picker', 'notes' => 'Wore a bear costume']);
+        $farm = Entity::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'entity_type_id' => EntityType::factory()->create(['account_id' => $user->account_id])->id, 'name' => 'Schrute Farms']);
+        LifeEventParticipant::factory()->create(['life_event_id' => $lifeEvent->id, 'participant_type' => $farm->getMorphClass(), 'participant_id' => $farm->id, 'position' => 1, 'role' => 'Host']);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('GET', "/api/v1/vaults/{$vault->uuid}/life-events/{$lifeEvent->uuid}");
+
+        $response->assertOk();
+        $response->assertJsonPath('data.attributes.date_precision', 'day');
+        $response->assertJsonPath('data.attributes.ended_on', '2026-03-03');
+        $response->assertJsonPath('data.attributes.happened_at_time', '06:30');
+        $response->assertJsonPath('data.attributes.timezone', 'America/New_York');
+        $response->assertJsonPath('data.attributes.participants.0.role', 'Picker');
+        $response->assertJsonPath('data.attributes.participants.0.notes', 'Wore a bear costume');
+        $response->assertJsonCount(1, 'data.attributes.participants');
+        $response->assertJsonPath('data.attributes.entity_participants.0.id', $farm->uuid);
+        $response->assertJsonPath('data.attributes.entity_participants.0.name', 'Schrute Farms');
+        $response->assertJsonPath('data.attributes.entity_participants.0.role', 'Host');
     }
 
     #[Test]

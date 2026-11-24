@@ -16,7 +16,9 @@ use App\Helpers\LifeEventTimeline;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SaveLifeEventRequest;
 use App\Models\Contact;
+use App\Models\LifeEvent;
 use App\Models\Vault;
+use App\ViewModels\Vaults\LifeEventDetailsViewModel;
 use App\ViewModels\Vaults\VaultDashboardViewModel;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -33,6 +35,17 @@ class VaultLifeEventController extends Controller
                 user: $request->user(),
                 vault: $vault,
                 opensLifeEventPanel: true,
+            ),
+        ]);
+    }
+
+    public function show(Request $request, Vault $vault, LifeEvent $lifeEvent): View
+    {
+        return view('app.vaults._life-event-details', [
+            'viewModel' => new LifeEventDetailsViewModel(
+                user: $request->user(),
+                vault: $vault,
+                lifeEvent: $lifeEvent,
             ),
         ]);
     }

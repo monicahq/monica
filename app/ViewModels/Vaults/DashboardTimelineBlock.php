@@ -85,7 +85,7 @@ class DashboardTimelineBlock
         return trans_choice(':count entry|:count entries', $count);
     }
 
-    /** @return list<array{key: string, label: string, showsHeading: bool, entries: list<array{id: int, icon: string, tint: string, title: string, typeName: string, date: string, relative: string|null, with: list<array{name: string, url: string|null}>, editUrl: string|null, isJustAdded: bool}>}> */
+    /** @return list<array{key: string, label: string, showsHeading: bool, entries: list<array{id: int, icon: string, tint: string, title: string, typeName: string, date: string, relative: string|null, with: list<array{name: string, url: string|null}>, editUrl: string|null, detailsUrl: string, detailsId: string, isJustAdded: bool}>}> */
     public function months(): array
     {
         $months = [];
@@ -322,7 +322,7 @@ class DashboardTimelineBlock
         });
     }
 
-    /** @return array{id: int, icon: string, tint: string, title: string, typeName: string, date: string, relative: string|null, with: list<array{name: string, url: string|null}>, editUrl: string|null, isJustAdded: bool} */
+    /** @return array{id: int, icon: string, tint: string, title: string, typeName: string, date: string, relative: string|null, with: list<array{name: string, url: string|null}>, editUrl: string|null, detailsUrl: string, detailsId: string, isJustAdded: bool} */
     private function entry(LifeEvent $lifeEvent): array
     {
         $type = $this->types()->firstWhere('id', $lifeEvent->life_event_type_id);
@@ -345,6 +345,8 @@ class DashboardTimelineBlock
             'editUrl' => $editable === null
                 ? null
                 : route('contacts.lifeEvents.edit', ['vault' => $this->vault, 'contact' => $editable, 'lifeEvent' => $lifeEvent]),
+            'detailsUrl' => route('vaults.lifeEvents.show', ['vault' => $this->vault, 'lifeEvent' => $lifeEvent]),
+            'detailsId' => "life-event-details-{$lifeEvent->uuid}",
             'isJustAdded' => $lifeEvent->id === $this->justAddedId,
         ];
     }

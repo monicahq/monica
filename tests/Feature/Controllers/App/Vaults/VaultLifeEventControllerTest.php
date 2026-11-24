@@ -6,6 +6,7 @@ namespace Tests\Feature\Controllers\App\Vaults;
 
 use App\Models\Contact;
 use App\Models\LifeEvent;
+use App\Models\LifeEventParticipant;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -120,6 +121,44 @@ class VaultLifeEventControllerTest extends TestCase
             ->assertSessionHasInput('contact_id', $michael->id);
     }
 
+    #[Test]
+    public function it_shows_the_details_of_a_life_event(): void
+    {
+        [$user, $vault, $michael] = $this->michael();
+        $lifeEvent = $this->lifeEventOf($michael, ['title' => 'Dundies', 'narrative' => 'Pam won Whitest Sneakers.']);
+
+        $this->actingAs($user)
+            ->get(route('vaults.lifeEvents.show', ['vault' => $vault, 'lifeEvent' => $lifeEvent]))
+            ->assertOk()
+            ->assertSee('id="life-event-details-'.$lifeEvent->uuid.'"', escape: false)
+            ->assertSee('Pam won Whitest Sneakers.')
+            ->assertSee('Who was there');
+    }
+
+    #[Test]
+    public function it_does_not_find_a_deleted_life_event(): void
+    {
+        [$user, $vault, $michael] = $this->michael();
+        $lifeEvent = $this->lifeEventOf($michael);
+        $lifeEvent->delete();
+
+        $this->actingAs($user)
+            ->get(route('vaults.lifeEvents.show', ['vault' => $vault, 'lifeEvent' => $lifeEvent]))
+            ->assertNotFound();
+    }
+
+    #[Test]
+    public function it_does_not_find_a_life_event_through_another_vault(): void
+    {
+        [$user, $vault, $michael] = $this->michael();
+        $stamford = Vault::factory()->create(['account_id' => $user->account_id]);
+        $lifeEvent = $this->lifeEventOf($michael);
+
+        $this->actingAs($user)
+            ->get(route('vaults.lifeEvents.show', ['vault' => $stamford, 'lifeEvent' => $lifeEvent]))
+            ->assertNotFound();
+    }
+
     /** @return array{0: User, 1: Vault, 2: Contact} */
     private function michael(): array
     {
@@ -137,5 +176,15 @@ class VaultLifeEventControllerTest extends TestCase
             'vault_id' => $vault->id,
             'first_name' => $firstName,
         ]);
+    }
+
+    /** @param array<string, mixed> $attributes */
+    private function lifeEventOf(Contact $contact, array $attributes = []): LifeEvent
+    {
+        $lifeEvent = LifeEvent::factory()->create(['vault_id' => $contact->vault_id, ...$attributes]);
+
+        LifeEventParticipant::factory()->create(['life_event_id' => $lifeEvent->id, 'participant_id' => $contact->id]);
+
+        return $lifeEvent;
     }
 }

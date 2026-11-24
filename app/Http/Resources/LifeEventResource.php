@@ -6,6 +6,7 @@ namespace App\Http\Resources;
 
 use App\Helpers\FieldValueFormatter;
 use App\Models\Contact;
+use App\Models\Entity;
 use App\Models\FieldValue;
 use App\Models\LifeEvent;
 use App\Models\LifeEventParticipant;
@@ -61,6 +62,10 @@ class LifeEventResource extends JsonResource
                     'name' => $this->group->name,
                 ],
                 'happened_on' => $this->happened_on->format('Y-m-d'),
+                'date_precision' => $this->date_precision->value,
+                'ended_on' => $this->ended_on?->format('Y-m-d'),
+                'happened_at_time' => $this->happened_at_time === null ? null : mb_substr($this->happened_at_time, 0, 5),
+                'timezone' => $this->timezone,
                 'duration_in_minutes' => $this->duration_in_minutes,
                 'narrative' => $this->narrative,
                 'location' => $this->location,
@@ -70,6 +75,19 @@ class LifeEventResource extends JsonResource
                         'id' => $participation->participant->uuid,
                         'name' => $participation->participant->name,
                         'position' => $participation->position,
+                        'role' => $participation->role,
+                        'notes' => $participation->notes,
+                    ])
+                    ->values()
+                    ->all(),
+                'entity_participants' => $this->participants
+                    ->filter(fn (LifeEventParticipant $participation): bool => $participation->participant instanceof Entity)
+                    ->map(fn (LifeEventParticipant $participation): array => [
+                        'id' => $participation->participant->uuid,
+                        'name' => $participation->participant->name,
+                        'position' => $participation->position,
+                        'role' => $participation->role,
+                        'notes' => $participation->notes,
                     ])
                     ->values()
                     ->all(),
