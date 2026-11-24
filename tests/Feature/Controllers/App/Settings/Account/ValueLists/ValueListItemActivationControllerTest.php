@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\App\Settings\Account\ValueLists;
 
+use App\Enums\CountryEnum;
+use App\Enums\ValueListEnum;
 use App\Models\User;
+use App\Models\ValueList;
 use App\Models\ValueListItem;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -55,6 +58,22 @@ class ValueListItemActivationControllerTest extends TestCase
 
         $this->assertTrue($item->is_active);
         $this->assertSame(2, $item->position);
+    }
+
+    #[Test]
+    public function it_shows_the_refusal_of_a_country_already_offered_on_its_row(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $list = ValueList::factory()->create(['account_id' => $user->account_id, 'key' => ValueListEnum::Countries->value]);
+        $stopped = ValueListItem::factory()->supplied(CountryEnum::France)->disabled()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id]);
+        ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'label' => null, 'country_code' => 'FR']);
+
+        $this->actingAs($user)->put(route('settings.valueListItemActivation.update', $stopped->id), ['active' => '1'])
+            ->assertSessionHasErrors(['active' => 'This country is already on the list.'], errorBag: "value{$stopped->id}");
+
+        $this->assertFalse($stopped->refresh()->is_active);
     }
 
     #[Test]

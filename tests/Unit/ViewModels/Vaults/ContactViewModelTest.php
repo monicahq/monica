@@ -1260,6 +1260,7 @@ class ContactViewModelTest extends TestCase
         $promotion = (new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact))->promotion();
 
         $this->assertSame('Michael Scott is a partial contact', $promotion['title']);
+        $this->assertSame('Michael Scott stays off the list of people. Make Michael Scott a full contact to list them with everybody else.', $promotion['body']);
         $this->assertSame(route('contacts.partial.update', ['vault' => $contact->vault, 'contact' => $contact]), $promotion['url']);
         $this->assertSame('Michael Scott will appear on the list of people, and everything written about them stays where it is.', $promotion['confirmBody']);
         $this->assertNull($promotion['refusal']);

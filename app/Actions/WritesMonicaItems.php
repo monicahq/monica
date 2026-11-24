@@ -339,7 +339,7 @@ trait WritesMonicaItems
             ->where('account_id', $this->user->account_id)
             ->where('slug', (string) $this->payload('entity_type'))
             ->first();
-        $version ??= $entityType?->defaultVersionIn($this->vault());
+        $version ??= $entityType?->versionsOnOfferIn($this->vault())->first();
 
         if (! $entityType instanceof EntityType || ! $version instanceof StructureVersion) {
             $this->leaveOut(AccountImportReasonEnum::RefusedWhileWriting);

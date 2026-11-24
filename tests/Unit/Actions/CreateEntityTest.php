@@ -219,6 +219,23 @@ class CreateEntityTest extends TestCase
     }
 
     #[Test]
+    public function it_starts_on_the_first_template_on_offer_when_the_default_one_is_turned_off(): void
+    {
+        Queue::fake();
+
+        [$user, $vault, $type, $version] = $this->farmWithGoats();
+        $version->structure->owner->update(['is_active' => false]);
+        $animal = $this->otherTemplateOf($user, $type);
+
+        $entity = new CreateEntity(user: $user, vault: $vault, entityType: $type, name: 'Mose’s goat')->execute();
+
+        $this->assertDatabaseHas('entities', [
+            'id' => $entity->id,
+            'structure_version_id' => $animal->id,
+        ]);
+    }
+
+    #[Test]
     public function it_refuses_a_template_turned_off(): void
     {
         [$user, $vault, $type] = $this->farmWithGoats();

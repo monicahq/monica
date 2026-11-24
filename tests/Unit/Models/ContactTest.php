@@ -1061,6 +1061,18 @@ class ContactTest extends TestCase
     }
 
     #[Test]
+    public function it_sends_the_search_engine_the_label_of_a_phone_number(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $dwight = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id]);
+
+        $this->writeOn($dwight, FieldTypeEnum::Phone, 'Phone', ['value_string' => '+33612345678', 'label_wording' => 'Beet farm']);
+
+        $this->assertStringContainsString('+33612345678 (Beet farm)', (string) $dwight->refresh()->toSearchableArray()['body']);
+    }
+
+    #[Test]
     public function it_names_where_the_words_searched_were_found(): void
     {
         $user = User::factory()->create();

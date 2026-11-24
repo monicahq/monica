@@ -7,9 +7,11 @@ namespace Tests\Unit\Models;
 use App\Actions\CreateStructureVersionDraft;
 use App\Actions\PublishStructureVersion;
 use App\Enums\FieldTypeEnum;
+use App\Enums\VersionStatusEnum;
 use App\Models\Entity;
 use App\Models\EntityType;
 use App\Models\StructureVersion;
+use App\Models\Template;
 use App\Models\User;
 use App\Models\Vault;
 use App\Models\VaultDefaultTemplate;
@@ -27,7 +29,7 @@ class EntityTypeTest extends TestCase
     {
         $vault = Vault::factory()->create();
         $type = $this->typeIn($vault);
-        VaultDefaultTemplate::factory()->forEntity($type)->create(['vault_id' => $vault->id]);
+        $this->entityDefaultCarrying($vault, $type, []);
 
         $this->assertTrue($this->isVisible($type, $vault));
     }
@@ -83,12 +85,26 @@ class EntityTypeTest extends TestCase
     }
 
     #[Test]
+    public function it_keeps_a_type_configured_when_its_default_template_is_turned_off_but_another_is_on_offer(): void
+    {
+        $vault = Vault::factory()->create();
+        $type = $this->typeIn($vault);
+        $basicAnimal = $this->entityDefaultCarrying($vault, $type, []);
+        $basicAnimal->structure->owner->update(['is_active' => false]);
+        $animal = Template::factory()->forEntity($type)->create(['account_id' => $vault->account_id]);
+        $version = StructureVersion::factory()->create(['structure_id' => $animal->structure->id, 'status' => VersionStatusEnum::Published]);
+        $animal->structure->update(['published_version_id' => $version->id]);
+
+        $this->assertTrue($this->isConfigured($type, $vault));
+    }
+
+    #[Test]
     public function it_decides_each_vault_on_its_own(): void
     {
         $scranton = Vault::factory()->create();
         $stamford = Vault::factory()->create(['account_id' => $scranton->account_id]);
         $type = $this->typeIn($scranton);
-        VaultDefaultTemplate::factory()->forEntity($type)->create(['vault_id' => $scranton->id]);
+        $this->entityDefaultCarrying($scranton, $type, []);
 
         $this->assertTrue($this->isVisible($type, $scranton));
         $this->assertFalse($this->isVisible($type, $stamford));
@@ -99,7 +115,7 @@ class EntityTypeTest extends TestCase
     {
         $vault = Vault::factory()->create();
         $animals = $this->typeIn($vault);
-        VaultDefaultTemplate::factory()->forEntity($animals)->create(['vault_id' => $vault->id]);
+        $this->entityDefaultCarrying($vault, $animals, []);
         $companies = $this->typeIn($vault);
         Entity::factory()->create(['vault_id' => $vault->id, 'entity_type_id' => $companies->id]);
 

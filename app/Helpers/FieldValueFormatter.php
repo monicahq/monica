@@ -153,6 +153,19 @@ class FieldValueFormatter
         };
     }
 
+    /**
+     * The value as the search engine reads it. A phone number keeps the digits it was typed with,
+     * so that grouping them does not split what somebody searches for, and keeps its label.
+     */
+    public function formatForSearch(FieldValue $value): ?string
+    {
+        if ($value->field->type !== FieldTypeEnum::Phone) {
+            return $this->format($value);
+        }
+
+        return $this->labelled($value, groupsThePhone: false);
+    }
+
     public function formatPossessionValue(PossessionFieldValue $value): ?string
     {
         $kind = $value->field->kind;
@@ -184,11 +197,13 @@ class FieldValueFormatter
         return $parsed instanceof CarbonImmutable ? $this->write($parsed, $this->dateFormat()) : $date;
     }
 
-    private function labelled(FieldValue $value): ?string
+    private function labelled(FieldValue $value, bool $groupsThePhone = true): ?string
     {
         $written = match ($value->field->type) {
             FieldTypeEnum::Address => self::addressLine(is_array($value->value_json) ? $value->value_json : null, $value->account_id),
-            FieldTypeEnum::Phone => $this->blankToNull($value->value_string) === null ? null : self::phone((string) $value->value_string),
+            FieldTypeEnum::Phone => $groupsThePhone && $this->blankToNull($value->value_string) !== null
+                ? self::phone((string) $value->value_string)
+                : $this->blankToNull($value->value_string),
             default => $this->blankToNull($value->value_string),
         };
         $label = $this->blankToNull($value->label_wording) ?? $value->valueListItem?->label;

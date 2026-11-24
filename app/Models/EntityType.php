@@ -222,8 +222,10 @@ class EntityType extends Model
     }
 
     /**
-     * Scope the types a vault is set up for: the type is active and the vault starts its records
-     * from an active, published template. This is what the vault's navigation lists.
+     * Scope the types a vault is set up for: the type is active, the vault has a default for it,
+     * and an active template of the type has a published version. A default whose template was
+     * turned off still counts, since a new record then starts from the first template on offer.
+     * This is what the vault's navigation lists.
      *
      * @param  Builder<EntityType>  $query
      */
@@ -232,16 +234,14 @@ class EntityType extends Model
         $query->where('is_active', true)
             ->whereHas('vaultDefaultTemplates', function (Builder $query) use ($vault): void {
                 $query->where('vault_id', $vault->id)
-                    ->where('applies_to', StructureAppliesToEnum::Entity)
-                    ->whereHas('structureVersion', function (Builder $query): void {
-                        $query->where('status', VersionStatusEnum::Published)
-                            ->whereHas('structure', function (Builder $query): void {
-                                $query->whereHasMorph('owner', [Template::class], function (Builder $query): void {
-                                    $query->where('is_active', true);
-                                });
-                            });
-                    });
-            });
+                    ->where('applies_to', StructureAppliesToEnum::Entity);
+            })
+            ->whereIn('id', Structure::query()
+                ->select('entity_type_id')
+                ->whereNotNull('published_version_id')
+                ->whereHasMorph('owner', [Template::class], function (Builder $query): void {
+                    $query->where('is_active', true);
+                }));
     }
 
     /**

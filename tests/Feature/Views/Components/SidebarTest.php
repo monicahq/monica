@@ -13,7 +13,6 @@ use App\Models\Reminder;
 use App\Models\ReminderOccurrence;
 use App\Models\User;
 use App\Models\Vault;
-use App\Models\VaultDefaultTemplate;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Pennant\Feature;
@@ -183,7 +182,7 @@ class SidebarTest extends TestCase
             'name_plural' => $plural,
             'position' => $position,
         ]);
-        VaultDefaultTemplate::factory()->forEntity($type)->create(['vault_id' => $vault->id]);
+        $this->entityDefaultCarrying($vault, $type, []);
 
         return $type;
     }

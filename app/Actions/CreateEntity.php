@@ -115,7 +115,7 @@ class CreateEntity
             return;
         }
 
-        $version = $this->entityType->defaultVersionIn($this->vault);
+        $version = $this->entityType->versionsOnOfferIn($this->vault)->first();
 
         if (! $version instanceof StructureVersion) {
             throw new ModelNotFoundException('This vault has no template for this type.');

@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ValueListItem;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class ValueListItemActivationController extends Controller
 {
@@ -20,10 +21,14 @@ class ValueListItemActivationController extends Controller
         ]);
 
         if ($request->boolean('active')) {
-            new EnableValueListItem(
-                user: $request->user(),
-                item: $valueListItem,
-            )->execute();
+            try {
+                new EnableValueListItem(
+                    user: $request->user(),
+                    item: $valueListItem,
+                )->execute();
+            } catch (ValidationException $e) {
+                throw $e->errorBag("value{$valueListItem->id}");
+            }
 
             return redirect()->route('settings.valueLists.index')
                 ->with('status', __('The value is offered again.'))

@@ -94,6 +94,18 @@ class EntityTypePolicyTest extends TestCase
     }
 
     #[Test]
+    public function it_lets_somebody_add_an_entity_from_another_template_when_the_default_one_is_turned_off(): void
+    {
+        [$user, $vault, $type] = $this->vaultWithType();
+        $basicAnimal = $this->entityDefaultCarrying($vault, $type, ['Animal details' => ['species' => FieldTypeEnum::Text]]);
+        $basicAnimal->structure->owner->update(['is_active' => false]);
+        $stamford = Vault::factory()->create(['account_id' => $user->account_id]);
+        $this->entityDefaultCarrying($stamford, $type, ['Animal details' => ['breed' => FieldTypeEnum::Text]]);
+
+        $this->assertTrue(Gate::forUser($user)->allows('addEntity', [$type, $vault]));
+    }
+
+    #[Test]
     public function it_refuses_to_add_an_entity_when_the_template_requires_what_cannot_be_filled_in(): void
     {
         [$user, $vault, $type] = $this->vaultWithType();

@@ -137,7 +137,7 @@ class ContactViewModel
 
         return [
             'title' => __(':name is a partial contact', ['name' => $name]),
-            'body' => __(':name was written down while a relationship was being entered, and stays off the list of people. Make :name a full contact to list them with everybody else.', ['name' => $name]),
+            'body' => __(':name stays off the list of people. Make :name a full contact to list them with everybody else.', ['name' => $name]),
             'url' => route('contacts.partial.update', ['vault' => $this->vault, 'contact' => $this->contact]),
             'confirmTitle' => __('Make :name a full contact?', ['name' => $name]),
             'confirmBody' => $limit === null

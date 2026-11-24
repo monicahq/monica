@@ -27,7 +27,7 @@ class EntityTypePolicy
             return Response::deny(__('This type is turned off. You can view and edit the existing profiles, but you cannot add new ones.'));
         }
 
-        $version = $entityType->defaultVersionIn($vault);
+        $version = $entityType->versionsOnOfferIn($vault)->first();
 
         if ($version === null) {
             return Response::deny(__('Nothing can be added until this vault has a published template for :name.', ['name' => $entityType->name_plural]));

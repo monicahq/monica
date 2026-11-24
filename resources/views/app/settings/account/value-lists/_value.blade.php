@@ -66,6 +66,10 @@
 
       <span class="ml-auto text-xs text-pretty text-muted">{{ $value['usageLabel'] }}</span>
 
+      @if ($valueErrors->has('active'))
+        <p id="{{ $rowId }}-active-error" role="alert" class="basis-full text-sm text-pretty text-error">{{ $valueErrors->first('active') }}</p>
+      @endif
+
       <div class="flex shrink-0 items-center gap-0.5">
         <x-button.ghost size="small" :href="$value['editUrl']" :x-target="$rowId">{{ __('Edit') }}</x-button.ghost>
 
@@ -91,7 +95,7 @@
           <x-form method="put" :action="route('settings.valueListItemActivation.update', $value['id'])" :x-target="$target">
             <input type="hidden" name="active" value="1" />
 
-            <x-button.ghost size="small">{{ __('Offer again') }}</x-button.ghost>
+            <x-button.ghost size="small" :aria-describedby="$valueErrors->has('active') ? $rowId.'-active-error' : null">{{ __('Offer again') }}</x-button.ghost>
           </x-form>
         @endif
       </div>

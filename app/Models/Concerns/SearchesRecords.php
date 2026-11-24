@@ -185,9 +185,7 @@ trait SearchesRecords
                     continue;
                 }
 
-                $text = $value->field->type === FieldTypeEnum::Phone
-                    ? $value->value_string
-                    : $formatter->format($value);
+                $text = $formatter->formatForSearch($value);
 
                 if ($text === null || mb_trim($text) === '') {
                     continue;

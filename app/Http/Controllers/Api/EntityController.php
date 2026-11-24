@@ -96,7 +96,7 @@ class EntityController extends Controller
                 ?? throw ValidationException::withMessages(['structure_version_id' => __('This template cannot be used for this type.')]);
         }
 
-        $fields = ($version ?? $entityType->defaultVersionIn($vault))?->inputFields()->filter(fn (Field $field): bool => $field->canBeFilledIn()) ?? collect();
+        $fields = ($version ?? $entityType->versionsOnOfferIn($vault)->first())?->inputFields()->filter(fn (Field $field): bool => $field->canBeFilledIn()) ?? collect();
 
         $validated = $request->validate(
             array_merge([
