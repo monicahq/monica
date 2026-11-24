@@ -150,8 +150,9 @@ jobs:
       - name: Fix results files
         shell: bash
         run: |
-          sed -i -e "s%$GITHUB_WORKSPACE/%%g" **/*.xml
-          sed -i -e "s%$GITHUB_WORKSPACE/%%g" *.xml
+          for f in $(find . -name "*.xml"); do
+            sed -i -e "s%$GITHUB_WORKSPACE/%%g" $f;
+          done
         working-directory: results
         if: success() || failure()
 
