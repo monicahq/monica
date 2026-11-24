@@ -183,5 +183,6 @@
       "at": "2026-10-26T23:35:04.262Z"
     }
   ],
-  "currentTask": "T016"
+  "currentTask": "T016",
+  "telemetryInstanceId": "bb623e8e-38c2-48d9-a29e-67fe44ad605c"
 }
