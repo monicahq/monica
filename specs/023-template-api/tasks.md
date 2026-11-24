@@ -152,7 +152,7 @@ Drafting a published section copies its fields with `replicate()`, which keeps e
 - [X] T054 [P] Run `vendor/bin/pint --dirty --format agent`
 - [X] T055 Run `vendor/bin/phpstan analyse --memory-limit=2G` at level 5, which CI enforces and the CLAUDE.md checklist omits
 - [X] T056 Run the full suite, and confirm it passes on SQLite, MySQL and PostgreSQL (SQLite only locally: no MySQL credentials on this machine and PostgreSQL is not running. CI gates on MySQL, and its matrix has SQLite and PostgreSQL commented out, so MySQL is the one that has to be watched on the pull request. Nothing here writes raw SQL.)
-- [X] T057 Smoke test the live app at erica.test rather than walking the whole of [quickstart.md](quickstart.md): every new route answers 401 rather than 404, so it is registered and behind Sanctum, and the four new reference groups render at /docs/api/{section}.md. The write walkthrough is left to the suite, since Boost forbids creating records outside tests without approval and `ApiDocsReturnFieldsTest` already calls all 26 endpoints and diffs their real answers.
+- [X] T057 Smoke test the live app at monica.test rather than walking the whole of [quickstart.md](quickstart.md): every new route answers 401 rather than 404, so it is registered and behind Sanctum, and the four new reference groups render at /docs/api/{section}.md. The write walkthrough is left to the suite, since Boost forbids creating records outside tests without approval and `ApiDocsReturnFieldsTest` already calls all 26 endpoints and diffs their real answers.
 - [X] T058 Write the pull request body naming the `spec.md` cap of 120 lines exceeded at 132 and why, as Principle XI requires
 
 ---

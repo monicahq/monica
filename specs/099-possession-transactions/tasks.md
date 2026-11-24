@@ -81,7 +81,7 @@ Independent test: attach a file to a transaction and open it from the entry.
 - [X] T043 [P] Guide `docs/portal/en/9-templates-and-customisation/16-possessions.md` and `docs/FEATURES.md`
 - [X] T044 `php artisan monica:localize`, translate every reported string in every locale (glossary in `.claude/rules/translations.md`), `--check` passes
 - [X] T045 `vendor/bin/phpstan analyse --no-progress`, `vendor/bin/pint --dirty --format agent`, `php artisan test --compact`
-- [ ] T046 The quickstart's checks by hand at erica.test: light, dark, `fr_FR`, 375 px, 200%, keyboard only
+- [ ] T046 The quickstart's checks by hand at monica.test: light, dark, `fr_FR`, 375 px, 200%, keyboard only
 
 ## Dependencies
 

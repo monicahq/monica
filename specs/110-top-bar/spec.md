@@ -6,7 +6,7 @@
 
 **Status**: Draft
 
-**Input**: User description: "i want a new header on https://erica.test/vaults which would transfer well into when we are in a vault. design is 1a" (Claude Design project `b78dc791-8645-424e-b24c-635ab7aea4f3`, `Header.dc.html`, option 1a)
+**Input**: User description: "i want a new header on https://monica.test/vaults which would transfer well into when we are in a vault. design is 1a" (Claude Design project `b78dc791-8645-424e-b24c-635ab7aea4f3`, `Header.dc.html`, option 1a)
 
 ## Context
 

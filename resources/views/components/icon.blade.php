@@ -93,6 +93,7 @@
     'target' => '<circle cx="8" cy="8" r="5.6"></circle><circle cx="8" cy="8" r="2.6"></circle><circle cx="8" cy="8" r="0.6" fill="currentColor" stroke="none"></circle>',
     'sparkles' => '<path d="M7.34 1.88a0.67 0.67 0 0 1 1.31 0l0.7 3.71a1.33 1.33 0 0 0 1.06 1.06l3.71 0.7a0.67 0.67 0 0 1 0 1.31l-3.71 0.7a1.33 1.33 0 0 0 -1.06 1.06l-0.7 3.71a0.67 0.67 0 0 1 -1.31 0l-0.7 -3.71a1.33 1.33 0 0 0 -1.06 -1.06l-3.71 -0.7a0.67 0.67 0 0 1 0 -1.31l3.71 -0.7a1.33 1.33 0 0 0 1.06 -1.06z"></path><path d="M13.33 1.33v2.67"></path><path d="M14.67 2.67h-2.67"></path><circle cx="2.67" cy="13.33" r="1.33"></circle>',
     'credit-card' => '<rect x="1.33" y="3.33" width="13.33" height="9.33" rx="1.33"></rect><line x1="1.33" y1="6.67" x2="14.67" y2="6.67"></line>',
+    'code' => '<path d="M5.8 4.6 2.6 8l3.2 3.4"></path><path d="M10.2 4.6 13.4 8l-3.2 3.4"></path>',
     'question' => '<circle cx="8" cy="8" r="6.67"></circle><path d="M6.06 6a2 2 0 0 1 3.89 0.67c0 1.33 -2 2 -2 2"></path><path d="M8 11.33h0.01"></path>',
     'bug' => '<path d="M8 13.33v-6"></path><path d="M9.33 4.67a2.67 2.67 0 0 1 2.67 2.67v2a4 4 0 0 1 -8 0v-2a2.67 2.67 0 0 1 2.67 -2.67z"></path><path d="M9.41 2.59 10.67 1.33"></path><path d="M14 14a2.67 2.67 0 0 0 -2.54 -2.67"></path><path d="M14 3.33a2.67 2.67 0 0 1 -2.37 2.65"></path><path d="M14.67 8.67h-2.67"></path><path d="M2 14a2.67 2.67 0 0 1 2.54 -2.67"></path><path d="M2 3.33a2.67 2.67 0 0 0 2.37 2.65"></path><path d="M4 8.67H1.33"></path><path d="m5.33 1.33 1.25 1.25"></path><path d="M6 4.75V4a2 2 0 1 1 4 0v0.75"></path>',
   ];

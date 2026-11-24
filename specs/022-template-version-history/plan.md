@@ -18,7 +18,7 @@ A read-only screen listing every version of one template, newest first, each exp
 
 **Testing**: PHPUnit. Feature test for the controller and the builder link, unit tests for the view model and its block.
 
-**Target Platform**: Laravel Herd at `http://erica.test`, the logged-in settings area.
+**Target Platform**: Laravel Herd at `http://monica.test`, the logged-in settings area.
 
 **Project Type**: Server-rendered web application.
 

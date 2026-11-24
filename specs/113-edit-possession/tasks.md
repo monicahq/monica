@@ -46,7 +46,7 @@ Independent test: change the location, remove a tag, untick Feature; the page re
 - [X] T017 [P] Entry in `docs/FEATURES.md`
 - [X] T018 `php artisan monica:localize`, translate every reported string in every locale, `--check` passes
 - [X] T019 `vendor/bin/phpstan analyse --no-progress`, `vendor/bin/pint --dirty --format agent`, `php artisan test --compact`
-- [ ] T020 The quickstart's checks by hand at erica.test
+- [ ] T020 The quickstart's checks by hand at monica.test
 
 ## Dependencies
 

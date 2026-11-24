@@ -55,7 +55,7 @@ No Setup phase: the feature adds no dependency, no migration and no factory. Eve
 - [X] T017 Run `php artisan monica:localize --check` and correct every counted phrase and typography breach it reports
 - [X] T018 Walk the accessibility pass in [quickstart.md](quickstart.md): keyboard only, `aria-expanded` on every expander, visible focus, 200% zoom
 - [X] T019 Run `vendor/bin/pint --dirty --format agent` and `vendor/bin/phpstan analyse --memory-limit=2G`
-- [X] T020 Walk [quickstart.md](quickstart.md) end to end against `http://erica.test`, then run `php artisan test --compact --filter=TemplateVersionHistory` and the templates view model and controller suites
+- [X] T020 Walk [quickstart.md](quickstart.md) end to end against `http://monica.test`, then run `php artisan test --compact --filter=TemplateVersionHistory` and the templates view model and controller suites
 
 ---
 

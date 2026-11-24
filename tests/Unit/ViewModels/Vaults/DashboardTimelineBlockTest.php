@@ -90,7 +90,7 @@ class DashboardTimelineBlockTest extends TestCase
     }
 
     #[Test]
-    public function it_lists_the_index_with_a_link_to_each_slice_and_the_neighbours_of_the_selected_one(): void
+    public function it_lists_each_slice_of_the_index_and_the_neighbours_of_the_selected_one(): void
     {
         $this->lifeEvent('2026-12-18', 'Christmas party', [$this->jim]);
         $this->lifeEvent('2025-05-01', 'Dundies', [$this->jim]);
@@ -100,8 +100,7 @@ class DashboardTimelineBlockTest extends TestCase
 
         $this->assertSame(['Upcoming', '2025', '2023'], array_column($index, 'label'));
         $this->assertSame([false, true, false], array_column($index, 'isCurrent'));
-        $this->assertSame([false, true, false], array_column($index, 'startsYears'));
-        $this->assertSame(route('vaults.show', ['vault' => $this->vault, 'slice' => '2023']), $index[2]['url']);
+        $this->assertSame(['upcoming', '2025', '2023'], array_column($index, 'slice'));
 
         $this->assertSame('Newer: Upcoming', $this->block(slice: '2025')->newer()['label']);
         $this->assertSame('Older: 2023', $this->block(slice: '2025')->older()['label']);
@@ -253,8 +252,6 @@ class DashboardTimelineBlockTest extends TestCase
         $this->assertSame(['Promoted'], array_column($entries, 'title'));
         $this->assertTrue($block->isFiltered());
         $this->assertSame(['uuid' => $this->dwight->uuid, 'name' => 'Dwight Schrute'], $block->contactChoice());
-        $this->assertStringContainsString("contact={$this->dwight->uuid}", $block->index()[1]['url']);
-        $this->assertStringContainsString("type={$this->promotion->uuid}", $block->index()[1]['url']);
         $this->assertSame(route('vaults.show', ['vault' => $this->vault, 'slice' => '2025']), $block->clearFiltersUrl());
         $this->assertSame([['category' => 'Work', 'types' => [
             ['uuid' => $this->prank->uuid, 'name' => 'Prank', 'isSelected' => false],

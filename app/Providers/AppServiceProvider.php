@@ -29,6 +29,7 @@ use Illuminate\Foundation\Events\DiagnosingHealth;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Log\Context\Repository;
+use Illuminate\Mail\Markdown;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Context;
@@ -134,6 +135,7 @@ class AppServiceProvider extends ServiceProvider
         $this->configureSearch();
         $this->configureFlags();
         $this->configureQueues();
+        $this->configureMail();
         $this->configureAssets();
         $this->configureHead();
         $this->configureNightwatch();
@@ -196,6 +198,16 @@ class AppServiceProvider extends ServiceProvider
     private function configureQueues(): void
     {
         Queue::forward(array_filter(config('monica.queues'), filled(...)));
+    }
+
+    /**
+     * Emails carry what people typed: a support request, a name, a subject. Laravel renders every
+     * email as Markdown, so a value holding `[text](url)` would become a working link the sender
+     * chose, inside an email from the instance. Secured encoding prints those values as text.
+     */
+    private function configureMail(): void
+    {
+        Markdown::withSecuredEncoding();
     }
 
     /**

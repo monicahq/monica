@@ -30,7 +30,7 @@ vendor/bin/pint --dirty --format agent
 php artisan test --compact
 ```
 
-## By hand, at erica.test
+## By hand, at monica.test
 
 1. Open a possession, select Transactions: summary reads "Unknown", list is empty.
 2. Add a purchase dated 14 March 2005 with $40, $3.20 tax, $6 shipping: the line reads $49.20, the

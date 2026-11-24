@@ -63,7 +63,7 @@ Independent test: record a valuation, then read it on the Overview and in Insura
 - [X] T030 `php artisan monica:localize`, translate every reported string in every locale, `--check` passes
 - [X] T031 `vendor/bin/phpstan analyse --no-progress`, `vendor/bin/pint --dirty --format agent`, `php artisan test --compact`
 - [X] T033 Example valuations in the seeded account: `database/seeders/ExamplePossessions.php` and `ExampleAccountSeeder::createPossessions()`, asserted in `tests/Unit/Seeders/ExampleAccountSeederTest.php`
-- [ ] T032 The quickstart's checks by hand at erica.test
+- [ ] T032 The quickstart's checks by hand at monica.test
 
 ## Dependencies
 

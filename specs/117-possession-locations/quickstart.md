@@ -24,7 +24,7 @@ vendor/bin/pint --dirty --format agent
 php artisan test --compact
 ```
 
-## By hand, at erica.test
+## By hand, at monica.test
 
 1. A possession added with a location: Locations shows one open stay since today, count 1.
 2. Move it with a reason: the preview names both stays; the old one closes, "Here now" moves, the

@@ -88,6 +88,24 @@ class VaultControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_sends_the_chosen_period_with_the_filters(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        LifeEvent::factory()->create(['vault_id' => $vault->id, 'title' => 'Dundies', 'happened_on' => '2025-05-01']);
+        LifeEvent::factory()->create(['vault_id' => $vault->id, 'title' => 'Fun run', 'happened_on' => '2023-02-01']);
+
+        $this->actingAs($user)
+            ->get(route('vaults.show', ['vault' => $vault, 'slice' => '2023']))
+            ->assertOk()
+            ->assertSee('name="slice"', escape: false)
+            ->assertSee('aria-label="Period"', escape: false)
+            ->assertSee('<option value="2023" selected>', escape: false);
+    }
+
+    #[Test]
     public function it_shows_the_form_that_opens_a_vault(): void
     {
         $user = User::factory()->create();

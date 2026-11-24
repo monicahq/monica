@@ -1,6 +1,6 @@
 # Quickstart: validating support requests
 
-The checkout is served by Herd at `erica.test`. Never migrate the local database for this: the tests
+The checkout is served by Herd at `monica.test`. Never migrate the local database for this: the tests
 build their own.
 
 ## Automated
@@ -31,7 +31,7 @@ The suite must prove, each in its own layer (`.claude/rules/testing.md`):
 | A request of another account answers 404 through the API and MCP | FR-012 | API and MCP tests |
 | No support area without an active administrator | edge case | `SupportRequestFormViewModelTest` |
 
-## By hand at `erica.test`
+## By hand at `monica.test`
 
 1. As a user, open the account menu, choose Help and support, pick "I have a billing question",
    check the guidance changes, send with a PDF. The confirmation shows `MON-{n}`.

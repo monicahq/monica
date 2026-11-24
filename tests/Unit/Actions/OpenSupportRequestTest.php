@@ -11,9 +11,11 @@ use App\Enums\SupportRequestStatusEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Account;
+use App\Models\Administrator;
 use App\Models\SupportAttachment;
 use App\Models\SupportRequest;
 use App\Models\User;
+use App\Notifications\SupportRequestOpened;
 use App\Notifications\SupportRequestReceived;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -119,5 +121,83 @@ class OpenSupportRequestTest extends TestCase
         $this->assertStringStartsWith("support/{$account->id}/", $attachment->path);
         Storage::assertExists($attachment->path);
         $this->assertEquals(104857600, $account->refresh()->storage_used_in_bytes);
+    }
+
+    #[Test]
+    public function it_emails_every_active_administrator_that_a_request_is_waiting(): void
+    {
+        Queue::fake();
+        Notification::fake();
+        Storage::fake();
+
+        $jan = User::factory()->create(['first_name' => 'Jan', 'last_name' => 'Levinson']);
+        $david = User::factory()->create(['first_name' => 'David', 'last_name' => 'Wallace']);
+        $robert = User::factory()->create(['is_active' => false]);
+        Administrator::factory()->create(['user_id' => $jan->id]);
+        Administrator::factory()->create(['user_id' => $david->id]);
+        Administrator::factory()->create(['user_id' => $robert->id]);
+        $user = User::factory()->create(['first_name' => 'Michael', 'last_name' => 'Scott']);
+
+        $supportRequest = new OpenSupportRequest(
+            user: $user,
+            category: SupportCategoryEnum::Billing,
+            subject: 'October invoice shows the wrong company name',
+            body: 'The invoice still says Dunder Mifflin Paper Company.',
+            files: [UploadedFile::fake()->image('invoice.png')],
+        )->execute();
+
+        Notification::assertSentToTimes($jan, SupportRequestOpened::class, 1);
+        Notification::assertSentTo($david, SupportRequestOpened::class, fn (SupportRequestOpened $notification): bool => $notification->reference === $supportRequest->reference
+            && $notification->category === SupportCategoryEnum::Billing
+            && $notification->accountId === $user->account_id
+            && $notification->authorName === 'Michael Scott'
+            && $notification->hasAttachments
+            && $notification->url === route('admin.support.show', $supportRequest));
+        Notification::assertNotSentTo($robert, SupportRequestOpened::class);
+        Notification::assertNotSentTo($user, SupportRequestOpened::class);
+    }
+
+    #[Test]
+    public function it_does_not_email_the_administrator_who_opened_the_request(): void
+    {
+        Queue::fake();
+        Notification::fake();
+
+        $jan = User::factory()->create();
+        $david = User::factory()->create();
+        Administrator::factory()->create(['user_id' => $jan->id]);
+        Administrator::factory()->create(['user_id' => $david->id]);
+
+        new OpenSupportRequest(
+            user: $jan,
+            category: SupportCategoryEnum::Question,
+            subject: 'Where are the archived vaults?',
+            body: 'I cannot find them anymore.',
+        )->execute();
+
+        Notification::assertNotSentTo($jan, SupportRequestOpened::class);
+        Notification::assertSentTo($david, SupportRequestOpened::class);
+    }
+
+    #[Test]
+    public function it_emails_no_administrator_when_support_is_switched_off(): void
+    {
+        Queue::fake();
+        Notification::fake();
+        config(['monica.support_enabled' => false]);
+
+        $jan = User::factory()->create();
+        Administrator::factory()->create(['user_id' => $jan->id]);
+        $user = User::factory()->create();
+
+        new OpenSupportRequest(
+            user: $user,
+            category: SupportCategoryEnum::Question,
+            subject: 'Where are the archived vaults?',
+            body: 'I cannot find them anymore.',
+        )->execute();
+
+        Notification::assertNotSentTo($jan, SupportRequestOpened::class);
+        Notification::assertSentTo($user, SupportRequestReceived::class);
     }
 }
