@@ -149,6 +149,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Public marketing site
+    |--------------------------------------------------------------------------
+    |
+    | The address of the public site, which the header of the documentation
+    | portal links to. Every instance shows the same header, so a self hosted
+    | one links there too.
+    |
+    */
+
+    'marketing_url' => env('MONICA_MARKETING_URL', 'https://www.monicahq.com'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Self hosted
     |--------------------------------------------------------------------------
     |
