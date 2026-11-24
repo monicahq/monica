@@ -55,18 +55,17 @@ class DashboardTimelineBlock
         return $this->page;
     }
 
-    /** @return list<array{label: string, count: int, url: string, isCurrent: bool, startsYears: bool}> */
+    /** @return list<array{slice: string, label: string, count: int, isCurrent: bool}> */
     public function index(): array
     {
         $index = [];
 
-        foreach ($this->timeline()->slices() as $position => $slice) {
+        foreach ($this->timeline()->slices() as $slice) {
             $index[] = [
+                'slice' => $slice['slice'],
                 'label' => $this->labelOf($slice['slice']),
                 'count' => $slice['count'],
-                'url' => $this->url(slice: $slice['slice']),
                 'isCurrent' => $slice['slice'] === $this->selectedSlice(),
-                'startsYears' => $position === 1,
             ];
         }
 
