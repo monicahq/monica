@@ -30,7 +30,7 @@
 @if ($compact)
   <div
     x-data="recordPicker({ url: @js($url), listId: @js($listId), chosen: @js((string) $chosen), chosenName: @js((string) $chosenName) })"
-    class="relative"
+    class="relative w-full"
   >
     <input type="hidden" name="{{ $name }}" x-model="chosen" x-bind:disabled="! hasChosen">
 
@@ -40,9 +40,9 @@
       x-show="hasChosen"
       x-ref="change"
       x-on:click="forget(); $nextTick(() => $refs.search.focus())"
-      class="focus-ring flex h-8 items-center gap-1.5 rounded-md border border-hairline-strong bg-input ps-3 pe-2 text-sm text-ink hover:border-muted-soft"
+      class="focus-ring flex min-h-8 w-full items-center gap-1.5 rounded-md border border-hairline-strong bg-input py-1 ps-3 pe-2 text-sm text-ink hover:border-muted-soft"
     >
-      <span>{{ $label }} <span x-text="chosenName"></span></span>
+      <span class="min-w-0 flex-1 text-start">{{ $label }} <span x-text="chosenName"></span></span>
       <span class="sr-only">{{ __('Choose another') }}</span>
       <x-icon name="close" :size="14" class="text-muted" />
     </button>
@@ -52,7 +52,6 @@
         type="search"
         :id="$id"
         size="small"
-        class="w-56"
         :placeholder="$placeholder ?? __('Type a name')"
         aria-label="{{ $label }}"
         x-ref="search"
@@ -64,7 +63,7 @@
         autocomplete="off"
       />
 
-      <div x-show="listOpen" x-cloak class="absolute start-0 top-full z-20 mt-1 w-72 rounded-md bg-canvas shadow-pop">
+      <div x-show="listOpen" x-cloak class="absolute inset-x-0 top-full z-20 mt-1 rounded-md bg-canvas shadow-pop">
         <x-record-picker.candidates :id="$listId" :candidates="[]" />
       </div>
     </div>
