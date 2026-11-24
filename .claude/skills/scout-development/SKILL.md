@@ -82,7 +82,7 @@ When no engine is configured, present these options and let the user decide — 
 
 | Engine | Type | Best For | Tradeoffs |
 |--------|------|----------|-----------|
-| **Database** | Built-in | Typical applications, simple search | No external deps. MySQL/PostgreSQL only. LIKE + full-text indexes. No typo tolerance. |
+| **Database** | Built-in | Typical applications, simple search | No external deps. MySQL/PostgreSQL only. LIKE + full-text indexes. Typo tolerance on PostgreSQL only (via `pg_trgm`). |
 | **Collection** | Built-in | Local dev, tiny datasets (<500 records) | Loads all records into memory. Most portable but least efficient. |
 | **Algolia** | Hosted SaaS | Advanced search without managing infra | Typo tolerance, analytics, faceting. Paid service. No self-hosting. |
 | **Meilisearch** | Self-hosted / Cloud | Teams wanting infrastructure control | Fast, open-source. Self-hostable or cloud. Requires filterable attribute config. |
@@ -218,6 +218,7 @@ Use `search-docs` for detailed testing patterns.
 
 - **Meilisearch filterable attributes** — you must configure filterable attributes in `config/scout.php` under `meilisearch.index-settings` and run `scout:sync-index-settings` **before** using `where`, `whereIn`, or `whereNotIn`. Without this, filtering silently returns wrong results.
 - **Meilisearch data type casting** — `toSearchableArray()` must return properly cast values: integers as `(int)`, floats as `(float)`. Wrong types cause silent filter failures.
+- **PostgreSQL full-text search** — add a stored, indexed `tsvector` column with `$table->searchable(['title' => 'A', 'body' => 'D'])` in a migration, then point `#[SearchUsingFullText(['search_vector'], ['vector' => true])]` at it and return `search_vector` from `toSearchableArray`. The `trigram` option adds typo tolerance and needs the `pg_trgm` extension, which `searchable()` creates. The query `language` must match the text search config the vector column was built with, including custom configs like `public.english_unaccent`. Use `search-docs` for the full option list.
 - **Database engine limitations** — `searchableAs()`, `getScoutKey()`, `getScoutKeyName()`, and `shouldBeSearchable()` have no effect with the database engine. It queries your actual tables directly.
 - **Global scopes break pagination** — search engines are not aware of Eloquent global scopes. Recreate scope constraints using Scout `where` clauses instead.
 - **`query()` is not for filtering** — with third-party engines, the `query()` callback runs after results are already retrieved. Use Scout `where` clauses for filtering; use `query()` only for eager-loading or customizing the Eloquent hydration query.
