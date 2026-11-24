@@ -9,19 +9,23 @@ use App\Enums\SupportMessageKindEnum;
 use App\Enums\SupportRequestStatusEnum;
 use App\Enums\UserActionEnum;
 use App\Helpers\SupportAttachmentWriter;
+use App\Helpers\SupportAvailability;
 use App\Helpers\TextSanitizer;
 use App\Jobs\LogUserAction;
 use App\Models\SupportMessage;
 use App\Models\SupportRequest;
 use App\Models\SupportStatusChange;
 use App\Models\User;
+use App\Notifications\SupportRequestOpened;
 use App\Notifications\SupportRequestReceived;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 
 /**
  * Ask the administrators of the instance for help: open a request with its first message and the
- * files sent with it, put it in their queue, and send the user a copy of what they wrote.
+ * files sent with it, put it in their queue, send the user a copy of what they wrote, and email
+ * every other active administrator that a request is waiting.
  */
 class OpenSupportRequest
 {
@@ -120,6 +124,24 @@ class OpenSupportRequest
             subject: $this->cleanSubject,
             body: $this->cleanBody,
             url: route('support.requests.show', $this->supportRequest),
+        ));
+
+        if (! SupportAvailability::isEnabled()) {
+            return;
+        }
+
+        $administrators = SupportAvailability::administrators()
+            ->reject(fn (User $administrator): bool => $administrator->id === $this->user->id);
+
+        Notification::send($administrators, new SupportRequestOpened(
+            reference: $this->supportRequest->reference,
+            subject: $this->cleanSubject,
+            category: $this->category,
+            accountId: $this->user->account_id,
+            authorName: $this->user->name,
+            body: $this->cleanBody,
+            hasAttachments: $this->files !== [],
+            url: route('admin.support.show', $this->supportRequest),
         ));
     }
 }
