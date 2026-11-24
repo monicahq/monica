@@ -37,6 +37,10 @@ concurrency:
   group: Build ${{ github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
+env:
+  default-connection: mysql
+  default-php-version: 8.5
+
 jobs:
   #############
   # Run tests
@@ -82,7 +86,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-version }}
           connection: ${{ matrix.connection }}
-
+          coverage: ${{ matrix.connection == env.default-connection && matrix.php-version == env.default-php-version }}
 
       # The tests render Blade views, so @vite needs a manifest. Building the
       # real assets is the job of the Static analysis workflow, so a stub is
@@ -128,9 +132,70 @@ jobs:
       - name: Run migrations
         run: php artisan migrate --no-interaction -vvv
 
+      - name: Set results artifact name
+        id: artifact
+        run: echo "name=${{ matrix.connection }}_${{ matrix.php-version }}_${{ matrix.suite }}" | sed -e "s/*//g" >> $GITHUB_OUTPUT
+
+      - name: Setup problem matchers for PHPUnit
+        shell: bash
+        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
       # Paratest gives each process its own database, named after the one above
       # with the process number appended, and migrates it. The connection user
       # therefore has to be allowed to create databases, which is why the
       # postgres step above grants CREATEDB.
       - name: Run tests
-        run: php artisan test --parallel --testsuite=${{ matrix.suite }}
+        run: php artisan test --parallel --testsuite=${{ matrix.suite }} --log-junit ./results/junit/results_${{ steps.artifact.outputs.name }}.xml ${{ case(matrix.connection == env.default-connection && matrix.php-version == env.default-php-version, format('--coverage-clover ./results/coverage_{0}.xml', steps.artifact.outputs.name), '') }}
+
+  reporting:
+    name: Reporting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Download results
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          pattern: ${{ format('results_{0}_{1}*', env.default-connection, env.default-php-version) }}
+          path: results
+          merge-multiple: true
+
+      - name: Merge junit files
+        run: |
+          mkdir -p $RUNNER_TEMP/junit-merge
+          cd $RUNNER_TEMP/junit-merge
+          npx junit-merge --recursive --dir $GITHUB_WORKSPACE/results/junit --out $GITHUB_WORKSPACE/results/results.xml
+
+      - name: Set version parameter
+        id: version
+        run: |
+          version=$(git tag --points-at HEAD)
+          test -z "$version" && version="main"
+          echo "value=$version" >> $GITHUB_OUTPUT
+
+      - name: Set coverage list
+        id: coverage
+        run: |
+          SONAR_COVERAGE=$(ls -m --format=comma results/coverage*.xml | sed -e ':a;N;$!ba;s/\n//g; s/ //g;')
+          echo "list=$SONAR_COVERAGE" >> $GITHUB_OUTPUT
+
+      - name: SonarCloud Scan
+        if: env.SONAR_TOKEN != ''
+        uses: SonarSource/sonarqube-scan-action@70bad232163b09d998ea0707ee80c0ec80798c16 # v8.5.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.projectKey=monica
+            -Dsonar.organization=monicahq
+            -Dsonar.sources=app,bootstrap,config,database,public,resources,routes
+            -Dsonar.exclusions=bootstrap/cache/*,public/vendor/**,lang/**,resources/lang/**
+            -Dsonar.tests=tests
+            -Dsonar.coverage.exclusions=routes/*.php,config/**/*.php,bootstrap/**,resources/**/*.php,database/**/*.php,public/*.php,resources/**/*.vue,resources/**/*.js
+            -Dsonar.cpd.exclusions=routes/*.php,config/*.php,bootstrap/**,resources/**/*.php,database/**/*.php
+            -Dsonar.sourceEncoding=UTF-8
+            -Dsonar.projectVersion=${{ steps.version.outputs.value }}
+            -Dsonar.php.tests.reportPath=results/results.xml
+            -Dsonar.php.coverage.reportPaths=${{ steps.coverage.outputs.list }}
