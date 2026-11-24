@@ -3,7 +3,7 @@
 **Feature Branch**: `2026-09-25-mcp-account-logs` (based on `main`) |
 **Created**: 2026-09-25 | **Status**: Draft
 
-**Input**: "i want to add logs (from http://erica.test/settings/account/logs) reading to mcp. add to
+**Input**: "i want to add logs (from http://monica.test/settings/account/logs) reading to mcp. add to
 docs too."
 
 ## Context

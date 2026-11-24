@@ -17,7 +17,7 @@ php artisan test --compact tests/Feature/Controllers/App/Settings/Account/Locati
 Then the gates: `php artisan monica:localize --check`, `vendor/bin/phpstan analyse --no-progress`,
 `vendor/bin/pint --dirty --format agent`, and the whole suite.
 
-## By hand, at erica.test
+## By hand, at monica.test
 
 | Step | Expected |
 | --- | --- |

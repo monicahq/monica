@@ -25,7 +25,7 @@ vendor/bin/pint --dirty --format agent
 php artisan test --compact
 ```
 
-## By hand, at erica.test
+## By hand, at monica.test
 
 1. Open a possession with a declared value: the Overview reads it. Select Valuations: empty state.
 2. Record an appraisal with a PDF: the preview line, the summary, the count and the Overview follow;

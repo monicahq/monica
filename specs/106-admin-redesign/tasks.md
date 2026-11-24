@@ -38,7 +38,7 @@
 - [X] T018 Run the full suite with `php artisan test --compact` (the layout and the theme toggle are shared)
 - [X] T019 Run the `accessibility-reviewer` and `rules-reviewer` agents on the diff, check their evidence, fix what holds
 - [X] T021 Apply the confirmed findings of both reviews (focus recipes, inverted button, aside, section matching, counted moment, test layers)
-- [ ] T020 Walk the by hand table in `quickstart.md` at `https://erica.test/admin`, light and dark, and report what was and was not checked
+- [ ] T020 Walk the by hand table in `quickstart.md` at `https://monica.test/admin`, light and dark, and report what was and was not checked
 
 ## Dependencies
 

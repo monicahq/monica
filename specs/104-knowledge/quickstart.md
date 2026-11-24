@@ -25,7 +25,7 @@ vendor/bin/pint --dirty --format agent
 php artisan test --compact
 ```
 
-## By hand, at erica.test
+## By hand, at monica.test
 
 1. A new vault: Knowledge in the sidebar, the empty screen matching the design.
 2. "Write a first note": "General" appears, the editor opens; write headings, tasks, a quote, a bare

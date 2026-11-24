@@ -23,7 +23,7 @@ vendor/bin/pint --dirty --format agent
 php artisan test --compact
 ```
 
-## By hand, at erica.test
+## By hand, at monica.test
 
 1. Open a possession: Insurance sits under Transactions. Select it: "Not insured", empty list.
 2. Add an active Sabre record for less than the declared value: the summary, the warning and the

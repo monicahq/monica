@@ -61,7 +61,7 @@
 - [X] T025 Run `php artisan monica:localize` and translate the new strings with sonnet subagents per the `translations` skill; French wording verbatim from the spec, French typography rules applied
 - [X] T026 [P] List the six supplied templates in `docs/portal/en/9-templates-and-customisation/1-introduction.md`
 - [X] T027 [P] Write the changelog entry per the `changelog` skill
-- [X] T028 Run the `definition-of-done` skill (Pint, PHPStan, `monica:localize --check`, `PAO_DISABLE=true php artisan test --parallel --compact`) and the quickstart checks by hand on erica.test
+- [X] T028 Run the `definition-of-done` skill (Pint, PHPStan, `monica:localize --check`, `PAO_DISABLE=true php artisan test --parallel --compact`) and the quickstart checks by hand on monica.test
 
 ## Dependencies
 

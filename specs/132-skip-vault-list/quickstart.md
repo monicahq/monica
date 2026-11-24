@@ -8,7 +8,7 @@ php artisan test --compact --filter='VaultPolicy|DestroyVault|UpdateVaultListVis
 php artisan monica:localize --check
 ```
 
-## By hand, at https://erica.test
+## By hand, at https://monica.test
 
 1. Settings, Preferences, section Vaults: turn **Show the list of vaults** off. A confirmation appears.
 2. Open `/vaults`, click the logo, leave the settings: each lands on the default vault.

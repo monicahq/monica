@@ -9,7 +9,7 @@ description: "Task list for removing copy assertions from the test suite"
 **Tests**: none added. The feature edits the suite itself; the suite passing is the proof.
 
 `SP` below is the scratchpad,
-`/private/tmp/claude-501/-Users-regis-code-erica/95b891c9-8d2f-4845-b815-d752fd57c8b1/scratchpad`.
+`/private/tmp/claude-501/-Users-regis-code-monica/95b891c9-8d2f-4845-b815-d752fd57c8b1/scratchpad`.
 Nothing under `SP` is committed.
 
 ## Phase 1: Setup

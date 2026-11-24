@@ -16,7 +16,7 @@ php artisan test --compact tests/Feature/Controllers/App/Vaults/PossessionTimeli
 php artisan monica:localize --check
 ```
 
-## By hand, at erica.test
+## By hand, at monica.test
 
 1. Open a possession with records in several sections: Timeline is a link with a count in the column.
 2. Open it: entries newest first under their year, each with its section's icon, date, title, detail, badge and amount as in the spec's table.

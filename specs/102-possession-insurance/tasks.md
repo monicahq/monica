@@ -57,7 +57,7 @@ Independent test: edit a record's policy number, then delete a record after its 
 - [X] T026 [P] Guide `docs/portal/en/9-templates-and-customisation/16-possessions.md` and `docs/FEATURES.md`
 - [X] T027 `php artisan monica:localize`, translate every reported string in every locale, `--check` passes
 - [X] T028 `vendor/bin/phpstan analyse --no-progress`, `vendor/bin/pint --dirty --format agent`, `php artisan test --compact`
-- [ ] T029 The quickstart's checks by hand at erica.test
+- [ ] T029 The quickstart's checks by hand at monica.test
 
 ## Dependencies
 

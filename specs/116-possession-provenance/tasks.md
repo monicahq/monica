@@ -54,7 +54,7 @@ Independent test: edit an event's precision and see it move in the chain; delete
 - [X] T026 Example provenance in the seeded account: `database/seeders/ExamplePossessions.php` and `ExampleAccountSeeder::createPossessions()`, asserted in `tests/Unit/Seeders/ExampleAccountSeederTest.php`
 - [X] T027 `php artisan monica:localize`, translate every reported string in every locale (translation subagents on Sonnet), `--check` passes
 - [X] T028 `vendor/bin/phpstan analyse --no-progress`, `vendor/bin/pint --dirty --format agent`, `php artisan test --compact`
-- [ ] T029 The quickstart's checks by hand at erica.test
+- [ ] T029 The quickstart's checks by hand at monica.test
 
 ## Dependencies
 

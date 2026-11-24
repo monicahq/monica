@@ -24,7 +24,7 @@ what the rest of this repository does.
 
 ## Path conventions
 
-Paths are repository-relative, from `/Users/regis/code/erica`. The layout is fixed by the
+Paths are repository-relative, from `/Users/regis/code/monica`. The layout is fixed by the
 constitution and set out in [plan.md](plan.md) under Project Structure. Nothing here creates a
 top-level folder that is not already named there.
 

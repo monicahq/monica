@@ -41,7 +41,7 @@ Independent test: spec US3.
 - [X] T013 [P] Add a section to `docs/portal/en/9-templates-and-customisation/12-possession-types.md` saying an account starts with 25 types that can be changed or deleted, with no dash used as punctuation (FR-011)
 - [X] T014 [P] Remove "No type is seeded" wording anywhere else it remains, checked with `grep -rn "seeded" specs/088-possession-types docs/portal`
 - [X] T015 Run `vendor/bin/pint --dirty --format agent`, `vendor/bin/phpstan analyse --no-progress`, then the whole suite with `php artisan test --compact`
-- [ ] T016 Walk quickstart.md by hand on erica.test
+- [ ] T016 Walk quickstart.md by hand on monica.test
 - [X] T017 Record the feature in `docs/FEATURES.md` with the feature-documentator skill (always the last task)
 
 ## Dependencies

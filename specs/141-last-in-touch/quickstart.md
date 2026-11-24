@@ -15,7 +15,7 @@ php artisan test --compact --filter=LastInTouch
 
 `php artisan monica:localize --check` is expected to fail until translations are run (research R7).
 
-## By hand, at erica.test, in English
+## By hand, at monica.test, in English
 
 1. Open a contact with no life event: **Last in touch** reads "never".
 2. Record a Meal with that contact dated last week: the header reads "1 week ago", and the

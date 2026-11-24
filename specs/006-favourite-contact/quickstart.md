@@ -47,7 +47,7 @@ there.
 Open a contact who is not a favourite:
 
 ```text
-http://erica.test/vaults/{vault-uuid}/contacts/{contact-uuid}
+http://monica.test/vaults/{vault-uuid}/contacts/{contact-uuid}
 ```
 
 | # | Do this | Expect |

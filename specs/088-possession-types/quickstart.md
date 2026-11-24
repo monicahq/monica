@@ -12,7 +12,7 @@ vendor/bin/pint --dirty --format agent
 
 Then the whole suite, since the settings sidebar is shared (`.claude/rules/components.md`).
 
-## By hand, on `https://erica.test/settings/account/possession-types`
+## By hand, on `https://monica.test/settings/account/possession-types`
 
 1. The sidebar's Possessions group shows Locations and Possession types. The list is empty and offers
    to create or import.

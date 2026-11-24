@@ -20,7 +20,7 @@ screen.
 
 ## By looking
 
-Herd serves the checkout at `https://erica.test`. Screenshots are taken with the `take-screenshot`
+Herd serves the checkout at `https://monica.test`. Screenshots are taken with the `take-screenshot`
 skill, at 1280 and 375 pixels, light and dark.
 
 | Screen | Check |

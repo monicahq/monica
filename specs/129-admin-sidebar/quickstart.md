@@ -1,6 +1,6 @@
 # Quickstart: Admin space sidebar
 
-Prerequisites: signed in at `https://erica.test` as an administrator, `bun run build` done.
+Prerequisites: signed in at `https://monica.test` as an administrator, `bun run build` done.
 
 ## Automated
 
