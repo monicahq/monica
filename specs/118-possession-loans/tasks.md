@@ -70,7 +70,7 @@ Independent test: a loan in the provenance writes and removes its two events; th
 - [X] T032 Example loans in the seeded account in `database/seeders/ExampleAccountSeeder.php`, asserted in `tests/Unit/Seeders/ExampleAccountSeederTest.php`
 - [X] T033 `php artisan monica:localize`, translate every reported string in every locale (translation subagents on Sonnet), `--check` passes
 - [X] T034 `vendor/bin/phpstan analyse --no-progress`, `vendor/bin/pint --dirty --format agent`, `php artisan test --compact`
-- [ ] T035 The quickstart's checks by hand at erica.test
+- [ ] T035 The quickstart's checks by hand at monica.test
 
 ## Dependencies
 

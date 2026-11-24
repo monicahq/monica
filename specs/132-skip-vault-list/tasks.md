@@ -59,7 +59,7 @@
 - [X] T031 [P] Write the What's new entry, following the `changelog` skill
 - [X] T032 Run `vendor/bin/pint --dirty --format agent`, PHPStan, and the full suite (`php artisan test --compact`), since `VaultController` and a shared policy changed
 - [X] T033 Run the `accessibility-reviewer` and `rules-reviewer` agents on the diff and check their evidence before acting on it
-- [ ] T034 Walk [quickstart.md](quickstart.md) by hand at https://erica.test, then run the `definition-of-done` skill, stating in the report why there is no MCP tool (research R6)
+- [ ] T034 Walk [quickstart.md](quickstart.md) by hand at https://monica.test, then run the `definition-of-done` skill, stating in the report why there is no MCP tool (research R6)
 
 ## Dependencies
 

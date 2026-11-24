@@ -26,7 +26,7 @@ php artisan monica:localize --check
 
 Expected: every test passes, and the localisation check reports nothing.
 
-## By hand, at erica.test
+## By hand, at monica.test
 
 1. Sign up a new account. Settings, Templates: Basic animal and Animal are both listed. Open Animal:
    two pages, seven sections, as in [data-model.md](data-model.md).

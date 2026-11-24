@@ -32,7 +32,7 @@ Once the fix is pushed and its pull request is open, comment on the issue with `
 The comment names the pull request and nothing else:
 
 ```markdown
-Fixed by https://github.com/monicahq/erica/pull/555
+Fixed by https://github.com/monicahq/monica/pull/555
 ```
 
 - Comment only once the pull request exists. A comment announcing a fix that nobody can read is
@@ -52,7 +52,7 @@ gh pr view <number> --json state,mergedAt
 ```
 
 - **Merged**: close the issue with `update_issue`, `status: resolved`, and a comment naming the
-  merged pull request: `Resolved by https://github.com/monicahq/erica/pull/555, merged.`
+  merged pull request: `Resolved by https://github.com/monicahq/monica/pull/555, merged.`
 - **Still open**: leave the issue open. Close it later, when you learn the pull request was merged.
 - **Closed without being merged**: leave the issue open, and comment that this pull request no
   longer fixes it.

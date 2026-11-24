@@ -4,12 +4,12 @@ How to prove the feature works end to end. Requirements are in [spec.md](spec.md
 
 ## Prerequisites
 
-Laravel Herd serving `http://erica.test`, the database migrated and seeded, and a signed-in account. Front-end assets built with `bun run dev` or `bun run build`.
+Laravel Herd serving `http://monica.test`, the database migrated and seeded, and a signed-in account. Front-end assets built with `bun run dev` or `bun run build`.
 
 ## Set up a template with a history
 
 Use the account's supplied **Basic contact** template. In the builder at
-`http://erica.test/settings/account/templates/basic-contact/builder`:
+`http://monica.test/settings/account/templates/basic-contact/builder`:
 
 1. Publish the current version if it is still a draft.
 2. Create a new version, add a section and a field to it, and publish it.

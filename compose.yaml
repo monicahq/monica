@@ -8,7 +8,7 @@ services:
   # something else: its log files are symbolic links to /dev/stderr, and a process whose standard
   # error is a pipe cannot open that. Running it under a supervisor fails with AH00015 at startup.
   app: &app
-    image: erica:latest
+    image: monica:latest
     build:
       context: .
       args:
@@ -19,7 +19,7 @@ services:
         GID: ${GROUP_ID:-1000}
     init: true
     volumes:
-      - erica_storage:/var/www/html/storage
+      - monica_storage:/var/www/html/storage
     ports:
       - 8000:80
     environment:
@@ -77,7 +77,7 @@ services:
       MARIADB_PASSWORD: secret
       MARIADB_ROOT_PASSWORD: secret
     volumes:
-      - erica_database:/var/lib/mysql
+      - monica_database:/var/lib/mysql
     restart: always
     healthcheck:
       # The application waits for this, so it starts against a database that answers rather than
@@ -88,7 +88,7 @@ services:
       retries: 20
 
 volumes:
-  erica_database:
-    name: erica_database
-  erica_storage:
-    name: erica_storage
+  monica_database:
+    name: monica_database
+  monica_storage:
+    name: monica_storage

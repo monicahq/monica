@@ -9,7 +9,7 @@ php artisan test --compact tests/Feature/Controllers/Api/LocationControllerTest.
 `McpCatalogueTest` proves each tool mirrors a route and is in the catalogue; `ApiDocsViewModelTest`
 proves each route is documented.
 
-## By hand, with a key of a test account on erica.test
+## By hand, with a key of a test account on monica.test
 
 1. `POST /api/v1/locations` with `{"name": "Dunder Mifflin Scranton", "address": "1725 Slough Avenue"}`:
    201, `path` is the name, `effective_address.location_name` is itself.

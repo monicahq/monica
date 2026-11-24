@@ -18,7 +18,7 @@ PAO_DISABLE=true php artisan test --parallel --compact
 
 The backfill migration is proven by `SupplyContactTemplatesTest` and is not run against the local database.
 
-## By hand, on erica.test
+## By hand, on monica.test
 
 | Step | Expected |
 | --- | --- |

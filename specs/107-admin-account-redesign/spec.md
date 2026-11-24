@@ -6,7 +6,7 @@
 
 **Status**: Draft
 
-**Input**: User description: "implement this design for the https://erica.test/admin/accounts/1 screen" (Claude Design project `b78dc791-8645-424e-b24c-635ab7aea4f3`, file `Admin Account.dc.html`). The shell around it is specification [106](../106-admin-redesign/spec.md).
+**Input**: User description: "implement this design for the https://monica.test/admin/accounts/1 screen" (Claude Design project `b78dc791-8645-424e-b24c-635ab7aea4f3`, file `Admin Account.dc.html`). The shell around it is specification [106](../106-admin-redesign/spec.md).
 
 ## User Scenarios & Testing *(mandatory)*
 

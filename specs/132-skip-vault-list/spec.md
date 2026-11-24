@@ -6,7 +6,7 @@
 
 **Status**: Draft
 
-**Input**: User description: "some users will only have one vault, and just want the defualt vault. in the settings page of the acount, above Billing, create a new menu item called Preferences. In this screen, we can toggle on off (we have this component on the notifications settings screen in https://erica.test/settings/account/notifications) the presence of the dashboard - if off, we will load the default view, and we will not be able to delete the vault (button in the ui should be greyed out with a text explaining clearly to the user why - and through the api/mcp we should reject vault deletion). also, when we land on /vaults, it should arrive directly on the default vault. add proper documentation for this in the https://erica.test/docs/en."
+**Input**: User description: "some users will only have one vault, and just want the defualt vault. in the settings page of the acount, above Billing, create a new menu item called Preferences. In this screen, we can toggle on off (we have this component on the notifications settings screen in https://monica.test/settings/account/notifications) the presence of the dashboard - if off, we will load the default view, and we will not be able to delete the vault (button in the ui should be greyed out with a text explaining clearly to the user why - and through the api/mcp we should reject vault deletion). also, when we land on /vaults, it should arrive directly on the default vault. add proper documentation for this in the https://monica.test/docs/en."
 
 ## Vocabulary
 

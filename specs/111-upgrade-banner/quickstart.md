@@ -26,7 +26,7 @@ vendor/bin/phpstan analyse --no-progress
 vendor/bin/pint --dirty --format agent
 ```
 
-## By hand, on `erica.test`
+## By hand, on `monica.test`
 
 With a hosted (not self hosted) free account whose user never hid the offer:
 

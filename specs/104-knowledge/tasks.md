@@ -69,7 +69,7 @@ Independent test: create, read, update, list, search and delete each kind throug
 
 - [X] T032 `php artisan monica:localize`, translate every reported string in every locale, `--check` passes
 - [X] T033 `vendor/bin/phpstan analyse --no-progress`, `vendor/bin/pint --dirty --format agent`, `php artisan test --compact`
-- [ ] T034 The quickstart's checks by hand at erica.test
+- [ ] T034 The quickstart's checks by hand at monica.test
 - [X] T035 Record the feature in `docs/FEATURES.md` with the `feature-documentator` skill
 
 ## Dependencies

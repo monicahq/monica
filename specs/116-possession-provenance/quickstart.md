@@ -24,7 +24,7 @@ vendor/bin/pint --dirty --format agent
 php artisan test --compact
 ```
 
-## By hand, at erica.test
+## By hand, at monica.test
 
 1. Open a possession with two transactions and select Provenance: empty state, count absent.
 2. Add an Origin around 1921, unverified: the summary names the place and "not verified".
