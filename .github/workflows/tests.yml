@@ -147,6 +147,22 @@ jobs:
       - name: Run tests
         run: php artisan test --parallel --testsuite=${{ matrix.suite }} --log-junit ./results/junit/results_${{ steps.artifact.outputs.name }}.xml ${{ case(matrix.connection == env.default-connection && matrix.php-version == env.default-php-version, format('--coverage-clover ./results/coverage_{0}.xml', steps.artifact.outputs.name), '') }}
 
+      - name: Fix results files
+        shell: bash
+        run: |
+          sed -i -e "s%$GITHUB_WORKSPACE/%%g" **/*.xml
+          sed -i -e "s%$GITHUB_WORKSPACE/%%g" *.xml
+        working-directory: results
+        if: success() || failure()
+
+      - name: Store results
+        if: success() || failure()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: results_${{ steps.artifact.outputs.name }}
+          path: results
+          overwrite: true
+
   reporting:
     name: Reporting
     runs-on: ubuntu-latest
