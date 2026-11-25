@@ -14,6 +14,7 @@ use ParagonIE\ConstantTime\Base64UrlSafe;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 use Webauthn\PublicKeyCredential;
+use Webauthn\PublicKeyCredentialRequestOptions;
 
 class VerifyPasskeyTest extends TestCase
 {
@@ -49,6 +50,20 @@ class VerifyPasskeyTest extends TestCase
         $this->expectExceptionMessage(self::MESSAGE);
 
         new VerifyPasskey()->getPasskey($this->credentialFor($securityKey->credential_id));
+    }
+
+    #[Test]
+    public function it_refuses_an_assertion_that_fails_the_signature_check_in_the_same_words(): void
+    {
+        $passkey = Passkey::factory()->create();
+
+        $this->expectException(ValidationException::class);
+        $this->expectExceptionMessage(self::MESSAGE);
+
+        new VerifyPasskey()->__invoke(
+            credential: $this->credentialFor($passkey->credential_id),
+            options: PublicKeyCredentialRequestOptions::create(random_bytes(32)),
+        );
     }
 
     private function credentialFor(string $credentialId): PublicKeyCredential

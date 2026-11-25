@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions;
 
+use Illuminate\Validation\ValidationException;
 use Laravel\Passkeys\Actions\VerifyPasskey as BaseVerifyPasskey;
 use Laravel\Passkeys\Passkey;
 use Override;
@@ -36,6 +37,10 @@ class VerifyPasskey extends BaseVerifyPasskey
     ): CredentialRecord {
         new RefusePasskeyLogin(candidate: $passkey->user)->execute();
 
-        return parent::validate($response, $passkey, $options);
+        try {
+            return parent::validate($response, $passkey, $options);
+        } catch (ValidationException) {
+            RefusePasskeyLogin::refuse();
+        }
     }
 }
