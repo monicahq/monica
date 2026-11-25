@@ -274,6 +274,7 @@ enum UserActionEnum: string implements Translatable
     case ContactMergeUndone = 'contact_merge_undone';
     case DuplicateCandidateDismissed = 'duplicate_candidate_dismissed';
     case RecordMovedToTemplateVersion = 'record_moved_to_template_version';
+    case RecordMovedToTemplate = 'record_moved_to_template';
     case TemplateExported = 'template_exported';
     case SectionExported = 'section_exported';
     case TemplateImported = 'template_imported';
@@ -584,6 +585,7 @@ enum UserActionEnum: string implements Translatable
             self::ContactMergeUndone => 'Undid the merge of :other into :name',
             self::DuplicateCandidateDismissed => 'Said :name and :other are two different people',
             self::RecordMovedToTemplateVersion => 'Moved :name onto version :version of its template',
+            self::RecordMovedToTemplate => 'Moved :name onto the template :template',
             self::MarketplaceListingCreation => 'Prepared :name for the marketplace',
             self::MarketplaceListingUpdate => 'Updated what the marketplace says about :name',
             self::MarketplaceListingSubmission => 'Sent version :version of :name in for review',

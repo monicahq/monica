@@ -4,7 +4,7 @@ title: Templates and customisation
 description: Find the pages on shaping Monica to what you want to remember, from templates to relationship and life event types.
 slug: templates-and-customisation
 section: templates-and-customisation
-last_updated: 2026-11-18
+last_updated: 2026-11-25
 ---
 
 # Templates and customisation
@@ -27,7 +27,7 @@ Every account starts with these templates for contacts. **Basic contact** is the
 | **Professional network** | Remember people, their work and the common ground that feeds the relationship. |
 | **Full portrait** | Build a rich record over time. |
 
-A contact can move to another template at any time. What both templates have in common, such as a birthday or an email address, comes along with it. What the new template has no place for is kept aside, and comes back if the contact returns to a template that has it.
+A contact can move to another template at any time. What both templates have in common, such as a birthday or an email address, comes along with it. What the new template has no place for is kept aside, and comes back if the contact returns to a template that has it. @doc(contacts.change-template) shows how.
 
 Every account also starts with two templates for animals. **Basic animal** is the one a new animal starts from, and you can pick **Animal** instead when you add one.
 
