@@ -44,23 +44,22 @@ Only if `.specify/extensions.yml` lists entries under `hooks.before_<step>` or `
 
 ## Outline
 
-Execute `tasks.md` phase by phase in dependency order. Each phase is laid out as ordered **waves** split by `⟶ Wait …` join lines: a dependency map where tasks within a wave are independent and a `⟶ Wait` marks where the next tasks depend on what came before. Setup and polish are built inline, wave by wave, stopping at each `⟶ Wait` line until the wave above is done; Foundational waves big enough to share (four tasks over five files) go to workers through `dispatch-briefs.py --waves`, and smaller ones stay inline; each user-story phase goes to its own worker wherever a subagent tool exists, and inline is the fallback for a host that cannot dispatch. Each task's finish is logged as it completes; implement then ends at `implemented` and `converge` completes the spec.
+Execute `tasks.md` phase by phase in dependency order. Each phase is laid out as ordered **waves** split by `⟶ Wait …` join lines: a dependency map where tasks within a wave are independent and a `⟶ Wait` marks where the next tasks depend on what came before. Setup and polish are built inline, wave by wave, stopping at each `⟶ Wait` line until the wave above is done; Foundational waves big enough to share (four tasks over five files) go to workers through `dispatch-briefs.py --waves`, and smaller ones stay inline; each user-story phase goes to its own worker wherever a subagent tool exists, and inline is the fallback for a host that cannot dispatch. Each wave is closed the moment its last task is done; implement then ends at `implemented` and `converge` completes the spec.
 <!-- speckit-companion:phase execute -->
 <!-- speckit-companion:node implement-exec -->
 1. Read `.specify/feature.json` for the feature directory. Load `<feature_directory>/tasks.md`, `plan.md`, and the feature spec (`spec.md`, or `<short-name>.spec.md` in a project written before this), plus `data-model.md` and `contracts/` if present. The step's start is already stamped, above.
 
-2. Work `tasks.md` **phase by phase, in dependency order**: **Setup**, then **Foundational** (which blocks every story), then each **user-story** phase in priority order (P1 first), then **Polish**. `tasks.md` lays each phase out as ordered **waves** separated by `**⟶ Wait …**` join lines. The waves are a **dependency map**: tasks inside one wave are independent of each other, so any order is safe, and a `⟶ Wait` line marks where the next tasks depend on everything above it. **Execute wave by wave, in order, and stop at each `⟶ Wait` line until the wave above is done.** Halt on a failed task and report the cause.
+2. Work `tasks.md` **phase by phase, in dependency order**: **Setup**, then **Foundational** (which blocks every story), then each **user-story** phase in priority order (P1 first), then **Polish**. `tasks.md` lays each phase out as ordered **waves** separated by `**⟶ Wait …**` join lines. The waves are a **dependency map**: tasks inside one wave are independent of each other, so any order is safe, and a `⟶ Wait` line marks where the next tasks depend on everything above it. **Execute wave by wave, in order, and stop at each `⟶ Wait` line until the wave above is done.** Crossing a `⟶ Wait` line or a phase heading means closing the wave above it first (step 4). Halt on a failed task and report the cause.
 
 3. **Dispatch one worker per user-story phase that owns five or more files**, when you have a subagent tool (Claude Code's `Agent`/`Task` tool or your host's equivalent): read `.specify/extensions/companion/commands/reference/fan-out.md` first and follow it, including the check at each join line. Count the phase's own `Files:` line, and that alone decides it. It holds in an auto run too. Every other phase, Setup, Polish, and everything without a subagent tool, you build yourself. **In Foundational, before each wave, run `python3 .specify/extensions/companion/scripts/dispatch-briefs.py --feature-dir <feature_directory> --waves` and do exactly what it prints.** Setup and Polish stay with you.
 
-4. **What you build yourself** (Setup, Polish, small phases and waves, or everything without a subagent tool), **close each wave with one call the moment its last task is done**, listing its tasks:
+4. **What you build yourself** (Setup, Polish, small phases and waves, or everything without a subagent tool), **close each wave with one call the moment its last task is done**, listing that wave's tasks and no others:
    ```bash
-   python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <feature_directory> --close-task <T001,T002,…> --by ai --did "<one line for the wave>" --files "<files>"
+   python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <feature_directory> --close-task <this wave's ids, e.g. T001,T002> --by ai --did "<one line for the wave>" --files "<files>"
    ```
-   One call folds the finishes, checks the boxes and times the wave as one unit. Never hand-edit a checkbox.
+   One call folds the finishes, checks the boxes and times the wave as one unit, then prints the next wave's ids to close. A list saved for the end of the step is still one unit: every wave in it shares one time, and the doctor reports it. Never hand-edit a checkbox.
 
-
-6. **Run the project's own checks before you call this done.** Validating against the spec's **Functional Requirements** and **Success Criteria** by reading is not validation. Run the suite and the type-check or build the project actually uses, read from its `package.json` scripts, `Makefile`, or the repo's own instructions, and do not invent a command: a test you wrote and never executed is a guess about your own code.
+5. **Run the project's own checks before you call this done.** Validating against the spec's **Functional Requirements** and **Success Criteria** by reading is not validation. Run the suite and the type-check or build the project actually uses, read from its `package.json` scripts, `Makefile`, or the repo's own instructions, and do not invent a command: a test you wrote and never executed is a guess about your own code.
 
    - **A test you authored that fails is your task, not a follow-up.** Fix it now.
    - **A pre-existing test your change invalidated is also yours.** Renaming what a component shows breaks the test asserting the old text. Updating it is part of the change, not scope creep.
@@ -71,6 +70,25 @@ Execute `tasks.md` phase by phase in dependency order. Each phase is laid out as
 
 **Output**: working changes per `tasks.md`, with completed tasks checked off.
 <!-- /speckit-companion:node implement-exec -->
+<!-- speckit-companion:node check-requirements -->
+6a. **Read the recorded size first**: `.spec-context.json` → the `size` field, where a missing value means `normal`. At `simple` size, skip this check; at `normal` or `oversized`, run it.
+
+**Hand the requirements and the diff to one worker that knows nothing about how you built this.** Re-reading your own work confirms your own reasoning, which is how a run ships a broken feature with every test green — so this check is only worth anything done by someone else.
+
+Dispatch one worker with three things and nothing else: the **Functional Requirements** from `spec.md` verbatim, the diff of what this run changed (against the commit implement started from, new files included), and the project's conventions. No plan, no task list, no summary of your approach. Those are what you want checked; handing them over is what breaks the check, because a worker told why the code is right will agree that it is right.
+
+Ask for one line per requirement, one of three verdicts, judging each requirement **as written** rather than as the implementation narrows it:
+
+- **`met`** — name the code that satisfies it, not a restatement of it.
+- **`missing`** — nothing in the diff does this.
+- **`at risk`** — something does this and something else can undo it. Name both. This is the verdict that earns the node: a requirement can be satisfied in one place and defeated a few lines later by code that was already there, and both readings look reasonable alone. Tell it to say, too, whether a test covers the real screen the requirement describes or a component built inside the test file, because the second proves nothing about the app.
+
+**An `at risk` closes with a test, never with an argument.** This is the whole point of the node and the one place it leaks: the reasoning that created a risk is the reasoning that will wave it away, and it sounds just as good the second time. A verdict answered with "that cannot happen because the library behaves this way" is not answered — that is a claim about the world, and the test is what settles it. Write the test that exercises the risk under the conditions the requirement names, not the conditions your implementation assumes. If the test passes, the risk was imaginary and you have proof. If you cannot write it, the risk is real and the code changes. A `missing` closes the same way: by code, not by explanation.
+
+On a host without subagents, do the same check yourself from only those three things: set the plan and the task list aside, read each requirement against the diff as if someone else wrote it, and say in your summary that the check ran inline.
+
+Anything you still disagree with after that goes in your summary as an open concern, in one sentence, so the next reader sees it. When the check ran, never record this step done with an unanswered `missing` or an untested `at risk`.
+<!-- /speckit-companion:node check-requirements -->
 <!-- speckit-companion:node record-verified -->
 6b. **Prove each requested rule where a reader meets it, before you call it verified.** For every requirement, at least one test drives the app's public surface (the rendered screen, the CLI, the API) in the exact condition the rule names, and none passes by reading internal state such as storage, a store or a private module. "Survives a reload" means building the app again from what storage kept and reading the screen; "sends in order" means counting the calls the app makes. A rule with no such test gets one now; if it fails, the code changes.
 

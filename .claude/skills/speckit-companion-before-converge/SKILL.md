@@ -4,13 +4,11 @@ description: Record the converge start in .spec-context.json for the Companion G
 compatibility: Requires spec-kit project structure with .specify/ directory
 metadata:
   author: alfredoperez
-  source: extension:companion
-  version: 0.28.0
+  source: companion:commands/speckit.companion.before-converge.md
+  version: 0.29.0
 user-invocable: true
 disable-model-invocation: false
 ---
-
-# Companion Before Converge Skill
 
 # Capture Converge Start
 

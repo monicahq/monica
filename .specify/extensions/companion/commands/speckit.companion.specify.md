@@ -110,21 +110,46 @@ Produce a feature specification: prioritized user stories with acceptance scenar
    - **User Scenarios & Testing** *(mandatory)*: prioritized user stories, each an independently testable slice. Per story: `### User Story N - <short title> (Priority: P1|P2|P3)` and a one-paragraph journey; **Why this priority** in one line; **Independent Test**, how this story alone proves value; **Acceptance Scenarios**, numbered `**Given** … **When** … **Then** …`. P1 first, as many stories as the feature needs.
    - **Edge Cases**: the boundary and error questions the implementation must answer (empty input, removal while in use, duplicates, reload and persistence).
    - **Requirements › Functional Requirements** *(mandatory)*: numbered `FR-001…`, each one testable MUST/SHOULD statement. A genuinely unresolvable choice is `[NEEDS CLARIFICATION: …]` (max 3); prefer an informed default recorded under Assumptions.
-   - **Key Entities** *(when the feature involves data)*: what each represents, its key attributes and relationships, no implementation detail.
+   - **Key Entities** *(when the feature involves data)*: what each represents, its key attributes and relationships, no implementation detail. Mark an entity that already exists and that this feature does not reshape with *(existing)* after its name, so plan writes no data model for it.
    - **Success Criteria › Measurable Outcomes** *(mandatory)*: technology-agnostic `SC-001…` outcomes (time, count, percentage, pass/fail).
+   - **Non-goals**: what this change deliberately leaves out.
+   - **Change-level rules**: constraints that hold for this change only ("no new dependency", "keep the public API").
+   - **Verification plan**: how a person or a test proves it works, in a few steps.
    - **Assumptions**: the defaults you chose for anything the request left open.
    - **Verbatim Constraints** *(only when the request pins exact values)*: every literal the result must match (a `data-testid`, route, endpoint, CLI flag, env var, config key, exact UI copy, column name), in backticks, exactly as written. Never paraphrase, recase or rename them; downstream steps use these exact strings. This is the one place implementation detail belongs in a spec.
 
-3. Tighten every requirement until it is testable and unambiguous, and remove a section that does not apply. Carry the Functional Requirements into the wrap-up call as `coverage`, each with its one-line text as `title`.
+3. Tighten every requirement until it is testable and unambiguous. Remove an optional section that does not apply; Non-goals, Change-level rules and Verification plan stay and say "None" when a small change has nothing for them. Carry the Functional Requirements into the wrap-up call as `coverage`, each with its one-line text as `title`.
 <!-- /speckit-companion:node draft-spec -->
 <!-- speckit-companion:node quality-checklist -->
-4. **Self-check the spec once, in place.** Do not write a checklist file. Read `spec.md` against these, fix each fail in the spec, and leave a genuine ambiguity as a `[NEEDS CLARIFICATION: …]` marker (max 3) for `clarify`. One pass, no rewrite loop, no option tables:
+4. **Self-check the spec once, in place.** Do not write a checklist file. Read `spec.md` against these and fix each fail in the spec. One pass, no rewrite loop:
 
    - No implementation detail outside **Verbatim Constraints**; written for a non-technical reader.
    - User Scenarios, Functional Requirements and Success Criteria are present.
    - Each requirement is one testable MUST/SHOULD statement with acceptance criteria behind it.
    - Success criteria are measurable and technology-agnostic.
    - Edge cases, scope, dependencies and assumptions are stated.
+
+5. **Settle the open questions before plan.** Scan `spec.md` for `[NEEDS CLARIFICATION: …]` markers. No marker left: ask nothing and move on. Otherwise settle every one here, never leaving one for plan to guess; past three, keep the three that matter most and turn the rest into Assumptions.
+
+   **Attended**: stop and ask them all at once, then wait:
+
+   ```markdown
+   | # | What is unresolved | Options |
+   |---|---|---|
+   | 1 | [the question, in the user's terms] | A. [option] · B. [option] · C. something else |
+
+   **Your choice**: _[wait for the user's response]_
+   ```
+
+   Write each answer into the spec in place of its marker, and record it the moment it arrives, keyed by its row so a later answer replaces it. A row the user skips is settled the unattended way below, so no marker survives:
+   ```bash
+   python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <feature_directory> --decision '{"decision": "<the answer, in their terms>", "id": "spec-question-<n>", "by": "you"}'
+   ```
+
+   **Unattended** (the dispatched prompt or `.spec-context.json` says `unattended: true`): never ask. Replace each marker with the most reasonable answer, write it under Assumptions, and record one concern per question:
+   ```bash
+   python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <feature_directory> --concern '{"note": "Question <n>: assumed <answer> for: <question>", "step": "specify"}'
+   ```
 <!-- /speckit-companion:node quality-checklist -->
 <!-- /speckit-companion:phase author -->
 <!-- speckit-companion:phase wrap-up -->
@@ -142,7 +167,7 @@ Produce a feature specification: prioritized user stories with acceptance scenar
    - **`normal`, full pipeline.** Write `spec.md` only: no appended Approach section, no `plan.md` / `tasks.md` here, no lifecycle fold. Plan and tasks are produced and recorded by their own `speckit.companion.plan` and `speckit.companion.tasks` runs.
 <!-- /speckit-companion:node branch -->
 <!-- speckit-companion:node finalize -->
-**Output**: `<feature_directory>/spec.md`. In **simple** mode the spec additionally carries an **Approach** section, and two lean files sit alongside it: `plan.md` (a pointer to that Approach) and `tasks.md` (the real `- [ ] **T001** …` checklist; the task list lives here, not in the spec). In **normal** mode the spec holds the four sections only, and no `plan.md` / `tasks.md` are written here.
+**Output**: `<feature_directory>/spec.md`. In **simple** mode the spec additionally carries an **Approach** section, and two lean files sit alongside it: `plan.md` (a pointer to that Approach) and `tasks.md` (the real `- [ ] **T001** …` checklist; the task list lives here, not in the spec). In **normal** mode the spec holds the drafted sections only, and no `plan.md` / `tasks.md` are written here.
 
 **Capture the whole wrap-up in one call.** Everything this step learned goes in a single `--batch`: what it worked *from* (the areas investigated, the constraints honored), the distilled intent, the explicit non-goals, and the workflow identity.
 
@@ -156,7 +181,7 @@ python3 .specify/extensions/companion/scripts/write-context.py --feature-dir <fe
 }'
 ```
 
-Best-effort as a whole: skip silently if `python3` is unavailable. Omit `context` when there is nothing worth recording and `expectations` when the spec declares no non-goals; never invent either. A spec with a `**Source**:` line adds `"source": "<that ticket, as written>"` to `set`, and one the brief says extends or supersedes an earlier folder adds `"extends"` or `"supersedes"` with that folder. **`workflow` is the one field that is not optional**: without it the shared writer defaults to `speckit`, and a later footer advance dispatches the stock command.
+Best-effort as a whole: skip silently if `python3` is unavailable. `expectations` holds each item of the spec's **Non-goals** section. Omit `expectations` when that section says "None", and `context` when there is nothing worth recording; never invent either. A spec with a `**Source**:` line adds `"source": "<that ticket, as written>"` to `set`, and one the brief says extends or supersedes an earlier folder adds `"extends"` or `"supersedes"` with that folder. **`workflow` is the one field that is not optional**: without it the shared writer defaults to `speckit`, and a later footer advance dispatches the stock command.
 
 **On a `simple` run, add the approach to the same call.** A `simple` run writes its plan inline and never reaches `plan`, where a full run records it. So when `verdict == "simple"`, put `"approach": "<one-line summary of the Approach section>"` in the `set` map alongside the rest rather than paying a second call.
 

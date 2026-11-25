@@ -1,17 +1,14 @@
 ---
 name: speckit-companion-after-implement
-description: Record implement progress from tasks.md in .spec-context.json for the
-  Companion GUI
+description: Record implement progress from tasks.md in .spec-context.json for the Companion GUI
 compatibility: Requires spec-kit project structure with .specify/ directory
 metadata:
   author: alfredoperez
-  source: extension:companion
-  version: 0.28.0
+  source: companion:commands/speckit.companion.after-implement.md
+  version: 0.29.0
 user-invocable: true
 disable-model-invocation: false
 ---
-
-# Companion After Implement Skill
 
 # Capture Implement Finish
 

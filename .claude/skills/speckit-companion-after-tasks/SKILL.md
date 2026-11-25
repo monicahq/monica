@@ -4,13 +4,11 @@ description: Record the tasks finish in .spec-context.json for the Companion GUI
 compatibility: Requires spec-kit project structure with .specify/ directory
 metadata:
   author: alfredoperez
-  source: extension:companion
-  version: 0.28.0
+  source: companion:commands/speckit.companion.after-tasks.md
+  version: 0.29.0
 user-invocable: true
 disable-model-invocation: false
 ---
-
-# Companion After Tasks Skill
 
 # Capture Tasks Finish
 

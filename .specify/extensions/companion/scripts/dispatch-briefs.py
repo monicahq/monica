@@ -2,7 +2,7 @@
 """Print the subagent briefs a step dispatches, and record each worker's check-in.
 
   dispatch-briefs.py --feature-dir <dir>                   one read-only reader per recorded `area:`
-  dispatch-briefs.py --feature-dir <dir> --docs            one writer per Phase 1 design document
+  dispatch-briefs.py --feature-dir <dir> --docs            one writer per Phase 1 design document the spec calls for
   dispatch-briefs.py --feature-dir <dir> --waves           workers for each Foundational wave of 4+ tasks over 5+ files
   dispatch-briefs.py --feature-dir <dir> --checkin <label> a dispatched worker started (a reader's is recorded by the step)
 
@@ -43,6 +43,56 @@ DOCS = {
                   "the spec's Verbatim Constraints exactly. If the feature exposes no interface, write nothing "
                   "and say so",
 }
+
+
+#: Why a design document is left out when the spec does not call for it.
+SKIP_WHY = {"data-model.md": "the spec names no new entity", "contracts/": "the spec names no new or changed API"}
+_ENTITIES_HEADING = re.compile(r"^#{2,4}\s+Key Entities\s*$", re.IGNORECASE)
+_EXISTING = re.compile(r"\(existing\)", re.IGNORECASE)
+_API = re.compile(r"\b(?:API|REST|GraphQL|gRPC|RPC|CLI)\b|(?i:\bapis?\b|\bendpoints?\b|\bwebhooks?\b|command[- ]line)"
+                  r"|`--[\w-]+`|\b(?:GET|POST|PUT|PATCH|DELETE)\s+/")
+
+
+_INTERFACE_HEADING = re.compile(r"^#{2,4}\s+(?:Functional Requirements|Verbatim Constraints)\b", re.IGNORECASE)
+
+
+def _interface_text(text: str) -> str:
+    """The body of the Functional Requirements and Verbatim Constraints sections."""
+    out, inside = [], False
+    for line in text.splitlines():
+        if line.startswith("#"):
+            inside = bool(_INTERFACE_HEADING.match(line.strip()))
+        elif inside:
+            out.append(line)
+    return "\n".join(out)
+
+
+def _entity_lines(text: str) -> list:
+    """The top-level bullet lines under the spec's Key Entities heading."""
+    lines, inside = [], False
+    for line in text.splitlines():
+        if line.startswith("#"):
+            inside = bool(_ENTITIES_HEADING.match(line.strip()))
+        elif inside and line.startswith(("- ", "* ")):
+            lines.append(line)
+    return lines
+
+
+def design_docs(feature_dir: Path) -> list:
+    """The Phase 1 documents the spec calls for: a data model for a new entity, contracts for a new or changed API.
+
+    An entity marked `(existing)` is one the feature does not create or reshape. A spec that cannot be read keeps both.
+    """
+    try:
+        text = Path(spec_file(feature_dir)).read_text(encoding="utf-8")
+    except (OSError, ValueError):
+        return list(DOCS)
+    wanted = []
+    if any(not _EXISTING.search(line) for line in _entity_lines(text)):
+        wanted.append("data-model.md")
+    if _API.search(_interface_text(text)):
+        wanted.append("contracts/")
+    return wanted
 
 
 def areas(ctx: dict) -> list:
@@ -102,11 +152,12 @@ def doc_briefs(feature_dir: Path, ctx: dict) -> list:
         return []
     feature_dir = Path(feature_dir).resolve()
     spec = spec_file(feature_dir)
+    wanted = design_docs(feature_dir)
     return [(f"doc: {name}",
              f"{_where(feature_dir)}First run `{checkin_line(feature_dir, f'doc: {name}')}`. Then write "
              f"`{feature_dir}/{name}`: {what}. Work from `{spec}`, `{feature_dir}/plan.md` and "
              f"`{feature_dir}/research.md`. Return only the path you wrote.")
-            for name, what in DOCS.items()]
+            for name, what in DOCS.items() if name in wanted]
 
 
 def _waves(tasks_text: str) -> list:
@@ -240,6 +291,13 @@ def main() -> int:
     briefs = doc_briefs(feature_dir, ctx) if args.docs else reader_briefs(feature_dir, ctx)
     what = "design docs" if args.docs else "readers"
 
+    if args.docs and len(briefs) < 2 and (ctx.get("size") or "normal") != "simple":
+        wanted = [label.split(": ", 1)[1] for label, _ in briefs]
+        skipped = "; ".join(f"skip {name}: {why}" for name, why in SKIP_WHY.items() if name not in wanted)
+        write = f"write {' and '.join(wanted)} yourself" if wanted else "no design document applies"
+        print(f"Working inline: {write}; {skipped}. "
+              "No design docs to dispatch.")
+        return 0
     # Specify already read the areas it recorded; readers pay a cold start each, so two areas read inline.
     floor = 2 if args.docs else MIN_READER_AREAS
     if len(briefs) < floor:

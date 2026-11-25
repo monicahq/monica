@@ -478,21 +478,37 @@ _WAVE_BREAK = re.compile(r"^\s*(#{2,}\s|\*\*Wave\b|\*\*⟶|⟶)")
 _TASK_ID = re.compile(r"\*\*(T\d+)\*\*|\b(T\d{3,})\b")
 
 
-def _wave_segment_of(tasks_md: Path, task_id: str) -> int | None:
-    """Index of the wave block in tasks.md that holds `task_id`: a heading or a join line starts a new block."""
+def wave_blocks(tasks_md: Path) -> list[list[tuple[str, bool]]]:
+    """The waves of tasks.md in order, each a list of (task id, checked): a heading or a join line starts a new one."""
     try:
         lines = tasks_md.read_text(encoding="utf-8").splitlines()
     except OSError:
-        return None
-    segment = 0
+        return []
+    blocks: list[list[tuple[str, bool]]] = [[]]
     for line in lines:
         if _WAVE_BREAK.match(line):
-            segment += 1
+            if blocks[-1]:
+                blocks.append([])
             continue
         m = _TASK_ID.search(line) if re.match(r"^\s*-\s*\[", line) else None
-        if m and (m.group(1) or m.group(2)) == task_id:
-            return segment
-    return None
+        if m:
+            blocks[-1].append((m.group(1) or m.group(2), bool(re.match(r"^\s*-\s*\[[xX]\]", line))))
+    return [b for b in blocks if b]
+
+
+def waves_spanned(tasks_md: Path, ids: list[str]) -> int:
+    """How many tasks.md waves hold these task ids; 0 when none of them is found."""
+    wanted = set(ids)
+    return sum(1 for block in wave_blocks(tasks_md) if wanted & {tid for tid, _ in block})
+
+
+def next_open_wave(tasks_md: Path) -> list[str]:
+    """The unchecked tasks of the first wave that still has any, the one to close next."""
+    for block in wave_blocks(tasks_md):
+        open_ids = [tid for tid, done in block if not done]
+        if open_ids:
+            return open_ids
+    return []
 
 
 def close_task(
@@ -510,14 +526,11 @@ def close_task(
     Byte-equivalent to `--task … --append` followed by `--materialize`, and
     idempotent for the same reason the fold is.
     """
-    # A comma list closes one wave in one call; each task records the wave it ran in. Only tasks
-    # that share a wave in tasks.md earn the label, so a whole list dumped at the end still reads as a batch.
+    # A comma list is one timed unit: its tasks share one finish, so they share one label and the
+    # viewer shows one time for them. A list that spans several waves is still one unit, because one
+    # instant is all the record knows about it; the doctor reports the deferred close.
     ids = [t.strip() for t in task_id.split(",") if t.strip()]
-    wave = None
-    if len(ids) > 1:
-        segments = {_wave_segment_of(feature_dir / "tasks.md", t) for t in ids}
-        if len(segments) == 1 and None not in segments:
-            wave = f"{ids[0]}-{ids[-1]}"
+    wave = f"{ids[0]}-{ids[-1]}" if len(ids) > 1 else None
     appended = None
     for tid in ids:
         appended = append_task_log(feature_dir, tid, by, did, files, wave=wave) or appended

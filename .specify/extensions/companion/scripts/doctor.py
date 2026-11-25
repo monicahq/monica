@@ -33,7 +33,7 @@ from spec_context import (  # noqa: E402
 )
 
 CHECKS = ("record", "triage", "bleed", "completion", "verification", "artifact",
-          "template", "built", "agents", "workflow", "numbering", "retired_living", "persistence_model", "dispatch", "trace", "chat")
+          "template", "built", "agents", "plugins", "workflow", "numbering", "retired_living", "persistence_model", "dispatch", "trace", "chat")
 
 SEVERITIES = ("problem", "warning", "note")
 _SEVERITY_RANK = {s: i for i, s in enumerate(SEVERITIES)}
@@ -328,6 +328,7 @@ def examine(feature_dir: Path, root: Path, chat: bool) -> Report:
     run_check(report, "template", lambda: _via("doctor_checks", "check_template", feature_dir))
     run_check(report, "built", lambda: _via("doctor_checks", "check_built", feature_dir, ctx, root))
     run_check(report, "agents", lambda: _via("doctor_checks", "check_agents", root))
+    run_check(report, "plugins", lambda: _via("doctor_checks", "check_plugins", root))
     run_check(report, "workflow", lambda: _via("doctor_checks", "check_workflow", root))
     run_check(report, "numbering", lambda: _via("doctor_checks", "check_numbering", feature_dir))
     run_check(report, "retired_living", lambda: _via("doctor_checks", "check_retired_living", root))
