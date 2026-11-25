@@ -7,6 +7,7 @@ namespace App\ViewModels;
 use App\Helpers\AvailableLocales;
 use App\Helpers\ChangelogEntries;
 use App\Helpers\ChangelogEntry;
+use App\Helpers\ChangelogScreenshot;
 use App\Helpers\KnowledgeMarkdown;
 use App\Models\ChangelogVote;
 use App\Models\User;
@@ -85,6 +86,12 @@ class ChangelogViewModel
                     'title' => __($entry->title),
                     'bodyHtml' => KnowledgeMarkdown::toHtml(__($entry->body)),
                     'link' => $entry->link === null ? null : url($entry->link),
+                    'screenshots' => array_map(fn (ChangelogScreenshot $screenshot): array => [
+                        'url' => $screenshot->url(),
+                        'description' => __($screenshot->description),
+                        'width' => $screenshot->width,
+                        'height' => $screenshot->height,
+                    ], $entry->screenshots),
                     'isNew' => isset($this->unseenIds[$entry->id]),
                     'vote' => $votes->get($entry->id)?->value,
                     'commentCount' => $commentCounts[$entry->id] ?? 0,

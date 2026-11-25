@@ -21,6 +21,10 @@
 
   <div class="text-base text-body text-pretty [&_a]:underline [&_p+p]:mt-2">{!! $entry['bodyHtml'] !!}</div>
 
+  @if ($entry['screenshots'] !== [])
+    <x-screenshot-gallery :screenshots="$entry['screenshots']" :id="$entry['id']" :title="$entry['title']" />
+  @endif
+
   @if ($feedback)
     @include('app.changelog._feedback', ['entry' => $entry])
   @endif
