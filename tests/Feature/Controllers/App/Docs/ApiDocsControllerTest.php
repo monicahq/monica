@@ -64,7 +64,7 @@ class ApiDocsControllerTest extends TestCase
             new ApiDocsViewModel()->sections(),
         );
 
-        $this->assertCount(333, $ids);
+        $this->assertCount(341, $ids);
 
         $this->get(route('docs.api.show', ['section' => 'knowledge-folders-index']))
             ->assertSee('Knowledge folders')

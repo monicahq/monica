@@ -102,7 +102,7 @@ $writeParams = [
     ['name' => 'title', 'type' => 'string', 'required' => false, 'description' => 'A title, up to 255 characters. Without one, the life event is called by the name of its type.', 'example' => 'Lunch at Cugino’s'],
     ['name' => 'narrative', 'type' => 'string', 'required' => false, 'description' => 'What happened, up to 65,535 characters.', 'example' => 'Michael insisted on paying, then asked for the receipt.'],
     ['name' => 'location', 'type' => 'string', 'required' => false, 'description' => 'Where it happened, up to 255 characters.', 'example' => 'Scranton'],
-    ['name' => 'duration_in_minutes', 'type' => 'integer', 'required' => false, 'description' => 'How long it lasted, from 1 to 100,000 minutes.', 'example' => 60],
+    ['name' => 'duration_in_minutes', 'type' => 'integer', 'required' => false, 'description' => 'How long it lasted, from 1 to 525,600 minutes (one year).', 'example' => 60],
     ['name' => 'fields', 'type' => 'object', 'required' => false, 'description' => 'The values of the custom fields its type asks for, keyed by field id. A text field takes a string, a select field the id of its choice, a multiple select field a list of them, a date a year, a month and a day. A repeating group takes a list of repetitions, each holding its id when it already exists and its values keyed by the ids of the fields inside the group. A file field cannot be written here and answers 422.', 'example' => ['412' => 'Chicken parm']],
 ];
 
