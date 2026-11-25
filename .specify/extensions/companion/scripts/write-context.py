@@ -80,6 +80,7 @@ from capture import (  # noqa: E402,F401
     _entry_identity,
     _parsed_batch,
     _parsed_classification,
+    append_amendments,
     append_capture_entries,
     append_decisions,
     apply_batch,
@@ -109,8 +110,10 @@ from task_sync import (  # noqa: E402,F401
     close_task,
     journal_task_finish,
     materialize_log,
+    next_open_wave,
     parse_task_markers,
     sync_tasks,
+    waves_spanned,
 )
 
 
@@ -385,6 +388,75 @@ def _apply_hook(args):
         _record_pending_specify_start(args)
     args.kind, args.status = "complete", STEP_COMPLETED_STATUS.get(step)
     return None
+
+
+#: A spec-kit bug stage, the report it writes, and the report field holding its outcome.
+BUG_STAGES = {"assess": ("assessment.md", "Verdict"), "fix": ("fix.md", "Status"), "test": ("test.md", "Result")}
+BUG_OUTCOMES = {
+    "assess": {"valid", "likely valid, needs reproduction", "invalid"},
+    "fix": {"applied", "partial", "not-applied"},
+    "test": {"verified", "partial", "failed"},
+}
+_BUG_SLUG = re.compile(r"^[a-z0-9][a-z0-9._-]*$")
+
+
+def _bug_outcome(bug_dir: Path, step: str) -> str | None:
+    report, field = BUG_STAGES[step]
+    try:
+        text = (bug_dir / report).read_text(encoding="utf-8")
+    except (OSError, ValueError):
+        return None
+    found = re.search(rf"^\s*[-*]\s*\*\*{field}\*\*\s*:\s*(.+?)\s*$", text, re.M | re.I)
+    value = found.group(1).strip("` ").lower() if found else None
+    return value if value in BUG_OUTCOMES[step] else None
+
+
+def _bug_hook(args) -> int:
+    """One bug hook's boundary: a start opens a new round of the stage, a finish closes the open one."""
+    refused = None
+    if not _BUG_SLUG.match(args.bug) or ".." in args.bug:
+        refused = f"not recording: {args.bug!r} is not a bug folder name"
+    elif args.hook not in ("start", "finish") or args.step not in BUG_STAGES:
+        refused = "not recording: --bug takes --hook start|finish and --step assess|fix|test"
+    elif args.feature_dir:
+        refused = "not recording: --bug and --feature-dir name different folders"
+    if refused:
+        print(f"[companion] {refused}", file=sys.stderr)
+        _record_outcome(False, refused)
+        return 0
+    root = _repo_root().resolve()
+    bug_dir = root / ".specify" / "bugs" / args.bug
+    if not bug_dir.is_dir() or not bug_dir.resolve().is_relative_to(root / ".specify" / "bugs"):
+        msg = f"not recording: {bug_dir} is not one of the project's bug folders"
+        print(f"[companion] {msg}", file=sys.stderr)
+        _record_outcome(False, msg)
+        return 0
+    try:
+        target = bug_dir / ".spec-context.json"
+        ctx = read_ctx(target)
+        log = canonical_log(ctx)
+        ctx.setdefault("workflow", "speckit")
+        ctx.setdefault("specName", args.bug)
+        last = log[-1] if log and isinstance(log[-1], dict) else None
+        kind = "start" if args.hook == "start" else "complete"
+        if last is not None and last.get("step") == args.step and last.get("kind") == kind:
+            print(f"[companion] {args.bug} {args.step} already has a {kind}; nothing to add.")
+            _record_outcome(True, None)
+            return 0
+        entry = {"step": args.step, "substep": None, "kind": kind, "by": "extension", "at": _now_iso()}
+        outcome = _bug_outcome(bug_dir, args.step) if kind == "complete" else None
+        if outcome:
+            entry["did"] = outcome
+        log.append(entry)
+        commit_log(ctx, log)
+        atomic_write(target, ctx)
+    except Exception as exc:  # noqa: BLE001 - a hook never fails the host command
+        print(f"[companion] Warning: skipped the bug record write: {exc}", file=sys.stderr)
+        _record_outcome(False, f"skipped the bug record write: {exc}")
+        return 0
+    print(f"[companion] Recorded {args.bug} {args.step} {kind}{f' ({outcome})' if outcome else ''} in {target}")
+    _record_outcome(True, None)
+    return 0
 
 
 #: The steps a document can show finished; converge is left to its hooks.
@@ -792,6 +864,11 @@ def _main() -> int:
              "writer picks. A specify start waits outside the project for its folder.",
     )
     parser.add_argument(
+        "--bug", default=None, metavar="SLUG",
+        help="With --hook and --step assess|fix|test: record a spec-kit bug stage in "
+             ".specify/bugs/<SLUG>/.spec-context.json. Always exits 0.",
+    )
+    parser.add_argument(
         "--event", default=None, choices=["user_prompt_submit", "stop"],
         help="A spec-kit runtime event handler: reads the agent's payload on stdin, records "
              "the boundary it stands for, prints nothing and always exits 0.",
@@ -843,6 +920,11 @@ def _main() -> int:
         "--concern", dest="concerns", action="append", default=None, metavar="JSON|TEXT",
         help="Append a concern to concerns[] (de-duped on 'note'). "
              "JSON object with a 'note' key (plus step/kind), or bare text. Repeatable.",
+    )
+    parser.add_argument(
+        "--amend", dest="amendments", action="append", default=None, metavar="JSON|TEXT",
+        help="Append an amendment to amendments[] (never de-duped). JSON object with a 'what' key "
+             "(plus why/by/replanned), or bare text. Never moves status. Repeatable.",
     )
     parser.add_argument(
         "--expectation", dest="expectations", action="append", default=None, metavar="TEXT",
@@ -899,10 +981,11 @@ def _main() -> int:
     parser.add_argument(
         "--batch", dest="batch", default=None, metavar="JSON",
         help="Apply the whole end-of-step capture volley in one call — a JSON object with "
-             "any of verified/decisions/concerns/expectations/context/coverage (with tasks/tests/"
+             "any of verified/decisions/concerns/amendments/expectations/context/coverage (with tasks/tests/"
              "title/assumes)/step_summary/"
              "last_action, written through the same additive writers. Collapses the volley "
-             "to one invocation; each writer still performs its own atomic write.",
+             "to one invocation; each writer still performs its own atomic write. Every list "
+             "de-dupes except amendments, which appends on each run.",
     )
     parser.add_argument(
         "--close-task", dest="close_task", default=None, metavar="TaskID",
@@ -920,6 +1003,8 @@ def _main() -> int:
     if args.batch == "-":
         args.batch = "" if sys.stdin is None or sys.stdin.isatty() else sys.stdin.read()
 
+    if args.bug is not None:
+        return _bug_hook(args)
     if args.event:
         handled = _apply_event(args)
         if handled is not None:
@@ -939,7 +1024,7 @@ def _main() -> int:
     # Terminal state belongs in `status`, not `currentStep`. Skipped in task-sync
     # mode, which always operates on the implement step.
     capture_mode = bool(
-        args.decisions or args.verified or args.verify_runs or args.concerns or args.expectations
+        args.decisions or args.verified or args.verify_runs or args.concerns or args.amendments or args.expectations
         or args.coverage_req or args.assumes or args.risk or args.risk_raise or args.mutation_report or args.step_summary or args.classification or args.context_entries
         or args.batch or args.request
     )
@@ -1090,6 +1175,10 @@ def _main() -> int:
         if args.concerns:
             target = append_capture_entries(feature_dir, "concerns", "note", args.concerns)
             captured.append(f"[companion] Recorded {len(args.concerns)} concern(s) in {target}")
+        if args.amendments:
+            target = append_amendments(feature_dir, args.amendments)
+            if target:
+                captured.append(f"[companion] Recorded {len(args.amendments)} amendment(s) in {target}")
         if args.expectations:
             target = append_string_list(feature_dir, "expectations", args.expectations)
             captured.append(f"[companion] Recorded {len(args.expectations)} expectation(s) in {target}")
@@ -1295,6 +1384,7 @@ def _main() -> int:
             print(f"[companion] Materialized append-log into {target}")
         elif args.close_task:
             print(f"[companion] Closed task {args.close_task} in {target} (by={args.by})")
+            _print_wave_hint(feature_dir, args.close_task)
         elif args.task and args.append:
             print(f"[companion] Appended finish for task {args.task} to {target} (by={args.by})")
         elif args.task:
@@ -1333,7 +1423,7 @@ _OP_FLAGS = (
 
 _CAPTURE_FLAGS = (
     "--batch",
-    "--decision", "--verified", "--concern", "--expectation", "--context",
+    "--decision", "--verified", "--concern", "--amend", "--expectation", "--context",
     "--coverage-req", "--step-summary", "--classification",
     "--request", "--assumes", "--risk", "--risk-raise", "--mutation-report",
 )
@@ -1437,6 +1527,20 @@ def _last_companion_line(text: str) -> str | None:
     return lines[-1] if lines else None
 
 
+def _print_wave_hint(feature_dir: Path, closed: str) -> None:
+    """After a close, say which wave to close next, so the next close is one copied line away."""
+    tasks_md = feature_dir / "tasks.md"
+    ids = [t.strip() for t in closed.split(",") if t.strip()]
+    spanned = waves_spanned(tasks_md, ids)
+    if spanned > 1:
+        print(f"[companion] That call closed {spanned} waves at once, so they share one time. "
+              "Close each wave the moment its last task is done.")
+    upcoming = next_open_wave(tasks_md)
+    if upcoming:
+        print(f"[companion] Next wave: {', '.join(upcoming)}. When its last task is done, close it: "
+              f"--close-task {','.join(upcoming)}")
+
+
 def main() -> int:
     """Record this invocation, then behave exactly as the unwrapped command did."""
     import io
@@ -1477,7 +1581,7 @@ def main() -> int:
         code = 1
     finally:
         sys.stdout, sys.stderr = real_out, real_err
-        if not _EVENT_NOOP and not help_only:
+        if not _EVENT_NOOP and not help_only and not _has_flag(argv, "--bug"):
             _trace_call(argv, out_buf.getvalue(), err_buf.getvalue(),
                         int((time.monotonic() - started) * 1000))
     # A lifecycle hook is bookkeeping: it never fails the spec-kit command that fired it.

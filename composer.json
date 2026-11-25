@@ -32,7 +32,7 @@
         "intervention/image": "^4.0",
         "laravel/cashier": "^16.8",
         "laravel/framework": "^13.8",
-        "laravel/head": "^0.2.2",
+        "laravel/head": "^0.3.0",
         "laravel/mcp": "^1.0",
         "laravel/nightwatch": "^1.30",
         "laravel/passkeys": "^0",
@@ -155,7 +155,7 @@
         ],
         "specify-upgrade": [
             "specify integration upgrade --force",
-            " specify extension add companion --from https://github.com/alfredoperez/speckit-companion/releases/download/companion-latest/companion.zip --force",
+            " specify extension add companion --from https://github.com/alfredoperez/speckit-companion/releases/download/speckit-ext-v0.29.0/companion-0.29.0.zip --force",
             "specify extension add bug --force",
             "specify extension add assess --force",
             "specify extension add archive --from https://github.com/stn1slv/spec-kit-archive/archive/refs/tags/v1.4.0.zip --force"

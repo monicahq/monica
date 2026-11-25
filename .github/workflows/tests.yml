@@ -95,7 +95,7 @@ jobs:
     services:
       meilisearch:
         # An empty image does not start the service.
-        image: ${{ case(needs.changes.outputs.code == 'true', 'getmeili/meilisearch:v1.56', '') }}
+        image: ${{ case(needs.changes.outputs.code == 'true', 'getmeili/meilisearch:v1.58', '') }}
         env:
           MEILI_MASTER_KEY: testing-master-key
           MEILI_NO_ANALYTICS: true

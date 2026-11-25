@@ -38,7 +38,7 @@ from spec_context import (  # noqa: E402
     _is_per_task,
     _is_step_level,
 )
-from task_sync import parse_task_markers  # noqa: E402
+from task_sync import parse_task_markers, waves_spanned  # noqa: E402
 
 #: Steps whose boundaries the extension stamps; an `ai` complete there is an
 #: anomaly, because it lands first and permanently blocks the hook's close.
@@ -288,6 +288,25 @@ def check_record(feature_dir: Path, ctx: dict, now: datetime | None = None) -> t
             "took, so the summaries are still trustworthy and the durations are not",
             {"tasks": [t for c in bursts for t, _ in c],
              "batches": len(bursts), "largest_batch": len(worst), "span_seconds": span},
+        ))
+
+    # The other half of a deferred close: a list that spans several tasks.md waves is recorded as one
+    # unit, so it never reads as a burst above, and only its span says the waves went unclosed.
+    units: dict = {}
+    for tid, s in summaries.items():
+        if isinstance(s, dict) and isinstance(s.get("wave"), str):
+            units.setdefault(s["wave"], []).append(tid)
+    deferred = {label: n for label, tids in units.items()
+                if (n := waves_spanned(feature_dir / "tasks.md", tids)) > 1}
+    if deferred:
+        label, spanned = max(deferred.items(), key=lambda kv: kv[1])
+        findings.append(Finding(
+            "record", "warning",
+            f"{plural(sum(deferred.values()), 'wave')} closed in "
+            f"{plural(len(deferred), 'call')} instead of one call each",
+            f"{label} closed {spanned} waves together, so the viewer shows one time for all of "
+            "them; close each wave the moment its last task is done",
+            {"units": deferred},
         ))
 
     for step, by, at, why in _attribution_anomalies(ctx, _tasks_all_checked(feature_dir)):
@@ -869,6 +888,92 @@ def check_agents(root: Path) -> tuple:
             "agents", "note", "The specify CLI is not on this shell's PATH",
             "Headless dispatch and Spec Kit's hooks call `specify`; if they fail, install it or add it to their PATH."))
     return CheckStatus("agents", "ran"), findings
+
+
+_PLUGINS_REPORTED: set = set()
+
+
+def _plugins_dir() -> Path:
+    import os
+    return Path(os.environ.get("CLAUDE_CONFIG_DIR") or Path.home() / ".claude") / "plugins"
+
+
+def _read_json(path: Path):
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
+
+
+def _version_tuple(version) -> tuple | None:
+    parts = re.findall(r"\d+", str(version or "").split("-")[0])
+    return tuple(int(p) for p in parts) if parts else None
+
+
+def _marketplace_version(location, name: str) -> str | None:
+    """The version a marketplace checkout offers for `name`: its manifest entry, else the plugin's own plugin.json."""
+    if not location:
+        return None
+    base = Path(location)
+    listing = _read_json(base / ".claude-plugin" / "marketplace.json") or {}
+    for entry in listing.get("plugins") or []:
+        if isinstance(entry, dict) and entry.get("name") == name:
+            if entry.get("version"):
+                return str(entry["version"])
+            source = entry.get("source")
+            if isinstance(source, str):
+                own = _read_json(base / source / ".claude-plugin" / "plugin.json") or {}
+                return str(own["version"]) if own.get("version") else None
+    return None
+
+
+def check_plugins(root: Path, plugins_dir: Path | None = None) -> tuple:
+    """Is each Claude Code plugin the project's Companion config or nodes name behind its marketplace?"""
+    root = Path(root).resolve()
+    if root in _PLUGINS_REPORTED:
+        return CheckStatus("plugins", "skipped", "reported with the first spec of this run"), []
+    sources = [root / ".specify" / "companion.yml", *sorted((root / ".specify" / "companion" / "nodes").glob("*.md"))]
+    text = "\n".join(p.read_text(encoding="utf-8", errors="replace") for p in sources if p.is_file())
+    if not text:
+        return CheckStatus("plugins", "not-applicable", "no Companion config or project nodes"), []
+    plugins_dir = Path(plugins_dir) if plugins_dir is not None else _plugins_dir()
+    installed = (_read_json(plugins_dir / "installed_plugins.json") or {}).get("plugins") or {}
+    marketplaces = _read_json(plugins_dir / "known_marketplaces.json") or {}
+    known = set(installed)
+    for market, info in marketplaces.items():
+        place = info.get("installLocation") if isinstance(info, dict) else None
+        listing = _read_json(Path(place) / ".claude-plugin" / "marketplace.json") if place else None
+        known |= {f"{e['name']}@{market}" for e in (listing or {}).get("plugins") or []
+                  if isinstance(e, dict) and e.get("name")}
+    referenced = sorted({key for key in known
+                         if re.search(rf"(?<![\w-]){re.escape(key.split('@')[0])}:[\w-]", text)})
+    if not referenced:
+        return CheckStatus("plugins", "not-applicable", "the config and nodes name no installed plugin"), []
+    _PLUGINS_REPORTED.add(root)
+    findings = []
+    for key in referenced:
+        name, _, market = key.partition("@")
+        entries = installed.get(key)
+        have = entries[0].get("version") if isinstance(entries, list) and entries and isinstance(entries[0], dict) else None
+        place = (marketplaces.get(market) or {}).get("installLocation") if isinstance(marketplaces.get(market), dict) else None
+        offered = _marketplace_version(place, name)
+        have_t, offered_t = _version_tuple(have), _version_tuple(offered)
+        if have is None and offered_t is not None:
+            findings.append(Finding("plugins", "note", f"{name}: not installed",
+                                    f"The project's Companion nodes call {name}, but it is not installed. "
+                                    f"Run `claude plugin install {key}`.",
+                                    {"plugin": key, "installed": None, "marketplace": offered}))
+        elif have_t is None or offered_t is None:
+            missing = "installed version" if have_t is None else f"version in the {market} marketplace"
+            findings.append(Finding("plugins", "note", f"{name}: version unknown",
+                                    f"Could not read the {missing}, so freshness was not checked.",
+                                    {"plugin": key, "installed": have, "marketplace": offered}))
+        elif have_t < offered_t:
+            findings.append(Finding("plugins", "warning", f"{name} is behind: {have} installed, {offered} available",
+                                    f"The project's Companion nodes call {name}, and {market} offers a newer version. "
+                                    f"Run `claude plugin marketplace update {market}` and `claude plugin update {key}`.",
+                                    {"plugin": key, "installed": have, "marketplace": offered}))
+    return CheckStatus("plugins", "ran"), findings
 
 
 _WORKFLOW_REPORTED: set = set()

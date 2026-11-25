@@ -6,6 +6,7 @@ compatibility: "Requires spec-kit project structure with .specify/ directory"
 metadata:
   author: "github-spec-kit"
   source: "templates/commands/implement.md"
+  version: "1.4.5"
 user-invocable: true
 disable-model-invocation: false
 ---

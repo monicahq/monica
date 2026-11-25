@@ -402,6 +402,34 @@ def append_decisions(feature_dir: Path, raws: list[str]) -> Path | None:
     return target
 
 
+def append_amendments(feature_dir: Path, raws: list[str]) -> Path | None:
+    """Amendments, each stamped with who made it and when; every one is kept, none de-duped."""
+    entries = [e for e in (_coerce_entry(r, "what") for r in raws) if e]
+    if not entries:
+        return None
+    target = feature_dir / ".spec-context.json"
+    branch = _git_branch(_repo_root_for(feature_dir)) or "main"
+    ctx = read_ctx(target)
+    fill_required(ctx, feature_dir, branch)
+    prior = ctx.get("amendments")
+    now = _now_iso()
+    for entry in entries:
+        entry["what"] = str(entry["what"])
+        why = entry.get("why")
+        if why is not None:
+            entry["why"] = json.dumps(why, ensure_ascii=False) if isinstance(why, (dict, list)) else str(why)
+        entry["by"] = str(entry["by"]) if _filled(entry.get("by")) else "ai"
+        if not _readable_time(entry.get("at")):
+            entry["at"] = now
+        replanned = entry.get("replanned")
+        if isinstance(replanned, str):
+            replanned = replanned.strip().lower() == "true"
+        entry["replanned"] = replanned if isinstance(replanned, bool) else False
+    ctx["amendments"] = (list(prior) if isinstance(prior, list) else []) + entries
+    atomic_write(target, ctx)
+    return target
+
+
 #: What the Companion workflow appends to each step's input on spec-kit's engine;
 #: an instruction to the step, never part of what the person asked for.
 ENGINE_STEP_MARKER = "(workflow engine step: run this step only, the engine runs the next one)"
@@ -851,7 +879,7 @@ def set_classification(feature_dir: Path, raw: str) -> Path:
 # rewrites, not the record.
 # --------------------------------------------------------------------------- #
 
-BATCH_KEYS = ("verified", "decisions", "concerns", "expectations", "context",
+BATCH_KEYS = ("verified", "decisions", "amendments", "concerns", "expectations", "context",
               "coverage", "step_summary", "last_action", "classification", "set")
 
 
@@ -869,7 +897,7 @@ def _parsed_batch(raw: str) -> dict:
             f"--batch has unknown key(s): {', '.join(unknown)}. "
             f"Known keys: {', '.join(BATCH_KEYS)}."
         )
-    for key in ("verified", "decisions", "concerns", "expectations", "context", "coverage"):
+    for key in ("verified", "decisions", "amendments", "concerns", "expectations", "context", "coverage"):
         if key in doc and not isinstance(doc[key], list):
             raise ValueError(f"--batch '{key}' must be a list")
     if "set" in doc and doc["set"] is not None:
@@ -912,6 +940,9 @@ def apply_batch(feature_dir: Path, raw: str, step: str) -> tuple:
     decisions = doc.get("decisions")
     if decisions:
         note(append_decisions(feature_dir, _as_raw(decisions)), f"{len(decisions)} decisions")
+    amendments = doc.get("amendments")
+    if amendments:
+        note(append_amendments(feature_dir, _as_raw(amendments)), f"{len(amendments)} amendments")
     for field, key, identity in (
         ("verified", "verified", "what"),
         ("concerns", "concerns", "note"),

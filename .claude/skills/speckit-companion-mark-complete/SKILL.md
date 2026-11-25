@@ -5,6 +5,9 @@ compatibility: Requires spec-kit project structure with .specify/ directory
 metadata:
   author: alfredoperez
   source: companion:commands/speckit.companion.mark-complete.md
+  version: 0.29.0
+user-invocable: true
+disable-model-invocation: false
 ---
 
 # Mark Spec Complete

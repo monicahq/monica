@@ -96,3 +96,57 @@ hooks:
     prompt: Execute speckit.companion.after-converge?
     description: Record the converge finish
     condition: null
+  before_bug_assess:
+  - extension: companion
+    command: speckit.companion.before-bug
+    enabled: true
+    optional: false
+    priority: 10
+    prompt: Execute speckit.companion.before-bug?
+    description: Record the bug assess start
+    condition: null
+  after_bug_assess:
+  - extension: companion
+    command: speckit.companion.after-bug
+    enabled: true
+    optional: false
+    priority: 10
+    prompt: Execute speckit.companion.after-bug?
+    description: Record the bug assess finish and verdict
+    condition: null
+  before_bug_fix:
+  - extension: companion
+    command: speckit.companion.before-bug
+    enabled: true
+    optional: false
+    priority: 10
+    prompt: Execute speckit.companion.before-bug?
+    description: Record the bug fix start
+    condition: null
+  after_bug_fix:
+  - extension: companion
+    command: speckit.companion.after-bug
+    enabled: true
+    optional: false
+    priority: 10
+    prompt: Execute speckit.companion.after-bug?
+    description: Record the bug fix finish and status
+    condition: null
+  before_bug_test:
+  - extension: companion
+    command: speckit.companion.before-bug
+    enabled: true
+    optional: false
+    priority: 10
+    prompt: Execute speckit.companion.before-bug?
+    description: Record the bug test start
+    condition: null
+  after_bug_test:
+  - extension: companion
+    command: speckit.companion.after-bug
+    enabled: true
+    optional: false
+    priority: 10
+    prompt: Execute speckit.companion.after-bug?
+    description: Record the bug test finish and result
+    condition: null

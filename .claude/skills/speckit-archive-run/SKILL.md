@@ -1,11 +1,19 @@
 ---
 name: speckit-archive-run
-description: Archive a feature specification into main project memory after merge, resolving gaps and conflicts
+description: Archive a feature specification into main project memory after merge,
+  resolving gaps and conflicts
 compatibility: Requires spec-kit project structure with .specify/ directory
 metadata:
   author: Stanislav Deviatov
-  source: archive:commands/archive.md
+  source: extension:archive
+  version: 1.4.0
+argument-hint: <feature-dir> [--spec-only|--plan-only|--changelog-only|--agent-only]
+  [guidance text]
+user-invocable: true
+disable-model-invocation: false
 ---
+
+# Archive Run Skill
 
 Act as the **Chief Software Architect** and **Documentation Maintainer**.
 A feature has been merged into the `main` branch. Your goal is to **archive** the feature specification into the main project memory — ensuring completeness, resolving conflicts, closing gaps, and respecting the project constitution.
@@ -282,6 +290,7 @@ Check if `REPO_ROOT/.specify/extensions.yml` exists:
 - For each remaining hook, do **not** attempt to interpret or evaluate hook `condition` expressions:
   - If the hook has no `condition` field, or it is null/empty, treat the hook as executable
   - If the hook defines a non-empty `condition`, skip the hook. Core's HookExecutor never fires `before_archive` or `after_archive`, so nothing else evaluates the condition and a hook carrying one does not run from this command. When a skipped hook is mandatory (`optional: false`), tell the user it was skipped and why
+- When constructing command invocations from hook command names, replace dots (`.`) with hyphens (`-`). For example, `speckit.git.commit` → `/speckit-git-commit`.
 - For each executable hook, output the following based on its `optional` flag:
   - **Optional hook** (`optional: true`):
     ```
