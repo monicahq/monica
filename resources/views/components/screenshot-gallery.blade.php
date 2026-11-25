@@ -127,7 +127,7 @@
       </div>
 
       @foreach ($screenshots as $index => $screenshot)
-        <p x-show="index === {{ $index }}" @click="open = false" aria-hidden="true" class="cursor-default "px-6 pt-4 pb-6 text-center text-base text-pretty text-on-scrim-muted">{{ $screenshot['description'] }}</p>
+        <p x-show="index === {{ $index }}" @click="open = false" aria-hidden="true" class="cursor-default px-6 pt-4 pb-6 text-center text-base text-pretty text-on-scrim-muted">{{ $screenshot['description'] }}</p>
       @endforeach
 
       <p class="sr-only" aria-live="polite" x-text="announcement"></p>
