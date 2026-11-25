@@ -28,7 +28,9 @@ class ReservedAddressWords
      * `contacts/new` is the same story. Every grouping the contact list answers to sits in the place
      * a contact's own address would sit, and that route is declared first too, so all of them are
      * spent. `me` is fixed by the API route resolving the contact that stands for the account holder,
-     * which is declared above `contacts/{contact}` so that the literal wins.
+     * which is declared above `contacts/{contact}` so that the literal wins. `statistics` and
+     * `template-changes` are fixed by the statistics of the people of a vault and by changing their
+     * template many at a time, both declared above it for the same reason.
      *
      * @return list<string>
      */
@@ -37,6 +39,8 @@ class ReservedAddressWords
         return [
             'new',
             'me',
+            'statistics',
+            'template-changes',
             ...ContactGroupingEnum::values(),
         ];
     }

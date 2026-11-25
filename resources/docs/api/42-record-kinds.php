@@ -1,0 +1,310 @@
+<?php
+
+declare(strict_types=1);
+
+use App\ViewModels\Docs\ApiDocsViewModel;
+
+$base = ApiDocsViewModel::baseUrl();
+
+$vaultId = '9f1c2b7a-4e3d-4a6b-8c5d-2e7f1a9b3c4d';
+$animalsId = '5b8e2f1a-7c3d-4e9a-b6f0-1d2c3e4f5a6b';
+$petId = '8b3c2d1e-4f5a-4b6c-9d7e-0f1a2b3c4d5e';
+$horseId = '3e7a1c9b-2d4f-4a6e-8b0c-5f9d1e3a7c2b';
+$changeId = '6a1d3f8c-9b2e-4c7a-a5d0-3e8f1b4c9d27';
+
+$rateLimit = 'Sixty requests per minute, per user, shared by every key and device.';
+
+$kindParams = [
+    ['name' => 'vault', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the vault.'],
+    ['name' => 'recordKind', 'type' => 'string', 'required' => true, 'description' => 'contacts for people, or the id of an entity type, as GET /entity-types gives it.'],
+];
+
+$batchParams = [
+    ['name' => 'from', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the template the records leave, as the statistics give it.', 'example' => $horseId],
+    ['name' => 'version', 'type' => 'integer', 'required' => false, 'description' => 'Take only the records on this version of the source template. Leave it out to take every version.'],
+    ['name' => 'to', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the template the records move onto, at the version it publishes now. Send the same template as from to update records on older versions to the published one.', 'example' => $petId],
+];
+
+$change = [
+    'type' => 'template_change',
+    'id' => $changeId,
+    'attributes' => [
+        'status' => 'finished',
+        'record_kind' => $animalsId,
+        'from' => $horseId,
+        'to' => $petId,
+        'to_version' => 3,
+        'counts' => ['total' => 4, 'done' => 4, 'moved' => 3, 'skipped' => 1, 'failed' => 0],
+        'not_moved' => [
+            ['id' => '2f9c4b7e-1a3d-4e6f-8b0c-7d5a9e1f3c2b', 'name' => 'Bijou', 'outcome' => 'skipped', 'reason' => 'This Animal’s template changed after the preview.'],
+        ],
+        'created_at' => 1764079200,
+        'ended_at' => 1764079212,
+    ],
+    'links' => ['self' => $base.'/vaults/'.$vaultId.'/template-changes/'.$changeId],
+];
+
+$changeFields = [
+    ['name' => 'data', 'type' => 'object', 'description' => 'The change.'],
+    ['name' => 'data.type', 'type' => 'string', 'description' => 'Always template_change.'],
+    ['name' => 'data.id', 'type' => 'uuid', 'description' => 'The id of the change.'],
+    ['name' => 'data.attributes', 'type' => 'object', 'description' => 'What the change is and how far it is.'],
+    ['name' => 'data.attributes.status', 'type' => 'string', 'description' => 'running while some records are still waiting, then finished.'],
+    ['name' => 'data.attributes.record_kind', 'type' => 'string', 'description' => 'contacts, or the id of the entity type.'],
+    ['name' => 'data.attributes.from', 'type' => 'uuid', 'description' => 'The id of the template the records leave.'],
+    ['name' => 'data.attributes.to', 'type' => 'uuid', 'description' => 'The id of the template the records move onto.'],
+    ['name' => 'data.attributes.to_version', 'type' => 'integer', 'description' => 'The number of the version they move onto.'],
+    ['name' => 'data.attributes.counts', 'type' => 'object', 'description' => 'How many records the change took and what became of them.'],
+    ['name' => 'data.attributes.counts.total', 'type' => 'integer', 'description' => 'How many records the change took.'],
+    ['name' => 'data.attributes.counts.done', 'type' => 'integer', 'description' => 'How many of them have been dealt with so far.'],
+    ['name' => 'data.attributes.counts.moved', 'type' => 'integer', 'description' => 'How many moved. Written once the change has finished, 0 before.'],
+    ['name' => 'data.attributes.counts.skipped', 'type' => 'integer', 'description' => 'How many were left as they were, because they changed, were archived or were deleted after the preview. Written once the change has finished.'],
+    ['name' => 'data.attributes.counts.failed', 'type' => 'integer', 'description' => 'How many could not be moved. Nothing was changed on them. Written once the change has finished.'],
+    ['name' => 'data.attributes.not_moved', 'type' => 'array', 'description' => 'The first hundred records that were skipped or failed.'],
+    ['name' => 'data.attributes.not_moved[]', 'type' => 'object', 'description' => 'One record.'],
+    ['name' => 'data.attributes.not_moved[].id', 'type' => 'uuid', 'description' => 'The id of the record.'],
+    ['name' => 'data.attributes.not_moved[].name', 'type' => 'string', 'description' => 'Its name.'],
+    ['name' => 'data.attributes.not_moved[].outcome', 'type' => 'string', 'description' => 'skipped or failed.'],
+    ['name' => 'data.attributes.not_moved[].reason', 'type' => 'string', 'description' => 'Why, in a sentence for the reader.'],
+    ['name' => 'data.attributes.created_at', 'type' => 'timestamp', 'description' => 'When the change was confirmed.'],
+    ['name' => 'data.attributes.ended_at', 'type' => 'timestamp', 'description' => 'When the last record was dealt with. Null while the change runs.'],
+    ['name' => 'data.links', 'type' => 'object', 'description' => 'Where the change lives.'],
+    ['name' => 'data.links.self', 'type' => 'string', 'description' => 'The URL of the change.'],
+];
+
+$runningChangeFields = array_values(array_filter($changeFields, fn (array $field): bool => ! str_starts_with($field['name'], 'data.attributes.not_moved[]')));
+
+return [
+    'name' => 'Record statistics',
+    'description' => 'How the records of one kind in a vault use templates: how many follow which template and version, which fields they fill in, and the change that moves many of them onto another template at once. A kind is people (contacts) or one entity type, such as Animals.',
+    'sections' => [
+        [
+            'id' => 'record-kinds-statistics-show',
+            'returnFields' => [
+                ['name' => 'data', 'type' => 'object', 'description' => 'The statistics.'],
+                ['name' => 'data.type', 'type' => 'string', 'description' => 'Always record_statistics.'],
+                ['name' => 'data.attributes', 'type' => 'object', 'description' => 'The figures.'],
+                ['name' => 'data.attributes.kind', 'type' => 'object', 'description' => 'The kind of record counted.'],
+                ['name' => 'data.attributes.kind.id', 'type' => 'string', 'description' => 'contacts, or the id of the entity type.'],
+                ['name' => 'data.attributes.kind.singular', 'type' => 'string', 'description' => 'What one record of the kind is called.'],
+                ['name' => 'data.attributes.kind.plural', 'type' => 'string', 'description' => 'What several are called.'],
+                ['name' => 'data.attributes.overview', 'type' => 'object', 'description' => 'The totals.'],
+                ['name' => 'data.attributes.overview.records', 'type' => 'integer', 'description' => 'How many records are not archived.'],
+                ['name' => 'data.attributes.overview.templates_in_use', 'type' => 'integer', 'description' => 'How many templates at least one of them follows.'],
+                ['name' => 'data.attributes.overview.on_older_versions', 'type' => 'integer', 'description' => 'How many follow a version other than the one their template publishes now.'],
+                ['name' => 'data.attributes.overview.archived', 'type' => 'integer', 'description' => 'How many are archived. No other figure counts them.'],
+                ['name' => 'data.attributes.overview.partial', 'type' => 'integer', 'description' => 'For people, how many partial contacts the total holds. Null for an entity type.'],
+                ['name' => 'data.attributes.templates', 'type' => 'array', 'description' => 'Every template of the kind that is offered or still followed, in the account’s order.'],
+                ['name' => 'data.attributes.templates[]', 'type' => 'object', 'description' => 'One template.'],
+                ['name' => 'data.attributes.templates[].id', 'type' => 'uuid', 'description' => 'The id of the template.'],
+                ['name' => 'data.attributes.templates[].name', 'type' => 'string', 'description' => 'What it is called.'],
+                ['name' => 'data.attributes.templates[].is_default', 'type' => 'boolean', 'description' => 'Whether new records of the kind start from it in this vault.'],
+                ['name' => 'data.attributes.templates[].is_active', 'type' => 'boolean', 'description' => 'Whether it is turned on. A turned off template appears only while records still follow it.'],
+                ['name' => 'data.attributes.templates[].records', 'type' => 'integer', 'description' => 'How many records follow it.'],
+                ['name' => 'data.attributes.templates[].share', 'type' => 'integer', 'description' => 'Their share of the total, as a rounded percentage.'],
+                ['name' => 'data.attributes.templates[].published_version', 'type' => 'integer', 'description' => 'The number of the version it publishes now. Null when it publishes none.'],
+                ['name' => 'data.attributes.templates[].versions', 'type' => 'array', 'description' => 'The versions its records are on, newest first.'],
+                ['name' => 'data.attributes.templates[].versions[]', 'type' => 'object', 'description' => 'One version.'],
+                ['name' => 'data.attributes.templates[].versions[].number', 'type' => 'integer', 'description' => 'Its number.'],
+                ['name' => 'data.attributes.templates[].versions[].records', 'type' => 'integer', 'description' => 'How many records are on it.'],
+                ['name' => 'data.attributes.templates[].versions[].is_published', 'type' => 'boolean', 'description' => 'Whether it is the version the template publishes now.'],
+                ['name' => 'data.links', 'type' => 'object', 'description' => 'Where the statistics live.'],
+                ['name' => 'data.links.self', 'type' => 'string', 'description' => 'Their URL.'],
+            ],
+            'title' => 'Get the statistics of a kind of record',
+            'label' => 'Get statistics',
+            'method' => 'GET',
+            'path' => '/vaults/{vault}/record-kinds/{recordKind}/statistics',
+            'examplePath' => '/vaults/'.$vaultId.'/record-kinds/'.$animalsId.'/statistics',
+            'description' => 'Count the records of one kind in a vault by template and version.',
+            'body' => [
+                'The figures cover every record of the kind in the vault, counted when you ask. Archived records are counted in archived and nowhere else.',
+            ],
+            'rateLimit' => $rateLimit,
+            'pathParams' => $kindParams,
+            'returns' => 'The statistics. A vault or an entity type of another account answers 404.',
+            'response' => ['data' => [
+                'type' => 'record_statistics',
+                'attributes' => [
+                    'kind' => ['id' => $animalsId, 'singular' => 'Animal', 'plural' => 'Animals'],
+                    'overview' => ['records' => 18, 'templates_in_use' => 2, 'on_older_versions' => 3, 'archived' => 2, 'partial' => null],
+                    'templates' => [
+                        ['id' => $petId, 'name' => 'Pet', 'is_default' => true, 'is_active' => true, 'records' => 14, 'share' => 78, 'published_version' => 3, 'versions' => [
+                            ['number' => 3, 'records' => 11, 'is_published' => true],
+                            ['number' => 2, 'records' => 3, 'is_published' => false],
+                        ]],
+                    ],
+                ],
+                'links' => ['self' => $base.'/vaults/'.$vaultId.'/record-kinds/'.$animalsId.'/statistics'],
+            ]],
+        ],
+        [
+            'id' => 'record-kinds-statistics-fields-show',
+            'returnFields' => [
+                ['name' => 'data', 'type' => 'object', 'description' => 'The completion of each field.'],
+                ['name' => 'data.type', 'type' => 'string', 'description' => 'Always field_completion.'],
+                ['name' => 'data.attributes', 'type' => 'object', 'description' => 'The figures.'],
+                ['name' => 'data.attributes.template', 'type' => 'uuid', 'description' => 'The id of the template counted.'],
+                ['name' => 'data.attributes.version', 'type' => 'integer', 'description' => 'The version counted. Null for every version.'],
+                ['name' => 'data.attributes.records', 'type' => 'integer', 'description' => 'How many records follow it, partial contacts left out.'],
+                ['name' => 'data.attributes.sections', 'type' => 'array', 'description' => 'The sections of the template, each with its fields. Empty when no record follows it.'],
+                ['name' => 'data.attributes.sections[]', 'type' => 'object', 'description' => 'One section.'],
+                ['name' => 'data.attributes.sections[].name', 'type' => 'string', 'description' => 'What the section is called.'],
+                ['name' => 'data.attributes.sections[].fields', 'type' => 'array', 'description' => 'Its fields, in the order asked for.'],
+                ['name' => 'data.attributes.sections[].fields[]', 'type' => 'object', 'description' => 'One field.'],
+                ['name' => 'data.attributes.sections[].fields[].key', 'type' => 'string', 'description' => 'The key of the field.'],
+                ['name' => 'data.attributes.sections[].fields[].label', 'type' => 'string', 'description' => 'What it is called.'],
+                ['name' => 'data.attributes.sections[].fields[].filled', 'type' => 'integer', 'description' => 'How many records hold at least one value in it. A value set aside does not count.'],
+                ['name' => 'data.attributes.sections[].fields[].offered_to', 'type' => 'integer', 'description' => 'How many records are on a version that has the field.'],
+                ['name' => 'data.attributes.sections[].fields[].percentage', 'type' => 'integer', 'description' => 'filled out of offered_to, rounded. Null when offered_to is 0.'],
+                ['name' => 'data.attributes.sections[].fields[].available_from', 'type' => 'integer', 'description' => 'The first version with the field, when some versions counted lack it. Null when every version has it.'],
+                ['name' => 'data.attributes.hidden_count', 'type' => 'integer', 'description' => 'How many sensitive fields are left out, because the key does not hold the sensitive fields scope.'],
+            ],
+            'title' => 'Get the completion of each field',
+            'label' => 'Get field completion',
+            'method' => 'GET',
+            'path' => '/vaults/{vault}/record-kinds/{recordKind}/statistics/fields',
+            'examplePath' => '/vaults/'.$vaultId.'/record-kinds/'.$animalsId.'/statistics/fields?template='.$petId,
+            'description' => 'Say, for one template, how many records fill in each of its fields.',
+            'body' => [
+                'A record counts once per field, however many values it holds there. A field added in a later version is counted against the records on the versions that have it.',
+            ],
+            'rateLimit' => $rateLimit,
+            'pathParams' => $kindParams,
+            'queryParams' => [
+                ['name' => 'template', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the template, as the statistics give it.', 'example' => $petId],
+                ['name' => 'version', 'type' => 'integer', 'required' => false, 'description' => 'One version number. Leave it out to count every version.'],
+                ['name' => 'order', 'type' => 'string', 'required' => false, 'default' => 'lowest', 'description' => 'lowest puts the least filled fields of each section first, form keeps the order of the form.'],
+            ],
+            'returns' => 'The completion of each field. A vault, an entity type or a template of another account, and a template of another kind, answer 404.',
+            'response' => ['data' => [
+                'type' => 'field_completion',
+                'attributes' => [
+                    'template' => $petId,
+                    'version' => null,
+                    'records' => 14,
+                    'sections' => [
+                        ['name' => 'Identification', 'fields' => [
+                            ['key' => 'microchip', 'label' => 'Microchip number', 'filled' => 5, 'offered_to' => 11, 'percentage' => 45, 'available_from' => 3],
+                        ]],
+                    ],
+                    'hidden_count' => 0,
+                ],
+            ]],
+        ],
+        [
+            'id' => 'record-kinds-template-change-preview-show',
+            'returnFields' => [
+                ['name' => 'data', 'type' => 'object', 'description' => 'What the change would do.'],
+                ['name' => 'data.type', 'type' => 'string', 'description' => 'Always template_change_preview.'],
+                ['name' => 'data.attributes', 'type' => 'object', 'description' => 'Everything the preview says.'],
+                ['name' => 'data.attributes.from', 'type' => 'uuid', 'description' => 'The id of the template the records leave.'],
+                ['name' => 'data.attributes.to', 'type' => 'uuid', 'description' => 'The id of the template they would move onto.'],
+                ['name' => 'data.attributes.to_version', 'type' => 'integer', 'description' => 'The number of the version they would move onto.'],
+                ['name' => 'data.attributes.counts', 'type' => 'object', 'description' => 'How many records each effect touches.'],
+                ['name' => 'data.attributes.counts.ready', 'type' => 'integer', 'description' => 'How many records can move. This is the number the change takes.'],
+                ['name' => 'data.attributes.counts.unchanged', 'type' => 'integer', 'description' => 'How many would have no value set aside or restored.'],
+                ['name' => 'data.attributes.counts.set_aside', 'type' => 'integer', 'description' => 'How many would have values set aside.'],
+                ['name' => 'data.attributes.counts.restored', 'type' => 'integer', 'description' => 'How many would have values set aside earlier brought back.'],
+                ['name' => 'data.attributes.counts.reminders_paused', 'type' => 'integer', 'description' => 'How many reminders would pause.'],
+                ['name' => 'data.attributes.counts.reminders_resumed', 'type' => 'integer', 'description' => 'How many reminders would run again.'],
+                ['name' => 'data.attributes.set_aside', 'type' => 'array', 'description' => 'The fields whose values would be set aside, most records first.'],
+                ['name' => 'data.attributes.set_aside[]', 'type' => 'object', 'description' => 'One field.'],
+                ['name' => 'data.attributes.set_aside[].label', 'type' => 'string', 'description' => 'What the field is called.'],
+                ['name' => 'data.attributes.set_aside[].section', 'type' => 'string', 'description' => 'The section it belongs to.'],
+                ['name' => 'data.attributes.set_aside[].records', 'type' => 'integer', 'description' => 'How many records it concerns.'],
+                ['name' => 'data.attributes.restored', 'type' => 'array', 'description' => 'The fields whose values would come back. Same shape as set_aside.'],
+                ['name' => 'data.attributes.restored[]', 'type' => 'object', 'description' => 'One field.'],
+                ['name' => 'data.attributes.restored[].label', 'type' => 'string', 'description' => 'What the field is called.'],
+                ['name' => 'data.attributes.restored[].section', 'type' => 'string', 'description' => 'The section it belongs to.'],
+                ['name' => 'data.attributes.restored[].records', 'type' => 'integer', 'description' => 'How many records it concerns.'],
+                ['name' => 'data.attributes.reminders_paused', 'type' => 'array', 'description' => 'The reminders that would pause, grouped by name.'],
+                ['name' => 'data.attributes.reminders_paused[]', 'type' => 'object', 'description' => 'One reminder name.'],
+                ['name' => 'data.attributes.reminders_paused[].name', 'type' => 'string', 'description' => 'What the reminder is called.'],
+                ['name' => 'data.attributes.reminders_paused[].records', 'type' => 'integer', 'description' => 'How many reminders of that name.'],
+                ['name' => 'data.attributes.reminders_resumed', 'type' => 'array', 'description' => 'The reminders that would run again. Same shape as reminders_paused.'],
+                ['name' => 'data.attributes.reminders_resumed[]', 'type' => 'object', 'description' => 'One reminder name.'],
+                ['name' => 'data.attributes.reminders_resumed[].name', 'type' => 'string', 'description' => 'What the reminder is called.'],
+                ['name' => 'data.attributes.reminders_resumed[].records', 'type' => 'integer', 'description' => 'How many reminders of that name.'],
+                ['name' => 'data.attributes.blocked', 'type' => 'array', 'description' => 'The ids of the records another running change already holds. They are left out of every count.'],
+                ['name' => 'data.attributes.blocked[]', 'type' => 'uuid', 'description' => 'The id of one such record.'],
+                ['name' => 'data.attributes.hidden_count', 'type' => 'integer', 'description' => 'How many sensitive fields the lists leave out, because the key does not hold the sensitive fields scope.'],
+            ],
+            'title' => 'Preview a change of template for many records',
+            'label' => 'Preview a change of template',
+            'method' => 'GET',
+            'path' => '/vaults/{vault}/record-kinds/{recordKind}/template-change-preview',
+            'examplePath' => '/vaults/'.$vaultId.'/record-kinds/'.$animalsId.'/template-change-preview?from='.$horseId.'&to='.$petId,
+            'description' => 'Say what moving every non-archived record of one template onto another would do, without changing anything.',
+            'body' => [
+                'Call this before POST /vaults/{vault}/record-kinds/{recordKind}/template-changes and show the result to the person. A value follows the matching field of the new version. A value without one is set aside, never deleted, and comes back if a later template has the field.',
+                'A sensitive field is named only to a key holding the sensitive fields scope. Otherwise it is counted in hidden_count.',
+            ],
+            'rateLimit' => $rateLimit,
+            'pathParams' => $kindParams,
+            'queryParams' => $batchParams,
+            'returns' => 'What the change would do. Nothing is written. A vault, an entity type or a template of another account answers 404. A destination that describes another kind of record, is turned off or has no published version answers 422 with the reason on to.',
+            'response' => ['data' => [
+                'type' => 'template_change_preview',
+                'attributes' => [
+                    'from' => $horseId,
+                    'to' => $petId,
+                    'to_version' => 3,
+                    'counts' => ['ready' => 3, 'unchanged' => 1, 'set_aside' => 2, 'restored' => 1, 'reminders_paused' => 1, 'reminders_resumed' => 1],
+                    'set_aside' => [['label' => 'Stable name', 'section' => 'Stable', 'records' => 2]],
+                    'restored' => [['label' => 'Microchip number', 'section' => 'Identification', 'records' => 1]],
+                    'reminders_paused' => [['name' => 'Farrier visit', 'records' => 1]],
+                    'reminders_resumed' => [['name' => 'Microchip renewal', 'records' => 1]],
+                    'blocked' => ['2f9c4b7e-1a3d-4e6f-8b0c-7d5a9e1f3c2b'],
+                    'hidden_count' => 0,
+                ],
+            ]],
+        ],
+        [
+            'id' => 'record-kinds-template-changes-create',
+            'returnFields' => $runningChangeFields,
+            'title' => 'Change the template of many records',
+            'label' => 'Change the template of many records',
+            'method' => 'POST',
+            'path' => '/vaults/{vault}/record-kinds/{recordKind}/template-changes',
+            'examplePath' => '/vaults/'.$vaultId.'/record-kinds/'.$animalsId.'/template-changes',
+            'description' => 'Move every non-archived record of one template in a vault onto another template, or onto the published version of the same one.',
+            'body' => [
+                'The records move in the background. The answer is the change, running, and GET /vaults/{vault}/template-changes/{templateChange} says how far it is.',
+                'Each record moves as a single contact does: its state is kept in its version history first, values with no matching field are set aside and never deleted, and reminders on them pause. A record that changed, was archived or was deleted after you confirmed is skipped. The change writes one entry in the account log.',
+            ],
+            'rateLimit' => $rateLimit,
+            'pathParams' => $kindParams,
+            'bodyParams' => $batchParams,
+            'returns' => 'The change, running. A vault, an entity type or a template of another account answers 404. A destination that describes another kind of record, is turned off or has no published version, and a batch with nothing left to move, answer 422 with the reason on to.',
+            'responseStatus' => 202,
+            'response' => ['data' => [
+                ...$change,
+                'attributes' => [
+                    ...$change['attributes'],
+                    'status' => 'running',
+                    'counts' => ['total' => 4, 'done' => 0, 'moved' => 0, 'skipped' => 0, 'failed' => 0],
+                    'not_moved' => [],
+                    'ended_at' => null,
+                ],
+            ]],
+        ],
+        [
+            'id' => 'template-changes-show',
+            'returnFields' => $changeFields,
+            'title' => 'Get a change of template',
+            'label' => 'Get a change of template',
+            'method' => 'GET',
+            'path' => '/vaults/{vault}/template-changes/{templateChange}',
+            'examplePath' => '/vaults/'.$vaultId.'/template-changes/'.$changeId,
+            'description' => 'Say how far a change of template is, and once it has finished, what became of each record.',
+            'rateLimit' => $rateLimit,
+            'pathParams' => [
+                ['name' => 'vault', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the vault.'],
+                ['name' => 'templateChange', 'type' => 'uuid', 'required' => true, 'description' => 'The id of the change, as POST /vaults/{vault}/record-kinds/{recordKind}/template-changes gives it.'],
+            ],
+            'returns' => 'The change. A vault or a change of another account answers 404.',
+            'response' => ['data' => $change],
+        ],
+    ],
+];

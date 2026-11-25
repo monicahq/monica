@@ -16,6 +16,18 @@
 
   <x-page-header :title="$viewModel->title()">
     <x-slot:actions>
+      <x-button :href="$viewModel->statisticsUrl()" type="button" variant="secondary" size="small" data-turbo="true" class="max-sm:hidden">
+        {{ __('Statistics') }}
+      </x-button>
+
+      <div class="sm:hidden">
+        <x-actions-menu :label="__('More actions for :name', ['name' => $viewModel->title()])">
+          <x-actions-menu.item :href="$viewModel->statisticsUrl()" data-turbo="true">
+            {{ __('Statistics') }}
+          </x-actions-menu.item>
+        </x-actions-menu>
+      </div>
+
       <x-button
         :href="$addRefusal === null ? $viewModel->addUrl() : null"
         type="button"
@@ -39,6 +51,20 @@
     <p id="entity-add-refusal" class="max-w-reading-narrow text-sm text-pretty text-muted">{{ $addRefusal }}</p>
   @endif
 
+  @if ($viewModel->templateChips() !== [])
+    <div class="flex flex-wrap items-center gap-2" aria-label="{{ __('Filters') }}" role="group">
+      @foreach ($viewModel->templateChips() as $chip)
+        <x-chip :href="$chip['url']" data-turbo="true">
+          {{ $chip['label'] }}
+          <span class="sr-only">{{ __('Remove this filter') }}</span>
+          <x-icon name="close" :size="12" aria-hidden="true" />
+        </x-chip>
+      @endforeach
+
+      <x-link :href="$viewModel->clearFiltersUrl()" class="text-sm focus-ring">{{ __('Clear filters') }}</x-link>
+    </div>
+  @endif
+
   <x-list-panel :items="$entities" :paginator="$entities" :size="$viewModel->size()" :default="$viewModel->defaultSize()">
     @foreach ($entities as $entity)
       <a
@@ -49,6 +75,8 @@
         <x-contact-avatar :name="$entity['name']" :url="$entity['avatarUrl']" :size="32" alt="" />
 
         <span class="truncate text-base font-semibold text-ink">{{ $entity['name'] }}</span>
+
+        <span class="ml-auto max-w-[40%] min-w-0 truncate text-sm text-muted">{{ $entity['template'] }}</span>
 
         @if ($entity['isArchived'])
           <x-badge>{{ __('Archived') }}</x-badge>

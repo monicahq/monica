@@ -41,13 +41,13 @@ class MoveRecordToStructureVersion
 {
     private StructureVersion $from;
 
-    private ?FieldCorrespondence $correspondence = null;
-
     public function __construct(
         private readonly User $user,
         private readonly Contact|Entity $record,
         private readonly StructureVersion $structureVersion,
         private readonly bool $writesToLog = true,
+        private ?FieldCorrespondence $correspondence = null,
+        private readonly bool $reindexes = true,
     ) {}
 
     public function execute(): Contact|Entity
@@ -82,7 +82,10 @@ class MoveRecordToStructureVersion
             return $this->record->refresh();
         }
 
-        $this->record->searchable();
+        if ($this->reindexes) {
+            $this->record->searchable();
+        }
+
         $this->log();
 
         return $this->record;
@@ -142,6 +145,10 @@ class MoveRecordToStructureVersion
 
     private function correspondence(): FieldCorrespondence
     {
+        if ($this->correspondence instanceof FieldCorrespondence && $this->correspondence->target->id !== $this->structureVersion->id) {
+            throw new InvalidArgumentException('This correspondence was built for another version.');
+        }
+
         return $this->correspondence ??= new FieldCorrespondence($this->structureVersion);
     }
 
