@@ -13,6 +13,7 @@ use Carbon\CarbonImmutable;
  */
 readonly class ChangelogEntry
 {
+    /** @param  list<ChangelogScreenshot>  $screenshots */
     public function __construct(
         public string $id,
         public string $title,
@@ -22,6 +23,7 @@ readonly class ChangelogEntry
         public ?string $link,
         public string $body,
         public string $file,
+        public array $screenshots = [],
     ) {}
 
     public function day(): string

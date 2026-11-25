@@ -33,6 +33,10 @@
         <div id="changelog-fix-{{ $fix['id'] }}" x-show="expanded" x-cloak class="flex flex-col gap-2.5 px-3.5 pb-3.5 pl-10">
           <div class="text-base text-body text-pretty [&_a]:underline [&_p+p]:mt-2">{!! $fix['bodyHtml'] !!}</div>
 
+          @if ($fix['screenshots'] !== [])
+            <x-screenshot-gallery :screenshots="$fix['screenshots']" :id="$fix['id']" :title="$fix['title']" :grid="true" />
+          @endif
+
           @if ($feedback)
             @include('app.changelog._feedback', ['entry' => $fix])
           @endif

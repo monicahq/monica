@@ -61,13 +61,63 @@ reminder email mentions it too.
 | `published_at` | Required. The current time in UTC, ending in `Z`: `date -u +%Y-%m-%dT%H:%M:%SZ`. |
 | `area` | Optional. The part of Monica it touches, as the reader names it: `Contacts`, `Vault`, `Reminders`, `Account settings`. |
 | `link` | Optional. A path inside the application, starting with a single `/`. Never a full URL. |
+| `screenshot_1` to `screenshot_6` | Optional. One line, in English, saying what the screenshot shows. See [Screenshots](#screenshots). |
 | body | Required. Markdown, in English: how it was before, then what changes now. |
 
 Every front matter value fits on one line. Only the body may span several.
 
-4. Run `php artisan monica:localize`, then translate what it reports as missing in every locale, following the [translations skill](../translations/SKILL.md). The title, the area and the body are translation keys like any other string, so the subagents doing the translation are Sonnet ones, as always. `php artisan monica:localize --check` fails until every locale has them.
-5. Run `php artisan test --compact tests/Unit/Helpers/ChangelogEntriesTest.php`. It refuses a missing field, an invalid or duplicate ULID, an unknown type, a malformed date and a link that leaves the application.
-6. Commit the entry and its translations in the same pull request as the change it describes.
+4. When the change can be seen, add its screenshots as [Screenshots](#screenshots) says.
+5. Run `php artisan monica:localize`, then translate what it reports as missing in every locale, following the [translations skill](../translations/SKILL.md). The title, the area, the body and the screenshot descriptions are translation keys like any other string, so the subagents doing the translation are Sonnet ones, as always. `php artisan monica:localize --check` fails until every locale has them.
+6. Run `php artisan test --compact tests/Unit/Helpers/ChangelogEntriesTest.php`. It refuses a missing field, an invalid or duplicate ULID, an unknown type, a malformed date, a link that leaves the application, and every screenshot defect listed below.
+7. Commit the entry, its screenshots and its translations in the same pull request as the change it describes.
+
+## Screenshots
+
+An entry about something a person can see carries screenshots, wherever the change can be shown: a new screen, a new or moved button, a changed layout, a new state of a form. An entry with nothing to see (a fix in an email, a performance gain, an API change) carries none.
+
+### What to capture
+
+- **One screenshot.** Add a second only when it shows something the first cannot. Six at most.
+- **The step that shows the most value.** A change spread over several screens or steps is shown by the one where the reader sees what they gain, never by the confirmation or congratulation screen at the end. Capture the other steps only when the request asks for them.
+- **The part that changed.** Frame and zoom on the element or region, with enough around it to recognise where it is. Leave out the top bar, the sidebar and the empty page around it, unless the change is in them.
+- **The example account**, in English and the light theme, so every screenshot reads the same way.
+
+### How to take it
+
+Use Iris, as the [take-screenshot skill](../take-screenshot/SKILL.md) says, through a signed link to the screen, with the debug bar off:
+
+```bash
+php artisan monica:screenshot-link monica.geller@centralperk.example --to=/vaults/<vault>/contacts/<contact>
+iris '<the link>' --selector '<css of the part that changed>' --padding 24 --scale 2 --size 720x900 -o /tmp/<id>-1.png
+```
+
+- **Always `--scale 2`.** What's new shows every screenshot as a double density image, at half its pixel size: a capture 1440 pixels wide is drawn 720 pixels wide, and stays sharp on a high density screen. A capture taken at `--scale 1` would be drawn at half the size it should be.
+- **A narrow window, about 720 pixels.** What's new keeps the proportions of the image and never crops it. Its column is about 690 pixels wide, so a capture wider than that is shrunk to fit, and a long thin strip ends up unreadable. A narrow window makes the screen wrap its content onto several lines, which gives a compact image that reads at its natural size. Widen `--size` only when the change needs the room, and never beyond 800 pixels.
+- **The part that changed, with `--selector`.** When no single element holds the change, drop `--selector` and give `--size` the width and height of the region instead.
+- Iris opens a URL and nothing else, so the step you capture has to be reachable by its address.
+- The signature of the link covers the scheme. When the local server redirects `http` to `https`, mint the link with `APP_URL` set to the `https` address for that one command, or the screen answers "Invalid signature".
+
+Open the image and look at it before going further. A crop that cuts the change, shows a loading state, or lands on another screen (a sign in, an email confirmation) is taken again.
+
+### How to store and declare it
+
+1. Convert it to WebP, named after the entry's `id` and the screenshot's position, without resizing it:
+
+```bash
+magick /tmp/<id>-1.png -quality 82 public/changelog/<id>-1.webp
+```
+
+Never resize the capture. Shrinking it breaks the double density, and What's new would draw it smaller than the screen it shows. The file must stay under 1 MB, which a capture of a region a few hundred pixels wide stays well under.
+
+2. Declare it in the front matter, its value saying what it shows:
+
+```markdown
+screenshot_1: The age next to a birthday on a contact page
+```
+
+Number the screenshots from 1 without a gap. The order of the numbers is the order the reader sees them in.
+
+The test of step 6 refuses a declared screenshot whose file is missing, a file that is not a valid WebP image or is over 1 MB, an empty description, a gap in the numbers, more than six screenshots, and a file in `public/changelog` that no entry declares.
 
 ## How to word it
 

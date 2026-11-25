@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Resources;
 
 use App\Helpers\ChangelogEntry;
+use App\Helpers\ChangelogScreenshot;
 use App\Helpers\KnowledgeMarkdown;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -29,6 +30,13 @@ class ChangelogEntryResource extends JsonResource
                 'body' => __($entry->body),
                 'body_html' => KnowledgeMarkdown::toHtml(__($entry->body)),
                 'link' => $entry->link === null ? null : url($entry->link),
+                'screenshots' => array_map(fn (ChangelogScreenshot $screenshot): array => [
+                    'position' => $screenshot->position,
+                    'url' => $screenshot->url(),
+                    'description' => __($screenshot->description),
+                    'width' => $screenshot->width,
+                    'height' => $screenshot->height,
+                ], $entry->screenshots),
                 'day' => $entry->day(),
                 'is_seen' => $this->resource['isSeen'],
                 'my_vote' => $this->resource['myVote'],
