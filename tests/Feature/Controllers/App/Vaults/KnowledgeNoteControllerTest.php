@@ -55,7 +55,8 @@ class KnowledgeNoteControllerTest extends TestCase
             ->assertSee('name="body_hash"', escape: false)
             ->assertSee('&lt;script&gt;', escape: false)
             ->assertDontSee('<script>alert(1)</script>', escape: false)
-            ->assertSee(route('knowledge.noteTasks.update', [$vault, $note]), escape: false);
+            ->assertSee(route('knowledge.noteTasks.update', [$vault, $note]), escape: false)
+            ->assertSee(route('knowledge.noteMarkdown.show', [$vault, $note]), escape: false);
     }
 
     #[Test]

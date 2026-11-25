@@ -173,6 +173,7 @@ use App\Http\Controllers\App\Vaults\KnowledgeListColumnPositionController;
 use App\Http\Controllers\App\Vaults\KnowledgeListController;
 use App\Http\Controllers\App\Vaults\KnowledgeListItemController;
 use App\Http\Controllers\App\Vaults\KnowledgeNoteController;
+use App\Http\Controllers\App\Vaults\KnowledgeNoteMarkdownController;
 use App\Http\Controllers\App\Vaults\KnowledgeNoteTaskController;
 use App\Http\Controllers\App\Vaults\PossessionController;
 use App\Http\Controllers\App\Vaults\PossessionFeaturedController;
@@ -645,6 +646,7 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::put('vaults/{vault}/knowledge/notes/{knowledgeNote}', [KnowledgeNoteController::class, 'update'])->whereUuid('knowledgeNote')->name('knowledge.notes.update');
     Route::delete('vaults/{vault}/knowledge/notes/{knowledgeNote}', [KnowledgeNoteController::class, 'destroy'])->whereUuid('knowledgeNote')->name('knowledge.notes.destroy');
     Route::put('vaults/{vault}/knowledge/notes/{knowledgeNote}/tasks', [KnowledgeNoteTaskController::class, 'update'])->whereUuid('knowledgeNote')->name('knowledge.noteTasks.update');
+    Route::get('vaults/{vault}/knowledge/notes/{knowledgeNote}/markdown', [KnowledgeNoteMarkdownController::class, 'show'])->whereUuid('knowledgeNote')->name('knowledge.noteMarkdown.show');
     Route::post('vaults/{vault}/knowledge/lists', [KnowledgeListController::class, 'create'])->name('knowledge.lists.create');
     Route::get('vaults/{vault}/knowledge/lists/{knowledgeList}', [KnowledgeListController::class, 'show'])->whereUuid('knowledgeList')->name('knowledge.lists.show');
     Route::get('vaults/{vault}/knowledge/lists/{knowledgeList}/edit', [KnowledgeListController::class, 'edit'])->whereUuid('knowledgeList')->name('knowledge.lists.edit');
