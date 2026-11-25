@@ -700,6 +700,14 @@ class ContactViewModel
             'url' => route('contacts.reminders.index', ['vault' => $this->vault, 'contact' => $this->contact]),
         ];
 
+        $facts[] = [
+            'icon' => 'layers',
+            'label' => __('Template'),
+            'value' => $this->contact->structureVersion->structure->owner->name,
+            'reminder' => null,
+            'url' => $this->templateUrl(),
+        ];
+
         return $facts;
     }
 

@@ -25,8 +25,8 @@
 
   <ul class="mt-4 flex list-none flex-wrap gap-x-5.5 gap-y-2">
     @foreach ($viewModel->headerFacts() as $fact)
-      <li class="flex items-center gap-1.75 text-sm text-body">
-        <x-icon :name="$fact['icon']" :size="16" :stroke-width="1.5" class="text-muted" />
+      <li class="flex min-w-0 items-center gap-1.75 text-sm wrap-anywhere text-body">
+        <x-icon :name="$fact['icon']" :size="16" :stroke-width="1.5" class="shrink-0 text-muted" />
         @if (isset($fact['url']))
           <a href="{{ $fact['url'] }}" data-turbo="true" class="rounded-xs text-body no-underline hover:text-link focus-ring">
             {{ $fact['label'] }} <b class="font-semibold text-ink">{{ $fact['value'] }}</b>
