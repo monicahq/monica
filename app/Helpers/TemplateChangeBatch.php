@@ -56,7 +56,7 @@ class TemplateChangeBatch
             ->get(['id', 'structure_version_id'])
             ->keyBy('id');
 
-        return $this->records = $records
+        return $this->records = $records;
     }
 
     /** @return array<int, true> */
