@@ -20,6 +20,6 @@ readonly class ChangelogScreenshot
 
     public function url(): string
     {
-        return asset("changelog/{$this->file}");
+        return asset("images/changelog/{$this->file}");
     }
 }

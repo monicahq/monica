@@ -57,7 +57,7 @@ class ScreenshotGalleryTest extends TestCase
     private function gallery(int $count): TestView
     {
         $screenshots = array_map(fn (int $position): array => [
-            'url' => "https://monica.test/changelog/01M7NBFWK5XNH908RFDGEAJXKN-{$position}.webp",
+            'url' => "https://monica.test/images/changelog/01M7NBFWK5XNH908RFDGEAJXKN-{$position}.webp",
             'description' => $position === 1 ? 'Dwight at the reception desk' : "Screenshot number {$position}",
             'width' => 1600,
             'height' => 1000,
