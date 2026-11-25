@@ -1,11 +1,17 @@
 ---
 name: speckit-assess-decide
-description: Apply a go / needs-clarification / kill gate and hand survivors off into Spec-Driven Development
+description: Apply a go / needs-clarification / kill gate and hand survivors off into
+  Spec-Driven Development
 compatibility: Requires spec-kit project structure with .specify/ directory
 metadata:
   author: spec-kit-core
-  source: assess:commands/speckit.assess.decide.md
+  source: extension:assess
+  version: 1.0.2
+user-invocable: true
+disable-model-invocation: false
 ---
+
+# Assess Decide Skill
 
 # Decide: Go, Clarify, or Kill
 

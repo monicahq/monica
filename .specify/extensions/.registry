@@ -30,7 +30,27 @@
           "speckit.companion.on-stop"
         ]
       },
-      "registered_skills": [],
+      "registered_skills": [
+        "speckit-companion-before-step",
+        "speckit-companion-after-specify",
+        "speckit-companion-after-plan",
+        "speckit-companion-after-tasks",
+        "speckit-companion-after-implement",
+        "speckit-companion-before-converge",
+        "speckit-companion-after-converge",
+        "speckit-companion-status",
+        "speckit-companion-resume",
+        "speckit-companion-specify",
+        "speckit-companion-plan",
+        "speckit-companion-tasks",
+        "speckit-companion-implement",
+        "speckit-companion-classify",
+        "speckit-companion-mark-complete",
+        "speckit-companion-auto",
+        "speckit-companion-doctor",
+        "speckit-companion-on-prompt",
+        "speckit-companion-on-stop"
+      ],
       "installed_at": "2026-11-21T10:43:27.441067+00:00"
     },
     "bug": {
@@ -46,7 +66,11 @@
           "speckit.bug.test"
         ]
       },
-      "registered_skills": [],
+      "registered_skills": [
+        "speckit-bug-assess",
+        "speckit-bug-fix",
+        "speckit-bug-test"
+      ],
       "installed_at": "2026-11-21T10:43:28.086460+00:00"
     },
     "assess": {
@@ -64,7 +88,13 @@
           "speckit.assess.decide"
         ]
       },
-      "registered_skills": [],
+      "registered_skills": [
+        "speckit-assess-intake",
+        "speckit-assess-research",
+        "speckit-assess-define",
+        "speckit-assess-shape",
+        "speckit-assess-decide"
+      ],
       "installed_at": "2026-11-21T10:43:28.573744+00:00"
     },
     "archive": {
@@ -78,7 +108,9 @@
           "speckit.archive.run"
         ]
       },
-      "registered_skills": [],
+      "registered_skills": [
+        "speckit-archive-run"
+      ],
       "installed_at": "2026-11-21T10:43:31.403529+00:00"
     }
   }

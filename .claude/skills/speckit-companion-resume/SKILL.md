@@ -1,11 +1,17 @@
 ---
 name: speckit-companion-resume
-description: Continue the spec-driven pipeline from the last completed step, carrying recorded decisions into scope, and dispatch the next command
+description: Continue the spec-driven pipeline from the last completed step, carrying
+  recorded decisions into scope, and dispatch the next command
 compatibility: Requires spec-kit project structure with .specify/ directory
 metadata:
   author: alfredoperez
-  source: companion:commands/speckit.companion.resume.md
+  source: extension:companion
+  version: 0.28.0
+user-invocable: true
+disable-model-invocation: false
 ---
+
+# Companion Resume Skill
 
 # Resume Spec
 

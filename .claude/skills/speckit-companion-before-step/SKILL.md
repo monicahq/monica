@@ -1,11 +1,17 @@
 ---
 name: speckit-companion-before-step
-description: Capture a spec-kit step's start into .spec-context.json for the Companion GUI
+description: Capture a spec-kit step's start into .spec-context.json for the Companion
+  GUI
 compatibility: Requires spec-kit project structure with .specify/ directory
 metadata:
   author: alfredoperez
-  source: companion:commands/speckit.companion.before-step.md
+  source: extension:companion
+  version: 0.28.0
+user-invocable: true
+disable-model-invocation: false
 ---
+
+# Companion Before Step Skill
 
 # Capture Step Start
 

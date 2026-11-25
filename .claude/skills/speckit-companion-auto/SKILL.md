@@ -1,11 +1,17 @@
 ---
 name: speckit-companion-auto
-description: Companion auto — run the whole pipeline hands-off (specify → plan → tasks → implement → converge), no pauses
+description: Companion auto — run the whole pipeline hands-off (specify → plan → tasks
+  → implement → converge), no pauses
 compatibility: Requires spec-kit project structure with .specify/ directory
 metadata:
   author: alfredoperez
-  source: companion:commands/speckit.companion.auto.md
+  source: extension:companion
+  version: 0.28.0
+user-invocable: true
+disable-model-invocation: false
 ---
+
+# Companion Auto Skill
 
 ## User Input
 
