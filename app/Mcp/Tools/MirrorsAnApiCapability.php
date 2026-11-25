@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Mcp\Tools;
 
 use App\Enums\ApiKeyScopeEnum;
+use App\Helpers\RecordKind;
 use App\Helpers\SupportAvailability;
 use App\Http\Resources\GroupFileResource;
 use App\Http\Resources\GroupMembershipResource;
@@ -54,6 +55,7 @@ use App\Models\StructureVersionPage;
 use App\Models\StructureVersionSection;
 use App\Models\SupportRequest;
 use App\Models\Template;
+use App\Models\TemplateChange;
 use App\Models\User;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
@@ -320,6 +322,26 @@ trait MirrorsAnApiCapability
         }
 
         return $this->found($entityType);
+    }
+
+    protected function recordKind(Request $request, string $address): string
+    {
+        if ($address === RecordKind::CONTACTS) {
+            return $address;
+        }
+
+        return $this->entityType($request, $address)->uuid;
+    }
+
+    protected function templateChange(Vault $vault, string $address): TemplateChange
+    {
+        $templateChange = Str::isUuid($address) ? TemplateChange::query()->where('vault_id', $vault->id)->where('uuid', $address)->first() : null;
+
+        if ($templateChange === null) {
+            throw $this->doesNotExist(__('That change of template does not exist.'));
+        }
+
+        return $this->found($templateChange);
     }
 
     protected function entity(Vault $vault, string $address): Entity

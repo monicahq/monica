@@ -24,8 +24,9 @@ class FieldCorrespondence
     /** @var Collection<array-key, Collection<int, Field>> */
     private Collection $anywhere;
 
-    public function __construct(StructureVersion $target)
-    {
+    public function __construct(
+        public readonly StructureVersion $target,
+    ) {
         $ids = $target->assembly
             ->load('sectionVersion.fields')
             ->flatMap(fn ($row): array => $row->sectionVersion->fields->pluck('id')->all())

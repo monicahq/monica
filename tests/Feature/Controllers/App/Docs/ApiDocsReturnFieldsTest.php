@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\App\Docs;
 
 use App\Actions\CreateLifeEvent;
+use App\Actions\CreateTemplateChange;
 use App\Actions\MergeContacts;
 use App\Enums\AccountExportStatusEnum;
 use App\Enums\AccountImportOutcomeEnum;
@@ -23,7 +24,9 @@ use App\Enums\ValueListEnum;
 use App\Enums\VersionStatusEnum;
 use App\Helpers\AvailableLocales;
 use App\Helpers\ChangelogEntries;
+use App\Helpers\RecordKind;
 use App\Helpers\StripeCatalogue;
+use App\Jobs\ChangeTemplateOfRecords;
 use App\Jobs\CreateDefaultTemplate;
 use App\Models\AccountExport;
 use App\Models\AccountImport;
@@ -38,6 +41,7 @@ use App\Models\Contact;
 use App\Models\ContactDuplicateCandidate;
 use App\Models\ContactListColumn;
 use App\Models\EmailSent;
+use App\Models\Entity;
 use App\Models\EntityType;
 use App\Models\Field;
 use App\Models\FieldValue;
@@ -92,6 +96,8 @@ use App\Models\SupportMessage;
 use App\Models\SupportRequest;
 use App\Models\SupportStatusChange;
 use App\Models\Template;
+use App\Models\TemplateChange;
+use App\Models\TemplateChangeItem;
 use App\Models\User;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
@@ -112,6 +118,7 @@ use Laravel\Scout\EngineManager;
 use Laravel\Scout\Engines\CollectionEngine;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\Fixtures\Dav\Structure;
+use Tests\Fixtures\Statistics\AnimalsVault;
 use Tests\TestCase;
 
 class ApiDocsReturnFieldsTest extends TestCase
@@ -2366,6 +2373,70 @@ class ApiDocsReturnFieldsTest extends TestCase
                 return $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/template-version", []);
             }),
 
+            'record-kinds-statistics-show' => $this->asSomebody(function (User $user): TestResponse {
+                $fixture = AnimalsVault::build($user);
+
+                return $this->json('GET', "/api/v1/vaults/{$fixture->vault->uuid}/record-kinds/{$fixture->animals->uuid}/statistics");
+            }),
+            'record-kinds-statistics-fields-show' => $this->asSomebody(function (User $user): TestResponse {
+                $fixture = AnimalsVault::build($user);
+
+                return $this->json('GET', "/api/v1/vaults/{$fixture->vault->uuid}/record-kinds/{$fixture->animals->uuid}/statistics/fields", ['template' => $fixture->pet->uuid]);
+            }),
+            'record-kinds-template-change-preview-show' => $this->asSomebody(function (User $user): TestResponse {
+                $fixture = AnimalsVault::build($user);
+                $chip = FieldValue::factory()->detached()->create([
+                    'account_id' => $user->account_id,
+                    'vault_id' => $fixture->vault->id,
+                    'valuable_type' => Entity::class,
+                    'valuable_id' => $fixture->horses['Ulysse']->id,
+                    'field_id' => $fixture->fields['microchip']->id,
+                    'value_string' => '250777',
+                ]);
+                Reminder::factory()->for($chip, 'fieldValue')->create([
+                    'remindable_type' => Entity::class,
+                    'name' => 'Microchip renewal',
+                    'is_active' => false,
+                    'inactive_reason' => ReminderInactiveReasonEnum::FieldRemoved,
+                    'deactivated_at' => now(),
+                ]);
+                TemplateChangeItem::factory()->create([
+                    'template_change_id' => TemplateChange::factory()->create(['vault_id' => $fixture->vault->id])->id,
+                    'record_type' => Entity::class,
+                    'record_id' => $fixture->horses['Bijou']->id,
+                    'from_version_id' => $fixture->horseV1->id,
+                ]);
+
+                return $this->json('GET', "/api/v1/vaults/{$fixture->vault->uuid}/record-kinds/{$fixture->animals->uuid}/template-change-preview", [
+                    'from' => $fixture->horse->uuid,
+                    'to' => $fixture->pet->uuid,
+                ]);
+            }),
+            'record-kinds-template-changes-create' => $this->asSomebody(function (User $user): TestResponse {
+                Queue::fake();
+                $fixture = AnimalsVault::build($user);
+
+                return $this->json('POST', "/api/v1/vaults/{$fixture->vault->uuid}/record-kinds/{$fixture->animals->uuid}/template-changes", [
+                    'from' => $fixture->horse->uuid,
+                    'to' => $fixture->pet->uuid,
+                ]);
+            }),
+            'template-changes-show' => $this->asSomebody(function (User $user): TestResponse {
+                Queue::fake();
+                $fixture = AnimalsVault::build($user);
+                $change = new CreateTemplateChange(
+                    user: $user,
+                    kind: RecordKind::forEntityType(vault: $fixture->vault, entityType: $fixture->animals),
+                    source: $fixture->horse,
+                    versionNumbers: [],
+                    target: $fixture->pet,
+                )->execute();
+                $fixture->horses['Bijou']->update(['structure_version_id' => $fixture->birdV1->id]);
+                $ids = $change->items()->orderBy('id')->pluck('id');
+                new ChangeTemplateOfRecords(templateChange: $change, firstItemId: $ids->first(), lastItemId: $ids->last())->handle();
+
+                return $this->json('GET', "/api/v1/vaults/{$fixture->vault->uuid}/template-changes/{$change->uuid}");
+            }),
             'contacts-template-preview' => $this->asSomebody(function (User $user): TestResponse {
                 $vault = Vault::factory()->create(['account_id' => $user->account_id]);
                 $from = Template::factory()->published()->create(['account_id' => $user->account_id])->refresh();

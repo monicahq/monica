@@ -11,6 +11,7 @@ use App\Enums\SortDirectionEnum;
 use App\Helpers\ContactListCatalogue;
 use App\Helpers\ContactListCells;
 use App\Helpers\PageSize;
+use App\Helpers\TemplateFilter;
 use App\Models\Contact;
 use App\Models\ContactListColumn;
 use App\Models\User;
@@ -38,6 +39,7 @@ class ContactsViewModel
         private readonly SortDirectionEnum $direction = SortDirectionEnum::Ascending,
         private readonly int|string $size = self::PER_PAGE,
         private readonly array $categoryIds = [],
+        private readonly TemplateFilter $templateFilter = new TemplateFilter,
     ) {}
 
     public function size(): int|string
@@ -189,6 +191,7 @@ class ContactsViewModel
                 'direction' => ($isCurrent ? $otherWay : $firstWay)->value,
                 'size' => $this->sizeInUrl(),
                 'categories' => $this->categoryIds === [] ? null : $this->categoryIds,
+                ...$this->templateFilter->parameters(),
             ]),
             'ariaSort' => $isCurrent ? ($this->direction === SortDirectionEnum::Ascending ? 'ascending' : 'descending') : null,
         ];
@@ -341,7 +344,8 @@ class ContactsViewModel
             ->where('vault_id', $this->vault->id)
             ->inGrouping($this->grouping)
             ->matchingSearch($this->query)
-            ->when($this->categoryIds !== [], fn (Builder $query): Builder => $query->holdingAnyCategory($this->categoryIds, true));
+            ->when($this->categoryIds !== [], fn (Builder $query): Builder => $query->holdingAnyCategory($this->categoryIds, true))
+            ->when($this->templateFilter->isActive(), fn (Builder $query): Builder => $this->templateFilter->apply($query));
     }
 
     private function searchTerm(): string
@@ -443,7 +447,7 @@ class ContactsViewModel
 
     private function isNarrowed(): bool
     {
-        return $this->searchTerm() !== '' || $this->grouping !== ContactGroupingEnum::Everyone || $this->categoryIds !== [];
+        return $this->searchTerm() !== '' || $this->grouping !== ContactGroupingEnum::Everyone || $this->categoryIds !== [] || $this->templateFilter->isActive();
     }
 
     private function url(?ContactGroupingEnum $grouping = null): string
@@ -456,7 +460,36 @@ class ContactsViewModel
             'direction' => $this->direction->value,
             'size' => $this->sizeInUrl(),
             'categories' => $this->categoryIds === [] ? null : $this->categoryIds,
+            ...$this->templateFilter->parameters(),
         ]);
+    }
+
+    /** @return array{template: string|null, version: int|null, change: string|null} */
+    public function templateFilterParameters(): array
+    {
+        return $this->templateFilter->parameters();
+    }
+
+    /** @return list<array{label: string, url: string}> */
+    public function templateChips(): array
+    {
+        return array_map(fn (array $chip): array => [
+            'label' => $chip['label'],
+            'url' => route('contacts.index', [
+                'vault' => $this->vault,
+                'filter' => $this->grouping->value,
+                'query' => $this->query === '' ? null : $this->query,
+                'sort' => $this->sort->value,
+                'direction' => $this->direction->value,
+                'categories' => $this->categoryIds === [] ? null : $this->categoryIds,
+                ...$chip['parameters'],
+            ]),
+        ], $this->templateFilter->chips());
+    }
+
+    public function clearFiltersUrl(): string
+    {
+        return route('contacts.index', ['vault' => $this->vault, 'filter' => $this->grouping->value]);
     }
 
     private function sizeInUrl(): int|string|null
