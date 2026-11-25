@@ -506,6 +506,7 @@ class ContactViewModelTest extends TestCase
 
         $this->assertSame($first->id, $revert['versionId']);
         $this->assertSame(route('contacts.templateVersion.update', ['vault' => $contact->vault, 'contact' => $contact]), $revert['url']);
+        $this->assertNull($revert['template']);
         $this->assertNull($history[1]['refusal']);
     }
 
@@ -546,18 +547,41 @@ class ContactViewModelTest extends TestCase
     }
 
     #[Test]
-    public function a_version_of_another_template_says_why_it_cannot_be_reverted_to(): void
+    public function a_version_of_another_template_offers_a_revert_onto_that_template(): void
     {
         $user = User::factory()->create();
         $first = $this->version($user, ['Health' => ['Ongoing' => ['Knee']]], 'Acquaintance');
         $contact = $this->contact($user, $first);
         $elsewhere = $this->version($user, ['Health' => ['Ongoing' => ['Knee']]], 'Friend');
+        $first->structure->update(['published_version_id' => $first->id]);
 
         $this->moved($contact, $first, $elsewhere, $user, now()->subDay());
 
         $history = new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact->refresh())->versionHistory();
+        $revert = $history[1]['revert'];
+
+        $this->assertSame($first->id, $revert['versionId']);
+        $this->assertSame($first->structure->owner->uuid, $revert['template']);
+        $this->assertSame(route('contacts.template.update', ['vault' => $contact->vault, 'contact' => $contact]), $revert['url']);
+        $this->assertNull($history[1]['refusal']);
+    }
+
+    #[Test]
+    public function a_version_of_a_template_turned_off_says_why_it_cannot_be_reverted_to(): void
+    {
+        $user = User::factory()->create();
+        $first = $this->version($user, ['Health' => ['Ongoing' => ['Knee']]], 'Acquaintance');
+        $contact = $this->contact($user, $first);
+        $elsewhere = $this->version($user, ['Health' => ['Ongoing' => ['Knee']]], 'Friend');
+        $first->structure->update(['published_version_id' => $first->id]);
+
+        $this->moved($contact, $first, $elsewhere, $user, now()->subDay());
+        $first->structure->owner->update(['is_active' => false]);
+
+        $history = new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact->refresh())->versionHistory();
 
         $this->assertNull($history[1]['revert']);
+        $this->assertNotNull($history[1]['refusal']);
     }
 
     #[Test]

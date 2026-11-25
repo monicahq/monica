@@ -151,6 +151,7 @@ use App\Http\Controllers\App\Vaults\ContactReminderFormController;
 use App\Http\Controllers\App\Vaults\ContactSectionController;
 use App\Http\Controllers\App\Vaults\ContactShareLinkController;
 use App\Http\Controllers\App\Vaults\ContactStructureVersionController;
+use App\Http\Controllers\App\Vaults\ContactTemplateController;
 use App\Http\Controllers\App\Vaults\ContactVCardController;
 use App\Http\Controllers\App\Vaults\EntityController;
 use App\Http\Controllers\App\Vaults\FieldChoiceController;
@@ -451,6 +452,9 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
 
     Route::put('vaults/{vault}/contacts/{contact}/template-version', [ContactStructureVersionController::class, 'update'])
         ->name('contacts.templateVersion.update');
+
+    Route::put('vaults/{vault}/contacts/{contact}/template', [ContactTemplateController::class, 'update'])
+        ->name('contacts.template.update');
 
     Route::get('vaults/{vault}/contacts/{contact}/sections/{structureVersionSection}/edit', [ContactSectionController::class, 'edit'])
         ->whereNumber('structureVersionSection')

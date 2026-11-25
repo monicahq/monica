@@ -15,24 +15,7 @@
     <x-vault.sidebar :user="$viewModel->user()" :vault="$vault" current="contacts" />
   </x-slot:sidebar>
 
-  <x-page-header :title="$viewModel->title()" :description="$viewModel->description()">
-    @if ($viewModel->template())
-      <x-slot:actions>
-        <div class="flex flex-col items-end gap-1 max-sm:items-start">
-          <x-caption id="current-template" tone="muted">{{ __('Current template') }}</x-caption>
-          <a
-            href="{{ $viewModel->templateUrl() }}"
-            aria-describedby="current-template"
-            class="inline-flex max-w-full items-center gap-1.5 rounded-md border border-hairline bg-canvas px-2.5 py-1.5 text-sm font-medium text-ink no-underline transition-colors hover:bg-hover focus-ring"
-          >
-            <x-icon name="layers" :size="15" />
-            <span class="min-w-0 wrap-anywhere">{{ $viewModel->template()->name }}</span>
-            <x-icon name="arrow-right" :size="14" class="text-muted" />
-          </a>
-        </div>
-      </x-slot:actions>
-    @endif
-  </x-page-header>
+  <x-page-header :title="$viewModel->title()" :description="$viewModel->description()" />
 
   <x-panel
     :title="__('Photo')"
@@ -133,6 +116,189 @@
       <x-button type="submit" ::aria-disabled="held" aria-describedby="name-form-held">{{ __('Save the name') }}</x-button>
     </div>
   </x-form>
+
+  @if ($viewModel->showsTemplatePanel())
+    <x-panel :title="__('Template')" :subtitle="$viewModel->templateSubtitle()" icon="layers" :clip="false">
+      <div class="flex flex-col gap-4" x-data="{ consequencesShown: false }">
+        <div class="flex max-w-105 flex-col gap-1.5">
+          <div class="flex items-center gap-1.5">
+            <span id="template-label" class="text-sm font-medium text-ink">{{ $viewModel->templateLabel() }}</span>
+
+            <x-help
+              :label="__('Help about the template of a contact')"
+              :title="__('What changing the template means')"
+              guide="contacts.change-template"
+            >{{ $viewModel->templateHelp() }}</x-help>
+          </div>
+
+          <x-actions-menu
+            :label="__('Template')"
+            variant="control"
+            width="full"
+            trigger-id="template-trigger"
+            labelledby="template-label template-current"
+            :describedby="$errors->has('template') ? 'template-error' : null"
+          >
+            <x-slot:text>
+              <span id="template-current" class="flex min-w-0 flex-1 flex-wrap items-baseline gap-x-2.5">
+                <span class="min-w-0 font-medium wrap-anywhere">{{ $viewModel->currentTemplateName() }}</span>
+
+                @if ($viewModel->currentVersionLabel())
+                  <span class="text-sm text-muted">{{ $viewModel->currentVersionLabel() }}</span>
+                @endif
+              </span>
+            </x-slot:text>
+
+            @foreach ($viewModel->templateChoices() as $choice)
+              <div
+                class="flex flex-col gap-0.5 pb-1"
+                @if ($choice['countLabel']) role="group" aria-labelledby="template-group-{{ $loop->index }}" @endif
+              >
+                @if ($choice['countLabel'])
+                  <p id="template-group-{{ $loop->index }}" class="flex items-baseline gap-2 px-2.5 pt-2.5 pb-1">
+                    <span class="text-sm font-semibold text-ink wrap-anywhere">{{ $choice['name'] }}</span>
+                    <span class="text-xs text-muted">{{ $choice['countLabel'] }}</span>
+                  </p>
+                @endif
+
+                @foreach ($choice['versions'] as $version)
+                  <x-actions-menu.item
+                    :href="$version['url']"
+                    :checked="$version['isCurrent']"
+                    x-target="template-change"
+                    :indented="$choice['countLabel'] !== null"
+                  >
+                    <span class="min-w-0 flex-1 wrap-anywhere">{{ $version['label'] }}</span>
+
+                    @if ($version['hint'] !== '')
+                      <span class="shrink-0 text-xs text-muted">{{ $version['hint'] }}</span>
+                    @endif
+
+                    <x-icon name="check" :size="15" :stroke-width="2" @class(['shrink-0', 'invisible' => ! $version['isCurrent']]) />
+                  </x-actions-menu.item>
+                @endforeach
+              </div>
+            @endforeach
+          </x-actions-menu>
+
+          @error('template')
+            <p id="template-error" class="text-sm text-error">{{ $message }}</p>
+          @enderror
+        </div>
+
+        <div
+          id="template-change"
+          x-merge="update"
+          @ajax:merged="if (! $el.querySelector('[x-autofocus]')) document.getElementById('template-trigger')?.focus()"
+          class="flex flex-col gap-4"
+        >
+          @if ($change = $viewModel->pendingChange())
+            <section aria-labelledby="template-change-title" class="flex flex-col overflow-hidden rounded-lg border border-hairline bg-canvas shadow-panel">
+              <div class="flex flex-col gap-4 p-5">
+                <div class="flex flex-col gap-1.5">
+                  <h3 id="template-change-title" tabindex="-1" x-autofocus class="text-base font-semibold text-pretty text-ink focus:outline-none">{{ $change['title'] }}</h3>
+
+                  @if ($change['refusal'])
+                    <p id="template-refusal" class="text-sm text-error">{{ $change['refusal'] }}</p>
+                  @else
+                    <p class="text-sm text-pretty text-body">{{ $change['sentence'] }}</p>
+                  @endif
+                </div>
+
+                @if (($groups = $viewModel->preview()) !== null)
+                  <div class="flex items-start gap-2.5">
+                    <x-icon name="check" :size="16" :stroke-width="2" class="mt-px text-success" />
+
+                    <p class="text-sm text-pretty text-body">
+                      <strong class="font-semibold text-ink">{{ __('No data will be lost.') }}</strong>
+                      {{ __('Any information that doesn’t have a matching field in the new template will remain accessible in Unused answers.') }}
+                    </p>
+                  </div>
+
+                  @foreach ($groups as $group)
+                    <div class="flex flex-col gap-2">
+                      <p class="text-sm font-semibold text-ink">{{ $group['title'] }}</p>
+
+                      <ul class="flex flex-col divide-y divide-hairline rounded-md border border-hairline">
+                        @foreach ($group['lines'] as $line)
+                          <li class="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 px-3 py-2">
+                            <span class="text-sm font-medium text-ink wrap-anywhere">
+                              {{ $line['text'] }}
+                              @if ($line['count'])
+                                <span class="font-normal text-muted">{{ $line['count'] }}</span>
+                              @endif
+                            </span>
+
+                            @if ($line['section'])
+                              <span class="flex items-center gap-1.5 text-xs text-muted">
+                                <x-icon name="folder" :size="14" />
+                                {{ $line['section'] }}
+                              </span>
+                            @endif
+                          </li>
+                        @endforeach
+                      </ul>
+
+                      @if ($group['note'])
+                        <p class="text-xs text-pretty text-muted">{{ $group['note'] }}</p>
+                      @endif
+                    </div>
+                  @endforeach
+                @endif
+              </div>
+
+              <div class="flex flex-wrap items-center justify-between gap-3 border-t border-hairline bg-card px-5 py-3">
+                <p class="text-xs text-muted">{{ __('You can switch back to your previous template at any time.') }}</p>
+
+                <div class="flex flex-wrap gap-2">
+                  <x-button.secondary :href="$change['cancelUrl']" x-target="template-change">{{ __('Cancel') }}</x-button.secondary>
+
+                  @if ($change['refusal'])
+                    <x-button type="button" aria-disabled="true" aria-describedby="template-refusal">{{ __('Change template') }}</x-button>
+                  @else
+                    <x-form method="put" :action="$change['action']">
+                      <input type="hidden" name="template" value="{{ $change['template'] }}" />
+                      <input type="hidden" name="structure_version_id" value="{{ $change['versionId'] }}" />
+
+                      <x-button type="submit">{{ __('Change template') }}</x-button>
+                    </x-form>
+                  @endif
+                </div>
+              </div>
+            </section>
+          @else
+            <p class="text-sm text-muted">
+              {{ __('Changing a template will have some consequences.') }}
+              <button
+                type="button"
+                class="cursor-pointer font-medium text-ink underline underline-offset-2 focus-ring"
+                aria-controls="template-consequences"
+                :aria-expanded="consequencesShown ? 'true' : 'false'"
+                @click="consequencesShown = ! consequencesShown"
+                x-text="consequencesShown ? @js(__('Show less')) : @js(__('Read more'))"
+              >{{ __('Read more') }}</button>
+            </p>
+
+            <div id="template-consequences" x-show="consequencesShown" x-cloak class="flex flex-col gap-4 rounded-lg border border-hairline bg-card px-5 py-4">
+              <p class="text-base font-medium text-ink">{{ $viewModel->consequencesLead() }}</p>
+
+              <ul class="grid gap-x-8 gap-y-3.5 md:grid-cols-2">
+                @foreach ($viewModel->consequences() as $consequence)
+                  <li class="flex items-start gap-3">
+                    <span class="flex size-7 shrink-0 items-center justify-center rounded-md border border-hairline bg-canvas text-ink-soft">
+                      <x-icon :name="$consequence['icon']" :size="15" />
+                    </span>
+
+                    <span class="pt-1 text-sm text-body">{{ $consequence['text'] }}</span>
+                  </li>
+                @endforeach
+              </ul>
+            </div>
+          @endif
+        </div>
+      </div>
+    </x-panel>
+  @endif
 
   @if ($demotion = $viewModel->demotion())
     @include('app.vaults.contacts._demotion', ['demotion' => $demotion])

@@ -29,4 +29,30 @@ class ActionsMenuTest extends TestCase
         $rendered->assertSee('@click.outside="menuOpen = false"', escape: false);
         $rendered->assertSee('@keydown.escape.window="if (menuOpen) { menuOpen = false; $refs.menuTrigger.focus() }"', escape: false);
     }
+
+    #[Test]
+    public function it_names_a_control_trigger_by_its_label_and_keeps_the_menu_contract(): void
+    {
+        $rendered = $this->blade('<span id="template-label">Template used for Pam</span><x-actions-menu label="Template" variant="control" width="full" labelledby="template-label"><x-slot:text>Basic contact</x-slot:text></x-actions-menu>');
+
+        $rendered->assertSee('aria-labelledby="template-label"', escape: false);
+        $rendered->assertSee('aria-haspopup="menu"', escape: false);
+        $rendered->assertSee(':aria-expanded="menuOpen ? \'true\' : \'false\'"', escape: false);
+        $rendered->assertSee('@keydown.escape.window="if (menuOpen) { menuOpen = false; $refs.menuTrigger.focus() }"', escape: false);
+        $rendered->assertSee('Basic contact');
+    }
+
+    #[Test]
+    public function it_reports_which_line_is_chosen_when_its_lines_are_choices(): void
+    {
+        $chosen = $this->blade('<x-actions-menu.item href="/one" :checked="true">Basic contact</x-actions-menu.item>');
+        $other = $this->blade('<x-actions-menu.item href="/two" :checked="false">Coworker</x-actions-menu.item>');
+        $action = $this->blade('<x-actions-menu.item href="/three">Export</x-actions-menu.item>');
+
+        $chosen->assertSee('role="menuitemradio"', escape: false);
+        $chosen->assertSee('aria-checked="true"', escape: false);
+        $other->assertSee('aria-checked="false"', escape: false);
+        $action->assertSee('role="menuitem"', escape: false);
+        $action->assertDontSee('aria-checked', escape: false);
+    }
 }

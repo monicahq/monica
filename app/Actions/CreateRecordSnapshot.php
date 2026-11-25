@@ -32,6 +32,7 @@ class CreateRecordSnapshot
         private readonly Contact|Entity $record,
         private readonly SnapshotReasonEnum $reason = SnapshotReasonEnum::Manual,
         private readonly ?CarbonImmutable $expiresAt = null,
+        private readonly bool $writesToLog = true,
     ) {}
 
     public function execute(): RecordSnapshot
@@ -215,6 +216,10 @@ class CreateRecordSnapshot
 
     private function log(): void
     {
+        if (! $this->writesToLog) {
+            return;
+        }
+
         LogUserAction::dispatch(
             account: $this->user->account,
             user: $this->user,
