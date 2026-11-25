@@ -116,6 +116,7 @@ class ReadMonicaFourFile
                 $this->read($items->getMatchedJsonPointer(), (string) $key, $value);
             }
         } catch (PathNotFoundException) {
+            // Raised at the end of the file when a section is absent; what was present has been read.
         } catch (JsonMachineException $exception) {
             Log::warning('An import file could not be read.', ['import' => $this->import->id, 'exception' => $exception->getMessage()]);
 
@@ -147,6 +148,8 @@ class ReadMonicaFourFile
                 break;
             case '/account/instance':
                 $this->readReference($key, is_array($value) ? $value : []);
+                break;
+            default:
                 break;
         }
     }
@@ -568,7 +571,15 @@ class ReadMonicaFourFile
     private function propertiesOf(array $records): array
     {
         return array_values(array_map(
-            fn (mixed $record): array => is_array($record) ? [...(is_array($record['properties'] ?? null) ? $record['properties'] : []), 'created_at' => $record['created_at'] ?? null] : [],
+            function (mixed $record): array {
+                if (! is_array($record)) {
+                    return [];
+                }
+
+                $properties = is_array($record['properties'] ?? null) ? $record['properties'] : [];
+
+                return [...$properties, 'created_at' => $record['created_at'] ?? null];
+            },
             $records,
         ));
     }

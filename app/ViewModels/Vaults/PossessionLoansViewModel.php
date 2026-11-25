@@ -207,6 +207,7 @@ class PossessionLoansViewModel
     {
         $name = $this->nameOf($loan);
         $isReturned = $loan->status === PossessionLoanStatusEnum::Returned;
+        $dueBack = $loan->due_on === null ? null : $this->writeDate($loan->due_on);
         [$status, $tone] = match (true) {
             $isReturned => [__('Returned'), 'neutral'],
             $loan->status === PossessionLoanStatusEnum::Planned => [__('Planned'), 'info'],
@@ -233,7 +234,7 @@ class PossessionLoansViewModel
                 $this->fact(__('Condition out'), $loan->conditionOut?->name),
                 $isReturned
                     ? $this->fact(__('Condition back'), $loan->conditionBack?->name)
-                    : $this->fact(__('Due back'), $loan->due_on === null ? null : $this->writeDate($loan->due_on)),
+                    : $this->fact(__('Due back'), $dueBack),
                 $this->fact(__('Deposit'), $loan->deposit_amount === null
                     ? null
                     : new PossessionValueFormatter($this->user)->formatExact($loan->deposit_amount, $loan->deposit_currency?->value)),

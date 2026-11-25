@@ -178,10 +178,11 @@ class RecordedCallTool implements Errable, Method
         $subject = request()->attributes->get('mcp_subject');
         $reachedVault = $vault instanceof Vault && $vault->account_id === $call->account_id ? $vault : null;
         $reachedSubject = $subject instanceof Model ? $subject : null;
+        $errorCode = $this->failure instanceof ValidationException ? -32602 : -32603;
 
         $call->update([
             'result' => $this->result($isError),
-            'error_code' => $isError ? ($this->failure instanceof ValidationException ? -32602 : -32603) : null,
+            'error_code' => $isError ? $errorCode : null,
             'error_message' => $isError ? $this->errorMessage($result['content'] ?? []) : null,
             'vault_id' => $reachedVault?->id,
             'vault_name' => $reachedVault?->name,

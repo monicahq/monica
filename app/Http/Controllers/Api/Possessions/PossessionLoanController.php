@@ -99,9 +99,13 @@ class PossessionLoanController extends Controller
             'contact_id' => ['sometimes', 'uuid'],
             ...$this->rules($request, isUpdate: true),
         ]);
-        $date = fn (string $field): ?CarbonImmutable => array_key_exists($field, $validated)
-            ? ($validated[$field] === null ? null : CarbonImmutable::parse($validated[$field]))
-            : $record->{$field};
+        $date = function (string $field) use ($validated, $record): ?CarbonImmutable {
+            if (! array_key_exists($field, $validated)) {
+                return $record->{$field};
+            }
+
+            return $validated[$field] === null ? null : CarbonImmutable::parse($validated[$field]);
+        };
         $kept = fn (string $field): mixed => array_key_exists($field, $validated) ? $validated[$field] : $record->{$field};
         $condition = fn (string $field, ?PossessionCondition $current): ?PossessionCondition => array_key_exists($field, $validated)
             ? $this->condition($request, $validated[$field])

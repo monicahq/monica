@@ -54,10 +54,10 @@
     @foreach ($options as $option)
       <button
         type="submit"
-        role="menuitem"
+        role="menuitemradio"
         name="{{ $name }}"
         value="{{ $option['value'] }}"
-        @if ($option['selected']) aria-checked="true" @endif
+        aria-checked="{{ $option['selected'] ? 'true' : 'false' }}"
         class="flex w-full cursor-pointer items-center gap-2.5 rounded-sm px-2.5 py-2.25 text-left text-base text-ink transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring-inset aria-checked:bg-hover aria-checked:font-medium"
       >
         <span class="min-w-0 flex-1 truncate">{{ $option['label'] }}</span>

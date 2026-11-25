@@ -26,7 +26,7 @@ class VaultReminderOccurrenceController extends Controller
         $validated = $request->validate([
             'category' => ['nullable', 'string', Rule::in(ReminderDates::categories())],
             'kind' => ['nullable', 'string', Rule::in(VaultReminderDates::kinds())],
-            'days' => ['nullable', 'integer', 'min:1', 'max:'.VaultReminderDates::MaximumDays],
+            'days' => ['nullable', 'integer', 'min:1', 'max:'.VaultReminderDates::MAXIMUM_DAYS],
         ]);
 
         $perPage = max(1, min(
@@ -38,8 +38,8 @@ class VaultReminderOccurrenceController extends Controller
             user: $request->user(),
             vault: $vault,
             category: $validated['category'] ?? null,
-            kind: $validated['kind'] ?? VaultReminderDates::All,
-            days: (int) ($validated['days'] ?? VaultReminderDates::DefaultDays),
+            kind: $validated['kind'] ?? VaultReminderDates::ALL,
+            days: (int) ($validated['days'] ?? VaultReminderDates::DEFAULT_DAYS),
             reachesSensitiveFields: $this->reachesSensitiveFields($request->user()),
             perPage: $perPage,
             page: max(1, (int) $request->query('page', '1')),

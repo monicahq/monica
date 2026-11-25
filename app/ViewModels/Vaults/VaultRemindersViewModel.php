@@ -14,9 +14,9 @@ use Illuminate\Support\Collection;
 
 class VaultRemindersViewModel
 {
-    public const string GroupByWhen = 'when';
+    public const string GROUP_BY_WHEN = 'when';
 
-    public const string GroupByContact = 'contact';
+    public const string GROUP_BY_CONTACT = 'contact';
 
     public const int PER_PAGE = 50;
 
@@ -26,7 +26,7 @@ class VaultRemindersViewModel
     public function __construct(
         private readonly User $user,
         private readonly Vault $vault,
-        private readonly string $groupBy = self::GroupByWhen,
+        private readonly string $groupBy = self::GROUP_BY_WHEN,
         private readonly int $page = 1,
     ) {}
 
@@ -47,7 +47,7 @@ class VaultRemindersViewModel
 
     public function groupBy(): string
     {
-        return $this->groupBy === self::GroupByContact ? self::GroupByContact : self::GroupByWhen;
+        return $this->groupBy === self::GROUP_BY_CONTACT ? self::GROUP_BY_CONTACT : self::GROUP_BY_WHEN;
     }
 
     public function activeUrl(): string
@@ -98,7 +98,7 @@ class VaultRemindersViewModel
      */
     public function groups(): array
     {
-        $groups = $this->groupBy() === self::GroupByContact ? $this->byContact() : $this->byWhen();
+        $groups = $this->groupBy() === self::GROUP_BY_CONTACT ? $this->byContact() : $this->byWhen();
         $start = ($this->page() - 1) * self::PER_PAGE;
         $end = $start + self::PER_PAGE;
         $position = 0;
@@ -133,7 +133,7 @@ class VaultRemindersViewModel
             return null;
         }
 
-        $route = $this->groupBy() === self::GroupByContact ? 'reminders.byContact' : 'reminders.index';
+        $route = $this->groupBy() === self::GROUP_BY_CONTACT ? 'reminders.byContact' : 'reminders.index';
 
         return route($route, ['vault' => $this->vault, 'page' => $this->page() + 1]);
     }

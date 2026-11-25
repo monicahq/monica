@@ -2,7 +2,7 @@
 {{-- @var \App\ViewModels\Vaults\VaultRemindersViewModel $viewModel --}}
 @php
   $groups = $viewModel->groups();
-  $byContact = $viewModel->groupBy() === \App\ViewModels\Vaults\VaultRemindersViewModel::GroupByContact;
+  $byContact = $viewModel->groupBy() === \App\ViewModels\Vaults\VaultRemindersViewModel::GROUP_BY_CONTACT;
 @endphp
 <x-shell :title="$viewModel->title()">
   <x-slot:breadcrumb>

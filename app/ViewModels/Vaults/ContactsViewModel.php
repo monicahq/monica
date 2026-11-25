@@ -123,10 +123,12 @@ class ContactsViewModel
 
             if ($groups === [] || $run !== $openRun) {
                 $continuesThePreviousPage = $groups === [] && $run !== null && $run === $favouriteBefore;
+                $isLabelled = $run !== null && ! $continuesThePreviousPage;
+                $label = $run ? __('Favourites') : __('Everybody else');
 
                 $groups[] = [
-                    'label' => $run === null || $continuesThePreviousPage ? null : ($run ? __('Favourites') : __('Everybody else')),
-                    'count' => $run === null || $continuesThePreviousPage ? null : $this->runCount($run),
+                    'label' => $isLabelled ? $label : null,
+                    'count' => $isLabelled ? $this->runCount($run) : null,
                     'people' => [],
                 ];
                 $openRun = $run;
@@ -259,6 +261,8 @@ class ContactsViewModel
         $firstWay = $sort->isChronological() ? SortDirectionEnum::Descending : SortDirectionEnum::Ascending;
         $otherWay = $this->direction === SortDirectionEnum::Ascending ? SortDirectionEnum::Descending : SortDirectionEnum::Ascending;
 
+        $ariaSort = $this->direction === SortDirectionEnum::Ascending ? 'ascending' : 'descending';
+
         return [
             'label' => $label,
             'url' => route('contacts.index', [
@@ -271,7 +275,7 @@ class ContactsViewModel
                 'categories' => $this->categoryIds === [] ? null : $this->categoryIds,
                 ...$this->templateFilter->parameters(),
             ]),
-            'ariaSort' => $isCurrent ? ($this->direction === SortDirectionEnum::Ascending ? 'ascending' : 'descending') : null,
+            'ariaSort' => $isCurrent ? $ariaSort : null,
         ];
     }
 

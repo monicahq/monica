@@ -73,9 +73,13 @@ class PossessionLocationStayController extends Controller
             'reason' => ['nullable', 'string', 'max:255'],
             'note' => ['nullable', 'string', 'max:5000'],
         ]);
-        $date = fn (string $field): ?CarbonImmutable => array_key_exists($field, $validated)
-            ? ($validated[$field] === null ? null : CarbonImmutable::parse($validated[$field]))
-            : $record->{$field};
+        $date = function (string $field) use ($validated, $record): ?CarbonImmutable {
+            if (! array_key_exists($field, $validated)) {
+                return $record->{$field};
+            }
+
+            return $validated[$field] === null ? null : CarbonImmutable::parse($validated[$field]);
+        };
         $kept = fn (string $field): ?string => array_key_exists($field, $validated) ? $validated[$field] : $record->{$field};
 
         new UpdatePossessionLocationStay(

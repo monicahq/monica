@@ -143,6 +143,7 @@ class ReadMonicaFile
                 $this->read($items->getMatchedJsonPointer(), $value);
             }
         } catch (PathNotFoundException) {
+            // Raised at the end of the file when a section is absent; what was present has been read.
         } catch (JsonMachineException $exception) {
             Log::warning('An import file could not be read.', ['import' => $this->import->id, 'exception' => $exception->getMessage()]);
 
