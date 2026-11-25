@@ -7,7 +7,7 @@ permissions:
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-    paths:
+    paths: &paths
       - .github/actions/js/action.yml
       - .github/actions/php/action.yml
       - .github/workflows/tests.yml
@@ -24,12 +24,12 @@ on:
       - phpstan.neon
       - phpunit.xml
 
-  # Also on pushes to main, so anything that lands without going through a pull
-  # request is still tested.
-  # push:
-  #   branches: [main]
-  # release:
-  #   types: [created]
+  push:
+    branches: [main]
+    paths: *paths
+    
+  release:
+    types: [created]
 
   workflow_dispatch:
 
