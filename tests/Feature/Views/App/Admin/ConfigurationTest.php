@@ -34,13 +34,13 @@ class ConfigurationTest extends TestCase
     #[Test]
     public function it_points_a_refused_control_at_the_reason_it_is_refused(): void
     {
-        config()->set('services.vonage.installed', false);
+        config()->set('monica.sso_installed', []);
 
         $response = $this->actingAs($this->administrator())->get('/admin/configuration');
 
         $response->assertSee('aria-describedby="reason-'.InstanceSettingEnum::SelfHosted->value.'"', false);
         $response->assertSee('id="reason-'.InstanceSettingEnum::SelfHosted->value.'"', false);
-        $response->assertSee('aria-describedby="reason-'.InstanceSettingEnum::VonageSmsFrom->value.'"', false);
+        $response->assertSee('aria-describedby="reason-'.InstanceSettingEnum::AppleClientId->value.'"', false);
     }
 
     #[Test]
@@ -80,11 +80,11 @@ class ConfigurationTest extends TestCase
     #[Test]
     public function it_asks_no_credential_from_a_setting_that_cannot_be_changed(): void
     {
-        config()->set('services.vonage.installed', false);
+        config()->set('monica.sso_installed', []);
 
         $content = $this->actingAs($this->administrator())->get('/admin/configuration')->getContent();
 
-        $form = $this->formAt($content, route('admin.configuration.update', ['setting' => InstanceSettingEnum::VonageSmsFrom->value]));
+        $form = $this->formAt($content, route('admin.configuration.update', ['setting' => InstanceSettingEnum::AppleClientId->value]));
 
         $this->assertStringContainsString('aria-disabled="true"', $form);
         $this->assertStringNotContainsString('confirm-password', $form);
@@ -93,7 +93,7 @@ class ConfigurationTest extends TestCase
     #[Test]
     public function it_keeps_a_refused_control_reachable_rather_than_taking_it_out_of_the_tab_order(): void
     {
-        config()->set('services.vonage.installed', false);
+        config()->set('monica.sso_installed', []);
 
         $response = $this->actingAs($this->administrator())->get('/admin/configuration');
         $content = $response->getContent();
@@ -135,7 +135,6 @@ class ConfigurationTest extends TestCase
     private function makeTelegramAvailable(): void
     {
         config([
-            'services.telegram.installed' => true,
             'services.telegram.token' => 'dwight-schrute-beet-farm',
             'services.telegram.webhook_secret' => 'bears-beets-battlestar-galactica',
         ]);

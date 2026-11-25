@@ -126,9 +126,9 @@ class NotifyReminderOccurrenceTest extends TestCase
     }
 
     #[Test]
-    public function it_writes_nothing_for_a_channel_whose_integration_is_not_installed(): void
+    public function it_writes_nothing_for_a_channel_the_instance_has_not_configured(): void
     {
-        config(['services.telegram.installed' => false]);
+        config(['services.telegram.token' => null]);
 
         $occurrence = $this->dueOccurrence();
         NotificationChannel::query()

@@ -56,17 +56,7 @@
       >
         @csrf
 
-        @if (! $panel->canGenerateSecret())
-          <x-button.secondary
-            type="submit"
-            size="small"
-            aria-disabled="true"
-            aria-describedby="telegram-unavailable"
-            onclick="return false"
-          >
-            {{ __('Generate a secret') }}
-          </x-button.secondary>
-        @elseif ($panel->secretReplacementWarning())
+        @if ($panel->secretReplacementWarning())
           <x-button.secondary
             type="submit"
             size="small"

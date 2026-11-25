@@ -84,9 +84,9 @@ class ConfigurationViewModelTest extends TestCase
     #[Test]
     public function it_reports_a_provider_whose_package_is_absent_as_unchangeable_with_a_reason(): void
     {
-        config()->set('services.vonage.installed', false);
+        config()->set('monica.sso_installed', []);
 
-        $setting = $this->find(InstanceSettingEnum::VonageSmsFrom);
+        $setting = $this->find(InstanceSettingEnum::AppleClientId);
 
         $this->assertFalse($setting['changeable']);
         $this->assertNotNull($setting['reason']);
@@ -95,9 +95,9 @@ class ConfigurationViewModelTest extends TestCase
     #[Test]
     public function it_reports_a_provider_whose_package_is_present_as_changeable(): void
     {
-        config()->set('services.vonage.installed', true);
+        config()->set('monica.sso_installed', ['apple']);
 
-        $setting = $this->find(InstanceSettingEnum::VonageSmsFrom);
+        $setting = $this->find(InstanceSettingEnum::AppleClientId);
 
         $this->assertTrue($setting['changeable']);
         $this->assertNull($setting['reason']);

@@ -110,14 +110,9 @@ enum NotificationChannelEnum: string implements Translatable
      * Whether whoever runs this server has set up what the channel needs from
      * them.
      *
-     * Two things can be missing: the integration itself, which ships as a
-     * suggested dependency so that an instance carries only what it uses, and
-     * the provider account, which belongs to whoever runs the server. Only
-     * Telegram and the text message can lack either. In app and email ask the
-     * instance for nothing beyond what it already has.
-     *
-     * Whether a package is installed is read from configuration rather than
-     * asked of the autoloader here, so that both answers can be tested.
+     * What can be missing is the provider account, which belongs to whoever
+     * runs the server. Only Telegram and the text message need one. In app and
+     * email ask the instance for nothing beyond what it already has.
      *
      * A channel every server can use answers true and has nothing more to
      * say; the question only bites where the provider account is the
@@ -126,12 +121,10 @@ enum NotificationChannelEnum: string implements Translatable
     public function isConfiguredOnTheInstance(): bool
     {
         return match ($this) {
-            self::Sms => (bool) config('services.vonage.installed')
-                && filled(config('vonage.api_key'))
+            self::Sms => filled(config('vonage.api_key'))
                 && filled(config('vonage.api_secret'))
                 && filled(config('vonage.sms_from')),
-            self::Telegram => (bool) config('services.telegram.installed')
-                && filled(config('services.telegram.token'))
+            self::Telegram => filled(config('services.telegram.token'))
                 && filled(config('services.telegram.bot_url')),
             self::InApp, self::Email => true,
         };

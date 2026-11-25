@@ -100,9 +100,9 @@ class NotificationChannelControllerTest extends TestCase
     }
 
     #[Test]
-    public function the_screen_works_with_no_integration_installed_at_all(): void
+    public function the_screen_works_with_no_provider_account_on_the_server(): void
     {
-        config(['services.telegram.installed' => false, 'services.vonage.installed' => false]);
+        config(['services.telegram.token' => null, 'vonage.api_key' => null]);
         $this->signedIn();
 
         $response = $this->get(route('settings.notifications.index'));

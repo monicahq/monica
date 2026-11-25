@@ -24,10 +24,6 @@ class TelegramWebhook
      */
     public static function missingPrerequisite(): ?string
     {
-        if (config('services.telegram.installed') !== true) {
-            return __('Unavailable on this server, because its package is not installed.');
-        }
-
         if (blank(config('services.telegram.token'))) {
             return __('Set the bot token first.');
         }

@@ -162,14 +162,14 @@ class UpdateInstanceSettingTest extends TestCase
     public function it_refuses_a_provider_whose_package_is_absent(): void
     {
         Queue::fake();
-        config()->set('services.vonage.installed', false);
+        config()->set('monica.sso_installed', []);
 
         $this->expectException(ValidationException::class);
 
         new UpdateInstanceSetting(
             administrator: User::factory()->create(),
-            setting: InstanceSettingEnum::VonageSmsFrom,
-            value: 'Dunder Mifflin',
+            setting: InstanceSettingEnum::AppleClientId,
+            value: 'com.dundermifflin.monica',
         )->execute();
     }
 

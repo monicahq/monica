@@ -26,12 +26,7 @@ class TelegramRegistrationPanel
      */
     public function canBeChecked(): bool
     {
-        return config('services.telegram.installed') === true && filled(config('services.telegram.token'));
-    }
-
-    public function canGenerateSecret(): bool
-    {
-        return config('services.telegram.installed') === true;
+        return filled(config('services.telegram.token'));
     }
 
     /**

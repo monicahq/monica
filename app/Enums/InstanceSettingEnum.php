@@ -280,21 +280,13 @@ enum InstanceSettingEnum: string implements Translatable
     /**
      * Whether this setting's provider is installed on this server.
      *
-     * Read through configuration rather than asked of the autoloader here, so a
-     * test can reach either state. The two notification channels answer with a
-     * flag of their own; a sign in provider answers by being in the list of
-     * drivers this installation carries, which is how the sign in screen already
-     * decides what to offer.
+     * A sign in provider answers by being in the list of drivers this
+     * installation carries, which is how the sign in screen already decides what
+     * to offer. Every other provider ships with the application.
      */
     public function providerIsInstalled(): bool
     {
         return match ($this) {
-            self::VonageKey, self::VonageSecret,
-            self::VonageSmsFrom => config('services.vonage.installed') === true,
-
-            self::TelegramBotToken, self::TelegramBotUrl,
-            self::TelegramBotWebhookSecret => config('services.telegram.installed') === true,
-
             self::GithubClientId, self::GithubClientSecret => self::signInProviderIsInstalled('github'),
             self::GoogleClientId, self::GoogleClientSecret => self::signInProviderIsInstalled('google'),
             self::AppleClientId, self::AppleTeamId, self::AppleKeyId,

@@ -33,18 +33,9 @@ class NotificationChannelEnumTest extends TestCase
     }
 
     #[Test]
-    public function a_channel_whose_integration_is_not_installed_is_unavailable(): void
+    public function telegram_is_configured_only_when_the_server_has_a_bot_token(): void
     {
-        config(['services.telegram.installed' => false, 'services.vonage.installed' => false]);
-
-        $this->assertFalse(NotificationChannelEnum::Telegram->isConfiguredOnTheInstance());
-        $this->assertFalse(NotificationChannelEnum::Sms->isConfiguredOnTheInstance());
-    }
-
-    #[Test]
-    public function an_installed_integration_still_has_to_be_configured(): void
-    {
-        config(['services.telegram.installed' => true, 'services.telegram.token' => null]);
+        config(['services.telegram.token' => null]);
 
         $this->assertFalse(NotificationChannelEnum::Telegram->isConfiguredOnTheInstance());
     }
