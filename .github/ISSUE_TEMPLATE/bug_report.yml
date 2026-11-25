@@ -1,0 +1,38 @@
+name: Bug report
+description: Something in Monica does not work as it should.
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Search the [open issues](https://github.com/monicahq/monica/issues) first. For a question or help with an installation, open a [discussion](https://github.com/monicahq/monica/discussions) instead.
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened
+      description: What you saw, and what you expected to see instead. Add a screenshot if it helps.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Where
+      options:
+        - my.monicahq.com
+        - A self-hosted instance
+    validations:
+      required: true
+  - type: textarea
+    id: self-hosted
+    attributes:
+      label: Self-hosted instance
+      description: Only for a self-hosted instance. The version or commit, the installation method (Docker, archive, other), the web server and the database.
