@@ -9,6 +9,7 @@ description: Conventions for writing pull requests, including Conventional Commi
 - You SHOULD avoid uppercase in the title, except for proper nouns and acronyms.
 - You MUST indicate the issue the PR closes, if that's the case, and reference the issue number. Do not mention anything otherwise.
 - You MUST NOT mention Claude Code anywhere.
+- You MUST push the branch with `git push --set-upstream origin <branch>`, so the local branch tracks the remote one. Run it outside the Bash sandbox: inside it `.git/config` cannot be written, so the push succeeds but the upstream is not recorded.
 - The pull request description MUST be bullet points and nothing else:
     - every line MUST be a bullet, a short heading grouping bullets, or an image
     - you MUST NOT write a paragraph anywhere, including the opening line and the closing line. No sentence introducing the change, no sentence summarising it, no narration between bullets. A description whose first line is prose is wrong however good the prose is
