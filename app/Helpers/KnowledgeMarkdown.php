@@ -33,6 +33,15 @@ class KnowledgeMarkdown
 {
     private static ?Environment $environment = null;
 
+    public static function document(string $title, ?string $body): string
+    {
+        if (blank($body)) {
+            return "# {$title}\n";
+        }
+
+        return "# {$title}\n\n{$body}";
+    }
+
     public static function toHtml(?string $markdown): string
     {
         if (blank($markdown)) {
