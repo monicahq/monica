@@ -22,7 +22,8 @@ const RULES = `Rules for every step of the update-dependencies workflow:
 - Never answer yes to a prompt asking to trust a source, and never pass a flag that skips one, with one exception the user approved: the "Untrusted Source" prompt of 'specify extension add <id> --from <url>', when the repository is one that the specify-upgrade script of composer.json names, the URL is the release asset of an exact version (not a rolling latest one), and the sha256 of that file, downloaded into your scratch directory, equals the digest GitHub publishes for the asset (the digest field in https://api.github.com/repos/<owner>/<repo>/releases/tags/<tag>). Then pipe y into that one command. A source with no published digest, such as a tag archive, is never installed: write the command in notes for the user.
 - Never push, never open a pull request, never write the index or the files of the root checkout, and change nothing outside the repository unless your step says so.
 - Call something outdated, released or breaking only after reading the registry, the release page or the changelog during this run, never from memory.
-- Read GitHub through 'gh api' with the sandbox disabled. Anonymous calls to api.github.com run out of their hourly quota within one run of this workflow, and release notes then go unread.`
+- Read GitHub through 'gh api' with the sandbox disabled. Anonymous calls to api.github.com run out of their hourly quota within one run of this workflow, and release notes then go unread.
+- The specs/*/.spec-context.json files belong to the repository, and Spec Kit rewrites them on its own (it adds a telemetryInstanceId, among others). Their modifications never make a worktree dirty for this workflow and never fail a step. Whenever 'git status --porcelain' lists them, stage those files alone and commit them with 'git commit --quiet -S -m "chore(docs): spec context"' with the sandbox disabled, then go on. Never stage them in a dependency commit, and never discard them.`
 
 const CHECKS = `How the checks run in this repository, from the worktree:
 - PHP tests: 'php artisan view:clear --quiet', then 'php artisan test --parallel --compact' with a Bash timeout of 600000 ms (the suite takes about two minutes). Failures en masse reading "touch(): Utime failed" come from compiled views owned by www-data: clear them and run again. In an agent session laravel/pao replaces Paratest's runner; when the suite crashes before any test runs, run it again with PAO_DISABLE=1 (the path people and CI take) and report both results, since a crash only agents see is still a regression.
@@ -351,14 +352,14 @@ ${research ? `\nResearch made before this step, read only, by another agent. Che
 Baseline of this branch before any change: failing tests ${JSON.stringify(prepared.baselineFailingTests)}, PHPStan errors ${prepared.baselinePhpstanErrors}.
 Already committed on this branch: ${committed.length ? committed.map(result => result.commitMessage).join('; ') : 'nothing yet'}.
 
-1. 'git status --porcelain' must print nothing. If it prints anything, return status failed with what you found, and change nothing.
+1. Commit the specs/*/.spec-context.json files 'git status --porcelain' lists, as the rules say. After that it must print nothing. If it prints anything else, return status failed with what you found, and change nothing.
 2. Apply the change.
 3. Verify it with the item's checks.
 ${item.kind === 'major'
   ? '   When a check fails, fix the code the upgrade broke, following CLAUDE.md and .claude/rules, starting from the breaking changes the research lists and the lines the failures point at. Never weaken a test (skip it, delete or loosen an assertion) and never add a PHPStan ignore or baseline entry. If it is still red after that, revert (step 5).'
   : '   When a check fails, find the package responsible (update the packages one at a time, or bisect), keep that one at its current version, record it in heldBack with the failure, and land the rest.'}
 4. Commit when green. Read 'git status --porcelain' and stage by path the files the item touches and the files its tools regenerated for it (lock files, generated skills), and nothing else: no .env, no CLAUDE.md symbolic link at the root, no build output. Run 'git commit --quiet -S' with the sandbox disabled. The subject is the item's commit subject (conventional, scope deps, build or ci, no attribution line); the body has one line per package, "name from → to". Check that 'git log -1 --format=%G?' prints G. Then delete any untracked file the item left that does not belong in the repository, so the next step starts clean.
-5. Revert when not green: 'git reset --quiet --hard HEAD' and 'git clean -fdq' (this worktree holds nothing but your attempt), then 'composer install --no-interaction --no-progress --quiet', 'bun install --frozen-lockfile --silent' and 'bun run build', so that vendor, node_modules and public/build match the lock files again. A global tool this step upgraded (the specify CLI) stays upgraded: say so in notes.
+5. Revert when not green: commit the specs/*/.spec-context.json files as the rules say, then 'git reset --quiet --hard HEAD' and 'git clean -fdq' (this worktree holds nothing but your attempt), then 'composer install --no-interaction --no-progress --quiet', 'bun install --frozen-lockfile --silent' and 'bun run build', so that vendor, node_modules and public/build match the lock files again. A global tool this step upgraded (the specify CLI) stays upgraded: say so in notes.
 
 ${CHECKS}`
 
@@ -370,7 +371,7 @@ Run every check below, and also:
 - 'bun install --frozen-lockfile', and 'bun audit' when the installed Bun has that command.
 - 'docker build --quiet -t update-dependencies-gate .' with the sandbox disabled, then remove that image. The image installs composer.lock and bun.lock with the pinned Bun, so it proves the lock files and the pins together.
 - 'docker compose config --quiet' when 'git diff --name-only ${prepared.baseSha}..HEAD' lists compose.yaml.
-- 'git status --porcelain' prints nothing at the end.
+- 'git status --porcelain' prints nothing at the end, once the specs/*/.spec-context.json files are committed as the rules say.
 Name every regression against the baseline: failing tests ${JSON.stringify(prepared.baselineFailingTests)}, PHPStan errors ${prepared.baselinePhpstanErrors}.
 
 ${CHECKS}`
