@@ -11,6 +11,21 @@ use Tests\TestCase;
 class KnowledgeMarkdownTest extends TestCase
 {
     #[Test]
+    public function a_document_is_the_title_as_a_heading_then_the_text_exactly_as_written(): void
+    {
+        $body = "Rules of the office:\n\n1. No Prison Mike\n   - Ever\n\n| Name | Dundies |\n| --- | --- |\n| Pam | 3 |\n\n- [ ] Order paper\n";
+
+        $this->assertSame("# Dunder Mifflin\n\n{$body}", KnowledgeMarkdown::document('Dunder Mifflin', $body));
+    }
+
+    #[Test]
+    public function a_document_without_text_is_the_title_alone(): void
+    {
+        $this->assertSame("# Dunder Mifflin\n", KnowledgeMarkdown::document('Dunder Mifflin', null));
+        $this->assertSame("# Dunder Mifflin\n", KnowledgeMarkdown::document('Dunder Mifflin', ''));
+    }
+
+    #[Test]
     public function it_shows_raw_html_as_text(): void
     {
         $html = KnowledgeMarkdown::toHtml('Prison Mike says <script>alert(1)</script>');

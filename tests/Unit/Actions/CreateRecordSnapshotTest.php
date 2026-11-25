@@ -66,6 +66,20 @@ class CreateRecordSnapshotTest extends TestCase
     }
 
     #[Test]
+    public function it_captures_without_writing_to_the_log_when_told_not_to(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+
+        $snapshot = new CreateRecordSnapshot(user: $user, record: $contact, writesToLog: false)->execute();
+
+        $this->assertModelExists($snapshot);
+        Queue::assertNotPushed(LogUserAction::class);
+    }
+
+    #[Test]
     public function it_writes_down_every_part_of_the_name_a_contact_reads_as(): void
     {
         Queue::fake();

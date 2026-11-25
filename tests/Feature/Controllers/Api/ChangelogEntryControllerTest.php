@@ -29,6 +29,7 @@ class ChangelogEntryControllerTest extends TestCase
             'body',
             'body_html',
             'link',
+            'screenshots',
             'day',
             'is_seen',
             'my_vote',
@@ -44,7 +45,7 @@ class ChangelogEntryControllerTest extends TestCase
         parent::setUp();
 
         CarbonImmutable::setTestNow('2026-11-17 12:00:00');
-        $this->app->instance(ChangelogEntries::class, new ChangelogEntries(directory: base_path('tests/Fixtures/Changelog/Valid')));
+        $this->app->instance(ChangelogEntries::class, new ChangelogEntries(directory: base_path('tests/Fixtures/Changelog/Valid'), screenshotDirectory: base_path('tests/Fixtures/Changelog/Screenshots/Valid')));
     }
 
     #[Test]
@@ -62,5 +63,24 @@ class ChangelogEntryControllerTest extends TestCase
         $response->assertJsonPath('data.0.attributes.is_seen', false);
         $response->assertJsonPath('meta.unseen_count', 3);
         $response->assertJsonPath('meta.fixes', 2);
+    }
+
+    #[Test]
+    public function it_lists_the_screenshots_of_an_entry_with_their_address_and_description(): void
+    {
+        Sanctum::actingAs(User::factory()->create());
+
+        $response = $this->json('GET', '/api/v1/changelog-entries');
+
+        $response->assertOk();
+        $response->assertJsonPath('data.0.attributes.screenshots', []);
+        $response->assertJsonPath('data.1.attributes.screenshots.0', [
+            'position' => 1,
+            'url' => asset('images/changelog/01M7NBFWK5XNH908RFDGEAJXKN-1.webp'),
+            'description' => 'The contact page with the conference room booked',
+            'width' => 32,
+            'height' => 18,
+        ]);
+        $response->assertJsonCount(2, 'data.1.attributes.screenshots');
     }
 }

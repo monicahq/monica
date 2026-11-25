@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-The application runs under Herd at `https://erica.test`. Run `bun run dev` if the assets are not built.
+The application runs under Herd at `https://monica.test`. Run `bun run dev` if the assets are not built.
 
 ## Set it up
 

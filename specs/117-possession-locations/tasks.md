@@ -61,7 +61,7 @@ Independent test: add a possession with a location, change it, clear it, save it
 - [X] T028 Example stays in the seeded account (a move or two) in `database/seeders/ExampleAccountSeeder.php`, asserted in `tests/Unit/Seeders/ExampleAccountSeederTest.php`
 - [X] T029 `php artisan monica:localize`, translate every reported string in every locale (translation subagents on Sonnet), `--check` passes
 - [X] T030 `vendor/bin/phpstan analyse --no-progress`, `vendor/bin/pint --dirty --format agent`, `php artisan test --compact`
-- [ ] T031 The quickstart's checks by hand at erica.test
+- [ ] T031 The quickstart's checks by hand at monica.test
 
 ## Dependencies
 

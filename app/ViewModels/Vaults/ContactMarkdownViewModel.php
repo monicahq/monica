@@ -6,6 +6,7 @@ namespace App\ViewModels\Vaults;
 
 use App\Enums\DateFormatEnum;
 use App\Helpers\AvailableLocales;
+use App\Helpers\Duration;
 use App\Helpers\FieldValueFormatter;
 use App\Helpers\FlagState;
 use App\Models\Contact;
@@ -209,7 +210,7 @@ class ContactMarkdownViewModel
             }
 
             if ($lifeEvent->duration_in_minutes !== null) {
-                $details[] = trans_choice(':count minute|:count minutes', $lifeEvent->duration_in_minutes);
+                $details[] = Duration::wording($lifeEvent->duration_in_minutes);
             }
 
             if (filled($lifeEvent->location)) {

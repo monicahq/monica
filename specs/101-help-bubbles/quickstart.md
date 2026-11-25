@@ -1,6 +1,6 @@
 # Quickstart: Help bubbles
 
-Prerequisites: Herd serving the checkout at `https://erica.test`, assets built (`bun run build`), signed in.
+Prerequisites: Herd serving the checkout at `https://monica.test`, assets built (`bun run build`), signed in.
 
 ## Automated
 
@@ -13,7 +13,7 @@ vendor/bin/phpstan analyse --no-progress
 
 Expected: all pass; the coverage test names any `<x-help` without a guide or with an unknown one.
 
-## By hand, on `https://erica.test/settings/account/profile`
+## By hand, on `https://monica.test/settings/account/profile`
 
 | Check | Expected |
 | --- | --- |

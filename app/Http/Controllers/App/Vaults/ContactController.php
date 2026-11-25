@@ -15,6 +15,8 @@ use App\Enums\ValueListEnum;
 use App\Exceptions\VaultHasNoContactDefault;
 use App\Helpers\AlpineAjaxTargets;
 use App\Helpers\PageSize;
+use App\Helpers\RecordKind;
+use App\Helpers\TemplateFilter;
 use App\Http\Controllers\Controller;
 use App\Jobs\RecordContactVisit;
 use App\Models\Contact;
@@ -49,10 +51,16 @@ class ContactController extends Controller
                 'sort' => $sort->value,
                 'direction' => $direction->value,
                 'categories' => $request->input('categories'),
+                'template' => $request->input('template'),
+                'version' => $request->input('version'),
+                'change' => $request->input('change'),
             ]);
         }
 
         $validated = $request->validate([
+            'template' => ['nullable', 'string', 'uuid'],
+            'version' => ['nullable', 'integer', 'min:1'],
+            'change' => ['nullable', 'string', 'uuid'],
             'categories' => ['array'],
             'categories.*' => ['integer', Rule::exists('value_list_items', 'id')
                 ->where('account_id', $user->account_id)
@@ -81,6 +89,13 @@ class ContactController extends Controller
                 direction: $direction,
                 size: PageSize::from($request, ContactsViewModel::PER_PAGE),
                 categoryIds: array_map(intval(...), $validated['categories'] ?? []),
+                templateFilter: TemplateFilter::fromValidated(
+                    kind: RecordKind::forContacts(vault: $vault),
+                    template: $validated['template'] ?? null,
+                    versionNumber: isset($validated['version']) ? (int) $validated['version'] : null,
+                    change: $validated['change'] ?? null,
+                ),
+                categoryChange: $request->session()->get('contactCategoryChange'),
             ),
         ]);
     }
@@ -120,6 +135,8 @@ class ContactController extends Controller
                 user: $request->user(),
                 vault: $vault,
                 contact: $contact,
+                askedTemplate: $request->filled('template') ? (string) $request->string('template') : null,
+                askedVersion: $request->filled('version') ? $request->integer('version') : null,
             ),
         ]);
     }

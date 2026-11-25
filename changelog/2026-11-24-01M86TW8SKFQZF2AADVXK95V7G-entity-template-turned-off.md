@@ -1,8 +1,8 @@
 ---
 id: 01M86TW8SKFQZF2AADVXK95V7G
-title: Turning off a template no longer stops you adding records
+title: Records can now be added after their template is turned off
 type: fix
 area: Templates
 published_at: 2026-11-24T13:10:45Z
 ---
-When the template a vault starts its records from was turned off, nothing of that kind could be added there any more, even with another template still on offer, and the kind could vanish from the vault’s menu. Monica now starts the new record from the next template on offer.
+Until now, turning off the template a vault used for one kind of record stopped you adding that kind there, even with another template still on offer, and the kind could even disappear from the vault’s menu. Now Monica simply starts the new record from the next template on offer.

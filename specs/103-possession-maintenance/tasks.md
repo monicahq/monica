@@ -60,7 +60,7 @@ Independent test: create, read, update, list and delete a record through the API
 - [X] T027 [P] Entry in `docs/FEATURES.md`
 - [X] T028 `php artisan monica:localize`, translate every reported string in every locale, `--check` passes
 - [X] T029 `vendor/bin/phpstan analyse --no-progress`, `vendor/bin/pint --dirty --format agent`, `php artisan test --compact`
-- [ ] T030 The quickstart's checks by hand at erica.test
+- [ ] T030 The quickstart's checks by hand at monica.test
 
 ## Dependencies
 

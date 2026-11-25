@@ -4,7 +4,7 @@ title: Change a template
 description: Add, move, rename or remove pages, sections and fields in a draft, then publish the result as a new version.
 slug: change-a-template
 section: templates-and-customisation
-last_updated: 2026-10-29
+last_updated: 2026-11-25
 ---
 
 # Change a template
@@ -82,7 +82,7 @@ This choice cannot be changed later, because every record made with the template
 
 On the template, choose **Edit** to change its **Name** and **Description**. Its slug, the short name in its address, never changes, so old links keep working.
 
-To delete a template, choose **Delete the template** on the same screen, then confirm. Monica refuses while any contact still uses one of its versions, and says **The template still renders records and stays**. Move those contacts to another template first. A deleted template’s slug stays taken, so an old link can never reach something else.
+To delete a template, choose **Delete the template** on the same screen, then confirm. Monica refuses while any contact still uses one of its versions, and says **The template still renders records and stays**. Move those contacts to another template first, one by one as @doc(contacts.change-template) explains, or all at once from the statistics of the list, as @doc(templates.change-many) explains. A deleted template’s slug stays taken, so an old link can never reach something else.
 
 Your last template for contacts cannot be deleted, because a new vault starts your own contact from it. The screen says so in place of the button. When you delete a template a vault starts its new records from, that vault moves to **Basic contact**, or to the next template Monica supplied when Basic contact is gone, then to one of your own.
 

@@ -41,7 +41,7 @@ Independent test: spec US3.
 - [X] T013 [P] Add one sentence to `docs/portal/en/9-templates-and-customisation/13-locations.md` saying an account starts with a house and five rooms inside it, which can be renamed, moved or deleted, with no dash used as punctuation (FR-010)
 - [X] T014 [P] Replace "no location is created automatically, for an account" in `specs/086-location-management/spec.md` line 119 with a pointer to specification 097, keeping "for an owned house" (research R9)
 - [X] T015 Run `vendor/bin/pint --dirty --format agent`, `vendor/bin/phpstan analyse --no-progress`, then the whole suite with `php artisan test --compact`
-- [ ] T016 Walk quickstart.md by hand on erica.test, never migrating the local database
+- [ ] T016 Walk quickstart.md by hand on monica.test, never migrating the local database
 - [X] T017 Record the feature in `docs/FEATURES.md` with the feature-documentator skill (always the last task)
 
 ## Dependencies

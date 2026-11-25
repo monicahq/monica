@@ -84,7 +84,7 @@ class LifeEventDetailsViewModelTest extends TestCase
             array_column($details->facts(), 'label'),
         );
         $this->assertSame('15:30, America/Toronto', $details->facts()[1]['value']);
-        $this->assertSame('90 minutes', $details->facts()[2]['value']);
+        $this->assertSame('1 hour 30 minutes', $details->facts()[2]['value']);
         $this->assertSame(route('groups.show', ['vault' => $this->vault, 'group' => $niagara]), $details->facts()[4]['url']);
     }
 

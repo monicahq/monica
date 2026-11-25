@@ -7,21 +7,9 @@ permissions:
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-    paths:
-      - .github/actions/js/action.yml
-      - .github/actions/php/action.yml
-      - .github/workflows/static.yml
-      - '**/*.php'
-      - '**/*.js'
-      - '**/*.css'
-      - phpstan.neon
-      - composer.json
-      - composer.lock
 
-  # Also on pushes to main, so anything that lands without going through a pull
-  # request is still checked.
-  # push:
-  #   branches: [main]
+  push:
+    branches: [main]
 
   workflow_dispatch:
 

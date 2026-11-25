@@ -29,6 +29,7 @@ class ReactivateReminders
         private readonly User $user,
         private readonly Contact|Entity|Field|Group|Reminder $subject,
         private readonly ReminderInactiveReasonEnum $reason,
+        private readonly bool $writesToLog = true,
     ) {}
 
     public function execute(): int
@@ -97,6 +98,10 @@ class ReactivateReminders
 
     private function log(): void
     {
+        if (! $this->writesToLog) {
+            return;
+        }
+
         if ($this->count === 0) {
             return;
         }

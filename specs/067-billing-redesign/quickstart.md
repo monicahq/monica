@@ -19,7 +19,7 @@ grep -rniE "free offer|the offers\b|this offer\b|that offer\b" lang/en.json app 
 
 It prints nothing once the rename is complete (the verb sense, "offers nothing", does not match).
 
-## Screen walkthrough at `http://erica.test/settings/account/billing`
+## Screen walkthrough at `http://monica.test/settings/account/billing`
 
 Set each state with factories in a throwaway test, never against the local database (memory: never
 migrate the local database). Render with the `take-screenshot` skill, in light and dark.

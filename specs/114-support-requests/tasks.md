@@ -102,7 +102,7 @@
 - [X] T066 `vendor/bin/pint --dirty --format agent`, `vendor/bin/phpstan analyse --no-progress`, `php artisan monica:localize --check`
 - [X] T067 `PAO_DISABLE=true php artisan test --parallel --compact`, including tests/Feature/RouteProtectionTest.php
 - [X] T068 Run the `accessibility-reviewer` and `rules-reviewer` agents on the diff and fix what they confirm
-- [ ] T069 Walk quickstart.md by hand at erica.test
+- [ ] T069 Walk quickstart.md by hand at monica.test
 
 ## Dependencies
 

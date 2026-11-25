@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-The checkout served by Herd at `erica.test`, `groups` and `file-upload` switched on for the account
+The checkout served by Herd at `monica.test`, `groups` and `file-upload` switched on for the account
 used (`php artisan monica:switch-flag groups on --email=...`). Never migrate the local database;
 the test suite migrates its own.
 

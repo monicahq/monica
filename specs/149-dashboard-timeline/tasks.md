@@ -131,7 +131,7 @@ proven by a test. Follow `.claude/rules/testing.md`: one rule tested once, in th
 - [X] T036 [P] Write the What's new entry with the `changelog` skill: the timeline covers the vault, the year index, the filters, and that "Recent life events" left the sidebar (principle VIII).
 - [X] T037 [P] Run the `accessibility-reviewer` agent on `resources/views/app/vaults/_timeline.blade.php`, `_timeline-people.blade.php`, `show.blade.php` and the search script; fix what it confirms.
 - [X] T038 [P] Run the `rules-reviewer` agent on the whole diff; fix what it confirms.
-- [X] T039 Build the assets with `bun run build` and walk the "By hand" list of `quickstart.md` on `https://erica.test` with the iris `take-screenshot` skill, including a narrow window and a right to left locale.
+- [X] T039 Build the assets with `bun run build` and walk the "By hand" list of `quickstart.md` on `https://monica.test` with the iris `take-screenshot` skill, including a narrow window and a right to left locale.
 - [X] T040 Run the `definition-of-done` skill: `vendor/bin/pint --dirty --format agent`, PHPStan, and the whole suite with `PAO_DISABLE=true php artisan test --compact --parallel`.
 
 ---

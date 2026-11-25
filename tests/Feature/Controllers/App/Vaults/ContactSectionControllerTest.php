@@ -146,7 +146,7 @@ class ContactSectionControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_writes_nothing_in_a_block_it_was_not_asked_about(): void
+    public function it_refuses_a_field_of_a_block_it_was_not_asked_about_and_writes_nothing(): void
     {
         Queue::fake();
 
@@ -159,7 +159,7 @@ class ContactSectionControllerTest extends TestCase
         $knee = Field::query()->where('label', 'Knee')->firstOrFail();
         $allergies = Field::query()->where('label', 'Allergies')->firstOrFail();
 
-        $this->actingAs($user)->put(
+        $response = $this->actingAs($user)->put(
             route('contacts.sections.update', [
                 'vault' => $vault,
                 'contact' => $michael,
@@ -168,7 +168,8 @@ class ContactSectionControllerTest extends TestCase
             ['fields' => [$knee->id => 'Twisted it skiing', $allergies->id => 'Peanuts']],
         );
 
-        $this->assertDatabaseHas('field_values', ['field_id' => $knee->id, 'value_string' => 'Twisted it skiing']);
+        $response->assertSessionHasErrors('fields');
+        $this->assertDatabaseMissing('field_values', ['field_id' => $knee->id]);
         $this->assertDatabaseMissing('field_values', ['field_id' => $allergies->id]);
     }
 

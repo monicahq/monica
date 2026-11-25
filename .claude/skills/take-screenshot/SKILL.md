@@ -87,7 +87,7 @@ iris --scale 1 --size 1440x1420 '<the link>' -o /tmp/relationship-types.png
 
 The signature covers the host, so `APP_URL` in `.env` has to name the host you are opening. That
 host differs from one setup to the next: Herd, for example, serves the project directory as
-`http://erica.test`. Read `APP_URL` rather than guessing it. A link minted for any other host answers
+`http://monica.test`. Read `APP_URL` rather than guessing it. A link minted for any other host answers
 `403 Invalid signature`.
 
 The link expires in five minutes, so mint a new one when it goes stale. It only works on a
@@ -168,9 +168,12 @@ Use descriptive names when taking multiple screenshots.
 Do not add generated screenshots to Git or store them anywhere in the
 repository.
 
-The one exception is a screenshot the product documentation shows. It is stored in
+There are two exceptions. A screenshot the product documentation shows is stored in
 `public/images/docs`, named and placed as the "Screenshots" section of the
 [writer skill](../writer/SKILL.md) says, and committed with the page that shows it.
+A screenshot of a What's new entry is stored in `public/images/changelog`, framed, converted
+and named as the "Screenshots" section of the [changelog skill](../changelog/SKILL.md)
+says, and committed with its entry.
 
 Screenshots taken for a pull request stay in `/tmp` and are uploaded directly
 to the pull request with GitHub CLI, as the

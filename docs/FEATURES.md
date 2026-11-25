@@ -260,3 +260,8 @@ A chronological list of every feature and improvement shipped during development
 * Admin/billing: Showed the figures of the business on that screen: who holds full access and through what, the state of the subscriptions, the payments of this month and the last, and the refunds and disputes that ended access.
 * Admin/billing: Let an administrator read the Stripe catalogue again instead of waiting for the hour, written down in the administrator record.
 * Vaults/people: The list of people, its pickers and the API order names the way the language of the account files them: by given name, after a particle, with each letter of the language kept apart, or by a kana reading.
+* MCP: An assistant can delete a contact, read and choose the columns of the people screen, and create, rename, reorder, stop offering and delete value lists and their values.
+* API: Value lists and their values can be created, renamed, reordered, stopped and deleted, as on the settings screen.
+* Field values: A field that is not in the section, or a repeated row carrying a key it does not know, is refused instead of silently ignored, and the row shape is documented for the API and the MCP server.
+* Field values: "I do not know the year" is kept on a date inside a repeated field.
+* Durations: A duration field and the duration of a life event go up to a year, and read in weeks, days, hours and minutes.

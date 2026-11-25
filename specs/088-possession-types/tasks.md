@@ -75,7 +75,7 @@ Independent test: spec US5. Depends on US1 to US4.
 - [X] T037 Run `php artisan monica:localize`, translate what it reports in every locale, then `php artisan monica:localize --check`
 - [X] T038 Add the feature to `docs/FEATURES.md` with the `feature-documentator` skill
 - [X] T039 Run `vendor/bin/pint --dirty --format agent`, `vendor/bin/phpstan analyse --no-progress`, then the whole suite
-- [ ] T040 Walk through `quickstart.md` by hand on `https://erica.test`
+- [ ] T040 Walk through `quickstart.md` by hand on `https://monica.test`
 
 ## Dependencies
 

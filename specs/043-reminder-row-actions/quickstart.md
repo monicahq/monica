@@ -11,7 +11,7 @@ vendor/bin/phpstan analyse --no-progress
 vendor/bin/pint --dirty --format agent
 ```
 
-## Manual, on http://erica.test/vaults/personal/reminders
+## Manual, on http://monica.test/vaults/personal/reminders
 
 Needs one repeating and one one time reminder, one of them late.
 

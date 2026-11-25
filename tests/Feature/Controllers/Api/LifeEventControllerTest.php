@@ -95,6 +95,25 @@ class LifeEventControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_narrows_the_list_to_the_past(): void
+    {
+        $this->travelTo('2026-11-22 10:00:00');
+
+        [$user, $vault, $jim] = $this->office();
+        $user->update(['timezone' => 'UTC']);
+        $this->lifeEventOn($vault, '2026-12-18', [$jim], 'Christmas party');
+        $this->lifeEventOn($vault, '2023-04-01', [$jim], 'Fun run');
+        $this->lifeEventOn($vault, '2025-05-01', [$jim], 'Dundies');
+
+        Sanctum::actingAs($user);
+
+        $this->json('GET', "/api/v1/vaults/{$vault->uuid}/life-events", ['slice' => 'past'])
+            ->assertOk()
+            ->assertJsonCount(2, 'data')
+            ->assertJsonPath('data.0.attributes.title', 'Dundies');
+    }
+
+    #[Test]
     public function it_narrows_the_list_to_a_type_deleted_since(): void
     {
         [$user, $vault, $jim] = $this->office();

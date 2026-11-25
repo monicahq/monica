@@ -52,7 +52,7 @@ description: "Task list for help bubbles"
 
 **Goal**: one bubble beside the Email address section title.
 
-**Independent Test**: open `https://erica.test/settings/account/profile` and run the quickstart table.
+**Independent Test**: open `https://monica.test/settings/account/profile` and run the quickstart table.
 
 - [X] T015 [US3] Add an optional `help` slot to `resources/views/components/page-section.blade.php`, rendered right after the `<h2>` and outside it, with `@var` entry (R9)
 - [X] T016 [P] [US3] Add one test to `tests/Feature/Views/Components/PageSectionTest.php`: the `help` slot content renders and the heading text stays only the title
@@ -65,7 +65,7 @@ description: "Task list for help bubbles"
 
 - [X] T019 Run the whole suite, `php artisan test --compact` (shared `x-page-section` and `x-help` changed); rewrite any feature test that asserted the old `x-help` markup to assert behaviour instead
 - [X] T020 [P] Run `vendor/bin/phpstan analyse --no-progress` and `vendor/bin/pint --dirty --format agent`
-- [X] T021 Run quickstart.md by hand on `https://erica.test`, with screenshots through the `take-screenshot` skill, light and dark, 320 px and desktop
+- [X] T021 Run quickstart.md by hand on `https://monica.test`, with screenshots through the `take-screenshot` skill, light and dark, 320 px and desktop
 - [X] T022 Record the feature in docs/FEATURES.md with the feature-documentator skill (always the last task)
 
 ## Phase 7: Guide sections (added after review)

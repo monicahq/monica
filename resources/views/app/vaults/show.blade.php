@@ -1,4 +1,4 @@
-{{-- One vault, opened: what needs doing, the people who matter, and what happened lately. --}}
+{{-- One vault, opened: what happened lately, what needs doing, and the people who matter, one tab each. --}}
 {{-- @var \App\ViewModels\Vaults\VaultDashboardViewModel $viewModel --}}
 @php
   $vault = $viewModel->vault();
@@ -9,7 +9,7 @@
   $lifeEventForm = $viewModel->lifeEventForm();
   $row = 'flex items-center gap-3 border-b border-hairline-soft px-4 py-2.5 text-base text-ink no-underline transition-colors duration-(--duration-fast) last:border-b-0 hover:bg-hover focus-ring-inset';
 @endphp
-<x-shell :title="$viewModel->title()" wide>
+<x-shell :title="$viewModel->title()">
   <x-slot:breadcrumb>
     <x-breadcrumb.vault :vault="$vault" />
   </x-slot:breadcrumb>
@@ -62,95 +62,91 @@
     <x-paywall-prompt :message="$ceiling" id="contact-ceiling" />
   @endif
 
-  <div class="grid items-start gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
-    <div class="flex min-w-0 flex-col gap-8">
+  <section id="contact-timeline" x-merge="replace" x-data="dashboardTabs" class="flex flex-col gap-5">
+    <div
       @if ($lifeEventForm !== null)
-        <section
-          id="contact-timeline"
-          x-merge="replace"
-          x-data="lifeEventPanel(@js($lifeEventForm->projection()))"
-          data-life-event-panel
-          class="flex flex-col gap-5"
+        x-data="lifeEventPanel(@js($lifeEventForm->projection()))"
+        data-life-event-panel
+      @endif
+      class="flex flex-col gap-5"
+    >
+      <div class="flex flex-wrap items-end justify-between gap-x-4 gap-y-3">
+        <x-tabs
+          :aria-label="__('What to show')"
+          x-on:keydown.right.prevent="selectAdjacentTab($el, 1)"
+          x-on:keydown.left.prevent="selectAdjacentTab($el, -1)"
+          x-on:keydown.home.prevent="selectFirstTab($el)"
+          x-on:keydown.end.prevent="selectLastTab($el)"
+          class="min-w-0 flex-1"
         >
-          <div class="flex flex-col gap-5">
-            <div class="flex flex-wrap items-center justify-between gap-4">
-              <div
-                role="tablist"
-                aria-label="{{ __('What to show') }}"
-                x-on:keydown.right.prevent="view = view === 'timeline' ? 'attention' : 'timeline'; $nextTick(() => document.getElementById(`dashboard-tab-${view}`)?.focus())"
-                x-on:keydown.left.prevent="view = view === 'timeline' ? 'attention' : 'timeline'; $nextTick(() => document.getElementById(`dashboard-tab-${view}`)?.focus())"
-                class="inline-flex gap-0.5 rounded-lg border border-hairline bg-card p-0.75"
-              >
-                @foreach ([
-                  'timeline' => ['label' => __('Timeline'), 'icon' => 'timeline', 'count' => $viewModel->timelineCount()],
-                  'attention' => ['label' => __('Needs your attention'), 'icon' => 'reminder', 'count' => $viewModel->attention()->count()],
-                ] as $view => $tab)
-                  <button
-                    type="button"
-                    role="tab"
-                    id="dashboard-tab-{{ $view }}"
-                    aria-controls="dashboard-panel-{{ $view }}"
-                    x-bind:aria-selected="view === '{{ $view }}' ? 'true' : 'false'"
-                    x-bind:tabindex="view === '{{ $view }}' ? 0 : -1"
-                    x-on:click="view = '{{ $view }}'"
-                    class="focus-ring flex h-8 cursor-pointer items-center gap-2 rounded-md px-3 text-sm font-medium text-body transition-colors duration-(--duration-fast) hover:text-ink aria-selected:bg-canvas aria-selected:text-ink aria-selected:shadow-nav-active"
-                  >
-                    <x-icon :name="$tab['icon']" :size="16" />
-                    {{ $tab['label'] }}
-                    <span class="flex h-4.75 min-w-4.75 items-center justify-center rounded-full px-1.25 text-2xs font-semibold text-muted tabular-nums">{{ $tab['count'] }}</span>
-                  </button>
-                @endforeach
-              </div>
+          @foreach ($viewModel->tabs() as $tab)
+            <x-tabs.item
+              :icon="$tab['icon']"
+              :count="$tab['count']"
+              :selected="$loop->first"
+              id="dashboard-tab-{{ $tab['key'] }}"
+              data-tab="{{ $tab['key'] }}"
+              aria-controls="dashboard-panel-{{ $tab['key'] }}"
+              tabindex="{{ $loop->first ? '0' : '-1' }}"
+              x-bind:aria-selected="view === '{{ $tab['key'] }}' ? 'true' : 'false'"
+              x-bind:tabindex="view === '{{ $tab['key'] }}' ? 0 : -1"
+              x-on:click="view = '{{ $tab['key'] }}'"
+            >{{ $tab['label'] }}</x-tabs.item>
+          @endforeach
+        </x-tabs>
 
-              <x-button.secondary
-                type="button"
-                x-show="view === 'timeline'"
-                x-ref="addButton"
-                x-on:click="show()"
-                x-bind:aria-expanded="open ? 'true' : 'false'"
-                :aria-controls="$lifeEventForm->isRendered() ? 'life-event-panel' : null"
-                x-bind:disabled="open"
-              >
-                <x-slot:icon><x-icon name="plus" :size="16" /></x-slot:icon>
-                {{ __('Add a life event') }}
-              </x-button.secondary>
+        @if ($lifeEventForm !== null)
+          <x-button.secondary
+            type="button"
+            x-show="view === 'timeline'"
+            x-ref="addButton"
+            x-on:click="show()"
+            x-bind:aria-expanded="open ? 'true' : 'false'"
+            :aria-controls="$lifeEventForm->isRendered() ? 'life-event-panel' : null"
+            x-bind:disabled="open"
+          >
+            <x-slot:icon><x-icon name="plus" :size="16" /></x-slot:icon>
+            {{ __('Add a life event') }}
+          </x-button.secondary>
+        @endif
 
-              <x-link x-show="view === 'attention'" x-cloak :href="$viewModel->attention()->remindersUrl()" :turbo="true" class="text-sm">{{ __('All reminders') }}</x-link>
-            </div>
+        <x-link x-show="view === 'attention'" x-cloak :href="$viewModel->attention()->remindersUrl()" :turbo="true" class="text-sm">{{ __('All reminders') }}</x-link>
+      </div>
 
-            <div role="tabpanel" id="dashboard-panel-timeline" aria-labelledby="dashboard-tab-timeline" x-show="view === 'timeline'" class="flex flex-col gap-5">
-              @if ($lifeEventForm->isRendered())
-                @include('app.vaults.contacts._life-event-panel', ['form' => $lifeEventForm])
-              @endif
-
-              @include('app.vaults._timeline', ['timeline' => $viewModel->timeline()])
-            </div>
-
-            <div role="tabpanel" id="dashboard-panel-attention" aria-labelledby="dashboard-tab-attention" x-show="view === 'attention'" x-cloak>
-              @include('app.vaults._attention-dates', ['attention' => $viewModel->attention(), 'showsAllReminders' => false])
-            </div>
-          </div>
-        </section>
-      @else
-        @include('app.vaults._attention', ['attention' => $viewModel->attention()])
+      <div role="tabpanel" id="dashboard-panel-timeline" aria-labelledby="dashboard-tab-timeline" x-show="view === 'timeline'" class="flex flex-col gap-5">
+        @if ($lifeEventForm?->isRendered())
+          @include('app.vaults.contacts._life-event-panel', ['form' => $lifeEventForm])
+        @endif
 
         @include('app.vaults._timeline', ['timeline' => $viewModel->timeline()])
-      @endif
-    </div>
+      </div>
 
-    <div class="flex min-w-0 flex-col gap-8">
-      <x-page-section :title="__('Favourite people')" icon="star">
+      <div role="tabpanel" id="dashboard-panel-attention" aria-labelledby="dashboard-tab-attention" x-show="view === 'attention'" x-cloak>
+        <h2 class="sr-only">{{ __('Needs your attention') }}</h2>
+
+        @include('app.vaults._attention-dates', ['attention' => $viewModel->attention(), 'showsAllReminders' => false])
+      </div>
+
+      <div role="tabpanel" id="dashboard-panel-favourites" aria-labelledby="dashboard-tab-favourites" x-show="view === 'favourites'" x-cloak class="flex flex-col gap-3">
+        <h2 class="sr-only">{{ __('Favourite people') }}</h2>
+
+        <p class="text-sm text-pretty text-muted">{{ __('People you marked as a favourite on their page, one step away.') }}</p>
+
         <x-panel :flush="true">
           @if ($favourites === [])
-            <p class="px-4 py-3 text-sm text-pretty text-muted">{{ __('Mark somebody as a favourite on their page and they stay here, one step away.') }}</p>
+            <x-empty-state :title="__('Nobody here yet')">
+              {{ __('Mark somebody as a favourite on their page and they stay here, one step away.') }}
+            </x-empty-state>
           @else
             <ul>
               @foreach ($favourites as $person)
                 <li>
                   <a href="{{ $person['url'] }}" data-turbo="true" class="{{ $row }}">
-                    <x-contact-avatar :name="$person['name']" :url="$person['avatarUrl']" :size="32" />
+                    <x-contact-avatar :name="$person['name']" :url="$person['avatarUrl']" :size="32" alt="" />
 
-                    <span class="min-w-0 truncate font-medium">{{ $person['name'] }}</span>
+                    <span class="min-w-0 flex-1 truncate font-semibold">{{ $person['name'] }}</span>
+
+                    <x-icon name="star-filled" :size="16" class="shrink-0 text-muted" />
                   </a>
                 </li>
               @endforeach
@@ -163,20 +159,26 @@
             </x-slot:footer>
           @endif
         </x-panel>
-      </x-page-section>
+      </div>
 
-      <x-page-section :title="__('Recently viewed')" icon="clock">
+      <div role="tabpanel" id="dashboard-panel-recent" aria-labelledby="dashboard-tab-recent" x-show="view === 'recent'" x-cloak class="flex flex-col gap-3">
+        <h2 class="sr-only">{{ __('Recently viewed') }}</h2>
+
+        <p class="text-sm text-pretty text-muted">{{ __('The last people whose page you opened in this vault.') }}</p>
+
         <x-panel :flush="true">
           @if ($recentlyViewed === [])
-            <p class="px-4 py-3 text-sm text-pretty text-muted">{{ __('The people you look up appear here, the latest first.') }}</p>
+            <x-empty-state :title="__('Nobody opened yet')">
+              {{ __('The people you look up appear here, the latest first.') }}
+            </x-empty-state>
           @else
             <ul>
               @foreach ($recentlyViewed as $person)
                 <li>
                   <a href="{{ $person['url'] }}" data-turbo="true" class="{{ $row }}">
-                    <x-contact-avatar :name="$person['name']" :url="$person['avatarUrl']" :size="28" />
+                    <x-contact-avatar :name="$person['name']" :url="$person['avatarUrl']" :size="32" alt="" />
 
-                    <span class="min-w-0 flex-1 truncate font-medium">{{ $person['name'] }}</span>
+                    <span class="min-w-0 flex-1 truncate font-semibold">{{ $person['name'] }}</span>
 
                     <span class="shrink-0 text-sm text-muted">{{ $person['when'] }}</span>
                   </a>
@@ -185,7 +187,7 @@
             </ul>
           @endif
         </x-panel>
-      </x-page-section>
+      </div>
     </div>
-  </div>
+  </section>
 </x-shell>

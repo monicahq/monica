@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\App\Docs;
 
 use App\Actions\CreateLifeEvent;
+use App\Actions\CreateTemplateChange;
 use App\Actions\MergeContacts;
 use App\Enums\AccountExportStatusEnum;
 use App\Enums\AccountImportOutcomeEnum;
@@ -18,11 +19,14 @@ use App\Enums\NotificationChannelEnum;
 use App\Enums\PossessionFieldKindEnum;
 use App\Enums\PossessionTransactionTypeEnum;
 use App\Enums\RelationTargetEnum;
+use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\ValueListEnum;
 use App\Enums\VersionStatusEnum;
 use App\Helpers\AvailableLocales;
 use App\Helpers\ChangelogEntries;
+use App\Helpers\RecordKind;
 use App\Helpers\StripeCatalogue;
+use App\Jobs\ChangeTemplateOfRecords;
 use App\Jobs\CreateDefaultTemplate;
 use App\Models\AccountExport;
 use App\Models\AccountImport;
@@ -37,6 +41,7 @@ use App\Models\Contact;
 use App\Models\ContactDuplicateCandidate;
 use App\Models\ContactListColumn;
 use App\Models\EmailSent;
+use App\Models\Entity;
 use App\Models\EntityType;
 use App\Models\Field;
 use App\Models\FieldValue;
@@ -91,6 +96,8 @@ use App\Models\SupportMessage;
 use App\Models\SupportRequest;
 use App\Models\SupportStatusChange;
 use App\Models\Template;
+use App\Models\TemplateChange;
+use App\Models\TemplateChangeItem;
 use App\Models\User;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
@@ -111,6 +118,7 @@ use Laravel\Scout\EngineManager;
 use Laravel\Scout\Engines\CollectionEngine;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\Fixtures\Dav\Structure;
+use Tests\Fixtures\Statistics\AnimalsVault;
 use Tests\TestCase;
 
 class ApiDocsReturnFieldsTest extends TestCase
@@ -959,6 +967,56 @@ class ApiDocsReturnFieldsTest extends TestCase
                 ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id]);
 
                 return $this->json('GET', '/api/v1/value-lists');
+            }),
+
+            'value-lists-create' => $this->asSomebody(fn (): TestResponse => $this->json('POST', '/api/v1/value-lists', [
+                'name' => 'Paper suppliers',
+            ])),
+
+            'value-lists-update' => $this->asSomebody(function (User $user): TestResponse {
+                $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('PUT', "/api/v1/value-lists/{$list->id}", ['name' => 'Paper suppliers']);
+            }),
+
+            'value-lists-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('DELETE', "/api/v1/value-lists/{$list->id}");
+            }),
+
+            'value-list-items-create' => $this->asSomebody(function (User $user): TestResponse {
+                $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('POST', "/api/v1/value-lists/{$list->id}/items", ['label' => 'Staples']);
+            }),
+
+            'value-list-items-update' => $this->asSomebody(function (User $user): TestResponse {
+                $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+                $item = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id]);
+
+                return $this->json('PUT', "/api/v1/value-lists/{$list->id}/items/{$item->id}", ['label' => 'Staples']);
+            }),
+
+            'value-list-items-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+                $item = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id]);
+
+                return $this->json('DELETE', "/api/v1/value-lists/{$list->id}/items/{$item->id}");
+            }),
+
+            'value-list-items-activation' => $this->asSomebody(function (User $user): TestResponse {
+                $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+                $item = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id]);
+
+                return $this->json('PUT', "/api/v1/value-lists/{$list->id}/items/{$item->id}/activation", ['is_active' => false]);
+            }),
+
+            'value-list-items-position' => $this->asSomebody(function (User $user): TestResponse {
+                $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+                $item = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id]);
+
+                return $this->json('PUT', "/api/v1/value-lists/{$list->id}/items/{$item->id}/position", ['position' => 1]);
             }),
 
             'countries-index' => $this->asSomebody(function (User $user): TestResponse {
@@ -2126,6 +2184,27 @@ class ApiDocsReturnFieldsTest extends TestCase
                 return $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contact-categories");
             }),
 
+            'contacts-categories-update' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                [$version, $field] = $this->categoriesTemplate($user);
+                $item = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $field->value_list_id]);
+                $jim = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'structure_version_id' => $version->id]);
+                $toby = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
+
+                return $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/contacts/categories", ['contacts' => [
+                    ['contact' => $jim->uuid, 'categories' => [$item->id]],
+                    ['contact' => $toby->uuid, 'categories' => []],
+                ]]);
+            }),
+
+            'contacts-destroy-many' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                $me = Contact::factory()->me()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
+                $todd = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
+
+                return $this->json('DELETE', "/api/v1/vaults/{$vault->uuid}/contacts", ['contacts' => [$todd->uuid, $me->uuid]]);
+            }),
+
             'contact-list-columns-show' => $this->asSomebody(function (User $user): TestResponse {
                 $vault = Vault::factory()->create(['account_id' => $user->account_id]);
                 $work = $this->contactTemplateCarrying($user, 'Professional', ['Work' => ['company']])['Work'];
@@ -2313,6 +2392,127 @@ class ApiDocsReturnFieldsTest extends TestCase
                 $this->holdACategory($contact);
 
                 return $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/template-version", []);
+            }),
+
+            'record-kinds-statistics-show' => $this->asSomebody(function (User $user): TestResponse {
+                $fixture = AnimalsVault::build($user);
+
+                return $this->json('GET', "/api/v1/vaults/{$fixture->vault->uuid}/record-kinds/{$fixture->animals->uuid}/statistics");
+            }),
+            'record-kinds-statistics-fields-show' => $this->asSomebody(function (User $user): TestResponse {
+                $fixture = AnimalsVault::build($user);
+
+                return $this->json('GET', "/api/v1/vaults/{$fixture->vault->uuid}/record-kinds/{$fixture->animals->uuid}/statistics/fields", ['template' => $fixture->pet->uuid]);
+            }),
+            'record-kinds-template-change-preview-show' => $this->asSomebody(function (User $user): TestResponse {
+                $fixture = AnimalsVault::build($user);
+                $chip = FieldValue::factory()->detached()->create([
+                    'account_id' => $user->account_id,
+                    'vault_id' => $fixture->vault->id,
+                    'valuable_type' => Entity::class,
+                    'valuable_id' => $fixture->horses['Ulysse']->id,
+                    'field_id' => $fixture->fields['microchip']->id,
+                    'value_string' => '250777',
+                ]);
+                Reminder::factory()->for($chip, 'fieldValue')->create([
+                    'remindable_type' => Entity::class,
+                    'name' => 'Microchip renewal',
+                    'is_active' => false,
+                    'inactive_reason' => ReminderInactiveReasonEnum::FieldRemoved,
+                    'deactivated_at' => now(),
+                ]);
+                TemplateChangeItem::factory()->create([
+                    'template_change_id' => TemplateChange::factory()->create(['vault_id' => $fixture->vault->id])->id,
+                    'record_type' => Entity::class,
+                    'record_id' => $fixture->horses['Bijou']->id,
+                    'from_version_id' => $fixture->horseV1->id,
+                ]);
+
+                return $this->json('GET', "/api/v1/vaults/{$fixture->vault->uuid}/record-kinds/{$fixture->animals->uuid}/template-change-preview", [
+                    'from' => $fixture->horse->uuid,
+                    'to' => $fixture->pet->uuid,
+                ]);
+            }),
+            'record-kinds-template-changes-create' => $this->asSomebody(function (User $user): TestResponse {
+                Queue::fake();
+                $fixture = AnimalsVault::build($user);
+
+                return $this->json('POST', "/api/v1/vaults/{$fixture->vault->uuid}/record-kinds/{$fixture->animals->uuid}/template-changes", [
+                    'from' => $fixture->horse->uuid,
+                    'to' => $fixture->pet->uuid,
+                ]);
+            }),
+            'template-changes-show' => $this->asSomebody(function (User $user): TestResponse {
+                Queue::fake();
+                $fixture = AnimalsVault::build($user);
+                $change = new CreateTemplateChange(
+                    user: $user,
+                    kind: RecordKind::forEntityType(vault: $fixture->vault, entityType: $fixture->animals),
+                    source: $fixture->horse,
+                    versionNumbers: [],
+                    target: $fixture->pet,
+                )->execute();
+                $fixture->horses['Bijou']->update(['structure_version_id' => $fixture->birdV1->id]);
+                $ids = $change->items()->orderBy('id')->pluck('id');
+                new ChangeTemplateOfRecords(templateChange: $change, firstItemId: $ids->first(), lastItemId: $ids->last())->handle();
+
+                return $this->json('GET', "/api/v1/vaults/{$fixture->vault->uuid}/template-changes/{$change->uuid}");
+            }),
+            'contacts-template-preview' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                $from = Template::factory()->published()->create(['account_id' => $user->account_id])->refresh();
+                $to = Template::factory()->published()->create(['account_id' => $user->account_id])->refresh();
+                $contact = Contact::factory()->create([
+                    'vault_id' => $vault->id,
+                    'account_id' => $user->account_id,
+                    'structure_version_id' => $from->structure->published_version_id,
+                ]);
+                $value = FieldValue::factory()->create([
+                    'account_id' => $user->account_id,
+                    'vault_id' => $vault->id,
+                    'valuable_type' => Contact::class,
+                    'valuable_id' => $contact->id,
+                    'field_id' => Field::factory()->recurringDate()->create(['account_id' => $user->account_id])->id,
+                    'value_string' => null,
+                    'value_date' => '1979-03-25',
+                ]);
+                Reminder::factory()->for($value, 'fieldValue')->create();
+                $returning = FieldValue::factory()->detached()->create([
+                    'account_id' => $user->account_id,
+                    'vault_id' => $vault->id,
+                    'valuable_type' => Contact::class,
+                    'valuable_id' => $contact->id,
+                    'field_id' => $this->fieldCarriedBy($to->structure->publishedVersion, FieldTypeEnum::RecurringDate)->id,
+                    'value_string' => null,
+                    'value_date' => '1979-03-25',
+                ]);
+                Reminder::factory()->for($returning, 'fieldValue')->create([
+                    'is_active' => false,
+                    'inactive_reason' => ReminderInactiveReasonEnum::FieldRemoved,
+                    'deactivated_at' => now(),
+                ]);
+
+                return $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/template-preview?template={$to->uuid}");
+            }),
+
+            'contacts-template-update' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                $from = Template::factory()->published()->create(['account_id' => $user->account_id])->refresh();
+                $to = Template::factory()->published()->create(['account_id' => $user->account_id])->refresh();
+                $file = File::factory()->create([
+                    'account_id' => $vault->account_id,
+                    'vault_id' => $vault->id,
+                    'mime_type' => 'image/webp',
+                ]);
+                $contact = Contact::factory()->create([
+                    'vault_id' => $vault->id,
+                    'account_id' => $user->account_id,
+                    'structure_version_id' => $from->structure->published_version_id,
+                    'avatar_file_id' => $file->id,
+                ]);
+                $this->holdACategoryCarriedBy($contact, $to->structure->publishedVersion);
+
+                return $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/template", ['template' => $to->uuid]);
             }),
 
             'vaults-destroy' => $this->asSomebody(function (User $user): TestResponse {
@@ -2886,7 +3086,7 @@ class ApiDocsReturnFieldsTest extends TestCase
             }),
 
             'changelog-entries-index' => $this->asSomebody(function (User $user): TestResponse {
-                $this->app->instance(ChangelogEntries::class, new ChangelogEntries(directory: base_path('tests/Fixtures/Changelog/Valid')));
+                $this->app->instance(ChangelogEntries::class, new ChangelogEntries(directory: base_path('tests/Fixtures/Changelog/Valid'), screenshotDirectory: base_path('tests/Fixtures/Changelog/Screenshots/Valid')));
                 CarbonImmutable::setTestNow('2026-11-17 12:00:00');
 
                 return $this->json('GET', '/api/v1/changelog-entries');
@@ -2995,6 +3195,43 @@ class ApiDocsReturnFieldsTest extends TestCase
         $list = $this->categoriesOf($contact->account_id);
         $item = ValueListItem::factory()->create(['account_id' => $contact->account_id, 'value_list_id' => $list->id]);
         $field = Field::factory()->create(['account_id' => $contact->account_id, 'type' => FieldTypeEnum::Multiselect, 'value_list_id' => $list->id]);
+
+        FieldValue::factory()->create([
+            'valuable_type' => Contact::class,
+            'valuable_id' => $contact->id,
+            'field_id' => $field->id,
+            'value_string' => null,
+            'value_list_item_ids' => [$item->id],
+        ]);
+    }
+
+    private function fieldCarriedBy(StructureVersion $version, FieldTypeEnum $type, ?int $valueListId = null): Field
+    {
+        $version->update(['status' => VersionStatusEnum::Draft]);
+        $sectionVersion = SectionVersion::factory()->create(['account_id' => $version->account_id]);
+        $field = Field::factory()->create([
+            'account_id' => $version->account_id,
+            'section_version_id' => $sectionVersion->id,
+            'type' => $type,
+            'value_list_id' => $valueListId,
+        ]);
+        StructureVersionSection::factory()->create([
+            'account_id' => $version->account_id,
+            'structure_version_id' => $version->id,
+            'structure_version_page_id' => $version->pages->first()->id,
+            'section_version_id' => $sectionVersion->id,
+        ]);
+        $sectionVersion->update(['status' => VersionStatusEnum::Published]);
+        $version->update(['status' => VersionStatusEnum::Published]);
+
+        return $field;
+    }
+
+    private function holdACategoryCarriedBy(Contact $contact, StructureVersion $version): void
+    {
+        $list = $this->categoriesOf($contact->account_id);
+        $item = ValueListItem::factory()->create(['account_id' => $contact->account_id, 'value_list_id' => $list->id]);
+        $field = $this->fieldCarriedBy($version, FieldTypeEnum::Multiselect, $list->id);
 
         FieldValue::factory()->create([
             'valuable_type' => Contact::class,

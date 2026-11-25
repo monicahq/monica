@@ -60,6 +60,26 @@ class DeactivateRemindersTest extends TestCase
     }
 
     #[Test]
+    public function it_silences_without_writing_to_the_log_when_told_not_to(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $reminder = $this->ruleOf($user);
+
+        $count = new DeactivateReminders(
+            user: $user,
+            subject: $reminder->remindable,
+            reason: ReminderInactiveReasonEnum::RecordArchived,
+            writesToLog: false,
+        )->execute();
+
+        $this->assertSame(1, $count);
+        $this->assertDatabaseHas('reminders', ['id' => $reminder->id, 'is_active' => false]);
+        Queue::assertNotPushed(LogUserAction::class);
+    }
+
+    #[Test]
     public function it_silences_every_rule_reading_a_field(): void
     {
         Queue::fake();

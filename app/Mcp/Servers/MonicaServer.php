@@ -12,7 +12,9 @@ use App\Mcp\Tools\AddTemplateSection;
 use App\Mcp\Tools\AnswerGroupReminderOccurrence;
 use App\Mcp\Tools\AnswerReminderOccurrence;
 use App\Mcp\Tools\ChangeAgentFeedbackStatus;
+use App\Mcp\Tools\ChangeContactTemplate;
 use App\Mcp\Tools\ChangeSupportRequestStatus;
+use App\Mcp\Tools\ChangeTemplateOfRecords;
 use App\Mcp\Tools\CreateContact;
 use App\Mcp\Tools\CreateContactRelationship;
 use App\Mcp\Tools\CreateContactReminder;
@@ -49,8 +51,12 @@ use App\Mcp\Tools\CreateSupportRequest;
 use App\Mcp\Tools\CreateTemplate;
 use App\Mcp\Tools\CreateTemplateDraft;
 use App\Mcp\Tools\CreateTemplateField;
+use App\Mcp\Tools\CreateValueList;
+use App\Mcp\Tools\CreateValueListItem;
+use App\Mcp\Tools\DeleteContact;
 use App\Mcp\Tools\DeleteContactRelationship;
 use App\Mcp\Tools\DeleteContactReminder;
+use App\Mcp\Tools\DeleteContacts;
 use App\Mcp\Tools\DeleteEntityType;
 use App\Mcp\Tools\DeleteGroup;
 use App\Mcp\Tools\DeleteGroupNote;
@@ -82,16 +88,20 @@ use App\Mcp\Tools\DeleteRelationshipType;
 use App\Mcp\Tools\DeleteTemplate;
 use App\Mcp\Tools\DeleteTemplateDraft;
 use App\Mcp\Tools\DeleteTemplateField;
+use App\Mcp\Tools\DeleteValueList;
+use App\Mcp\Tools\DeleteValueListItem;
 use App\Mcp\Tools\DuplicateTemplate;
 use App\Mcp\Tools\ExportPossessionType;
 use App\Mcp\Tools\GetAgentFeedback;
 use App\Mcp\Tools\GetContact;
+use App\Mcp\Tools\GetContactListColumns;
 use App\Mcp\Tools\GetContactMarkdown;
 use App\Mcp\Tools\GetContactRelationship;
 use App\Mcp\Tools\GetContactReminder;
 use App\Mcp\Tools\GetEmailSent;
 use App\Mcp\Tools\GetEntity;
 use App\Mcp\Tools\GetEntityType;
+use App\Mcp\Tools\GetFieldCompletion;
 use App\Mcp\Tools\GetGroup;
 use App\Mcp\Tools\GetGroupNote;
 use App\Mcp\Tools\GetGroupReminder;
@@ -115,11 +125,13 @@ use App\Mcp\Tools\GetPossessionTag;
 use App\Mcp\Tools\GetPossessionTransaction;
 use App\Mcp\Tools\GetPossessionType;
 use App\Mcp\Tools\GetPossessionValuation;
+use App\Mcp\Tools\GetRecordStatistics;
 use App\Mcp\Tools\GetRelationshipCategory;
 use App\Mcp\Tools\GetRelationshipType;
 use App\Mcp\Tools\GetSupportQueueRequest;
 use App\Mcp\Tools\GetSupportRequest;
 use App\Mcp\Tools\GetTemplate;
+use App\Mcp\Tools\GetTemplateChange;
 use App\Mcp\Tools\GetTemplateVersion;
 use App\Mcp\Tools\ImportPossessionType;
 use App\Mcp\Tools\ListAgentFeedback;
@@ -175,6 +187,8 @@ use App\Mcp\Tools\ListVaultReminderOccurrences;
 use App\Mcp\Tools\ListVaultReminders;
 use App\Mcp\Tools\ListVaults;
 use App\Mcp\Tools\MovePossession;
+use App\Mcp\Tools\PreviewContactTemplateChange;
+use App\Mcp\Tools\PreviewTemplateChange;
 use App\Mcp\Tools\PublishTemplateVersion;
 use App\Mcp\Tools\RemoveGroupFile;
 use App\Mcp\Tools\RemoveGroupMember;
@@ -185,7 +199,9 @@ use App\Mcp\Tools\RestoreLifeEvent;
 use App\Mcp\Tools\SearchKnowledge;
 use App\Mcp\Tools\SearchRecords;
 use App\Mcp\Tools\SendSupportReply;
+use App\Mcp\Tools\SetContactCategories;
 use App\Mcp\Tools\SetContactFavourite;
+use App\Mcp\Tools\SetContactListColumns;
 use App\Mcp\Tools\SetContactPartial;
 use App\Mcp\Tools\SetEntityTypeActivation;
 use App\Mcp\Tools\SetEntityTypePosition;
@@ -206,6 +222,8 @@ use App\Mcp\Tools\SetTemplateActivation;
 use App\Mcp\Tools\SetTemplateFieldPosition;
 use App\Mcp\Tools\SetTemplatePosition;
 use App\Mcp\Tools\SetTemplateSectionPosition;
+use App\Mcp\Tools\SetValueListItemActivation;
+use App\Mcp\Tools\SetValueListItemPosition;
 use App\Mcp\Tools\SolveSupportRequest;
 use App\Mcp\Tools\SubmitFeedback;
 use App\Mcp\Tools\UpdateContactName;
@@ -245,6 +263,8 @@ use App\Mcp\Tools\UpdateRelationshipType;
 use App\Mcp\Tools\UpdateTemplate;
 use App\Mcp\Tools\UpdateTemplateField;
 use App\Mcp\Tools\UpdateTemplateSection;
+use App\Mcp\Tools\UpdateValueList;
+use App\Mcp\Tools\UpdateValueListItem;
 use App\Mcp\Tools\UpdateVault;
 use Laravel\Mcp\Server;
 use Laravel\Mcp\Server\Attributes\Instructions;
@@ -502,7 +522,19 @@ class MonicaServer extends Server
         UpdateContactName::class,
         UpdateContactNameRepresentations::class,
         UpdateContactSection::class,
+        PreviewContactTemplateChange::class,
+        ChangeContactTemplate::class,
+        SetContactCategories::class,
+        GetRecordStatistics::class,
+        GetFieldCompletion::class,
+        PreviewTemplateChange::class,
+        ChangeTemplateOfRecords::class,
+        GetTemplateChange::class,
         SetContactFavourite::class,
+        DeleteContact::class,
+        DeleteContacts::class,
+        GetContactListColumns::class,
+        SetContactListColumns::class,
         SetContactPartial::class,
         ListContactReminders::class,
         GetContactReminder::class,
@@ -515,6 +547,14 @@ class MonicaServer extends Server
         ListContactCategories::class,
         ListCountries::class,
         ListValueLists::class,
+        CreateValueList::class,
+        UpdateValueList::class,
+        DeleteValueList::class,
+        CreateValueListItem::class,
+        UpdateValueListItem::class,
+        DeleteValueListItem::class,
+        SetValueListItemActivation::class,
+        SetValueListItemPosition::class,
         AnswerReminderOccurrence::class,
         ListGroupReminders::class,
         GetGroupReminder::class,

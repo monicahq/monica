@@ -464,6 +464,10 @@ class LocalizeCommand extends Command
                     $keys[$key] = true;
                 }
             }
+
+            foreach ($entry->screenshots as $screenshot) {
+                $keys[$screenshot->description] = true;
+            }
         }
 
         $update = new Update(

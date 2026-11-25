@@ -99,13 +99,13 @@ class FieldValueFormatterTest extends TestCase
     }
 
     #[Test]
-    public function it_reads_a_duration_as_a_number_of_minutes(): void
+    public function it_reads_a_duration_in_the_largest_units_that_fit(): void
     {
         $user = User::factory()->create();
         $formatter = new FieldValueFormatter($user);
 
         $this->assertEquals('1 minute', $formatter->format($this->value($user, FieldTypeEnum::Duration, ['value_number' => '1.000000'])));
-        $this->assertEquals('90 minutes', $formatter->format($this->value($user, FieldTypeEnum::Duration, ['value_number' => '90.000000'])));
+        $this->assertEquals('1 hour 30 minutes', $formatter->format($this->value($user, FieldTypeEnum::Duration, ['value_number' => '90.000000'])));
         $this->assertNull($formatter->format($this->value($user, FieldTypeEnum::Duration, ['value_number' => null])));
     }
 

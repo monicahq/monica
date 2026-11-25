@@ -131,7 +131,7 @@ class VaultDashboardViewModel
     /** @return list<array{name: string, avatarUrl: string|null, url: string, when: string}> */
     public function recentlyViewed(): array
     {
-        return $this->vault
+        return once(fn (): array => $this->vault
             ->contacts()
             ->listed()
             ->whereNotNull('last_consulted_at')
@@ -144,7 +144,7 @@ class VaultDashboardViewModel
                 'when' => $this->day($contact->last_consulted_at),
             ])
             ->values()
-            ->all();
+            ->all());
     }
 
     /**
@@ -184,6 +184,17 @@ class VaultDashboardViewModel
     public function timelineCount(): int
     {
         return $this->timeline()->total();
+    }
+
+    /** @return list<array{key: string, label: string, icon: string, count: int}> */
+    public function tabs(): array
+    {
+        return [
+            ['key' => 'timeline', 'label' => __('Timeline'), 'icon' => 'timeline', 'count' => $this->timelineCount()],
+            ['key' => 'attention', 'label' => __('Needs your attention'), 'icon' => 'reminder', 'count' => $this->attention()->count()],
+            ['key' => 'favourites', 'label' => __('Favourite people'), 'icon' => 'star', 'count' => $this->favouriteContacts()->count()],
+            ['key' => 'recent', 'label' => __('Recently viewed'), 'icon' => 'clock', 'count' => count($this->recentlyViewed())],
+        ];
     }
 
     private function meContact(): ?Contact

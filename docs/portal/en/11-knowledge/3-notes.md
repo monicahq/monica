@@ -4,7 +4,7 @@ title: Write notes
 description: Write free text in a folder, with headings, bullets and tasks you can tick while reading.
 slug: notes
 section: knowledge
-last_updated: 2026-11-20
+last_updated: 2026-11-25
 ---
 
 # Write notes
@@ -48,6 +48,16 @@ A web address you type, such as `https://www.example.com`, becomes a link on its
 ## Tick tasks
 
 While you read a note, tick a task's box to mark it done, and untick it to bring it back. The note saves straight away, so you can use a note as a checklist without opening it to edit.
+
+## Copy, view or download the Markdown
+
+The **Markdown** menu next to **Edit** works with the note's text as you wrote it, with its title as the first heading:
+
+- **Copy** puts it on your clipboard, ready to paste into an assistant or another editor.
+- **View as MD** shows it in place of the formatted note. Choose **View formatted** in the same menu to go back.
+- **Download as MD** saves it as a `.md` file named after the note.
+
+The menu appears once a note has some text.
 
 ## Edit or delete a note
 

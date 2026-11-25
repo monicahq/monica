@@ -99,4 +99,22 @@ class VaultDashboardViewModelTest extends TestCase
 
         $this->assertSame(3, new VaultDashboardViewModel(user: $user, vault: $vault)->timelineCount());
     }
+
+    #[Test]
+    public function it_names_the_four_tabs_and_counts_every_favourite_beyond_the_ten_shown(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        LifeEvent::factory()->count(2)->create(['vault_id' => $vault->id]);
+        Contact::factory()->count(12)->create(['vault_id' => $vault->id, 'is_favourite' => true]);
+        Contact::factory()->archived()->create(['vault_id' => $vault->id, 'first_name' => 'Roy', 'is_favourite' => true]);
+        Contact::factory()->create(['vault_id' => $vault->id, 'first_name' => 'Kelly', 'last_consulted_at' => now()]);
+
+        $tabs = new VaultDashboardViewModel(user: $user, vault: $vault)->tabs();
+
+        $this->assertSame(['timeline', 'attention', 'favourites', 'recent'], array_column($tabs, 'key'));
+        $this->assertSame(['Timeline', 'Needs your attention', 'Favourite people', 'Recently viewed'], array_column($tabs, 'label'));
+        $this->assertSame([2, 0, 12, 1], array_column($tabs, 'count'));
+    }
 }

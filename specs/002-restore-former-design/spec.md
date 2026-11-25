@@ -6,7 +6,7 @@
 
 **Status**: Draft
 
-**Input**: User description: "i want to implement in a new pull request the former design we had before https://github.com/monicahq/erica/pull/50 which changes the deisgn completely, and adapt this new design to the new features made after this."
+**Input**: User description: "i want to implement in a new pull request the former design we had before pull request #50 of the former repository which changes the deisgn completely, and adapt this new design to the new features made after this."
 
 ## User Scenarios & Testing *(mandatory)*
 

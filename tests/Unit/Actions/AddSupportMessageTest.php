@@ -8,10 +8,13 @@ use App\Actions\AddSupportMessage;
 use App\Enums\SupportRequestStatusEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
+use App\Models\Administrator;
 use App\Models\SupportRequest;
 use App\Models\User;
+use App\Notifications\SupportMessageAdded;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -84,5 +87,85 @@ class AddSupportMessageTest extends TestCase
         $this->expectException(ModelNotFoundException::class);
 
         new AddSupportMessage(user: $user, supportRequest: $supportRequest, body: 'Is this Stamford?')->execute();
+    }
+
+    #[Test]
+    public function it_emails_every_active_administrator_that_the_user_wrote_again(): void
+    {
+        Queue::fake();
+        Notification::fake();
+
+        $jan = User::factory()->create();
+        $robert = User::factory()->create(['is_active' => false]);
+        Administrator::factory()->create(['user_id' => $jan->id]);
+        Administrator::factory()->create(['user_id' => $robert->id]);
+        $user = User::factory()->create(['first_name' => 'Michael', 'last_name' => 'Scott']);
+        $supportRequest = SupportRequest::factory()->waitingOnUser()->create(['account_id' => $user->account_id, 'number' => 245110]);
+
+        new AddSupportMessage(
+            user: $user,
+            supportRequest: $supportRequest,
+            body: 'Settings show New York. I moved to Paris in March.',
+        )->execute();
+
+        Notification::assertSentToTimes($jan, SupportMessageAdded::class, 1);
+        Notification::assertSentTo($jan, SupportMessageAdded::class, fn (SupportMessageAdded $notification): bool => $notification->reference === 'MON-245110'
+            && $notification->accountId === $user->account_id
+            && $notification->authorName === 'Michael Scott'
+            && ! $notification->reopened
+            && ! $notification->hasAttachments
+            && $notification->url === route('admin.support.show', $supportRequest));
+        Notification::assertNotSentTo($robert, SupportMessageAdded::class);
+    }
+
+    #[Test]
+    public function it_tells_the_administrators_that_the_message_reopened_a_solved_request(): void
+    {
+        Queue::fake();
+        Notification::fake();
+
+        $jan = User::factory()->create();
+        Administrator::factory()->create(['user_id' => $jan->id]);
+        $user = User::factory()->create();
+        $supportRequest = SupportRequest::factory()->solved()->create(['account_id' => $user->account_id]);
+
+        new AddSupportMessage(user: $user, supportRequest: $supportRequest, body: 'Holly still sees the whole vault.')->execute();
+
+        Notification::assertSentTo($jan, SupportMessageAdded::class, fn (SupportMessageAdded $notification): bool => $notification->reopened);
+    }
+
+    #[Test]
+    public function it_does_not_email_the_administrator_who_wrote_the_message(): void
+    {
+        Queue::fake();
+        Notification::fake();
+
+        $jan = User::factory()->create();
+        $david = User::factory()->create();
+        Administrator::factory()->create(['user_id' => $jan->id]);
+        Administrator::factory()->create(['user_id' => $david->id]);
+        $supportRequest = SupportRequest::factory()->toHandle()->create(['account_id' => $jan->account_id]);
+
+        new AddSupportMessage(user: $jan, supportRequest: $supportRequest, body: 'One more detail: it happens on Fridays.')->execute();
+
+        Notification::assertNotSentTo($jan, SupportMessageAdded::class);
+        Notification::assertSentTo($david, SupportMessageAdded::class);
+    }
+
+    #[Test]
+    public function it_emails_no_administrator_when_support_is_switched_off(): void
+    {
+        Queue::fake();
+        Notification::fake();
+        config(['monica.support_enabled' => false]);
+
+        $jan = User::factory()->create();
+        Administrator::factory()->create(['user_id' => $jan->id]);
+        $user = User::factory()->create();
+        $supportRequest = SupportRequest::factory()->waitingOnUser()->create(['account_id' => $user->account_id]);
+
+        new AddSupportMessage(user: $user, supportRequest: $supportRequest, body: 'Settings show New York.')->execute();
+
+        Notification::assertNothingSent();
     }
 }

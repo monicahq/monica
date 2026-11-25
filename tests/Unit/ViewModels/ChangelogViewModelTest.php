@@ -25,7 +25,7 @@ class ChangelogViewModelTest extends TestCase
         parent::setUp();
 
         CarbonImmutable::setTestNow('2026-11-17 12:00:00');
-        $this->app->instance(ChangelogEntries::class, new ChangelogEntries(directory: base_path('tests/Fixtures/Changelog/Valid')));
+        $this->app->instance(ChangelogEntries::class, new ChangelogEntries(directory: base_path('tests/Fixtures/Changelog/Valid'), screenshotDirectory: base_path('tests/Fixtures/Changelog/Screenshots/Valid')));
     }
 
     #[Test]
@@ -49,6 +49,24 @@ class ChangelogViewModelTest extends TestCase
 
         $this->assertContains('01M7NBFWKB8S8MJ0MBVV165X36', array_column($days[0]['entries'], 'id'));
         $this->assertSame('2026-11-16', $days[0]['date']);
+    }
+
+    #[Test]
+    public function it_gives_each_entry_its_screenshots_with_their_translated_description(): void
+    {
+        app('translator')->addLines(['*.The contact page with the conference room booked' => 'La page du contact avec la salle réservée'], 'fr_FR');
+        app()->setLocale('fr_FR');
+
+        $entries = $this->viewModel()->days()[0]['entries'];
+
+        $this->assertSame([], $entries[0]['screenshots']);
+        $this->assertSame([
+            'url' => asset('images/changelog/01M7NBFWK5XNH908RFDGEAJXKN-1.webp'),
+            'description' => 'La page du contact avec la salle réservée',
+            'width' => 32,
+            'height' => 18,
+        ], $entries[1]['screenshots'][0]);
+        $this->assertCount(2, $entries[1]['screenshots']);
     }
 
     #[Test]

@@ -32,8 +32,10 @@ use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\DeadlockException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Events\TransactionBeginning;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Queue;
 use InvalidArgumentException;
 use PDOException;
@@ -64,10 +66,110 @@ class MoveRecordToStructureVersionTest extends TestCase
         Queue::assertPushedOn(
             queue: 'low',
             job: LogUserAction::class,
-            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::RecordMovedToTemplateVersion
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::RecordMovedToTemplate
                 && $job->isAbout($contact)
-                && $job->parameters === ['name' => 'Pam Beesly', 'version' => $to->version_number],
+                && $job->parameters === ['name' => 'Pam Beesly', 'template' => $to->structure->owner->name],
         );
+    }
+
+    #[Test]
+    public function it_logs_a_move_within_one_template_as_a_new_version(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $to = StructureVersion::factory()->published()->create([
+            'structure_id' => $contact->structureVersion->structure_id,
+            'version_number' => 2,
+        ]);
+
+        new MoveRecordToStructureVersion(
+            user: $user,
+            record: $contact,
+            structureVersion: $to,
+        )->execute();
+
+        Queue::assertPushedOn(
+            queue: 'low',
+            job: LogUserAction::class,
+            callback: fn (LogUserAction $job): bool => $job->action === UserActionEnum::RecordMovedToTemplateVersion
+                && $job->parameters === ['name' => 'Pam Beesly', 'version' => 2],
+        );
+    }
+
+    #[Test]
+    public function it_does_nothing_when_the_record_is_already_on_the_version(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+
+        new MoveRecordToStructureVersion(
+            user: $user,
+            record: $contact,
+            structureVersion: $contact->structureVersion,
+        )->execute();
+
+        $this->assertSame(0, RecordSnapshot::query()->count());
+        Queue::assertNotPushed(LogUserAction::class);
+    }
+
+    #[Test]
+    public function it_writes_one_entry_when_the_same_move_arrives_twice_at_once(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $dwight = $this->contactOf($user);
+        $from = $dwight->structureVersion;
+        $to = $this->publishedContactVersion($user);
+
+        $staleDwight = Contact::query()->findOrFail($dwight->id);
+
+        $otherRequestHasRun = false;
+        Event::listen(TransactionBeginning::class, function () use (&$otherRequestHasRun, $user, $dwight, $to): void {
+            if ($otherRequestHasRun) {
+                return;
+            }
+
+            $otherRequestHasRun = true;
+
+            new MoveRecordToStructureVersion(user: $user, record: $dwight, structureVersion: $to)->execute();
+        });
+
+        new MoveRecordToStructureVersion(user: $user, record: $staleDwight, structureVersion: $to)->execute();
+
+        $this->assertSame($to->id, $staleDwight->structure_version_id);
+        $this->assertSame(1, RecordSnapshot::query()->count());
+        $this->assertSame(0, $from->fresh()->record_count);
+        $this->assertSame(1, $to->fresh()->record_count);
+        $this->assertCount(1, Queue::pushed(
+            LogUserAction::class,
+            fn (LogUserAction $job): bool => $job->action === UserActionEnum::RecordMovedToTemplate,
+        ));
+    }
+
+    #[Test]
+    public function it_writes_nothing_to_the_log_when_told_not_to(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $to = $this->publishedContactVersion($user);
+
+        new MoveRecordToStructureVersion(
+            user: $user,
+            record: $contact,
+            structureVersion: $to,
+            writesToLog: false,
+        )->execute();
+
+        $this->assertEquals($to->id, $contact->fresh()->structure_version_id);
+        $this->assertSame(1, RecordSnapshot::query()->count());
+        Queue::assertNotPushed(LogUserAction::class);
     }
 
     #[Test]

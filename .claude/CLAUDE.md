@@ -152,7 +152,7 @@ You MUST run the `definition-of-done` skill before every commit and before every
 
 ### Issue tracker
 
-Issues live in GitHub Issues on monicahq/erica, used through `gh`. See `docs/agents/issue-tracker.md`.
+Issues live in GitHub Issues on monicahq/monica, used through `gh`. See `docs/agents/issue-tracker.md`.
 
 ### Triage labels
 

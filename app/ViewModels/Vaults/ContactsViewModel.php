@@ -4,16 +4,22 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Vaults;
 
+use App\Actions\DestroyContacts;
 use App\Enums\ContactGroupingEnum;
 use App\Enums\ContactListColumnSourceEnum;
 use App\Enums\ContactSortEnum;
 use App\Enums\SortDirectionEnum;
+use App\Enums\ValueListEnum;
 use App\Helpers\ContactListCatalogue;
 use App\Helpers\ContactListCells;
+use App\Helpers\CountedPhraseWordings;
 use App\Helpers\PageSize;
+use App\Helpers\TemplateFilter;
 use App\Models\Contact;
 use App\Models\ContactListColumn;
 use App\Models\User;
+use App\Models\ValueList;
+use App\Models\ValueListItem;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -28,7 +34,10 @@ class ContactsViewModel
     /** @var list<ContactListColumn>|null */
     private ?array $columns = null;
 
-    /** @param  list<int>  $categoryIds */
+    /**
+     * @param  list<int>  $categoryIds
+     * @param  array{category: string|null, changed: int, unchanged: list<string>, previous: array<string, list<int>>}|null  $categoryChange
+     */
     public function __construct(
         private readonly User $user,
         private readonly Vault $vault,
@@ -38,6 +47,8 @@ class ContactsViewModel
         private readonly SortDirectionEnum $direction = SortDirectionEnum::Ascending,
         private readonly int|string $size = self::PER_PAGE,
         private readonly array $categoryIds = [],
+        private readonly TemplateFilter $templateFilter = new TemplateFilter,
+        private readonly ?array $categoryChange = null,
     ) {}
 
     public function size(): int|string
@@ -129,13 +140,14 @@ class ContactsViewModel
 
     /**
      * @param  list<list<string>>  $cells
-     * @return array{name: string, isFavourite: bool, isArchived: bool, showsStar: bool, avatarUrl: string|null, url: string, cells: list<array{values: list<string>, whenEmpty: string, moreLabel: string|null}>}
+     * @return array{uuid: string, name: string, isFavourite: bool, isArchived: bool, showsStar: bool, avatarUrl: string|null, url: string, cells: list<array{values: list<string>, whenEmpty: string, moreLabel: string|null}>}
      */
     private function rowFor(Contact $contact, array $cells): array
     {
         $columns = $this->columns();
 
         return [
+            'uuid' => $contact->uuid,
             'name' => $contact->name,
             'isFavourite' => $contact->is_favourite,
             'isArchived' => $contact->is_archived,
@@ -161,6 +173,74 @@ class ContactsViewModel
     public function columns(): array
     {
         return $this->columns ??= $this->catalogue()->shownColumnsOf($this->vault);
+    }
+
+    /** @return array<string, string> */
+    public function selectionWordings(): array
+    {
+        return CountedPhraseWordings::of(':count selected|:count selected');
+    }
+
+    public function selectionLimit(): int
+    {
+        return DestroyContacts::LIMIT;
+    }
+
+    public function selectionLimitLine(): string
+    {
+        return trans_choice('[0,*]Select :count people or fewer.', $this->selectionLimit());
+    }
+
+    /** @return list<array{id: int, label: string}> */
+    public function menuCategories(): array
+    {
+        return ValueListItem::query()
+            ->where('account_id', $this->user->account_id)
+            ->whereIn('value_list_id', ValueList::query()
+                ->where('account_id', $this->user->account_id)
+                ->where('key', ValueListEnum::ContactCategories->value)
+                ->select('id'))
+            ->where('is_active', true)
+            ->orderBy('position')
+            ->get()
+            ->map(fn (ValueListItem $item): array => ['id' => $item->id, 'label' => $item->label])
+            ->all();
+    }
+
+    public function categoryChangeUrl(): string
+    {
+        return route('contacts.categories.update', $this->vault);
+    }
+
+    /** @return array{line: string|null, unchangedLine: string|null, restorations: list<array{contact: string, categories: list<int>}>}|null */
+    public function categoryChange(): ?array
+    {
+        if ($this->categoryChange === null) {
+            return null;
+        }
+
+        $changed = $this->categoryChange['changed'];
+        $unchanged = $this->categoryChange['unchanged'];
+        $line = null;
+        $unchangedLine = null;
+
+        if ($changed > 0) {
+            $line = $this->categoryChange['category'] === null
+                ? trans_choice('Category removed from :count person|Category removed from :count people', $changed)
+                : trans_choice(':count person moved to :category|:count people moved to :category', $changed, ['category' => $this->categoryChange['category']]);
+        }
+
+        if ($unchanged !== []) {
+            $unchangedLine = trim(trans_choice(':count person was left as they were.|:count people were left as they were.', count($unchanged)).' '.implode(' ', array_unique($unchanged)));
+        }
+
+        $restorations = [];
+
+        foreach ($this->categoryChange['previous'] as $uuid => $categories) {
+            $restorations[] = ['contact' => (string) $uuid, 'categories' => $categories];
+        }
+
+        return ['line' => $line, 'unchangedLine' => $unchangedLine, 'restorations' => $restorations];
     }
 
     public function customiseUrl(): string
@@ -189,6 +269,7 @@ class ContactsViewModel
                 'direction' => ($isCurrent ? $otherWay : $firstWay)->value,
                 'size' => $this->sizeInUrl(),
                 'categories' => $this->categoryIds === [] ? null : $this->categoryIds,
+                ...$this->templateFilter->parameters(),
             ]),
             'ariaSort' => $isCurrent ? ($this->direction === SortDirectionEnum::Ascending ? 'ascending' : 'descending') : null,
         ];
@@ -341,7 +422,8 @@ class ContactsViewModel
             ->where('vault_id', $this->vault->id)
             ->inGrouping($this->grouping)
             ->matchingSearch($this->query)
-            ->when($this->categoryIds !== [], fn (Builder $query): Builder => $query->holdingAnyCategory($this->categoryIds, true));
+            ->when($this->categoryIds !== [], fn (Builder $query): Builder => $query->holdingAnyCategory($this->categoryIds, true))
+            ->when($this->templateFilter->isActive(), fn (Builder $query): Builder => $this->templateFilter->apply($query));
     }
 
     private function searchTerm(): string
@@ -443,7 +525,7 @@ class ContactsViewModel
 
     private function isNarrowed(): bool
     {
-        return $this->searchTerm() !== '' || $this->grouping !== ContactGroupingEnum::Everyone || $this->categoryIds !== [];
+        return $this->searchTerm() !== '' || $this->grouping !== ContactGroupingEnum::Everyone || $this->categoryIds !== [] || $this->templateFilter->isActive();
     }
 
     private function url(?ContactGroupingEnum $grouping = null): string
@@ -456,7 +538,36 @@ class ContactsViewModel
             'direction' => $this->direction->value,
             'size' => $this->sizeInUrl(),
             'categories' => $this->categoryIds === [] ? null : $this->categoryIds,
+            ...$this->templateFilter->parameters(),
         ]);
+    }
+
+    /** @return array{template: string|null, version: int|null, change: string|null} */
+    public function templateFilterParameters(): array
+    {
+        return $this->templateFilter->parameters();
+    }
+
+    /** @return list<array{label: string, url: string}> */
+    public function templateChips(): array
+    {
+        return array_map(fn (array $chip): array => [
+            'label' => $chip['label'],
+            'url' => route('contacts.index', [
+                'vault' => $this->vault,
+                'filter' => $this->grouping->value,
+                'query' => $this->query === '' ? null : $this->query,
+                'sort' => $this->sort->value,
+                'direction' => $this->direction->value,
+                'categories' => $this->categoryIds === [] ? null : $this->categoryIds,
+                ...$chip['parameters'],
+            ]),
+        ], $this->templateFilter->chips());
+    }
+
+    public function clearFiltersUrl(): string
+    {
+        return route('contacts.index', ['vault' => $this->vault, 'filter' => $this->grouping->value]);
     }
 
     private function sizeInUrl(): int|string|null

@@ -24,7 +24,7 @@ vendor/bin/pint --dirty --format agent
 php artisan test --compact
 ```
 
-## By hand, at erica.test
+## By hand, at monica.test
 
 1. Open a possession and select Maintenance: its own address, the empty list, the help mark.
 2. Add a Restoration from Worn to Like new with a next due date already passed: the card matches the

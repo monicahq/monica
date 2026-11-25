@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Mcp\Tools;
 
 use App\Enums\ApiKeyScopeEnum;
+use App\Helpers\RecordKind;
 use App\Helpers\SupportAvailability;
 use App\Http\Resources\GroupFileResource;
 use App\Http\Resources\GroupMembershipResource;
@@ -54,7 +55,10 @@ use App\Models\StructureVersionPage;
 use App\Models\StructureVersionSection;
 use App\Models\SupportRequest;
 use App\Models\Template;
+use App\Models\TemplateChange;
 use App\Models\User;
+use App\Models\ValueList;
+use App\Models\ValueListItem;
 use App\Models\Vault;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\Builder;
@@ -320,6 +324,26 @@ trait MirrorsAnApiCapability
         return $this->found($entityType);
     }
 
+    protected function recordKind(Request $request, string $address): string
+    {
+        if ($address === RecordKind::CONTACTS) {
+            return $address;
+        }
+
+        return $this->entityType($request, $address)->uuid;
+    }
+
+    protected function templateChange(Vault $vault, string $address): TemplateChange
+    {
+        $templateChange = Str::isUuid($address) ? TemplateChange::query()->where('vault_id', $vault->id)->where('uuid', $address)->first() : null;
+
+        if ($templateChange === null) {
+            throw $this->doesNotExist(__('That change of template does not exist.'));
+        }
+
+        return $this->found($templateChange);
+    }
+
     protected function entity(Vault $vault, string $address): Entity
     {
         $entity = Str::isUuid($address) ? Entity::query()->where('vault_id', $vault->id)->where('uuid', $address)->first() : null;
@@ -582,6 +606,34 @@ trait MirrorsAnApiCapability
         }
 
         return $this->found($lifeEventCategory);
+    }
+
+    protected function valueList(Request $request, string $id): ValueList
+    {
+        $valueList = preg_match('/^[1-9][0-9]*$/', $id) === 1
+            ? ValueList::query()
+                ->where('account_id', $this->user($request)->account_id)
+                ->where('is_shared', true)
+                ->whereKey($id)
+                ->first()
+            : null;
+
+        if ($valueList === null) {
+            throw $this->doesNotExist(__('That value list does not exist.'));
+        }
+
+        return $this->found($valueList);
+    }
+
+    protected function valueListItem(ValueList $valueList, string $id): ValueListItem
+    {
+        $item = preg_match('/^[1-9][0-9]*$/', $id) === 1 ? $valueList->items()->whereKey($id)->first() : null;
+
+        if ($item === null) {
+            throw $this->doesNotExist(__('That value does not exist.'));
+        }
+
+        return $this->found($item);
     }
 
     protected function log(Request $request, string $id): Log

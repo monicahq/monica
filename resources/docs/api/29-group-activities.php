@@ -103,7 +103,7 @@ $writeParams = [
     ['name' => 'title', 'type' => 'string', 'required' => false, 'description' => 'A title, up to 255 characters. Without one, the life event is called by the name of its type.', 'example' => 'Budget review'],
     ['name' => 'narrative', 'type' => 'string', 'required' => false, 'description' => 'What happened, up to 65,535 characters.', 'example' => 'Angela went through every receipt twice.'],
     ['name' => 'location', 'type' => 'string', 'required' => false, 'description' => 'Where it happened, up to 255 characters.', 'example' => 'Conference room'],
-    ['name' => 'duration_in_minutes', 'type' => 'integer', 'required' => false, 'description' => 'How long it lasted, from 1 to 100,000 minutes.', 'example' => 90],
+    ['name' => 'duration_in_minutes', 'type' => 'integer', 'required' => false, 'description' => 'How long it lasted, from 1 to 525,600 minutes (one year).', 'example' => 90],
     ['name' => 'fields', 'type' => 'object', 'required' => false, 'description' => 'The values of the custom fields its type asks for, keyed by field id, in the same way as when a life event is recorded. A file field cannot be written here and answers 422.', 'example' => ['412' => 'Party budget']],
 ];
 

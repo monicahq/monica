@@ -39,7 +39,7 @@ again.
 
 ## By hand
 
-On `https://erica.test`, in a vault with life events in several years:
+On `https://monica.test`, in a vault with life events in several years:
 
 1. The dashboard opens on "Upcoming", or on the newest year when nothing is upcoming.
 2. Pick a year, a type, then search and pick a person: only the timeline changes, the address follows,

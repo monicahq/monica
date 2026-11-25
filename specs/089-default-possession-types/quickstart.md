@@ -22,7 +22,7 @@ php artisan test --compact tests/Unit/Enums/PossessionTypeEnumTest.php
 Then `php artisan monica:localize --check`, `vendor/bin/phpstan analyse --no-progress`,
 `vendor/bin/pint --dirty --format agent`, and the whole suite.
 
-## By hand, on erica.test
+## By hand, on monica.test
 
 1. Sign up a new account in French with the queue worker running.
 2. Settings, Possession types: 25 types, French names, colours by family.

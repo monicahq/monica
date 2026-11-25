@@ -129,7 +129,9 @@ use App\Http\Controllers\App\Support\SupportRequestController;
 use App\Http\Controllers\App\Support\SupportSolutionController;
 use App\Http\Controllers\App\Vaults\AbsorbedContactController;
 use App\Http\Controllers\App\Vaults\ContactAvatarController;
+use App\Http\Controllers\App\Vaults\ContactCategoryController;
 use App\Http\Controllers\App\Vaults\ContactController;
+use App\Http\Controllers\App\Vaults\ContactDeletionController;
 use App\Http\Controllers\App\Vaults\ContactDuplicateController;
 use App\Http\Controllers\App\Vaults\ContactDuplicateDismissalController;
 use App\Http\Controllers\App\Vaults\ContactDuplicateSearchController;
@@ -151,6 +153,7 @@ use App\Http\Controllers\App\Vaults\ContactReminderFormController;
 use App\Http\Controllers\App\Vaults\ContactSectionController;
 use App\Http\Controllers\App\Vaults\ContactShareLinkController;
 use App\Http\Controllers\App\Vaults\ContactStructureVersionController;
+use App\Http\Controllers\App\Vaults\ContactTemplateController;
 use App\Http\Controllers\App\Vaults\ContactVCardController;
 use App\Http\Controllers\App\Vaults\EntityController;
 use App\Http\Controllers\App\Vaults\FieldChoiceController;
@@ -173,6 +176,7 @@ use App\Http\Controllers\App\Vaults\KnowledgeListColumnPositionController;
 use App\Http\Controllers\App\Vaults\KnowledgeListController;
 use App\Http\Controllers\App\Vaults\KnowledgeListItemController;
 use App\Http\Controllers\App\Vaults\KnowledgeNoteController;
+use App\Http\Controllers\App\Vaults\KnowledgeNoteMarkdownController;
 use App\Http\Controllers\App\Vaults\KnowledgeNoteTaskController;
 use App\Http\Controllers\App\Vaults\PossessionController;
 use App\Http\Controllers\App\Vaults\PossessionFeaturedController;
@@ -190,11 +194,14 @@ use App\Http\Controllers\App\Vaults\PossessionTransactionController;
 use App\Http\Controllers\App\Vaults\PossessionTransactionDocumentController;
 use App\Http\Controllers\App\Vaults\PossessionTypeFieldController;
 use App\Http\Controllers\App\Vaults\PossessionValuationController;
+use App\Http\Controllers\App\Vaults\RecordStatisticsController;
 use App\Http\Controllers\App\Vaults\ReminderController;
 use App\Http\Controllers\App\Vaults\ReminderOccurrenceAnswerController;
 use App\Http\Controllers\App\Vaults\ReminderOccurrenceTestNotificationController;
 use App\Http\Controllers\App\Vaults\SearchController;
 use App\Http\Controllers\App\Vaults\SetAsideValueController;
+use App\Http\Controllers\App\Vaults\TemplateChangeController;
+use App\Http\Controllers\App\Vaults\TemplateChangePreviewController;
 use App\Http\Controllers\App\Vaults\VaultController;
 use App\Http\Controllers\App\Vaults\VaultDefaultTemplateController;
 use App\Http\Controllers\App\Vaults\VaultLifeEventCandidateController;
@@ -374,6 +381,11 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::put('vaults/{vault}/contact-list-columns', [ContactListColumnController::class, 'update'])->name('contactListColumns.update');
 
     Route::get('vaults/{vault}/entities/{entityType}', [EntityController::class, 'index'])->name('entities.index');
+    Route::get('vaults/{vault}/entities/{entityType}/statistics', [RecordStatisticsController::class, 'index'])->name('entities.statistics.index');
+    Route::get('vaults/{vault}/entities/{entityType}/template-changes/new', [TemplateChangeController::class, 'new'])->name('entities.templateChanges.new');
+    Route::get('vaults/{vault}/entities/{entityType}/template-changes/preview', [TemplateChangePreviewController::class, 'show'])->name('entities.templateChanges.preview');
+    Route::post('vaults/{vault}/entities/{entityType}/template-changes', [TemplateChangeController::class, 'create'])->name('entities.templateChanges.create');
+    Route::get('vaults/{vault}/entities/{entityType}/template-changes/{templateChange}', [TemplateChangeController::class, 'show'])->whereUuid('templateChange')->name('entities.templateChanges.show');
     Route::get('vaults/{vault}/fields/{field}/choices', [FieldChoiceController::class, 'index'])->whereNumber('field')->name('fields.choices.index');
     Route::get('vaults/{vault}/entities/{entityType}/new/{template?}', [EntityController::class, 'new'])->where('template', '[a-z0-9\-]+')->name('entities.new');
     Route::post('vaults/{vault}/entities/{entityType}', [EntityController::class, 'create'])->name('entities.create');
@@ -416,8 +428,16 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
         });
     });
 
+    Route::get('vaults/{vault}/contacts/statistics', [RecordStatisticsController::class, 'index'])->name('contacts.statistics.index');
+    Route::get('vaults/{vault}/contacts/template-changes/new', [TemplateChangeController::class, 'new'])->name('contacts.templateChanges.new');
+    Route::get('vaults/{vault}/contacts/template-changes/preview', [TemplateChangePreviewController::class, 'show'])->name('contacts.templateChanges.preview');
+    Route::post('vaults/{vault}/contacts/template-changes', [TemplateChangeController::class, 'create'])->name('contacts.templateChanges.create');
+    Route::get('vaults/{vault}/contacts/template-changes/{templateChange}', [TemplateChangeController::class, 'show'])->whereUuid('templateChange')->name('contacts.templateChanges.show');
     Route::get('vaults/{vault}/contacts/new', [ContactController::class, 'new'])->name('contacts.new');
     Route::post('vaults/{vault}/contacts', [ContactController::class, 'create'])->name('contacts.create');
+    Route::match(['GET', 'QUERY'], 'vaults/{vault}/contacts/deletion', [ContactDeletionController::class, 'show'])->name('contacts.deletion.show');
+    Route::delete('vaults/{vault}/contacts', [ContactDeletionController::class, 'destroy'])->name('contacts.deletion.destroy');
+    Route::put('vaults/{vault}/contacts/categories', [ContactCategoryController::class, 'update'])->name('contacts.categories.update');
 
     Route::get('vaults/{vault}/contacts/{filter?}', [ContactController::class, 'index'])
         ->whereIn('filter', ContactGroupingEnum::values())
@@ -450,6 +470,9 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
 
     Route::put('vaults/{vault}/contacts/{contact}/template-version', [ContactStructureVersionController::class, 'update'])
         ->name('contacts.templateVersion.update');
+
+    Route::put('vaults/{vault}/contacts/{contact}/template', [ContactTemplateController::class, 'update'])
+        ->name('contacts.template.update');
 
     Route::get('vaults/{vault}/contacts/{contact}/sections/{structureVersionSection}/edit', [ContactSectionController::class, 'edit'])
         ->whereNumber('structureVersionSection')
@@ -645,6 +668,7 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::put('vaults/{vault}/knowledge/notes/{knowledgeNote}', [KnowledgeNoteController::class, 'update'])->whereUuid('knowledgeNote')->name('knowledge.notes.update');
     Route::delete('vaults/{vault}/knowledge/notes/{knowledgeNote}', [KnowledgeNoteController::class, 'destroy'])->whereUuid('knowledgeNote')->name('knowledge.notes.destroy');
     Route::put('vaults/{vault}/knowledge/notes/{knowledgeNote}/tasks', [KnowledgeNoteTaskController::class, 'update'])->whereUuid('knowledgeNote')->name('knowledge.noteTasks.update');
+    Route::get('vaults/{vault}/knowledge/notes/{knowledgeNote}/markdown', [KnowledgeNoteMarkdownController::class, 'show'])->whereUuid('knowledgeNote')->name('knowledge.noteMarkdown.show');
     Route::post('vaults/{vault}/knowledge/lists', [KnowledgeListController::class, 'create'])->name('knowledge.lists.create');
     Route::get('vaults/{vault}/knowledge/lists/{knowledgeList}', [KnowledgeListController::class, 'show'])->whereUuid('knowledgeList')->name('knowledge.lists.show');
     Route::get('vaults/{vault}/knowledge/lists/{knowledgeList}/edit', [KnowledgeListController::class, 'edit'])->whereUuid('knowledgeList')->name('knowledge.lists.edit');

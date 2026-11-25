@@ -18,6 +18,7 @@ Every kind of field you can add to a template, by the name the builder shows. @d
 | **Short text** | One line of text, up to a length you set | |
 | **Long text** | Several lines, for anything that needs a paragraph | |
 | **Number** | A number, with its own minimum, maximum and decimals | |
+| **Duration** | A length of time, typed in minutes and shown in weeks, days, hours and minutes | From one minute to one year. Something that comes back, such as a visit every three months, is a reminder |
 | **Yes or no** | A single checkbox | |
 | **URL** | A web address | Checked before it is saved |
 | **Email** | An email address, and what it is for, such as **Home** or **Work** | Checked before it is saved. Can identify somebody, to spot duplicates |
@@ -53,4 +54,4 @@ A field’s type is fixed once added. To change it, remove the field and add ano
 
 ## Not available yet
 
-The builder also lists types marked **Later**, which cannot be picked yet: **Free tags**, **Duration**, **Qualified relation**, **Money**, **Full name**, **Rating**, **Rich text**, **Colour**, **Geographic location** and **Computed value**.
+The builder also lists types marked **Later**, which cannot be picked yet: **Free tags**, **Qualified relation**, **Money**, **Full name**, **Rating**, **Rich text**, **Colour**, **Geographic location** and **Computed value**.

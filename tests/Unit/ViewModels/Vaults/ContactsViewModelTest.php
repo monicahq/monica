@@ -601,6 +601,60 @@ class ContactsViewModelTest extends TestCase
         $this->assertStringContainsString('categories%5B0%5D='.$sales->id, (string) $viewModel->headings()[0]['url']);
     }
 
+    #[Test]
+    public function it_offers_the_active_categories_in_the_order_of_the_list(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $list = ValueList::factory()->supplied(ValueListEnum::ContactCategories)->create(['account_id' => $user->account_id]);
+        $accounting = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'label' => 'Accounting', 'position' => 2]);
+        $sales = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'label' => 'Sales', 'position' => 1]);
+        ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'label' => 'Annex', 'position' => 3, 'is_active' => false]);
+
+        $this->assertSame(
+            [['id' => $sales->id, 'label' => 'Sales'], ['id' => $accounting->id, 'label' => 'Accounting']],
+            new ContactsViewModel(user: $user, vault: $vault)->menuCategories(),
+        );
+    }
+
+    #[Test]
+    public function it_words_a_change_of_category_and_what_its_undo_puts_back(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        $change = new ContactsViewModel(user: $user, vault: $vault, categoryChange: [
+            'category' => 'Sales',
+            'changed' => 2,
+            'unchanged' => ['Their template has no category field.'],
+            'previous' => ['jim-uuid' => [4], 'dwight-uuid' => []],
+        ])->categoryChange();
+
+        $this->assertSame('2 people moved to Sales', $change['line']);
+        $this->assertSame('1 person was left as they were. Their template has no category field.', $change['unchangedLine']);
+        $this->assertSame(
+            [['contact' => 'jim-uuid', 'categories' => [4]], ['contact' => 'dwight-uuid', 'categories' => []]],
+            $change['restorations'],
+        );
+    }
+
+    #[Test]
+    public function it_words_the_removal_of_a_category(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+
+        $change = new ContactsViewModel(user: $user, vault: $vault, categoryChange: [
+            'category' => null,
+            'changed' => 1,
+            'unchanged' => [],
+            'previous' => ['pam-uuid' => [3]],
+        ])->categoryChange();
+
+        $this->assertSame('Category removed from 1 person', $change['line']);
+        $this->assertNull($change['unchangedLine']);
+    }
+
     /** @param  list<int>  $itemIds */
     private function hold(Contact $contact, Field $field, array $itemIds): void
     {

@@ -1,0 +1,115 @@
+name: Release
+
+on:
+  pull_request:
+    branches-ignore: ['*']
+  push:
+    branches:
+      - next
+      - next-major
+      - beta
+      - alpha
+
+  workflow_dispatch:
+
+env:
+  php-version: '8.5'
+  build-node-version: 24
+
+jobs:
+  ####################
+  # Semantic release
+  ####################
+  semantic:
+    if: github.event_name != 'pull_request'
+    uses: monicahq/workflows/.github/workflows/release.yml@v2
+    with:
+      semantic_version: 26
+    secrets:
+      GH_TOKEN_RELEASE: ${{ secrets.GH_TOKEN_RELEASE }}
+
+  package:
+    needs: semantic
+    runs-on: ubuntu-latest
+    name: Package release
+    if: needs.semantic.outputs.new_release_published == 'true'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: v${{ needs.semantic.outputs.new_release_version }}
+
+      - name: Setup PHP ${{ env.php-version }}
+        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # v2.40.0
+        with:
+          php-version: ${{ env.php-version }}
+          coverage: none
+
+      # Composer
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+      - name: Cache composer files
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ env.php-version }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-${{ env.php-version }}-${{ hashFiles('**/composer.lock') }}
+            ${{ runner.os }}-composer-${{ env.php-version }}
+            ${{ runner.os }}-composer-
+
+      # Yarn
+      - name: Setup Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ env.build-node-version }}
+
+      - name: Import key
+        run: echo -e "$GPG_KEY" | gpg --batch --yes --import -
+        env:
+          GPG_KEY: ${{ secrets.GPG_KEY }}
+
+      - name: Create package
+        id: package
+        run: scripts/ci/package.sh 'v${{ needs.semantic.outputs.new_release_version }}' $GITHUB_SHA
+        env:
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          GPG_FINGERPRINT: ${{ secrets.GPG_FINGERPRINT }}
+
+      - name: Publish package
+        run: |
+          for f in {${{ steps.package.outputs.package }},${{ steps.package.outputs.assets }}}{,.asc,.sha512,.sha512.asc}; do
+            echo "Uploading release file '$f'…"
+            gh release upload 'v${{ needs.semantic.outputs.new_release_version }}' "$f" --clobber
+          done
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Store package
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: package
+          path: ${{ steps.package.outputs.package }}
+
+      - name: Store assets
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: assets
+          path: ${{ steps.package.outputs.assets }}
+
+  docker-workflow:
+    needs: [semantic, package]
+    runs-on: ubuntu-latest
+    name: Docker release create
+    if: needs.semantic.outputs.new_release_published == 'true'
+
+    steps:
+      - name: Dispatch docker release
+        run: |
+          gh workflow run "Release update" \
+            --repo monicahq/docker \
+            --ref main
+        env:
+          GH_TOKEN: ${{ secrets.DOCKER_GITHUB_TOKEN }}

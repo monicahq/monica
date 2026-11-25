@@ -105,10 +105,10 @@ class LocalizeCommandTest extends TestCase
     }
 
     #[Test]
-    public function it_writes_the_title_area_and_description_of_every_changelog_entry(): void
+    public function it_writes_the_title_area_description_and_screenshot_descriptions_of_every_changelog_entry(): void
     {
         $this->app->useLangPath($this->langPath);
-        $this->app->instance(ChangelogEntries::class, new ChangelogEntries(directory: base_path('tests/Fixtures/Changelog/Valid')));
+        $this->app->instance(ChangelogEntries::class, new ChangelogEntries(directory: base_path('tests/Fixtures/Changelog/Valid'), screenshotDirectory: base_path('tests/Fixtures/Changelog/Screenshots/Valid')));
 
         $this->artisan('monica:localize')->assertSuccessful();
 
@@ -118,6 +118,7 @@ class LocalizeCommandTest extends TestCase
         $this->assertArrayHasKey('Reminders', $english);
         $this->assertArrayHasKey('Michael can now book the conference room **straight** from a contact page.', $english);
         $this->assertArrayHasKey('Threat level midnight', $english);
+        $this->assertArrayHasKey('The booking confirmed in the calendar', $english);
     }
 
     #[Test]

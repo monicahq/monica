@@ -2,7 +2,7 @@
 
 The commands that gate the change are the ones in `CLAUDE.md`, under "When a change is done".
 
-## By hand, at `https://erica.test/admin`, signed in as an administrator
+## By hand, at `https://monica.test/admin`, signed in as an administrator
 
 | Check | Expected |
 | --- | --- |
