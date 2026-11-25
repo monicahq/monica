@@ -37,7 +37,7 @@ install_meilisearch() {
         aarch64|arm64) ARCH=aarch64 ;;
         *) ARCH=amd64 ;;
     esac
-    sudo curl -fsSL -o /usr/local/bin/meilisearch "https://github.com/meilisearch/meilisearch/releases/download/v1.56.1/meilisearch-linux-$ARCH"
+    sudo curl -fsSL -o /usr/local/bin/meilisearch "https://github.com/meilisearch/meilisearch/releases/download/v1.58.0/meilisearch-linux-$ARCH"
     sudo chmod +x /usr/local/bin/meilisearch
     setenv "SCOUT_DRIVER" "meilisearch"
     setenv "MEILISEARCH_HOST" "http://127.0.0.1:7700"

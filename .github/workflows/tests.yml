@@ -66,7 +66,7 @@ jobs:
     # against a real one; every other test runs on Scout's null engine.
     services:
       meilisearch:
-        image: getmeili/meilisearch:v1.56
+        image: getmeili/meilisearch:v1.58
         env:
           MEILI_MASTER_KEY: testing-master-key
           MEILI_NO_ANALYTICS: true
