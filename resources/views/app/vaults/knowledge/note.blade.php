@@ -28,73 +28,133 @@
 
         @include('app.vaults.knowledge._note-form', ['viewModel' => $viewModel])
       @else
-        <header x-data="{ renaming: false }" class="flex flex-wrap items-start gap-x-4 gap-y-3">
-          <div class="flex min-w-60 flex-1 flex-col gap-2">
-            <p class="flex items-center gap-1.5 text-sm text-muted">
-              <x-icon name="folder" :size="14" />
-              <span>{{ $viewModel->folderName() }}</span>
-              <span class="text-muted-soft" aria-hidden="true">·</span>
-              <span>{{ __('Note') }}</span>
-            </p>
+        <div
+          class="contents"
+          x-data="{
+            source: false,
+            copyState: 'idle',
+            markdown: @js($viewModel->markdown()),
+            copy() {
+              this.copyState = 'idle'
 
-            <x-form x-cloak x-show="renaming" method="put" :action="$viewModel->updateUrl()">
-              <input
-                x-ref="title"
-                name="title"
-                value="{{ $viewModel->title() }}"
-                maxlength="255"
-                aria-label="{{ __('Title') }}"
-                @keydown.escape.prevent="renaming = false; $refs.title.value = @js($viewModel->title())"
-                @blur="if (renaming) $el.form.requestSubmit()"
-                class="-mx-2 w-[calc(100%+1rem)] rounded-md border border-ink bg-input px-2 py-0.5 text-page-title text-ink focus-ring-field"
-              />
-            </x-form>
+              window.copyText(this.markdown).then((ok) => {
+                this.copyState = ok ? 'copied' : 'failed'
 
-            <h1 id="note-title" x-show="! renaming" class="text-page-title text-ink">
-              <button
-                type="button"
-                title="{{ __('Rename') }}"
-                @click="renaming = true; $nextTick(() => $refs.title.select())"
-                class="focus-ring -mx-2 cursor-text rounded-md px-2 py-0.5 text-start hover:bg-hover"
-              >{{ $viewModel->title() }}</button>
-            </h1>
+                if (ok) {
+                  setTimeout(() => { if (this.copyState === 'copied') this.copyState = 'idle' }, 2000)
+                }
+              })
+            },
+          }"
+        >
+          <header x-data="{ renaming: false }" class="flex flex-wrap items-start gap-x-4 gap-y-3">
+            <div class="flex min-w-60 flex-1 flex-col gap-2">
+              <p class="flex items-center gap-1.5 text-sm text-muted">
+                <x-icon name="folder" :size="14" />
+                <span>{{ $viewModel->folderName() }}</span>
+                <span class="text-muted-soft" aria-hidden="true">·</span>
+                <span>{{ __('Note') }}</span>
+              </p>
 
-            <p class="text-xs text-muted"><x-timestamp :at="$viewModel->editedAt()">{{ $viewModel->edited() }}</x-timestamp></p>
-          </div>
+              <x-form x-cloak x-show="renaming" method="put" :action="$viewModel->updateUrl()">
+                <input
+                  x-ref="title"
+                  name="title"
+                  value="{{ $viewModel->title() }}"
+                  maxlength="255"
+                  aria-label="{{ __('Title') }}"
+                  @keydown.escape.prevent="renaming = false; $refs.title.value = @js($viewModel->title())"
+                  @blur="if (renaming) $el.form.requestSubmit()"
+                  class="-mx-2 w-[calc(100%+1rem)] rounded-md border border-ink bg-input px-2 py-0.5 text-page-title text-ink focus-ring-field"
+                />
+              </x-form>
 
-          <div class="flex items-center gap-2">
-            <x-button.secondary size="small" :href="$viewModel->editUrl()">{{ __('Edit') }}</x-button.secondary>
+              <h1 id="note-title" x-show="! renaming" class="text-page-title text-ink">
+                <button
+                  type="button"
+                  title="{{ __('Rename') }}"
+                  @click="renaming = true; $nextTick(() => $refs.title.select())"
+                  class="focus-ring -mx-2 cursor-text rounded-md px-2 py-0.5 text-start hover:bg-hover"
+                >{{ $viewModel->title() }}</button>
+              </h1>
 
-            <x-delete-action
-              :title="$viewModel->deleteTitle()"
-              :confirm="__('Delete the note')"
-              :action="$viewModel->destroyUrl()"
-              :label="__('Delete')"
-              variant="ghost"
-              size="small"
-            >
-              <p>{{ __('The note is deleted for good.') }}</p>
-            </x-delete-action>
-          </div>
-        </header>
+              <p class="text-xs text-muted"><x-timestamp :at="$viewModel->editedAt()">{{ $viewModel->edited() }}</x-timestamp></p>
+            </div>
 
-        @if ($viewModel->isEmpty())
-          <p class="text-base text-muted">{{ __('This note is empty. Use Edit to write in it.') }}</p>
-        @else
-          <div x-data>
-            <x-error id="knowledge-task-error" :messages="$errors->get('task')" />
+            <div class="ms-auto flex items-center gap-2">
+              @unless ($viewModel->isEmpty())
+                <x-actions-menu :label="__('Markdown')" align="left">
+                  <x-slot:glyph>
+                    <x-markdown-mark :size="12" />
+                  </x-slot:glyph>
 
-            <x-form method="put" :action="$viewModel->taskUrl()" x-ref="taskForm" class="hidden">
-              <input type="hidden" name="task" x-ref="task" />
-              <input type="hidden" name="body_hash" value="{{ $viewModel->bodyHash() }}" />
-            </x-form>
+                  <x-slot:text>
+                    <span x-text="copyState === 'copied' ? @js(__('Copied')) : @js(__('Markdown'))">{{ __('Markdown') }}</span>
+                    <x-icon name="chevron-down" :size="14" class="text-muted" />
+                  </x-slot:text>
 
-            <article
-              @change="if ($event.target.dataset.task) { $refs.task.value = $event.target.dataset.task; $refs.taskForm.requestSubmit() }"
-              class="{{ $prose }}"
-            >{!! $viewModel->html() !!}</article>
-          </div>
-        @endif
+                  <button type="button" role="menuitem" @click="menuOpen = false; $refs.menuTrigger.focus(); copy()" class="flex w-full cursor-pointer items-center gap-2.5 min-h-8 rounded-md px-2.5 text-left font-sans text-base text-ink transition-colors hover:bg-hover focus-ring-inset">
+                    <x-icon name="copy" :size="16" />
+                    {{ __('Copy') }}
+                  </button>
+
+                  <button type="button" role="menuitem" @click="menuOpen = false; $refs.menuTrigger.focus(); source = ! source" class="flex w-full cursor-pointer items-center gap-2.5 min-h-8 rounded-md px-2.5 text-left font-sans text-base text-ink transition-colors hover:bg-hover focus-ring-inset">
+                    <x-icon name="code" :size="16" />
+                    <span x-text="source ? @js(__('View formatted')) : @js(__('View as MD'))">{{ __('View as MD') }}</span>
+                  </button>
+
+                  <x-actions-menu.item :href="$viewModel->markdownUrl()" download data-no-instant>
+                    <x-slot:icon>
+                      <x-icon name="download" :size="16" />
+                    </x-slot:icon>
+
+                    {{ __('Download as MD') }}
+                  </x-actions-menu.item>
+                </x-actions-menu>
+              @endunless
+
+              <x-button.secondary size="small" :href="$viewModel->editUrl()">{{ __('Edit') }}</x-button.secondary>
+
+              <x-delete-action
+                :title="$viewModel->deleteTitle()"
+                :confirm="__('Delete the note')"
+                :action="$viewModel->destroyUrl()"
+                :label="__('Delete')"
+                variant="ghost"
+                size="small"
+              >
+                <p>{{ __('The note is deleted for good.') }}</p>
+              </x-delete-action>
+            </div>
+          </header>
+
+          <p
+            role="status"
+            x-cloak
+            :class="copyState === 'failed' ? 'text-sm text-error' : 'sr-only'"
+            x-text="{ copied: @js(__('Copied')), failed: @js(__('Could not copy. Download the file instead.')) }[copyState] ?? ''"
+          ></p>
+
+          @if ($viewModel->isEmpty())
+            <p class="text-base text-muted">{{ __('This note is empty. Use Edit to write in it.') }}</p>
+          @else
+            <div x-data x-show="! source">
+              <x-error id="knowledge-task-error" :messages="$errors->get('task')" />
+
+              <x-form method="put" :action="$viewModel->taskUrl()" x-ref="taskForm" class="hidden">
+                <input type="hidden" name="task" x-ref="task" />
+                <input type="hidden" name="body_hash" value="{{ $viewModel->bodyHash() }}" />
+              </x-form>
+
+              <article
+                @change="if ($event.target.dataset.task) { $refs.task.value = $event.target.dataset.task; $refs.taskForm.requestSubmit() }"
+                class="{{ $prose }}"
+              >{!! $viewModel->html() !!}</article>
+            </div>
+
+            <pre x-cloak x-show="source" class="max-w-[68ch] rounded-lg border border-hairline bg-card p-4 font-mono text-xs leading-[1.65] whitespace-pre-wrap wrap-anywhere text-body">{{ $viewModel->markdown() }}</pre>
+          @endif
+        </div>
       @endif
     </section>
   </div>

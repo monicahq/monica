@@ -73,6 +73,11 @@ class KnowledgeNoteViewModel
         return KnowledgeMarkdown::toHtml($this->note->body);
     }
 
+    public function markdown(): string
+    {
+        return KnowledgeMarkdown::document($this->note->title, $this->note->body);
+    }
+
     public function bodyHash(): string
     {
         return ToggleKnowledgeNoteTask::hash($this->note->body);
@@ -125,6 +130,11 @@ class KnowledgeNoteViewModel
     public function destroyUrl(): string
     {
         return route('knowledge.notes.destroy', [$this->vault(), $this->note]);
+    }
+
+    public function markdownUrl(): string
+    {
+        return route('knowledge.noteMarkdown.show', [$this->vault(), $this->note]);
     }
 
     public function taskUrl(): string
