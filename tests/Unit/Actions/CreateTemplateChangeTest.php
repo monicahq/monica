@@ -108,6 +108,19 @@ class CreateTemplateChangeTest extends TestCase
     }
 
     #[Test]
+    public function it_refuses_a_second_batch_for_records_already_waiting_to_move(): void
+    {
+        Queue::fake();
+        $fixture = AnimalsVault::build();
+        $this->change($fixture, source: $fixture->horse, target: $fixture->pet);
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('No record is left to move.');
+
+        $this->change($fixture, source: $fixture->horse, target: $fixture->pet);
+    }
+
+    #[Test]
     public function it_refuses_a_template_of_another_account(): void
     {
         $fixture = AnimalsVault::build();

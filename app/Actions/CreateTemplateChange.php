@@ -13,6 +13,7 @@ use App\Models\Template;
 use App\Models\TemplateChange;
 use App\Models\TemplateChangeItem;
 use App\Models\User;
+use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
@@ -80,25 +81,28 @@ class CreateTemplateChange
         if ($refusal !== null) {
             throw new InvalidArgumentException($refusal);
         }
-
-        $this->batch = new TemplateChangeBatch(
-            kind: $this->kind,
-            source: $this->source,
-            versionNumbers: $this->versionNumbers,
-            target: $this->target->structure->publishedVersion,
-        );
-
-        if ($this->batch->movable()->isEmpty()) {
-            throw new InvalidArgumentException(__('No record is left to move.'));
-        }
     }
 
     private function create(): void
     {
-        $records = $this->batch->movable();
         $morph = $this->kind->morphClass();
 
-        $this->templateChange = DB::transaction(function () use ($records, $morph): TemplateChange {
+        $this->templateChange = DB::transaction(function () use ($morph): TemplateChange {
+            Vault::query()->whereKey($this->kind->vault->id)->lockForUpdate()->first();
+
+            $this->batch = new TemplateChangeBatch(
+                kind: $this->kind,
+                source: $this->source,
+                versionNumbers: $this->versionNumbers,
+                target: $this->target->structure->publishedVersion,
+            );
+
+            $records = $this->batch->movable();
+
+            if ($records->isEmpty()) {
+                throw new InvalidArgumentException(__('No record is left to move.'));
+            }
+
             $templateChange = TemplateChange::query()->create([
                 'account_id' => $this->user->account_id,
                 'vault_id' => $this->kind->vault->id,
