@@ -280,5 +280,6 @@
     }
   ],
   "workingBranch": "2026-10-25-location-management",
-  "currentTask": "T028"
+  "currentTask": "T028",
+  "telemetryInstanceId": "4ec9a054-8031-4353-8c2f-0504f9d1c6f4"
 }
