@@ -199,7 +199,7 @@ class AppServiceProviderTest extends TestCase
         $this->assertIsCallable($resolver);
         $this->assertSame([
             'id' => $michael->id,
-            'email' => $michael->email,
+            'username' => $michael->email,
         ], $resolver($michael));
     }
 
