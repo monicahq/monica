@@ -836,6 +836,31 @@ class ContactViewModelTest extends TestCase
         $this->assertSame(route('contacts.reminders.index', ['vault' => $contact->vault, 'contact' => $contact]), $fact['url']);
     }
 
+    #[Test]
+    public function the_header_ends_with_the_template_the_page_is_built_from(): void
+    {
+        $user = User::factory()->create();
+        $version = $this->version($user, ['Health' => ['Ongoing' => ['Knee']]], templateName: 'Basic contact');
+        $contact = $this->contact($user, $version);
+        $template = $version->structure->owner;
+
+        $facts = new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact)->headerFacts();
+
+        $this->assertSame([
+            'icon' => 'layers',
+            'label' => 'Template',
+            'value' => 'Basic contact',
+            'reminder' => null,
+            'url' => route('settings.templateBuilder.index', $template),
+        ], end($facts));
+
+        $template->update(['name' => 'Dunder Mifflin staff']);
+
+        $facts = new ContactViewModel(user: $user, vault: $contact->vault, contact: $contact->fresh())->headerFacts();
+
+        $this->assertSame('Dunder Mifflin staff', end($facts)['value']);
+    }
+
     private function contactWithBirthday(string $date, bool $yearIsUnknown = false, bool $monthIsUnknown = false): Contact
     {
         $user = User::factory()->create();

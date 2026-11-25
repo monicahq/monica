@@ -2944,7 +2944,7 @@ class ApiDocsReturnFieldsTest extends TestCase
             }),
 
             'changelog-entries-index' => $this->asSomebody(function (User $user): TestResponse {
-                $this->app->instance(ChangelogEntries::class, new ChangelogEntries(directory: base_path('tests/Fixtures/Changelog/Valid')));
+                $this->app->instance(ChangelogEntries::class, new ChangelogEntries(directory: base_path('tests/Fixtures/Changelog/Valid'), screenshotDirectory: base_path('tests/Fixtures/Changelog/Screenshots/Valid')));
                 CarbonImmutable::setTestNow('2026-11-17 12:00:00');
 
                 return $this->json('GET', '/api/v1/changelog-entries');

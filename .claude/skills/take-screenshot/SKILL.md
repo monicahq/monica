@@ -168,9 +168,12 @@ Use descriptive names when taking multiple screenshots.
 Do not add generated screenshots to Git or store them anywhere in the
 repository.
 
-The one exception is a screenshot the product documentation shows. It is stored in
+There are two exceptions. A screenshot the product documentation shows is stored in
 `public/images/docs`, named and placed as the "Screenshots" section of the
 [writer skill](../writer/SKILL.md) says, and committed with the page that shows it.
+A screenshot of a What's new entry is stored in `public/changelog`, framed, converted
+and named as the "Screenshots" section of the [changelog skill](../changelog/SKILL.md)
+says, and committed with its entry.
 
 Screenshots taken for a pull request stay in `/tmp` and are uploaded directly
 to the pull request with GitHub CLI, as the

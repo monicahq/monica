@@ -93,6 +93,9 @@
     --color-focus: var(--focus);
     --color-focus-ring: var(--focus-ring);
     --color-scrim: var(--scrim);
+    --color-scrim-strong: var(--scrim-strong);
+    --color-on-scrim: var(--on-scrim);
+    --color-on-scrim-muted: var(--on-scrim-muted);
     --color-ink: var(--ink);
     --color-ink-soft: var(--ink-soft);
     --color-body: var(--body);
@@ -231,6 +234,9 @@
     --hairline-soft: #f4f4f5;
     --hover: #f4f4f5;
     --scrim: rgb(9 9 11 / 0.5);
+    --scrim-strong: rgb(9 9 11 / 0.92);
+    --on-scrim: #fafafa;
+    --on-scrim-muted: #e4e4e7;
 
     --ink: #09090b;
     --ink-soft: #27272a;
@@ -393,6 +399,10 @@
 
 @utility focus-ring-on-admin-bar {
     @apply focus-visible:ring-[3px] focus-visible:ring-on-admin-bar/40 focus-visible:outline-none;
+}
+
+@utility focus-ring-on-scrim {
+    @apply focus-visible:ring-[3px] focus-visible:ring-on-scrim/40 focus-visible:outline-none;
 }
 
 @utility focus-ring-on-admin-bar-inset {

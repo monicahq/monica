@@ -1,11 +1,9 @@
 ---
 id: 01M87W6SMD9Z7HP2Q0TTAPW9XH
-title: The documentation has the header of the Monica website
+title: Website header is now shown in the documentation
 type: improvement
 area: Documentation
 published_at: 2026-11-24T22:53:13Z
 link: /docs
 ---
-Every page of the documentation now opens with the same header as the Monica website, with its
-Features and Docs menus, so moving between the website and the documentation no longer feels like
-changing products.
+Until now, the documentation had a header of its own, so going from the Monica website to the documentation felt like changing products. Now every page of the documentation opens with the website’s header, with its Features and Docs menus.
