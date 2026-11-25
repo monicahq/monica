@@ -21,6 +21,8 @@ Change a contact’s template when the page no longer fits the person. For examp
 - You created somebody with the wrong template by mistake, and the page asks the wrong questions.
 - You want to delete a template, and Monica refuses while people still use it. Move them onto another template first.
 
+To move many people at once, such as everybody still on an old template, use the **Statistics** page of the list of people instead, as @doc(templates.change-many) explains.
+
 You do not need to change the template to fix a single answer or add a field to one person. Edit the section instead, as @doc(contacts.edit) explains. And you do not need it to give somebody a newer version of the template they already use: the contact page offers that on its own, as @doc(templates.apply-new-version) explains.
 
 ## Change the template

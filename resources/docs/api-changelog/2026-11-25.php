@@ -82,5 +82,23 @@ return [
                 ['field' => 'structure_version_id', 'change' => 'Added', 'endpoints' => ['GET /vaults/{vault}/contacts/{contact}/template-preview', 'PUT /vaults/{vault}/contacts/{contact}/template']],
             ],
         ],
+        [
+            'id' => 'record-statistics-and-template-changes',
+            'kind' => 'Added',
+            'group' => 'Record statistics',
+            'title' => 'Count records by template, and change the template of many at once',
+            'summary' => 'GET /vaults/{vault}/record-kinds/{recordKind}/statistics counts the records of one kind in a vault by template and version. GET /vaults/{vault}/record-kinds/{recordKind}/statistics/fields says how many records fill in each field of a template. GET /vaults/{vault}/record-kinds/{recordKind}/template-change-preview says what moving every record of one template onto another would do, POST /vaults/{vault}/record-kinds/{recordKind}/template-changes starts that move in the background, and GET /vaults/{vault}/template-changes/{templateChange} says how far it is. A kind of record is contacts or the id of an entity type.',
+            'why' => 'The application now shows these statistics and moves many records at once, and everything the application does can be done through the API.',
+            'breaking' => false,
+            'changes' => [
+                ['field' => 'record kinds', 'change' => 'Added', 'endpoints' => [
+                    'GET /vaults/{vault}/record-kinds/{recordKind}/statistics',
+                    'GET /vaults/{vault}/record-kinds/{recordKind}/statistics/fields',
+                    'GET /vaults/{vault}/record-kinds/{recordKind}/template-change-preview',
+                    'POST /vaults/{vault}/record-kinds/{recordKind}/template-changes',
+                    'GET /vaults/{vault}/template-changes/{templateChange}',
+                ]],
+            ],
+        ],
     ],
 ];

@@ -64,7 +64,7 @@ class ApiDocsControllerTest extends TestCase
             new ApiDocsViewModel()->sections(),
         );
 
-        $this->assertCount(345, $ids);
+        $this->assertCount(350, $ids);
 
         $this->get(route('docs.api.show', ['section' => 'knowledge-folders-index']))
             ->assertSee('Knowledge folders')
@@ -75,7 +75,8 @@ class ApiDocsControllerTest extends TestCase
             ->assertSee('Possession locations')
             ->assertSee('Possession loans')
             ->assertSee('What’s new')
-            ->assertSee('Agent feedback');
+            ->assertSee('Agent feedback')
+            ->assertSee('Record statistics');
 
         foreach (new ApiDocsViewModel()->sections() as $section) {
             $this->blade('<x-api-docs.endpoint :section="$section" />', ['section' => $section])

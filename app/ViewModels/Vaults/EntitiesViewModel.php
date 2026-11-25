@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\ViewModels\Vaults;
 
 use App\Helpers\PageSize;
+use App\Helpers\TemplateFilter;
 use App\Models\Contact;
 use App\Models\Entity;
 use App\Models\EntityType;
+use App\Models\Template;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -21,6 +23,7 @@ class EntitiesViewModel
         private readonly Vault $vault,
         private readonly EntityType $entityType,
         private readonly int|string $size = self::PER_PAGE,
+        private readonly TemplateFilter $templateFilter = new TemplateFilter,
     ) {}
 
     public function user(): User
@@ -51,6 +54,11 @@ class EntitiesViewModel
     public function addUrl(): string
     {
         return route('entities.new', ['vault' => $this->vault, 'entityType' => $this->entityType]);
+    }
+
+    public function statisticsUrl(): string
+    {
+        return route('entities.statistics.index', ['vault' => $this->vault, 'entityType' => $this->entityType]);
     }
 
     public function addLabel(): string
@@ -110,14 +118,28 @@ class EntitiesViewModel
         return self::PER_PAGE;
     }
 
-    /** @return LengthAwarePaginator<int, array{id: int, name: string, url: string, avatarUrl: string|null, isArchived: bool}> */
+    /** @return list<array{label: string, url: string}> */
+    public function templateChips(): array
+    {
+        return array_map(fn (array $chip): array => [
+            'label' => $chip['label'],
+            'url' => route('entities.index', ['vault' => $this->vault, 'entityType' => $this->entityType, ...$chip['parameters']]),
+        ], $this->templateFilter->chips());
+    }
+
+    public function clearFiltersUrl(): string
+    {
+        return route('entities.index', ['vault' => $this->vault, 'entityType' => $this->entityType]);
+    }
+
+    /** @return LengthAwarePaginator<int, array{id: int, name: string, url: string, avatarUrl: string|null, isArchived: bool, template: string}> */
     public function entities(): LengthAwarePaginator
     {
-        $query = Entity::query()
+        $query = $this->templateFilter->apply(Entity::query()
             ->where('vault_id', $this->vault->id)
             ->where('entity_type_id', $this->entityType->id)
-            ->with('avatar')
-            ->orderBy('sort_name');
+            ->with(['avatar', 'structureVersion.structure.owner'])
+            ->orderBy('sort_name'));
 
         return PageSize::paginate($query, $this->size)
             ->through(fn (Entity $entity): array => [
@@ -128,6 +150,17 @@ class EntitiesViewModel
                     ? null
                     : route('files.variants.show', ['vault' => $this->vault, 'file' => $entity->avatar, 'size' => Contact::AVATAR_THUMBNAIL_PIXELS]),
                 'isArchived' => $entity->is_archived,
+                'template' => $this->templateOf($entity),
             ]);
+    }
+
+    private function templateOf(Entity $entity): string
+    {
+        $owner = $entity->structureVersion->structure->owner;
+
+        return __(':template · v:number', [
+            'template' => $owner instanceof Template ? $owner->name : __('A template that was deleted'),
+            'number' => $entity->structureVersion->version_number,
+        ]);
     }
 }

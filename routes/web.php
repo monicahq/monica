@@ -194,11 +194,14 @@ use App\Http\Controllers\App\Vaults\PossessionTransactionController;
 use App\Http\Controllers\App\Vaults\PossessionTransactionDocumentController;
 use App\Http\Controllers\App\Vaults\PossessionTypeFieldController;
 use App\Http\Controllers\App\Vaults\PossessionValuationController;
+use App\Http\Controllers\App\Vaults\RecordStatisticsController;
 use App\Http\Controllers\App\Vaults\ReminderController;
 use App\Http\Controllers\App\Vaults\ReminderOccurrenceAnswerController;
 use App\Http\Controllers\App\Vaults\ReminderOccurrenceTestNotificationController;
 use App\Http\Controllers\App\Vaults\SearchController;
 use App\Http\Controllers\App\Vaults\SetAsideValueController;
+use App\Http\Controllers\App\Vaults\TemplateChangeController;
+use App\Http\Controllers\App\Vaults\TemplateChangePreviewController;
 use App\Http\Controllers\App\Vaults\VaultController;
 use App\Http\Controllers\App\Vaults\VaultDefaultTemplateController;
 use App\Http\Controllers\App\Vaults\VaultLifeEventCandidateController;
@@ -378,6 +381,11 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::put('vaults/{vault}/contact-list-columns', [ContactListColumnController::class, 'update'])->name('contactListColumns.update');
 
     Route::get('vaults/{vault}/entities/{entityType}', [EntityController::class, 'index'])->name('entities.index');
+    Route::get('vaults/{vault}/entities/{entityType}/statistics', [RecordStatisticsController::class, 'index'])->name('entities.statistics.index');
+    Route::get('vaults/{vault}/entities/{entityType}/template-changes/new', [TemplateChangeController::class, 'new'])->name('entities.templateChanges.new');
+    Route::get('vaults/{vault}/entities/{entityType}/template-changes/preview', [TemplateChangePreviewController::class, 'show'])->name('entities.templateChanges.preview');
+    Route::post('vaults/{vault}/entities/{entityType}/template-changes', [TemplateChangeController::class, 'create'])->name('entities.templateChanges.create');
+    Route::get('vaults/{vault}/entities/{entityType}/template-changes/{templateChange}', [TemplateChangeController::class, 'show'])->whereUuid('templateChange')->name('entities.templateChanges.show');
     Route::get('vaults/{vault}/fields/{field}/choices', [FieldChoiceController::class, 'index'])->whereNumber('field')->name('fields.choices.index');
     Route::get('vaults/{vault}/entities/{entityType}/new/{template?}', [EntityController::class, 'new'])->where('template', '[a-z0-9\-]+')->name('entities.new');
     Route::post('vaults/{vault}/entities/{entityType}', [EntityController::class, 'create'])->name('entities.create');
@@ -420,6 +428,11 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
         });
     });
 
+    Route::get('vaults/{vault}/contacts/statistics', [RecordStatisticsController::class, 'index'])->name('contacts.statistics.index');
+    Route::get('vaults/{vault}/contacts/template-changes/new', [TemplateChangeController::class, 'new'])->name('contacts.templateChanges.new');
+    Route::get('vaults/{vault}/contacts/template-changes/preview', [TemplateChangePreviewController::class, 'show'])->name('contacts.templateChanges.preview');
+    Route::post('vaults/{vault}/contacts/template-changes', [TemplateChangeController::class, 'create'])->name('contacts.templateChanges.create');
+    Route::get('vaults/{vault}/contacts/template-changes/{templateChange}', [TemplateChangeController::class, 'show'])->whereUuid('templateChange')->name('contacts.templateChanges.show');
     Route::get('vaults/{vault}/contacts/new', [ContactController::class, 'new'])->name('contacts.new');
     Route::post('vaults/{vault}/contacts', [ContactController::class, 'create'])->name('contacts.create');
     Route::get('vaults/{vault}/contacts/deletion', [ContactDeletionController::class, 'show'])->name('contacts.deletion.show');

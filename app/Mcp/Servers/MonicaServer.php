@@ -14,6 +14,7 @@ use App\Mcp\Tools\AnswerReminderOccurrence;
 use App\Mcp\Tools\ChangeAgentFeedbackStatus;
 use App\Mcp\Tools\ChangeContactTemplate;
 use App\Mcp\Tools\ChangeSupportRequestStatus;
+use App\Mcp\Tools\ChangeTemplateOfRecords;
 use App\Mcp\Tools\CreateContact;
 use App\Mcp\Tools\CreateContactRelationship;
 use App\Mcp\Tools\CreateContactReminder;
@@ -100,6 +101,7 @@ use App\Mcp\Tools\GetContactReminder;
 use App\Mcp\Tools\GetEmailSent;
 use App\Mcp\Tools\GetEntity;
 use App\Mcp\Tools\GetEntityType;
+use App\Mcp\Tools\GetFieldCompletion;
 use App\Mcp\Tools\GetGroup;
 use App\Mcp\Tools\GetGroupNote;
 use App\Mcp\Tools\GetGroupReminder;
@@ -123,11 +125,13 @@ use App\Mcp\Tools\GetPossessionTag;
 use App\Mcp\Tools\GetPossessionTransaction;
 use App\Mcp\Tools\GetPossessionType;
 use App\Mcp\Tools\GetPossessionValuation;
+use App\Mcp\Tools\GetRecordStatistics;
 use App\Mcp\Tools\GetRelationshipCategory;
 use App\Mcp\Tools\GetRelationshipType;
 use App\Mcp\Tools\GetSupportQueueRequest;
 use App\Mcp\Tools\GetSupportRequest;
 use App\Mcp\Tools\GetTemplate;
+use App\Mcp\Tools\GetTemplateChange;
 use App\Mcp\Tools\GetTemplateVersion;
 use App\Mcp\Tools\ImportPossessionType;
 use App\Mcp\Tools\ListAgentFeedback;
@@ -184,6 +188,7 @@ use App\Mcp\Tools\ListVaultReminders;
 use App\Mcp\Tools\ListVaults;
 use App\Mcp\Tools\MovePossession;
 use App\Mcp\Tools\PreviewContactTemplateChange;
+use App\Mcp\Tools\PreviewTemplateChange;
 use App\Mcp\Tools\PublishTemplateVersion;
 use App\Mcp\Tools\RemoveGroupFile;
 use App\Mcp\Tools\RemoveGroupMember;
@@ -520,6 +525,11 @@ class MonicaServer extends Server
         PreviewContactTemplateChange::class,
         ChangeContactTemplate::class,
         SetContactCategories::class,
+        GetRecordStatistics::class,
+        GetFieldCompletion::class,
+        PreviewTemplateChange::class,
+        ChangeTemplateOfRecords::class,
+        GetTemplateChange::class,
         SetContactFavourite::class,
         DeleteContact::class,
         DeleteContacts::class,

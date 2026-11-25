@@ -20,6 +20,10 @@
     <h1 class="min-w-0 text-page-title text-ink">{{ $viewModel->title() }}</h1>
 
     <div class="flex items-center gap-2">
+      <x-button :href="route('contacts.statistics.index', $vault)" type="button" variant="secondary" size="small" data-turbo="true" class="max-sm:hidden">
+        {{ __('Statistics') }}
+      </x-button>
+
       <x-button
         :href="$ceiling === null ? $viewModel->newContactUrl() : null"
         type="button"
@@ -36,6 +40,9 @@
       </x-button>
 
       <x-actions-menu :label="__('More actions for people')">
+        <x-actions-menu.item :href="route('contacts.statistics.index', $vault)" data-turbo="true" class="sm:hidden">
+          {{ __('Statistics') }}
+        </x-actions-menu.item>
         <x-actions-menu.item :href="route('vaults.duplicates.index', $vault)" data-turbo="true">
           {{ __('Manage duplicates') }}
         </x-actions-menu.item>
@@ -106,6 +113,11 @@
             @foreach ($viewModel->categoryIds() as $categoryId)
               <input type="hidden" name="categories[]" value="{{ $categoryId }}" />
             @endforeach
+            @foreach ($viewModel->templateFilterParameters() as $parameter => $value)
+              @if ($value !== null)
+                <input type="hidden" name="{{ $parameter }}" value="{{ $value }}" />
+              @endif
+            @endforeach
 
             <x-input
               type="search"
@@ -120,6 +132,20 @@
         </div>
       </div>
 
+      @if ($viewModel->templateChips() !== [])
+        <div class="flex flex-wrap items-center gap-2" aria-label="{{ __('Filters') }}" role="group">
+          @foreach ($viewModel->templateChips() as $chip)
+            <x-chip :href="$chip['url']" x-target.push="contacts">
+              {{ $chip['label'] }}
+              <span class="sr-only">{{ __('Remove this filter') }}</span>
+              <x-icon name="close" :size="12" aria-hidden="true" />
+            </x-chip>
+          @endforeach
+
+          <x-link :href="$viewModel->clearFiltersUrl()" x-target.push="contacts" class="text-sm focus-ring">{{ __('Clear filters') }}</x-link>
+        </div>
+      @endif
+
       @if ($categories !== [])
         <form method="get" action="{{ $viewModel->searchUrl() }}" x-target.push="contacts" class="flex flex-wrap items-end gap-x-3 gap-y-2">
           <input type="hidden" name="sort" value="{{ $viewModel->sort() }}" />
@@ -130,6 +156,11 @@
           @if ($viewModel->size() !== $viewModel->defaultSize())
             <input type="hidden" name="size" value="{{ $viewModel->size() }}" />
           @endif
+          @foreach ($viewModel->templateFilterParameters() as $parameter => $value)
+            @if ($value !== null)
+              <input type="hidden" name="{{ $parameter }}" value="{{ $value }}" />
+            @endif
+          @endforeach
 
           <fieldset class="flex min-w-0 flex-wrap items-center gap-2">
             <legend class="mb-2 text-label text-ink">{{ __('Categories') }}</legend>

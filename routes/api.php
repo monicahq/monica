@@ -58,6 +58,7 @@ use App\Http\Controllers\Api\EntityController;
 use App\Http\Controllers\Api\EntityTypeActivationController;
 use App\Http\Controllers\Api\EntityTypeController;
 use App\Http\Controllers\Api\EntityTypePositionController;
+use App\Http\Controllers\Api\FieldCompletionController;
 use App\Http\Controllers\Api\FieldController;
 use App\Http\Controllers\Api\FieldPositionController;
 use App\Http\Controllers\Api\GroupController;
@@ -125,6 +126,7 @@ use App\Http\Controllers\Api\PossessionTypes\PossessionFieldPositionController;
 use App\Http\Controllers\Api\PossessionTypes\PossessionTypeController;
 use App\Http\Controllers\Api\PossessionTypes\PossessionTypeExportController;
 use App\Http\Controllers\Api\PossessionTypes\PossessionTypeImportController;
+use App\Http\Controllers\Api\RecordStatisticsController;
 use App\Http\Controllers\Api\RelationshipCategoryActivationController;
 use App\Http\Controllers\Api\RelationshipCategoryController;
 use App\Http\Controllers\Api\RelationshipCategoryPositionController;
@@ -149,6 +151,8 @@ use App\Http\Controllers\Api\SupportMessageController;
 use App\Http\Controllers\Api\SupportRequestController;
 use App\Http\Controllers\Api\SupportSolutionController;
 use App\Http\Controllers\Api\TemplateActivationController;
+use App\Http\Controllers\Api\TemplateChangeController;
+use App\Http\Controllers\Api\TemplateChangePreviewController;
 use App\Http\Controllers\Api\TemplateController;
 use App\Http\Controllers\Api\TemplateDuplicateController;
 use App\Http\Controllers\Api\TemplatePositionController;
@@ -495,6 +499,13 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::put('vaults/{vault}/contacts/{contact}/template-version', [ContactStructureVersionController::class, 'update'])->name('contacts.templateVersion.update');
         Route::match(['GET', 'QUERY'], 'vaults/{vault}/contacts/{contact}/template-preview', [ContactTemplatePreviewController::class, 'show'])->name('contacts.templatePreview.show');
         Route::put('vaults/{vault}/contacts/{contact}/template', [ContactTemplateController::class, 'update'])->name('contacts.template.update');
+
+        // Statistics of one kind of record in a vault, and changing the template of many of its records
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/record-kinds/{recordKind}/statistics', [RecordStatisticsController::class, 'show'])->where('recordKind', 'contacts|[0-9a-fA-F-]{36}')->name('recordKinds.statistics.show');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/record-kinds/{recordKind}/statistics/fields', [FieldCompletionController::class, 'show'])->where('recordKind', 'contacts|[0-9a-fA-F-]{36}')->name('recordKinds.statistics.fields.show');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/record-kinds/{recordKind}/template-change-preview', [TemplateChangePreviewController::class, 'show'])->where('recordKind', 'contacts|[0-9a-fA-F-]{36}')->name('recordKinds.templateChangePreview.show');
+        Route::post('vaults/{vault}/record-kinds/{recordKind}/template-changes', [TemplateChangeController::class, 'create'])->where('recordKind', 'contacts|[0-9a-fA-F-]{36}')->name('recordKinds.templateChanges.create');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/template-changes/{templateChange}', [TemplateChangeController::class, 'show'])->where('templateChange', '[0-9a-fA-F-]{36}')->name('templateChanges.show');
         Route::put('vaults/{vault}/contacts/{contact}/sections/{section}', [ContactSectionController::class, 'update'])->name('contacts.sections.update');
 
         Route::match(['GET', 'QUERY'], 'vaults/{vault}/contacts/{contact}/reminders', [ContactReminderController::class, 'index'])->name('contacts.reminders');

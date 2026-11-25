@@ -16,6 +16,8 @@ use App\Exceptions\NotEnoughStorageLeft;
 use App\Exceptions\TooManyRepetitions;
 use App\Helpers\FieldValueRules;
 use App\Helpers\PageSize;
+use App\Helpers\RecordKind;
+use App\Helpers\TemplateFilter;
 use App\Http\Controllers\Controller;
 use App\Models\Entity;
 use App\Models\EntityType;
@@ -37,12 +39,24 @@ class EntityController extends Controller
     {
         $this->refuseAHiddenType($vault, $entityType);
 
+        $validated = $request->validate([
+            'template' => ['nullable', 'string', 'uuid'],
+            'version' => ['nullable', 'integer', 'min:1'],
+            'change' => ['nullable', 'string', 'uuid'],
+        ]);
+
         return view('app.vaults.entities.index', [
             'viewModel' => new EntitiesViewModel(
                 user: $request->user(),
                 vault: $vault,
                 entityType: $entityType,
                 size: PageSize::from($request, EntitiesViewModel::PER_PAGE),
+                templateFilter: TemplateFilter::fromValidated(
+                    kind: RecordKind::forEntityType(vault: $vault, entityType: $entityType),
+                    template: $validated['template'] ?? null,
+                    versionNumber: isset($validated['version']) ? (int) $validated['version'] : null,
+                    change: $validated['change'] ?? null,
+                ),
             ),
         ]);
     }
