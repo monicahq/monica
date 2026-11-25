@@ -26,18 +26,18 @@ use Illuminate\Support\Collection;
  */
 class VaultReminderDates
 {
-    public const string All = 'all';
+    public const string ALL = 'all';
 
-    public const string Birthdays = 'birthdays';
+    public const string BIRTHDAYS = 'birthdays';
 
-    public const int DefaultDays = ReminderOccurrenceCategoryEnum::UpcomingDays;
+    public const int DEFAULT_DAYS = ReminderOccurrenceCategoryEnum::UPCOMING_DAYS;
 
-    public const int MaximumDays = 365;
+    public const int MAXIMUM_DAYS = 365;
 
     /** @return list<string> */
     public static function kinds(): array
     {
-        return [self::All, self::Birthdays];
+        return [self::ALL, self::BIRTHDAYS];
     }
 
     /**
@@ -95,17 +95,17 @@ class VaultReminderDates
     {
         $today = CarbonImmutable::now($user->timezone)->startOfDay();
 
-        if ($category === ReminderDates::History) {
+        if ($category === ReminderDates::HISTORY) {
             return self::history($vault, $kind, $reachesSensitiveFields, $perPage, $page);
         }
 
         $lastDay = $today->addDays($days);
 
         $dates = self::until($vault, $today, $lastDay)
-            ->filter(fn (ReminderOccurrence $occurrence): bool => $kind === self::All || self::readsABirthday($occurrence->reminder))
+            ->filter(fn (ReminderOccurrence $occurrence): bool => $kind === self::ALL || self::readsABirthday($occurrence->reminder))
             ->map(fn (ReminderOccurrence $occurrence): VaultReminderDate => self::fromOccurrence($occurrence, $reachesSensitiveFields));
 
-        if ($kind === self::Birthdays) {
+        if ($kind === self::BIRTHDAYS) {
             $dates = $dates
                 ->concat(self::birthdaysWithoutAReminder($vault, $today, $lastDay, $reachesSensitiveFields))
                 ->sortBy(fn (VaultReminderDate $date): string => $date->date->toDateString());
@@ -143,7 +143,7 @@ class VaultReminderDates
             ->with(['vault', 'reminder' => fn (BelongsTo $rule): BelongsTo => $rule->withTrashed()->with(['remindable', 'field', 'fieldValue.field'])])
             ->orderBy('id');
 
-        if ($kind === self::Birthdays) {
+        if ($kind === self::BIRTHDAYS) {
             $query->whereHas('reminder', function (Builder $rule): void {
                 $rule->withTrashed()
                     ->where('remindable_type', (new Contact)->getMorphClass())

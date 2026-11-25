@@ -131,7 +131,7 @@ export default (config) => {
                 return config.text.tooMany ?? config.text.failed;
             }
 
-            if (/^Request failed with status/.test(error?.message ?? '')) {
+            if ((error?.message ?? '').startsWith('Request failed with status')) {
                 return config.text.failed;
             }
 

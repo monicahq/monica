@@ -34,7 +34,7 @@ class VaultDashboardAttention
             ReminderOccurrenceCategoryEnum::Upcoming->value => [],
         ];
 
-        foreach (new VaultDeadlines(user: $this->user, vault: $this->vault)->rowsUntil($today->addDays(ReminderOccurrenceCategoryEnum::UpcomingDays)) as $row) {
+        foreach (new VaultDeadlines(user: $this->user, vault: $this->vault)->rowsUntil($today->addDays(ReminderOccurrenceCategoryEnum::UPCOMING_DAYS)) as $row) {
             $rows[ReminderOccurrenceCategoryEnum::for($row->occurrence(), $today)->value][] = $row;
         }
 

@@ -18,7 +18,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class ContactRemindersViewModel
 {
-    public const string FilterAll = 'all';
+    public const string FILTER_ALL = 'all';
 
     public const int PER_PAGE = 25;
 
@@ -35,7 +35,7 @@ class ContactRemindersViewModel
         private readonly User $user,
         private readonly Vault $vault,
         private readonly Contact $contact,
-        private readonly string $filter = self::FilterAll,
+        private readonly string $filter = self::FILTER_ALL,
         private readonly int $page = 1,
     ) {}
 
@@ -76,7 +76,7 @@ class ContactRemindersViewModel
 
     public function filter(): string
     {
-        return in_array($this->filter, self::FILTERS, true) ? $this->filter : self::FilterAll;
+        return in_array($this->filter, self::FILTERS, true) ? $this->filter : self::FILTER_ALL;
     }
 
     public function page(): int
@@ -86,7 +86,7 @@ class ContactRemindersViewModel
 
     public function nextPageUrl(): ?string
     {
-        if ($this->filter() !== ReminderDates::History) {
+        if ($this->filter() !== ReminderDates::HISTORY) {
             return null;
         }
 
@@ -97,7 +97,7 @@ class ContactRemindersViewModel
         return route('contacts.reminders.index', [
             'vault' => $this->vault,
             'contact' => $this->contact,
-            'filter' => ReminderDates::History,
+            'filter' => ReminderDates::HISTORY,
             'page' => $this->page() + 1,
         ]);
     }
@@ -121,14 +121,14 @@ class ContactRemindersViewModel
             'key' => $key,
             'label' => $labels[$key],
             'count' => match ($key) {
-                self::FilterAll => count($rows['overdue']) + count($rows['today']) + count($rows['upcoming']),
-                ReminderDates::History => $this->historyCount(),
+                self::FILTER_ALL => count($rows['overdue']) + count($rows['today']) + count($rows['upcoming']),
+                ReminderDates::HISTORY => $this->historyCount(),
                 default => count($rows[$key]),
             },
             'url' => route('contacts.reminders.index', array_filter([
                 'vault' => $this->vault,
                 'contact' => $this->contact,
-                'filter' => $key === self::FilterAll ? null : $key,
+                'filter' => $key === self::FILTER_ALL ? null : $key,
             ])),
             'isCurrent' => $this->filter() === $key,
         ], $keys);
@@ -146,7 +146,7 @@ class ContactRemindersViewModel
         ];
 
         $keys = match ($this->filter()) {
-            self::FilterAll => ['overdue', 'today', 'upcoming'],
+            self::FILTER_ALL => ['overdue', 'today', 'upcoming'],
             default => [$this->filter()],
         };
 
@@ -220,7 +220,7 @@ class ContactRemindersViewModel
             $rows['upcoming'][] = $this->rowFor($occurrence);
         }
 
-        if ($this->filter() === ReminderDates::History) {
+        if ($this->filter() === ReminderDates::HISTORY) {
             $rows['history'] = array_map($this->rowFor(...), $this->history()->items());
         }
 
@@ -233,7 +233,7 @@ class ContactRemindersViewModel
         return $this->history ??= ReminderDates::page(
             $this->user,
             $this->contact,
-            ReminderDates::History,
+            ReminderDates::HISTORY,
             self::PER_PAGE,
             $this->page(),
         );
@@ -241,7 +241,7 @@ class ContactRemindersViewModel
 
     private function historyCount(): int
     {
-        if ($this->filter() === ReminderDates::History) {
+        if ($this->filter() === ReminderDates::HISTORY) {
             return $this->history()->total();
         }
 

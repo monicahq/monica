@@ -5,8 +5,6 @@ declare(strict_types=1);
 use Laravel\Cashier\Console\WebhookCommand;
 use Laravel\Cashier\Invoices\DompdfInvoiceRenderer;
 
-// use Laravel\Cashier\Invoices\LaravelPdfInvoiceRenderer;
-
 return [
 
     /*

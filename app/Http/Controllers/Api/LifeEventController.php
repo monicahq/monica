@@ -163,6 +163,12 @@ class LifeEventController extends Controller
             ->pluck('id')
             ->all();
 
+        $durationInMinutes = $lifeEvent->duration_in_minutes;
+
+        if (array_key_exists('duration_in_minutes', $validated)) {
+            $durationInMinutes = $validated['duration_in_minutes'] === null ? null : (int) $validated['duration_in_minutes'];
+        }
+
         try {
             new UpdateLifeEvent(
                 user: $request->user(),
@@ -174,7 +180,7 @@ class LifeEventController extends Controller
                 title: array_key_exists('title', $validated) ? $validated['title'] : $lifeEvent->title,
                 narrative: array_key_exists('narrative', $validated) ? $validated['narrative'] : $lifeEvent->narrative,
                 location: array_key_exists('location', $validated) ? $validated['location'] : $lifeEvent->location,
-                durationInMinutes: array_key_exists('duration_in_minutes', $validated) ? ($validated['duration_in_minutes'] === null ? null : (int) $validated['duration_in_minutes']) : $lifeEvent->duration_in_minutes,
+                durationInMinutes: $durationInMinutes,
                 participants: array_slice($people, 1),
                 values: $values,
                 keptFieldIds: $hiddenFieldIds,

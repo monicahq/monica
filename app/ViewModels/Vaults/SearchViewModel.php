@@ -106,6 +106,7 @@ class SearchViewModel
         }
 
         $words = $this->result()['words'];
+        $scope = $this->acrossAccount ? 'account' : null;
         $groups = [];
 
         foreach ($this->result()['groups'] as $group) {
@@ -125,7 +126,7 @@ class SearchViewModel
                 'nextPageUrl' => $results->hasMorePages() ? route('search.index', array_filter([
                     'vault' => $this->vault,
                     'query' => $this->query,
-                    'scope' => $this->acrossAccount ? 'account' : null,
+                    'scope' => $scope,
                     'group' => $group['key'],
                     'page' => $results->currentPage() + 1,
                 ])) : null,

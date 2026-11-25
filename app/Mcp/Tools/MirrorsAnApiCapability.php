@@ -610,7 +610,7 @@ trait MirrorsAnApiCapability
 
     protected function valueList(Request $request, string $id): ValueList
     {
-        $valueList = preg_match('/^[1-9][0-9]*$/', $id) === 1
+        $valueList = preg_match('/^[1-9]\d*$/', $id) === 1
             ? ValueList::query()
                 ->where('account_id', $this->user($request)->account_id)
                 ->where('is_shared', true)
@@ -627,7 +627,7 @@ trait MirrorsAnApiCapability
 
     protected function valueListItem(ValueList $valueList, string $id): ValueListItem
     {
-        $item = preg_match('/^[1-9][0-9]*$/', $id) === 1 ? $valueList->items()->whereKey($id)->first() : null;
+        $item = preg_match('/^[1-9]\d*$/', $id) === 1 ? $valueList->items()->whereKey($id)->first() : null;
 
         if ($item === null) {
             throw $this->doesNotExist(__('That value does not exist.'));
@@ -638,7 +638,7 @@ trait MirrorsAnApiCapability
 
     protected function log(Request $request, string $id): Log
     {
-        if (preg_match('/^[1-9][0-9]*$/', $id) !== 1) {
+        if (preg_match('/^[1-9]\d*$/', $id) !== 1) {
             throw $this->doesNotExist(__('That log entry does not exist.'));
         }
 
@@ -653,7 +653,7 @@ trait MirrorsAnApiCapability
 
     protected function emailSent(Request $request, string $id): EmailSent
     {
-        if (preg_match('/^[1-9][0-9]*$/', $id) !== 1) {
+        if (preg_match('/^[1-9]\d*$/', $id) !== 1) {
             throw $this->doesNotExist(__('That email does not exist.'));
         }
 

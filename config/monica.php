@@ -23,6 +23,8 @@ if (! function_exists('readVersion')) {
     }
 }
 
+$providersWithoutDriver = class_exists(AppleProvider::class) ? [] : ['apple'];
+
 return [
 
     /*
@@ -129,7 +131,7 @@ return [
     |
     */
     'sso_installed' => class_exists(SocialiteServiceProvider::class)
-        ? array_values(array_diff(SsoProviderEnum::values(), class_exists(AppleProvider::class) ? [] : ['apple']))
+        ? array_values(array_diff(SsoProviderEnum::values(), $providersWithoutDriver))
         : [],
 
     /*

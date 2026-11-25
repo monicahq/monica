@@ -164,8 +164,14 @@ class VCardReader
         $phonetic = $name === null ? null : $this->parameter($name, 'PHONETIC');
         $transliterated = $source !== null && mb_strtolower((string) $this->parameter($source, 'X-NAME-KIND')) === 'transliteration';
 
+        $kind = match (true) {
+            $phonetic !== null => 'phonetic',
+            $transliterated => 'transliteration',
+            default => 'written',
+        };
+
         $row = [
-            'kind' => $phonetic !== null ? 'phonetic' : ($transliterated ? 'transliteration' : 'written'),
+            'kind' => $kind,
             'language' => $this->language($source),
             'script' => $source === null ? null : $this->script($source),
             'phonetic_system' => $phonetic === null ? null : mb_substr(mb_strtolower($phonetic), 0, 32),

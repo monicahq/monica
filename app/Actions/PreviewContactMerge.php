@@ -333,7 +333,11 @@ class PreviewContactMerge
     {
         $read = $value->value;
 
-        return is_array($read) ? json_encode($read) ?: '' : (string) $read;
+        if (! is_array($read)) {
+            return (string) $read;
+        }
+
+        return json_encode($read) ?: '';
     }
 
     private function rowReads(FieldValueRow $row): string

@@ -50,11 +50,11 @@ class PossessionProvenanceViewModel
                 $origin->location === null => __('Place unknown'),
                 default => $origin->location,
             },
-            'originNote' => $origin instanceof PossessionProvenanceEvent
-                ? ($origin->is_verified
-                    ? __(':date, verified', ['date' => $this->writeEventDate($origin)])
-                    : __(':date, not verified', ['date' => $this->writeEventDate($origin)]))
-                : __('No origin event yet'),
+            'originNote' => match (true) {
+                ! $origin instanceof PossessionProvenanceEvent => __('No origin event yet'),
+                $origin->is_verified => __(':date, verified', ['date' => $this->writeEventDate($origin)]),
+                default => __(':date, not verified', ['date' => $this->writeEventDate($origin)]),
+            },
             'chain' => $owners === []
                 ? __('No owner recorded')
                 : trans_choice(':count owner known|:count owners known', count($owners)),
@@ -108,7 +108,7 @@ class PossessionProvenanceViewModel
                 'sourceUrl' => $event->source_url,
                 'transaction' => $event->transaction instanceof PossessionTransaction ? [
                     'label' => $this->transactionLink($event->transaction),
-                    'total' => $event->transaction->total() === null ? __('No amount recorded') : $this->money($event->transaction),
+                    'total' => $this->money($event->transaction) ?? __('No amount recorded'),
                     'url' => route('possessions.transactions.index', [$this->possession->vault, $this->possession]),
                 ] : null,
                 'editUrl' => route('possessions.provenance.edit', [$this->possession->vault, $this->possession, $event]),
@@ -174,7 +174,7 @@ class PossessionProvenanceViewModel
                         $transaction->occurred_on === null ? __('Date unknown') : $this->writeDate($transaction->occurred_on),
                         $transaction->counterparty,
                     ])),
-                    $transaction->total() === null ? null : $this->money($transaction),
+                    $this->money($transaction),
                 ])),
             ])
             ->values()
@@ -295,8 +295,12 @@ class PossessionProvenanceViewModel
         };
     }
 
-    private function money(PossessionTransaction $transaction): string
+    private function money(PossessionTransaction $transaction): ?string
     {
+        if ($transaction->total() === null) {
+            return null;
+        }
+
         return new PossessionValueFormatter($this->user)->formatExact($transaction->total(), $transaction->currency?->value);
     }
 

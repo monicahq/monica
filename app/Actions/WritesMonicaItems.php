@@ -758,6 +758,7 @@ trait WritesMonicaItems
             ->filter()
             ->values()
             ->all();
+        $chosenItem = $column === 'value_list_item_id' ? ($items[0] ?? null) : null;
 
         new SetFieldValue(
             user: $this->user,
@@ -767,7 +768,7 @@ trait WritesMonicaItems
             value: $value['value'] ?? null,
             valueListItem: $field->type->usesALabelList()
                 ? $this->itemOf($field, $value['label'] ?? null)
-                : ($column === 'value_list_item_id' ? ($items[0] ?? null) : null),
+                : $chosenItem,
             labelWording: $this->shortText($value['label_wording'] ?? null),
             valueListItems: $column === 'value_list_item_ids' ? $items : [],
             file: $this->fileOf($value['file'] ?? null),

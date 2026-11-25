@@ -13,7 +13,7 @@ enum ReminderOccurrenceCategoryEnum: string
     case Today = 'today';
     case Overdue = 'overdue';
 
-    public const int UpcomingDays = 7;
+    public const int UPCOMING_DAYS = 7;
 
     public static function for(ReminderOccurrence $occurrence, CarbonImmutable $today): self
     {

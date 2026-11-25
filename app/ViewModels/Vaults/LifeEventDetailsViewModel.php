@@ -128,6 +128,11 @@ class LifeEventDetailsViewModel
             ->filter(fn (LifeEventParticipant $participation): bool => $participation->participant !== null)
             ->map(function (LifeEventParticipant $participation) use ($relations): array {
                 $person = $participation->participant;
+                $relation = match (true) {
+                    ! $person instanceof Contact => $person->entityType->name_singular,
+                    $person->is_me => __('You'),
+                    default => $relations->get($person->id),
+                };
 
                 return [
                     'name' => $person->name,
@@ -135,7 +140,7 @@ class LifeEventDetailsViewModel
                     'avatarUrl' => $person instanceof Contact && $person->avatar !== null
                         ? route('files.variants.show', ['vault' => $this->vault, 'file' => $person->avatar, 'size' => Contact::AVATAR_THUMBNAIL_PIXELS])
                         : null,
-                    'relation' => $person instanceof Contact ? ($person->is_me ? __('You') : $relations->get($person->id)) : $person->entityType->name_singular,
+                    'relation' => $relation,
                     'role' => $participation->role,
                     'notes' => $participation->notes,
                 ];

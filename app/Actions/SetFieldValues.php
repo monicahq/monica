@@ -342,13 +342,15 @@ class SetFieldValues
             return;
         }
 
+        $address = is_array($given) ? $given : [];
+
         $value = new SetFieldValue(
             user: $this->user,
             valuable: $this->record,
             field: $field,
             row: $row,
             value: $field->type === FieldTypeEnum::Address
-                ? $this->addressFor($field, is_array($given) ? $given : [], $row)
+                ? $this->addressFor($field, $address, $row)
                 : $this->scalarFor($field, $given),
             valueListItem: $this->chosenItem($field, $given) ?? $this->chosenLabel($field, $label),
             labelWording: $wording === null ? null : (string) $wording,

@@ -41,13 +41,14 @@ class ContactNameRepresentationController extends Controller
             ->map(fn (ContactNameRepresentation $representation): array => ['id' => $representation->uuid, ...$representation->toComparable()])
             ->all();
         $storedDisplay = $contact->nameRepresentations->search(fn (ContactNameRepresentation $representation): bool => $representation->id === $contact->display_name_representation_id);
+        $storedDisplay = $storedDisplay === false ? null : $storedDisplay;
 
         try {
             new UpdateContactNameRepresentations(
                 user: $request->user(),
                 contact: $contact,
                 nameRepresentations: array_values($validated['name_representations'] ?? $storedRows),
-                display: isset($validated['display']) ? (int) $validated['display'] : ($storedDisplay === false ? null : $storedDisplay),
+                display: isset($validated['display']) ? (int) $validated['display'] : $storedDisplay,
                 nickname: array_key_exists('nickname', $validated) ? $validated['nickname'] : $contact->nickname,
                 maidenName: array_key_exists('maiden_name', $validated) ? $validated['maiden_name'] : $contact->maiden_name,
             )->execute();
