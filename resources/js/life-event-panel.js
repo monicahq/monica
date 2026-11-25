@@ -1,5 +1,4 @@
 export default (projection) => ({
-    view: 'timeline',
     open: projection.open,
     step: projection.step,
     category: projection.category,

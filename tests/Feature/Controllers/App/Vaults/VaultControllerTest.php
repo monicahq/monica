@@ -67,6 +67,24 @@ class VaultControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_ties_each_tab_to_its_panel_even_in_a_vault_without_the_signed_in_person(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $response = $this->actingAs($user)->get(route('vaults.show', $vault))
+            ->assertOk()
+            ->assertSee('x-data="dashboardTabs"', escape: false)
+            ->assertSee('aria-label="What to show"', escape: false);
+
+        foreach (['timeline', 'attention', 'favourites', 'recent'] as $tab) {
+            $response
+                ->assertSee("aria-controls=\"dashboard-panel-{$tab}\"", escape: false)
+                ->assertSee("aria-labelledby=\"dashboard-tab-{$tab}\"", escape: false);
+        }
+    }
+
+    #[Test]
     public function it_draws_the_timeline_alone_when_only_the_timeline_is_asked_for(): void
     {
         Queue::fake();

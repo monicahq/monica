@@ -45,7 +45,7 @@ class LifeEventTimelineTest extends TestCase
     }
 
     #[Test]
-    public function it_counts_upcoming_first_then_every_year_newest_first(): void
+    public function it_counts_upcoming_first_then_the_past_then_every_year_newest_first(): void
     {
         $this->lifeEvent('2026-12-18', $this->promotion, [$this->dwight]);
         $this->lifeEvent('2027-01-03', $this->prank, [$this->jim]);
@@ -54,6 +54,7 @@ class LifeEventTimelineTest extends TestCase
 
         $this->assertSame([
             ['slice' => 'upcoming', 'count' => 2, 'total' => 2],
+            ['slice' => 'past', 'count' => 2, 'total' => 2],
             ['slice' => '2025', 'count' => 1, 'total' => 1],
             ['slice' => '2023', 'count' => 1, 'total' => 1],
         ], $this->timeline()->slices());
@@ -69,6 +70,7 @@ class LifeEventTimelineTest extends TestCase
 
         $this->assertSame([
             ['slice' => 'upcoming', 'count' => 2, 'total' => 2],
+            ['slice' => 'past', 'count' => 1, 'total' => 1],
             ['slice' => '2026', 'count' => 1, 'total' => 1],
         ], $this->timeline()->slices());
     }
@@ -94,12 +96,14 @@ class LifeEventTimelineTest extends TestCase
 
         $this->assertSame([
             ['slice' => 'upcoming', 'count' => 1, 'total' => 1],
+            ['slice' => 'past', 'count' => 2, 'total' => 3],
             ['slice' => '2025', 'count' => 2, 'total' => 2],
             ['slice' => '2023', 'count' => 0, 'total' => 1],
         ], $this->timeline(contact: $this->dwight)->slices());
 
         $this->assertSame([
             ['slice' => 'upcoming', 'count' => 1, 'total' => 1],
+            ['slice' => 'past', 'count' => 1, 'total' => 3],
             ['slice' => '2025', 'count' => 1, 'total' => 2],
             ['slice' => '2023', 'count' => 0, 'total' => 1],
         ], $this->timeline(type: $this->promotion, contact: $this->dwight)->slices());
@@ -116,19 +120,22 @@ class LifeEventTimelineTest extends TestCase
     }
 
     #[Test]
-    public function it_opens_on_upcoming_then_on_the_newest_year_that_matches(): void
+    public function it_opens_on_the_past_whenever_it_matches_and_on_upcoming_otherwise(): void
     {
         $this->assertSame('upcoming', $this->timeline()->defaultSlice());
-
-        $this->lifeEvent('2025-05-01', $this->prank, [$this->jim]);
-        $this->lifeEvent('2023-02-01', $this->promotion, [$this->dwight]);
-
-        $this->assertSame('2025', $this->timeline()->defaultSlice());
-        $this->assertSame('2023', $this->timeline(contact: $this->dwight)->defaultSlice());
 
         $this->lifeEvent('2027-01-03', $this->prank, [$this->jim]);
 
         $this->assertSame('upcoming', $this->timeline()->defaultSlice());
+
+        $this->lifeEvent('2025-05-01', $this->prank, [$this->jim]);
+
+        $this->assertSame('past', $this->timeline()->defaultSlice());
+        $this->assertSame('upcoming', $this->timeline(contact: $this->dwight)->defaultSlice());
+
+        $this->lifeEvent('2023-02-01', $this->promotion, [$this->dwight]);
+
+        $this->assertSame('past', $this->timeline(contact: $this->dwight)->defaultSlice());
     }
 
     #[Test]
@@ -141,6 +148,17 @@ class LifeEventTimelineTest extends TestCase
 
         $this->assertSame([$christmas->id, $artShow->id], $this->timeline()->query('upcoming')->pluck('id')->all());
         $this->assertSame([$later->id, $earlier->id], $this->timeline()->query('2026')->pluck('id')->all());
+    }
+
+    #[Test]
+    public function it_lists_the_past_newest_first_across_years_up_to_yesterday(): void
+    {
+        $this->lifeEvent('2026-11-22', $this->prank, [$this->jim]);
+        $yesterday = $this->lifeEvent('2026-11-21', $this->prank, [$this->jim]);
+        $older = $this->lifeEvent('2024-02-01', $this->prank, [$this->jim]);
+        $newer = $this->lifeEvent('2025-09-01', $this->prank, [$this->jim]);
+
+        $this->assertSame([$yesterday->id, $newer->id, $older->id], $this->timeline()->query('past')->pluck('id')->all());
     }
 
     #[Test]
