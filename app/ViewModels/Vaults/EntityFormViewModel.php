@@ -85,6 +85,15 @@ class EntityFormViewModel
         return $this->listUrl();
     }
 
+    public function destroyUrl(): ?string
+    {
+        if ($this->entity === null) {
+            return null;
+        }
+
+        return route('entities.destroy', ['vault' => $this->vault, 'entityType' => $this->entityType, 'entity' => $this->entity]);
+    }
+
     public function listUrl(): string
     {
         return route('entities.index', ['vault' => $this->vault, 'entityType' => $this->entityType]);

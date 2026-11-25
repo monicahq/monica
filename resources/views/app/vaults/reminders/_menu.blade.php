@@ -36,7 +36,8 @@
         </button>
       </x-slot:trigger>
 
-      {{ __('This cannot be undone. Nothing further is delivered, and dates still waiting for an answer are dropped. The answers you already gave are kept.') }}
+      {{ __('Nothing further is delivered, and dates still waiting for an answer are dropped. The answers you already gave are kept.') }}
+      {{ __('It waits 30 days in the trash of this vault, where it can be restored.') }}
     </x-modal.warning>
   </x-actions-menu>
 @endif

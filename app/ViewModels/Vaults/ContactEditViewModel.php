@@ -334,7 +334,7 @@ class ContactEditViewModel
 
         return $response->denied()
             ? (string) $response->message()
-            : __('Taking them off the list can be undone.');
+            : __('They wait 30 days in the trash of this vault, where they can be restored.');
     }
 
     /** @return array{title: string, lead: string, lines: list<array{icon: string, text: string}>, url: string, confirmTitle: string, confirmBody: string, reachabilityLine: string|null, refusal: string|null}|null */

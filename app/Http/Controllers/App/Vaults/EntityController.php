@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\App\Vaults;
 
 use App\Actions\CreateEntity;
+use App\Actions\DestroyEntity;
 use App\Actions\UpdateEntity;
 use App\Exceptions\EntityNeedsAName;
 use App\Exceptions\EntityTemplateChanged;
@@ -228,6 +229,21 @@ class EntityController extends Controller
         return redirect()
             ->route('entities.show', ['vault' => $vault, 'entityType' => $entityType, 'entity' => $entity])
             ->with('status', __(':name is saved.', ['name' => $entity->name]));
+    }
+
+    public function destroy(Request $request, Vault $vault, EntityType $entityType, Entity $entity): RedirectResponse
+    {
+        $this->refuseWhatIsNotReachable($vault, $entityType, $entity);
+
+        new DestroyEntity(
+            user: $request->user(),
+            vault: $vault,
+            entity: $entity,
+        )->execute();
+
+        return redirect()
+            ->route('entities.index', ['vault' => $vault, 'entityType' => $entityType])
+            ->with('status', __(':name is in the trash of this vault.', ['name' => $entity->name]));
     }
 
     private function refuseWhatIsNotReachable(Vault $vault, EntityType $entityType, Entity $entity): void

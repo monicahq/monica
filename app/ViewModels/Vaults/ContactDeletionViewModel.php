@@ -55,7 +55,7 @@ class ContactDeletionViewModel
 
     public function consequence(): string
     {
-        return __('Everything written on the record is deleted with them.');
+        return __('Their relationships, reminders and life events go with them to the trash of this vault, where they wait 30 days and can be restored.');
     }
 
     public function keptLine(): ?string

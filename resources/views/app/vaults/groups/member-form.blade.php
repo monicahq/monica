@@ -82,7 +82,7 @@
             <x-button.danger type="button" @click="open = true">{{ __('Delete this membership') }}</x-button.danger>
           </x-slot:trigger>
 
-          <p>{{ __('This cannot be undone.') }}</p>
+          <p>{{ __('It waits 30 days in the trash of this vault, where it can be restored.') }}</p>
         </x-modal.warning>
       </x-slot:trigger>
     </x-delete-section>

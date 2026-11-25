@@ -88,5 +88,9 @@
 
       <x-button form="entity-form">{{ __('Save') }}</x-button>
     </div>
+
+    @if ($viewModel->isEditing())
+      @include('app.vaults.entities._delete', ['viewModel' => $viewModel])
+    @endif
   </div>
 </x-shell>

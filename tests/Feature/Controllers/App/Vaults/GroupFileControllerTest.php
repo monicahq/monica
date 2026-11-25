@@ -79,7 +79,7 @@ class GroupFileControllerTest extends TestCase
         $this->actingAs($user)->delete(route('groups.files.destroy', ['vault' => $vault, 'group' => $group, 'groupFile' => $attachment]))
             ->assertRedirect(route('groups.files.index', ['vault' => $vault, 'group' => $group]));
 
-        $this->assertModelMissing($attachment);
+        $this->assertSoftDeleted($attachment);
     }
 
     #[Test]

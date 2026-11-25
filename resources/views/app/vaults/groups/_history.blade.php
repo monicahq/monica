@@ -76,10 +76,13 @@
                   :confirm="__('Delete the note')"
                   :action="$entry['destroyUrl']"
                   :label="__('Delete')"
+                  :irreversible="false"
                   variant="ghost"
                   size="small"
                 >
                   <p>{{ __('The note of :date is removed from the group. Nothing else changes.', ['date' => $entry['when']]) }}</p>
+
+                  <p>{{ __('It waits 30 days in the trash of this vault, where it can be restored.') }}</p>
                 </x-delete-action>
               @endif
             </div>

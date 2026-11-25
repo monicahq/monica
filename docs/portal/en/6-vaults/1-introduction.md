@@ -4,7 +4,7 @@ title: Vaults
 description: Learn what a vault holds, when a second one helps, and why you should choose the vault before adding somebody.
 slug: vaults
 section: vaults
-last_updated: 2026-09-29
+last_updated: 2026-11-25
 ---
 
 # Vaults
@@ -18,5 +18,6 @@ Choose the vault before you add somebody, because Monica cannot move a contact f
 1. @doc(vaults.create). Start a second vault, and choose which vault is the default.
 2. @doc(vaults.settings). Rename a vault, change its colour, and choose the template new contacts start from.
 3. @doc(vaults.delete). Remove a vault and everything in it.
+4. @doc(vaults.trash). Bring back something you deleted, or delete it for good.
 
 On monicahq.com, the free plan holds one vault, so a second one needs full access.

@@ -9,7 +9,9 @@ use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Group;
+use App\Models\GroupFile;
 use App\Models\GroupMember;
+use App\Models\GroupNote;
 use App\Models\Reminder;
 use App\Models\User;
 use App\Models\Vault;
@@ -24,7 +26,7 @@ class DestroyGroupTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_deletes_the_group_and_leaves_its_members_alone(): void
+    public function it_sends_the_group_and_what_is_kept_with_it_to_the_trash_and_leaves_its_members_alone(): void
     {
         Queue::fake();
 
@@ -32,12 +34,17 @@ class DestroyGroupTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
         $group = Group::factory()->create(['vault_id' => $vault->id, 'name' => 'Party planning committee']);
         $angela = GroupMember::factory()->create(['group_id' => $group->id]);
+        $note = GroupNote::factory()->create(['group_id' => $group->id]);
+        $attachment = GroupFile::factory()->create(['group_id' => $group->id]);
 
         new DestroyGroup(user: $user, vault: $vault, group: $group)->execute();
 
         $this->assertSoftDeleted($group);
-        $this->assertNotSoftDeleted($angela);
         $this->assertNotSoftDeleted($angela->contact);
+
+        foreach (['group_members' => $angela, 'group_notes' => $note, 'group_files' => $attachment] as $table => $record) {
+            $this->assertSoftDeleted($table, ['id' => $record->id, 'deleted_with_type' => Group::class, 'deleted_with_id' => $group->id]);
+        }
 
         Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::GroupDeletion);
     }

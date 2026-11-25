@@ -152,7 +152,7 @@ class GroupFileControllerTest extends TestCase
         $this->json('DELETE', "/api/v1/vaults/{$vault->uuid}/groups/{$group->uuid}/files/{$attachment->uuid}")
             ->assertNoContent();
 
-        $this->assertModelMissing($attachment);
+        $this->assertSoftDeleted($attachment);
     }
 
     #[Test]

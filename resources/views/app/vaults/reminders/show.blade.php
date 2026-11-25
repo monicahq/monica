@@ -99,7 +99,9 @@
               >{{ __('Delete reminder') }}</button>
             </x-slot:trigger>
 
-            {{ $viewModel->deleteLine() }}
+            <p>{{ $viewModel->deleteLine() }}</p>
+
+            <p>{{ __('It waits 30 days in the trash of this vault, where it can be restored.') }}</p>
           </x-modal.warning>
         </x-actions-menu>
       </div>

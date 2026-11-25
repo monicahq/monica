@@ -7,6 +7,7 @@ namespace App\ViewModels\Vaults;
 use App\Enums\StructureAppliesToEnum;
 use App\Enums\VaultColourEnum;
 use App\Enums\VersionStatusEnum;
+use App\Helpers\VaultTrash;
 use App\Models\AccountExport;
 use App\Models\StructureVersion;
 use App\Models\Template;
@@ -40,6 +41,11 @@ class VaultSettingsViewModel
     public function title(): string
     {
         return __('Vault settings');
+    }
+
+    public function trashCount(): int
+    {
+        return new VaultTrash(vault: $this->vault)->counts()['total'];
     }
 
     public function description(): string

@@ -22,7 +22,7 @@ class RemoveGroupFileTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function it_lets_go_of_the_file_and_starts_its_grace_period(): void
+    public function it_sends_the_attachment_to_the_trash_and_keeps_the_file(): void
     {
         Queue::fake();
 
@@ -33,11 +33,10 @@ class RemoveGroupFileTest extends TestCase
 
         new RemoveGroupFile(user: $user, vault: $vault, group: $group, attachment: $attachment)->execute();
 
-        $this->assertModelMissing($attachment);
+        $this->assertSoftDeleted($attachment);
         $file = $attachment->file->refresh();
-        $this->assertEquals(0, $file->reference_count);
-        $this->assertNotNull($file->orphaned_at);
-        $this->assertModelExists($file);
+        $this->assertEquals(1, $file->reference_count);
+        $this->assertNull($file->orphaned_at);
 
         Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::GroupFileRemoval);
     }

@@ -35,7 +35,17 @@ class RestoreLifeEvent
         $this->validate();
 
         DB::transaction(function (): void {
-            $this->lifeEvent->restore();
+            $isStillTrashed = LifeEvent::query()
+                ->onlyTrashed()
+                ->whereKey($this->lifeEvent->id)
+                ->lockForUpdate()
+                ->value('id') !== null;
+
+            if (! $isStillTrashed) {
+                throw new ModelNotFoundException('This life event is not deleted.');
+            }
+
+            $this->lifeEvent->restoreFromTheTrash();
 
             StructureVersion::query()
                 ->whereKey($this->lifeEvent->structure_version_id)

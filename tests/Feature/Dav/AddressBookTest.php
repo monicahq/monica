@@ -884,7 +884,7 @@ class AddressBookTest extends TestCase
 
         $this->assertSoftDeleted($group);
         $this->assertNotSoftDeleted($jim);
-        $this->assertSame(1, GroupMember::query()->where('group_id', $group->id)->count());
+        $this->assertSame(1, GroupMember::query()->onlyTrashed()->where('group_id', $group->id)->where('deleted_with_type', Group::class)->count());
     }
 
     #[Test]

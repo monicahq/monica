@@ -4,12 +4,14 @@ title: Change a vault’s name, colour, default template and sections
 description: Rename a vault, change its colour and description, choose the template that new contacts in it start from, and choose which sections it shows.
 slug: vault-settings
 section: vaults
-last_updated: 2026-11-24
+last_updated: 2026-11-25
 ---
 
 # Change a vault’s name, colour, default template and sections
 
 Each vault has its own settings: what it is called, its colour, the template new contacts in it start from, and which sections it shows.
+
+These settings live under the **General** tab. The **Trash** tab beside it holds what you deleted from the vault: @doc(vaults.trash) explains it.
 
 To open them, go to the vault and choose **Vault settings** in its sidebar.
 

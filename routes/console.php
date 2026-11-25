@@ -8,6 +8,7 @@ use App\Jobs\GenerateDueReminderOccurrences;
 use App\Jobs\PurgeAbandonedAccountImports;
 use App\Jobs\PurgeExpiredAccountExports;
 use App\Jobs\PurgeOrphanedFiles;
+use App\Jobs\PurgeVaultTrash;
 use App\Jobs\RecordLastInTouchOfTheDay;
 use App\Jobs\SendNotificationDigests;
 use Illuminate\Support\Facades\Schedule;
@@ -26,6 +27,8 @@ if (config('telescope.enabled')) {
 if (config('laravelcloudflare.enabled')) {
     Schedule::command('cloudflare:reload')->dailyAt('01:25');
 }
+
+Schedule::job(new PurgeVaultTrash, 'low')->dailyAt('03:10')->sentryMonitor();
 
 Schedule::job(new PurgeOrphanedFiles, 'low')->dailyAt('03:20')->sentryMonitor();
 

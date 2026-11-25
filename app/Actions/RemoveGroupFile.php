@@ -11,11 +11,10 @@ use App\Models\GroupFile;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\DB;
 
 /**
- * Stop keeping a file with a group. The group lets go of its reference, and the file itself survives
- * the grace period every detached file gets before it is swept up.
+ * Stop keeping a file with a group. The attachment goes to the vault's trash and keeps its reference
+ * on the file, so restoring it finds the file intact; deleting it for good lets go of the file.
  */
 class RemoveGroupFile
 {
@@ -32,11 +31,7 @@ class RemoveGroupFile
 
         $file = $this->attachment->file;
 
-        DB::transaction(function () use ($file): void {
-            $this->attachment->delete();
-
-            new DetachFile(user: $this->user, file: $file)->execute();
-        });
+        $this->attachment->delete();
 
         LogUserAction::dispatch(
             account: $this->user->account,

@@ -118,6 +118,7 @@ enum UserActionEnum: string implements Translatable
     case RelationshipCreation = 'relationship_created';
     case RelationshipUpdate = 'relationship_updated';
     case RelationshipDeletion = 'relationship_deleted';
+    case RelationshipRestoration = 'relationship_restored';
     case GroupCreation = 'group_created';
     case GroupUpdate = 'group_updated';
     case GroupDeletion = 'group_deleted';
@@ -126,12 +127,17 @@ enum UserActionEnum: string implements Translatable
     case GroupMembershipUpdate = 'group_membership_updated';
     case GroupMembershipEnd = 'group_membership_ended';
     case GroupMembershipDeletion = 'group_membership_deleted';
+    case GroupMembershipRestoration = 'group_membership_restored';
     case GroupExported = 'group_exported';
     case GroupNoteCreation = 'group_note_created';
     case GroupNoteUpdate = 'group_note_updated';
     case GroupNoteDeletion = 'group_note_deleted';
+    case GroupNoteRestoration = 'group_note_restored';
     case GroupFileAddition = 'group_file_added';
     case GroupFileRemoval = 'group_file_removed';
+    case GroupFileRestoration = 'group_file_restored';
+    case TrashItemDestruction = 'trash_item_destroyed';
+    case TrashEmptied = 'trash_emptied';
     case SupportRequestOpened = 'support_request_opened';
     case SupportMessageAdded = 'support_message_added';
     case SupportRequestSolved = 'support_request_solved';
@@ -294,6 +300,7 @@ enum UserActionEnum: string implements Translatable
     case ReminderCreation = 'reminder_created';
     case ReminderUpdate = 'reminder_updated';
     case ReminderRemoval = 'reminder_removed';
+    case ReminderRestoration = 'reminder_restored';
     case ReminderDeactivation = 'reminders_deactivated';
     case ReminderReactivation = 'reminders_reactivated';
     case ReminderOccurrenceRemembered = 'reminder_occurrence_remembered';
@@ -422,6 +429,7 @@ enum UserActionEnum: string implements Translatable
             self::RelationshipCreation => 'Recorded that :name is the :role of :other',
             self::RelationshipUpdate => 'Changed the relationship between :name and :other',
             self::RelationshipDeletion => 'Removed the relationship between :name and :other',
+            self::RelationshipRestoration => 'Brought back the relationship between :name and :other',
             self::GroupCreation => 'Created the group :name',
             self::GroupUpdate => 'Changed the group :name',
             self::GroupDeletion => 'Deleted the group :name',
@@ -430,12 +438,17 @@ enum UserActionEnum: string implements Translatable
             self::GroupMembershipUpdate => 'Changed the membership of :name in the group :group',
             self::GroupMembershipEnd => 'Recorded that :name left the group :group',
             self::GroupMembershipDeletion => 'Removed the membership of :name from the group :group',
+            self::GroupMembershipRestoration => 'Brought back the membership of :name in the group :group',
             self::GroupExported => 'Exported the group :name and its members as cards',
             self::GroupNoteCreation => 'Wrote a note on the group :name',
             self::GroupNoteUpdate => 'Changed a note on the group :name',
             self::GroupNoteDeletion => 'Deleted a note on the group :name',
+            self::GroupNoteRestoration => 'Brought back a note on the group :name',
             self::GroupFileAddition => 'Added the file :file to the group :name',
             self::GroupFileRemoval => 'Removed the file :file from the group :name',
+            self::GroupFileRestoration => 'Brought back the file :file in the group :name',
+            self::TrashItemDestruction => 'Deleted :name for good from the trash of the vault :vault',
+            self::TrashEmptied => 'Emptied the trash of the vault :vault',
             self::SupportRequestOpened => 'Asked the support team about :subject',
             self::SupportMessageAdded => 'Wrote to the support team about :subject',
             self::SupportRequestSolved => 'Marked the support request :subject as solved',
@@ -598,6 +611,7 @@ enum UserActionEnum: string implements Translatable
             self::ReminderCreation => 'Asked to be reminded of :label on :name',
             self::ReminderUpdate => 'Changed the reminder on :label on :name',
             self::ReminderRemoval => 'Removed the reminder on :label on :name',
+            self::ReminderRestoration => 'Brought back the reminder on :label on :name',
             self::ReminderDeactivation => 'Stopped :count reminder about :name|Stopped :count reminders about :name',
             self::ReminderReactivation => 'Restored :count reminder about :name|Restored :count reminders about :name',
             self::ReminderOccurrenceRemembered => 'Remembered :name on :date',
