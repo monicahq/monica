@@ -25,6 +25,10 @@ export default (config) => ({
         return this.uuids.length > 0 && this.uuids.every((uuid) => this.selected.includes(uuid));
     },
 
+    get overLimit() {
+        return this.count > config.limit;
+    },
+
     get someChecked() {
         return this.count > 0 && !this.allChecked;
     },
@@ -38,6 +42,10 @@ export default (config) => ({
     },
 
     get announcement() {
+        if (this.overLimit) {
+            return `${this.label} ${config.limitLine}`;
+        }
+
         if (this.count > 0) {
             return this.label;
         }
@@ -95,6 +103,10 @@ export default (config) => ({
     },
 
     changeCategory(category, form) {
+        if (this.overLimit) {
+            return;
+        }
+
         this.category = category;
         this.$nextTick(() => form.requestSubmit());
     },

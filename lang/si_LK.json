@@ -6398,6 +6398,7 @@
     "[0,*]Disputes that ended access: :count": "[0,*]ප්‍රවේශය අවසන් කළ ආරවුල්: :count",
     "[0,*]Failed: :count": "[0,*]අසාර්ථක: :count",
     "[0,*]Full refunds that ended access: :count": "[0,*]ප්‍රවේශය අවසන් කළ සම්පූර්ණ ආපසු ගෙවීම්: :count",
+    "[0,*]Select :count people or fewer.": "[0,*]පුද්ගලයින් :count දෙනෙකු හෝ ඊට අඩුවෙන් තෝරන්න.",
     "[0,*]Show :count more": "[0,*]තව :count පෙන්වන්න",
     "[0,*]Waiting on a failed payment Stripe is retrying: :count": "[0,*]අසාර්ථක ගෙවීමක් එනතුරු, Stripe නැවත උත්සාහ කරමින්: :count",
     "[0,*]Writing :count of :total.": "[0,*]:total න් :count ලියමින්.",

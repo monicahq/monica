@@ -6398,6 +6398,7 @@
     "[0,*]Disputes that ended access: :count": "[0,*]প্রবেশাধিকার শেষ করা বিরোধ: :count",
     "[0,*]Failed: :count": "[0,*]ব্যর্থ: :count",
     "[0,*]Full refunds that ended access: :count": "[0,*]প্রবেশাধিকার শেষ করা পূর্ণ রিফান্ড: :count",
+    "[0,*]Select :count people or fewer.": "[0,*]সর্বাধিক :count জনকে বেছে নিন।",
     "[0,*]Show :count more": "[0,*]আরও :count দেখান",
     "[0,*]Waiting on a failed payment Stripe is retrying: :count": "[0,*]ব্যর্থ পেমেন্টের অপেক্ষায়, যা Stripe আবার চেষ্টা করছে: :count",
     "[0,*]Writing :count of :total.": "[0,*]:total-এর মধ্যে :count লেখা হচ্ছে।",

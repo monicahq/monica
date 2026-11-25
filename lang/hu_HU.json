@@ -6398,6 +6398,7 @@
     "[0,*]Disputes that ended access: :count": "[0,*]A hozzáférést megszüntető viták: :count",
     "[0,*]Failed: :count": "[0,*]Sikertelen: :count",
     "[0,*]Full refunds that ended access: :count": "[0,*]A hozzáférést megszüntető teljes visszatérítések: :count",
+    "[0,*]Select :count people or fewer.": "[0,*]Legfeljebb :count személyt válasszon ki.",
     "[0,*]Show :count more": "[0,*]További :count megjelenítése",
     "[0,*]Waiting on a failed payment Stripe is retrying: :count": "[0,*]Sikertelen fizetésre várnak, amelyet a Stripe újrapróbál: :count",
     "[0,*]Writing :count of :total.": "[0,*]Írás: :count / :total.",

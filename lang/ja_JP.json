@@ -6398,6 +6398,7 @@
     "[0,*]Disputes that ended access: :count": "[0,*]アクセスが終了した異議申し立て: :count",
     "[0,*]Failed: :count": "[0,*]失敗: :count件",
     "[0,*]Full refunds that ended access: :count": "[0,*]アクセスが終了した全額返金: :count",
+    "[0,*]Select :count people or fewer.": "[0,*]:count人まで選択してください。",
     "[0,*]Show :count more": "他:count件を表示",
     "[0,*]Waiting on a failed payment Stripe is retrying: :count": "[0,*]Stripe が再試行中の失敗した支払いで待機中: :count",
     "[0,*]Writing :count of :total.": "[0,*]:total件中:count件を書き込み中。",

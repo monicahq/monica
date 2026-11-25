@@ -6398,6 +6398,7 @@
     "[0,*]Disputes that ended access: :count": "[0,*]Geschillen die de toegang beëindigden: :count",
     "[0,*]Failed: :count": "[0,*]Mislukt: :count",
     "[0,*]Full refunds that ended access: :count": "[0,*]Volledige terugbetalingen die de toegang beëindigden: :count",
+    "[0,*]Select :count people or fewer.": "[0,*]Selecteer maximaal :count personen.",
     "[0,*]Show :count more": "[0,*]Toon :count meer",
     "[0,*]Waiting on a failed payment Stripe is retrying: :count": "[0,*]Wachtend op een mislukte betaling die Stripe opnieuw probeert: :count",
     "[0,*]Writing :count of :total.": "[0,*]Bezig met schrijven: :count van :total.",

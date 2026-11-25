@@ -26,7 +26,7 @@ class ContactDeletionControllerTest extends TestCase
         $todd = $this->contact($user, $vault, 'Todd', 'Packer');
 
         $this->actingAs($user)
-            ->get(route('contacts.deletion.show', ['vault' => $vault, 'contacts' => [$toby->uuid, $todd->uuid]]))
+            ->post(route('contacts.deletion.show', $vault), ['_method' => 'QUERY', 'contacts' => [$toby->uuid, $todd->uuid]])
             ->assertOk()
             ->assertSee('Delete 2 people?')
             ->assertSee(route('contacts.deletion.destroy', $vault));

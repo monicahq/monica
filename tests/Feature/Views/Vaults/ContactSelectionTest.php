@@ -52,7 +52,9 @@ class ContactSelectionTest extends TestCase
             ->assertOk()
             ->assertSee('role="group"', false)
             ->assertSee('aria-label="Actions for the selected people"', false)
-            ->assertSee('aria-label="Clear the selection"', false);
+            ->assertSee('aria-label="Clear the selection"', false)
+            ->assertSee('id="contact-selection-limit"', false)
+            ->assertSee('Select 500 people or fewer.');
     }
 
     #[Test]

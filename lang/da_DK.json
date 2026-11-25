@@ -6398,6 +6398,7 @@
     "[0,*]Disputes that ended access: :count": "[0,*]Indsigelser, der afsluttede adgang: :count",
     "[0,*]Failed: :count": "[0,*]Mislykkedes: :count",
     "[0,*]Full refunds that ended access: :count": "[0,*]Fulde refusioner, der afsluttede adgang: :count",
+    "[0,*]Select :count people or fewer.": "[0,*]Vælg højst :count personer.",
     "[0,*]Show :count more": "[0,*]Vis :count mere",
     "[0,*]Waiting on a failed payment Stripe is retrying: :count": "[0,*]Venter på en mislykket betaling, som Stripe prøver igen: :count",
     "[0,*]Writing :count of :total.": "[0,*]Skriver :count af :total.",

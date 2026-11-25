@@ -5,7 +5,7 @@ segment would otherwise take `deletion`.
 
 | Method and path | Name | Controller | Answers |
 | --- | --- | --- | --- |
-| `GET vaults/{vault}/contacts/deletion?contacts[]=…` | `contacts.deletion.show` | `ContactDeletionController@show` | The confirmation dialog, as an Alpine Ajax fragment |
+| `GET` or `QUERY vaults/{vault}/contacts/deletion` | `contacts.deletion.show` | `ContactDeletionController@show` | The confirmation dialog, as an Alpine Ajax fragment. The list sends `QUERY` (a POST spoofed with `_method`), so the selected uuids travel in the body: 500 of them in a query string are about 26 KB, past what a front server accepts |
 | `DELETE vaults/{vault}/contacts` | `contacts.deletion.destroy` | `ContactDeletionController@destroy` | Back to the list, `status` naming how many were deleted and kept |
 | `PUT vaults/{vault}/contacts/categories` | `contacts.categories.update` | `ContactCategoryController@update` | Back to the list, flashing `contactCategoryChange` for the Undo notice |
 

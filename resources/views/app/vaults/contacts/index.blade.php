@@ -57,7 +57,7 @@
   <div
     id="contacts"
     x-merge="replace"
-    x-data="contactSelection(@js(['locale' => str_replace('_', '-', app()->getLocale()), 'wordings' => $viewModel->selectionWordings(), 'nothingSelected' => __('Nothing selected')]))"
+    x-data="contactSelection(@js(['locale' => str_replace('_', '-', app()->getLocale()), 'wordings' => $viewModel->selectionWordings(), 'nothingSelected' => __('Nothing selected'), 'limit' => $viewModel->selectionLimit(), 'limitLine' => $viewModel->selectionLimitLine()]))"
     @keydown.escape="escape()"
     class="flex flex-col gap-3.5"
   >
@@ -199,7 +199,15 @@
 
         <span id="contact-categories-empty" class="text-xs text-muted">{{ __('Your list of categories is empty.') }}</span>
       @else
-        <x-form method="put" :action="$viewModel->categoryChangeUrl()">
+        <x-button x-show="overLimit" type="button" variant="ghost" size="small" aria-disabled="true" aria-describedby="contact-selection-limit">
+          <x-slot:icon>
+            <x-icon name="tag" :size="15" :stroke-width="1.5" />
+          </x-slot:icon>
+
+          {{ __('Change category') }}
+        </x-button>
+
+        <x-form x-show="! overLimit" method="put" :action="$viewModel->categoryChangeUrl()">
           <template x-for="(uuid, index) in selected" :key="uuid">
             <span>
               <input type="hidden" :name="`contacts[${index}][contact]`" :value="uuid" />
@@ -234,13 +242,23 @@
         </x-form>
       @endif
 
-      <form method="get" action="{{ route('contacts.deletion.show', $vault) }}" x-target="contact-deletion">
+      <x-form method="query" :action="route('contacts.deletion.show', $vault)" x-target="contact-deletion">
         <template x-for="uuid in selected" :key="uuid">
           <input type="hidden" name="contacts[]" :value="uuid" />
         </template>
 
-        <x-button type="submit" variant="ghost" tone="danger" size="small">{{ __('Delete') }}</x-button>
-      </form>
+        <x-button
+          type="submit"
+          variant="ghost"
+          tone="danger"
+          size="small"
+          ::aria-disabled="overLimit"
+          ::aria-describedby="overLimit && 'contact-selection-limit'"
+          @click="if (overLimit) { $event.preventDefault() }"
+        >{{ __('Delete') }}</x-button>
+      </x-form>
+
+      <span id="contact-selection-limit" x-show="overLimit" class="text-xs text-muted">{{ $viewModel->selectionLimitLine() }}</span>
 
       <span class="h-5 w-px bg-hairline" aria-hidden="true"></span>
 

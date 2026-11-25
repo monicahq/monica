@@ -6398,6 +6398,7 @@
     "[0,*]Disputes that ended access: :count": "[0,*]导致访问权限终止的纠纷：:count",
     "[0,*]Failed: :count": "[0,*]失败：:count",
     "[0,*]Full refunds that ended access: :count": "[0,*]导致访问权限终止的全额退款：:count",
+    "[0,*]Select :count people or fewer.": "[0,*]最多选择:count人。",
     "[0,*]Show :count more": "再显示 :count 项",
     "[0,*]Waiting on a failed payment Stripe is retrying: :count": "[0,*]因付款失败而等待 Stripe 重试：:count",
     "[0,*]Writing :count of :total.": "[0,*]正在写入第 :count 项，共 :total 项。",

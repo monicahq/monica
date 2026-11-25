@@ -6398,6 +6398,7 @@
     "[0,*]Disputes that ended access: :count": "[0,*]அணுகலை முடித்த தகராறுகள்: :count",
     "[0,*]Failed: :count": "[0,*]தோல்வி: :count",
     "[0,*]Full refunds that ended access: :count": "[0,*]அணுகலை முடித்த முழுப் பணத்திரும்பப்பெறல்கள்: :count",
+    "[0,*]Select :count people or fewer.": "[0,*]அதிகபட்சம் :count பேரைத் தேர்ந்தெடு.",
     "[0,*]Show :count more": "[0,*]மேலும் :count காட்டு",
     "[0,*]Waiting on a failed payment Stripe is retrying: :count": "[0,*]தோல்வியுற்ற கட்டணத்துக்காகக் காத்திருப்பவை, Stripe மீண்டும் முயல்கிறது: :count",
     "[0,*]Writing :count of :total.": "[0,*]:total இல் :count எழுதப்படுகிறது.",

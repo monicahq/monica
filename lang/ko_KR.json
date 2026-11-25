@@ -6398,6 +6398,7 @@
     "[0,*]Disputes that ended access: :count": "[0,*]이용 권한이 종료된 분쟁: :count",
     "[0,*]Failed: :count": "[0,*]실패: :count건",
     "[0,*]Full refunds that ended access: :count": "[0,*]이용 권한이 종료된 전액 환불: :count",
+    "[0,*]Select :count people or fewer.": "[0,*]최대 :count명까지 선택할 수 있습니다.",
     "[0,*]Show :count more": ":count개 더 보기",
     "[0,*]Waiting on a failed payment Stripe is retrying: :count": "[0,*]Stripe가 재시도 중인 실패한 결제 대기: :count",
     "[0,*]Writing :count of :total.": "[0,*]:total개 중 :count개를 쓰는 중.",

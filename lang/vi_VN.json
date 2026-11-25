@@ -6398,6 +6398,7 @@
     "[0,*]Disputes that ended access: :count": "[0,*]Tranh chấp đã chấm dứt quyền truy cập: :count",
     "[0,*]Failed: :count": "[0,*]Thất bại: :count",
     "[0,*]Full refunds that ended access: :count": "[0,*]Hoàn tiền toàn bộ đã chấm dứt quyền truy cập: :count",
+    "[0,*]Select :count people or fewer.": "[0,*]Chọn tối đa :count người.",
     "[0,*]Show :count more": "[0,*]Hiện thêm :count",
     "[0,*]Waiting on a failed payment Stripe is retrying: :count": "[0,*]Đang chờ khoản thanh toán thất bại mà Stripe đang thử lại: :count",
     "[0,*]Writing :count of :total.": "[0,*]Đang ghi :count trên :total.",

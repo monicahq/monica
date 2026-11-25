@@ -6398,6 +6398,7 @@
     "[0,*]Disputes that ended access: :count": "[0,*]Erişimi sona erdiren itirazlar: :count",
     "[0,*]Failed: :count": "[0,*]Başarısız: :count",
     "[0,*]Full refunds that ended access: :count": "[0,*]Erişimi sona erdiren tam iadeler: :count",
+    "[0,*]Select :count people or fewer.": "[0,*]En fazla :count kişi seç.",
     "[0,*]Show :count more": "[0,*]:count tane daha göster",
     "[0,*]Waiting on a failed payment Stripe is retrying: :count": "[0,*]Stripe’ın yeniden denediği başarısız bir ödemeyi bekleyen: :count",
     "[0,*]Writing :count of :total.": "[0,*]:count / :total yazılıyor.",

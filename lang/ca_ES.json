@@ -6398,6 +6398,7 @@
     "[0,*]Disputes that ended access: :count": "[0,*]Disputes que han acabat l’accés: :count",
     "[0,*]Failed: :count": "[0,*]Fallats: :count",
     "[0,*]Full refunds that ended access: :count": "[0,*]Reemborsaments totals que han acabat l’accés: :count",
+    "[0,*]Select :count people or fewer.": "[0,*]Selecciona com a màxim :count persones.",
     "[0,*]Show :count more": "[0,*]Mostra’n :count més",
     "[0,*]Waiting on a failed payment Stripe is retrying: :count": "[0,*]Esperant un pagament fallit que Stripe reintenta: :count",
     "[0,*]Writing :count of :total.": "[0,*]S’està escrivint :count de :total.",

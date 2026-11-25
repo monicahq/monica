@@ -435,7 +435,7 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::get('vaults/{vault}/contacts/template-changes/{templateChange}', [TemplateChangeController::class, 'show'])->whereUuid('templateChange')->name('contacts.templateChanges.show');
     Route::get('vaults/{vault}/contacts/new', [ContactController::class, 'new'])->name('contacts.new');
     Route::post('vaults/{vault}/contacts', [ContactController::class, 'create'])->name('contacts.create');
-    Route::get('vaults/{vault}/contacts/deletion', [ContactDeletionController::class, 'show'])->name('contacts.deletion.show');
+    Route::match(['GET', 'QUERY'], 'vaults/{vault}/contacts/deletion', [ContactDeletionController::class, 'show'])->name('contacts.deletion.show');
     Route::delete('vaults/{vault}/contacts', [ContactDeletionController::class, 'destroy'])->name('contacts.deletion.destroy');
     Route::put('vaults/{vault}/contacts/categories', [ContactCategoryController::class, 'update'])->name('contacts.categories.update');
 

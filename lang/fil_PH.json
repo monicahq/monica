@@ -6398,6 +6398,7 @@
     "[0,*]Disputes that ended access: :count": "[0,*]Mga hindi pagkakasundo sa singil na nagtapos ng access: :count",
     "[0,*]Failed: :count": "[0,*]Pumalya: :count",
     "[0,*]Full refunds that ended access: :count": "[0,*]Mga buong refund na nagtapos ng access: :count",
+    "[0,*]Select :count people or fewer.": "[0,*]Pumili ng hindi hihigit sa :count tao.",
     "[0,*]Show :count more": "[0,*]Magpakita ng :count pa",
     "[0,*]Waiting on a failed payment Stripe is retrying: :count": "[0,*]Naghihintay sa bigong bayad na muling sinusubukan ng Stripe: :count",
     "[0,*]Writing :count of :total.": "[0,*]Isinusulat ang :count sa :total.",

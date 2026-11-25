@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Vaults;
 
+use App\Actions\DestroyContacts;
 use App\Enums\ContactGroupingEnum;
 use App\Enums\ContactListColumnSourceEnum;
 use App\Enums\ContactSortEnum;
@@ -178,6 +179,16 @@ class ContactsViewModel
     public function selectionWordings(): array
     {
         return CountedPhraseWordings::of(':count selected|:count selected');
+    }
+
+    public function selectionLimit(): int
+    {
+        return DestroyContacts::LIMIT;
+    }
+
+    public function selectionLimitLine(): string
+    {
+        return trans_choice('[0,*]Select :count people or fewer.', $this->selectionLimit());
     }
 
     /** @return list<array{id: int, label: string}> */
