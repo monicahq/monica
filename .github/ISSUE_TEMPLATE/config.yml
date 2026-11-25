@@ -1,1 +1,8 @@
 blank_issues_enabled: false
+contact_links:
+  - name: Question or help with an installation
+    url: https://github.com/monicahq/monica/discussions
+    about: Ask in the discussions, not in the issues.
+  - name: Security vulnerability
+    url: https://github.com/monicahq/monica/security/policy
+    about: Report it privately, never in a public issue.
