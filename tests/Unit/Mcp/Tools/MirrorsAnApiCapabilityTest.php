@@ -12,11 +12,15 @@ use App\Mcp\Tools\GetLocation;
 use App\Mcp\Tools\ListLogs;
 use App\Mcp\Tools\SearchRecords;
 use App\Mcp\Tools\UpdateLocation;
+use App\Mcp\Tools\UpdateValueList;
+use App\Mcp\Tools\UpdateValueListItem;
 use App\Models\Entity;
 use App\Models\Location;
 use App\Models\Log;
 use App\Models\Possession;
 use App\Models\User;
+use App\Models\ValueList;
+use App\Models\ValueListItem;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
@@ -93,6 +97,31 @@ class MirrorsAnApiCapabilityTest extends TestCase
 
         MonicaServer::actingAs($user)->tool(GetLocation::class, ['location' => $elsewhere->uuid])
             ->assertHasErrors([__('That location does not exist.')]);
+    }
+
+    #[Test]
+    public function it_reports_a_value_list_of_another_account_or_of_one_field_as_not_existing(): void
+    {
+        $user = User::factory()->create();
+        $elsewhere = ValueList::factory()->create();
+        $beets = ValueList::factory()->create(['account_id' => $user->account_id, 'is_shared' => false]);
+
+        foreach ([$elsewhere, $beets] as $list) {
+            MonicaServer::actingAs($user)->tool(UpdateValueList::class, ['value_list' => $list->id, 'name' => 'Paper suppliers'])
+                ->assertHasErrors([__('That value list does not exist.')]);
+        }
+    }
+
+    #[Test]
+    public function it_reports_a_value_of_another_list_as_not_existing(): void
+    {
+        $user = User::factory()->create();
+        $suppliers = ValueList::factory()->create(['account_id' => $user->account_id]);
+        $departments = ValueList::factory()->create(['account_id' => $user->account_id]);
+        $sales = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $departments->id]);
+
+        MonicaServer::actingAs($user)->tool(UpdateValueListItem::class, ['value_list' => $suppliers->id, 'value_list_item' => $sales->id, 'label' => 'Staples'])
+            ->assertHasErrors([__('That value does not exist.')]);
     }
 
     #[Test]

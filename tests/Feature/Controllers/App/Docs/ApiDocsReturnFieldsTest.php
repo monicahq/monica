@@ -962,6 +962,56 @@ class ApiDocsReturnFieldsTest extends TestCase
                 return $this->json('GET', '/api/v1/value-lists');
             }),
 
+            'value-lists-create' => $this->asSomebody(fn (): TestResponse => $this->json('POST', '/api/v1/value-lists', [
+                'name' => 'Paper suppliers',
+            ])),
+
+            'value-lists-update' => $this->asSomebody(function (User $user): TestResponse {
+                $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('PUT', "/api/v1/value-lists/{$list->id}", ['name' => 'Paper suppliers']);
+            }),
+
+            'value-lists-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('DELETE', "/api/v1/value-lists/{$list->id}");
+            }),
+
+            'value-list-items-create' => $this->asSomebody(function (User $user): TestResponse {
+                $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('POST', "/api/v1/value-lists/{$list->id}/items", ['label' => 'Staples']);
+            }),
+
+            'value-list-items-update' => $this->asSomebody(function (User $user): TestResponse {
+                $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+                $item = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id]);
+
+                return $this->json('PUT', "/api/v1/value-lists/{$list->id}/items/{$item->id}", ['label' => 'Staples']);
+            }),
+
+            'value-list-items-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+                $item = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id]);
+
+                return $this->json('DELETE', "/api/v1/value-lists/{$list->id}/items/{$item->id}");
+            }),
+
+            'value-list-items-activation' => $this->asSomebody(function (User $user): TestResponse {
+                $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+                $item = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id]);
+
+                return $this->json('PUT', "/api/v1/value-lists/{$list->id}/items/{$item->id}/activation", ['is_active' => false]);
+            }),
+
+            'value-list-items-position' => $this->asSomebody(function (User $user): TestResponse {
+                $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+                $item = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id]);
+
+                return $this->json('PUT', "/api/v1/value-lists/{$list->id}/items/{$item->id}/position", ['position' => 1]);
+            }),
+
             'countries-index' => $this->asSomebody(function (User $user): TestResponse {
                 $list = ValueList::factory()->create(['account_id' => $user->account_id, 'key' => ValueListEnum::Countries->value]);
                 ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id, 'label' => null, 'country_code' => 'JP']);

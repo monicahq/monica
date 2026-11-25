@@ -250,7 +250,7 @@ class FieldCatalogueViewModel
                 'types' => [
                     ['key' => 'date', 'label' => __('Date'), 'description' => __('A precise day.'), 'example' => __('Adoption day'), 'mark' => 'calendar', 'preview' => ['kind' => 'input', 'value' => __('14 June 2019')]],
                     ['key' => 'recurring_date', 'label' => __('Recurring date'), 'description' => __('A day that comes back every year. The year may be unknown, and it can drive a reminder.'), 'example' => __('Birthday, yearly check up'), 'mark' => 'calendar-repeat', 'preview' => ['kind' => 'input', 'value' => __('14 June, every year')]],
-                    ['key' => 'duration', 'label' => __('Duration'), 'description' => __('A length of time rather than a day.'), 'example' => __('How long the walk usually takes'), 'mark' => 'clock', 'preview' => ['kind' => 'input', 'value' => __('45 minutes')]],
+                    ['key' => 'duration', 'label' => __('Duration'), 'description' => __('A length of time rather than a day, up to a year. Something that comes back, such as a visit every three months, is a reminder.'), 'example' => __('How long the walk usually takes'), 'mark' => 'clock', 'preview' => ['kind' => 'input', 'value' => __('45 minutes')]],
                 ],
             ],
             [

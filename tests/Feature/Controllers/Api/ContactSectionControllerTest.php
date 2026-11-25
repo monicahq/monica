@@ -85,6 +85,23 @@ class ContactSectionControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_refuses_a_field_that_is_not_in_the_section_and_writes_nothing(): void
+    {
+        Queue::fake();
+
+        [$user, $url, $nickname] = $this->dwightWithTwoTextFields();
+        $elsewhere = Field::factory()->create(['type' => FieldTypeEnum::Text]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('PUT', $url, ['fields' => [$nickname->id => 'Big Tuna', $elsewhere->id => 'Stamford']])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors('fields');
+
+        $this->assertDatabaseMissing('field_values', ['field_id' => $nickname->id]);
+    }
+
+    #[Test]
     public function it_saves_an_address_naming_its_country_by_its_code(): void
     {
         Queue::fake();

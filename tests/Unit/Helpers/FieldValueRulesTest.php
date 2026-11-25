@@ -8,6 +8,7 @@ use App\Enums\CountryEnum;
 use App\Enums\FieldTypeEnum;
 use App\Enums\RelationTargetEnum;
 use App\Enums\ValueListEnum;
+use App\Helpers\Duration;
 use App\Helpers\FieldValueRules;
 use App\Models\Contact;
 use App\Models\Entity;
@@ -48,9 +49,11 @@ class FieldValueRulesTest extends TestCase
         $duration = Field::factory()->create(['type' => FieldTypeEnum::Duration]);
         $rules = FieldValueRules::for(collect([$duration]));
 
-        $this->assertTrue(Validator::make(['fields' => [$duration->id => 90]], $rules)->passes());
+        foreach ([90, 131400, Duration::LONGEST_IN_MINUTES] as $accepted) {
+            $this->assertTrue(Validator::make(['fields' => [$duration->id => $accepted]], $rules)->passes());
+        }
 
-        foreach ([0, 2.5, 'abc', 100001] as $refused) {
+        foreach ([0, 2.5, 'abc', Duration::LONGEST_IN_MINUTES + 1] as $refused) {
             $this->assertTrue(Validator::make(['fields' => [$duration->id => $refused]], $rules)->fails());
         }
     }
@@ -86,8 +89,55 @@ class FieldValueRulesTest extends TestCase
     public function it_asks_nothing_of_a_field_that_stores_nothing(): void
     {
         $divider = Field::factory()->layout()->create();
+        $rules = FieldValueRules::for(collect([$divider]));
 
-        $this->assertEquals([], FieldValueRules::for(collect([$divider])));
+        $this->assertArrayNotHasKey("fields.{$divider->id}", $rules);
+        $this->assertTrue(Validator::make(['fields' => [$divider->id => 'Dunder Mifflin']], $rules)->fails());
+    }
+
+    #[Test]
+    public function it_refuses_a_field_that_is_not_one_of_those_given(): void
+    {
+        $text = Field::factory()->create(['type' => FieldTypeEnum::Text]);
+        $elsewhere = Field::factory()->create(['type' => FieldTypeEnum::Text]);
+        $rules = FieldValueRules::for(collect([$text]));
+
+        $this->assertTrue(Validator::make(['fields' => [$text->id => 'Scranton']], $rules)->passes());
+        $this->assertTrue(Validator::make(['fields' => [$elsewhere->id => 'Stamford']], $rules)->fails());
+    }
+
+    #[Test]
+    public function it_refuses_a_repetition_that_does_not_have_the_shape_of_a_row(): void
+    {
+        $phones = Field::factory()->repeater()->create();
+        $phone = Field::factory()->create([
+            'type' => FieldTypeEnum::Phone,
+            'section_version_id' => $phones->section_version_id,
+            'parent_field_id' => $phones->id,
+        ]);
+        $elsewhere = Field::factory()->create(['type' => FieldTypeEnum::Phone]);
+        $phones->setRelation('children', collect([$phone]));
+        $rules = FieldValueRules::for(collect([$phones]));
+
+        $refused = [
+            [[$phone->id => '+1 570 555 0100']],
+            ['+1 570 555 0100'],
+            [['values' => [$elsewhere->id => '+1 570 555 0100']]],
+        ];
+
+        foreach ($refused as $rows) {
+            $this->assertTrue(Validator::make(['fields' => [$phones->id => $rows]], $rules)->fails());
+        }
+
+        $accepted = [
+            [['values' => [$phone->id => '+1 570 555 0100']]],
+            [['id' => 4, 'values' => []]],
+            [['unknown_year' => []]],
+        ];
+
+        foreach ($accepted as $rows) {
+            $this->assertTrue(Validator::make(['fields' => [$phones->id => $rows]], $rules)->passes());
+        }
     }
 
     #[Test]
@@ -301,6 +351,7 @@ class FieldValueRulesTest extends TestCase
         $prefix = "fields.{$addresses->id}.*.values.{$address->id}";
 
         $this->assertEquals(['nullable', 'array'], $rules[$prefix]);
+        $this->assertEquals(['nullable', "array:{$address->id}"], $rules["fields.{$addresses->id}.*.values"]);
         $this->assertEquals(['nullable', 'string', 'max:255'], $rules["{$prefix}.street"]);
         $this->assertArrayHasKey("{$prefix}.country", $rules);
         $this->assertArrayHasKey("fields.{$addresses->id}.*.labels.{$address->id}", $rules);

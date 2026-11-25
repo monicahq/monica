@@ -1146,6 +1146,57 @@ class SetFieldValuesTest extends TestCase
     }
 
     #[Test]
+    public function it_carries_the_unknown_year_of_a_date_inside_a_repetition(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $anniversaries = $this->fieldOn($contact, ['key' => 'anniversaries', 'type' => FieldTypeEnum::Repeater, 'is_repeatable' => true]);
+        $date = $this->childOf($anniversaries, ['key' => 'date', 'type' => FieldTypeEnum::RecurringDate]);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($anniversaries),
+            values: [$anniversaries->id => [
+                ['values' => [$date->id => '1964-03-15'], 'unknown_year' => [$date->id => '1']],
+                ['values' => [$date->id => '1970-01-20']],
+            ]],
+        )->execute();
+
+        $values = FieldValue::query()->where('field_id', $date->id)->get();
+
+        $this->assertSame([false, true], $values->map(fn (FieldValue $value): bool => $value->year_is_unknown)->sort()->values()->all());
+    }
+
+    #[Test]
+    public function it_still_reads_the_unknown_year_given_for_every_row_of_a_repetition(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $anniversaries = $this->fieldOn($contact, ['key' => 'anniversaries', 'type' => FieldTypeEnum::Repeater, 'is_repeatable' => true]);
+        $date = $this->childOf($anniversaries, ['key' => 'date', 'type' => FieldTypeEnum::RecurringDate]);
+
+        new SetFieldValues(
+            user: $user,
+            record: $contact,
+            section: $this->sectionOf($anniversaries),
+            values: [$anniversaries->id => [
+                ['values' => [$date->id => '1964-03-15']],
+                ['values' => [$date->id => '1970-01-20'], 'unknown_year' => [$date->id => '0']],
+            ]],
+            yearIsUnknown: [$date->id => true],
+        )->execute();
+
+        $values = FieldValue::query()->where('field_id', $date->id)->get();
+
+        $this->assertSame([false, true], $values->map(fn (FieldValue $value): bool => $value->year_is_unknown)->sort()->values()->all());
+    }
+
+    #[Test]
     public function it_writes_each_repetition_the_label_that_belongs_to_it(): void
     {
         Queue::fake();
