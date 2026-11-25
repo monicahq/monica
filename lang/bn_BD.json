@@ -4691,6 +4691,7 @@
     "The Microsoft tenant whose accounts may sign in.": "যে Microsoft টেন্যান্টের অ্যাকাউন্টগুলো সাইন ইন করতে পারে।",
     "The Okta authorization server, when it is not the default one.": "Okta অনুমোদন সার্ভার, যখন সেটি ডিফল্ট নয়।",
     "The Services ID Apple knows this instance by.": "যে Services ID দিয়ে Apple এই ইনস্ট্যান্সকে চেনে।",
+    "The Template panel on Edit contact, asking before a contact moves to another template": "পরিচিতি সম্পাদনা করুন পাতার টেমপ্লেট প্যানেল, যা পরিচিতিকে অন্য টেমপ্লেটে সরানোর আগে জিজ্ঞাসা করে",
     "The account": "অ্যাকাউন্ট",
     "The account gets the full product straight away, as though the one time purchase had been made. This takes no payment and issues no invoice.": "একবারের কেনা হয়ে গেছে এমনভাবেই অ্যাকাউন্ট সঙ্গে সঙ্গে পুরো পণ্য পায়। এতে কোনো টাকা নেওয়া হয় না আর কোনো চালান দেওয়া হয় না।",
     "The account goes back to the free plan. An order that was paid stays on the record, marked as refunded, and nothing is deleted.": "অ্যাকাউন্টটি বিনামূল্যের প্ল্যানে ফিরে আসে। দাম দেওয়া অর্ডার নথিতে থাকে, ফেরত হিসেবে চিহ্নিত, আর কিছুই মুছে ফেলা হয় না।",

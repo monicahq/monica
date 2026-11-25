@@ -4691,6 +4691,7 @@
     "The Microsoft tenant whose accounts may sign in.": "Microsoft-leigjandinn sem á aðgangana sem mega skrá sig inn.",
     "The Okta authorization server, when it is not the default one.": "Heimildarþjónn Okta, þegar hann er ekki sá sjálfgefni.",
     "The Services ID Apple knows this instance by.": "Services ID sem Apple þekkir þetta tilvik undir.",
+    "The Template panel on Edit contact, asking before a contact moves to another template": "Sniðmátsspjaldið í Breyta tengilið, sem spyr áður en tengiliður er fluttur í annað sniðmát",
     "The account": "Aðgangurinn",
     "The account gets the full product straight away, as though the one time purchase had been made. This takes no payment and issues no invoice.": "Aðgangurinn fær alla vöruna strax, eins og eingreiðslukaupin hefðu verið gerð. Engin greiðsla er tekin og enginn reikningur gefinn út.",
     "The account goes back to the free plan. An order that was paid stays on the record, marked as refunded, and nothing is deleted.": "Reikningurinn fer aftur á fríu leiðina. Beiðni sem var greidd stendur áfram á skrá, merkt sem endurgreidd, og engu er eytt.",

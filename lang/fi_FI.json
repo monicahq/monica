@@ -4691,6 +4691,7 @@
     "The Microsoft tenant whose accounts may sign in.": "Microsoft-vuokraaja, jonka tilit voivat kirjautua sisään.",
     "The Okta authorization server, when it is not the default one.": "Okta-valtuutuspalvelin, kun se ei ole oletuspalvelin.",
     "The Services ID Apple knows this instance by.": "Services ID, jolla Apple tuntee tämän palvelimen.",
+    "The Template panel on Edit contact, asking before a contact moves to another template": "Mallin paneeli Muokkaa yhteystietoa -näytössä, joka kysyy ennen kuin yhteystieto siirretään toiseen malliin",
     "The account": "Tili",
     "The account gets the full product straight away, as though the one time purchase had been made. This takes no payment and issues no invoice.": "Tili saa koko tuotteen heti, ikään kuin kertaosto olisi tehty. Tämä ei ota maksua eikä luo laskua.",
     "The account goes back to the free plan. An order that was paid stays on the record, marked as refunded, and nothing is deleted.": "Tili palaa ilmaiseen pakettiin. Maksettu tilaus jää kirjoihin, merkittynä hyvitetyksi, eikä mitään poisteta.",

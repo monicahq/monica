@@ -4691,6 +4691,7 @@
     "The Microsoft tenant whose accounts may sign in.": "Ο μισθωτής Microsoft του οποίου οι λογαριασμοί μπορούν να συνδεθούν.",
     "The Okta authorization server, when it is not the default one.": "Ο διακομιστής εξουσιοδότησης του Okta, όταν δεν είναι ο προεπιλεγμένος.",
     "The Services ID Apple knows this instance by.": "Το Services ID με το οποίο η Apple γνωρίζει αυτήν την εγκατάσταση.",
+    "The Template panel on Edit contact, asking before a contact moves to another template": "Το πλαίσιο Πρότυπο στην Επεξεργασία επαφής, που ζητά επιβεβαίωση πριν μια επαφή μετακινηθεί σε άλλο πρότυπο",
     "The account": "Ο λογαριασμός",
     "The account gets the full product straight away, as though the one time purchase had been made. This takes no payment and issues no invoice.": "Ο λογαριασμός αποκτά αμέσως ολόκληρο το προϊόν, σαν να είχε γίνει η εφάπαξ αγορά. Αυτό δεν εισπράττει πληρωμή και δεν εκδίδει τιμολόγιο.",
     "The account goes back to the free plan. An order that was paid stays on the record, marked as refunded, and nothing is deleted.": "Ο λογαριασμός επιστρέφει στο δωρεάν πρόγραμμα. Μια παραγγελία που πληρώθηκε μένει στα αρχεία, σημειωμένη ως επιστραφείσα, και δεν διαγράφεται τίποτα.",

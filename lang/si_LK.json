@@ -4691,6 +4691,7 @@
     "The Microsoft tenant whose accounts may sign in.": "පිවිසිය හැකි ගිණුම් අයත් Microsoft ටෙනන්ට් එක.",
     "The Okta authorization server, when it is not the default one.": "පෙරනිමි එක නොවන විට භාවිත වන Okta අවසර සේවාදායකය.",
     "The Services ID Apple knows this instance by.": "Apple මෙම නිදසුන හඳුනන Services ID එක.",
+    "The Template panel on Edit contact, asking before a contact moves to another template": "සම්බන්ධතාව සංස්කරණය කරන්න තිරයේ අච්චුව පුවරුව, සම්බන්ධතාවක් වෙනත් අච්චුවකට මාරු කිරීමට පෙර අසයි",
     "The account": "ගිණුම",
     "The account gets the full product straight away, as though the one time purchase had been made. This takes no payment and issues no invoice.": "එක් වර මිලදී ගැනීම සිදු වූවා සේම, ගිණුමට වහාම සම්පූර්ණ නිෂ්පාදනය ලැබේ. මෙය කිසිදු ගෙවීමක් නොගනී, ඉන්වොයිසයක්ද නොදෙයි.",
     "The account goes back to the free plan. An order that was paid stays on the record, marked as refunded, and nothing is deleted.": "ගිණුම නොමිලේ සැලැස්මට නැවත පැමිණේ. ගෙවා ඇති ඇණවුමක් වාර්තාවේ රැඳී, ආපසු ගෙවූ ලෙස සලකුණු කර, කිසිවක් මකා නොදමයි.",

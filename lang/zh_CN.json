@@ -4691,6 +4691,7 @@
     "The Microsoft tenant whose accounts may sign in.": "允许其账户登录的 Microsoft 租户。",
     "The Okta authorization server, when it is not the default one.": "非默认时使用的 Okta 授权服务器。",
     "The Services ID Apple knows this instance by.": "Apple 用于识别本实例的 Services ID。",
+    "The Template panel on Edit contact, asking before a contact moves to another template": "编辑联系人页面中的模板面板，在联系人切换到另一个模板之前会先询问",
     "The account": "账户",
     "The account gets the full product straight away, as though the one time purchase had been made. This takes no payment and issues no invoice.": "该账户将立即获得完整产品，如同已完成一次性购买。此操作不收取费用，也不开具发票。",
     "The account goes back to the free plan. An order that was paid stays on the record, marked as refunded, and nothing is deleted.": "账户回到免费方案。已付款的订单仍然记录在案，标记为已退款，不会删除任何内容。",

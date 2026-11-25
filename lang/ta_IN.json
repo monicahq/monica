@@ -4691,6 +4691,7 @@
     "The Microsoft tenant whose accounts may sign in.": "உள்நுழைய அனுமதிக்கப்படும் கணக்குகள் சேர்ந்த Microsoft டெனன்ட்.",
     "The Okta authorization server, when it is not the default one.": "இயல்புநிலை அல்லாதபோது பயன்படும் Okta அங்கீகார சேவையகம்.",
     "The Services ID Apple knows this instance by.": "Apple இந்த நிகழ்வை அறியும் Services ID.",
+    "The Template panel on Edit contact, asking before a contact moves to another template": "தொடர்பைத் திருத்து திரையில் உள்ள வார்ப்புரு பலகம், ஒரு தொடர்பை வேறு வார்ப்புருவுக்கு மாற்றும் முன் கேட்கிறது",
     "The account": "கணக்கு",
     "The account gets the full product straight away, as though the one time purchase had been made. This takes no payment and issues no invoice.": "ஒரு முறை வாங்கியது போலவே, கணக்கு உடனடியாக முழுப் பொருளையும் பெறுகிறது. இது எந்தக் கட்டணத்தையும் வாங்குவதில்லை, விலைப்பட்டியலும் வழங்குவதில்லை.",
     "The account goes back to the free plan. An order that was paid stays on the record, marked as refunded, and nothing is deleted.": "கணக்கு இலவச திட்டத்துக்குத் திரும்புகிறது. செலுத்தப்பட்ட ஆர்டர் பதிவில் இருக்கும், திரும்பச் செலுத்தப்பட்டதாகக் குறிக்கப்பட்டு, எதுவும் நீக்கப்படாது.",

@@ -4691,6 +4691,7 @@
     "The Microsoft tenant whose accounts may sign in.": "Арендатор Microsoft, аккаунты которого могут входить.",
     "The Okta authorization server, when it is not the default one.": "Сервер авторизации Okta, если это не сервер по умолчанию.",
     "The Services ID Apple knows this instance by.": "Services ID, под которым Apple знает этот экземпляр.",
+    "The Template panel on Edit contact, asking before a contact moves to another template": "Панель «Шаблон» на экране «Изменить контакт», которая спрашивает подтверждение, прежде чем контакт перейдёт на другой шаблон",
     "The account": "Аккаунт",
     "The account gets the full product straight away, as though the one time purchase had been made. This takes no payment and issues no invoice.": "Аккаунт сразу получает полный продукт, как будто была совершена разовая покупка. Оплата не списывается, счёт не выставляется.",
     "The account goes back to the free plan. An order that was paid stays on the record, marked as refunded, and nothing is deleted.": "Аккаунт возвращается на бесплатный тариф. Оплаченный заказ остаётся в истории с пометкой о возврате, и ничего не удаляется.",

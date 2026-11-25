@@ -4691,6 +4691,7 @@
     "The Microsoft tenant whose accounts may sign in.": "サインインを許可するアカウントが属する Microsoft テナント。",
     "The Okta authorization server, when it is not the default one.": "既定以外を使う場合の Okta 認可サーバー。",
     "The Services ID Apple knows this instance by.": "Apple がこのインスタンスを識別する Services ID。",
+    "The Template panel on Edit contact, asking before a contact moves to another template": "連絡先を編集画面のテンプレートパネル。連絡先を別のテンプレートに移す前に確認します",
     "The account": "アカウント",
     "The account gets the full product straight away, as though the one time purchase had been made. This takes no payment and issues no invoice.": "アカウントはすぐに製品のすべてを利用できるようになります。一度きりの購入をした場合と同じ扱いです。支払いは発生せず、請求書も発行されません。",
     "The account goes back to the free plan. An order that was paid stays on the record, marked as refunded, and nothing is deleted.": "アカウントは無料プランに戻ります。支払われた注文は返金済みとして記録に残り、何も削除されません。",

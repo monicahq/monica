@@ -4691,6 +4691,7 @@
     "The Microsoft tenant whose accounts may sign in.": "Den Microsoft-klientorganisation vars konton får logga in.",
     "The Okta authorization server, when it is not the default one.": "Oktas auktoriseringsserver, när den inte är standardservern.",
     "The Services ID Apple knows this instance by.": "Det Services ID som Apple känner den här instansen under.",
+    "The Template panel on Edit contact, asking before a contact moves to another template": "Panelen Mall under Redigera kontakt, som frågar innan en kontakt flyttas till en annan mall",
     "The account": "Kontot",
     "The account gets the full product straight away, as though the one time purchase had been made. This takes no payment and issues no invoice.": "Kontot får hela produkten direkt, som om engångsköpet hade gjorts. Ingen betalning tas emot och ingen faktura utfärdas.",
     "The account goes back to the free plan. An order that was paid stays on the record, marked as refunded, and nothing is deleted.": "Kontot går tillbaka till gratisplanen. En order som betalats står kvar på pränt, märkt som återbetald, och ingenting tas bort.",

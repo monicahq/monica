@@ -4691,6 +4691,7 @@
     "The Microsoft tenant whose accounts may sign in.": "เทแนนต์ของ Microsoft ที่บัญชีในนั้นลงชื่อเข้าใช้ได้",
     "The Okta authorization server, when it is not the default one.": "เซิร์ฟเวอร์การอนุญาตของ Okta เมื่อไม่ใช่ตัวเริ่มต้น",
     "The Services ID Apple knows this instance by.": "Services ID ที่ Apple ใช้รู้จักเซิร์ฟเวอร์นี้",
+    "The Template panel on Edit contact, asking before a contact moves to another template": "แผงเทมเพลตในหน้าแก้ไขผู้ติดต่อ ซึ่งถามก่อนย้ายผู้ติดต่อไปใช้เทมเพลตอื่น",
     "The account": "บัญชี",
     "The account gets the full product straight away, as though the one time purchase had been made. This takes no payment and issues no invoice.": "บัญชีจะได้รับผลิตภัณฑ์เต็มรูปแบบทันที เหมือนได้ซื้อแบบจ่ายครั้งเดียวไปแล้ว การทำแบบนี้ไม่เก็บเงินและไม่ออกใบแจ้งหนี้",
     "The account goes back to the free plan. An order that was paid stays on the record, marked as refunded, and nothing is deleted.": "บัญชีกลับไปที่แพ็กเกจฟรี คำสั่งซื้อที่ชำระแล้วยังอยู่ในบันทึก โดยทำเครื่องหมายว่าคืนเงินแล้ว และไม่มีอะไรถูกลบ",

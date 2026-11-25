@@ -4691,6 +4691,7 @@
     "The Microsoft tenant whose accounts may sign in.": "Hesapları oturum açabilen Microsoft kiracısı.",
     "The Okta authorization server, when it is not the default one.": "Varsayılan olmadığında kullanılan Okta yetkilendirme sunucusu.",
     "The Services ID Apple knows this instance by.": "Apple’ın bu sunucuyu tanıdığı Services ID.",
+    "The Template panel on Edit contact, asking before a contact moves to another template": "Kişiyi düzenle ekranındaki Şablon paneli, bir kişi başka bir şablona geçmeden önce onay ister",
     "The account": "Hesap",
     "The account gets the full product straight away, as though the one time purchase had been made. This takes no payment and issues no invoice.": "Hesap, tek seferlik satın alma yapılmış gibi ürünün tamamını hemen alır. Bu işlem hiçbir ödeme almaz ve fatura kesmez.",
     "The account goes back to the free plan. An order that was paid stays on the record, marked as refunded, and nothing is deleted.": "Hesap ücretsiz plana geri döner. Ödenmiş bir sipariş, iade edildi olarak işaretlenerek kayıtta kalır ve hiçbir şey silinmez.",

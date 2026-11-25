@@ -4691,6 +4691,7 @@
     "The Microsoft tenant whose accounts may sign in.": "Đối tượng thuê Microsoft có tài khoản được phép đăng nhập.",
     "The Okta authorization server, when it is not the default one.": "Máy chủ uỷ quyền của Okta, khi không dùng máy chủ mặc định.",
     "The Services ID Apple knows this instance by.": "Services ID mà Apple dùng để biết máy chủ này.",
+    "The Template panel on Edit contact, asking before a contact moves to another template": "Bảng Mẫu trong màn hình Sửa liên hệ, hỏi lại trước khi một liên hệ chuyển sang mẫu khác",
     "The account": "Tài khoản",
     "The account gets the full product straight away, as though the one time purchase had been made. This takes no payment and issues no invoice.": "Tài khoản nhận được toàn bộ sản phẩm ngay, như thể đã trả tiền một lần. Việc này không thu tiền và không phát hành hóa đơn.",
     "The account goes back to the free plan. An order that was paid stays on the record, marked as refunded, and nothing is deleted.": "Tài khoản trở lại gói miễn phí. Đơn hàng đã trả tiền vẫn ở trong hồ sơ, được ghi là đã hoàn tiền, và không có gì bị xóa.",

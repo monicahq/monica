@@ -4691,6 +4691,7 @@
     "The Microsoft tenant whose accounts may sign in.": "An tionónta Microsoft a bhféadfaidh a chuntais síniú isteach.",
     "The Okta authorization server, when it is not the default one.": "Freastalaí údaraithe Okta, nuair nach é an ceann réamhshocraithe é.",
     "The Services ID Apple knows this instance by.": "An Services ID a bhfuil aithne ag Apple ar an ásc seo leis.",
+    "The Template panel on Edit contact, asking before a contact moves to another template": "An painéal Teimpléad ar Cuir an teagmhálaí in eagar, a fhiafraíonn sula n-aistrítear teagmhálaí go teimpléad eile",
     "The account": "An cuntas",
     "The account gets the full product straight away, as though the one time purchase had been made. This takes no payment and issues no invoice.": "Faigheann an cuntas an táirge iomlán láithreach, mar a bheadh an ceannach aonuaire déanta. Ní ghlacann sé íocaíocht agus ní eisíonn sonrasc.",
     "The account goes back to the free plan. An order that was paid stays on the record, marked as refunded, and nothing is deleted.": "Téann an cuntas ar ais go dtí an plean saor in aisce. Fanann ordú a íocadh ar taifead, marcáilte mar aisíoctha, agus ní scriostar aon rud.",

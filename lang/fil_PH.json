@@ -4691,6 +4691,7 @@
     "The Microsoft tenant whose accounts may sign in.": "Ang Microsoft tenant na ang mga account ay maaaring mag-sign in.",
     "The Okta authorization server, when it is not the default one.": "Ang authorization server ng Okta, kapag hindi ito ang default.",
     "The Services ID Apple knows this instance by.": "Ang Services ID na ginagamit ng Apple para sa instance na ito.",
+    "The Template panel on Edit contact, asking before a contact moves to another template": "Ang panel ng Template sa I-edit ang contact, na nagtatanong bago ilipat ang isang contact sa ibang template",
     "The account": "Ang account",
     "The account gets the full product straight away, as though the one time purchase had been made. This takes no payment and issues no invoice.": "Agad na nakukuha ng account ang buong produkto, na parang naisagawa na ang isahang pagbili. Walang bayad na tinatanggap ito at walang ipinapalabas na invoice.",
     "The account goes back to the free plan. An order that was paid stays on the record, marked as refunded, and nothing is deleted.": "Babalik ang account sa libreng plano. Ang order na nabayaran ay mananatiling nakatala, may markang naibalik ang bayad, at walang mabubura.",

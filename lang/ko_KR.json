@@ -4691,6 +4691,7 @@
     "The Microsoft tenant whose accounts may sign in.": "로그인할 수 있는 계정이 속한 Microsoft 테넌트.",
     "The Okta authorization server, when it is not the default one.": "기본값이 아닐 때 사용하는 Okta 권한 부여 서버.",
     "The Services ID Apple knows this instance by.": "Apple 이 이 인스턴스를 식별하는 Services ID.",
+    "The Template panel on Edit contact, asking before a contact moves to another template": "연락처 편집 화면의 템플릿 패널. 연락처를 다른 템플릿으로 옮기기 전에 확인을 요청합니다",
     "The account": "계정",
     "The account gets the full product straight away, as though the one time purchase had been made. This takes no payment and issues no invoice.": "일시불 구매를 마친 것처럼 계정이 곧바로 전체 기능을 갖게 됩니다. 결제를 받지도, 청구서를 발행하지도 않습니다.",
     "The account goes back to the free plan. An order that was paid stays on the record, marked as refunded, and nothing is deleted.": "계정은 무료 요금제로 돌아갑니다. 결제된 주문은 환불로 표시되어 기록에 남고, 삭제되는 것은 없습니다.",

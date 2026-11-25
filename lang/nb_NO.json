@@ -4691,6 +4691,7 @@
     "The Microsoft tenant whose accounts may sign in.": "Microsoft-leieren som kontoene må tilhøre for å logge inn.",
     "The Okta authorization server, when it is not the default one.": "Okta-autorisasjonsserveren, når den ikke er standardserveren.",
     "The Services ID Apple knows this instance by.": "Services ID-en som Apple kjenner denne instansen under.",
+    "The Template panel on Edit contact, asking before a contact moves to another template": "Mal-panelet under Rediger kontakt, som spør før en kontakt flyttes til en annen mal",
     "The account": "Kontoen",
     "The account gets the full product straight away, as though the one time purchase had been made. This takes no payment and issues no invoice.": "Kontoen får hele produktet med én gang, som om engangskjøpet var gjort. Det tas ingen betaling, og det utstedes ingen faktura.",
     "The account goes back to the free plan. An order that was paid stays on the record, marked as refunded, and nothing is deleted.": "Kontoen går tilbake til gratisplanen. En ordre som er betalt, står fortsatt på papiret, merket som refundert, og ingenting slettes.",

@@ -4691,6 +4691,7 @@
     "The Microsoft tenant whose accounts may sign in.": "Der Microsoft-Mandant, dessen Konten sich anmelden dürfen.",
     "The Okta authorization server, when it is not the default one.": "Der Okta-Autorisierungsserver, wenn es nicht der Standardserver ist.",
     "The Services ID Apple knows this instance by.": "Die Services ID, unter der Apple diese Instanz kennt.",
+    "The Template panel on Edit contact, asking before a contact moves to another template": "Der Bereich Vorlage unter Kontakt bearbeiten, der nachfragt, bevor ein Kontakt zu einer anderen Vorlage wechselt",
     "The account": "Das Konto",
     "The account gets the full product straight away, as though the one time purchase had been made. This takes no payment and issues no invoice.": "Das Konto erhält sofort das vollständige Produkt, als wäre der Einmalkauf erfolgt. Dabei wird keine Zahlung eingezogen und keine Rechnung erstellt.",
     "The account goes back to the free plan. An order that was paid stays on the record, marked as refunded, and nothing is deleted.": "Das Konto fällt auf den kostenlosen Tarif zurück. Eine bezahlte Bestellung bleibt als erstattet vermerkt, und nichts wird gelöscht.",

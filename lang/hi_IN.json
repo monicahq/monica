@@ -4691,6 +4691,7 @@
     "The Microsoft tenant whose accounts may sign in.": "वह Microsoft टेनेंट जिसके खाते साइन इन कर सकते हैं।",
     "The Okta authorization server, when it is not the default one.": "Okta प्राधिकरण सर्वर, जब वह डिफ़ॉल्ट न हो।",
     "The Services ID Apple knows this instance by.": "वह Services ID जिससे Apple इस इंस्टैंस को जानता है।",
+    "The Template panel on Edit contact, asking before a contact moves to another template": "संपर्क संपादित करें में टेम्पलेट पैनल, जो किसी संपर्क को दूसरे टेम्पलेट पर ले जाने से पहले पूछता है",
     "The account": "खाता",
     "The account gets the full product straight away, as though the one time purchase had been made. This takes no payment and issues no invoice.": "खाते को तुरंत पूरा उत्पाद मिल जाता है, जैसे एक-बार की ख़रीद हो चुकी हो। इसमें कोई भुगतान नहीं लिया जाता और कोई बिल नहीं दिया जाता।",
     "The account goes back to the free plan. An order that was paid stays on the record, marked as refunded, and nothing is deleted.": "खाता निःशुल्क प्लान पर लौट आता है। चुकाया गया ऑर्डर अभिलेख में रहता है, वापसी के रूप में चिह्नित, और कुछ भी मिटाया नहीं जाता।",

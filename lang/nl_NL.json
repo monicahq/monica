@@ -4691,6 +4691,7 @@
     "The Microsoft tenant whose accounts may sign in.": "De Microsoft-tenant waarvan de accounts zich mogen aanmelden.",
     "The Okta authorization server, when it is not the default one.": "De Okta-autorisatieserver, wanneer dat niet de standaardserver is.",
     "The Services ID Apple knows this instance by.": "De Services ID waaronder Apple deze instantie kent.",
+    "The Template panel on Edit contact, asking before a contact moves to another template": "Het paneel Sjabloon bij Contact bewerken, dat om bevestiging vraagt voordat een contact naar een ander sjabloon gaat",
     "The account": "Het account",
     "The account gets the full product straight away, as though the one time purchase had been made. This takes no payment and issues no invoice.": "Het account krijgt direct het volledige product, alsof de eenmalige aankoop was gedaan. Hierbij wordt geen betaling geïnd en geen factuur uitgegeven.",
     "The account goes back to the free plan. An order that was paid stays on the record, marked as refunded, and nothing is deleted.": "Het account gaat terug naar het gratis pakket. Een betaalde bestelling blijft bewaard, gemarkeerd als terugbetaald, en er wordt niets verwijderd.",

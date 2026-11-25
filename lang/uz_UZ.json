@@ -4691,6 +4691,7 @@
     "The Microsoft tenant whose accounts may sign in.": "Hisoblari tizimga kira oladigan Microsoft tenanti.",
     "The Okta authorization server, when it is not the default one.": "Standart boʻlmaganda ishlatiladigan Okta avtorizatsiya serveri.",
     "The Services ID Apple knows this instance by.": "Apple bu nusxani taniydigan Services ID.",
+    "The Template panel on Edit contact, asking before a contact moves to another template": "Kontaktni tahrirlash ekranidagi Shablon paneli, kontakt boshqa shablonga oʻtishidan oldin soʻraydi",
     "The account": "Hisob",
     "The account gets the full product straight away, as though the one time purchase had been made. This takes no payment and issues no invoice.": "Bir martalik xarid qilingandek, hisob darhol toʻliq mahsulotni oladi. Bunda hech qanday toʻlov olinmaydi va hisob-faktura berilmaydi.",
     "The account goes back to the free plan. An order that was paid stays on the record, marked as refunded, and nothing is deleted.": "Hisob bepul tarifga qaytadi. Toʻlangan buyurtma qaydda qoladi, qaytarilgan deb belgilanib, va hech narsa oʻchirilmaydi.",

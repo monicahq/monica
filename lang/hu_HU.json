@@ -4691,6 +4691,7 @@
     "The Microsoft tenant whose accounts may sign in.": "Az a Microsoft-bérlő, amelynek fiókjai bejelentkezhetnek.",
     "The Okta authorization server, when it is not the default one.": "Az Okta engedélyezési kiszolgálója, ha nem az alapértelmezett.",
     "The Services ID Apple knows this instance by.": "A Services ID, amelyen az Apple ismeri ezt a példányt.",
+    "The Template panel on Edit contact, asking before a contact moves to another template": "A Sablon panel a Névjegy szerkesztése képernyőn, amely rákérdez, mielőtt egy névjegy másik sablonra kerül",
     "The account": "A fiók",
     "The account gets the full product straight away, as though the one time purchase had been made. This takes no payment and issues no invoice.": "A fiók azonnal megkapja a teljes terméket, mintha megtörtént volna az egyszeri vásárlás. Fizetést nem fogadunk el, és számlát nem állítunk ki.",
     "The account goes back to the free plan. An order that was paid stays on the record, marked as refunded, and nothing is deleted.": "A fiók visszakerül az ingyenes csomagra. A kifizetett megrendelés nyilvántartva marad, visszatérítettként megjelölve, és semmi nem törlődik.",

@@ -4691,6 +4691,7 @@
     "The Microsoft tenant whose accounts may sign in.": "Microsoft nuomotojas, kurio paskyros gali prisijungti.",
     "The Okta authorization server, when it is not the default one.": "Okta autorizavimo serveris, kai jis nėra numatytasis.",
     "The Services ID Apple knows this instance by.": "Services ID, kuriuo Apple žino šį egzempliorių.",
+    "The Template panel on Edit contact, asking before a contact moves to another template": "Šablono skydelis ekrane Redaguoti kontaktą, kuris paklausia prieš perkeliant kontaktą į kitą šabloną",
     "The account": "Paskyra",
     "The account gets the full product straight away, as though the one time purchase had been made. This takes no payment and issues no invoice.": "Paskyra iškart gauna visą produktą, tarsi vienkartinis pirkimas būtų atliktas. Už tai neimamas mokestis ir neišrašoma sąskaita.",
     "The account goes back to the free plan. An order that was paid stays on the record, marked as refunded, and nothing is deleted.": "Paskyra grįžta prie nemokamo plano. Apmokėtas užsakymas lieka užrašytas, pažymėtas kaip grąžintas, ir nieko neištrinama.",
