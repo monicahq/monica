@@ -15,12 +15,12 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class ReminderDates
 {
-    public const string History = 'history';
+    public const string HISTORY = 'history';
 
     /** @return list<string> */
     public static function categories(): array
     {
-        return [...ReminderOccurrenceCategoryEnum::values(), self::History];
+        return [...ReminderOccurrenceCategoryEnum::values(), self::HISTORY];
     }
 
     /** @return LengthAwarePaginator<int, ReminderOccurrence> */
@@ -48,7 +48,7 @@ class ReminderDates
         $query = match ($category) {
             ReminderOccurrenceCategoryEnum::Overdue->value => $query->whereIn('reminder_id', $activeRules->modelKeys())->active()->where('local_date', '<', $today->toDateString())->orderBy('local_date'),
             ReminderOccurrenceCategoryEnum::Today->value => $query->whereIn('reminder_id', $activeRules->modelKeys())->active()->where('local_date', '>=', $today->toDateString())->where('local_date', '<', $today->addDay()->toDateString()),
-            self::History => $query->answered()->orderByDesc('answered_at'),
+            self::HISTORY => $query->answered()->orderByDesc('answered_at'),
             default => $query->orderByDesc('local_date'),
         };
 

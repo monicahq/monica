@@ -39,7 +39,7 @@ class Birthday
     {
         $days = $this->daysUntilNext();
 
-        return $days !== null && $days <= ReminderOccurrenceCategoryEnum::UpcomingDays;
+        return $days !== null && $days <= ReminderOccurrenceCategoryEnum::UPCOMING_DAYS;
     }
 
     public function age(): ?int

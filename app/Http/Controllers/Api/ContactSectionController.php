@@ -85,9 +85,15 @@ class ContactSectionController extends Controller
         $reminders = [];
 
         foreach ($validated['reminders'] ?? [] as $fieldId => $reminder) {
+            if ($reminder === null) {
+                $reminders[$fieldId] = ['on' => '0'];
+
+                continue;
+            }
+
             $cadence = ReminderCadenceEnum::tryFrom((string) ($reminder['cadence'] ?? '')) ?? ReminderCadenceEnum::Yearly;
 
-            $reminders[$fieldId] = $reminder === null ? ['on' => '0'] : [
+            $reminders[$fieldId] = [
                 'on' => '1',
                 'name' => $reminder['name'] ?? null,
                 'recurs' => $cadence->recurs() ? '1' : '0',

@@ -105,7 +105,7 @@ class VaultRemindersViewModelTest extends TestCase
         $this->deadline($this->onceIn($user, $vault, '2026-09-02', 'Angela', 'Martin'), '2026-09-02');
         $this->deadline($this->onceIn($user, $vault, '2026-09-07', 'Élodie', 'Bernard'), '2026-09-07');
 
-        $groups = $this->viewModelFor($user, $vault, VaultRemindersViewModel::GroupByContact)->groups();
+        $groups = $this->viewModelFor($user, $vault, VaultRemindersViewModel::GROUP_BY_CONTACT)->groups();
 
         $this->assertSame(['Angela Martin', 'Élodie Bernard', 'Zoe Vance'], array_column($groups, 'title'));
 
@@ -124,7 +124,7 @@ class VaultRemindersViewModelTest extends TestCase
         $this->deadline($this->onceIn($user, $vault, '2026-09-06', 'Michael', 'Scott'), '2026-09-06');
         $this->deadline($this->onceIn($user, $vault, '2026-09-07', 'Michael', 'Scott'), '2026-09-07');
 
-        $groups = $this->viewModelFor($user, $vault, VaultRemindersViewModel::GroupByContact)->groups();
+        $groups = $this->viewModelFor($user, $vault, VaultRemindersViewModel::GROUP_BY_CONTACT)->groups();
 
         $this->assertSame(['Michael Scott', 'Michael Scott'], array_column($groups, 'title'));
     }
@@ -136,7 +136,7 @@ class VaultRemindersViewModelTest extends TestCase
         $vault = Vault::factory()->create(['account_id' => $user->account_id]);
 
         $this->assertSame(
-            VaultRemindersViewModel::GroupByWhen,
+            VaultRemindersViewModel::GROUP_BY_WHEN,
             $this->viewModelFor($user, $vault, 'sideways')->groupBy(),
         );
     }
@@ -199,12 +199,12 @@ class VaultRemindersViewModelTest extends TestCase
             $this->onceIn($user, $vault, CarbonImmutable::parse('2026-09-04')->addDays($day)->toDateString());
         }
 
-        $viewModel = $this->viewModelFor($user, $vault, VaultRemindersViewModel::GroupByContact);
+        $viewModel = $this->viewModelFor($user, $vault, VaultRemindersViewModel::GROUP_BY_CONTACT);
 
         $this->assertStringEndsWith("/vaults/{$vault->slug}/reminders/by-contact?page=2", (string) $viewModel->nextPageUrl());
     }
 
-    private function viewModelFor(User $user, Vault $vault, string $groupBy = VaultRemindersViewModel::GroupByWhen): VaultRemindersViewModel
+    private function viewModelFor(User $user, Vault $vault, string $groupBy = VaultRemindersViewModel::GROUP_BY_WHEN): VaultRemindersViewModel
     {
         return new VaultRemindersViewModel(user: $user, vault: $vault, groupBy: $groupBy);
     }

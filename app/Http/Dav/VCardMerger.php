@@ -354,8 +354,9 @@ class VCardMerger
             return;
         }
 
+        $fallbackWording = $property->name === 'X-ABDATE' ? $field->label : null;
         $wording = $typed === null || $typed === ''
-            ? ($item->label ?? ($property->name === 'X-ABDATE' ? $field->label : null))
+            ? ($item->label ?? $fallbackWording)
             : $typed;
 
         if ($wording === null) {

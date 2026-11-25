@@ -20,6 +20,7 @@ class BillingResource extends JsonResource
         $payment = $this->payments()->where('status', 'paid')->latest('billed_at')->first();
         $subscription = $this->subscription();
         $order = $this->orders->first(fn (StripeOrder $order): bool => $order->stripe_status !== StripeOrder::UNPAID);
+        $settledAt = $order?->isSettled() === true ? $order->updated_at?->timestamp : null;
 
         return [
             'type' => 'billing',
@@ -36,7 +37,7 @@ class BillingResource extends JsonResource
                     'offer' => $order->offerKind()?->value,
                     'price_id' => $order->stripe_price,
                     'ordered_at' => $order->created_at->timestamp,
-                    'settled_at' => $order->isSettled() ? $order->updated_at?->timestamp : null,
+                    'settled_at' => $settledAt,
                 ],
                 'billing_email' => $this->billing_email,
                 'limits' => [

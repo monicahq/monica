@@ -110,6 +110,11 @@ class FieldController extends TemplateScopedController
         try {
             $sectionVersion = new MakeSectionVersionEditable(user: $request->user(), row: $row)->execute();
             $field = $this->fieldIn($sectionVersion, $key);
+            $repetitionOrder = $field->repetition_order;
+
+            if (array_key_exists('repetition_order', $validated)) {
+                $repetitionOrder = $validated['repetition_order'] === null ? null : RepetitionOrderEnum::from($validated['repetition_order']);
+            }
 
             new UpdateField(
                 user: $request->user(),
@@ -128,9 +133,7 @@ class FieldController extends TemplateScopedController
                 validation: array_key_exists('validation', $validated) ? $validated['validation'] : $field->validation,
                 repeatMin: array_key_exists('repeat_min', $validated) ? $validated['repeat_min'] : $field->repeat_min,
                 repeatMax: array_key_exists('repeat_max', $validated) ? $validated['repeat_max'] : $field->repeat_max,
-                repetitionOrder: array_key_exists('repetition_order', $validated)
-                    ? ($validated['repetition_order'] === null ? null : RepetitionOrderEnum::from($validated['repetition_order']))
-                    : $field->repetition_order,
+                repetitionOrder: $repetitionOrder,
             )->execute();
         } catch (InvalidArgumentException $e) {
             throw ValidationException::withMessages(['value_list_id' => $e->getMessage()]);

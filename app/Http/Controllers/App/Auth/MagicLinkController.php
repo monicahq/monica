@@ -33,6 +33,7 @@ class MagicLinkController extends Controller
         try {
             new CreateMagicLink(email: $validated['email'])->execute();
         } catch (ModelNotFoundException) {
+            // An unknown address gets the same answer, so the screen never says who has an account.
         }
 
         return view('app.auth.magic-link-sent', [

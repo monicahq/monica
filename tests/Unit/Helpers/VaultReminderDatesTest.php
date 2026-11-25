@@ -125,7 +125,7 @@ class VaultReminderDatesTest extends TestCase
         $michael = $this->contact('Michael', 'Scott');
         $this->birthdayReminder($michael, '1964-09-07');
 
-        $dates = $this->page(kind: VaultReminderDates::Birthdays);
+        $dates = $this->page(kind: VaultReminderDates::BIRTHDAYS);
 
         $this->assertSame(['2026-09-07'], $this->days($dates));
         $this->assertSame(62, $dates->items()[0]->age);
@@ -138,7 +138,7 @@ class VaultReminderDatesTest extends TestCase
         $michael = $this->contact('Michael', 'Scott');
         $this->birthday($michael, '1900-09-07', yearIsUnknown: true);
 
-        $dates = $this->page(kind: VaultReminderDates::Birthdays);
+        $dates = $this->page(kind: VaultReminderDates::BIRTHDAYS);
 
         $this->assertSame(['2026-09-07'], $this->days($dates));
         $this->assertNull($dates->items()[0]->age);
@@ -150,7 +150,7 @@ class VaultReminderDatesTest extends TestCase
         $this->manualReminder($this->contact('Stanley', 'Hudson'), '2026-09-06');
         $this->birthdayReminder($this->contact('Michael', 'Scott'), '1964-09-07');
 
-        $this->assertSame(['2026-09-07'], $this->days($this->page(kind: VaultReminderDates::Birthdays)));
+        $this->assertSame(['2026-09-07'], $this->days($this->page(kind: VaultReminderDates::BIRTHDAYS)));
     }
 
     #[Test]
@@ -159,7 +159,7 @@ class VaultReminderDatesTest extends TestCase
         $dwight = $this->contact('Dwight', 'Schrute');
         $this->birthday($dwight, '1974-09-06');
 
-        $dates = $this->page(kind: VaultReminderDates::Birthdays);
+        $dates = $this->page(kind: VaultReminderDates::BIRTHDAYS);
 
         $this->assertCount(1, $dates->items());
         $this->assertNull($dates->items()[0]->occurrence);
@@ -173,7 +173,7 @@ class VaultReminderDatesTest extends TestCase
     {
         $this->birthdayReminder($this->contact('Michael', 'Scott'), '1964-09-07');
 
-        $this->assertCount(1, $this->page(kind: VaultReminderDates::Birthdays)->items());
+        $this->assertCount(1, $this->page(kind: VaultReminderDates::BIRTHDAYS)->items());
     }
 
     #[Test]
@@ -181,8 +181,8 @@ class VaultReminderDatesTest extends TestCase
     {
         $this->birthday($this->contact('Dwight', 'Schrute'), '1974-09-03');
 
-        $this->assertSame([], $this->days($this->page(kind: VaultReminderDates::Birthdays)));
-        $this->assertSame([], $this->days($this->page(category: 'history', kind: VaultReminderDates::Birthdays)));
+        $this->assertSame([], $this->days($this->page(kind: VaultReminderDates::BIRTHDAYS)));
+        $this->assertSame([], $this->days($this->page(category: 'history', kind: VaultReminderDates::BIRTHDAYS)));
     }
 
     #[Test]
@@ -201,8 +201,8 @@ class VaultReminderDatesTest extends TestCase
         $michael = $this->contact('Michael', 'Scott');
         $this->birthdayReminder($michael, '1964-09-07', sensitive: true);
 
-        $hidden = $this->page(kind: VaultReminderDates::Birthdays);
-        $shown = $this->page(kind: VaultReminderDates::Birthdays, reachesSensitiveFields: true);
+        $hidden = $this->page(kind: VaultReminderDates::BIRTHDAYS);
+        $shown = $this->page(kind: VaultReminderDates::BIRTHDAYS, reachesSensitiveFields: true);
 
         $this->assertSame(['2026-09-07'], $this->days($hidden));
         $this->assertNull($hidden->items()[0]->age);
@@ -211,7 +211,7 @@ class VaultReminderDatesTest extends TestCase
     }
 
     /** @return LengthAwarePaginator<int, VaultReminderDate> */
-    private function page(?string $category = null, string $kind = VaultReminderDates::All, int $days = 7, bool $reachesSensitiveFields = false): LengthAwarePaginator
+    private function page(?string $category = null, string $kind = VaultReminderDates::ALL, int $days = 7, bool $reachesSensitiveFields = false): LengthAwarePaginator
     {
         return VaultReminderDates::page(
             user: $this->user,

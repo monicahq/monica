@@ -20,7 +20,7 @@ class VaultReminderController extends Controller
             'viewModel' => new VaultRemindersViewModel(
                 user: $request->user(),
                 vault: $vault,
-                groupBy: VaultRemindersViewModel::GroupByWhen,
+                groupBy: VaultRemindersViewModel::GROUP_BY_WHEN,
                 page: $request->integer('page', 1),
             ),
         ]);
@@ -32,7 +32,7 @@ class VaultReminderController extends Controller
             'viewModel' => new VaultRemindersViewModel(
                 user: $request->user(),
                 vault: $vault,
-                groupBy: VaultRemindersViewModel::GroupByContact,
+                groupBy: VaultRemindersViewModel::GROUP_BY_CONTACT,
                 page: $request->integer('page', 1),
             ),
         ]);

@@ -18,6 +18,7 @@ class CompactPossessionResource extends JsonResource
     {
         $this->resource->loadMissing(['vault', 'possessionType', 'location', 'valuations']);
         $currentValue = $this->currentValue();
+        $valueSource = ($currentValue['isValuation'] ?? false) ? 'valuation' : 'declared_value';
 
         return [
             'type' => 'possession',
@@ -36,7 +37,7 @@ class CompactPossessionResource extends JsonResource
                 'current_value' => $currentValue === null ? null : [
                     'amount' => $currentValue['amount'],
                     'currency' => $currentValue['currency'],
-                    'source' => $currentValue['isValuation'] ? 'valuation' : 'declared_value',
+                    'source' => $valueSource,
                 ],
             ],
             'links' => [

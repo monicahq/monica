@@ -23,6 +23,7 @@ class PossessionResource extends JsonResource
     {
         $this->resource->loadMissing(['vault', 'possessionType.groups.fields', 'possessionType.standaloneFields', 'location', 'values', 'transactions', 'tags', 'valuations']);
         $currentValue = $this->currentValue();
+        $valueSource = ($currentValue['isValuation'] ?? false) ? 'valuation' : 'declared_value';
         $acquisition = $this->acquisitionTransaction();
 
         return [
@@ -62,7 +63,7 @@ class PossessionResource extends JsonResource
                 'current_value' => $currentValue === null ? null : [
                     'amount' => $currentValue['amount'],
                     'currency' => $currentValue['currency'],
-                    'source' => $currentValue['isValuation'] ? 'valuation' : 'declared_value',
+                    'source' => $valueSource,
                 ],
                 'tags' => $this->tags->map(fn (PossessionTag $tag): array => [
                     'id' => $tag->uuid,

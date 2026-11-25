@@ -92,6 +92,7 @@ class RecordEmailDeliveryOutcome
             try {
                 return CarbonImmutable::parse($reported);
             } catch (InvalidFormatException) {
+                // An unreadable instant falls through to the warning below.
             }
         }
 

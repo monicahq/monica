@@ -120,6 +120,11 @@ class SupportQueueViewModel
         return collect($this->requests()->items())
             ->map(function (SupportRequest $supportRequest) use ($current): array {
                 $last = $supportRequest->messages->last(fn (SupportMessage $message): bool => $message->kind !== SupportMessageKindEnum::Note);
+                $lastLine = match (true) {
+                    $last === null => '',
+                    $last->kind === SupportMessageKindEnum::Reply => __('Support: :body', ['body' => $last->body]),
+                    default => $last->body,
+                };
 
                 return [
                     'uuid' => $supportRequest->uuid,
@@ -129,7 +134,7 @@ class SupportQueueViewModel
                     'name' => $supportRequest->user->name ?? __('Deleted user'),
                     'categoryLabel' => __($supportRequest->category->shortLabel()),
                     'age' => $supportRequest->created_at->diffForHumans(),
-                    'lastLine' => $last === null ? '' : ($last->kind === SupportMessageKindEnum::Reply ? __('Support: :body', ['body' => $last->body]) : $last->body),
+                    'lastLine' => $lastLine,
                 ];
             })
             ->values()

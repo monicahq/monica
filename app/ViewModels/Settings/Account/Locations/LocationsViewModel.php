@@ -182,12 +182,17 @@ class LocationsViewModel
     private function row(Location $location, int $level): array
     {
         $deletion = $this->user->inspect('delete', $location);
+        $icon = match (true) {
+            $level !== 1 => 'layers',
+            $location->address === null => 'place',
+            default => 'home',
+        };
 
         return [
             'uuid' => $location->uuid,
             'name' => $location->name,
             'emoji' => $location->emoji,
-            'icon' => $level === 1 ? ($location->address === null ? 'place' : 'home') : 'layers',
+            'icon' => $icon,
             'level' => $level,
             'line' => $this->line($location),
             'editUrl' => route('settings.locations.edit', $location),

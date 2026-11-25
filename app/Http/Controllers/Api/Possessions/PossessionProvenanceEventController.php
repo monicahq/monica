@@ -72,9 +72,13 @@ class PossessionProvenanceEventController extends Controller
         $possessionRecord = $this->possession($this->vault($request, $vault), $possession);
         $record = $this->event($possessionRecord, $event);
         $validated = $request->validate($this->rules($possessionRecord, typeRequired: false));
-        $kept = fn (string $field): ?string => array_key_exists($field, $validated)
-            ? ($validated[$field] === null ? null : (string) $validated[$field])
-            : $record->getRawOriginal($field);
+        $kept = function (string $field) use ($validated, $record): ?string {
+            if (! array_key_exists($field, $validated)) {
+                return $record->getRawOriginal($field);
+            }
+
+            return $validated[$field] === null ? null : (string) $validated[$field];
+        };
         $datePrecision = PossessionProvenanceDatePrecisionEnum::tryFrom($validated['date_precision'] ?? '') ?? $record->date_precision;
 
         new UpdatePossessionProvenanceEvent(
