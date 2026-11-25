@@ -128,7 +128,8 @@ class HeadMetadataTest extends TestCase
     public function it_names_a_public_page_by_its_address_without_the_query_string(): void
     {
         $this->get(route('docs.api.show', ['section' => 'vaults-index', 'utm_source' => 'dunder-mifflin']))
-            ->assertSee('<link rel="canonical" href="http://localhost/docs/api/vaults-index">', escape: false);
+            ->assertSee('<link rel="canonical" href="http://localhost/docs/api/vaults-index">', escape: false)
+            ->assertSee('<meta property="og:url" content="http://localhost/docs/api/vaults-index">', escape: false);
     }
 
     #[Test]

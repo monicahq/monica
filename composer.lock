@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "16e3fb43e3c4792d20d94a9eb670d238",
+    "content-hash": "052daab81b9ae4233ced18bad2e1c788",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -2470,16 +2470,16 @@
         },
         {
             "name": "laravel/head",
-            "version": "v0.2.2",
+            "version": "v0.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/head.git",
-                "reference": "09e88a09c0ca08533be94863a4d3e95016b6d88f"
+                "reference": "67efe95ff1691a44036df03e55637e79da97b719"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/head/zipball/09e88a09c0ca08533be94863a4d3e95016b6d88f",
-                "reference": "09e88a09c0ca08533be94863a4d3e95016b6d88f",
+                "url": "https://api.github.com/repos/laravel/head/zipball/67efe95ff1691a44036df03e55637e79da97b719",
+                "reference": "67efe95ff1691a44036df03e55637e79da97b719",
                 "shasum": ""
             },
             "require": {
@@ -2537,7 +2537,7 @@
                 "issues": "https://github.com/laravel/head/issues",
                 "source": "https://github.com/laravel/head"
             },
-            "time": "2026-08-26T18:54:37+00:00"
+            "time": "2026-11-10T20:00:34+00:00"
         },
         {
             "name": "laravel/mcp",
