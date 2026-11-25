@@ -2177,6 +2177,27 @@ class ApiDocsReturnFieldsTest extends TestCase
                 return $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contact-categories");
             }),
 
+            'contacts-categories-update' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                [$version, $field] = $this->categoriesTemplate($user);
+                $item = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $field->value_list_id]);
+                $jim = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id, 'structure_version_id' => $version->id]);
+                $toby = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
+
+                return $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/contacts/categories", ['contacts' => [
+                    ['contact' => $jim->uuid, 'categories' => [$item->id]],
+                    ['contact' => $toby->uuid, 'categories' => []],
+                ]]);
+            }),
+
+            'contacts-destroy-many' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                $me = Contact::factory()->me()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
+                $todd = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
+
+                return $this->json('DELETE', "/api/v1/vaults/{$vault->uuid}/contacts", ['contacts' => [$todd->uuid, $me->uuid]]);
+            }),
+
             'contact-list-columns-show' => $this->asSomebody(function (User $user): TestResponse {
                 $vault = Vault::factory()->create(['account_id' => $user->account_id]);
                 $work = $this->contactTemplateCarrying($user, 'Professional', ['Work' => ['company']])['Work'];

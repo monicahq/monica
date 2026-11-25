@@ -30,6 +30,7 @@ use App\Http\Controllers\Api\CheckoutSessionController;
 use App\Http\Controllers\Api\ContactAvatarController;
 use App\Http\Controllers\Api\ContactCategoryController;
 use App\Http\Controllers\Api\ContactController;
+use App\Http\Controllers\Api\ContactDeletionController;
 use App\Http\Controllers\Api\ContactDuplicateController;
 use App\Http\Controllers\Api\ContactDuplicateDismissalController;
 use App\Http\Controllers\Api\ContactEntityController;
@@ -476,6 +477,8 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::match(['GET', 'QUERY'], 'vaults/{vault}/contacts/{contact}/vcard', [ContactVCardController::class, 'show'])->middleware('flag:vcard-export')->name('contacts.vcard.show');
         Route::match(['GET', 'QUERY'], 'vaults/{vault}/contacts/{contact}/markdown', [ContactMarkdownController::class, 'show'])->name('contacts.markdown.show');
         Route::post('vaults/{vault}/contacts', [ContactController::class, 'create'])->name('contacts.create');
+        Route::delete('vaults/{vault}/contacts', [ContactDeletionController::class, 'destroy'])->name('contacts.deletion.destroy');
+        Route::put('vaults/{vault}/contacts/categories', [ContactCategoryController::class, 'update'])->name('contacts.categories.update');
         Route::delete('vaults/{vault}/contacts/{contact}', [ContactController::class, 'destroy'])->name('contacts.destroy');
 
         Route::match(['GET', 'QUERY'], 'vaults/{vault}/contacts/{contact}/merge/{other}', [ContactMergeController::class, 'show'])->name('contacts.merge.show');

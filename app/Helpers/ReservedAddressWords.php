@@ -28,7 +28,8 @@ class ReservedAddressWords
      * `contacts/new` is the same story. Every grouping the contact list answers to sits in the place
      * a contact's own address would sit, and that route is declared first too, so all of them are
      * spent. `me` is fixed by the API route resolving the contact that stands for the account holder,
-     * which is declared above `contacts/{contact}` so that the literal wins.
+     * which is declared above `contacts/{contact}` so that the literal wins. `deletion` and
+     * `categories` are fixed by the routes acting on several contacts of the list at once.
      *
      * @return list<string>
      */
@@ -37,6 +38,8 @@ class ReservedAddressWords
         return [
             'new',
             'me',
+            'deletion',
+            'categories',
             ...ContactGroupingEnum::values(),
         ];
     }

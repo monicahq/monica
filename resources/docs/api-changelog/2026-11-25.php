@@ -6,6 +6,19 @@ return [
     'date' => '2026-11-25',
     'entries' => [
         [
+            'id' => 'contacts-bulk-actions',
+            'kind' => 'Added',
+            'group' => 'Contacts',
+            'title' => 'Delete several contacts, or set their categories, in one call',
+            'summary' => 'Delete up to 500 contacts of a vault at once, each as deleting it alone would, with the contact representing you kept and listed with the reason. Set the categories of up to 500 contacts at once, each ending with exactly the categories listed for it, with the contacts whose template has no category field listed with the reason.',
+            'why' => 'The people screen can now select several contacts and delete them or change their category, and everything the application does can be done through the API.',
+            'breaking' => false,
+            'changes' => [
+                ['field' => 'contact_deletion', 'change' => 'Added', 'endpoints' => ['DELETE /vaults/{vault}/contacts']],
+                ['field' => 'contact_category_change', 'change' => 'Added', 'endpoints' => ['PUT /vaults/{vault}/contacts/categories']],
+            ],
+        ],
+        [
             'id' => 'changelog-entry-screenshots',
             'kind' => 'Added',
             'group' => 'What’s new',

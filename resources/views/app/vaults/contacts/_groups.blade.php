@@ -1,7 +1,7 @@
 {{-- The rows of the table of people, the favourites first under a heading of their own. --}}
 {{-- @var \App\ViewModels\Vaults\ContactsViewModel $viewModel --}}
 @php
-  $width = count($viewModel->headings());
+  $width = count($viewModel->headings()) + 1;
 @endphp
 @foreach ($viewModel->groups() as $group)
   @if ($group['label'] !== null)
@@ -16,7 +16,20 @@
   @endif
 
   @foreach ($group['people'] as $person)
-    <tr class="relative border-t border-hairline transition-colors duration-(--duration-fast) ease-out hover:bg-hover">
+    <tr
+      class="relative border-t border-hairline transition-colors duration-(--duration-fast) ease-out hover:bg-hover"
+      :class="isSelected('{{ $person['uuid'] }}') && 'bg-hover'"
+      @click="rowClick($event, '{{ $person['uuid'] }}')"
+    >
+      <td class="w-11 py-2.75 pl-4">
+        <x-selection-checkbox
+          :label="__('Select :name', ['name' => $person['name']])"
+          data-contact-uuid="{{ $person['uuid'] }}"
+          ::checked="isSelected('{{ $person['uuid'] }}')"
+          @change="toggle('{{ $person['uuid'] }}')"
+        />
+      </td>
+
       <td class="px-4 py-2.75">
         <span class="flex min-w-0 items-center gap-3">
           <x-contact-avatar :name="$person['name']" :url="$person['avatarUrl']" :size="32" />

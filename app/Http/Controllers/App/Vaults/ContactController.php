@@ -81,6 +81,7 @@ class ContactController extends Controller
                 direction: $direction,
                 size: PageSize::from($request, ContactsViewModel::PER_PAGE),
                 categoryIds: array_map(intval(...), $validated['categories'] ?? []),
+                categoryChange: $request->session()->get('contactCategoryChange'),
             ),
         ]);
     }

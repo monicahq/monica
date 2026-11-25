@@ -129,7 +129,9 @@ use App\Http\Controllers\App\Support\SupportRequestController;
 use App\Http\Controllers\App\Support\SupportSolutionController;
 use App\Http\Controllers\App\Vaults\AbsorbedContactController;
 use App\Http\Controllers\App\Vaults\ContactAvatarController;
+use App\Http\Controllers\App\Vaults\ContactCategoryController;
 use App\Http\Controllers\App\Vaults\ContactController;
+use App\Http\Controllers\App\Vaults\ContactDeletionController;
 use App\Http\Controllers\App\Vaults\ContactDuplicateController;
 use App\Http\Controllers\App\Vaults\ContactDuplicateDismissalController;
 use App\Http\Controllers\App\Vaults\ContactDuplicateSearchController;
@@ -420,6 +422,9 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
 
     Route::get('vaults/{vault}/contacts/new', [ContactController::class, 'new'])->name('contacts.new');
     Route::post('vaults/{vault}/contacts', [ContactController::class, 'create'])->name('contacts.create');
+    Route::get('vaults/{vault}/contacts/deletion', [ContactDeletionController::class, 'show'])->name('contacts.deletion.show');
+    Route::delete('vaults/{vault}/contacts', [ContactDeletionController::class, 'destroy'])->name('contacts.deletion.destroy');
+    Route::put('vaults/{vault}/contacts/categories', [ContactCategoryController::class, 'update'])->name('contacts.categories.update');
 
     Route::get('vaults/{vault}/contacts/{filter?}', [ContactController::class, 'index'])
         ->whereIn('filter', ContactGroupingEnum::values())
