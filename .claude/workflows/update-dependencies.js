@@ -22,8 +22,10 @@ const RULES = `Rules for every step of the update-dependencies workflow:
 - Never answer yes to a prompt asking to trust a source, and never pass a flag that skips one, with one exception the user approved: the "Untrusted Source" prompt of 'specify extension add <id> --from <url>', when the repository is one that the specify-upgrade script of composer.json names, the URL is the release asset of an exact version (not a rolling latest one), and the sha256 of that file, downloaded into your scratch directory, equals the digest GitHub publishes for the asset (the digest field in https://api.github.com/repos/<owner>/<repo>/releases/tags/<tag>). Then pipe y into that one command. A source with no published digest, such as a tag archive, is never installed: write the command in notes for the user.
 - Never push, never open a pull request, never write the index or the files of the root checkout, and change nothing outside the repository unless your step says so.
 - Call something outdated, released or breaking only after reading the registry, the release page or the changelog during this run, never from memory.
-- Read GitHub through 'gh api' with the sandbox disabled. Anonymous calls to api.github.com run out of their hourly quota within one run of this workflow, and release notes then go unread.
-- The specs/*/.spec-context.json files belong to the repository, and Spec Kit rewrites them on its own (it adds a telemetryInstanceId, among others). Their modifications never make a worktree dirty for this workflow and never fail a step. Whenever 'git status --porcelain' lists them, stage those files alone and commit them with 'git commit --quiet -S -m "chore(docs): spec context"' with the sandbox disabled, then go on. Never stage them in a dependency commit, and never discard them.`
+- Read GitHub through 'gh api' with the sandbox disabled. Anonymous calls to api.github.com run out of their hourly quota within one run of this workflow, and release notes then go unread.`
+
+const SPEC_CONTEXT_RULE = `Rule for the steps that commit in the worktree:
+- The specs/*/.spec-context.json files belong to the repository, and Spec Kit rewrites them on its own (it adds a telemetryInstanceId, among others). Their modifications never make the worktree dirty for this workflow and never fail a step. Whenever 'git status --porcelain' lists them, stage those files alone and commit them with 'git commit --quiet -S -m "chore(docs): spec context"' with the sandbox disabled, then go on. Never stage them in a dependency commit, and never discard them.`
 
 const CHECKS = `How the checks run in this repository, from the worktree:
 - PHP tests: 'php artisan view:clear --quiet', then 'php artisan test --parallel --compact' with a Bash timeout of 600000 ms (the suite takes about two minutes). Failures en masse reading "touch(): Utime failed" come from compiled views owned by www-data: clear them and run again. In an agent session laravel/pao replaces Paratest's runner; when the suite crashes before any test runs, run it again with PAO_DISABLE=1 (the path people and CI take) and report both results, since a crash only agents see is still a regression.
@@ -340,6 +342,7 @@ Prepare the branch and the worktree this update runs in, then record the baselin
 ${CHECKS}`
 
 const applyPrompt = (prepared, item, research, committed) => `${RULES}
+${SPEC_CONTEXT_RULE}
 
 Apply one dependency change in the worktree ${prepared.worktree} (branch ${prepared.branch}), verify it, then either commit it or put the worktree back exactly as it was. Work only in that worktree.
 
@@ -364,6 +367,7 @@ ${item.kind === 'major'
 ${CHECKS}`
 
 const gatePrompt = (prepared) => `${RULES}
+${SPEC_CONTEXT_RULE}
 
 Run the full gate on branch ${prepared.branch} in the worktree ${prepared.worktree}. It holds every commit of this run on top of ${prepared.baseSha}. Fix nothing: report.
 
@@ -383,6 +387,7 @@ ${lens.prompt}
 Give each finding its evidence (file:line, command output) and a severity: blocker (wrong or broken), fix (should change before merge), note (worth knowing). Report nothing you have not checked.`
 
 const fixPrompt = (prepared, gate, findings) => `${RULES}
+${SPEC_CONTEXT_RULE}
 
 The gate and the reviews of branch ${prepared.branch} (worktree ${prepared.worktree}) reported the problems below. Other agents wrote them: confirm each one against the files before acting, and dismiss with a reason what does not hold.
 
