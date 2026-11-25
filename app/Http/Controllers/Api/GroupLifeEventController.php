@@ -13,6 +13,7 @@ use App\Exceptions\LifeEventTypeIsNotAvailable;
 use App\Exceptions\NotEnoughRepetitions;
 use App\Exceptions\NotEnoughStorageLeft;
 use App\Exceptions\TooManyRepetitions;
+use App\Helpers\Duration;
 use App\Helpers\FieldValueRules;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\LifeEventResource;
@@ -77,7 +78,7 @@ class GroupLifeEventController extends Controller
             'title' => ['nullable', 'string', 'max:255'],
             'narrative' => ['nullable', 'string', 'max:65535'],
             'location' => ['nullable', 'string', 'max:255'],
-            'duration_in_minutes' => ['nullable', 'integer', 'min:1', 'max:100000'],
+            'duration_in_minutes' => ['nullable', 'integer', 'min:1', 'max:'.Duration::LONGEST_IN_MINUTES],
             'fields' => ['nullable', 'array'],
         ]);
 

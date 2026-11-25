@@ -518,10 +518,44 @@ class ContactControllerTest extends TestCase
             ->assertStatus(200)
             ->assertSee('Michael', false)
             ->assertSee('Scott', false)
-            ->assertSee(route('contacts.destroy', ['vault' => $vault, 'contact' => $michael]), false)
-            ->assertSee('Current template')
-            ->assertSee('Basic contact')
-            ->assertSee(route('settings.templateBuilder.index', $michael->structureVersion->structure->owner), false);
+            ->assertSee(route('contacts.destroy', ['vault' => $vault, 'contact' => $michael]), false);
+    }
+
+    #[Test]
+    public function the_edit_screen_offers_the_other_templates(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+        $client = Template::factory()->published()->create(['account_id' => $user->account_id, 'name' => 'Client'])->refresh();
+
+        $this->actingAs($user)->get(route('contacts.edit', ['vault' => $vault, 'contact' => $michael]))
+            ->assertStatus(200)
+            ->assertSee('Template used for Michael')
+            ->assertSee('aria-labelledby="template-label template-current"', false)
+            ->assertSee('x-target="template-change"', false)
+            ->assertSee('aria-controls="template-consequences"', false)
+            ->assertSee(e(route('contacts.edit', ['vault' => $vault, 'contact' => $michael, 'template' => $client->uuid, 'version' => $client->structure->published_version_id])), false)
+            ->assertDontSee('id="template-change-title"', false);
+    }
+
+    #[Test]
+    public function the_edit_screen_asks_before_changing_the_template_and_says_what_moves(): void
+    {
+        $user = User::factory()->create();
+        $vault = $this->vaultReadyForContacts($user);
+        $michael = $this->contact($vault, 'Michael', 'Scott');
+        $client = Template::factory()->published()->create(['account_id' => $user->account_id, 'name' => 'Client'])->refresh();
+
+        $this->actingAs($user)->get(route('contacts.edit', ['vault' => $vault, 'contact' => $michael, 'template' => $client->uuid, 'version' => $client->structure->published_version_id]))
+            ->assertStatus(200)
+            ->assertSee('Switch Michael to the Client template?')
+            ->assertSee('aria-labelledby="template-change-title"', false)
+            ->assertSee('x-merge="update"', false)
+            ->assertSee('x-autofocus', false)
+            ->assertSee(route('contacts.template.update', ['vault' => $vault, 'contact' => $michael]), false)
+            ->assertSee('name="template" value="'.$client->uuid.'"', false)
+            ->assertSee('Change template');
     }
 
     #[Test]

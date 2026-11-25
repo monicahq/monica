@@ -120,6 +120,8 @@ class ContactController extends Controller
                 user: $request->user(),
                 vault: $vault,
                 contact: $contact,
+                askedTemplate: $request->filled('template') ? (string) $request->string('template') : null,
+                askedVersion: $request->filled('version') ? $request->integer('version') : null,
             ),
         ]);
     }

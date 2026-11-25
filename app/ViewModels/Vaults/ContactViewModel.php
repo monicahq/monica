@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Vaults;
 
+use App\Actions\ChangeContactTemplate;
 use App\Enums\VaultColourEnum;
 use App\Enums\VersionStatusEnum;
 use App\Helpers\AvailableLocales;
@@ -23,6 +24,7 @@ use App\Models\Section;
 use App\Models\StructureVersion;
 use App\Models\StructureVersionPage;
 use App\Models\StructureVersionSection;
+use App\Models\Template;
 use App\Models\User;
 use App\Models\Vault;
 use App\ViewModels\Settings\Account\Templates\FieldCatalogueViewModel;
@@ -360,7 +362,7 @@ class ContactViewModel
         return $this->selectedPageKey === self::PAGE_VERSION_HISTORY;
     }
 
-    /** @return array<int, array{date: string, ago: string, title: string, isCurrent: bool, span: string, revert: array{url: string, versionId: int, title: string, confirm: string, cancel: string, body: string}|null, refusal: string|null, spaceBelow: int}> */
+    /** @return array<int, array{date: string, ago: string, title: string, isCurrent: bool, span: string, revert: array{url: string, versionId: int, template: string|null, title: string, confirm: string, cancel: string, body: string}|null, refusal: string|null, spaceBelow: int}> */
     public function versionHistory(): array
     {
         $chain = $this->versionChain();
@@ -442,30 +444,58 @@ class ContactViewModel
 
     private function canRevertTo(StructureVersion $version, bool $isCurrent): bool
     {
-        return ! $isCurrent
-            && $version->status === VersionStatusEnum::Published
-            && $version->structure_id === $this->contact->structureVersion->structure_id;
+        if ($isCurrent) {
+            return false;
+        }
+
+        if ($version->status !== VersionStatusEnum::Published) {
+            return false;
+        }
+
+        if ($this->isSameTemplate($version)) {
+            return true;
+        }
+
+        $owner = $version->structure->owner;
+
+        if (! $owner instanceof Template) {
+            return false;
+        }
+
+        return ChangeContactTemplate::refusal($owner, $version) === null;
     }
 
-    /** @return array{url: string, versionId: int, title: string, confirm: string, cancel: string, body: string}|null */
+    private function isSameTemplate(StructureVersion $version): bool
+    {
+        return $version->structure_id === $this->contact->structureVersion->structure_id;
+    }
+
+    /** @return array{url: string, versionId: int, template: string|null, title: string, confirm: string, cancel: string, body: string}|null */
     private function revertTo(StructureVersion $version, string $title, bool $isCurrent): ?array
     {
         if (! $this->canRevertTo($version, $isCurrent)) {
             return null;
         }
 
+        $isSameTemplate = $this->isSameTemplate($version);
+
         return [
-            'url' => route('contacts.templateVersion.update', [
-                'vault' => $this->vault,
-                'contact' => $this->contact,
-            ]),
+            'url' => $isSameTemplate
+                ? route('contacts.templateVersion.update', ['vault' => $this->vault, 'contact' => $this->contact])
+                : route('contacts.template.update', ['vault' => $this->vault, 'contact' => $this->contact]),
             'versionId' => $version->id,
+            'template' => $isSameTemplate ? null : $version->structure->owner->uuid,
             'title' => __('Revert to :version?', ['version' => $title]),
             'confirm' => __('Revert'),
             'cancel' => __('Stay on version :number', ['number' => $this->contact->structureVersion->version_number]),
-            'body' => __('This contact will show the sections and fields of version :number again. Answers in fields that version does not have are hidden, not deleted, and come back when you move to a version that has them. This is recorded in the version history.', [
-                'number' => $version->version_number,
-            ]),
+            'body' => $isSameTemplate
+                ? __('This contact will show the sections and fields of version :number again. Answers in fields that version does not have are hidden, not deleted, and come back when you move to a version that has them. This is recorded in the version history.', [
+                    'number' => $version->version_number,
+                ])
+                : __('This contact will show the sections and fields of :template, version :number, again. Answers in fields that version does not have are hidden, not deleted, and come back when you move to a version that has them. This is recorded in the version history.', [
+                    'template' => $version->structure->owner->name,
+                    'number' => $version->version_number,
+                ]),
         ];
     }
 
@@ -479,7 +509,13 @@ class ContactViewModel
             return __('This version has been retired, so nothing can be put back on it.');
         }
 
-        return __('This version belongs to another template, so it cannot be reverted to here.');
+        $owner = $version->structure->owner;
+
+        if (! $owner instanceof Template) {
+            return __('This template was deleted, so nothing can be put back on it.');
+        }
+
+        return ChangeContactTemplate::refusal($owner, $version);
     }
 
     public function setAsideLine(): ?string
@@ -698,6 +734,14 @@ class ContactViewModel
                 : trans_choice(':count awaiting an answer|:count awaiting an answer', $awaiting),
             'reminder' => null,
             'url' => route('contacts.reminders.index', ['vault' => $this->vault, 'contact' => $this->contact]),
+        ];
+
+        $facts[] = [
+            'icon' => 'layers',
+            'label' => __('Template'),
+            'value' => $this->contact->structureVersion->structure->owner->name,
+            'reminder' => null,
+            'url' => $this->templateUrl(),
         ];
 
         return $facts;

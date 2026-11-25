@@ -18,6 +18,7 @@ use App\Enums\NotificationChannelEnum;
 use App\Enums\PossessionFieldKindEnum;
 use App\Enums\PossessionTransactionTypeEnum;
 use App\Enums\RelationTargetEnum;
+use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\ValueListEnum;
 use App\Enums\VersionStatusEnum;
 use App\Helpers\AvailableLocales;
@@ -959,6 +960,56 @@ class ApiDocsReturnFieldsTest extends TestCase
                 ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id]);
 
                 return $this->json('GET', '/api/v1/value-lists');
+            }),
+
+            'value-lists-create' => $this->asSomebody(fn (): TestResponse => $this->json('POST', '/api/v1/value-lists', [
+                'name' => 'Paper suppliers',
+            ])),
+
+            'value-lists-update' => $this->asSomebody(function (User $user): TestResponse {
+                $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('PUT', "/api/v1/value-lists/{$list->id}", ['name' => 'Paper suppliers']);
+            }),
+
+            'value-lists-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('DELETE', "/api/v1/value-lists/{$list->id}");
+            }),
+
+            'value-list-items-create' => $this->asSomebody(function (User $user): TestResponse {
+                $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+
+                return $this->json('POST', "/api/v1/value-lists/{$list->id}/items", ['label' => 'Staples']);
+            }),
+
+            'value-list-items-update' => $this->asSomebody(function (User $user): TestResponse {
+                $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+                $item = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id]);
+
+                return $this->json('PUT', "/api/v1/value-lists/{$list->id}/items/{$item->id}", ['label' => 'Staples']);
+            }),
+
+            'value-list-items-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+                $item = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id]);
+
+                return $this->json('DELETE', "/api/v1/value-lists/{$list->id}/items/{$item->id}");
+            }),
+
+            'value-list-items-activation' => $this->asSomebody(function (User $user): TestResponse {
+                $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+                $item = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id]);
+
+                return $this->json('PUT', "/api/v1/value-lists/{$list->id}/items/{$item->id}/activation", ['is_active' => false]);
+            }),
+
+            'value-list-items-position' => $this->asSomebody(function (User $user): TestResponse {
+                $list = ValueList::factory()->create(['account_id' => $user->account_id]);
+                $item = ValueListItem::factory()->create(['account_id' => $user->account_id, 'value_list_id' => $list->id]);
+
+                return $this->json('PUT', "/api/v1/value-lists/{$list->id}/items/{$item->id}/position", ['position' => 1]);
             }),
 
             'countries-index' => $this->asSomebody(function (User $user): TestResponse {
@@ -2315,6 +2366,63 @@ class ApiDocsReturnFieldsTest extends TestCase
                 return $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/template-version", []);
             }),
 
+            'contacts-template-preview' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                $from = Template::factory()->published()->create(['account_id' => $user->account_id])->refresh();
+                $to = Template::factory()->published()->create(['account_id' => $user->account_id])->refresh();
+                $contact = Contact::factory()->create([
+                    'vault_id' => $vault->id,
+                    'account_id' => $user->account_id,
+                    'structure_version_id' => $from->structure->published_version_id,
+                ]);
+                $value = FieldValue::factory()->create([
+                    'account_id' => $user->account_id,
+                    'vault_id' => $vault->id,
+                    'valuable_type' => Contact::class,
+                    'valuable_id' => $contact->id,
+                    'field_id' => Field::factory()->recurringDate()->create(['account_id' => $user->account_id])->id,
+                    'value_string' => null,
+                    'value_date' => '1979-03-25',
+                ]);
+                Reminder::factory()->for($value, 'fieldValue')->create();
+                $returning = FieldValue::factory()->detached()->create([
+                    'account_id' => $user->account_id,
+                    'vault_id' => $vault->id,
+                    'valuable_type' => Contact::class,
+                    'valuable_id' => $contact->id,
+                    'field_id' => $this->fieldCarriedBy($to->structure->publishedVersion, FieldTypeEnum::RecurringDate)->id,
+                    'value_string' => null,
+                    'value_date' => '1979-03-25',
+                ]);
+                Reminder::factory()->for($returning, 'fieldValue')->create([
+                    'is_active' => false,
+                    'inactive_reason' => ReminderInactiveReasonEnum::FieldRemoved,
+                    'deactivated_at' => now(),
+                ]);
+
+                return $this->json('GET', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/template-preview?template={$to->uuid}");
+            }),
+
+            'contacts-template-update' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                $from = Template::factory()->published()->create(['account_id' => $user->account_id])->refresh();
+                $to = Template::factory()->published()->create(['account_id' => $user->account_id])->refresh();
+                $file = File::factory()->create([
+                    'account_id' => $vault->account_id,
+                    'vault_id' => $vault->id,
+                    'mime_type' => 'image/webp',
+                ]);
+                $contact = Contact::factory()->create([
+                    'vault_id' => $vault->id,
+                    'account_id' => $user->account_id,
+                    'structure_version_id' => $from->structure->published_version_id,
+                    'avatar_file_id' => $file->id,
+                ]);
+                $this->holdACategoryCarriedBy($contact, $to->structure->publishedVersion);
+
+                return $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/template", ['template' => $to->uuid]);
+            }),
+
             'vaults-destroy' => $this->asSomebody(function (User $user): TestResponse {
                 $vault = Vault::factory()->default()->create(['account_id' => $user->account_id]);
 
@@ -2886,7 +2994,7 @@ class ApiDocsReturnFieldsTest extends TestCase
             }),
 
             'changelog-entries-index' => $this->asSomebody(function (User $user): TestResponse {
-                $this->app->instance(ChangelogEntries::class, new ChangelogEntries(directory: base_path('tests/Fixtures/Changelog/Valid')));
+                $this->app->instance(ChangelogEntries::class, new ChangelogEntries(directory: base_path('tests/Fixtures/Changelog/Valid'), screenshotDirectory: base_path('tests/Fixtures/Changelog/Screenshots/Valid')));
                 CarbonImmutable::setTestNow('2026-11-17 12:00:00');
 
                 return $this->json('GET', '/api/v1/changelog-entries');
@@ -2995,6 +3103,43 @@ class ApiDocsReturnFieldsTest extends TestCase
         $list = $this->categoriesOf($contact->account_id);
         $item = ValueListItem::factory()->create(['account_id' => $contact->account_id, 'value_list_id' => $list->id]);
         $field = Field::factory()->create(['account_id' => $contact->account_id, 'type' => FieldTypeEnum::Multiselect, 'value_list_id' => $list->id]);
+
+        FieldValue::factory()->create([
+            'valuable_type' => Contact::class,
+            'valuable_id' => $contact->id,
+            'field_id' => $field->id,
+            'value_string' => null,
+            'value_list_item_ids' => [$item->id],
+        ]);
+    }
+
+    private function fieldCarriedBy(StructureVersion $version, FieldTypeEnum $type, ?int $valueListId = null): Field
+    {
+        $version->update(['status' => VersionStatusEnum::Draft]);
+        $sectionVersion = SectionVersion::factory()->create(['account_id' => $version->account_id]);
+        $field = Field::factory()->create([
+            'account_id' => $version->account_id,
+            'section_version_id' => $sectionVersion->id,
+            'type' => $type,
+            'value_list_id' => $valueListId,
+        ]);
+        StructureVersionSection::factory()->create([
+            'account_id' => $version->account_id,
+            'structure_version_id' => $version->id,
+            'structure_version_page_id' => $version->pages->first()->id,
+            'section_version_id' => $sectionVersion->id,
+        ]);
+        $sectionVersion->update(['status' => VersionStatusEnum::Published]);
+        $version->update(['status' => VersionStatusEnum::Published]);
+
+        return $field;
+    }
+
+    private function holdACategoryCarriedBy(Contact $contact, StructureVersion $version): void
+    {
+        $list = $this->categoriesOf($contact->account_id);
+        $item = ValueListItem::factory()->create(['account_id' => $contact->account_id, 'value_list_id' => $list->id]);
+        $field = $this->fieldCarriedBy($version, FieldTypeEnum::Multiselect, $list->id);
 
         FieldValue::factory()->create([
             'valuable_type' => Contact::class,

@@ -10,6 +10,7 @@ use App\Enums\FieldTypeEnum;
 use App\Enums\LifeEventSourceEnum;
 use App\Enums\VaultColourEnum;
 use App\Helpers\AvailableLocales;
+use App\Helpers\Duration;
 use App\Helpers\FieldValueFormatter;
 use App\Models\Contact;
 use App\Models\Entity;
@@ -90,7 +91,7 @@ class LifeEventDetailsViewModel
         }
 
         if ($lifeEvent->duration_in_minutes !== null) {
-            $facts[] = ['label' => __('Duration'), 'value' => trans_choice(':count minute|:count minutes', $lifeEvent->duration_in_minutes), 'url' => null];
+            $facts[] = ['label' => __('Duration'), 'value' => Duration::wording($lifeEvent->duration_in_minutes), 'url' => null];
         }
 
         if ($lifeEvent->location !== null) {

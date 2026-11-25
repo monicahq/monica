@@ -48,6 +48,8 @@ use App\Http\Controllers\Api\ContactReminderOccurrenceController;
 use App\Http\Controllers\Api\ContactSectionController;
 use App\Http\Controllers\Api\ContactStructureVersionController;
 use App\Http\Controllers\Api\ContactSummaryController;
+use App\Http\Controllers\Api\ContactTemplateController;
+use App\Http\Controllers\Api\ContactTemplatePreviewController;
 use App\Http\Controllers\Api\ContactVCardController;
 use App\Http\Controllers\Api\CountryController;
 use App\Http\Controllers\Api\EmailSentController;
@@ -150,6 +152,9 @@ use App\Http\Controllers\Api\TemplateController;
 use App\Http\Controllers\Api\TemplateDuplicateController;
 use App\Http\Controllers\Api\TemplatePositionController;
 use App\Http\Controllers\Api\ValueListController;
+use App\Http\Controllers\Api\ValueListItemActivationController;
+use App\Http\Controllers\Api\ValueListItemController;
+use App\Http\Controllers\Api\ValueListItemPositionController;
 use App\Http\Controllers\Api\VaultController;
 use App\Http\Controllers\Api\VaultReminderController;
 use App\Http\Controllers\Api\VaultReminderOccurrenceController;
@@ -345,6 +350,14 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
 
         Route::match(['GET', 'QUERY'], 'countries', [CountryController::class, 'index'])->name('countries');
         Route::match(['GET', 'QUERY'], 'value-lists', [ValueListController::class, 'index'])->name('valueLists');
+        Route::post('value-lists', [ValueListController::class, 'create'])->name('valueLists.create');
+        Route::put('value-lists/{valueList}', [ValueListController::class, 'update'])->where('valueList', '[1-9][0-9]*')->name('valueLists.update');
+        Route::delete('value-lists/{valueList}', [ValueListController::class, 'destroy'])->where('valueList', '[1-9][0-9]*')->name('valueLists.destroy');
+        Route::post('value-lists/{valueList}/items', [ValueListItemController::class, 'create'])->where('valueList', '[1-9][0-9]*')->name('valueLists.items.create');
+        Route::put('value-lists/{valueList}/items/{valueListItem}', [ValueListItemController::class, 'update'])->where(['valueList' => '[1-9][0-9]*', 'valueListItem' => '[1-9][0-9]*'])->name('valueLists.items.update');
+        Route::delete('value-lists/{valueList}/items/{valueListItem}', [ValueListItemController::class, 'destroy'])->where(['valueList' => '[1-9][0-9]*', 'valueListItem' => '[1-9][0-9]*'])->name('valueLists.items.destroy');
+        Route::put('value-lists/{valueList}/items/{valueListItem}/activation', [ValueListItemActivationController::class, 'update'])->where(['valueList' => '[1-9][0-9]*', 'valueListItem' => '[1-9][0-9]*'])->name('valueLists.items.activation.update');
+        Route::put('value-lists/{valueList}/items/{valueListItem}/position', [ValueListItemPositionController::class, 'update'])->where(['valueList' => '[1-9][0-9]*', 'valueListItem' => '[1-9][0-9]*'])->name('valueLists.items.position.update');
         Route::match(['GET', 'QUERY'], 'templates', [TemplateController::class, 'index'])->name('templates');
         Route::match(['GET', 'QUERY'], 'templates/{template}', [TemplateController::class, 'show'])->where('template', '[0-9a-fA-F-]{36}')->name('templates.show');
         Route::post('templates', [TemplateController::class, 'create'])->name('templates.create');
@@ -477,6 +490,8 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::post('vaults/{vault}/contacts/{contact}/avatar', [ContactAvatarController::class, 'update'])->middleware('flag:file-upload')->name('contacts.avatar.update');
         Route::delete('vaults/{vault}/contacts/{contact}/avatar', [ContactAvatarController::class, 'destroy'])->name('contacts.avatar.destroy');
         Route::put('vaults/{vault}/contacts/{contact}/template-version', [ContactStructureVersionController::class, 'update'])->name('contacts.templateVersion.update');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/contacts/{contact}/template-preview', [ContactTemplatePreviewController::class, 'show'])->name('contacts.templatePreview.show');
+        Route::put('vaults/{vault}/contacts/{contact}/template', [ContactTemplateController::class, 'update'])->name('contacts.template.update');
         Route::put('vaults/{vault}/contacts/{contact}/sections/{section}', [ContactSectionController::class, 'update'])->name('contacts.sections.update');
 
         Route::match(['GET', 'QUERY'], 'vaults/{vault}/contacts/{contact}/reminders', [ContactReminderController::class, 'index'])->name('contacts.reminders');

@@ -102,7 +102,7 @@ $writeParams = [
     ['name' => 'title', 'type' => 'string', 'required' => false, 'description' => 'A title, up to 255 characters. Without one, the life event is called by the name of its type.', 'example' => 'Lunch at Cugino’s'],
     ['name' => 'narrative', 'type' => 'string', 'required' => false, 'description' => 'What happened, up to 65,535 characters.', 'example' => 'Michael insisted on paying, then asked for the receipt.'],
     ['name' => 'location', 'type' => 'string', 'required' => false, 'description' => 'Where it happened, up to 255 characters.', 'example' => 'Scranton'],
-    ['name' => 'duration_in_minutes', 'type' => 'integer', 'required' => false, 'description' => 'How long it lasted, from 1 to 100,000 minutes.', 'example' => 60],
+    ['name' => 'duration_in_minutes', 'type' => 'integer', 'required' => false, 'description' => 'How long it lasted, from 1 to 525,600 minutes (one year).', 'example' => 60],
     ['name' => 'fields', 'type' => 'object', 'required' => false, 'description' => 'The values of the custom fields its type asks for, keyed by field id. A text field takes a string, a select field the id of its choice, a multiple select field a list of them, a date a year, a month and a day. A repeating group takes a list of repetitions, each holding its id when it already exists and its values keyed by the ids of the fields inside the group. A file field cannot be written here and answers 422.', 'example' => ['412' => 'Chicken parm']],
 ];
 
@@ -132,7 +132,7 @@ return [
             'queryParams' => [
                 ['name' => 'contact', 'type' => 'string', 'required' => false, 'description' => 'Only the life events this contact took part in, named by its slug or its id. A contact of another vault answers 404.'],
                 ['name' => 'life_event_type', 'type' => 'string', 'required' => false, 'description' => 'Only the life events of this type, named by its id. A type deleted since still narrows the list to the life events recorded as it. A type of another account answers 404.'],
-                ['name' => 'slice', 'type' => 'string', 'required' => false, 'description' => 'upcoming, for the life events dated today or later, the nearest first, or a year such as 2024, for that year up to yesterday, the most recent first. Today is the key owner’s, in their time zone. Any other value answers 422.', 'example' => '2024'],
+                ['name' => 'slice', 'type' => 'string', 'required' => false, 'description' => 'upcoming, for the life events dated today or later, the nearest first, past, for every life event before today, the most recent first, or a year such as 2024, for that year up to yesterday, the most recent first. Today is the key owner’s, in their time zone. Any other value answers 422.', 'example' => '2024'],
                 ['name' => 'page', 'type' => 'integer', 'required' => false, 'description' => 'Which page to answer with.', 'default' => '1', 'example' => 2],
                 ['name' => 'per_page', 'type' => 'integer', 'required' => false, 'description' => 'How many records one page holds, between 1 and 100. A number outside the range is brought back into it rather than refused.', 'default' => '25', 'example' => 10],
             ],
@@ -145,9 +145,9 @@ return [
         [
             'id' => 'life-event-slices-index',
             'returnFields' => [
-                ['name' => 'data', 'type' => 'array', 'description' => 'The slices of the timeline: upcoming first, then every year holding a life event before today, the most recent first.'],
+                ['name' => 'data', 'type' => 'array', 'description' => 'The slices of the timeline: upcoming first, then past when the vault holds a life event before today, then every year holding one, the most recent first.'],
                 ['name' => 'data[]', 'type' => 'object', 'description' => 'One slice.'],
-                ['name' => 'data[].slice', 'type' => 'string', 'description' => 'upcoming, or a year written with four digits. Pass it as slice to the list of life events.'],
+                ['name' => 'data[].slice', 'type' => 'string', 'description' => 'upcoming, past, or a year written with four digits. Pass it as slice to the list of life events.'],
                 ['name' => 'data[].count', 'type' => 'integer', 'description' => 'How many life events the slice holds under contact and life_event_type.'],
                 ['name' => 'data[].total', 'type' => 'integer', 'description' => 'How many life events the slice holds without them, so a year they empty is still listed.'],
                 ['name' => 'meta', 'type' => 'object', 'description' => 'What holds for the whole vault.'],
@@ -159,7 +159,7 @@ return [
             'method' => 'GET',
             'path' => '/vaults/{vault}/life-event-slices',
             'examplePath' => '/vaults/'.$vaultSlug.'/life-event-slices',
-            'description' => 'Count the life events of a vault in each slice of its timeline: what is upcoming, then each year before today.',
+            'description' => 'Count the life events of a vault in each slice of its timeline: what is upcoming, everything before today, then each year before today.',
             'body' => [
                 'Every count comes from one reading of the vault, so the answer costs the same however many years it holds. Deleted life events are left out.',
             ],
@@ -173,6 +173,7 @@ return [
             'response' => [
                 'data' => [
                     ['slice' => 'upcoming', 'count' => 2, 'total' => 2],
+                    ['slice' => 'past', 'count' => 14, 'total' => 27],
                     ['slice' => '2025', 'count' => 14, 'total' => 18],
                     ['slice' => '2024', 'count' => 0, 'total' => 9],
                 ],

@@ -16,6 +16,7 @@ use App\Exceptions\LifeEventTypeIsNotAvailable;
 use App\Exceptions\NotEnoughRepetitions;
 use App\Exceptions\NotEnoughStorageLeft;
 use App\Exceptions\TooManyRepetitions;
+use App\Helpers\Duration;
 use App\Helpers\FieldValueRules;
 use App\Helpers\LifeEventTimeline;
 use App\Http\Controllers\Controller;
@@ -45,7 +46,7 @@ class LifeEventController extends Controller
         $validated = $request->validate([
             'contact' => ['nullable', 'string'],
             'life_event_type' => ['nullable', 'string'],
-            'slice' => ['nullable', 'string', 'regex:/^(upcoming|\d{4})$/'],
+            'slice' => ['nullable', 'string', 'regex:/^(upcoming|past|\d{4})$/'],
         ]);
 
         $contact = isset($validated['contact'])
@@ -239,7 +240,7 @@ class LifeEventController extends Controller
             'title' => [...$sometimes, 'nullable', 'string', 'max:255'],
             'narrative' => [...$sometimes, 'nullable', 'string', 'max:65535'],
             'location' => [...$sometimes, 'nullable', 'string', 'max:255'],
-            'duration_in_minutes' => [...$sometimes, 'nullable', 'integer', 'min:1', 'max:100000'],
+            'duration_in_minutes' => [...$sometimes, 'nullable', 'integer', 'min:1', 'max:'.Duration::LONGEST_IN_MINUTES],
             'fields' => ['nullable', 'array'],
         ];
     }

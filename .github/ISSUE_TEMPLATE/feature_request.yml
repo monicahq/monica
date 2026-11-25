@@ -1,0 +1,19 @@
+name: Feature request
+description: Something Monica does not do yet.
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Search the [open issues](https://github.com/monicahq/monica/issues) first, and add a 👍 to an existing one rather than opening a second.
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem
+      description: What you are trying to do, and why Monica does not let you do it today.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What you propose
+      description: How you would like Monica to solve it, if you have an idea.

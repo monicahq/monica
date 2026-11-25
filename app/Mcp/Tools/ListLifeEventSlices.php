@@ -14,7 +14,7 @@ use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
 use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
 use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
-#[Description('Count the life events of one vault in each slice of its timeline: what is upcoming, then every year before today holding one, most recent first. count follows the contact and the type given, total does not, so a year they empty is still listed.')]
+#[Description('Count the life events of one vault in each slice of its timeline: what is upcoming, then past for everything before today, then every year before today holding one, most recent first. count follows the contact and the type given, total does not, so a year they empty is still listed.')]
 #[IsReadOnly]
 #[IsDestructive(false)]
 #[IsOpenWorld(false)]

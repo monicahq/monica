@@ -29,7 +29,14 @@ class FieldValueRules
      */
     public static function for(Collection $fields, ?Vault $vault = null): array
     {
-        $rules = [];
+        $topLevelIds = $fields
+            ->filter(fn (Field $field): bool => $field->parent_field_id === null && $field->type->hasAnInput())
+            ->pluck('id')
+            ->implode(',');
+
+        $rules = [
+            'fields' => ['nullable', "array:{$topLevelIds}"],
+        ];
 
         foreach ($fields as $field) {
             if (! $field->type->hasAnInput()) {
@@ -92,14 +99,20 @@ class FieldValueRules
     /** @return array<string, array<int, mixed>> */
     private static function forRepetitionsOf(Field $field, ?Vault $vault): array
     {
+        $childIds = $field->children
+            ->filter(fn (Field $child): bool => $child->type->hasAnInput() && ! $child->type->isRepeater())
+            ->pluck('id')
+            ->implode(',');
+
         $rules = [
             "fields.{$field->id}" => array_filter([
                 $field->is_required ? 'required' : 'nullable',
                 'array',
                 $field->repeat_max === null ? null : "max:{$field->repeat_max}",
             ]),
+            "fields.{$field->id}.*" => ['array:id,values,labels,label_wordings,unknown_year'],
             "fields.{$field->id}.*.id" => ['nullable', 'integer'],
-            "fields.{$field->id}.*.values" => ['nullable', 'array'],
+            "fields.{$field->id}.*.values" => ['nullable', "array:{$childIds}"],
             "fields.{$field->id}.*.labels" => ['nullable', 'array'],
             "fields.{$field->id}.*.label_wordings" => ['nullable', 'array'],
         ];
@@ -145,7 +158,7 @@ class FieldValueRules
             FieldTypeEnum::Url => ['string', 'url', 'max:1024'],
             FieldTypeEnum::Email => ['string', 'email', 'max:1024'],
             FieldTypeEnum::Number => ['numeric', 'min:-'.FieldValue::LARGEST_NUMBER, 'max:'.FieldValue::LARGEST_NUMBER],
-            FieldTypeEnum::Duration => ['integer', 'min:1', 'max:100000'],
+            FieldTypeEnum::Duration => ['integer', 'min:1', 'max:'.Duration::LONGEST_IN_MINUTES],
             FieldTypeEnum::Boolean => ['boolean'],
             FieldTypeEnum::Date, FieldTypeEnum::RecurringDate => ['date'],
             FieldTypeEnum::Select, FieldTypeEnum::Radio => [self::choiceRule($field)],

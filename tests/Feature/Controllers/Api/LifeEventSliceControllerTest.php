@@ -42,7 +42,8 @@ class LifeEventSliceControllerTest extends TestCase
         $this->json('GET', "/api/v1/vaults/{$vault->uuid}/life-event-slices", ['contact' => $dwight->uuid])
             ->assertOk()
             ->assertJsonStructure($this->jsonStructure)
-            ->assertJsonPath('data.1', ['slice' => '2025', 'count' => 1, 'total' => 2])
+            ->assertJsonPath('data.1', ['slice' => 'past', 'count' => 1, 'total' => 2])
+            ->assertJsonPath('data.2', ['slice' => '2025', 'count' => 1, 'total' => 2])
             ->assertJsonPath('meta.today', '2026-11-22');
     }
 
@@ -62,7 +63,7 @@ class LifeEventSliceControllerTest extends TestCase
 
         $this->json('GET', "/api/v1/vaults/{$vault->uuid}/life-event-slices", ['life_event_type' => $prank->lifeEventType->uuid])
             ->assertOk()
-            ->assertJsonPath('data.1', ['slice' => '2025', 'count' => 1, 'total' => 2]);
+            ->assertJsonPath('data.2', ['slice' => '2025', 'count' => 1, 'total' => 2]);
     }
 
     #[Test]

@@ -35,6 +35,7 @@
 @php
   use App\Enums\FieldTypeEnum;
   use App\Enums\ValueListEnum;
+  use App\Helpers\Duration;
   use App\Helpers\FieldValueFormatter;
   use App\Helpers\FlagState;
   use App\Models\FieldValue;
@@ -452,7 +453,11 @@
           FieldTypeEnum::Number => -FieldValue::LARGEST_NUMBER,
           default => null,
       }"
-      :max="$type === FieldTypeEnum::Number ? FieldValue::LARGEST_NUMBER : null"
+      :max="match ($type) {
+          FieldTypeEnum::Duration => Duration::LONGEST_IN_MINUTES,
+          FieldTypeEnum::Number => FieldValue::LARGEST_NUMBER,
+          default => null,
+      }"
       :placeholder="$field->placeholder"
       :help="$field->help_text"
       :error="$error"

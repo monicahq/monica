@@ -1,317 +1,383 @@
-# Monica v3: design guidelines
-
-## 1. Direction
-
-The product is a personal notebook that happens to be extremely powerful. A page about somebody's mother should not feel like opening a Salesforce record.
-
-It should feel quiet, calm, precise and unhurried. It should not feel like a social network, an enterprise CRM, an admin dashboard, a wall of cards, or a marketing template.
-
-**This supersedes the warm paper direction.** Between August 2026 and now this document described terracotta, display typography, a floating dock and low warm shadows. None of that shipped, and some of it never existed in the code at all. What the product actually is, and what this document now describes, is a shadcn-inspired console: a white page, cool grey neutrals, a hairline around anything that is a surface, corners of 6 and 8, and no accent colour whatsoever.
-
-What survived every revision is the accessibility contract, the vocabulary, the voice, the row-based lists, and the rule that a person's own data outranks the chrome around it.
-
-Three rules that decide most arguments:
-
-1. **User data outranks chrome.** Names, dates, notes and relationships get more visual weight than the containers around them.
-2. **Colour identifies, it never decorates.** There is no brand hue. The only saturated colour in the interface says a thing succeeded, needs attention or failed, or it is a colour the user chose themselves, which is what a vault colour and an entity type colour are.
-3. **Nothing changes under somebody's feet.** This is the product's first principle (spec 3.1) and it is a visual rule too. No layout that silently reflows, no destructive action without a named consequence, no auto-applied structure update.
-
+---
+version: alpha
+name: Monica
+description: A quiet console for a personal notebook. White page, cool grey neutrals, hairlines around surfaces, corners of 6 and 8, no accent colour.
+colors:
+  primary: "#18181b"
+  on-primary: "#fafafa"
+  primary-hover: "#27272a"
+  page: "#ffffff"
+  canvas: "#ffffff"
+  card: "#fafafa"
+  sunken: "#fafafa"
+  input: "#ffffff"
+  hairline: "#e4e4e7"
+  hairline-strong: "#d4d4d8"
+  hairline-soft: "#f4f4f5"
+  hover: "#f4f4f5"
+  ink: "#09090b"
+  ink-soft: "#27272a"
+  body: "#52525b"
+  muted: "#71717a"
+  muted-soft: "#a1a1aa"
+  placeholder: "#71717a"
+  focus-ring: "#09090b"
+  success: "#15803d"
+  success-tint: "#f0fdf4"
+  success-edge: "#bbf7d0"
+  warning: "#b45309"
+  warning-tint: "#fffbeb"
+  warning-edge: "#fde68a"
+  error: "#b91c1c"
+  error-hover: "#991b1b"
+  error-tint: "#fef2f2"
+  error-edge: "#fecaca"
+  on-error: "#ffffff"
+  query: "#1d4ed8"
+  query-tint: "#eff6ff"
+  query-edge: "#bfdbfe"
+  admin-signal: "#fbbf24"
+  dark:
+    primary: "#fafafa"
+    on-primary: "#18181b"
+    primary-hover: "#ffffff"
+    page: "#09090b"
+    canvas: "#09090b"
+    card: "#18181b"
+    sunken: "#18181b"
+    input: "#09090b"
+    hairline: "#27272a"
+    hairline-strong: "#3f3f46"
+    hairline-soft: "#1f1f23"
+    hover: "#27272a"
+    ink: "#fafafa"
+    ink-soft: "#e4e4e7"
+    body: "#d4d4d8"
+    muted: "#a1a1aa"
+    muted-soft: "#71717a"
+    placeholder: "#a1a1aa"
+    focus-ring: "#d4d4d8"
+    success: "#4ade80"
+    success-tint: "#0c2318"
+    success-edge: "#14532d"
+    warning: "#fbbf24"
+    warning-tint: "#271a06"
+    warning-edge: "#78350f"
+    error: "#f87171"
+    error-hover: "#fca5a5"
+    error-tint: "#2a1214"
+    error-edge: "#7f1d1d"
+    on-error: "#18181b"
+    query: "#60a5fa"
+    query-tint: "#0b1a33"
+    query-edge: "#1e3a8a"
+  identity:
+    blue: "#3f5fd0"
+    green: "#4f8a49"
+    amber: "#9a6a24"
+    rust: "#9a3f2b"
+    violet: "#6b4fa8"
+    teal: "#2f7f86"
+    plum: "#a8447a"
+    slate: "#4a4a52"
+typography:
+  page-title:
+    fontFamily: system-ui
+    fontSize: 28px
+    fontWeight: 600
+    lineHeight: 1.15
+    letterSpacing: -0.03em
+  prose-heading:
+    fontFamily: system-ui
+    fontSize: 18px
+    fontWeight: 600
+    lineHeight: 1.3
+    letterSpacing: -0.02em
+  section-title:
+    fontFamily: system-ui
+    fontSize: 16px
+    fontWeight: 600
+    lineHeight: 1.35
+    letterSpacing: -0.02em
+  lede:
+    fontFamily: system-ui
+    fontSize: 16px
+    fontWeight: 400
+    lineHeight: 1.55
+  card-title:
+    fontFamily: system-ui
+    fontSize: 15px
+    fontWeight: 600
+    lineHeight: 1.4
+    letterSpacing: -0.01em
+  body-md:
+    fontFamily: system-ui
+    fontSize: 13.5px
+    fontWeight: 400
+    lineHeight: 1.6
+  body-sm:
+    fontFamily: system-ui
+    fontSize: 13px
+    fontWeight: 400
+    lineHeight: 1.5
+  body-xs:
+    fontFamily: system-ui
+    fontSize: 12.5px
+    fontWeight: 400
+    lineHeight: 1.4
+  label:
+    fontFamily: system-ui
+    fontSize: 12px
+    fontWeight: 500
+    lineHeight: 1.4
+  nav:
+    fontFamily: system-ui
+    fontSize: 13.5px
+    fontWeight: 500
+    lineHeight: 1
+  caption:
+    fontFamily: system-ui
+    fontSize: 11px
+    fontWeight: 500
+    lineHeight: 1.4
+    letterSpacing: 0.08em
+  code:
+    fontFamily: ui-monospace
+    fontSize: 12.5px
+    fontWeight: 400
+    lineHeight: 1.4
+rounded:
+  xs: 4px
+  sm: 6px
+  md: 6px
+  lg: 8px
+  xl: 8px
+  full: 9999px
+spacing:
+  base: 4px
+  section-gap: 32px
+  gutter: 16px
+  sidebar: 248px
+  top-bar: 56px
+  reading-column: 960px
+  wide-column: 1400px
+  admin-column: 1120px
+  sm:
+    gutter: 24px
+motion:
+  state-change:
+    duration: 150ms
+    delay: 0ms
+    timingFunction: cubic-bezier(0.22, 1, 0.36, 1)
+  menu:
+    duration: 170ms
+    delay: 0ms
+    timingFunction: cubic-bezier(0.22, 1, 0.36, 1)
+  surface-enter:
+    duration: 220ms
+    delay: 0ms
+    timingFunction: cubic-bezier(0.22, 1, 0.36, 1)
+  toast-enter:
+    duration: 260ms
+    delay: 0ms
+    timingFunction: cubic-bezier(0.22, 1, 0.36, 1)
+  toast-exit:
+    duration: 200ms
+    delay: 0ms
+    timingFunction: ease-in
+components:
+  button-primary:
+    backgroundColor: "{colors.primary}"
+    textColor: "{colors.on-primary}"
+    typography: "{typography.nav}"
+    rounded: "{rounded.md}"
+    height: 36px
+    padding: 15px
+  button-primary-hover:
+    backgroundColor: "{colors.primary-hover}"
+  button-secondary:
+    backgroundColor: "{colors.canvas}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.md}"
+    height: 36px
+  button-secondary-hover:
+    backgroundColor: "{colors.hover}"
+  button-ghost:
+    textColor: "{colors.body}"
+    rounded: "{rounded.md}"
+    height: 36px
+  button-danger:
+    backgroundColor: "{colors.error}"
+    textColor: "{colors.on-error}"
+    rounded: "{rounded.md}"
+    height: 36px
+  button-danger-hover:
+    backgroundColor: "{colors.error-hover}"
+  button-small:
+    height: 32px
+    padding: 12px
+  field:
+    backgroundColor: "{colors.input}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.md}"
+    height: 36px
+    padding: 12px
+  badge:
+    backgroundColor: "{colors.hover}"
+    textColor: "{colors.body}"
+    typography: "{typography.caption}"
+    rounded: "{rounded.full}"
+    height: 22px
+  chip:
+    backgroundColor: "{colors.canvas}"
+    textColor: "{colors.body}"
+    rounded: "{rounded.full}"
+    height: 32px
+  chip-selected:
+    backgroundColor: "{colors.primary}"
+    textColor: "{colors.on-primary}"
+  tab:
+    textColor: "{colors.muted}"
+    typography: "{typography.nav}"
+    height: 36px
+  tab-selected:
+    textColor: "{colors.ink}"
+  nav-row:
+    textColor: "{colors.body}"
+    typography: "{typography.nav}"
+    rounded: "{rounded.md}"
+    height: 32px
+  nav-row-current:
+    backgroundColor: "{colors.canvas}"
+    textColor: "{colors.ink}"
+  panel:
+    backgroundColor: "{colors.canvas}"
+    rounded: "{rounded.lg}"
+    padding: 16px
+  notice:
+    backgroundColor: "{colors.card}"
+    rounded: "{rounded.md}"
+    padding: 16px
+  row:
+    typography: "{typography.body-md}"
+    padding: 16px
+  admin-bar:
+    backgroundColor: "{colors.primary}"
+    textColor: "{colors.on-primary}"
 ---
 
-## 2. Accessibility contract
+# Monica: design system
 
-AA is a delivery condition, not a phase. Two consequences specific to this product:
+Every value below lives in `@resources/css/app.css`. The `@theme` block names the tokens Blade can reach; the `:root` and `.dark` blocks are the only place a hex is written. A feature view uses semantic utilities only: never a raw hex, a pixel radius or a pixel font size.
 
-**Fields are generated, not hand-built.** A screen is assembled from user-defined templates, so accessibility cannot be retrofitted screen by screen. Each *field type* is made accessible once, in its component, and every template inherits it. A template author can produce an ugly page. They must not be able to produce an inaccessible one.
+## Overview
 
-**The builder is a product surface.** Creating a template, reordering sections and editing a repeater must all work with keyboard and screen reader. It is the hardest screen in the product and it does not get an exemption.
+A personal notebook that happens to be powerful. A page about somebody's mother must not feel like a CRM record, a social network, an admin dashboard or a marketing template. It feels quiet, calm, precise and unhurried.
 
-Non-negotiables on every screen:
+The look is a shadcn-inspired console: a white page, cool grey neutrals, a hairline around anything that is a surface, and no accent colour. Three rules settle most arguments.
 
-- Keyboard-complete, logical tab order, visible focus, no traps outside modals.
-- Text 4.5:1, large text 3:1, control boundaries and focus indicators 3:1.
-- Meaning never carried by colour alone. Always a word or a shape too.
-- Persistent labels. Placeholders are never labels.
-- Readable at 200% zoom and at 320px width.
-- `prefers-reduced-motion` removes motion rather than shortening it.
-- Errors programmatically tied to their field. Dynamic results announced.
+1. **User data outranks chrome.** Names, dates, notes and relationships carry more weight than the containers around them.
+2. **Colour identifies, it never decorates.** The only saturated colour says something succeeded, needs attention or failed, or it is a colour the user chose (a vault colour, an entity type colour).
+3. **Nothing changes under somebody's feet.** No silent reflow, no destructive action without a named consequence, no structure update applied automatically.
 
-One deliberate departure from the source design. The drawing this system was taken from sets its help text at `#a1a1aa`, which is 2.6:1 on white. We set it in `--muted`, which measures 4.9:1. The contract in this section outranks the drawing.
+WCAG 2.2 AA is a delivery condition, not a phase. Screens are generated from user templates, so each field type is made accessible once, in its component, and every template inherits it. The template builder gets no exemption: it works by keyboard and screen reader.
 
----
+## Colors
 
-## 3. Tokens
+Cool greys, and nothing else until something has gone right or wrong. The top level of the `colors` tokens is the light theme; the `dark` group overrides it when `.dark` is set on the root.
 
-Every value lives in `resources/css/app.css`. Semantic tokens only in components, never a raw hex, px radius or px font size in a feature view.
+- **Primary (#18181b):** the filled button, a selected chip, the admin bar. It inverts with the theme (#fafafa in dark) rather than keeping a hue of its own.
+- **Surfaces:** `page`, `canvas` and `input` are the same white. A panel is separated from the page by its hairline and one pixel of shadow, not by a lighter fill. `card` is the one tinted step: the sidebar, an icon tile, a quiet notice.
+- **Hairlines:** `hairline` is every border; `hairline-strong` is the edge of a control and a link underline; `hairline-soft` sits between rows.
+- **Text ramp:** `ink`, `ink-soft`, `body`, `muted` and `placeholder` all reach 4.5:1 on page, canvas and card. `muted-soft` does not, and is for marks and micro-labels, never a sentence.
+- **Semantic triads:** `success`, `warning` and `error` each come as the word, a `-tint` ground and an `-edge` hairline. `query` is used only by the API documentation method badges. `admin-signal` marks the administrator's own badge.
+- **Identity:** the eight `identity` hues are the vault colours of `VaultColourEnum`. They are data, not interface, and changing one is a data migration.
 
-The file has two parts. The `@theme` block, which names every token Blade can reach and maps it onto a runtime variable. And the `:root` and `.dark` blocks, which are the only place a hex appears and which are what the theme flips.
+A link is `ink` with a `hairline-strong` underline, and on hover the underline moves, not the word. There is no blue link.
 
-There is no `@layer components` and there are no component classes. A button is one utility string in one file rather than a rule here and a class name there.
+## Typography
 
-**The names are ours, the values are shadcn's.** `--ink`, `--hairline`, `--canvas` and `--hover` are not renamed to `foreground`, `border`, `card` and `accent`. Renaming them would touch about nine hundred call sites to change nothing anybody sees, and Tailwind emits nothing at all for a token it does not know, so a single missed site would be silently unstyled rather than loud.
+One family, the system sans stack. Nothing is downloaded, so the page paints on the first frame and no visitor is announced to a font service. `ui-monospace` is for machine values (ids, keys, slugs, shortcuts) and never for a name or a date. There is no display face.
 
-### 3.1 Colour: the palette
+28px down to 13.5px is the widest gap in the product; everything between is within three pixels, so weight and colour separate a card title from the sentence under it. **600 is for headings, row titles and a name in a list. 500 is for controls, labels, a current navigation row and emphasis.** A page of semibold buttons reads as labels shouting. The `caption` level is uppercase, 11px, tracked at 0.08em, and is the only uppercase text in the product. Fields render at 16px on phones so Safari does not zoom, and return to 13.5px from `sm` up.
 
-Cool greys, and nothing else until something has gone right or wrong.
+## Layout
 
-| Token | Light | Dark | Job |
-| --- | --- | --- | --- |
-| `--page` | `#ffffff` | `#09090b` | Behind everything |
-| `--canvas` | `#ffffff` | `#09090b` | A panel, a dialog, a menu |
-| `--card` | `#fafafa` | `#18181b` | A tinted step: the sidebar, a footer band, an icon tile |
-| `--sunken` | `#fafafa` | `#18181b` | A read-only well |
-| `--input` | `#ffffff` | `#09090b` | A field |
-| `--hairline` | `#e4e4e7` | `#27272a` | Every border in the product |
-| `--hairline-strong` | `#d4d4d8` | `#3f3f46` | A control edge, a link underline |
-| `--hairline-soft` | `#f4f4f5` | `#1f1f23` | Between rows in a list |
-| `--hover` | `#f4f4f5` | `#27272a` | Under a pointer |
+Base unit 4. A heading and 32px of space is the first tool for separating two things; a panel is the second, kept for a section genuinely independent of what sits above it.
 
-A panel on the page is the same white as the page. What separates them is the hairline and one pixel of shadow under it. That is the whole idea: a surface is a line around some space, not a lighter rectangle.
+- **Shell** (`@resources/views/layouts/shell.blade.php`): a 248px sidebar in `card` with a hairline down its edge, beside a 56px top bar over a hairline. Below 1024px (`lg`) the sidebar becomes an off canvas drawer opened from the bar.
+- **Content column:** 960px, centred, 16px gutter on phones and 24px from `sm`. A `wide` screen (the template builder) takes 1400px and owns its own scrolling. The admin layout reads 1120px under an inverted bar.
+- **Footer bar:** sticky at the foot, `canvas` over a top hairline, its contents aligned with the content column.
+- **Breakpoints:** Tailwind defaults plus `xs` (35rem) and `topbar-labels` (56.25rem), where the top bar buttons gain their words.
 
-The text ramp, measured rather than eyeballed. `ink`, `ink-soft`, `body`, `muted` and `placeholder` each meet 4.5:1 against the page, the canvas and the card. `muted-soft` sits below that and is for marks that are not text, never for a sentence.
+Adapt, do not shrink. Stack regions, reduce columns, keep touch targets. Never scale type down to make a desktop layout fit, and never hide data to save space. Everything holds at 320px and at 200% zoom.
 
-| Token | Light | Dark |
-| --- | --- | --- |
-| `--ink` | `#09090b` | `#fafafa` |
-| `--ink-soft` | `#27272a` | `#e4e4e7` |
-| `--body` | `#52525b` | `#d4d4d8` |
-| `--muted` | `#71717a` | `#a1a1aa` |
-| `--muted-soft` | `#a1a1aa` | `#71717a` |
-| `--placeholder` | `#71717a` | `#a1a1aa` |
+## Elevation & Depth
 
-### 3.2 Colour: there is no accent
-
-`--brand`, `--text-link-hover`, `--accent-tint`, `--sand`, `--sand-deep` and the whole `--shell-*` chrome ramp were deleted. A link is `--ink` with a `--hairline-strong` underline, and what moves on hover is the underline rather than the word. A focus ring is `--ink`. The filled button is `--primary`, which is `#18181b` in light and `#fafafa` in dark, so it inverts with the theme rather than keeping a colour of its own.
-
-The one place the product still needs a second ground is the admin bar. It is inverted, `bg-primary text-on-primary`, in both themes. Somebody deactivating a user while believing they are editing their own profile is the failure that bar exists to prevent, and an inverted strip says which of the two products you are in more loudly than the blue tint ever did.
-
-### 3.3 Colour: the names for jobs
-
-Each semantic colour comes in three parts, which is what a badge is built from: the word, the ground it sits on, and the hairline around it.
-
-| Token | Light | Dark |
-| --- | --- | --- |
-| `--success` / `-tint` / `-edge` | `#15803d` / `#f0fdf4` / `#bbf7d0` | `#4ade80` / `#0c2318` / `#14532d` |
-| `--warning` / `-tint` / `-edge` | `#b45309` / `#fffbeb` / `#fde68a` | `#fbbf24` / `#271a06` / `#78350f` |
-| `--danger` / `-tint` / `-edge` | `#b91c1c` / `#fef2f2` / `#fecaca` | `#f87171` / `#2a1214` / `#7f1d1d` |
-
-Identity colour is separate and is content rather than interface. The eight hues in `avatar-initials.blade.php` are the vault colours, which are stored in the database as `VaultColourEnum` and `EntityType::COLOURS`. Re-hueing them is a data migration, not a design change.
-
-### 3.4 Type
-
-One family, the system sans stack. Nothing is downloaded, so a page paints on the first frame and no visitor is announced to a font service. The source design sets everything in Geist through a font CDN; we take its sizes, its weights and its tracking, and leave the request behind. The mono stack is for machine values (ids, keys, slugs, shortcuts) and never for a name or a date.
-
-There is no display face. A page title is the same family at a larger size and a heavier weight.
-
-| Step | Size | Weight | Tracking | Job |
-| --- | --- | --- | --- | --- |
-| `text-page-title`, `text-2xl` | 28 | 600 | -0.03em | The `<h1>` of a screen |
-| `text-xl` | 18 | 600 | -0.02em | A heading inside long-form prose |
-| `text-section-title`, `text-lg` | 16 | 600 | -0.02em | A section within a screen |
-| `text-card-title` | 15 | 600 | -0.01em | A panel header |
-| `text-base` | 13.5 | 400 | | Running text |
-| `text-sm` | 13 | 400 | | A secondary line |
-| `text-xs` | 12.5 | 400 | | A hint, metadata |
-| `text-label` | 12 | 500 | | A field label |
-| `text-nav` | 13.5 | 500 | | A navigation row, a tab |
-| `text-[11px]` + `tracking-caption` | 11 | 500 | 0.08em | The uppercase micro-label |
-
-28 to 13.5 is the widest gap in the product. Everything between is within three pixels of everything else, and what separates a card title from the sentence under it is weight and colour rather than size.
-
-**Controls are medium, not semibold.** A page of semibold buttons reads as a row of labels shouting, and the weight is not what says a button is a button. 600 is for a heading, a row title and the name in a list. 500 is for a control, a label, an active navigation row and emphasis inside a sentence.
-
-### 3.5 Space, shape, motion
-
-Base unit 4.
-
-Corners are two numbers. **6** is a control: a button, a field, a nav row, a menu item, an icon tile. **8** is a surface: a card, a panel, a menu, a dialog. **4** is left for the few marks small enough that 6 reads as a circle. A badge is not on this scale at all, because a badge is fully round, and so is an avatar. Nothing else is.
-
-There is barely an elevation layer.
+Depth comes from hairlines, not shadows. There are four shadows and no others.
 
 | Shadow | Value | Where |
 | --- | --- | --- |
-| `--shadow-panel` | `0 1px 2px rgb(0 0 0 / 0.04)` | A card, under its hairline |
-| `--shadow-control` | `0 1px 2px rgb(9 9 11 / 0.06)` | A secondary or bar button, under its edge |
-| `--shadow-nav-active` | `inset 0 0 0 1px var(--hairline), 0 1px 2px rgb(0 0 0 / 0.04)` | The navigation row you are on |
-| `--shadow-pop` | `0 10px 24px -8px var(--pop-shadow)` | A menu, a dialog, a toast |
-| `--shadow-quote` | `0 18px 40px -22px var(--quote-shadow)` | The quote card on the guest screens |
+| `shadow-panel` | `0 1px 2px rgb(0 0 0 / 0.04)` | A panel, under its hairline |
+| `shadow-control` | `0 1px 2px rgb(9 9 11 / 0.06)` | A secondary or bar button |
+| `shadow-nav-active` | inset 1px `hairline` ring plus `shadow-panel` | The navigation row you are on |
+| `shadow-pop` | `0 10px 24px -8px` at 16% ink (60% black in dark) | A menu, a dialog, a toast |
 
-Motion is short and plain: `--duration-fast` 150ms for feedback, `--duration-standard` 170ms for menus, `--duration-slow` 220ms for panels. One easing, which replaces Tailwind's `ease-out`. They are read on a tag as `duration-(--duration-fast)`, and they are variables rather than `@theme` tokens so that the reduced-motion block can zero all of them in one rule instead of putting a `motion-reduce:` variant on every element in the product that moves.
+A dialog sits over a `scrim` of ink at 50% (black at 70% in dark).
 
-The one real animation is the toast, whose 4500ms timer bar is coupled to the auto-dismiss timeout in `components/toaster.blade.php`. The two have to be changed together.
+## Shapes
 
----
+Corners are two numbers. **6** (`rounded-md`, also `rounded-sm`) is a control: a button, a field, a navigation row, a menu item, an icon tile, a notice. **8** (`rounded-lg`) is a surface: a panel, a menu, a dialog. **4** (`rounded-xs`) is for marks so small that 6 reads as a circle. **Full** is for a badge, a chip and an avatar, and nothing else.
 
-## 4. Shell
+Icons are drawn by the product in `@resources/views/components/icon.blade.php`: a 16 by 16 viewBox, stroke 1.4, no fill, `currentColor`, round caps. No icon library, icon font, unicode symbol or emoji. A missing glyph is drawn in that file. Decorative glyphs are `aria-hidden`; a glyph alone in a control takes a `label`. The logo is never redrawn or recoloured, except inverted on ink.
 
-`layouts/shell.blade.php` is the signed-in shell: a navigation column on the left that stays put, and the screen itself on the right under a bar that says where you are.
+## Motion & Micro-interaction
 
-- **Sidebar 248px.** A tinted panel (`--card`) beside the page with a hairline down its edge, not a dark slab against it. What says which side is furniture is the tint and the line, not the contrast. Below 1024px it becomes an off-canvas drawer opened from the bar.
-- **Bar 56px, sticky.** The page colour at 85% with an 8px blur behind it, over a hairline. What scrolls under it stays legible instead of disappearing. It carries no shadow.
-- **Reading column 960px**, centred, with a 24px gutter and 28px above. It is capped because a settings form set across a 27-inch monitor is not a better settings form.
-- **Wide screens** ask for `wide`, which drops the reading cap for a 1400px one and makes the content column exactly as tall as the window, so a region inside it can own the scrolling. The template builder is what this exists for.
-- **Footer bar**, when a screen has one, is sticky at the foot and spans the window while its contents line up with the content column.
+Short and plain. Feedback takes 150ms, a menu 170ms, a panel or the drawer 220ms, all on one decelerating curve that replaces Tailwind's `ease-out`. Durations are CSS variables (`duration-(--duration-fast)`) so `prefers-reduced-motion` sets all of them to 0ms in one rule and stops the toast animations outright.
 
-`layouts/account.blade.php` is the same bar with no sidebar. `layouts/admin.blade.php` is the inverted bar described in 3.2, at 1120px. `layouts/marketplace.blade.php` is the only shell that draws for guests. `layouts/guest.blade.php` is bare.
+Hover changes a background, nothing more. Nothing moves, scales or lifts, and press does nothing. The toast is the one real animation; its 4500ms timer bar is tied to the auto dismiss timeout in `@resources/views/components/toaster.blade.php`, and the two change together.
 
-The sidebar is a slot rather than something the layout builds, because which vault it points at and which destination is current are the screen's business.
+## Voice & Content Strategy
 
-### The navigation row
+- **Tone:** direct, calm, specific and non judgemental. Address the reader as *you*; the application never speaks in the first person. Hard subjects (death, separation, illness) get neutral, respectful wording, with no euphemism and no condolence copy.
+- **Capitalisation:** sentence case everywhere, buttons and headings included. Uppercase only for the 11px caption.
+- **Terminology:** one word per concept, from the glossary in `@.claude/rules/translations.md`: vault, contact, template, section, field, reminder, life event.
+- **Actions:** verbs the user performs: *Add a relationship*, *Save changes*, *Complete reminder*. Never *Submit*, *OK* or *You're all set!*
+- **Explain, do not announce:** a supporting line says what a thing is for, not that it exists.
+- **Empty states** name what will land there ("Nobody here yet", then what the list will hold). Never "No data".
+- **Destructive actions** name the object and the consequence: "Delete this relationship? This removes the link between Alex and Jordan. Both contacts stay."
+- **Numbers and dates:** digits; dates as a person says them (14 March 1989, in three weeks). A count goes through `trans_choice()`.
+- **Emoji:** never.
 
-32px minimum, 6px corners, `text-nav`. Idle is `--body` on nothing. Hover is `--hover`. The destination you are on is a small raised card: `--canvas` fill with `--shadow-nav-active`, at weight 500. Group headings above them are the 11px uppercase micro-label in `--muted-soft`.
+## Components
 
----
+Every shared component is a Blade component in `@resources/views/components/`, most of them anonymous. The pattern is a `$base` class string plus a per variant `match`, merged through `$attributes->class()`. A property a variant chooses (a border colour, a background) is never also named in `$base`: equal specificity means Tailwind's own output order decides, not the string. `@.claude/rules/components.md` lists which component to reach for.
 
-## 5. Surfaces
+- **Button** (`x-button`): 36px, or 32px small, weight 500. Variants `primary`, `secondary`, `bar`, `ghost`, `danger`, and `inverted` for the admin bar. Secondary and bar sit in `canvas` inside `hairline-strong` with `shadow-control`; on hover the edge darkens to `muted-soft`. Loading keeps the label and the width.
+- **Field** (`x-input`, `x-select`, `x-textarea`): 36px, or 32px small, `input` inside `hairline-strong`. Focus adds an ink border and a 3px ring at 20%; an invalid field takes the `error` border and ring. Labels are persistent, never a placeholder.
+- **Badge** (`x-badge`): a 22px pill at the caption size. Tones `neutral`, `info`, `success`, `warning`, `danger`, `accent` (filled `primary`), `signal`. The word carries the state; a badge without a word is a bug.
+- **Chip** (`x-chip`): a 32px pill filter. Selected fills with `primary` and carries `aria-current` or `aria-pressed`.
+- **Tabs** (`x-tabs`): a rule across the full width; the current tab thickens its own piece of it in `primary` and turns `ink`. No pill, no card.
+- **Navigation row:** 32px (40px below `lg`), `nav` type. Idle `body`, hover `hover`, current is `canvas` with `shadow-nav-active` at weight 500. Group headings are the caption in `muted-soft`.
+- **Panel** (`x-panel`): 8px corners, a hairline, `shadow-panel`, a header ruled off rather than tinted, a 16px body. `flush` lets a list of rows draw its own padding. `tone="danger"` is the only panel with a tinted header.
+- **Notice** (`x-notice`): a tinted block with a glyph. `info` is `canvas` in a hairline, `quiet` is `card` in a hairline, the others take their semantic triad.
+- **Row** (`x-row`): an outlined 32px icon tile, a semibold title, a `muted` description, right aligned meta, a hairline below. A linked row hovers to `hover` with an inset focus ring.
 
-**A heading and 32px of space is the first tool for separating two things.** A panel is the second, and it is for a section that is genuinely independent of what sits above it. Wrapping every paragraph in one turns a page into a stack of boxes.
+Focus is a 3px ring of `focus-ring` at 45%, outside the element (`focus-ring`), or inset inside a menu (`focus-ring-inset`), or the field variant (`focus-ring-field`). These recipes are named utilities and are never written out longhand.
 
-`<x-panel>` is the card: 8px corners, a hairline, `--shadow-panel`, a header ruled off rather than tinted, and a 16px body. The footer keeps a tint, because a strip a save button sits in is a different kind of thing from the body above it. `tone="danger"` is the one panel allowed a tinted header, and it is the only panel on a screen entitled to it.
+**Product patterns.** Contacts are rows, never a grid of cards, grouped by initial only in name order. The vault list is the one screen built from cards. The vault dashboard is six boxes of equal height, each one a link to its part. A relationship is written as a sentence ("Lucie is Théo's mother"), never an arrow. Sensitive fields are masked by default and revealed by a named control, never by hover.
 
-`flush` is for a panel whose body is a list of rows: the rows draw their own padding and hairlines.
+## Do's and Don'ts
 
-`<x-box>` is an older card primitive doing the same job with different markup. Merging the two is a real cleanup and it is not a design change.
-
----
-
-## 6. Components
-
-Every shared component is an anonymous Blade component in `resources/views/components`. The house pattern is a `@php` block computing a class string with `match`, merged through `$attributes->class([...])`.
-
-Where that pattern names a colour, the shared base string must not name the same one. Two utilities for one property have the same specificity, so what a browser draws is whichever Tailwind emitted last, and Tailwind orders its own output rather than reading the string. `border-transparent` in a base string beat every variant's border colour for as long as the button component had one, which is how a button with an edge in its class list rendered without one. A colour a variant chooses belongs to the variant, in every branch of the `match`.
-
-- **Button.** 36px, or 32px small, at weight 500, 6px corners. Five variants: primary (filled `--primary`), secondary and bar (white inside `--hairline-strong` over `--shadow-control`, drawn identically now that the bar is the same white as the page), ghost, danger. No bottom edge and nothing moves on press, but the secondary button owns its outline rather than borrowing the panel's: a control edged in the same hairline that separates a panel from the page reads as a bordered area rather than something to press, so it steps up to `--hairline-strong` and takes one pixel of shadow. The face stays the page white, so it gains a body without a second ground, and holds up in a footer strip, a sidebar and a card header alike. A tinted face is what this rules out. `--card` is what a footer and a sidebar are already drawn in, so a button filled that way disappears in both.
-- **Field.** 36px, or 32px small, 6px corners, white inside `--hairline-strong`. 16px on a phone so Safari does not zoom, and back down from `sm` up.
-- **Badge.** A pill. 22px, 11.5px at weight 500. The word carries the state and the tint only agrees with it, so a badge still works with the colour taken away, and a badge with no word in it is a bug.
-- **Chip.** A filter or a scope toggle. A pill that fills with `--primary` when it is in force, and carries `aria-current` or `aria-pressed` so the fill is not the only thing saying so.
-- **Tabs.** A rule that runs the whole width, and the tab you are on thickens its own piece of it. No enclosing pill, no card, nothing that looks like a button. A per-tab count takes a ground only on the tab you are on.
-- **Notice.** A tinted block with a glyph. `info` and `quiet` have no colour left, so they tell themselves apart by their ground: white inside a hairline, and `--card` inside a hairline.
-- **Row.** A list row with an outlined icon tile, a title, a description and right-aligned meta.
-
----
-
-## 7. States
-
-Every interactive component defines: default, hover, focus-visible, active, selected, disabled, loading, error.
-
-**Hover** is a background change to `--hover`, or one step lighter on a filled button. Colour only. Nothing moves, scales or lifts. Never the only way to find an important action. On a secondary or bar button the edge darkens to `--muted-soft` along with the ground, since the outline is what says it is a control and an edge that does not answer the pointer makes the hover read as a tint that landed on the wrong element.
-
-**Press** does nothing. `--press-translate` is 0.
-
-**Focus** is a 3px ring at 45% of `--focus-ring`, outside the element, plus a 3px ring at 20% and a near-black border on a field. It is near black, which is why it is drawn wide and clear of the element rather than tight against it: a near-black ring touching a near-black button would be invisible. Inside a menu, where an outside ring would be clipped, it is an inset ring instead. Never removed without an equally visible replacement.
-
-A secondary or bar button takes the near-black border too, for the reason a field does: its edge carries the control, so leaving it pale under the ring draws the ring around nothing in particular. The filled variants keep the ring alone, having no edge of their own to darken.
-
-**Selected** in navigation is a fill plus a ring. In chips it is a fill plus `aria-pressed`. Never colour alone.
-
-**Loading** disables the trigger, shows an inline spinner, preserves the button width and keeps the label.
-
-**Disabled** stays legible and explains itself. Never used to hide a permission or a validation rule.
-
-**Announced**: contact created, changes saved, reminder completed, import finished, validation failed, undo done, vault switched.
-
----
-
-## 8. Iconography
-
-The product draws its own icons, in `resources/views/components/icon.blade.php`. **No Lucide, no Heroicons, no icon font, no unicode symbols, no emoji, no raster icons.** A glyph that does not exist in that file has to be drawn in that file.
-
-16×16 viewBox, stroke 1.4, `fill: none`, `currentColor`, round caps and joins, about 2px of optical padding, simple geometry. Rendered at 15 inline, 16 in rows and buttons, 18 in notices, 20 in empty states.
-
-Decorative glyphs are `aria-hidden`. A glyph that is the only content of a control is given a `label`. An unknown name falls back to the default rather than drawing nothing, since an empty square beside a row reads as a bug.
-
-`components/entity-icon.blade.php` is a separate, smaller set, because the names it answers to are stored in the database as an entity type's chosen icon. Renaming those is a migration, not a design change.
-
-The mark in `public/images/logo.svg` is never redrawn and never recoloured, except inverted on ink.
-
----
-
-## 9. Product patterns
-
-**Contact list.** Rows, not a grid of cards. Name, photo or initials, relationship summary, last interaction, next reminder. In name order the rows are grouped under the letter they begin with, which is what makes a long list something to be scanned; in any other order there are no letters, since a letter over a list ordered by a date is a heading that lies. The chips that narrow it are links, so the list can be reached again by the back button, and the order is two selects and a button rather than a select that reloads the screen the moment it is touched. A run cut in half by the pagination comes back on the next page without its letter, so it reads as the rest of itself.
-
-**Vault list.** The one screen in the product built from cards rather than rows, and the one with no sidebar. A vault is not one of a long list to be scanned down a column: there are three or four, they are picked by recognition, and each carries a sentence about what it is for that a row would truncate. The card's mark is the colour somebody chose for the vault, not a tint derived from its name: the choice is theirs and the screen does not overrule it.
-
-**Vault dashboard.** One box for every part of the vault, on a three-column grid at the content width. The grid is not a wall of cards despite looking like one: there are six of them, they never grow to seven, and a box is a section of the vault rather than a record. The whole box is the link, so the rows inside it are plain spans; a box whose part has nothing in it yet is an empty state naming what will land there and is not a link at all. Boxes stretch to a common height, so no part of the vault reads as smaller than another for having fewer rows in it today.
-
-**Contact profile.** A stable spine regardless of template: identity header, primary actions, highlighted fields, sections from the assigned template, relationships, timeline, reminders, files, metadata on request. Sections are headings and space, panels only where a section is genuinely independent.
-
-**Template builder.** The screen the current design was drawn from. A tab bar of pages, section cards on the left, and a sticky inspector on the right that edits the field you picked. A published version is frozen and says so in a notice above the tabs rather than by disabling controls silently.
-
-**Generated fields.** Every field type has one accessible rendering used identically in view, edit, import, search and the API docs. Layout elements (separator, subheading, help text) are real headings and real descriptions, not styled divs. Custom fields look exactly like built-in fields. Never demote them into a "custom data" box.
-
-**Sensitive fields.** Masked by default, revealed by an explicit control with an accessible name ("Show national ID"), the mask indicated in text as well as visually. Never revealed by hover. Excluded from private links by default, and the exclusion is stated where the link is created.
-
-**Relationships.** Direction is written as a sentence, never implied by an arrow: "Lucie is Théo's mother." Show type, qualifiers as badges, period, and certainty (certain, probable, uncertain) as a word. Deduced and suggested relationships are visually distinguishable from confirmed ones and say where they came from. Editing a relationship states the reciprocal that will be created.
-
-**Timeline.** A chronological list. Thin vertical line, date grouping, compact rows, small nature glyphs, expandable detail, an explicit distinction between event date and recorded date. Life events and relationship events share one stream. No decorative timeline graphics.
-
-**Journal.** A day is a page: life events, the day's own narrative, a mood. An empty day stays empty. No nudging, no streaks, no gamification.
-
-**Reminders.** Subject, related contact, due date, recurrence, delivery status, state. Overdue uses a word and a glyph, not red alone. Snooze, skip, complete and turn off the rule are four distinct labelled actions, and the interface says which occurrences each one affects.
-
-**Destructive actions.** Name the object and the consequence. Not "Are you sure?" but "Delete this relationship? This removes the link between Alex and Jordan. Both contacts stay." When something is disabled rather than deleted, say so where the user will look for it, with the reason and a way back.
-
----
-
-## 10. Voice
-
-Direct, calm, human, specific and non-judgemental. Plain English sentences, in sentence case, about the person's own life.
-
-Address the reader as *you*. Never refer to the application in the first person. Actions are verbs the user performs: *Add a relationship. Save changes. Complete reminder.* Never *Create relationship entity*, *Submit*, or *You're all set!*
-
-**Explain, do not announce.** A section's supporting line says what the thing is for, not that it exists. "Dates in the next thirty days, from birthdays and anything you asked to be reminded of." Not "Your upcoming dates."
-
-**Empty states name what will land there**, not that the list is empty. "Nobody here yet", then a sentence about what this list eventually holds. Never "No data".
-
-Sentence case everywhere, buttons and section headings included. Uppercase only for the 11px metadata label. British-leaning spelling in the product's own strings (favourite, colour). Numbers as digits. Dates written the way a person says them (14 March 1989, in three weeks, six days ago).
-
-Hard subjects (death, separation, estrangement, illness, conflict) are ordinary content in a personal CRM and get neutral, respectful wording. No euphemism, no jollity, no condolence copy.
-
-Microcopy may have a light touch where it is honest ("so December is not a panic"), but clarity always wins over charm.
-
-**Emoji: never.** Not in the interface, not as icons, not in empty states. Personality comes from the icon set and the writing.
-
----
-
-## 11. Responsive
-
-Breakpoints: mobile <640, tablet 640 to 1023, desktop 1024 to 1439, wide ≥1440. Driven by content, not device names.
-
-Below 1024 the sidebar becomes a drawer opened from the bar. On mobile the page gutter is 16, page actions stay near the title, multi-column profiles stack, tables become row lists when horizontal comparison is not essential, detail panels become full-screen sheets.
-
-Adapt, do not shrink. Reduce columns, stack regions, move non-essential metadata behind detail views, allow horizontal scroll for genuinely tabular data, preserve touch targets. Never scale type down to make a desktop layout fit, and never hide data to save space.
-
----
-
-## 12. Marketing
-
-Same tokens, same type, same icons, more whitespace. Not a second brand.
-
-Hero: one headline, one paragraph, one primary action, one optional secondary, one real screen of the product. Feature sections alternate explanation and real interface. Screenshots come from the running product with demonstration data. No device frames, no fake browser chrome, no stock photography, no abstract SaaS illustration, no generated screenshots, no composited controls.
-
-Open-source signals belong in plain sight: source, licence, self-hosting, contributing, changelog, privacy.
-
----
-
-## 13. Review checklist
-
-- Is anything wrapped in a panel that a heading and 32px of space would have done?
-- Is the primary action obvious, and is there exactly one per region?
-- Are all values from tokens? Any radius other than 4, 6, 8 or full? Any raw hex in a feature view?
-- Is every control at weight 500 and every heading at 600?
-- Does every status read without colour? Do control boundaries reach 3:1?
-- Complete by keyboard, focus always visible as a ring clear of the element, focus restored after overlays?
-- Are hover-only actions reachable another way?
-- Does a destination that does not exist yet look like a word rather than a link?
-- Does every field type render accessibly in view, edit, import and search?
-- Are destructive consequences named, and is nothing applied silently?
-- Does it hold up in dark, where the ramp inverts and the semantic hues are lifted?
-- Does it still work with 5,000 contacts, a 40-field template, a 60-character name and German labels?
-- Is this real product UI, and does the user's own data dominate the screen?
-
----
-
-## 14. Do not
-
-Gradients (other than the one wash behind the guest quote) · glassmorphism · background images · grain · a card per section · a radius that is not 4, 6, 8 or full · pill-shaped anything except a badge, a chip and an avatar · coloured shadows · glowing borders · an accent colour · a blue link · stock photos · generated faces · device mockups · fabricated screenshots · third-party icons · icon fonts · emoji · webfonts · hover-only actions · colour-only meaning · placeholder-as-label · a link that leads nowhere · oversized numbers filling space · decorative dashboards · social-media-style profiles · animation without a reason · density bought with accessibility.
+- Do keep exactly one primary action per region.
+- Do pair every colour with a word or a shape; meaning is never carried by colour alone.
+- Do keep text at 4.5:1, and control edges and focus rings at 3:1.
+- Do render a refused control with `aria-disabled` and a reason, rather than hiding it.
+- Do check every screen in dark, with 5,000 contacts, a 60 character name and German labels.
+- Don't use an accent colour, a blue link, glassmorphism, coloured shadows or glowing borders.
+- Don't use a gradient as decoration. The few in the product draw data (a reminder ratio, a hatched bar) or the striped edge of the admin bar.
+- Don't use a radius other than 4, 6, 8 or full, or a pill shape outside a badge, a chip and an avatar.
+- Don't wrap every section in a card; a heading and 32px of space usually does the job.
+- Don't use webfonts, third party icons, icon fonts, emoji, stock photos, device mockups or fabricated screenshots.
+- Don't put an action behind hover only, or use a placeholder as a label.
+- Don't draw a link that leads nowhere, an oversized number filling space, or a decorative dashboard.

@@ -18,13 +18,15 @@ use Illuminate\Support\Facades\DB;
 use stdClass;
 
 /**
- * The life events of a vault cut into slices: what is upcoming, then one slice per year before today.
+ * The life events of a vault cut into slices: what is upcoming, everything before today, then one slice per year before today.
  * Every count comes from one aggregate, so reading the index costs the same whatever the vault holds.
  * The dashboard and the API read through it, so both give the same answer.
  */
 class LifeEventTimeline
 {
     public const string UPCOMING = 'upcoming';
+
+    public const string PAST = 'past';
 
     public const string EVERYTHING = 'everything';
 
@@ -54,6 +56,14 @@ class LifeEventTimeline
                 'total' => (int) $rows->sum('upcoming_all'),
             ]];
 
+            if ((int) $rows->sum('past_all') > 0) {
+                $slices[] = [
+                    'slice' => self::PAST,
+                    'count' => (int) $rows->sum('past'),
+                    'total' => (int) $rows->sum('past_all'),
+                ];
+            }
+
             foreach ($rows->sortByDesc('year') as $row) {
                 if ((int) $row->past_all === 0) {
                     continue;
@@ -79,6 +89,12 @@ class LifeEventTimeline
 
     public function defaultSlice(): string
     {
+        $past = collect($this->slices())->firstWhere('slice', self::PAST);
+
+        if (($past['count'] ?? 0) > 0) {
+            return self::PAST;
+        }
+
         foreach ($this->slices() as $slice) {
             if ($slice['count'] > 0) {
                 return $slice['slice'];
@@ -109,6 +125,13 @@ class LifeEventTimeline
                 ->where('happened_on', '>=', $this->today->toDateString())
                 ->orderBy('happened_on')
                 ->orderBy('id');
+        }
+
+        if ($slice === self::PAST) {
+            return $query
+                ->where('happened_on', '<', $this->today->toDateString())
+                ->orderByDesc('happened_on')
+                ->orderByDesc('id');
         }
 
         $start = CarbonImmutable::create((int) $slice);

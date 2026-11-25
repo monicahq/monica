@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\Helpers\Duration;
 use App\Helpers\FieldValueRules;
 use App\Models\Contact;
 use App\Models\Field;
@@ -34,7 +35,7 @@ class SaveLifeEventRequest extends FormRequest
             'title' => ['nullable', 'string', 'max:255'],
             'narrative' => ['nullable', 'string', 'max:65535'],
             'location' => ['nullable', 'string', 'max:255'],
-            'duration_in_minutes' => ['nullable', 'integer', 'min:1', 'max:100000'],
+            'duration_in_minutes' => ['nullable', 'integer', 'min:1', 'max:'.Duration::LONGEST_IN_MINUTES],
         ];
 
         if (! $this->route('lifeEvent') instanceof LifeEvent) {

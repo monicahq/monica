@@ -65,6 +65,10 @@
 
                   <x-slot:fields>
                     <input type="hidden" name="structure_version_id" value="{{ $entry['revert']['versionId'] }}" />
+
+                    @if ($entry['revert']['template'])
+                      <input type="hidden" name="template" value="{{ $entry['revert']['template'] }}" />
+                    @endif
                   </x-slot:fields>
                 </x-modal.warning>
               @elseif ($entry['refusal'])

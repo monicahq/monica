@@ -151,6 +151,7 @@ use App\Http\Controllers\App\Vaults\ContactReminderFormController;
 use App\Http\Controllers\App\Vaults\ContactSectionController;
 use App\Http\Controllers\App\Vaults\ContactShareLinkController;
 use App\Http\Controllers\App\Vaults\ContactStructureVersionController;
+use App\Http\Controllers\App\Vaults\ContactTemplateController;
 use App\Http\Controllers\App\Vaults\ContactVCardController;
 use App\Http\Controllers\App\Vaults\EntityController;
 use App\Http\Controllers\App\Vaults\FieldChoiceController;
@@ -173,6 +174,7 @@ use App\Http\Controllers\App\Vaults\KnowledgeListColumnPositionController;
 use App\Http\Controllers\App\Vaults\KnowledgeListController;
 use App\Http\Controllers\App\Vaults\KnowledgeListItemController;
 use App\Http\Controllers\App\Vaults\KnowledgeNoteController;
+use App\Http\Controllers\App\Vaults\KnowledgeNoteMarkdownController;
 use App\Http\Controllers\App\Vaults\KnowledgeNoteTaskController;
 use App\Http\Controllers\App\Vaults\PossessionController;
 use App\Http\Controllers\App\Vaults\PossessionFeaturedController;
@@ -451,6 +453,9 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::put('vaults/{vault}/contacts/{contact}/template-version', [ContactStructureVersionController::class, 'update'])
         ->name('contacts.templateVersion.update');
 
+    Route::put('vaults/{vault}/contacts/{contact}/template', [ContactTemplateController::class, 'update'])
+        ->name('contacts.template.update');
+
     Route::get('vaults/{vault}/contacts/{contact}/sections/{structureVersionSection}/edit', [ContactSectionController::class, 'edit'])
         ->whereNumber('structureVersionSection')
         ->name('contacts.sections.edit');
@@ -645,6 +650,7 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::put('vaults/{vault}/knowledge/notes/{knowledgeNote}', [KnowledgeNoteController::class, 'update'])->whereUuid('knowledgeNote')->name('knowledge.notes.update');
     Route::delete('vaults/{vault}/knowledge/notes/{knowledgeNote}', [KnowledgeNoteController::class, 'destroy'])->whereUuid('knowledgeNote')->name('knowledge.notes.destroy');
     Route::put('vaults/{vault}/knowledge/notes/{knowledgeNote}/tasks', [KnowledgeNoteTaskController::class, 'update'])->whereUuid('knowledgeNote')->name('knowledge.noteTasks.update');
+    Route::get('vaults/{vault}/knowledge/notes/{knowledgeNote}/markdown', [KnowledgeNoteMarkdownController::class, 'show'])->whereUuid('knowledgeNote')->name('knowledge.noteMarkdown.show');
     Route::post('vaults/{vault}/knowledge/lists', [KnowledgeListController::class, 'create'])->name('knowledge.lists.create');
     Route::get('vaults/{vault}/knowledge/lists/{knowledgeList}', [KnowledgeListController::class, 'show'])->whereUuid('knowledgeList')->name('knowledge.lists.show');
     Route::get('vaults/{vault}/knowledge/lists/{knowledgeList}/edit', [KnowledgeListController::class, 'edit'])->whereUuid('knowledgeList')->name('knowledge.lists.edit');

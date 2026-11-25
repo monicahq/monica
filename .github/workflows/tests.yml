@@ -4,30 +4,17 @@ name: Unit tests
 permissions:
   contents: read
 
+# The workflow runs on every pull request, never filtered by path. Main requires
+# each test job below to report, and a job that never starts never reports, so a
+# pull request without code would wait forever. The changes job decides instead
+# whether the steps run, and a job whose steps are all skipped still reports.
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-    paths: &paths
-      - .github/actions/js/action.yml
-      - .github/actions/php/action.yml
-      - .github/workflows/tests.yml
-      - '**/*.php'
-      - '**/*.js'
-      - '**/*.css'
-      - .env.example
-      - composer.json
-      - composer.lock
-      - package.json
-      - bun.lock
-      - pint.json
-      - vite.config.js
-      - phpstan.neon
-      - phpunit.xml
 
   push:
     branches: [main]
-    paths: *paths
-    
+
   release:
     types: [created]
 
@@ -43,9 +30,46 @@ env:
 
 jobs:
   #############
+  # Detect code
+  #############
+  changes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    name: Detect code changes
+    outputs:
+      code: ${{ steps.detect.outputs.code }}
+
+    steps:
+      - name: Checkout sources
+        if: github.event_name == 'pull_request'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 2
+
+      # A pull request is checked out as a merge commit whose first parent is
+      # the base branch, so the difference between the two is the pull request.
+      - name: Detect code changes
+        id: detect
+        run: |
+          if [ "${{ github.event_name }}" != 'pull_request' ]; then
+            echo 'code=true' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          pattern='\.(php|js|css)$|^\.github/actions/(js|php)/action\.yml$|^\.github/workflows/tests\.yml$'
+          pattern="$pattern"'|^(\.env\.example|composer\.json|composer\.lock|package\.json|bun\.lock|pint\.json|vite\.config\.js|phpstan\.neon|phpunit\.xml)$'
+
+          if git diff --name-only HEAD^1 HEAD | grep -qE "$pattern"; then
+            echo 'code=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'code=false' >> "$GITHUB_OUTPUT"
+          fi
+
+  #############
   # Run tests
   #############
   tests:
+    needs: changes
     runs-on: ubuntu-latest
     timeout-minutes: 20
     name: PHP ${{ matrix.php-version }} + ${{ matrix.connection }} + ${{ matrix.suite }}
@@ -70,7 +94,8 @@ jobs:
     # against a real one; every other test runs on Scout's null engine.
     services:
       meilisearch:
-        image: getmeili/meilisearch:v1.56
+        # An empty image does not start the service.
+        image: ${{ case(needs.changes.outputs.code == 'true', 'getmeili/meilisearch:v1.56', '') }}
         env:
           MEILI_MASTER_KEY: testing-master-key
           MEILI_NO_ANALYTICS: true
@@ -79,9 +104,11 @@ jobs:
 
     steps:
       - name: Checkout sources
+        if: needs.changes.outputs.code == 'true'
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Setup PHP
+        if: needs.changes.outputs.code == 'true'
         uses: ./.github/actions/php
         with:
           php-version: ${{ matrix.php-version }}
@@ -92,6 +119,7 @@ jobs:
       # real assets is the job of the Static analysis workflow, so a stub is
       # enough here.
       - name: Prepare environment
+        if: needs.changes.outputs.code == 'true'
         run: |
           cp tests/.env.ci.${{ matrix.connection }} .env
           mkdir -p public/build/assets
@@ -105,17 +133,17 @@ jobs:
           JSON
 
       - name: Create sqlite database
-        if: matrix.connection == 'sqlite'
+        if: needs.changes.outputs.code == 'true' && matrix.connection == 'sqlite'
         run: touch database/database.sqlite
 
       - name: Create mysql database
-        if: matrix.connection == 'mysql'
+        if: needs.changes.outputs.code == 'true' && matrix.connection == 'mysql'
         run: |
           sudo systemctl start mysql.service
           mysql --protocol=tcp -u root -proot -e "CREATE DATABASE IF NOT EXISTS monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 
       - name: Create pgsql database
-        if: matrix.connection == 'pgsql'
+        if: needs.changes.outputs.code == 'true' && matrix.connection == 'pgsql'
         run: |
           sudo systemctl start postgresql.service
           sudo -u postgres psql --command="CREATE USER monica PASSWORD 'secret'" --command="\du"
@@ -124,12 +152,15 @@ jobs:
           PGPASSWORD=secret psql --username=monica --host=localhost --list monica
 
       - name: Generate key
+        if: needs.changes.outputs.code == 'true'
         run: php artisan key:generate
 
       - name: Generate OAuth keys
+        if: needs.changes.outputs.code == 'true'
         run: php artisan passport:keys --no-interaction
 
       - name: Run migrations
+        if: needs.changes.outputs.code == 'true'
         run: php artisan migrate --no-interaction -vvv
 
       - name: Set results artifact name
@@ -145,19 +176,19 @@ jobs:
       # therefore has to be allowed to create databases, which is why the
       # postgres step above grants CREATEDB.
       - name: Run tests
+        if: needs.changes.outputs.code == 'true'
         run: php artisan test --parallel --testsuite=${{ matrix.suite }} --log-junit ./results/junit/results_${{ steps.artifact.outputs.name }}.xml ${{ case(matrix.connection == env.default-connection && matrix.php-version == env.default-php-version, format('--coverage-clover ./results/coverage_{0}.xml', steps.artifact.outputs.name), '') }}
 
       - name: Fix results files
-        shell: bash
+        if: needs.changes.outputs.code == 'true' && (success() || failure())
         run: |
           for f in $(find . -name "*.xml"); do
             sed -i -e "s%$GITHUB_WORKSPACE/%%g" $f;
           done
         working-directory: results
-        if: success() || failure()
 
       - name: Store results
-        if: success() || failure()
+        if: needs.changes.outputs.code == 'true' && (success() || failure())
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: results_${{ steps.artifact.outputs.name }}
@@ -167,12 +198,16 @@ jobs:
   reporting:
     name: Reporting
     runs-on: ubuntu-latest
-    needs: tests
+    needs:
+      - changes
+      - tests
     steps:
       - name: Checkout sources
+        if: needs.changes.outputs.code == 'true'
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Download results
+        if: needs.changes.outputs.code == 'true'
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           pattern: ${{ format('results_{0}_{1}*', env.default-connection, env.default-php-version) }}
@@ -180,6 +215,7 @@ jobs:
           merge-multiple: true
 
       - name: Merge junit files
+        if: needs.changes.outputs.code == 'true'
         run: |
           mkdir -p $RUNNER_TEMP/junit-merge
           cd $RUNNER_TEMP/junit-merge
@@ -187,6 +223,7 @@ jobs:
 
       - name: Set version parameter
         id: version
+        if: needs.changes.outputs.code == 'true'
         run: |
           version=$(git tag --points-at HEAD)
           test -z "$version" && version="main"
@@ -194,12 +231,13 @@ jobs:
 
       - name: Set coverage list
         id: coverage
+        if: needs.changes.outputs.code == 'true'
         run: |
           SONAR_COVERAGE=$(ls -m --format=comma results/coverage*.xml | sed -e ':a;N;$!ba;s/\n//g; s/ //g;')
           echo "list=$SONAR_COVERAGE" >> $GITHUB_OUTPUT
 
       - name: SonarCloud Scan
-        if: env.SONAR_TOKEN != ''
+        if: needs.changes.outputs.code == 'true' && env.SONAR_TOKEN != ''
         uses: SonarSource/sonarqube-scan-action@70bad232163b09d998ea0707ee80c0ec80798c16 # v8.5.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
