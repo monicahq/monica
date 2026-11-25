@@ -101,6 +101,32 @@ class DestroyContactTest extends TestCase
     }
 
     #[Test]
+    public function it_refuses_a_contact_another_request_deleted_first(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id, 'contact_count' => 4]);
+        $version = StructureVersion::factory()->published()->used(3)->create();
+        $contact = Contact::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $vault->id,
+            'structure_version_id' => $version->id,
+        ]);
+
+        new DestroyContact(user: $user, contact: Contact::query()->findOrFail($contact->id))->execute();
+
+        $this->assertThrows(
+            fn () => new DestroyContact(user: $user, contact: $contact)->execute(),
+            ModelNotFoundException::class,
+        );
+
+        $this->assertSame(3, $vault->fresh()->contact_count);
+        $this->assertSame(2, $version->fresh()->record_count);
+        $this->assertCount(1, Queue::pushed(LogUserAction::class));
+    }
+
+    #[Test]
     public function it_never_takes_a_count_below_zero(): void
     {
         Queue::fake();

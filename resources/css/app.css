@@ -167,6 +167,22 @@
     --animate-toast-tick: toast-tick 420ms 90ms ease-out both;
     --animate-toast-ring: toast-ring 900ms ease-out forwards;
     --animate-toast-timer: toast-timer 4500ms linear forwards;
+    --animate-toolbar-in: toolbar-in 240ms cubic-bezier(0.22, 1, 0.36, 1) both;
+
+    @keyframes toolbar-in {
+        0% {
+            opacity: 0;
+            transform: translateY(6px) scale(0.96);
+        }
+        60% {
+            opacity: 1;
+            transform: translateY(0) scale(1.015);
+        }
+        100% {
+            opacity: 1;
+            transform: none;
+        }
+    }
 
     @keyframes toast-in {
         from {
@@ -373,7 +389,8 @@
     .animate-toast-out,
     .animate-toast-tick,
     .animate-toast-ring,
-    .animate-toast-timer {
+    .animate-toast-timer,
+    .animate-toolbar-in {
         animation: none;
     }
 }

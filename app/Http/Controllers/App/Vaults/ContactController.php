@@ -95,6 +95,7 @@ class ContactController extends Controller
                     versionNumber: isset($validated['version']) ? (int) $validated['version'] : null,
                     change: $validated['change'] ?? null,
                 ),
+                categoryChange: $request->session()->get('contactCategoryChange'),
             ),
         ]);
     }

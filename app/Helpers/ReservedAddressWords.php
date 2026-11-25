@@ -30,7 +30,8 @@ class ReservedAddressWords
      * spent. `me` is fixed by the API route resolving the contact that stands for the account holder,
      * which is declared above `contacts/{contact}` so that the literal wins. `statistics` and
      * `template-changes` are fixed by the statistics of the people of a vault and by changing their
-     * template many at a time, both declared above it for the same reason.
+     * template many at a time, both declared above it for the same reason. `deletion` and
+     * `categories` are fixed by the routes acting on several contacts of the list at once.
      *
      * @return list<string>
      */
@@ -41,6 +42,8 @@ class ReservedAddressWords
             'me',
             'statistics',
             'template-changes',
+            'deletion',
+            'categories',
             ...ContactGroupingEnum::values(),
         ];
     }

@@ -56,6 +56,7 @@ use App\Mcp\Tools\CreateValueListItem;
 use App\Mcp\Tools\DeleteContact;
 use App\Mcp\Tools\DeleteContactRelationship;
 use App\Mcp\Tools\DeleteContactReminder;
+use App\Mcp\Tools\DeleteContacts;
 use App\Mcp\Tools\DeleteEntityType;
 use App\Mcp\Tools\DeleteGroup;
 use App\Mcp\Tools\DeleteGroupNote;
@@ -198,6 +199,7 @@ use App\Mcp\Tools\RestoreLifeEvent;
 use App\Mcp\Tools\SearchKnowledge;
 use App\Mcp\Tools\SearchRecords;
 use App\Mcp\Tools\SendSupportReply;
+use App\Mcp\Tools\SetContactCategories;
 use App\Mcp\Tools\SetContactFavourite;
 use App\Mcp\Tools\SetContactListColumns;
 use App\Mcp\Tools\SetContactPartial;
@@ -522,6 +524,7 @@ class MonicaServer extends Server
         UpdateContactSection::class,
         PreviewContactTemplateChange::class,
         ChangeContactTemplate::class,
+        SetContactCategories::class,
         GetRecordStatistics::class,
         GetFieldCompletion::class,
         PreviewTemplateChange::class,
@@ -529,6 +532,7 @@ class MonicaServer extends Server
         GetTemplateChange::class,
         SetContactFavourite::class,
         DeleteContact::class,
+        DeleteContacts::class,
         GetContactListColumns::class,
         SetContactListColumns::class,
         SetContactPartial::class,

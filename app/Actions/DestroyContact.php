@@ -48,6 +48,15 @@ class DestroyContact
         $this->name = $this->contact->name;
 
         DB::transaction(function (): void {
+            $isStillThere = Contact::query()
+                ->whereKey($this->contact->id)
+                ->lockForUpdate()
+                ->value('id') !== null;
+
+            if (! $isStillThere) {
+                throw new ModelNotFoundException('This contact is already deleted.');
+            }
+
             $this->contact->delete();
 
             $this->revokeTheLinksOntoThem();
