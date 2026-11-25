@@ -9,10 +9,10 @@ use App\Enums\SnapshotReasonEnum;
 use App\Enums\StructureAppliesToEnum;
 use App\Enums\UserActionEnum;
 use App\Enums\VersionStatusEnum;
+use App\Helpers\FieldCorrespondence;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
 use App\Models\Entity;
-use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\FieldValueRow;
 use App\Models\Reminder;
@@ -34,33 +34,53 @@ use InvalidArgumentException;
  * and a field put back later brings its values back the same way.
  *
  * The snapshot and the move are one transaction, so a deadlock leaves neither behind and the move is
- * run again, from the record as the database holds it.
+ * run again, from the record as the database holds it. The record's row is locked before anything
+ * is decided, so a second request for the same move waits, then finds it done and writes nothing.
  */
 class MoveRecordToStructureVersion
 {
     private StructureVersion $from;
 
+    private ?FieldCorrespondence $correspondence = null;
+
     public function __construct(
         private readonly User $user,
         private readonly Contact|Entity $record,
         private readonly StructureVersion $structureVersion,
+        private readonly bool $writesToLog = true,
     ) {}
 
     public function execute(): Contact|Entity
     {
         $this->validate();
 
-        DB::transaction(function (): void {
+        $hasMoved = DB::transaction(function (): bool {
+            $currentVersionId = $this->record->newQueryWithoutScopes()
+                ->whereKey($this->record->id)
+                ->lockForUpdate()
+                ->value('structure_version_id');
+
+            if ((int) $currentVersionId === $this->structureVersion->id) {
+                return false;
+            }
+
             $this->record->refresh();
 
             new CreateRecordSnapshot(
                 user: $this->user,
                 record: $this->record,
                 reason: SnapshotReasonEnum::TemplateChange,
+                writesToLog: $this->writesToLog,
             )->execute();
 
             $this->move();
+
+            return true;
         }, attempts: 3);
+
+        if (! $hasMoved) {
+            return $this->record->refresh();
+        }
 
         $this->record->searchable();
         $this->log();
@@ -99,10 +119,6 @@ class MoveRecordToStructureVersion
     {
         $this->from = $this->record->structureVersion;
 
-        if ($this->from->is($this->structureVersion)) {
-            return;
-        }
-
         $this->record->structure_version_id = $this->structureVersion->id;
         $this->record->save();
 
@@ -121,10 +137,12 @@ class MoveRecordToStructureVersion
     /** @return list<int> */
     private function fieldsCarriedNow(): array
     {
-        return $this->structureVersion->assembly
-            ->load('sectionVersion.fields')
-            ->flatMap(fn ($row): array => $row->sectionVersion->fields->pluck('id')->all())
-            ->all();
+        return $this->correspondence()->carriedFieldIds();
+    }
+
+    private function correspondence(): FieldCorrespondence
+    {
+        return $this->correspondence ??= new FieldCorrespondence($this->structureVersion);
     }
 
     private function followTheFieldsIntoTheNewVersion(): void
@@ -137,86 +155,15 @@ class MoveRecordToStructureVersion
             ->where('valuable_type', $this->record->getMorphClass())
             ->where('valuable_id', $this->record->id);
 
-        $carried = $this->fieldsCarriedNow();
-
-        $heldIds = $values->clone()->pluck('field_id')
-            ->merge($rows->clone()->pluck('field_id'))
-            ->unique()
-            ->diff($carried);
-
-        if ($heldIds->isEmpty()) {
-            return;
-        }
-
-        $carriedFields = Field::query()
-            ->whereIn('id', $carried)
-            ->with('sectionVersion')
-            ->get();
-
-        $inTheSameSection = $carriedFields->keyBy(fn (Field $field): string => "{$field->sectionVersion->section_id}|{$field->key}|{$field->type->value}");
-        $anywhere = $carriedFields->groupBy(fn (Field $field): string => "{$field->parent_field_id}|{$field->key}|{$field->type->value}");
-
-        $heldFields = Field::query()
-            ->whereIn('id', $heldIds)
-            ->with('sectionVersion')
-            ->get()
-            ->sortBy(fn (Field $held): bool => $held->parent_field_id !== null);
-
-        $sameSectionKey = fn (Field $held): string => "{$held->sectionVersion->section_id}|{$held->key}|{$held->type->value}";
-
-        $wanted = $heldFields
-            ->reject(fn (Field $held): bool => $inTheSameSection->has($sameSectionKey($held)))
-            ->countBy(fn (Field $held): string => "{$held->parent_field_id}|{$held->key}|{$held->type->value}");
-
-        /** @var array<int, true> $taken */
-        $taken = $values->clone()->whereIn('field_id', $carried)->pluck('field_id')
-            ->merge($rows->clone()->whereIn('field_id', $carried)->pluck('field_id'))
-            ->merge($heldFields->map(fn (Field $held): ?int => $inTheSameSection->get($sameSectionKey($held))?->id)->filter())
-            ->mapWithKeys(fn (int $id): array => [$id => true])
-            ->all();
-
-        /** @var array<int, Field> $followed */
-        $followed = [];
-
-        $heldFields->each(function (Field $held) use ($inTheSameSection, $anywhere, $sameSectionKey, $wanted, &$taken, &$followed, $values, $rows): void {
-            $counterpart = $inTheSameSection->get($sameSectionKey($held));
-
-            if (! $counterpart instanceof Field) {
-                if ($wanted->get("{$held->parent_field_id}|{$held->key}|{$held->type->value}") > 1) {
-                    return;
-                }
-
-                $parent = $held->parent_field_id === null ? null : ($followed[$held->parent_field_id] ?? null);
-
-                if ($held->parent_field_id !== null && $parent === null) {
-                    return;
-                }
-
-                $candidates = $anywhere->get("{$parent?->id}|{$held->key}|{$held->type->value}");
-
-                if ($candidates === null || $candidates->count() !== 1) {
-                    return;
-                }
-
-                $counterpart = $candidates->first();
-
-                if (isset($taken[$counterpart->id])) {
-                    return;
-                }
-
-                $taken[$counterpart->id] = true;
-            }
-
-            $followed[$held->id] = $counterpart;
-
+        foreach ($this->correspondence()->counterpartsFor($this->record) as $heldId => $counterpart) {
             Reminder::query()
-                ->whereIn('field_value_id', $values->clone()->where('field_id', $held->id)->select('id'))
-                ->where('field_id', $held->id)
+                ->whereIn('field_value_id', $values->clone()->where('field_id', $heldId)->select('id'))
+                ->where('field_id', $heldId)
                 ->update(['field_id' => $counterpart->id]);
 
-            $values->clone()->where('field_id', $held->id)->update(['field_id' => $counterpart->id]);
-            $rows->clone()->where('field_id', $held->id)->update(['field_id' => $counterpart->id]);
-        });
+            $values->clone()->where('field_id', $heldId)->update(['field_id' => $counterpart->id]);
+            $rows->clone()->where('field_id', $heldId)->update(['field_id' => $counterpart->id]);
+        }
     }
 
     private function setAsideWhatTheNewStructureDoesNotCarry(): void
@@ -246,6 +193,7 @@ class MoveRecordToStructureVersion
                 user: $this->user,
                 subject: $rule,
                 reason: ReminderInactiveReasonEnum::FieldRemoved,
+                writesToLog: $this->writesToLog,
             )->execute());
     }
 
@@ -276,11 +224,32 @@ class MoveRecordToStructureVersion
                 user: $this->user,
                 subject: $rule,
                 reason: ReminderInactiveReasonEnum::FieldRemoved,
+                writesToLog: $this->writesToLog,
             )->execute());
     }
 
     private function log(): void
     {
+        if (! $this->writesToLog) {
+            return;
+        }
+
+        if ($this->from->structure_id !== $this->structureVersion->structure_id) {
+            LogUserAction::dispatch(
+                account: $this->user->account,
+                user: $this->user,
+                action: UserActionEnum::RecordMovedToTemplate,
+                vault: $this->record->vault,
+                parameters: [
+                    'name' => $this->record->name,
+                    'template' => $this->structureVersion->structure->owner->name,
+                ],
+                loggable: $this->record,
+            );
+
+            return;
+        }
+
         LogUserAction::dispatch(
             account: $this->user->account,
             user: $this->user,

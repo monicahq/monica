@@ -48,6 +48,8 @@ use App\Http\Controllers\Api\ContactReminderOccurrenceController;
 use App\Http\Controllers\Api\ContactSectionController;
 use App\Http\Controllers\Api\ContactStructureVersionController;
 use App\Http\Controllers\Api\ContactSummaryController;
+use App\Http\Controllers\Api\ContactTemplateController;
+use App\Http\Controllers\Api\ContactTemplatePreviewController;
 use App\Http\Controllers\Api\ContactVCardController;
 use App\Http\Controllers\Api\CountryController;
 use App\Http\Controllers\Api\EmailSentController;
@@ -477,6 +479,8 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::post('vaults/{vault}/contacts/{contact}/avatar', [ContactAvatarController::class, 'update'])->middleware('flag:file-upload')->name('contacts.avatar.update');
         Route::delete('vaults/{vault}/contacts/{contact}/avatar', [ContactAvatarController::class, 'destroy'])->name('contacts.avatar.destroy');
         Route::put('vaults/{vault}/contacts/{contact}/template-version', [ContactStructureVersionController::class, 'update'])->name('contacts.templateVersion.update');
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/contacts/{contact}/template-preview', [ContactTemplatePreviewController::class, 'show'])->name('contacts.templatePreview.show');
+        Route::put('vaults/{vault}/contacts/{contact}/template', [ContactTemplateController::class, 'update'])->name('contacts.template.update');
         Route::put('vaults/{vault}/contacts/{contact}/sections/{section}', [ContactSectionController::class, 'update'])->name('contacts.sections.update');
 
         Route::match(['GET', 'QUERY'], 'vaults/{vault}/contacts/{contact}/reminders', [ContactReminderController::class, 'index'])->name('contacts.reminders');

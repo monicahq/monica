@@ -4,7 +4,7 @@ title: Change what you know about somebody
 description: Edit one section of a contact’s page at a time, add a second phone number or correct a name, and learn how the tabs are arranged.
 slug: change-what-you-know
 section: people
-last_updated: 2026-11-23
+last_updated: 2026-11-25
 ---
 
 # Change what you know about somebody
@@ -93,7 +93,7 @@ The address of a contact’s page is built from their name, so it changes with t
 
 A template can change. If a field disappears from the version of the template a contact uses, what you wrote in it is not deleted. Monica hides it, and keeps it.
 
-To see these answers, open the menu next to **Edit contact**, choose **Version history**, then **Unused answers**. The screen, **Answers to questions no longer asked**, lists each hidden answer and when it stopped being used. Put the field back on the template, and the answers come back on the contact’s page on their own.
+To see these answers, open the menu next to **Edit contact**, choose **Version history**, then **Unused answers**. The screen, **Answers to questions no longer asked**, lists each hidden answer and when it stopped being used. Put the field back on the template, and the answers come back on the contact’s page on their own. Moving somebody onto another template sets answers aside the same way, as @doc(contacts.change-template) explains.
 
 ## When a new version of the template is ready
 

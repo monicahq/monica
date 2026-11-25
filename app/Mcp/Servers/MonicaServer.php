@@ -12,6 +12,7 @@ use App\Mcp\Tools\AddTemplateSection;
 use App\Mcp\Tools\AnswerGroupReminderOccurrence;
 use App\Mcp\Tools\AnswerReminderOccurrence;
 use App\Mcp\Tools\ChangeAgentFeedbackStatus;
+use App\Mcp\Tools\ChangeContactTemplate;
 use App\Mcp\Tools\ChangeSupportRequestStatus;
 use App\Mcp\Tools\CreateContact;
 use App\Mcp\Tools\CreateContactRelationship;
@@ -175,6 +176,7 @@ use App\Mcp\Tools\ListVaultReminderOccurrences;
 use App\Mcp\Tools\ListVaultReminders;
 use App\Mcp\Tools\ListVaults;
 use App\Mcp\Tools\MovePossession;
+use App\Mcp\Tools\PreviewContactTemplateChange;
 use App\Mcp\Tools\PublishTemplateVersion;
 use App\Mcp\Tools\RemoveGroupFile;
 use App\Mcp\Tools\RemoveGroupMember;
@@ -502,6 +504,8 @@ class MonicaServer extends Server
         UpdateContactName::class,
         UpdateContactNameRepresentations::class,
         UpdateContactSection::class,
+        PreviewContactTemplateChange::class,
+        ChangeContactTemplate::class,
         SetContactFavourite::class,
         SetContactPartial::class,
         ListContactReminders::class,
