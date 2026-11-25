@@ -8,6 +8,7 @@ use App\Enums\DateFormatEnum;
 use App\Enums\DatePrecisionEnum;
 use App\Enums\VaultColourEnum;
 use App\Helpers\AvailableLocales;
+use App\Helpers\Duration;
 use App\Helpers\FieldValueFormatter;
 use App\Helpers\FlagState;
 use App\Models\Contact;
@@ -249,7 +250,7 @@ class ContactTimelineBlock
         $details = [];
 
         if ($lifeEvent->duration_in_minutes !== null) {
-            $details[] = trans_choice(':count minute|:count minutes', $lifeEvent->duration_in_minutes);
+            $details[] = Duration::wording($lifeEvent->duration_in_minutes);
         }
 
         if ($lifeEvent->location !== null) {

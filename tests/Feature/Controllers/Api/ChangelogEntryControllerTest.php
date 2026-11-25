@@ -76,7 +76,7 @@ class ChangelogEntryControllerTest extends TestCase
         $response->assertJsonPath('data.0.attributes.screenshots', []);
         $response->assertJsonPath('data.1.attributes.screenshots.0', [
             'position' => 1,
-            'url' => asset('changelog/01M7NBFWK5XNH908RFDGEAJXKN-1.webp'),
+            'url' => asset('images/changelog/01M7NBFWK5XNH908RFDGEAJXKN-1.webp'),
             'description' => 'The contact page with the conference room booked',
             'width' => 32,
             'height' => 18,

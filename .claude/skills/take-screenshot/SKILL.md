@@ -171,7 +171,7 @@ repository.
 There are two exceptions. A screenshot the product documentation shows is stored in
 `public/images/docs`, named and placed as the "Screenshots" section of the
 [writer skill](../writer/SKILL.md) says, and committed with the page that shows it.
-A screenshot of a What's new entry is stored in `public/changelog`, framed, converted
+A screenshot of a What's new entry is stored in `public/images/changelog`, framed, converted
 and named as the "Screenshots" section of the [changelog skill](../changelog/SKILL.md)
 says, and committed with its entry.
 

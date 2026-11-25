@@ -61,7 +61,7 @@ class ChangelogViewModelTest extends TestCase
 
         $this->assertSame([], $entries[0]['screenshots']);
         $this->assertSame([
-            'url' => asset('changelog/01M7NBFWK5XNH908RFDGEAJXKN-1.webp'),
+            'url' => asset('images/changelog/01M7NBFWK5XNH908RFDGEAJXKN-1.webp'),
             'description' => 'La page du contact avec la salle réservée',
             'width' => 32,
             'height' => 18,

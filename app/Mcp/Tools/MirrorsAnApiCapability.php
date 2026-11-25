@@ -57,6 +57,8 @@ use App\Models\SupportRequest;
 use App\Models\Template;
 use App\Models\TemplateChange;
 use App\Models\User;
+use App\Models\ValueList;
+use App\Models\ValueListItem;
 use App\Models\Vault;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\Builder;
@@ -604,6 +606,34 @@ trait MirrorsAnApiCapability
         }
 
         return $this->found($lifeEventCategory);
+    }
+
+    protected function valueList(Request $request, string $id): ValueList
+    {
+        $valueList = preg_match('/^[1-9][0-9]*$/', $id) === 1
+            ? ValueList::query()
+                ->where('account_id', $this->user($request)->account_id)
+                ->where('is_shared', true)
+                ->whereKey($id)
+                ->first()
+            : null;
+
+        if ($valueList === null) {
+            throw $this->doesNotExist(__('That value list does not exist.'));
+        }
+
+        return $this->found($valueList);
+    }
+
+    protected function valueListItem(ValueList $valueList, string $id): ValueListItem
+    {
+        $item = preg_match('/^[1-9][0-9]*$/', $id) === 1 ? $valueList->items()->whereKey($id)->first() : null;
+
+        if ($item === null) {
+            throw $this->doesNotExist(__('That value does not exist.'));
+        }
+
+        return $this->found($item);
     }
 
     protected function log(Request $request, string $id): Log

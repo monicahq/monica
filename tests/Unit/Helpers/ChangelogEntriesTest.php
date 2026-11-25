@@ -45,7 +45,7 @@ class ChangelogEntriesTest extends TestCase
         $this->assertSame('The contact page with the conference room booked', $screenshots[0]->description);
         $this->assertSame('01M7NBFWK5XNH908RFDGEAJXKN-2.webp', $screenshots[1]->file);
         $this->assertSame([32, 18], [$screenshots[0]->width, $screenshots[0]->height]);
-        $this->assertSame(asset('changelog/01M7NBFWK5XNH908RFDGEAJXKN-1.webp'), $screenshots[0]->url());
+        $this->assertSame(asset('images/changelog/01M7NBFWK5XNH908RFDGEAJXKN-1.webp'), $screenshots[0]->url());
     }
 
     #[Test]

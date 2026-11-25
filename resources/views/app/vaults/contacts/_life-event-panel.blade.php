@@ -270,7 +270,7 @@
                 <x-textarea id="life-event-narrative" name="narrative" :label="$label" :value="$form->pieceValue('narrative')" :placeholder="__('Anything worth remembering')" :error="$errors->get('narrative')" />
               @elseif ($piece === 'duration_in_minutes')
                 <div class="max-w-50">
-                  <x-input type="number" id="life-event-duration" name="duration_in_minutes" :label="$label" :value="$form->pieceValue('duration_in_minutes')" min="1" :error="$errors->get('duration_in_minutes')" />
+                  <x-input type="number" id="life-event-duration" name="duration_in_minutes" :label="$label" :value="$form->pieceValue('duration_in_minutes')" min="1" :max="\App\Helpers\Duration::LONGEST_IN_MINUTES" :error="$errors->get('duration_in_minutes')" />
                 </div>
               @else
                 <x-input

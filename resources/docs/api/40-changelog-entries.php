@@ -28,7 +28,7 @@ $conferenceRoom = [
         'screenshots' => [
             [
                 'position' => 1,
-                'url' => "{$application}/changelog/{$conferenceRoomId}-1.webp",
+                'url' => "{$application}/images/changelog/{$conferenceRoomId}-1.webp",
                 'description' => 'The contact page with the conference room booked',
                 'width' => 1600,
                 'height' => 1000,

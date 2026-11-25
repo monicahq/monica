@@ -140,7 +140,7 @@ class FieldValueFormatter
             FieldTypeEnum::Email, FieldTypeEnum::Phone, FieldTypeEnum::Address => $this->labelled($value),
             FieldTypeEnum::Textarea => $this->blankToNull($value->value_text),
             FieldTypeEnum::Number => $this->number($value),
-            FieldTypeEnum::Duration => $value->value_number === null ? null : trans_choice(':count minute|:count minutes', (int) $value->value_number),
+            FieldTypeEnum::Duration => $value->value_number === null ? null : Duration::wording((int) $value->value_number),
             FieldTypeEnum::Boolean => $this->boolean($value),
             FieldTypeEnum::Date => $this->date($value),
             FieldTypeEnum::RecurringDate => $this->recurringDate($value),

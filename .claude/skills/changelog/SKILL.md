@@ -104,7 +104,7 @@ Open the image and look at it before going further. A crop that cuts the change,
 1. Convert it to WebP, named after the entry's `id` and the screenshot's position, without resizing it:
 
 ```bash
-magick /tmp/<id>-1.png -quality 82 public/changelog/<id>-1.webp
+magick /tmp/<id>-1.png -quality 82 public/images/changelog/<id>-1.webp
 ```
 
 Never resize the capture. Shrinking it breaks the double density, and What's new would draw it smaller than the screen it shows. The file must stay under 1 MB, which a capture of a region a few hundred pixels wide stays well under.
@@ -117,7 +117,7 @@ screenshot_1: The age next to a birthday on a contact page
 
 Number the screenshots from 1 without a gap. The order of the numbers is the order the reader sees them in.
 
-The test of step 6 refuses a declared screenshot whose file is missing, a file that is not a valid WebP image or is over 1 MB, an empty description, a gap in the numbers, more than six screenshots, and a file in `public/changelog` that no entry declares.
+The test of step 6 refuses a declared screenshot whose file is missing, a file that is not a valid WebP image or is over 1 MB, an empty description, a gap in the numbers, more than six screenshots, and a file in `public/images/changelog` that no entry declares.
 
 ## How to word it
 

@@ -35,6 +35,7 @@ use App\Models\StructureVersionSection;
 use App\Models\SupportRequest;
 use App\Models\Template;
 use App\Models\User;
+use App\Models\ValueList;
 use App\Models\Vault;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
@@ -210,6 +211,7 @@ class McpCompartmentTest extends TestCase
             'support_request' => fn (): Model => SupportRequest::factory()->create(),
             'log' => fn (): Model => Log::factory()->create(),
             'email_sent' => fn (): Model => EmailSent::factory()->create(),
+            'value_list' => fn (): Model => ValueList::factory()->create(),
         ];
     }
 

@@ -322,7 +322,7 @@ class SetFieldValues
         );
     }
 
-    private function saveOne(Field $field, mixed $given, ?FieldValueRow $row, mixed $label = null, mixed $wording = null): void
+    private function saveOne(Field $field, mixed $given, ?FieldValueRow $row, mixed $label = null, mixed $wording = null, ?bool $yearIsUnknown = null): void
     {
         if ($field->type->holdsAFile()) {
             $this->saveTheFile($field, $given, $row);
@@ -353,7 +353,7 @@ class SetFieldValues
             valueListItem: $this->chosenItem($field, $given) ?? $this->chosenLabel($field, $label),
             labelWording: $wording === null ? null : (string) $wording,
             valueListItems: $this->chosenItems($field, $given),
-            yearIsUnknown: (bool) ($this->yearIsUnknown[$field->id] ?? false),
+            yearIsUnknown: $yearIsUnknown ?? (bool) ($this->yearIsUnknown[$field->id] ?? false),
             monthIsUnknown: (bool) ($this->monthIsUnknown[$field->id] ?? false),
             writesToTheJournal: false,
         )->execute();
@@ -428,6 +428,7 @@ class SetFieldValues
             $values = is_array($repetition['values'] ?? null) ? $repetition['values'] : [];
             $labels = is_array($repetition['labels'] ?? null) ? $repetition['labels'] : [];
             $wordings = is_array($repetition['label_wordings'] ?? null) ? $repetition['label_wordings'] : [];
+            $unknownYears = is_array($repetition['unknown_year'] ?? null) ? $repetition['unknown_year'] : [];
             $row = $existing->get((int) ($repetition['id'] ?? 0));
 
             if ($row === null && $this->nothingWasFilledIn($children, $values)) {
@@ -445,7 +446,7 @@ class SetFieldValues
             $ordered[] = $row;
 
             foreach ($children as $child) {
-                $this->saveOne($child, $values[$child->id] ?? null, $row, $labels[$child->id] ?? null, $wordings[$child->id] ?? null);
+                $this->saveOne($child, $values[$child->id] ?? null, $row, $labels[$child->id] ?? null, $wordings[$child->id] ?? null, array_key_exists($child->id, $unknownYears) ? (bool) $unknownYears[$child->id] : null);
             }
         }
 
