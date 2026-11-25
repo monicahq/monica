@@ -42,25 +42,26 @@ Write one entry per meaningful change, not one per commit and not one per pull r
 ```markdown
 ---
 id: 01KB1J7XY8M4NPQ2RST6VW9ABC
-title: Birthdays show the age somebody turns
+title: Upcoming age is now shown next to a birthday
 type: feature
 area: Contacts
 published_at: 2026-11-17T10:00:00Z
 link: /vaults
 ---
-Next to a birthday on a contact page, Monica now writes how old the person will be,
-and the reminder email says it too.
+Until now, a birthday on a contact page showed only the date, so you had to work out
+how old the person was turning. Now Monica shows the age right next to it, and the
+reminder email mentions it too.
 ```
 
 | Key | Rule |
 | --- | --- |
 | `id` | Required. The ULID from step 1. Never change it once the entry is merged. |
-| `title` | Required. One line, in English, saying what changed for the reader. |
+| `title` | Required. One line, in English, naming what the reader now gets. See [How to word it](#how-to-word-it). |
 | `type` | Required. `feature`, `improvement` or `fix`. |
 | `published_at` | Required. The current time in UTC, ending in `Z`: `date -u +%Y-%m-%dT%H:%M:%SZ`. |
 | `area` | Optional. The part of Monica it touches, as the reader names it: `Contacts`, `Vault`, `Reminders`, `Account settings`. |
 | `link` | Optional. A path inside the application, starting with a single `/`. Never a full URL. |
-| body | Required. Markdown, in English. |
+| body | Required. Markdown, in English: how it was before, then what changes now. |
 
 Every front matter value fits on one line. Only the body may span several.
 
@@ -70,10 +71,36 @@ Every front matter value fits on one line. Only the body may span several.
 
 ## How to word it
 
-- Say what changed for the reader and why it matters to them. Leave out how it was built: no class names, no table names, no mention of a refactoring.
-- Keep the title short and concrete: "Search finds nicknames and companies", not "Improved search".
-- A fix says what went wrong in the reader's words: "Reminders for 29 February arrived on 1 March. They now arrive on 28 February."
-- Write the plain, calm English the rest of the product uses. The [translations skill](../translations/SKILL.md) and `.claude/rules/translations.md` say how each language then writes it.
+### The title
+
+Start with the thing the reader gets, then say what is now true of it, with "now". The screen or the
+product is not the subject.
+
+| Write | Not |
+| --- | --- |
+| Template name is now shown on a contact page | A contact page names its template |
+| Nicknames and companies now show up in search | Search finds nicknames and companies |
+| Reminders for 29 February now arrive on 28 February | Improved reminders |
+
+Keep it short and concrete. A vague title ("Improved search") says nothing.
+
+### The body
+
+Two parts, in this order, in the simplest and friendliest words you can find:
+
+1. **Before.** How it was until now, as the reader lived it: "Until now, nothing on a contact page
+   told you which template it was built from."
+2. **Now.** What this change gives them: "Now its name is shown under the person's name. Select it
+   to open the template."
+
+A fix follows the same order: what went wrong, then what happens now.
+
+Talk to the reader as "you", in short sentences, the way you would tell a friend. Leave out how it
+was built: no class names, no table names, no mention of a refactoring.
+
+### Tone
+
+Write the plain, friendly English the rest of the product uses. The [translations skill](../translations/SKILL.md) and `.claude/rules/translations.md` say how each language then writes it.
 
 ## What never changes
 
