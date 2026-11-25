@@ -55,7 +55,7 @@ class DashboardTimelineBlock
         return $this->page;
     }
 
-    /** @return list<array{slice: string, label: string, count: int, isCurrent: bool}> */
+    /** @return list<array{slice: string, label: string, count: int, isCurrent: bool, isYear: bool}> */
     public function index(): array
     {
         $index = [];
@@ -66,6 +66,7 @@ class DashboardTimelineBlock
                 'label' => $this->labelOf($slice['slice']),
                 'count' => $slice['count'],
                 'isCurrent' => $slice['slice'] === $this->selectedSlice(),
+                'isYear' => ! in_array($slice['slice'], [LifeEventTimeline::UPCOMING, LifeEventTimeline::PAST], true),
             ];
         }
 
@@ -91,6 +92,7 @@ class DashboardTimelineBlock
         $imprecise = [];
         $continued = $this->groupThePreviousPageEndedIn();
         $isUpcoming = $this->selectedSlice() === LifeEventTimeline::UPCOMING;
+        $spansYears = $isUpcoming || $this->selectedSlice() === LifeEventTimeline::PAST;
 
         foreach ($this->lifeEvents() as $lifeEvent) {
             $date = $lifeEvent->happened_on;
@@ -110,7 +112,7 @@ class DashboardTimelineBlock
 
             $months[$key] ??= [
                 'key' => $key,
-                'label' => DateFormatEnum::write($date, $isUpcoming ? 'F Y' : 'F'),
+                'label' => DateFormatEnum::write($date, $spansYears ? 'F Y' : 'F'),
                 'showsHeading' => $key !== $continued,
                 'entries' => [],
             ];
@@ -123,7 +125,7 @@ class DashboardTimelineBlock
             $year = (int) substr($key, 0, 4);
 
             foreach ($imprecise as $impreciseYear => $group) {
-                if ($isUpcoming && $impreciseYear < $year) {
+                if ($isUpcoming ? $impreciseYear < $year : $impreciseYear > $year) {
                     $groups[] = $group;
                     unset($imprecise[$impreciseYear]);
                 }
@@ -147,7 +149,7 @@ class DashboardTimelineBlock
     /** @return array{label: string, url: string}|null */
     public function newer(): ?array
     {
-        $slices = array_column($this->timeline()->slices(), 'slice');
+        $slices = $this->slicesToPageThrough();
         $position = array_search($this->selectedSlice(), $slices, true);
 
         if ($position === false || $position === 0) {
@@ -163,7 +165,7 @@ class DashboardTimelineBlock
     /** @return array{label: string, url: string}|null */
     public function older(): ?array
     {
-        $slices = array_column($this->timeline()->slices(), 'slice');
+        $slices = $this->slicesToPageThrough();
         $position = array_search($this->selectedSlice(), $slices, true);
 
         if ($position === false || ! isset($slices[$position + 1])) {
@@ -402,9 +404,25 @@ class DashboardTimelineBlock
             : "{$lifeEvent->happened_on->year}-sometime";
     }
 
+    /** @return list<string> */
+    private function slicesToPageThrough(): array
+    {
+        if ($this->selectedSlice() === LifeEventTimeline::PAST) {
+            return [LifeEventTimeline::UPCOMING, LifeEventTimeline::PAST];
+        }
+
+        $slices = array_column($this->timeline()->slices(), 'slice');
+
+        return array_values(array_diff($slices, [LifeEventTimeline::PAST]));
+    }
+
     private function labelOf(string $slice): string
     {
-        return $slice === LifeEventTimeline::UPCOMING ? __('Upcoming') : $slice;
+        return match ($slice) {
+            LifeEventTimeline::UPCOMING => __('Upcoming'),
+            LifeEventTimeline::PAST => __('Past'),
+            default => $slice,
+        };
     }
 
     private function url(string $slice, int $page = 1): string

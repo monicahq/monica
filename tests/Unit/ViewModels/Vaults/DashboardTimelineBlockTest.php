@@ -52,13 +52,13 @@ class DashboardTimelineBlockTest extends TestCase
     }
 
     #[Test]
-    public function it_opens_on_what_is_coming_up_nearest_first_by_month_and_year(): void
+    public function it_lists_what_is_coming_up_nearest_first_by_month_and_year(): void
     {
         $this->lifeEvent('2027-01-03', 'Art show', [$this->jim]);
         $this->lifeEvent('2026-12-18', 'Christmas party', [$this->jim]);
         $this->lifeEvent('2025-05-01', 'Dundies', [$this->jim]);
 
-        $block = $this->block();
+        $block = $this->block(slice: 'upcoming');
 
         $this->assertSame('upcoming', $block->selectedSlice());
         $this->assertSame('Upcoming', $block->title());
@@ -68,13 +68,19 @@ class DashboardTimelineBlockTest extends TestCase
     }
 
     #[Test]
-    public function it_opens_on_the_newest_year_when_nothing_is_coming_up_and_ignores_an_unknown_one(): void
+    public function it_opens_on_the_past_newest_first_by_month_and_year_and_ignores_an_unknown_slice(): void
     {
+        $this->lifeEvent('2026-12-18', 'Christmas party', [$this->jim]);
         $this->lifeEvent('2025-05-01', 'Dundies', [$this->jim]);
         $this->lifeEvent('2023-02-01', 'Fun run', [$this->jim]);
 
-        $this->assertSame('2025', $this->block()->selectedSlice());
-        $this->assertSame('2025', $this->block(slice: '1990')->selectedSlice());
+        $block = $this->block();
+
+        $this->assertSame('past', $block->selectedSlice());
+        $this->assertSame('Past', $block->title());
+        $this->assertSame('2 entries', $block->countLabel());
+        $this->assertSame(['May 2025', 'February 2023'], array_column($block->months(), 'label'));
+        $this->assertSame('past', $this->block(slice: '1990')->selectedSlice());
         $this->assertSame('2023', $this->block(slice: '2023')->selectedSlice());
     }
 
@@ -98,14 +104,18 @@ class DashboardTimelineBlockTest extends TestCase
 
         $index = $this->block(slice: '2025')->index();
 
-        $this->assertSame(['Upcoming', '2025', '2023'], array_column($index, 'label'));
-        $this->assertSame([false, true, false], array_column($index, 'isCurrent'));
-        $this->assertSame(['upcoming', '2025', '2023'], array_column($index, 'slice'));
+        $this->assertSame(['Upcoming', 'Past', '2025', '2023'], array_column($index, 'label'));
+        $this->assertSame([false, false, true, false], array_column($index, 'isCurrent'));
+        $this->assertSame(['upcoming', 'past', '2025', '2023'], array_column($index, 'slice'));
+        $this->assertSame([false, false, true, true], array_column($index, 'isYear'));
 
         $this->assertSame('Newer: Upcoming', $this->block(slice: '2025')->newer()['label']);
         $this->assertSame('Older: 2023', $this->block(slice: '2025')->older()['label']);
         $this->assertNull($this->block(slice: 'upcoming')->newer());
+        $this->assertSame('Older: 2025', $this->block(slice: 'upcoming')->older()['label']);
         $this->assertNull($this->block(slice: '2023')->older());
+        $this->assertSame('Newer: Upcoming', $this->block(slice: 'past')->newer()['label']);
+        $this->assertNull($this->block(slice: 'past')->older());
     }
 
     #[Test]
@@ -129,7 +139,17 @@ class DashboardTimelineBlockTest extends TestCase
         $this->lifeEvent('2027-01-01', 'Move to Philadelphia', [$this->jim], DatePrecisionEnum::Year);
         $this->lifeEvent('2027-03-01', 'Wedding', [$this->jim]);
 
-        $this->assertSame(['March 2027', 'Sometime in 2027', 'February 2028'], array_column($this->block()->months(), 'label'));
+        $this->assertSame(['March 2027', 'Sometime in 2027', 'February 2028'], array_column($this->block(slice: 'upcoming')->months(), 'label'));
+    }
+
+    #[Test]
+    public function it_places_a_life_event_known_only_to_the_year_after_the_months_of_its_year_in_the_past(): void
+    {
+        $this->lifeEvent('2018-02-01', 'Booze cruise', [$this->jim]);
+        $this->lifeEvent('2019-01-01', 'Moved to Scranton', [$this->jim], DatePrecisionEnum::Year);
+        $this->lifeEvent('2019-06-01', 'Started at Dunder Mifflin', [$this->jim]);
+
+        $this->assertSame(['June 2019', 'Sometime in 2019', 'February 2018'], array_column($this->block()->months(), 'label'));
     }
 
     #[Test]
@@ -164,7 +184,7 @@ class DashboardTimelineBlockTest extends TestCase
         $this->lifeEvent('2027-01-18', 'Further', [$this->jim]);
         $this->lifeEvent('2026-11-21', 'Yesterday', [$this->jim]);
 
-        $relative = collect($this->block()->months())->flatMap(fn (array $month): array => $month['entries'])->pluck('relative', 'title')->all();
+        $relative = collect($this->block(slice: 'upcoming')->months())->flatMap(fn (array $month): array => $month['entries'])->pluck('relative', 'title')->all();
 
         $this->assertSame('Today', $relative['Today']);
         $this->assertSame('Tomorrow', $relative['Tomorrow']);
@@ -183,7 +203,7 @@ class DashboardTimelineBlockTest extends TestCase
         foreach (['America/Los_Angeles', 'Europe/Paris', 'Asia/Tokyo'] as $timezone) {
             $this->user->update(['timezone' => $timezone]);
 
-            $this->assertSame('in 3 days', $this->block()->months()[0]['entries'][0]['relative'], $timezone);
+            $this->assertSame('in 3 days', $this->block(slice: 'upcoming')->months()[0]['entries'][0]['relative'], $timezone);
             $this->assertSame('4 days ago', $this->block(slice: '2026')->months()[0]['entries'][0]['relative'], $timezone);
         }
     }
@@ -282,7 +302,7 @@ class DashboardTimelineBlockTest extends TestCase
 
         $this->assertFalse($block->holdsNothing());
         $this->assertTrue($block->isEmptySlice());
-        $this->assertSame(0, $block->index()[1]['count']);
+        $this->assertSame(0, $block->index()[2]['count']);
     }
 
     #[Test]

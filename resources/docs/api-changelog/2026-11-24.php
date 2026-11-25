@@ -6,6 +6,18 @@ return [
     'date' => '2026-11-24',
     'entries' => [
         [
+            'id' => 'life-event-past-slice',
+            'kind' => 'Added',
+            'group' => 'Life events',
+            'title' => 'Ask for every life event before today',
+            'summary' => 'The timeline has a new slice, past, holding every life event dated before today, the most recent first. GET /vaults/{vault}/life-events accepts slice=past, and GET /vaults/{vault}/life-event-slices lists it second, right after upcoming, whenever the vault holds a past life event. The slices of one year are unchanged.',
+            'why' => 'The dashboard of a vault now opens on its past life events, and everything the application shows can be read through the API.',
+            'breaking' => false,
+            'changes' => [
+                ['field' => 'slice', 'change' => 'Changed', 'endpoints' => ['GET /vaults/{vault}/life-events', 'GET /vaults/{vault}/life-event-slices']],
+            ],
+        ],
+        [
             'id' => 'vault-section-visibility',
             'kind' => 'Added',
             'group' => 'Vaults',
