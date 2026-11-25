@@ -85,7 +85,7 @@ RUN set -ex; \
 # version the Static analysis workflow pins.
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 COPY --from=node:26-trixie-slim /usr/local/bin/node /usr/local/bin/node
-COPY --from=oven/bun:1.4.4-debian /usr/local/bin/bun /usr/local/bin/bun
+COPY --from=oven/bun:1.4.5-debian /usr/local/bin/bun /usr/local/bin/bun
 RUN ln --symbolic bun /usr/local/bin/bunx
 
 # Set crontab for schedules
