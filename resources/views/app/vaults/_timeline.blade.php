@@ -14,7 +14,7 @@
     <x-panel :flush="true">
       <x-empty-state :title="__('Nothing on the timeline yet')">
         <x-slot:icon><x-icon name="timeline" :size="28" :stroke-width="1.5" /></x-slot:icon>
-        {{ __('Life events written about anybody in this vault land here, what is coming up first.') }}
+        {{ __('Life events written about anybody in this vault land here.') }}
       </x-empty-state>
     </x-panel>
   @else
@@ -34,13 +34,15 @@
             aria-label="{{ __('Period') }}"
             x-on:change="$el.form.requestSubmit()"
           >
-            @foreach (array_slice($timeline->index(), 0, 1) as $slice)
+            @foreach ($timeline->index() as $slice)
+              @continue($slice['isYear'])
               <option value="{{ $slice['slice'] }}" @selected($slice['isCurrent'])>{{ $slice['label'] }} · {{ trans_choice(':count entry|:count entries', $slice['count']) }}</option>
             @endforeach
 
-            @if (count($timeline->index()) > 1)
+            @if (collect($timeline->index())->contains('isYear', true))
               <optgroup label="{{ __('Years') }}">
-                @foreach (array_slice($timeline->index(), 1) as $slice)
+                @foreach ($timeline->index() as $slice)
+                  @continue(! $slice['isYear'])
                   <option value="{{ $slice['slice'] }}" @selected($slice['isCurrent'])>{{ $slice['label'] }} · {{ trans_choice(':count entry|:count entries', $slice['count']) }}</option>
                 @endforeach
               </optgroup>
@@ -122,7 +124,7 @@
                       <x-icon name="chevron-right" :size="14" x-show="! open" x-cloak class="rtl:-scale-x-100" />
                     </span>
                     <x-caption tone="muted">{{ $month['label'] }}</x-caption>
-                    <span class="text-xs text-muted tabular-nums" aria-hidden="true">{{ count($month['entries']) }}</span>
+                    <span class="text-xs text-muted tabular-nums" aria-hidden="true">({{ count($month['entries']) }})</span>
                     <span class="sr-only">{{ trans_choice(':count entry|:count entries', count($month['entries'])) }}</span>
                   </button>
                 </h3>
@@ -202,9 +204,9 @@
 
                       <div
                         x-bind:data-open="open"
-                        class="flex shrink-0 flex-wrap gap-1 opacity-0 transition-opacity motion-reduce:transition-none data-open:opacity-100 group-focus-within:opacity-100 group-hover:opacity-100 pointer-coarse:opacity-100"
+                        class="flex shrink-0 flex-wrap gap-1 sm:self-center opacity-0 transition-opacity motion-reduce:transition-none data-open:opacity-100 group-focus-within:opacity-100 group-hover:opacity-100 pointer-coarse:opacity-100"
                       >
-                        <x-button.ghost
+                        <x-button.secondary
                           type="button"
                           size="small"
                           x-ref="detailsToggle"
@@ -216,10 +218,10 @@
                           <span x-text="open ? @js(__('Hide details')) : @js(__('Details'))">{{ __('Details') }}</span>
                           <span class="sr-only">{{ $entry['title'] }}, {{ $entry['date'] }}</span>
                           <x-icon name="chevron-down" :size="14" x-bind:class="open && 'rotate-180'" class="motion-safe:transition-transform" />
-                        </x-button.ghost>
+                        </x-button.secondary>
 
                         @if ($entry['editUrl'] !== null)
-                          <x-button.ghost :href="$entry['editUrl']" data-turbo="true" size="small" aria-label="{{ __('Edit :name', ['name' => $entry['title']]) }}">{{ __('Edit') }}</x-button.ghost>
+                          <x-button.secondary :href="$entry['editUrl']" data-turbo="true" size="small" aria-label="{{ __('Edit :name', ['name' => $entry['title']]) }}">{{ __('Edit') }}</x-button.secondary>
                         @endif
                       </div>
                     </div>

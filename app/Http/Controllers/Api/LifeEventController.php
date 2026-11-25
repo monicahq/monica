@@ -45,7 +45,7 @@ class LifeEventController extends Controller
         $validated = $request->validate([
             'contact' => ['nullable', 'string'],
             'life_event_type' => ['nullable', 'string'],
-            'slice' => ['nullable', 'string', 'regex:/^(upcoming|\d{4})$/'],
+            'slice' => ['nullable', 'string', 'regex:/^(upcoming|past|\d{4})$/'],
         ]);
 
         $contact = isset($validated['contact'])
