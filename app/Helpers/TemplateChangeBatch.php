@@ -49,11 +49,14 @@ class TemplateChangeBatch
     /** @return Collection<int, object{id: int, structure_version_id: int}> */
     public function records(): Collection
     {
-        return $this->records ??= $this->query()
+        /** @var Collection<int, object{id: int, structure_version_id: int}> $records */
+        $records = $this->records ?? $this->query()
             ->toBase()
             ->orderBy('id')
             ->get(['id', 'structure_version_id'])
             ->keyBy('id');
+
+        return $this->records = $records
     }
 
     /** @return array<int, true> */
