@@ -396,7 +396,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Nightwatch::user(fn (Authenticatable $user): array => $user instanceof User ? [
             'id' => $user->getAuthIdentifier(),
-            'email' => $user->email,
+            'username' => $user->email,
         ] : []);
 
         Event::listen(DiagnosingHealth::class, fn () => Nightwatch::dontSample());
