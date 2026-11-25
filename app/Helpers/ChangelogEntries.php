@@ -207,7 +207,7 @@ class ChangelogEntries
 
     private function screenshotDirectory(): string
     {
-        return $this->screenshotDirectory ?? public_path('changelog');
+        return $this->screenshotDirectory ?? public_path('images/changelog');
     }
 
     /** @return list<string> */
