@@ -165,9 +165,11 @@ jobs:
 
       - name: Set results artifact name
         id: artifact
+        if: needs.changes.outputs.code == 'true'
         run: echo "name=${{ matrix.connection }}_${{ matrix.php-version }}_${{ matrix.suite }}" | sed -e "s/*//g" >> $GITHUB_OUTPUT
 
       - name: Setup problem matchers for PHPUnit
+        if: needs.changes.outputs.code == 'true'
         shell: bash
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
