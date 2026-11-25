@@ -94,6 +94,10 @@ Here are some of the things you can do to help.
 - You can answer questions in [the issue tracker](https://github.com/monicahq/monica/issues) to help other community members.
 - You can financially support Monica’s development [on Patreon](https://www.patreon.com/monicahq) or by subscribing to [a paid account](https://monicahq.com/pricing).
 
+### Contribute as a developer
+
+- [The developer setup guide](docs/DEVELOPER_SETUP.md) gives every command to run to get Monica working on your machine, and to check a change before you send it.
+
 ## Principles, vision, goals and strategy
 
 ### Vision
