@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\OAuth;
 
+use App\Models\Administrator;
 use App\Models\MobileSession;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -112,6 +113,17 @@ class MobileSignInTest extends TestCase
         Passport::actingAs(User::factory()->create(), [Registrar::OAUTH_SCOPE]);
 
         $this->getJson('/api/v1/me')->assertForbidden();
+    }
+
+    #[Test]
+    public function the_token_of_the_phone_of_an_administrator_does_not_reach_the_administration(): void
+    {
+        $michael = User::factory()->create();
+        Administrator::factory()->create(['user_id' => $michael->id]);
+
+        Passport::actingAs($michael, [MobileSession::SCOPE]);
+
+        $this->getJson('/api/v1/admin/support-requests')->assertNotFound();
     }
 
     private function approvedCode(User $user): string

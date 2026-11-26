@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\Actions;
 
 use App\Models\MobileSession;
+use Illuminate\Support\Str;
 
 /**
  * A phone signs itself out with its refresh token. An unknown token, or one of another client,
- * changes nothing, and the caller is not told which it was.
+ * changes nothing, and the caller is not told which it was. A client id that is not a UUID names
+ * no client, and is not sent to the database, which would refuse it on PostgreSQL.
  */
 class RevokeMobileSession
 {
@@ -30,6 +32,10 @@ class RevokeMobileSession
 
     private function heldSession(): ?MobileSession
     {
+        if (! Str::isUuid($this->clientId)) {
+            return null;
+        }
+
         return MobileSession::query()
             ->whereNull('ended_at')
             ->where('client_id', $this->clientId)
