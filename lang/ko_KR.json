@@ -514,7 +514,6 @@
     "A type that came with your account. Its wording, its category and its mark are yours to change. It cannot be deleted, only switched off.": "계정과 함께 제공된 유형입니다. 문구와 분류, 표식은 바꿀 수 있습니다. 삭제할 수는 없고 꺼 둘 수만 있습니다.",
     "A type you add under this category is offered wherever the category is.": "이 분류 아래에 추가한 유형은 분류가 제공되는 모든 곳에서 함께 제공됩니다.",
     "A user wrote again in an existing request": "사용자가 기존 문의에 다시 글을 남겼습니다",
-    "A value list in this file holds nothing to choose from.": "이 파일의 어떤 값 목록에 고를 것이 하나도 없습니다.",
     "A value list in this file is named in a way that is not a reference.": "이 파일의 어떤 값 목록이 참조가 아닌 방식으로 지정되어 있습니다.",
     "A value nothing uses is deleted. A value records already point at is no longer offered instead, so everything that already has it keeps it.": "아무것도 쓰지 않는 값은 삭제됩니다. 이미 기록이 가리키는 값은 삭제되는 대신 더 이상 선택지로 제공되지 않으므로, 그 값을 가진 것은 그대로 유지됩니다.",
     "A vault holds one part of your life. Everything you keep here is in a vault, and new records go to the first one you make.": "보관함은 내 삶의 한 부분을 담습니다. 여기에 보관하는 모든 것은 어느 보관함 안에 있으며, 새 기록은 가장 먼저 만든 보관함으로 들어갑니다.",

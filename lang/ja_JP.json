@@ -514,7 +514,6 @@
     "A type that came with your account. Its wording, its category and its mark are yours to change. It cannot be deleted, only switched off.": "アカウントに付属するタイプです。文言、カテゴリ、マークは変更できます。削除はできず、オフにすることだけができます。",
     "A type you add under this category is offered wherever the category is.": "このカテゴリの下に追加したタイプは、カテゴリが表示されるあらゆる場所で提示されます。",
     "A user wrote again in an existing request": "ユーザーが既存のリクエストに再度書き込みました",
-    "A value list in this file holds nothing to choose from.": "このファイルの選択リストに選択肢がありません。",
     "A value list in this file is named in a way that is not a reference.": "このファイルの選択リストの名前が参照の形式になっていません。",
     "A value nothing uses is deleted. A value records already point at is no longer offered instead, so everything that already has it keeps it.": "どこにも使われていない値は削除されます。レコードがすでに指している値は削除されず、以後選択肢に表示されなくなるだけなので、すでに設定されているものはそのまま残ります。",
     "A vault holds one part of your life. Everything you keep here is in a vault, and new records go to the first one you make.": "保管庫は人生の一部分を収めます。ここに保存するものはすべて保管庫の中にあり、新しいレコードは最初に作成した保管庫に入ります。",

@@ -514,7 +514,6 @@
     "A type that came with your account. Its wording, its category and its mark are yours to change. It cannot be deleted, only switched off.": "ประเภทที่มาพร้อมบัญชีของคุณ ถ้อยคำ หมวดหมู่ และเครื่องหมายของมันคุณเปลี่ยนได้ ลบไม่ได้ ปิดได้เท่านั้น",
     "A type you add under this category is offered wherever the category is.": "ประเภทที่คุณเพิ่มใต้หมวดหมู่นี้จะถูกเสนอทุกที่ที่หมวดหมู่ปรากฏ",
     "A user wrote again in an existing request": "ผู้ใช้เขียนข้อความใหม่ในคำขอที่มีอยู่",
-    "A value list in this file holds nothing to choose from.": "รายการค่าหนึ่งในไฟล์นี้ไม่มีอะไรให้เลือกเลย",
     "A value list in this file is named in a way that is not a reference.": "รายการค่าหนึ่งในไฟล์นี้ตั้งชื่อในแบบที่ไม่ใช่การอ้างอิง",
     "A value nothing uses is deleted. A value records already point at is no longer offered instead, so everything that already has it keeps it.": "ค่าที่ไม่มีอะไรใช้จะถูกลบ ค่าที่มีระเบียนชี้ถึงอยู่แล้วจะเลิกให้เลือกแทนการลบ ดังนั้นทุกอย่างที่มีค่านั้นอยู่แล้วก็ยังเก็บไว้",
     "A vault holds one part of your life. Everything you keep here is in a vault, and new records go to the first one you make.": "ห้องนิรภัยหนึ่งเก็บชีวิตคุณส่วนหนึ่ง ทุกอย่างที่คุณเก็บไว้ที่นี่อยู่ในห้องนิรภัย และระเบียนใหม่จะไปอยู่ในห้องแรกที่คุณสร้าง",

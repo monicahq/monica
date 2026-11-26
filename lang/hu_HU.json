@@ -514,7 +514,6 @@
     "A type that came with your account. Its wording, its category and its mark are yours to change. It cannot be deleted, only switched off.": "A fiókkal együtt érkezett típus. A szövegét, a kategóriáját és a jelét megváltoztathatja. Nem törölhető, csak kikapcsolható.",
     "A type you add under this category is offered wherever the category is.": "Az ebbe a kategóriába felvett típus mindenhol felkínálódik, ahol a kategória is.",
     "A user wrote again in an existing request": "Egy felhasználó újra írt egy meglévő kérésben",
-    "A value list in this file holds nothing to choose from.": "A fájlban van egy értéklista, amelyben nincs miből választani.",
     "A value list in this file is named in a way that is not a reference.": "A fájlban van egy értéklista, amely nem hivatkozásként van megadva.",
     "A value nothing uses is deleted. A value records already point at is no longer offered instead, so everything that already has it keeps it.": "A nem használt érték törlődik. Azt az értéket, amelyre rekordok már mutatnak, ehelyett többé nem kínáljuk fel, így minden megtartja, aminek már megvan.",
     "A vault holds one part of your life. Everything you keep here is in a vault, and new records go to the first one you make.": "A széf az életed egy részét tartja. Minden, amit itt őrzöl, valamelyik széfben van, az új rekordok pedig az elsőbe kerülnek, amelyet létrehozol.",

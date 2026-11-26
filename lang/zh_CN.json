@@ -514,7 +514,6 @@
     "A type that came with your account. Its wording, its category and its mark are yours to change. It cannot be deleted, only switched off.": "随账户提供的类型。它的措辞、分类和标记都可由你更改。它无法删除，只能关闭。",
     "A type you add under this category is offered wherever the category is.": "你在此分类下添加的类型，会在该分类出现的任何地方被提供。",
     "A user wrote again in an existing request": "用户在现有工单中再次留言",
-    "A value list in this file holds nothing to choose from.": "此文件中的选项列表没有可选项。",
     "A value list in this file is named in a way that is not a reference.": "此文件中选项列表的名称不是引用格式。",
     "A value nothing uses is deleted. A value records already point at is no longer offered instead, so everything that already has it keeps it.": "未被使用的值会被删除。记录已指向的值不会被删除，只是不再提供，因此已设置的内容保持不变。",
     "A vault holds one part of your life. Everything you keep here is in a vault, and new records go to the first one you make.": "保险库存放你生活的一部分。你在这里保存的一切都在保险库中，新记录会进入你创建的第一个保险库。",

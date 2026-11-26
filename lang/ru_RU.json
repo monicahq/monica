@@ -514,7 +514,6 @@
     "A type that came with your account. Its wording, its category and its mark are yours to change. It cannot be deleted, only switched off.": "Тип, который был в аккаунте изначально. Его название, категорию и метку можно менять. Удалить его нельзя, только отключить.",
     "A type you add under this category is offered wherever the category is.": "Тип, добавленный в эту категорию, предлагается везде, где есть эта категория.",
     "A user wrote again in an existing request": "Пользователь снова написал в существующем обращении",
-    "A value list in this file holds nothing to choose from.": "Один из списков значений в этом файле пуст.",
     "A value list in this file is named in a way that is not a reference.": "Один из списков значений в этом файле назван так, что это не ссылка.",
     "A value nothing uses is deleted. A value records already point at is no longer offered instead, so everything that already has it keeps it.": "Значение, которое нигде не используется, удаляется. Значение, на которое уже ссылаются записи, вместо этого больше не предлагается, поэтому там, где оно уже есть, оно сохраняется.",
     "A vault holds one part of your life. Everything you keep here is in a vault, and new records go to the first one you make.": "Хранилище вмещает одну часть вашей жизни. Всё, что вы здесь храните, лежит в хранилище, а новые записи попадают в первое созданное вами.",

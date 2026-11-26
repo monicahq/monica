@@ -593,10 +593,6 @@ class StructureFileReader
             ];
         }
 
-        if ($items === []) {
-            $this->refuse(__('A value list in this file holds nothing to choose from.'));
-        }
-
         return $items;
     }
 

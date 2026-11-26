@@ -514,7 +514,6 @@
     "A type that came with your account. Its wording, its category and its mark are yours to change. It cannot be deleted, only switched off.": "Tilisi mukana tullut tyyppi. Sen sanamuoto, luokka ja merkki ovat sinun muutettavissasi. Sitä ei voi poistaa, vain ottaa pois käytöstä.",
     "A type you add under this category is offered wherever the category is.": "Tämän luokan alle lisäämäsi tyyppi tarjotaan kaikkialla, missä luokkakin.",
     "A user wrote again in an existing request": "Käyttäjä kirjoitti uudelleen olemassa olevaan pyyntöön",
-    "A value list in this file holds nothing to choose from.": "Tiedostossa on arvolista, jossa ei ole mitään valittavaa.",
     "A value list in this file is named in a way that is not a reference.": "Tiedostossa on arvolista, joka on ilmoitettu tavalla, joka ei ole viittaus.",
     "A value nothing uses is deleted. A value records already point at is no longer offered instead, so everything that already has it keeps it.": "Arvo, jota mikään ei käytä, poistetaan. Arvoa, johon tietueet jo osoittavat, ei sen sijaan enää tarjota, joten kaikki jolla se jo on, säilyttää sen.",
     "A vault holds one part of your life. Everything you keep here is in a vault, and new records go to the first one you make.": "Holvi pitää sisällään yhden osan elämääsi. Kaikki mitä säilytät täällä, on jossakin holvissa, ja uudet tietueet menevät ensimmäiseen tekemääsi holviin.",

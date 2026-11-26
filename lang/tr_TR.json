@@ -514,7 +514,6 @@
     "A type that came with your account. Its wording, its category and its mark are yours to change. It cannot be deleted, only switched off.": "Hesabınızla birlikte gelen bir tür. İfadesini, kategorisini ve işaretini değiştirebilirsiniz. Silinemez, yalnızca kapatılabilir.",
     "A type you add under this category is offered wherever the category is.": "Bu kategorinin altına eklediğiniz bir tür, kategorinin sunulduğu her yerde sunulur.",
     "A user wrote again in an existing request": "Bir kullanıcı mevcut bir talepte yeniden yazdı",
-    "A value list in this file holds nothing to choose from.": "Bu dosyadaki bir değer listesinde seçilecek hiçbir şey yok.",
     "A value list in this file is named in a way that is not a reference.": "Bu dosyadaki bir değer listesi, bir başvuru olmayan bir biçimde adlandırılmış.",
     "A value nothing uses is deleted. A value records already point at is no longer offered instead, so everything that already has it keeps it.": "Hiçbir şeyin kullanmadığı bir değer silinir. Kayıtların halihazırda kullandığı bir değer ise silinmez, yalnızca sunulmaz olur; böylece onu taşıyan her şey onu korur.",
     "A vault holds one part of your life. Everything you keep here is in a vault, and new records go to the first one you make.": "Kasa, hayatınızın bir parçasını tutar. Burada tuttuğunuz her şey bir kasadadır ve yeni kayıtlar açtığınız ilk kasaya gider.",
