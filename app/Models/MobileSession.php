@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Passport\Client;
 use Override;
@@ -64,6 +65,21 @@ class MobileSession extends Model
     public const string SCOPE = 'api';
 
     public const int LIFETIME_IN_DAYS = 30;
+
+    /**
+     * How long after a renewal the refresh token it replaced may come back without ending the session:
+     * two requests of the phone sent at once present the same token (RFC 9700, section 4.14.2).
+     */
+    public const int REPLAY_GRACE_IN_SECONDS = 30;
+
+    /**
+     * The client a token request names, read the way the OAuth server reads it: from the body, or else
+     * from HTTP Basic authentication.
+     */
+    public static function clientIdOf(Request $request): string
+    {
+        return $request->string('client_id')->toString() ?: (string) $request->getUser();
+    }
 
     /**
      * Get the attributes that should be cast.

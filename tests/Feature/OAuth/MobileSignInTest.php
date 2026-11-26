@@ -47,6 +47,17 @@ class MobileSignInTest extends TestCase
     }
 
     #[Test]
+    public function it_shows_the_consent_page_even_when_the_request_asks_for_no_prompt(): void
+    {
+        $pam = User::factory()->create();
+        $this->signInFromThePhone($pam);
+
+        $this->actingAs($pam)->get($this->authorizationUrl().'&prompt=none')
+            ->assertOk()
+            ->assertSee('Allow Monica for Android to reach your account?');
+    }
+
+    #[Test]
     public function it_shows_the_consent_page_whatever_the_mcp_server_switch(): void
     {
         $pam = User::factory()->create();
@@ -124,6 +135,15 @@ class MobileSignInTest extends TestCase
         Passport::actingAs($michael, [MobileSession::SCOPE]);
 
         $this->getJson('/api/v1/admin/support-requests')->assertNotFound();
+    }
+
+    #[Test]
+    public function the_token_of_the_phone_mints_no_api_key(): void
+    {
+        $tokens = $this->signInFromThePhone(User::factory()->create());
+
+        $this->withToken($tokens['access_token'])->postJson('/api/v1/api-keys', ['name' => 'Schrute Farms export'])
+            ->assertForbidden();
     }
 
     private function approvedCode(User $user): string

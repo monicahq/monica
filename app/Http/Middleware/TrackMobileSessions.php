@@ -23,7 +23,7 @@ class TrackMobileSessions
     /** @param  Closure(Request): (Response)  $next */
     public function handle(Request $request, Closure $next): Response
     {
-        if (! $request->routeIs('passport.token') || $request->string('client_id')->toString() !== MobileSession::CLIENT_ID) {
+        if (! $request->routeIs('passport.token') || MobileSession::clientIdOf($request) !== MobileSession::CLIENT_ID) {
             return $next($request);
         }
 

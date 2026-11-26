@@ -34,10 +34,38 @@ class MobileSessionLifecycleTest extends TestCase
         $tokens = $this->signInFromThePhone(User::factory()->create());
         $renewed = $this->renew($tokens['refresh_token'])->json();
 
+        $this->travel(MobileSession::REPLAY_GRACE_IN_SECONDS + 1)->seconds();
         $this->renew($tokens['refresh_token'])->assertStatus(400)->assertJsonPath('error', 'invalid_grant');
 
         $this->assertNotNull(MobileSession::query()->sole()->ended_at);
         $this->renew($renewed['refresh_token'])->assertStatus(400);
+    }
+
+    #[Test]
+    public function two_renewals_sent_at_once_with_the_same_token_keep_the_phone_signed_in(): void
+    {
+        $tokens = $this->signInFromThePhone(User::factory()->create());
+        $renewed = $this->renew($tokens['refresh_token'])->json();
+
+        $this->renew($tokens['refresh_token'])->assertStatus(400);
+
+        $this->assertNull(MobileSession::query()->sole()->ended_at);
+        $this->renew($renewed['refresh_token'])->assertOk();
+    }
+
+    #[Test]
+    public function a_renewal_naming_the_app_through_basic_authentication_moves_the_session_along(): void
+    {
+        $tokens = $this->signInFromThePhone(User::factory()->create());
+
+        $renewed = $this->withHeader('Authorization', 'Basic '.base64_encode(MobileSession::CLIENT_ID.':'))
+            ->postJson('/oauth/token', [
+                'grant_type' => 'refresh_token',
+                'refresh_token' => $tokens['refresh_token'],
+                'scope' => MobileSession::SCOPE,
+            ])->assertOk()->json();
+
+        $this->assertSame(hash('sha256', $renewed['refresh_token']), MobileSession::query()->sole()->refresh_token_hash);
     }
 
     #[Test]

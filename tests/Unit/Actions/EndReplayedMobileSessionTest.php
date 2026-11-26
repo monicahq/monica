@@ -32,11 +32,27 @@ class EndReplayedMobileSessionTest extends TestCase
     {
         Queue::fake();
 
-        $session = MobileSession::factory()->create(['previous_refresh_token_hash' => hash('sha256', 'jello-stapler')]);
+        $session = MobileSession::factory()->create([
+            'previous_refresh_token_hash' => hash('sha256', 'jello-stapler'),
+            'last_used_at' => now()->subMinute(),
+        ]);
 
         new EndReplayedMobileSession(refreshToken: 'jello-stapler')->execute();
 
         $this->assertNotNull($session->refresh()->ended_at);
+    }
+
+    #[Test]
+    public function it_leaves_the_session_alone_when_the_replaced_refresh_token_comes_back_right_after_the_renewal(): void
+    {
+        $session = MobileSession::factory()->create([
+            'previous_refresh_token_hash' => hash('sha256', 'jello-stapler'),
+            'last_used_at' => now()->subSeconds(MobileSession::REPLAY_GRACE_IN_SECONDS - 1),
+        ]);
+
+        new EndReplayedMobileSession(refreshToken: 'jello-stapler')->execute();
+
+        $this->assertNull($session->refresh()->ended_at);
     }
 
     #[Test]

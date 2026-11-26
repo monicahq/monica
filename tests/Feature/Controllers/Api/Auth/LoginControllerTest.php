@@ -247,4 +247,22 @@ class LoginControllerTest extends TestCase
 
         $this->assertNotNull(MobileSession::query()->sole()->ended_at);
     }
+
+    #[Test]
+    public function it_signs_out_a_phone_whose_session_was_never_recorded(): void
+    {
+        $tokens = $this->signInFromThePhone(User::factory()->create());
+        MobileSession::query()->delete();
+
+        $this->withToken($tokens['access_token'])->deleteJson('/api/v1/logout')->assertNoContent();
+
+        $this->app['auth']->forgetGuards();
+        $this->withToken($tokens['access_token'])->getJson('/api/v1/me')->assertUnauthorized();
+        $this->postJson('/oauth/token', [
+            'grant_type' => 'refresh_token',
+            'client_id' => MobileSession::CLIENT_ID,
+            'refresh_token' => $tokens['refresh_token'],
+            'scope' => MobileSession::SCOPE,
+        ])->assertStatus(400);
+    }
 }

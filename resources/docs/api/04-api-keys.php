@@ -170,6 +170,7 @@ return [
             'body' => [
                 'The readable value comes back in the token field, beside the object describing the key. This is the only time it exists in that form. Copy it now: it is not shown again, and a key you fail to copy is replaced rather than recovered.',
                 'Calling this with a key is deliberate, and it is how a key is rotated without opening the application. Every creation is written to your account log, so a key that mints other keys is visible afterwards.',
+                'The mobile app cannot create a key and gets 403: a key would keep working after the phone is signed out.',
             ],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'bodyParams' => [

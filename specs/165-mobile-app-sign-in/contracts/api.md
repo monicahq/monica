@@ -4,7 +4,8 @@
 
 - `Authorization: Bearer` takes an API key or a Passport access token carrying `api`.
 - A Passport token without `api` (an assistant's) gets `403`.
-- A mobile token has the rights of a key without scopes (R3).
+- A mobile token has the rights of a key without scopes (R3), except that it cannot create an API key (`403`): a key would outlive the phone once it is signed out.
+- A mobile token never reaches the administration routes (`404`).
 
 ## `GET /api/v1/status` (existing, gains `mobile`)
 
@@ -21,7 +22,7 @@
 ## `DELETE /api/v1/logout` (existing)
 
 - With an API key: unchanged.
-- With a mobile token: ends its session, `204`.
+- With a mobile token: ends its session, `204`. A token whose session was never recorded is revoked with its refresh token, `204`.
 
 ## `GET /api/v1/mobile-sessions`, `GET /api/v1/mobile-sessions/{mobileSession}` (new)
 

@@ -27,7 +27,7 @@ class BindOAuthScopes
             return $next($request);
         }
 
-        $isMobileApp = $request->string('client_id')->toString() === MobileSession::CLIENT_ID;
+        $isMobileApp = MobileSession::clientIdOf($request) === MobileSession::CLIENT_ID;
         $scopes = $request->string('scope')->explode(' ')->filter()->values();
 
         $refused = $isMobileApp
@@ -39,7 +39,9 @@ class BindOAuthScopes
         }
 
         if ($isMobileApp && $request->routeIs('passport.authorizations.authorize')) {
-            $prompt = $request->string('prompt')->explode(' ')->filter()->push('consent')->unique()->implode(' ');
+            // Passport drops every other value next to `none` and then approves silently, so `none` goes.
+            $prompt = $request->string('prompt')->explode(' ')->filter()->reject(fn (string $value): bool => $value === 'none')
+                ->push('consent')->unique()->implode(' ');
             $request->query->set('prompt', $prompt);
         }
 

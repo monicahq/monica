@@ -185,6 +185,30 @@ class LoginControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_shows_the_sign_in_page_to_somebody_who_comes_back_from_the_registration_page(): void
+    {
+        config(['monica.registration_enabled' => true]);
+
+        $this->withSession(['url.intended' => $this->authorizationAsking('consent create')])
+            ->get(route('auth.login.new'))
+            ->assertRedirect(route('auth.register.new'));
+
+        $this->get(route('auth.login.new'))->assertOk();
+    }
+
+    #[Test]
+    public function it_recognises_the_tap_on_sign_up_whatever_the_address_the_request_reached(): void
+    {
+        config(['monica.registration_enabled' => true]);
+
+        $intended = 'http://monica.internal/oauth/authorize?'.http_build_query(['client_id' => 'mobile', 'prompt' => 'consent create']);
+
+        $this->withSession(['url.intended' => $intended])
+            ->get(route('auth.login.new'))
+            ->assertRedirect(route('auth.register.new'));
+    }
+
+    #[Test]
     public function it_says_so_when_the_instance_does_not_accept_new_accounts(): void
     {
         config(['monica.registration_enabled' => false]);
