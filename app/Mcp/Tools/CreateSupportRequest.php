@@ -43,7 +43,7 @@ class CreateSupportRequest extends Tool
         return [
             'category' => $schema->string()->enum(SupportCategoryEnum::values())->description('What it is about: feature, billing, email (emails not received), question, or technical (something broken).')->required(),
             'subject' => $schema->string()->description('A short summary.')->required(),
-            'body' => $schema->string()->description('What is going on, as plain text, at least 10 characters.')->required(),
+            'body' => $schema->string()->description('What is going on, in Markdown, at least 10 characters.')->required(),
         ];
     }
 }

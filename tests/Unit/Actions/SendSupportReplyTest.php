@@ -55,6 +55,26 @@ class SendSupportReplyTest extends TestCase
     }
 
     #[Test]
+    public function it_keeps_the_reply_exactly_as_it_was_written(): void
+    {
+        Queue::fake();
+        Notification::fake();
+        $michael = User::factory()->create();
+        $supportRequest = SupportRequest::factory()->toHandle()->create(['account_id' => $michael->account_id, 'user_id' => $michael->id]);
+
+        $reply = new SendSupportReply(
+            administrator: $this->administrator('Jim', 'Halpert'),
+            supportRequest: $supportRequest,
+            body: '**Step 1.** Jim put <b>my stapler</b> in jello, and a < b.',
+        )->execute();
+
+        $this->assertDatabaseHas('support_messages', [
+            'id' => $reply->id,
+            'body' => '**Step 1.** Jim put <b>my stapler</b> in jello, and a < b.',
+        ]);
+    }
+
+    #[Test]
     public function it_moves_the_request_to_the_status_chosen_with_the_reply(): void
     {
         Queue::fake();

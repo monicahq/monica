@@ -38,7 +38,7 @@
     <span class="ml-auto text-xs text-muted">{{ $message['when'] }}</span>
   </div>
 
-  <p class="max-w-[72ch] text-base whitespace-pre-wrap text-body text-pretty">{{ $message['body'] }}</p>
+  <x-support.message-body :markdown="$message['body']" class="max-w-[72ch]" />
 
   @if ($message['files'] !== [])
     <ul class="flex flex-wrap gap-2">

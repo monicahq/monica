@@ -39,7 +39,9 @@
 
       <x-panel>
         <x-form method="post" :action="route('support.requests.messages.create', $supportRequest)" :upload="true" class="space-y-4">
-          <x-textarea id="body" name="body" :label="__('Your reply')" :rows="4" :value="old('body')" :error="$errors->get('body')" required />
+          <x-textarea id="body" name="body" :label="__('Your reply')" :rows="4" :value="old('body')" :error="$errors->get('body')" described-by="body-markdown" required />
+
+          <x-support.markdown-hint id="body-markdown" />
 
           <x-support.file-input
             id="files"

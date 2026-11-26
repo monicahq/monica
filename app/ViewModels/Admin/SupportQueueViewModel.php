@@ -9,6 +9,7 @@ use App\Enums\SupportMessageKindEnum;
 use App\Enums\SupportRequestStatusEnum;
 use App\Helpers\PageSize;
 use App\Helpers\StorageSize;
+use App\Helpers\SupportMarkdown;
 use App\Helpers\SupportQueue;
 use App\Models\SupportAttachment;
 use App\Models\SupportMessage;
@@ -122,8 +123,8 @@ class SupportQueueViewModel
                 $last = $supportRequest->messages->last(fn (SupportMessage $message): bool => $message->kind !== SupportMessageKindEnum::Note);
                 $lastLine = match (true) {
                     $last === null => '',
-                    $last->kind === SupportMessageKindEnum::Reply => __('Support: :body', ['body' => $last->body]),
-                    default => $last->body,
+                    $last->kind === SupportMessageKindEnum::Reply => __('Support: :body', ['body' => SupportMarkdown::plainText($last->body)]),
+                    default => SupportMarkdown::plainText($last->body),
                 };
 
                 return [

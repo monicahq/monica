@@ -9,7 +9,6 @@ use App\Enums\SupportRequestStatusEnum;
 use App\Enums\UserActionEnum;
 use App\Helpers\SupportAttachmentWriter;
 use App\Helpers\SupportAvailability;
-use App\Helpers\TextSanitizer;
 use App\Jobs\LogUserAction;
 use App\Models\SupportMessage;
 use App\Models\SupportRequest;
@@ -30,7 +29,7 @@ class AddSupportMessage
 {
     private SupportMessage $message;
 
-    private string $cleanBody;
+    private string $trimmedBody;
 
     private SupportRequestStatusEnum $previousStatus;
 
@@ -62,7 +61,7 @@ class AddSupportMessage
 
     private function sanitize(): void
     {
-        $this->cleanBody = TextSanitizer::plainText($this->body);
+        $this->trimmedBody = mb_trim($this->body);
     }
 
     private function create(): void
@@ -73,7 +72,7 @@ class AddSupportMessage
                 'author_user_id' => $this->user->id,
                 'author_name' => $this->user->name,
                 'kind' => SupportMessageKindEnum::Message,
-                'body' => $this->cleanBody,
+                'body' => $this->trimmedBody,
             ]);
 
             foreach ($this->files as $file) {
@@ -124,7 +123,7 @@ class AddSupportMessage
             subject: $this->supportRequest->subject,
             accountId: $this->user->account_id,
             authorName: $this->user->name,
-            body: $this->cleanBody,
+            body: $this->trimmedBody,
             hasAttachments: $this->files !== [],
             reopened: $this->previousStatus === SupportRequestStatusEnum::Solved,
             url: route('admin.support.show', $this->supportRequest),

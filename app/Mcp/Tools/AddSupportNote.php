@@ -49,7 +49,7 @@ class AddSupportNote extends Tool
     {
         return [
             'support_request' => $schema->string()->description('The id of the support request, as list-support-queue gives it.')->required(),
-            'body' => $schema->string()->description('The note, as plain text.')->required(),
+            'body' => $schema->string()->description('The note, in Markdown.')->required(),
         ];
     }
 }

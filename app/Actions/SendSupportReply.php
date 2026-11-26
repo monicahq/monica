@@ -7,7 +7,6 @@ namespace App\Actions;
 use App\Enums\AdministratorActionEnum;
 use App\Enums\SupportMessageKindEnum;
 use App\Enums\SupportRequestStatusEnum;
-use App\Helpers\TextSanitizer;
 use App\Jobs\LogAdministratorAction;
 use App\Models\SupportMessage;
 use App\Models\SupportRequest;
@@ -25,7 +24,7 @@ class SendSupportReply
 {
     private SupportMessage $message;
 
-    private string $cleanBody;
+    private string $trimmedBody;
 
     public function __construct(
         private readonly User $administrator,
@@ -54,7 +53,7 @@ class SendSupportReply
 
     private function sanitize(): void
     {
-        $this->cleanBody = TextSanitizer::plainText($this->body);
+        $this->trimmedBody = mb_trim($this->body);
     }
 
     private function create(): void
@@ -65,7 +64,7 @@ class SendSupportReply
                 'author_user_id' => $this->administrator->id,
                 'author_name' => $this->administrator->name,
                 'kind' => SupportMessageKindEnum::Reply,
-                'body' => $this->cleanBody,
+                'body' => $this->trimmedBody,
             ]);
 
             $previous = $this->supportRequest->status;
@@ -110,7 +109,7 @@ class SendSupportReply
             reference: $this->supportRequest->reference,
             subject: $this->supportRequest->subject,
             administratorName: $this->administrator->name,
-            body: $this->cleanBody,
+            body: $this->trimmedBody,
             url: route('support.requests.show', $this->supportRequest),
         ));
     }

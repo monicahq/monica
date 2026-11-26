@@ -108,8 +108,11 @@
           :rows="8"
           :help="__('Share as much detail as you can. The more context you provide, the easier it is to help.')"
           :error="$errors->get('body')"
+          described-by="body-markdown"
           required
         />
+
+        <x-support.markdown-hint id="body-markdown" />
 
         <x-support.file-input
           id="files"

@@ -32,6 +32,19 @@ class SupportQueueViewModelTest extends TestCase
     }
 
     #[Test]
+    public function it_shows_the_last_line_of_each_request_without_its_markdown(): void
+    {
+        $fromToby = SupportRequest::factory()->toHandle()->create(['created_at' => now()->subDays(2)]);
+        SupportMessage::factory()->create(['support_request_id' => $fromToby->id, 'body' => "**Toby** is _back_\n\n- from Costa Rica"]);
+        $answered = SupportRequest::factory()->toHandle()->create(['created_at' => now()->subDay()]);
+        SupportMessage::factory()->reply()->create(['support_request_id' => $answered->id, 'body' => '# Fixed', 'created_at' => now()]);
+
+        $viewModel = new SupportQueueViewModel(administrator: User::factory()->create(), queue: new SupportQueue);
+
+        $this->assertEquals(['Toby is back from Costa Rica', 'Support: Fixed'], array_column($viewModel->rows(), 'lastLine'));
+    }
+
+    #[Test]
     public function it_says_why_the_list_is_empty(): void
     {
         $administrator = User::factory()->create();

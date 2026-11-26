@@ -33,8 +33,11 @@
         :help="__('Sent to :email and shown in their requests, signed with your name.', ['email' => $current['email']])"
         :error="$errors->get('body')"
         :placeholder="__('Write your reply…')"
+        described-by="reply-body-markdown"
         required
       />
+
+      <x-support.markdown-hint id="reply-body-markdown" />
 
       <div class="flex flex-wrap items-end gap-3">
         <x-button>{{ __('Send reply') }}</x-button>
@@ -59,8 +62,11 @@
         :help="__('Only administrators see this note. :name is never told it exists.', ['name' => $current['firstName']])"
         :error="$errors->note->get('body')"
         :placeholder="__('What the next administrator should know…')"
+        described-by="note-body-markdown"
         required
       />
+
+      <x-support.markdown-hint id="note-body-markdown" />
 
       <x-button>{{ __('Add note') }}</x-button>
     </x-form>

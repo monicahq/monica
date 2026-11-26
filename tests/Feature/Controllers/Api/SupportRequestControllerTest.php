@@ -106,6 +106,26 @@ class SupportRequestControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_hands_back_the_markdown_of_a_request_exactly_as_it_was_written(): void
+    {
+        Queue::fake();
+        Notification::fake();
+        Administrator::factory()->create(['user_id' => User::factory()->create()->id]);
+        $body = "## Steps\n\n1. Open the invoice\n2. Read <b>Dunder Mifflin</b>, where a < b";
+
+        Sanctum::actingAs(User::factory()->create());
+
+        $response = $this->json('POST', '/api/v1/support-requests', [
+            'category' => 'billing',
+            'subject' => 'October invoice shows the wrong company name',
+            'body' => $body,
+        ]);
+
+        $response->assertCreated();
+        $response->assertJsonPath('data.attributes.messages.0.attributes.body', $body);
+    }
+
+    #[Test]
     public function it_refuses_a_sixth_request_within_a_minute(): void
     {
         Queue::fake();

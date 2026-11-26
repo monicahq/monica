@@ -4,7 +4,7 @@ title: Ask for help
 description: Write to the people who run your Monica from inside the application, follow their reply, and close the request once it is solved.
 slug: ask-for-help
 section: your-account-and-security
-last_updated: 2026-11-11
+last_updated: 2026-11-26
 requires: support
 ---
 
@@ -25,6 +25,24 @@ Open the menu under your picture and choose **Help and support**. If the entry i
 The next screen shows the request number, such as **MON-482913**. Keep it if you write about the request later. A copy of what you sent arrives in your inbox.
 
 Files you send to support do not count against the storage of your account.
+
+## Format your message
+
+A request, a reply and every message after them can use Markdown, a few simple marks that become formatting once the message is sent. It helps when you describe steps or paste an error, but plain sentences work just as well.
+
+| Write | To get |
+| --- | --- |
+| `## What happened` | a heading |
+| `- The vault` | a bullet |
+| `1. Open the vault` | a numbered step |
+| `> The reminder never came` | a quote |
+| `**before Friday**` | bold text |
+| `` `Error 500` `` | a short piece of code |
+| `[the page](https://www.example.com)` | a link |
+
+To paste a longer error or a log, put a line of three backticks (` ``` `) above it and another below it. Everything between them is shown exactly as you pasted it.
+
+A web address you type, such as `https://www.example.com`, becomes a link on its own. HTML is shown as the characters you typed, and an image appears as a link to its address rather than as the picture.
 
 ## Follow a request
 

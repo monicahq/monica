@@ -78,6 +78,26 @@ class OpenSupportRequestTest extends TestCase
     }
 
     #[Test]
+    public function it_keeps_the_message_exactly_as_it_was_written(): void
+    {
+        Queue::fake();
+        Notification::fake();
+        $user = User::factory()->create();
+
+        $supportRequest = new OpenSupportRequest(
+            user: $user,
+            category: SupportCategoryEnum::Billing,
+            subject: 'Stapler in jello',
+            body: '**Step 1.** Jim put <b>my stapler</b> in jello, and a < b.',
+        )->execute();
+
+        $this->assertDatabaseHas('support_messages', [
+            'support_request_id' => $supportRequest->id,
+            'body' => '**Step 1.** Jim put <b>my stapler</b> in jello, and a < b.',
+        ]);
+    }
+
+    #[Test]
     public function it_records_the_language_shown_when_the_user_never_picked_one(): void
     {
         Queue::fake();
