@@ -52,6 +52,25 @@ class AddSupportMessageTest extends TestCase
     }
 
     #[Test]
+    public function it_keeps_the_message_exactly_as_it_was_written(): void
+    {
+        Queue::fake();
+        $user = User::factory()->create();
+        $supportRequest = SupportRequest::factory()->waitingOnUser()->create(['account_id' => $user->account_id]);
+
+        $message = new AddSupportMessage(
+            user: $user,
+            supportRequest: $supportRequest,
+            body: '**Step 1.** Jim put <b>my stapler</b> in jello, and a < b.',
+        )->execute();
+
+        $this->assertDatabaseHas('support_messages', [
+            'id' => $message->id,
+            'body' => '**Step 1.** Jim put <b>my stapler</b> in jello, and a < b.',
+        ]);
+    }
+
+    #[Test]
     public function it_reopens_a_solved_request_under_the_same_number(): void
     {
         Queue::fake();

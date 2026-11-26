@@ -11,11 +11,11 @@ use League\CommonMark\Extension\CommonMark\Node\Inline\Link;
 use League\CommonMark\Extension\ExtensionInterface;
 
 /**
- * Draws an image written in a Knowledge note as a link to its address. An
- * image would make the reader's browser fetch an address somebody else chose
- * the moment the note opens, which says who read it and when. A link is
- * fetched only when it is followed, and goes through the same checks as any
- * other link.
+ * Draws an image written in a Knowledge note or a support message as a link
+ * to its address. An image would make the reader's browser fetch an address
+ * somebody else chose the moment the text opens, which says who read it and
+ * when. A link is fetched only when it is followed, and goes through the same
+ * checks as any other link.
  */
 class KnowledgeImageLinkExtension implements ExtensionInterface
 {

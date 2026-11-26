@@ -50,7 +50,7 @@ class SendSupportReply extends Tool
     {
         return [
             'support_request' => $schema->string()->description('The id of the support request, as list-support-queue gives it.')->required(),
-            'body' => $schema->string()->description('The reply, as plain text.')->required(),
+            'body' => $schema->string()->description('The reply, in Markdown.')->required(),
             'status' => $schema->string()->enum(SupportRequestStatusEnum::values())->description('Where the request moves after the reply.'),
         ];
     }

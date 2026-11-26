@@ -33,7 +33,7 @@ class OpenSupportRequest
 
     private string $cleanSubject;
 
-    private string $cleanBody;
+    private string $trimmedBody;
 
     /** @param  list<UploadedFile>  $files */
     public function __construct(
@@ -57,7 +57,7 @@ class OpenSupportRequest
     private function sanitize(): void
     {
         $this->cleanSubject = TextSanitizer::plainText($this->subject);
-        $this->cleanBody = TextSanitizer::plainText($this->body);
+        $this->trimmedBody = mb_trim($this->body);
     }
 
     private function create(): void
@@ -80,7 +80,7 @@ class OpenSupportRequest
                 'author_user_id' => $this->user->id,
                 'author_name' => $this->user->name,
                 'kind' => SupportMessageKindEnum::Message,
-                'body' => $this->cleanBody,
+                'body' => $this->trimmedBody,
             ]);
 
             foreach ($this->files as $file) {
@@ -122,7 +122,7 @@ class OpenSupportRequest
         $this->user->notify(new SupportRequestReceived(
             reference: $this->supportRequest->reference,
             subject: $this->cleanSubject,
-            body: $this->cleanBody,
+            body: $this->trimmedBody,
             url: route('support.requests.show', $this->supportRequest),
         ));
 
@@ -139,7 +139,7 @@ class OpenSupportRequest
             category: $this->category,
             accountId: $this->user->account_id,
             authorName: $this->user->name,
-            body: $this->cleanBody,
+            body: $this->trimmedBody,
             hasAttachments: $this->files !== [],
             url: route('admin.support.show', $this->supportRequest),
         ));

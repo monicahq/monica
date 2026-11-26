@@ -46,7 +46,7 @@ class AddSupportMessage extends Tool
     {
         return [
             'support_request' => $schema->string()->description('The id of the support request, as list-support-requests gives it.')->required(),
-            'body' => $schema->string()->description('What to write, as plain text.')->required(),
+            'body' => $schema->string()->description('What to write, in Markdown.')->required(),
         ];
     }
 }

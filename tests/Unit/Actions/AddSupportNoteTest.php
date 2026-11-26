@@ -49,6 +49,25 @@ class AddSupportNoteTest extends TestCase
     }
 
     #[Test]
+    public function it_keeps_the_note_exactly_as_it_was_written(): void
+    {
+        Queue::fake();
+        $administrator = User::factory()->create();
+        Administrator::factory()->create(['user_id' => $administrator->id]);
+
+        $note = new AddSupportNote(
+            administrator: $administrator,
+            supportRequest: SupportRequest::factory()->toHandle()->create(),
+            body: '**Step 1.** Jim put <b>my stapler</b> in jello, and a < b.',
+        )->execute();
+
+        $this->assertDatabaseHas('support_messages', [
+            'id' => $note->id,
+            'body' => '**Step 1.** Jim put <b>my stapler</b> in jello, and a < b.',
+        ]);
+    }
+
+    #[Test]
     public function it_refuses_somebody_who_does_not_run_the_instance(): void
     {
         $this->expectException(ModelNotFoundException::class);

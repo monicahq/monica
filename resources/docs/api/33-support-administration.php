@@ -131,7 +131,7 @@ $messageAttributes = [
     ['name' => 'kind', 'type' => 'string', 'description' => 'message when the person wrote it, reply when an administrator answered them, note when an administrator wrote it for the team alone.'],
     ['name' => 'author_name', 'type' => 'string', 'description' => 'The name of the person who wrote it.'],
     ['name' => 'is_support_team', 'type' => 'boolean', 'description' => 'Whether an administrator wrote it.'],
-    ['name' => 'body', 'type' => 'string', 'description' => 'What was written, as plain text.'],
+    ['name' => 'body', 'type' => 'string', 'description' => 'What was written, in Markdown, exactly as written. Format it safely before displaying it, and never insert it into a page as HTML.'],
     ['name' => 'attachments', 'type' => 'array', 'description' => 'The files sent with it. An empty list when there are none, which is always the case for a reply or a note written through this API.'],
     ['name' => 'attachments[]', 'type' => 'object', 'description' => 'One file.'],
     ['name' => 'attachments[].id', 'type' => 'uuid', 'description' => 'The id of the file.'],
@@ -244,7 +244,7 @@ return [
             'rateLimit' => $rateLimit,
             'pathParams' => $requestIdentifier,
             'bodyParams' => [
-                ['name' => 'body', 'type' => 'string', 'required' => true, 'description' => 'What to say, up to 20,000 characters. A body left empty answers 422.', 'example' => 'Hi Michael. The reminder was set for a time that had already passed, so it was skipped. We have moved it to tomorrow at nine.'],
+                ['name' => 'body', 'type' => 'string', 'required' => true, 'description' => 'What to say, in Markdown, up to 20,000 characters. A body left empty answers 422.', 'example' => 'Hi Michael. The reminder was set for a time that had already passed, so it was skipped. We have moved it to tomorrow at nine.'],
                 ['name' => 'status', 'type' => 'string', 'required' => false, 'description' => 'The status the request takes once answered: to_handle, waiting_on_user or solved. Any other value answers 422 on status.', 'default' => 'waiting_on_user', 'example' => 'waiting_on_user'],
             ],
             'returns' => 'The message object that was written.',
@@ -265,7 +265,7 @@ return [
             'rateLimit' => $rateLimit,
             'pathParams' => $requestIdentifier,
             'bodyParams' => [
-                ['name' => 'body', 'type' => 'string', 'required' => true, 'description' => 'What to write, up to 20,000 characters. A body left empty answers 422.', 'example' => 'Same account as the ticket about the birthday reminders. Check with Pam before closing.'],
+                ['name' => 'body', 'type' => 'string', 'required' => true, 'description' => 'What to write, in Markdown, up to 20,000 characters. A body left empty answers 422.', 'example' => 'Same account as the ticket about the birthday reminders. Check with Pam before closing.'],
             ],
             'returns' => 'The message object that was written, with a kind of note.',
             'responseStatus' => 201,

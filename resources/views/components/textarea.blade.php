@@ -7,6 +7,7 @@
   @var string|null $value
   @var string|null $placeholder
   @var string|null $help
+  @var string $describedBy
   @var string|array<int, string>|null $error
   @var int $rows
   @var bool $required
@@ -19,6 +20,7 @@
   'value' => null,
   'placeholder' => null,
   'help' => null,
+  'describedBy' => '',
   'error' => null,
   'rows' => 3,
   'required' => false,
@@ -27,7 +29,7 @@
 @php
   $helpId = $help ? $id.'-help' : null;
   $errorId = $error ? $id.'-error' : null;
-  $describedBy = trim(($helpId ?? '').' '.($errorId ?? ''));
+  $describedBy = trim(($helpId ?? '').' '.$describedBy.' '.($errorId ?? ''));
 
   $control = 'w-full rounded-md border border-hairline-strong bg-input px-3 py-2.75 font-sans text-ink '
     .'transition duration-(--duration-fast) ease-out '

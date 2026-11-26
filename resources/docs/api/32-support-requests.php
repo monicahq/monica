@@ -79,7 +79,7 @@ $messageAttributes = [
     ['name' => 'kind', 'type' => 'string', 'description' => 'message when the person who asked wrote it, reply when the support team did. An internal note is never shown here.'],
     ['name' => 'author_name', 'type' => 'string', 'description' => 'The name of the person who wrote it.'],
     ['name' => 'is_support_team', 'type' => 'boolean', 'description' => 'Whether the support team wrote it.'],
-    ['name' => 'body', 'type' => 'string', 'description' => 'What was written, as plain text.'],
+    ['name' => 'body', 'type' => 'string', 'description' => 'What was written, in Markdown, exactly as written. Format it safely before displaying it, and never insert it into a page as HTML.'],
     ['name' => 'attachments', 'type' => 'array', 'description' => 'The files sent with it. An empty list when there are none.'],
     ['name' => 'attachments[]', 'type' => 'object', 'description' => 'One file.'],
     ['name' => 'attachments[].id', 'type' => 'uuid', 'description' => 'The id of the file, which the download address takes.'],
@@ -181,7 +181,7 @@ return [
             'bodyParams' => [
                 ['name' => 'category', 'type' => 'string', 'required' => true, 'description' => 'What the request is about: feature, billing, email, question or technical.', 'example' => 'question'],
                 ['name' => 'subject', 'type' => 'string', 'required' => true, 'description' => 'The title of the request, up to 255 characters.', 'example' => 'My conference room reminder never arrived'],
-                ['name' => 'body', 'type' => 'string', 'required' => true, 'description' => 'What you want to say, between 10 and 20,000 characters.', 'example' => 'I booked the conference room for the quarterly meeting, but the reminder never arrived. Dwight says it is a conspiracy.'],
+                ['name' => 'body', 'type' => 'string', 'required' => true, 'description' => 'What you want to say, in Markdown, between 10 and 20,000 characters.', 'example' => 'I booked the conference room for the quarterly meeting, but the reminder never arrived. Dwight says it is a conspiracy.'],
                 ['name' => 'files', 'type' => 'file', 'required' => false, 'description' => 'Files to send with the first message. Repeat the field once per file, up to 5.'],
             ],
             'returns' => 'The support request object that was opened, with its first message.',
@@ -211,7 +211,7 @@ return [
             'rateLimit' => $rateLimit,
             'pathParams' => $requestIdentifier,
             'bodyParams' => [
-                ['name' => 'body', 'type' => 'string', 'required' => true, 'description' => 'What you want to say, up to 20,000 characters. A body left empty answers 422.', 'example' => 'Thank you, Jim. Could you also move the one for the Scranton Business Park meeting?'],
+                ['name' => 'body', 'type' => 'string', 'required' => true, 'description' => 'What you want to say, in Markdown, up to 20,000 characters. A body left empty answers 422.', 'example' => 'Thank you, Jim. Could you also move the one for the Scranton Business Park meeting?'],
                 ['name' => 'files', 'type' => 'file', 'required' => false, 'description' => 'Files to send with the message. Repeat the field once per file, up to 5.'],
             ],
             'returns' => 'The message object that was written. A request of another account answers 404.',

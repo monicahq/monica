@@ -21,7 +21,7 @@
       <span class="text-xs text-muted">{{ $message['when'] }}</span>
     </div>
 
-    <p class="max-w-prose text-base whitespace-pre-wrap text-body text-pretty">{{ $message['body'] }}</p>
+    <x-support.message-body :markdown="$message['body']" class="max-w-prose" />
 
     @if ($message['files'] !== [])
       <ul class="flex flex-wrap gap-2 pt-0.5">
