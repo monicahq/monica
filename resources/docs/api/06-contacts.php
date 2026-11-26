@@ -944,23 +944,26 @@ return [
             'bodyParams' => [
                 ['name' => 'contacts', 'type' => 'array', 'required' => true, 'description' => 'The ids or the addresses of the contacts of this vault to delete. At most 500.', 'example' => [$contactId]],
             ],
-            'returns' => 'Which contacts were deleted, and which were kept with the reason. A vault belonging to somebody else answers 404. More than 500 contacts answers 422 on contacts, and a contact that is not in the vault answers 422 on its position in the list. A contact already deleted is skipped and appears in neither list. Nothing is deleted when the call is refused.',
+            'returns' => 'Which contacts were deleted, which were kept with the reason, and which of the ids given match no contact of the vault. A vault belonging to somebody else answers 404. More than 500 contacts answers 422 on contacts, and nothing is deleted then. An id matching no contact of the vault, whether unknown or belonging to another vault, is skipped and listed in missing, and the others are still deleted. A contact already deleted is skipped and appears in neither deleted nor kept.',
             'returnFields' => [
                 ['name' => 'data', 'type' => 'object', 'description' => 'What the deletion did.'],
                 ['name' => 'data.type', 'type' => 'string', 'description' => 'Always contact_deletion.'],
-                ['name' => 'data.attributes', 'type' => 'object', 'description' => 'Who was deleted and who was kept.'],
+                ['name' => 'data.attributes', 'type' => 'object', 'description' => 'Who was deleted, who was kept and which ids were not found.'],
                 ['name' => 'data.attributes.deleted', 'type' => 'array', 'description' => 'The contacts deleted.'],
                 ['name' => 'data.attributes.deleted[]', 'type' => 'string', 'description' => 'The id of one of them.'],
                 ['name' => 'data.attributes.kept', 'type' => 'array', 'description' => 'The contacts that could not be deleted.'],
                 ['name' => 'data.attributes.kept[]', 'type' => 'object', 'description' => 'One of them.'],
                 ['name' => 'data.attributes.kept[].contact', 'type' => 'string', 'description' => 'The id of the contact.'],
                 ['name' => 'data.attributes.kept[].reason', 'type' => 'string', 'description' => 'Why it was kept, in the language of the account.'],
+                ['name' => 'data.attributes.missing', 'type' => 'array', 'description' => 'The ids given that match no contact of this vault, as given, without repeats and in the order given.'],
+                ['name' => 'data.attributes.missing[]', 'type' => 'string', 'description' => 'One of them.'],
             ],
             'response' => ['data' => [
                 'type' => 'contact_deletion',
                 'attributes' => [
                     'deleted' => [$contactId],
                     'kept' => [['contact' => '6f3c1d2e-8a4b-4c5d-9e6f-7a8b9c0d1e2f', 'reason' => 'This is the contact that represents you, and it stays. Everything on the record is written from its point of view.']],
+                    'missing' => ['0b9d6f1a-3c2e-4d7b-8a5f-1e2d3c4b5a69'],
                 ],
             ]],
         ],

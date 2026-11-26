@@ -11,7 +11,6 @@ use App\Models\Contact;
 use App\Models\Vault;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
 
 class ContactDeletionController extends Controller
 {
@@ -26,38 +25,41 @@ class ContactDeletionController extends Controller
             'contacts.*' => ['required', 'string', 'max:255'],
         ]);
 
+        $found = $this->contacts($vault, $validated['contacts']);
+
         $outcome = new DestroyContacts(
             user: $request->user(),
             vault: $vault,
-            contacts: $this->contacts($vault, $validated['contacts']),
+            contacts: $found['contacts'],
         )->execute();
 
-        return response()->json(['data' => new ContactDeletionResource($outcome)]);
+        return response()->json(['data' => new ContactDeletionResource([...$outcome, 'missing' => $found['missing']])]);
     }
 
     /**
      * @param  list<string>  $addresses
-     * @return list<Contact>
+     * @return array{contacts: list<Contact>, missing: list<string>}
      */
     private function contacts(Vault $vault, array $addresses): array
     {
         $contacts = [];
+        $missing = [];
 
-        foreach ($addresses as $index => $address) {
+        foreach ($addresses as $address) {
             $contact = Contact::query()->withTrashed()
                 ->where('vault_id', $vault->id)
                 ->addressedBy($address)
                 ->first();
 
             if ($contact === null) {
-                throw ValidationException::withMessages([
-                    "contacts.{$index}" => __('That contact does not exist.'),
-                ]);
+                $missing[$address] = $address;
+
+                continue;
             }
 
             $contacts[$contact->id] = $contact;
         }
 
-        return array_values($contacts);
+        return ['contacts' => array_values($contacts), 'missing' => array_values($missing)];
     }
 }

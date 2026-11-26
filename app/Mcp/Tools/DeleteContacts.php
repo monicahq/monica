@@ -14,7 +14,7 @@ use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
 use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
 use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
 
-#[Description('Delete up to 500 contacts of one vault at once, each exactly as delete-contact would. A contact that may not be deleted, such as the one representing the user, is kept and listed with the reason. Nothing an assistant can call brings a contact back, so ask before calling it. Each deletion is written to the account log.')]
+#[Description('Delete up to 500 contacts of one vault at once, each exactly as delete-contact would. A contact that may not be deleted, such as the one representing the user, is kept and listed with the reason. An id matching no contact of the vault is skipped and listed as missing. Nothing an assistant can call brings a contact back, so ask before calling it. Each deletion is written to the account log.')]
 #[IsReadOnly(false)]
 #[IsDestructive]
 #[IsOpenWorld(false)]

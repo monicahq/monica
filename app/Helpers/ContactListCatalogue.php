@@ -129,6 +129,28 @@ class ContactListCatalogue
         return $this->catalogue()["{$sectionId}:{$fieldKey}"] ?? null;
     }
 
+    /**
+     * The shared column that shows a field the list does not offer as a column of its own: email,
+     * phone and the birthday. Null when no template carries the field or another column does not show it.
+     */
+    public function sharedColumnShowing(int $sectionId, string $fieldKey): ?ContactListColumnSourceEnum
+    {
+        $field = $this->carriedField($sectionId, $fieldKey);
+
+        return match (true) {
+            $field === null => null,
+            $field->type === FieldTypeEnum::Email => ContactListColumnSourceEnum::Email,
+            $field->type === FieldTypeEnum::Phone => ContactListColumnSourceEnum::Phone,
+            $field->key === self::BIRTHDAY_KEY => ContactListColumnSourceEnum::Birthday,
+            default => null,
+        };
+    }
+
+    public function isSensitive(int $sectionId, string $fieldKey): bool
+    {
+        return $this->carriedField($sectionId, $fieldKey)?->is_sensitive === true;
+    }
+
     /** @param  array{templateIds: list<int>}  $field */
     public function isCarriedByEveryTemplate(array $field): bool
     {
@@ -188,6 +210,25 @@ class ContactListCatalogue
                 $this->fields[$key]['templateIds'][] = $template->id;
             }
         }
+    }
+
+    private function carriedField(int $sectionId, string $fieldKey): ?Field
+    {
+        foreach ($this->templates() as $template) {
+            foreach ($template->structure->publishedVersion->sectionVersions ?? [] as $sectionVersion) {
+                if ($sectionVersion->section?->id !== $sectionId) {
+                    continue;
+                }
+
+                $field = $sectionVersion->fields->firstWhere('key', $fieldKey);
+
+                if ($field !== null) {
+                    return $field;
+                }
+            }
+        }
+
+        return null;
     }
 
     private function isShown(Field $field): bool

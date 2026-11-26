@@ -106,9 +106,21 @@ class UpdateContactListColumns
             $isOffered = $catalogue->supplies((int) $row['sectionId'], (string) $row['fieldKey']);
             $isKept = in_array("{$row['sectionId']}:{$row['fieldKey']}", $kept, true);
 
-            if (! $isOffered && ! $isKept) {
-                throw new InvalidArgumentException(__('No template in this account carries that field, so the list has nothing to show in its column.'));
+            if ($isOffered || $isKept) {
+                continue;
             }
+
+            $sharedColumn = $catalogue->sharedColumnShowing((int) $row['sectionId'], (string) $row['fieldKey']);
+
+            if ($sharedColumn !== null) {
+                throw new InvalidArgumentException(__('This field is shown by the :column column. Choose that column instead.', ['column' => __($sharedColumn->label())]));
+            }
+
+            if ($catalogue->isSensitive((int) $row['sectionId'], (string) $row['fieldKey'])) {
+                throw new InvalidArgumentException(__('A sensitive field cannot be shown in the list of people.'));
+            }
+
+            throw new InvalidArgumentException(__('No template in this account carries that field, so the list has nothing to show in its column.'));
         }
     }
 

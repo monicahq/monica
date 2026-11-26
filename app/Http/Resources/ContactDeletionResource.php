@@ -15,7 +15,7 @@ class ContactDeletionResource extends JsonResource
     #[Override]
     public function toArray(Request $request): array
     {
-        /** @var array{deleted: list<Contact>, kept: list<array{contact: Contact, reason: string}>} $outcome */
+        /** @var array{deleted: list<Contact>, kept: list<array{contact: Contact, reason: string}>, missing: list<string>} $outcome */
         $outcome = $this->resource;
 
         return [
@@ -26,6 +26,7 @@ class ContactDeletionResource extends JsonResource
                     'contact' => $kept['contact']->uuid,
                     'reason' => $kept['reason'],
                 ], $outcome['kept']),
+                'missing' => $outcome['missing'],
             ],
         ];
     }
