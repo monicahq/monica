@@ -43,7 +43,7 @@ class ChangelogEntries
         $signature = implode('|', array_map(fn (string $file): string => $file.':'.filemtime($file), [...$files, ...$this->screenshotFiles()]));
 
         // The cache refuses to unserialize objects (cache.serializable_classes), so it holds plain arrays.
-        $rows = Cache::rememberForever('changelog:'.md5($signature), fn (): array => array_map(fn (ChangelogEntry $entry): array => [
+        $rows = Cache::rememberForever('changelog:'.hash('sha256', $signature), fn (): array => array_map(fn (ChangelogEntry $entry): array => [
             'id' => $entry->id,
             'title' => $entry->title,
             'type' => $entry->type->value,

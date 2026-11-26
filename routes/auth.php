@@ -144,7 +144,7 @@ Route::middleware(['auth'])->group(function (): void {
     Route::get('verify-email/{id}/{hash}', [EmailVerificationController::class, 'update'])
         ->middleware(['signed', 'throttle:6,1'])
         ->where('id', '[0-9]+')
-        ->where('hash', '[a-f0-9]{40}')
+        ->where('hash', '[a-f0-9]{64}')
         ->name('auth.verification.verify');
     Route::post('resend-verification-email', [EmailVerificationController::class, 'create'])
         ->middleware('throttle:6,1')

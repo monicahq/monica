@@ -26,7 +26,7 @@ class EmailVerificationControllerTest extends TestCase
             now()->addMinutes(60),
             [
                 'id' => $user->id,
-                'hash' => sha1((string) $user->email),
+                'hash' => hash('sha256', (string) $user->email),
             ],
         );
     }
@@ -81,7 +81,7 @@ class EmailVerificationControllerTest extends TestCase
             now()->addMinutes(60),
             [
                 'id' => $user->id,
-                'hash' => sha1('dwight.schrute@dundermifflin.com'),
+                'hash' => hash('sha256', 'dwight.schrute@dundermifflin.com'),
             ],
         );
 
