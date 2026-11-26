@@ -347,6 +347,41 @@ class FieldInputTest extends TestCase
         ]);
     }
 
+    #[Test]
+    public function an_unanswered_yes_or_no_sends_nothing_until_it_is_touched(): void
+    {
+        $field = Field::factory()->create(['type' => FieldTypeEnum::Boolean, 'is_required' => false]);
+
+        $rendered = $this->render($field);
+
+        $rendered->assertSee('x-data="{ answered: false }"', escape: false);
+        $rendered->assertSee('name="fields['.$field->id.']" value="0" disabled', escape: false);
+        $rendered->assertSee('x-on:change="answered = true"', escape: false);
+    }
+
+    #[Test]
+    public function an_answered_yes_or_no_sends_no_when_it_is_unticked(): void
+    {
+        $field = Field::factory()->create(['type' => FieldTypeEnum::Boolean, 'is_required' => false]);
+        $value = FieldValue::factory()->make(['field_id' => $field->id, 'value_boolean' => false]);
+
+        $rendered = $this->render($field, $value);
+
+        $rendered->assertSee('x-data="{ answered: true }"', escape: false);
+        $rendered->assertDontSee('value="0" disabled', escape: false);
+    }
+
+    #[Test]
+    public function a_required_yes_or_no_always_sends_an_answer(): void
+    {
+        $field = Field::factory()->create(['type' => FieldTypeEnum::Boolean, 'is_required' => true]);
+
+        $rendered = $this->render($field);
+
+        $rendered->assertSee('x-data="{ answered: true }"', escape: false);
+        $rendered->assertDontSee('value="0" disabled', escape: false);
+    }
+
     private function phoneNaming(ValueList $list): Field
     {
         return Field::factory()->create([

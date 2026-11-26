@@ -1045,7 +1045,7 @@ class Contact extends Model
                 }
 
                 return $words
-                    ->map(fn (string $word): string => mb_strtoupper(mb_substr($word, 0, 1)))
+                    ->map(fn (string $word): string => mb_strtoupper((string) grapheme_substr($word, 0, 1)))
                     ->implode('');
             },
         );

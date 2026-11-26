@@ -87,7 +87,7 @@ class VaultDashboardViewModel
     public function tile(): array
     {
         return [
-            'initial' => mb_strtoupper(mb_substr($this->vault->name, 0, 1)),
+            'initial' => mb_strtoupper((string) grapheme_substr($this->vault->name, 0, 1)),
             'colour' => $this->vault->colour,
             'tint' => "color-mix(in srgb, {$this->vault->colour} 12%, var(--canvas))",
         ];
