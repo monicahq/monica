@@ -22,7 +22,7 @@
     <div
       x-data="{ navOpen: false }"
       @keydown.escape.window="navOpen = false"
-      @class(['grid h-dvh grid-cols-1 overflow-hidden print:block print:h-auto print:overflow-visible', 'lg:grid-cols-[248px_minmax(0,1fr)]' => isset($sidebar)])
+      @class(['grid h-dvh grid-cols-1 grid-rows-1 overflow-hidden print:block print:h-auto print:overflow-visible', 'lg:grid-cols-[248px_minmax(0,1fr)]' => isset($sidebar)])
     >
       @isset($sidebar)
         {{ $sidebar }}
@@ -34,11 +34,11 @@
         x-bind:class="navOpen && 'max-lg:overflow-hidden'"
         @class(['relative min-w-0 overflow-y-auto print:overflow-visible', 'flex flex-col' => isset($footer)])
       >
-        <header class="flex h-14 shrink-0 items-center gap-2 sm:gap-3.5 border-b border-topbar-hairline bg-topbar px-4 sm:px-6 print:hidden">
+        <header class="flex shrink-0 flex-wrap items-center gap-x-2 gap-y-1.5 sm:gap-x-3.5 border-b border-topbar-hairline bg-topbar px-4 pt-2.5 pb-3 sm:px-6 lg:h-14 lg:flex-nowrap lg:py-0 print:hidden">
           <x-menu-button />
 
           @isset($breadcrumb)
-            <div class="-m-1 min-w-0 overflow-hidden p-1">
+            <div class="-m-1 min-w-0 overflow-hidden p-1 max-lg:order-last max-lg:basis-full">
               {{ $breadcrumb }}
             </div>
           @endisset

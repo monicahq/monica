@@ -79,7 +79,7 @@
     --container-reading: 56ch;
 
     --breakpoint-xs: 35rem;
-    --breakpoint-topbar-labels: 56.25rem;
+    --breakpoint-topbar-labels: 96rem;
 
     --color-page: var(--page);
     --color-canvas: var(--canvas);
