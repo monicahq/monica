@@ -320,7 +320,7 @@ class AddressBookBackend implements BackendInterface, SyncSupport
             'id' => $group->id,
             'uri' => $this->uriOfGroup($group),
             'lastmodified' => $group->updated_at?->getTimestamp(),
-            'etag' => '"'.md5($card).'"',
+            'etag' => '"'.hash('sha256', $card).'"',
         ];
 
         if ($withCard) {
@@ -351,7 +351,7 @@ class AddressBookBackend implements BackendInterface, SyncSupport
 
     private function etagOf(Contact $contact): string
     {
-        return '"'.md5(implode('|', [
+        return '"'.hash('sha256', implode('|', [
             (string) $contact->updated_at?->getTimestamp(),
             app()->getLocale(),
             $this->reachesSensitiveFields ? 'sensitive' : 'plain',

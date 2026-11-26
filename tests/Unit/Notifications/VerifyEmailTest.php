@@ -24,11 +24,11 @@ class VerifyEmailTest extends TestCase
         $message = new VerifyEmail()->toMail($michael);
 
         $this->assertStringContainsString(
-            '/verify-email/'.$michael->id.'/'.sha1((string) $michael->email),
+            '/verify-email/'.$michael->id.'/'.hash('sha256', (string) $michael->email),
             $message->actionUrl,
         );
         $this->assertStringContainsString(
-            '/verify-email/'.$michael->id.'/'.sha1((string) $michael->email),
+            '/verify-email/'.$michael->id.'/'.hash('sha256', (string) $michael->email),
             (string) $message->render(),
         );
     }
