@@ -241,6 +241,19 @@ class StructureFileReaderTest extends TestCase
     }
 
     #[Test]
+    public function it_reads_a_list_of_choices_that_holds_none_yet(): void
+    {
+        $file = $this->file();
+        $file['template']['pages'][0]['sections'][0]['section']['fields'][0]['type'] = 'select';
+        $file['template']['pages'][0]['sections'][0]['section']['fields'][0]['value_list_reference'] = 'branches';
+        $file['value_lists'] = ['branches' => ['key' => null, 'name' => 'Branches', 'items' => []]];
+
+        $read = StructureFileReader::read(json_encode($file));
+
+        $this->assertSame([], $read['value_lists']['branches']['items']);
+    }
+
+    #[Test]
     public function it_refuses_a_field_offering_choices_from_nowhere(): void
     {
         $file = $this->file();
