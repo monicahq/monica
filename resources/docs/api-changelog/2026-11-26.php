@@ -38,5 +38,18 @@ return [
                 ]],
             ],
         ],
+        [
+            'id' => 'relationships-recorded-once',
+            'kind' => 'Changed',
+            'group' => 'Relationships',
+            'title' => 'The same relationship cannot be recorded twice',
+            'summary' => 'POST /vaults/{vault}/contacts/{contact}/relationships answers 422 on other_contact when the two people already hold a current relationship of that type the same way round. A symmetric type has only one way round, so linking B to A after A to B is refused. A relationship that ended does not count. PUT /vaults/{vault}/contacts/{contact}/relationships/{relationship} answers 422 on relationship_type when the change would leave the two people with two current relationships of the same type.',
+            'why' => 'Two rows for one friendship listed it twice on both contact pages.',
+            'breaking' => false,
+            'changes' => [
+                ['field' => 'other_contact', 'change' => 'Changed', 'endpoints' => ['POST /vaults/{vault}/contacts/{contact}/relationships']],
+                ['field' => 'relationship_type', 'change' => 'Changed', 'endpoints' => ['PUT /vaults/{vault}/contacts/{contact}/relationships/{relationship}']],
+            ],
+        ],
     ],
 ];

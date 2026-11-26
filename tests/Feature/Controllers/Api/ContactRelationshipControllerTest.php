@@ -97,6 +97,30 @@ class ContactRelationshipControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_refuses_a_symmetric_link_the_two_people_already_have(): void
+    {
+        Queue::fake();
+        [$user, $vault, $jim, $pam] = $this->jimAndPam();
+        $type = RelationshipType::factory()->create(['account_id' => $user->account_id]);
+
+        Sanctum::actingAs($user);
+
+        $this->json('POST', "/api/v1/vaults/{$vault->uuid}/contacts/{$jim->uuid}/relationships", [
+            'relationship_type' => $type->uuid,
+            'other_contact' => $pam->slug,
+        ])->assertCreated();
+
+        $response = $this->json('POST', "/api/v1/vaults/{$vault->uuid}/contacts/{$pam->uuid}/relationships", [
+            'relationship_type' => $type->uuid,
+            'other_contact' => $jim->slug,
+        ]);
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors(['other_contact' => 'These two people are already linked this way.']);
+        $this->assertDatabaseCount('relationships', 1);
+    }
+
+    #[Test]
     public function it_does_not_find_another_person_in_another_vault(): void
     {
         [$user, $vault, $jim] = $this->jimAndPam();

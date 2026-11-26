@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\DB;
  */
 class CreateRelationship
 {
+    use RefusesADuplicateRelationship;
     use RefusesALoopInParentage;
 
     private Relationship $relationship;
@@ -46,6 +47,7 @@ class CreateRelationship
         private readonly ?string $lastName = null,
         private readonly bool $createsRecord = false,
         private readonly bool $swapped = false,
+        private readonly RelationshipStatusEnum $status = RelationshipStatusEnum::Current,
     ) {}
 
     public function execute(): Relationship
@@ -55,6 +57,15 @@ class CreateRelationship
         DB::transaction(function (): void {
             $this->settleTheOtherSide();
             $this->orderTheSides();
+            if ($this->status === RelationshipStatusEnum::Current) {
+                $this->refuseADuplicateRelationship(
+                    relationshipType: $this->relationshipType,
+                    sideA: $this->sideA,
+                    sideB: $this->sideB,
+                    vaultId: $this->vault->id,
+                );
+            }
+
             $this->refuseALoopInParentage(
                 relationshipType: $this->relationshipType,
                 sideA: $this->sideA,
@@ -149,7 +160,7 @@ class CreateRelationship
             'relationship_type_id' => $this->relationshipType->id,
             'contact_a_id' => $this->sideA->id,
             'contact_b_id' => $this->sideB->id,
-            'status' => RelationshipStatusEnum::Current,
+            'status' => $this->status,
         ]);
     }
 

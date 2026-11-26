@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\DB;
  */
 class UpdateRelationship
 {
+    use RefusesADuplicateRelationship;
     use RefusesALoopInParentage;
 
     private Contact $other;
@@ -50,6 +51,16 @@ class UpdateRelationship
 
         DB::transaction(function (): void {
             [$sideA, $sideB] = $this->orderTheSides();
+
+            if ($this->status === RelationshipStatusEnum::Current) {
+                $this->refuseADuplicateRelationship(
+                    relationshipType: $this->relationshipType,
+                    sideA: $sideA,
+                    sideB: $sideB,
+                    vaultId: $this->vault->id,
+                    ignoring: $this->relationship->id,
+                );
+            }
 
             $this->refuseALoopInParentage(
                 relationshipType: $this->relationshipType,

@@ -318,6 +318,47 @@ class WriteAccountImportItemTest extends TestCase
     }
 
     #[Test]
+    public function it_leaves_out_a_relationship_the_vault_already_holds(): void
+    {
+        Queue::fake();
+        Exceptions::fake();
+
+        $scranton = new CreateVault(user: $this->michael, name: 'Scranton')->execute();
+        $jim = new CreateContact(user: $this->michael, vault: $scranton, firstName: 'Jim', lastName: 'Halpert')->execute();
+        $pam = new CreateContact(user: $this->michael, vault: $scranton, firstName: 'Pam', lastName: 'Beesly')->execute();
+        new CreateRelationship(
+            user: $this->michael,
+            vault: $scranton,
+            contact: $jim,
+            relationshipType: RelationshipType::query()->where('account_id', $this->michael->account_id)->where('key', RelationshipTypeEnum::Spouse->value)->firstOrFail(),
+            otherContact: $pam,
+        )->execute();
+
+        $holder = $this->accountHolder('Pam', 'Beesly');
+        $import = $this->readMonicaImport($holder, $this->exported($scranton));
+        $marriage = $import->items()->where('kind', 'relationship')->sole();
+        $repeated = $marriage->replicate();
+        $repeated->source_uuid = '50000000-0000-4000-8000-000000000002';
+        $repeated->payload = [
+            ...$marriage->payload,
+            'uuid' => '50000000-0000-4000-8000-000000000002',
+            'contact' => $marriage->payload['other_contact'],
+            'other_contact' => $marriage->payload['contact'],
+        ];
+        $repeated->save();
+        new StartAccountImport(user: $holder, import: $import, vaultName: 'Scranton')->execute();
+
+        $this->writeEveryItem($import);
+
+        $repeated->refresh();
+
+        $this->assertSame(AccountImportOutcomeEnum::LeftOut, $repeated->outcome);
+        $this->assertSame(AccountImportReasonEnum::RelationshipAlreadyRecorded->value, $repeated->reason);
+        $this->assertSame(1, Relationship::query()->where('vault_id', $import->refresh()->vault_id)->count());
+        Exceptions::assertNothingReported();
+    }
+
+    #[Test]
     public function it_leaves_out_a_relationship_that_would_make_somebody_their_own_ancestor(): void
     {
         Queue::fake();

@@ -10,6 +10,7 @@ use App\Actions\UpdateRelationship;
 use App\Enums\RelationshipStatusEnum;
 use App\Exceptions\CannotLinkSomebodyToThemselves;
 use App\Exceptions\RelationshipDatesAreOutOfOrder;
+use App\Exceptions\RelationshipIsAlreadyRecorded;
 use App\Exceptions\RelationshipTypeIsNotAvailable;
 use App\Exceptions\RelationshipWouldCrossVaults;
 use App\Exceptions\RelationshipWouldLoopParentage;
@@ -92,7 +93,7 @@ class ContactRelationshipController extends Controller
                 createsRecord: $request->boolean('creates_record'),
                 swapped: ! $request->boolean('holds_role_a', true),
             )->execute();
-        } catch (CannotLinkSomebodyToThemselves|RelationshipWouldCrossVaults $e) {
+        } catch (CannotLinkSomebodyToThemselves|RelationshipIsAlreadyRecorded|RelationshipWouldCrossVaults $e) {
             throw ValidationException::withMessages(['other_contact' => $e->getMessage()]);
         } catch (RelationshipTypeIsNotAvailable|RelationshipWouldLoopParentage $e) {
             throw ValidationException::withMessages(['relationship_type' => $e->getMessage()]);
@@ -165,7 +166,7 @@ class ContactRelationshipController extends Controller
                 otherLastName: $validated['last_name'] ?? null,
                 createsRecord: $request->boolean('creates_record'),
             )->execute();
-        } catch (RelationshipTypeIsNotAvailable|RelationshipWouldLoopParentage $e) {
+        } catch (RelationshipIsAlreadyRecorded|RelationshipTypeIsNotAvailable|RelationshipWouldLoopParentage $e) {
             throw ValidationException::withMessages(['relationship_type' => $e->getMessage()]);
         } catch (RelationshipDatesAreOutOfOrder $e) {
             throw ValidationException::withMessages(['ended_on' => $e->getMessage()]);

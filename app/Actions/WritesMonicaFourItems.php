@@ -13,6 +13,7 @@ use App\Enums\ReminderCadenceEnum;
 use App\Enums\ReminderOccurrenceCancelledReasonEnum;
 use App\Enums\ValueListEnum;
 use App\Exceptions\NotEnoughStorageLeft;
+use App\Exceptions\RelationshipIsAlreadyRecorded;
 use App\Exceptions\RelationshipWouldLoopParentage;
 use App\Exceptions\ValueListItemIsStopped;
 use App\Helpers\MonicaFourVocabulary;
@@ -626,6 +627,8 @@ trait WritesMonicaFourItems
                 otherContact: $other,
                 swapped: $shipped !== null ? $shipped[1] : MonicaFourVocabulary::isDirected($name) && $name !== $own,
             )->execute();
+        } catch (RelationshipIsAlreadyRecorded) {
+            $this->leaveOut(AccountImportReasonEnum::RelationshipAlreadyRecorded);
         } catch (RelationshipWouldLoopParentage) {
             $this->leaveOut(AccountImportReasonEnum::ParentageLoop);
         }

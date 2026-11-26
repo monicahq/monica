@@ -15,6 +15,7 @@ enum AccountImportReasonEnum: string implements Translatable
     case ContactNotInTheFile = 'contact_not_in_the_file';
     case ReverseOfAnotherRelationship = 'reverse_of_another_relationship';
     case ParentageLoop = 'parentage_loop';
+    case RelationshipAlreadyRecorded = 'relationship_already_recorded';
     case OneTimeReminderInThePast = 'one_time_reminder_in_the_past';
     case BirthdayAlreadyHasAReminder = 'birthday_already_has_a_reminder';
     case FilesNotOffered = 'files_not_offered';
@@ -30,6 +31,7 @@ enum AccountImportReasonEnum: string implements Translatable
             self::ContactNotInTheFile => 'It names somebody the file does not hold.',
             self::ReverseOfAnotherRelationship => 'The same relationship, seen from the other side, came over once.',
             self::ParentageLoop => 'It would make somebody their own ancestor.',
+            self::RelationshipAlreadyRecorded => 'The vault already links these two people this way.',
             self::OneTimeReminderInThePast => 'A reminder for a single date that has already passed.',
             self::BirthdayAlreadyHasAReminder => 'Another reminder in the file already covers this birthday.',
             self::FilesNotOffered => 'This instance does not keep files yet.',

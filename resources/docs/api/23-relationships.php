@@ -131,6 +131,7 @@ return [
             'body' => [
                 'The other person is an existing contact named by other_contact, somebody new named by first_name, or, when you send neither, somebody whose name is unknown. Somebody new has no record of their own unless creates_record is true.',
                 'Linking somebody to themselves, using a type that is switched off, or making somebody their own ancestor answers 422, naming other_contact or relationship_type.',
+                'The same two people can hold only one current relationship of a given type. Linking them again with that type answers 422 on other_contact, whichever of the two you start from when the type is symmetric. A relationship that ended does not count, so two people can be linked again after a break.',
             ],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
@@ -169,6 +170,7 @@ return [
             'description' => 'Change the type of a relationship, whether it ended, its dates or which side holds which role.',
             'body' => [
                 'Every field is optional. A field you leave out keeps its value, and a date sent as null is cleared. Setting status back to current clears the end date.',
+                'A change that would leave the two people with two current relationships of the same type answers 422 on relationship_type.',
                 'An end date before the start date answers 422 on ended_on. first_name, last_name and creates_record only apply to somebody without a record of their own, and answer 422 for anybody else, who is renamed on their own record.',
             ],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
