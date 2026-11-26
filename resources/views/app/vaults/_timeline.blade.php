@@ -26,7 +26,7 @@
         x-on:record-chosen="$nextTick(() => $el.requestSubmit())"
         class="flex flex-col gap-2"
       >
-        <div class="grid grid-cols-[repeat(auto-fit,minmax(11.25rem,1fr))] gap-2">
+        <div class="grid gap-2 sm:grid-cols-3">
           <x-select
             id="dashboard-timeline-period"
             name="slice"

@@ -89,7 +89,7 @@
 
     <div x-show="count === 0" class="flex flex-col gap-3.5">
       <div class="flex flex-wrap items-center justify-between gap-x-6 gap-y-3">
-        <div class="flex flex-wrap items-center gap-2">
+        <div class="flex items-center gap-2 sm:flex-wrap max-sm:-mx-4 max-sm:-my-1 max-sm:overflow-x-auto max-sm:px-4 max-sm:py-1 max-sm:[scrollbar-width:none]">
           @foreach ($viewModel->filters() as $filter)
             <x-chip
               :href="$filter['url']"
@@ -101,10 +101,10 @@
           @endforeach
         </div>
 
-        <div class="ml-auto flex min-w-0 items-center justify-end gap-2">
+        <div class="ml-auto flex min-w-0 items-center justify-end gap-2 max-sm:w-full">
           <x-icon-button :href="$viewModel->customiseUrl()" icon="layers" :label="__('Customise view')" align="right" data-turbo="true" />
 
-          <form method="get" action="{{ $viewModel->searchUrl() }}" x-target.push="contacts" role="search" class="w-72 max-w-full">
+          <form method="get" action="{{ $viewModel->searchUrl() }}" x-target.push="contacts" role="search" class="min-w-0 flex-1 sm:w-72 sm:flex-none">
             <input type="hidden" name="sort" value="{{ $viewModel->sort() }}" />
             <input type="hidden" name="direction" value="{{ $viewModel->direction() }}" />
             @if ($viewModel->size() !== $viewModel->defaultSize())

@@ -77,7 +77,7 @@
           x-on:keydown.left.prevent="selectAdjacentTab($el, -1)"
           x-on:keydown.home.prevent="selectFirstTab($el)"
           x-on:keydown.end.prevent="selectLastTab($el)"
-          class="min-w-0 flex-1"
+          class="min-w-0 grow"
         >
           @foreach ($viewModel->tabs() as $tab)
             <x-tabs.item
@@ -104,6 +104,7 @@
             x-bind:aria-expanded="open ? 'true' : 'false'"
             :aria-controls="$lifeEventForm->isRendered() ? 'life-event-panel' : null"
             x-bind:disabled="open"
+            class="max-sm:w-full"
           >
             <x-slot:icon><x-icon name="plus" :size="16" /></x-slot:icon>
             {{ __('Add a life event') }}
