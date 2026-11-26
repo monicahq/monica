@@ -197,7 +197,7 @@ class ContactTimelineBlock
             'isEdited' => $lifeEvent->id === $this->editedId && $lifeEvent->id !== $this->editingId,
             'editUrl' => route('contacts.lifeEvents.edit', ['vault' => $this->vault, 'contact' => $this->contact, 'lifeEvent' => $lifeEvent]),
             'destroyUrl' => route('contacts.lifeEvents.destroy', ['vault' => $this->vault, 'contact' => $this->contact, 'lifeEvent' => $lifeEvent]),
-            'deleteLine' => __('It is removed from the timeline of :names. The people stay.', ['names' => $this->namesOf($lifeEvent)]),
+            'deleteLine' => __('It is removed from the timeline of :names and waits 30 days in the trash of this vault, where it can be restored. The people stay.', ['names' => $this->namesOf($lifeEvent)]),
         ];
     }
 

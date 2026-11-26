@@ -64,7 +64,9 @@
       @keydown.escape.window="if (menuOpen) { menuOpen = false; $refs.menuTrigger.focus() }"
       ::aria-expanded="menuOpen ? 'true' : 'false'"
       aria-haspopup="menu"
-      :aria-label="$text === null ? $label : null"
+      :id="$triggerId"
+      :aria-labelledby="$labelledby"
+      :aria-label="$text === null && $labelledby === null ? $label : null"
     >
       @isset($glyph)
         {{ $glyph }}

@@ -9,6 +9,8 @@ use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Contact;
+use App\Models\Group;
+use App\Models\GroupMember;
 use App\Models\LifeEvent;
 use App\Models\LifeEventParticipant;
 use App\Models\Relationship;
@@ -211,7 +213,38 @@ class DestroyContactTest extends TestCase
             'id' => $reminder->id,
             'is_active' => false,
             'inactive_reason' => ReminderInactiveReasonEnum::RecordDeleted->value,
+            'deleted_with_type' => Contact::class,
+            'deleted_with_id' => $reminder->remindable_id,
         ]);
+        $this->assertSoftDeleted('reminders', ['id' => $reminder->id]);
+    }
+
+    #[Test]
+    public function it_sends_what_is_theirs_to_the_trash_with_them(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $jan = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'first_name' => 'Jan']);
+        $relationship = Relationship::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id, 'contact_b_id' => $jan->id]);
+        $membership = GroupMember::factory()->create([
+            'group_id' => Group::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id])->id,
+            'contact_id' => $jan->id,
+        ]);
+        $ownLifeEvent = LifeEvent::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id]);
+        LifeEventParticipant::factory()->create(['life_event_id' => $ownLifeEvent->id, 'participant_id' => $jan->id]);
+        $sharedLifeEvent = LifeEvent::factory()->create(['account_id' => $user->account_id, 'vault_id' => $vault->id]);
+        LifeEventParticipant::factory()->create(['life_event_id' => $sharedLifeEvent->id, 'participant_id' => $jan->id]);
+        LifeEventParticipant::factory()->create(['life_event_id' => $sharedLifeEvent->id]);
+
+        new DestroyContact(user: $user, contact: $jan)->execute();
+
+        foreach (['relationships' => $relationship, 'group_members' => $membership, 'life_events' => $ownLifeEvent] as $table => $record) {
+            $this->assertSoftDeleted($table, ['id' => $record->id, 'deleted_with_type' => Contact::class, 'deleted_with_id' => $jan->id]);
+        }
+
+        $this->assertNotSoftDeleted('life_events', ['id' => $sharedLifeEvent->id]);
     }
 
     #[Test]

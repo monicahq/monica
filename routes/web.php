@@ -210,6 +210,9 @@ use App\Http\Controllers\App\Vaults\VaultReminderController;
 use App\Http\Controllers\App\Vaults\VaultSectionVisibilityController;
 use App\Http\Controllers\App\Vaults\VaultSettingsController;
 use App\Http\Controllers\App\Vaults\VaultTimelineContactCandidateController;
+use App\Http\Controllers\App\Vaults\VaultTrashController;
+use App\Http\Controllers\App\Vaults\VaultTrashItemController;
+use App\Http\Controllers\App\Vaults\VaultTrashRestorationController;
 use App\Http\Controllers\App\WelcomeController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -391,6 +394,7 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
     Route::post('vaults/{vault}/entities/{entityType}', [EntityController::class, 'create'])->name('entities.create');
     Route::get('vaults/{vault}/entities/{entityType}/{entity}/edit', [EntityController::class, 'edit'])->whereUuid('entity')->name('entities.edit');
     Route::put('vaults/{vault}/entities/{entityType}/{entity}', [EntityController::class, 'update'])->whereUuid('entity')->name('entities.update');
+    Route::delete('vaults/{vault}/entities/{entityType}/{entity}', [EntityController::class, 'destroy'])->whereUuid('entity')->name('entities.destroy');
     Route::get('vaults/{vault}/entities/{entityType}/{entity}/{page?}', [EntityController::class, 'show'])->whereUuid('entity')->name('entities.show');
 
     Route::middleware(['flag:groups'])->group(function () {
@@ -701,6 +705,10 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
         ->name('reminders.destroy');
 
     Route::get('vaults/{vault}/settings', [VaultSettingsController::class, 'index'])->name('vaults.settings.index');
+    Route::put('vaults/{vault}/settings/trash/{kind}/{item}/restoration', [VaultTrashRestorationController::class, 'update'])->where('kind', 'contact|entity|group|relationship|life-event|reminder|group-membership|group-note|group-file')->whereUuid('item')->name('vaults.trash.restoration.update');
+    Route::delete('vaults/{vault}/settings/trash/{kind}/{item}', [VaultTrashItemController::class, 'destroy'])->where('kind', 'contact|entity|group|relationship|life-event|reminder|group-membership|group-note|group-file')->whereUuid('item')->name('vaults.trash.destroy');
+    Route::delete('vaults/{vault}/settings/trash', [VaultTrashController::class, 'destroy'])->name('vaults.trash.empty');
+    Route::get('vaults/{vault}/settings/trash/{kind?}', [VaultTrashController::class, 'index'])->where('kind', 'contact|entity|group|relationship|life-event|reminder|group-membership|group-note|group-file')->name('vaults.trash.index');
     Route::put('vaults/{vault}/settings/default-template', [VaultDefaultTemplateController::class, 'update'])->name('vaults.defaultTemplate.update');
     Route::put('vaults/{vault}/settings/sections', [VaultSectionVisibilityController::class, 'update'])->name('vaults.sectionVisibility.update');
 

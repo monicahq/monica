@@ -6,6 +6,7 @@ namespace Tests\Feature\Controllers\App\Docs;
 
 use App\Actions\CreateLifeEvent;
 use App\Actions\CreateTemplateChange;
+use App\Actions\DestroyContact;
 use App\Actions\MergeContacts;
 use App\Enums\AccountExportStatusEnum;
 use App\Enums\AccountImportOutcomeEnum;
@@ -1127,6 +1128,15 @@ class ApiDocsReturnFieldsTest extends TestCase
                 $id = $this->json('POST', "/api/v1/vaults/{$vault->uuid}/entity-types/{$entityType->uuid}/entities", ['name' => 'Mose’s goat'])->json('data.id');
 
                 return $this->json('PUT', "/api/v1/vaults/{$vault->uuid}/entities/{$id}", ['fields' => [$species->id => 'Sheep']]);
+            }),
+
+            'entities-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                $entityType = EntityType::factory()->create(['account_id' => $user->account_id]);
+                $this->entityDefaultCarrying($vault, $entityType, ['Animal details' => ['species' => FieldTypeEnum::Text]]);
+                $id = $this->json('POST', "/api/v1/vaults/{$vault->uuid}/entity-types/{$entityType->uuid}/entities", ['name' => 'Mose’s goat'])->json('data.id');
+
+                return $this->json('DELETE', "/api/v1/vaults/{$vault->uuid}/entities/{$id}");
             }),
 
             'life-event-categories-index' => $this->asSomebody(function (User $user): TestResponse {
@@ -2671,6 +2681,35 @@ class ApiDocsReturnFieldsTest extends TestCase
                 $group->delete();
 
                 return $this->json('PUT', "/api/v1/vaults/{$group->vault->uuid}/groups/{$group->uuid}/restoration");
+            }),
+
+            'trash-index' => $this->asSomebody(function (User $user): TestResponse {
+                $relationship = $this->aRelationship($user);
+                new DestroyContact(user: $user, contact: $relationship->contactA)->execute();
+
+                return $this->json('GET', "/api/v1/vaults/{$relationship->vault->uuid}/trash?kind=relationship");
+            }),
+
+            'trash-restoration-update' => $this->asSomebody(function (User $user): TestResponse {
+                $relationship = $this->aRelationship($user);
+                $contact = $relationship->contactA;
+                new DestroyContact(user: $user, contact: $contact)->execute();
+
+                return $this->json('PUT', "/api/v1/vaults/{$relationship->vault->uuid}/trash/contact/{$contact->uuid}/restoration");
+            }),
+
+            'trash-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $group = $this->aGroup($user);
+                $group->delete();
+
+                return $this->json('DELETE', "/api/v1/vaults/{$group->vault->uuid}/trash/group/{$group->uuid}");
+            }),
+
+            'trash-empty' => $this->asSomebody(function (User $user): TestResponse {
+                $group = $this->aGroup($user);
+                $group->delete();
+
+                return $this->json('DELETE', "/api/v1/vaults/{$group->vault->uuid}/trash");
             }),
 
             'group-members-index' => $this->asSomebody(function (User $user): TestResponse {

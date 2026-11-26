@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Enums\ReminderCadenceEnum;
 use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\ReminderSourceEnum;
+use App\Models\Concerns\GoesToTheTrashWithItsOwner;
 use App\Models\Concerns\HasUuids;
 use App\Models\Concerns\ResolvesModelInVault;
 use Carbon\CarbonImmutable;
@@ -89,6 +90,8 @@ use Override;
  * @property CarbonImmutable $created_at
  * @property CarbonImmutable|null $updated_at
  * @property CarbonImmutable|null $deleted_at
+ * @property string|null $deleted_with_type
+ * @property int|null $deleted_with_id
  * @property-read Account $account
  * @property-read Vault $vault
  * @property-read Contact|Entity|Group $remindable
@@ -122,6 +125,8 @@ use Override;
 ])]
 class Reminder extends Model
 {
+    use GoesToTheTrashWithItsOwner;
+
     /** @use HasFactory<ReminderFactory> */
     use HasFactory;
 

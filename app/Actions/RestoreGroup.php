@@ -8,6 +8,10 @@ use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Group;
+use App\Models\GroupFile;
+use App\Models\GroupMember;
+use App\Models\GroupNote;
+use App\Models\Reminder;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -40,6 +44,11 @@ class RestoreGroup
 
         DB::transaction(function (): void {
             $this->group->restore();
+
+            GroupMember::query()->deletedWithOwner($this->group)->get()->each(fn (GroupMember $membership) => $membership->restoreFromTheTrash());
+            GroupNote::query()->deletedWithOwner($this->group)->get()->each(fn (GroupNote $note) => $note->restoreFromTheTrash());
+            GroupFile::query()->deletedWithOwner($this->group)->get()->each(fn (GroupFile $attachment) => $attachment->restoreFromTheTrash());
+            Reminder::query()->deletedWithOwner($this->group)->get()->each(fn (Reminder $reminder) => $reminder->restoreFromTheTrash());
 
             new ReactivateReminders(
                 user: $this->user,

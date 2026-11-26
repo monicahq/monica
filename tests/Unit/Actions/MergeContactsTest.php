@@ -758,6 +758,7 @@ class MergeContactsTest extends TestCase
         $this->assertSoftDeleted($between);
         $this->assertContains(['kind' => 'relationship_dropped', 'id' => $twin->id], $merge->ledger);
         $this->assertContains(['kind' => 'relationship_dropped', 'id' => $between->id], $merge->ledger);
+        $this->assertSoftDeleted('relationships', ['id' => $twin->id, 'deleted_with_type' => ContactMerge::class, 'deleted_with_id' => $merge->id]);
     }
 
     #[Test]

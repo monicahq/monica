@@ -6,6 +6,19 @@ return [
     'date' => '2026-11-25',
     'entries' => [
         [
+            'id' => 'vault-trash',
+            'kind' => 'Added',
+            'group' => 'Trash',
+            'title' => 'List, restore and delete for good what waits in the trash of a vault',
+            'summary' => 'Whatever is deleted from a vault now waits 30 days in its trash. List it, restore one item with everything deleted at the same time as it, delete one item for good, or empty the trash. Deleting a person now also sends their relationships, group memberships, reminders and the life events nobody else takes part in to the trash, and deleting a group its memberships, notes, files and reminders. A record of an entity type can now be deleted.',
+            'why' => 'Vault settings now have a Trash tab, and everything the application does can be done through the API.',
+            'breaking' => false,
+            'changes' => [
+                ['field' => 'trash_item', 'change' => 'Added', 'endpoints' => ['GET /vaults/{vault}/trash', 'PUT /vaults/{vault}/trash/{kind}/{item}/restoration', 'DELETE /vaults/{vault}/trash/{kind}/{item}', 'DELETE /vaults/{vault}/trash']],
+                ['field' => 'entity_deletion', 'change' => 'Added', 'endpoints' => ['DELETE /vaults/{vault}/entities/{entity}']],
+            ],
+        ],
+        [
             'id' => 'contacts-bulk-actions',
             'kind' => 'Added',
             'group' => 'Contacts',

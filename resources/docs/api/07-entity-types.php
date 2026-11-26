@@ -624,5 +624,18 @@ return [
             'returns' => 'The entity object as it now reads. A record in another vault, or belonging to somebody else, answers 404.',
             'response' => ['data' => $entity],
         ],
+        [
+            'id' => 'entities-destroy',
+            'title' => 'Delete a record',
+            'label' => 'Delete a record',
+            'method' => 'DELETE',
+            'path' => '/vaults/{vault}/entities/{entity}',
+            'examplePath' => '/vaults/schrute-farms/entities/9b1e6c42-7a35-4f08-b2d9-5c8e41a7f031',
+            'description' => 'Delete a record. It goes to the trash of the vault, where it can be restored for 30 days.',
+            'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
+            'pathParams' => $recordPathParams,
+            'returns' => 'Nothing at all. A record in another vault, or belonging to somebody else, answers 404.',
+            'responseStatus' => 204,
+        ],
     ],
 ];

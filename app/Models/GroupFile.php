@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\Concerns\GoesToTheTrashWithItsOwner;
 use App\Models\Concerns\HasUuids;
 use App\Models\Concerns\ResolvesModelInAccount;
 use Carbon\CarbonImmutable;
@@ -13,6 +14,7 @@ use Illuminate\Database\Eloquent\Attributes\RouteKey;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class GroupFile
@@ -21,9 +23,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * attachment, and it holds one reference on the file, so the file is only swept up once every
  * group, field and life event pointing at it has let go and its grace period has passed.
  *
- * Removing a file from a group deletes this row rather than soft deleting it; the file itself is
- * what survives, through its own grace period. Deleting the group keeps the rows, so restoring the
- * group brings its files back.
+ * Removing a file from a group soft deletes this row, which goes to the vault's trash and keeps
+ * its reference on the file, so restoring it finds the file intact. Deleting it for good lets go of
+ * the reference, and the file is then swept up after its own grace period.
  *
  * @property int $id
  * @property string $uuid
@@ -33,6 +35,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int|null $added_by_user_id
  * @property CarbonImmutable $created_at
  * @property CarbonImmutable|null $updated_at
+ * @property CarbonImmutable|null $deleted_at
+ * @property string|null $deleted_with_type
+ * @property int|null $deleted_with_id
  * @property-read Account $account
  * @property-read Group $group
  * @property-read File $file
@@ -47,11 +52,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 ])]
 class GroupFile extends Model
 {
+    use GoesToTheTrashWithItsOwner;
+
     /** @use HasFactory<GroupFileFactory> */
     use HasFactory;
 
     use HasUuids;
     use ResolvesModelInAccount;
+    use SoftDeletes;
 
     /**
      * Get the account the attachment belongs to.

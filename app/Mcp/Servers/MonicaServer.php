@@ -57,6 +57,7 @@ use App\Mcp\Tools\DeleteContact;
 use App\Mcp\Tools\DeleteContactRelationship;
 use App\Mcp\Tools\DeleteContactReminder;
 use App\Mcp\Tools\DeleteContacts;
+use App\Mcp\Tools\DeleteEntity;
 use App\Mcp\Tools\DeleteEntityType;
 use App\Mcp\Tools\DeleteGroup;
 use App\Mcp\Tools\DeleteGroupNote;
@@ -88,9 +89,11 @@ use App\Mcp\Tools\DeleteRelationshipType;
 use App\Mcp\Tools\DeleteTemplate;
 use App\Mcp\Tools\DeleteTemplateDraft;
 use App\Mcp\Tools\DeleteTemplateField;
+use App\Mcp\Tools\DeleteTrashItem;
 use App\Mcp\Tools\DeleteValueList;
 use App\Mcp\Tools\DeleteValueListItem;
 use App\Mcp\Tools\DuplicateTemplate;
+use App\Mcp\Tools\EmptyTrash;
 use App\Mcp\Tools\ExportPossessionType;
 use App\Mcp\Tools\GetAgentFeedback;
 use App\Mcp\Tools\GetContact;
@@ -182,6 +185,7 @@ use App\Mcp\Tools\ListSupportQueue;
 use App\Mcp\Tools\ListSupportRequests;
 use App\Mcp\Tools\ListTemplates;
 use App\Mcp\Tools\ListTemplateVersions;
+use App\Mcp\Tools\ListTrash;
 use App\Mcp\Tools\ListValueLists;
 use App\Mcp\Tools\ListVaultReminderOccurrences;
 use App\Mcp\Tools\ListVaultReminders;
@@ -196,6 +200,7 @@ use App\Mcp\Tools\RemoveTemplateSection;
 use App\Mcp\Tools\ReplaceLifeEventTypeFields;
 use App\Mcp\Tools\RestoreGroup;
 use App\Mcp\Tools\RestoreLifeEvent;
+use App\Mcp\Tools\RestoreTrashItem;
 use App\Mcp\Tools\SearchKnowledge;
 use App\Mcp\Tools\SearchRecords;
 use App\Mcp\Tools\SendSupportReply;
@@ -406,6 +411,7 @@ class MonicaServer extends Server
         GetEntity::class,
         CreateEntity::class,
         UpdateEntity::class,
+        DeleteEntity::class,
         ListRelationshipCategories::class,
         GetRelationshipCategory::class,
         ListRelationshipCategoryTypes::class,
@@ -582,6 +588,10 @@ class MonicaServer extends Server
         UpdateGroup::class,
         DeleteGroup::class,
         RestoreGroup::class,
+        ListTrash::class,
+        RestoreTrashItem::class,
+        DeleteTrashItem::class,
+        EmptyTrash::class,
         ListGroupMembers::class,
         AddGroupMember::class,
         UpdateGroupMember::class,

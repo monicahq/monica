@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\RelationshipStatusEnum;
+use App\Models\Concerns\GoesToTheTrashWithItsOwner;
 use App\Models\Concerns\HasUuids;
 use App\Models\Concerns\ResolvesModelInVault;
 use Carbon\CarbonImmutable;
@@ -45,6 +46,8 @@ use Override;
  * @property CarbonImmutable $created_at
  * @property CarbonImmutable|null $updated_at
  * @property CarbonImmutable|null $deleted_at
+ * @property string|null $deleted_with_type
+ * @property int|null $deleted_with_id
  * @property-read Account $account
  * @property-read Vault $vault
  * @property-read RelationshipType $relationshipType
@@ -65,6 +68,8 @@ use Override;
 ])]
 class Relationship extends Model
 {
+    use GoesToTheTrashWithItsOwner;
+
     /** @use HasFactory<RelationshipFactory> */
     use HasFactory;
 

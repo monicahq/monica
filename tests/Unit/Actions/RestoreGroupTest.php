@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Actions;
 
+use App\Actions\DestroyGroup;
 use App\Actions\RestoreGroup;
 use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Group;
+use App\Models\GroupFile;
 use App\Models\GroupMember;
+use App\Models\GroupNote;
 use App\Models\Reminder;
 use App\Models\User;
 use App\Models\Vault;
@@ -40,6 +43,28 @@ class RestoreGroupTest extends TestCase
         $this->assertCount(2, $group->fresh()->currentMembers);
 
         Queue::assertPushedOn('low', LogUserAction::class, fn (LogUserAction $job): bool => $job->action === UserActionEnum::GroupRestoration);
+    }
+
+    #[Test]
+    public function it_brings_back_what_went_to_the_trash_with_the_group_and_leaves_what_was_deleted_before(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $group = Group::factory()->create(['vault_id' => $vault->id, 'name' => 'Finer Things Club']);
+        $pam = GroupMember::factory()->create(['group_id' => $group->id]);
+        $note = GroupNote::factory()->create(['group_id' => $group->id]);
+        $attachment = GroupFile::factory()->create(['group_id' => $group->id]);
+        $oscar = GroupMember::factory()->create(['group_id' => $group->id, 'deleted_at' => now()->subDay()]);
+        new DestroyGroup(user: $user, vault: $vault, group: $group)->execute();
+
+        new RestoreGroup(user: $user, vault: $vault, group: $group->fresh())->execute();
+
+        $this->assertNotSoftDeleted('group_members', ['id' => $pam->id, 'deleted_with_type' => null]);
+        $this->assertNotSoftDeleted($note);
+        $this->assertNotSoftDeleted($attachment);
+        $this->assertSoftDeleted($oscar);
     }
 
     #[Test]

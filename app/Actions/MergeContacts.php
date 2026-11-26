@@ -559,6 +559,22 @@ class MergeContacts
             'snapshot_id' => $this->snapshot->id,
             'merged_by_user_id' => $this->user->id,
         ]);
+
+        $heldByTheMerge = [
+            'deleted_with_type' => $this->merge->getMorphClass(),
+            'deleted_with_id' => $this->merge->id,
+        ];
+        $ledger = collect($this->ledger);
+
+        Relationship::query()
+            ->onlyTrashed()
+            ->whereKey($ledger->where('kind', 'relationship_dropped')->pluck('id')->all())
+            ->update($heldByTheMerge);
+
+        GroupMember::query()
+            ->onlyTrashed()
+            ->whereKey($ledger->where('kind', 'membership_folded')->pluck('dropped')->all())
+            ->update($heldByTheMerge);
     }
 
     private function log(): void

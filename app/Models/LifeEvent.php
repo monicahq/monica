@@ -8,6 +8,7 @@ use App\Enums\DateFormatEnum;
 use App\Enums\DatePrecisionEnum;
 use App\Enums\LifeEventSourceEnum;
 use App\Helpers\AvailableLocales;
+use App\Models\Concerns\GoesToTheTrashWithItsOwner;
 use App\Models\Concerns\HasUuids;
 use App\Models\Concerns\ResolvesModelInVault;
 use App\Models\Concerns\SearchesRecords;
@@ -72,6 +73,8 @@ use Override;
  * @property CarbonImmutable $created_at
  * @property CarbonImmutable|null $updated_at
  * @property CarbonImmutable|null $deleted_at
+ * @property string|null $deleted_with_type
+ * @property int|null $deleted_with_id
  * @property-read string $name
  * @property-read Account $account
  * @property-read Vault $vault
@@ -115,6 +118,8 @@ use Override;
 ])]
 class LifeEvent extends Model
 {
+    use GoesToTheTrashWithItsOwner;
+
     /** @use HasFactory<LifeEventFactory> */
     use HasFactory;
 

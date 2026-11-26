@@ -124,9 +124,12 @@
                         :confirm="__('Remove it')"
                         :action="$row['destroyUrl']"
                         :label="__('Delete')"
+                        :irreversible="false"
                         size="small"
                       >
                         <p>{{ __('The link with :name is taken off both records. Neither person is deleted.', ['name' => $row['name']]) }}</p>
+
+                        <p>{{ __('It waits 30 days in the trash of this vault, where it can be restored.') }}</p>
                       </x-delete-action>
                     </span>
                   </li>

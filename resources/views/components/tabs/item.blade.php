@@ -47,7 +47,11 @@
   @if ($count !== null)
     <span
       class="flex h-4.75 min-w-4.75 items-center justify-center rounded-full px-1.25 text-2xs font-semibold text-muted group-aria-selected:bg-hover group-aria-selected:text-body"
-      @if ($countLabel) title="{{ $countLabel }}" @endif
+      @if ($countLabel) title="{{ $countLabel }}" aria-hidden="true" @endif
     >{{ $count }}</span>
+
+    @if ($countLabel)
+      <span class="sr-only">{{ $countLabel }}</span>
+    @endif
   @endif
 </{{ $tag }}>

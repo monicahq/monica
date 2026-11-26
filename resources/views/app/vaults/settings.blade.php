@@ -21,6 +21,8 @@
 
   <x-page-header :title="$viewModel->title()" :description="$viewModel->description()" />
 
+  @include('app.vaults.settings._tabs', ['vault' => $vault, 'current' => 'general', 'trashCount' => $viewModel->trashCount()])
+
   <div
     x-data="{
       name: @js($values['name']),

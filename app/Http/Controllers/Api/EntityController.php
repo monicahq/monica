@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api;
 
 use App\Actions\CreateEntity;
+use App\Actions\DestroyEntity;
 use App\Actions\UpdateEntity;
 use App\Enums\ApiKeyScopeEnum;
 use App\Exceptions\EntityNeedsAName;
@@ -27,6 +28,7 @@ use App\Models\Vault;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
 use Laravel\Sanctum\PersonalAccessToken;
 
@@ -191,6 +193,19 @@ class EntityController extends Controller
         }
 
         return $this->respond($request, $entity, 200);
+    }
+
+    public function destroy(Request $request, string $vault, string $entity): Response
+    {
+        $vault = $this->vault($request, $vault);
+
+        new DestroyEntity(
+            user: $request->user(),
+            vault: $vault,
+            entity: $this->entity($vault, $entity),
+        )->execute();
+
+        return response()->noContent(204);
     }
 
     private function respond(Request $request, Entity $entity, int $status): JsonResponse

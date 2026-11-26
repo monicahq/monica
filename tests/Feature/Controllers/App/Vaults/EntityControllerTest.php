@@ -354,6 +354,25 @@ class EntityControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_sends_a_record_to_the_trash_and_goes_back_to_the_list(): void
+    {
+        Queue::fake();
+
+        [$user, $vault, $type] = $this->vaultWithType();
+        $version = $this->entityDefaultCarrying($vault, $type, ['Animal details' => ['species' => FieldTypeEnum::Text]]);
+        $entity = $this->goat($user, $vault, $type, $version, 'Goat');
+
+        $this->actingAs($user)->get(route('entities.edit', ['vault' => $vault, 'entityType' => $type, 'entity' => $entity]))
+            ->assertSee(route('entities.destroy', ['vault' => $vault, 'entityType' => $type, 'entity' => $entity]));
+
+        $this->actingAs($user)->delete(route('entities.destroy', ['vault' => $vault, 'entityType' => $type, 'entity' => $entity]))
+            ->assertRedirect(route('entities.index', ['vault' => $vault, 'entityType' => $type]))
+            ->assertSessionHas('status');
+
+        $this->assertSoftDeleted($entity);
+    }
+
+    #[Test]
     public function it_refuses_to_update_a_record_without_a_name(): void
     {
         [$user, $vault, $type] = $this->vaultWithType();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\Concerns\GoesToTheTrashWithItsOwner;
 use App\Models\Concerns\HasUuids;
 use App\Models\Concerns\ResolvesModelInVault;
 use Carbon\CarbonImmutable;
@@ -35,6 +36,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property CarbonImmutable $created_at
  * @property CarbonImmutable|null $updated_at
  * @property CarbonImmutable|null $deleted_at
+ * @property string|null $deleted_with_type
+ * @property int|null $deleted_with_id
  * @property-read Account $account
  * @property-read Vault $vault
  * @property-read Group $group
@@ -50,6 +53,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 ])]
 class GroupNote extends Model
 {
+    use GoesToTheTrashWithItsOwner;
+
     /** @use HasFactory<GroupNoteFactory> */
     use HasFactory;
 

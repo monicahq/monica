@@ -45,10 +45,13 @@
             :confirm="__('Remove the file')"
             :action="$file['destroyUrl']"
             :label="__('Remove')"
+            :irreversible="false"
             variant="ghost"
             size="small"
           >
             <p>{{ __(':name is no longer kept with the group. It stays wherever else it is used.', ['name' => $file['name']]) }}</p>
+
+            <p>{{ __('It waits 30 days in the trash of this vault, where it can be restored.') }}</p>
           </x-delete-action>
         </div>
       @endforeach

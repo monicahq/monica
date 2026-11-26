@@ -217,6 +217,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Trash
+    |--------------------------------------------------------------------------
+    |
+    | How many days something deleted from a vault waits in the vault's trash
+    | before it is deleted for good. It is fixed rather than read from the
+    | environment, since every screen promises 30 days in its own words, and it
+    | must not be longer than the grace period of orphaned files.
+    |
+    */
+
+    'trash_retention_in_days' => 30,
+
+    /*
+    |--------------------------------------------------------------------------
     | How far ahead reminder deadlines are generated
     |--------------------------------------------------------------------------
     |

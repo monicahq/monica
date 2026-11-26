@@ -8,14 +8,18 @@ use App\Enums\ReminderInactiveReasonEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\Group;
+use App\Models\GroupFile;
+use App\Models\GroupMember;
+use App\Models\GroupNote;
+use App\Models\Reminder;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Delete a group. Its members are left as they are, its reminders stop, and its memberships, its history
- * and its reminders come back with it if it is restored.
+ * Send a group to the vault's trash with its memberships, notes, files and reminders. The people in it
+ * are left as they are, and restoring the group brings all of it back.
  */
 class DestroyGroup
 {
@@ -43,6 +47,11 @@ class DestroyGroup
                 subject: $this->group,
                 reason: ReminderInactiveReasonEnum::RecordDeleted,
             )->execute();
+
+            $this->group->members()->get()->each(fn (GroupMember $membership) => $membership->deleteWith($this->group));
+            $this->group->notes()->get()->each(fn (GroupNote $note) => $note->deleteWith($this->group));
+            $this->group->files()->get()->each(fn (GroupFile $attachment) => $attachment->deleteWith($this->group));
+            $this->group->reminders()->get()->each(fn (Reminder $reminder) => $reminder->deleteWith($this->group));
         });
 
         LogUserAction::dispatch(

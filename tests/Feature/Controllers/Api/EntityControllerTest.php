@@ -256,6 +256,21 @@ class EntityControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_sends_an_entity_to_the_trash(): void
+    {
+        Queue::fake();
+
+        [$user, $vault, , , $entity] = $this->goat();
+
+        Sanctum::actingAs($user);
+
+        $this->json('DELETE', "/api/v1/vaults/{$vault->uuid}/entities/{$entity->uuid}")
+            ->assertNoContent();
+
+        $this->assertSoftDeleted($entity);
+    }
+
+    #[Test]
     public function it_renames_an_entity_and_keeps_every_value_left_out(): void
     {
         [$user, $vault, , $version, $entity] = $this->goat();

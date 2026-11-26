@@ -156,6 +156,9 @@ use App\Http\Controllers\Api\TemplateChangePreviewController;
 use App\Http\Controllers\Api\TemplateController;
 use App\Http\Controllers\Api\TemplateDuplicateController;
 use App\Http\Controllers\Api\TemplatePositionController;
+use App\Http\Controllers\Api\TrashController;
+use App\Http\Controllers\Api\TrashItemController;
+use App\Http\Controllers\Api\TrashRestorationController;
 use App\Http\Controllers\Api\ValueListController;
 use App\Http\Controllers\Api\ValueListItemActivationController;
 use App\Http\Controllers\Api\ValueListItemController;
@@ -276,6 +279,12 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::post('vaults/{vault}/entity-types/{entityType}/entities', [EntityController::class, 'create'])->where('entityType', '[0-9a-fA-F-]{36}')->name('entities.create');
         Route::match(['GET', 'QUERY'], 'vaults/{vault}/entities/{entity}', [EntityController::class, 'show'])->where('entity', '[0-9a-fA-F-]{36}')->name('entities.show');
         Route::put('vaults/{vault}/entities/{entity}', [EntityController::class, 'update'])->where('entity', '[0-9a-fA-F-]{36}')->name('entities.update');
+        Route::delete('vaults/{vault}/entities/{entity}', [EntityController::class, 'destroy'])->where('entity', '[0-9a-fA-F-]{36}')->name('entities.destroy');
+
+        Route::match(['GET', 'QUERY'], 'vaults/{vault}/trash', [TrashController::class, 'index'])->name('trash');
+        Route::delete('vaults/{vault}/trash', [TrashController::class, 'destroy'])->name('trash.empty');
+        Route::delete('vaults/{vault}/trash/{kind}/{item}', [TrashItemController::class, 'destroy'])->where('kind', 'contact|entity|group|relationship|life-event|reminder|group-membership|group-note|group-file')->where('item', '[0-9a-fA-F-]{36}')->name('trash.destroy');
+        Route::put('vaults/{vault}/trash/{kind}/{item}/restoration', [TrashRestorationController::class, 'update'])->where('kind', 'contact|entity|group|relationship|life-event|reminder|group-membership|group-note|group-file')->where('item', '[0-9a-fA-F-]{36}')->name('trash.restoration.update');
 
         Route::match(['GET', 'QUERY'], 'life-event-categories', [LifeEventCategoryController::class, 'index'])->name('lifeEventCategories');
         Route::match(['GET', 'QUERY'], 'life-event-categories/{lifeEventCategory}', [LifeEventCategoryController::class, 'show'])->where('lifeEventCategory', '[0-9a-fA-F-]{36}')->name('lifeEventCategories.show');

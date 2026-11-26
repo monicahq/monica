@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace App\Mcp\Tools;
 
 use App\Enums\ApiKeyScopeEnum;
+use App\Enums\TrashItemKindEnum;
 use App\Helpers\RecordKind;
 use App\Helpers\SupportAvailability;
+use App\Helpers\TrashItem;
+use App\Helpers\VaultTrash;
 use App\Http\Resources\GroupFileResource;
 use App\Http\Resources\GroupMembershipResource;
 use App\Http\Resources\GroupNoteResource;
@@ -242,6 +245,25 @@ trait MirrorsAnApiCapability
         }
 
         return $this->found($group);
+    }
+
+    protected function trashItem(Vault $vault, string $kind, string $address): TrashItem
+    {
+        $kind = TrashItemKindEnum::tryFrom($kind);
+
+        if ($kind === null || ! Str::isUuid($address)) {
+            throw $this->doesNotExist(__('That item is not in the trash of this vault.'));
+        }
+
+        try {
+            $item = new VaultTrash(vault: $vault)->find($kind, $address);
+        } catch (ModelNotFoundException) {
+            throw $this->doesNotExist(__('That item is not in the trash of this vault.'));
+        }
+
+        $this->found($item->record);
+
+        return $item;
     }
 
     protected function groupMembership(Group $group, string $address): GroupMember

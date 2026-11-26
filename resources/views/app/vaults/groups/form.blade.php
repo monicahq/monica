@@ -67,7 +67,7 @@
 
   @if ($viewModel->destroyAction() !== null)
     <x-delete-section :title="__('Delete this group')" icon="people" class="max-w-140">
-      <p>{{ __('The people in it stay as they are. Only the group and the memberships it holds go, and the group can be brought back right after.') }}</p>
+      <p>{{ __('The people in it stay as they are. The group goes to the trash of this vault with its memberships, notes, files and reminders, and waits there 30 days.') }}</p>
 
       <x-slot:trigger>
         <x-modal.warning
@@ -83,6 +83,8 @@
           </x-slot:trigger>
 
           <p>{{ __('The people in it are not deleted.') }}</p>
+
+          <p>{{ __('It waits 30 days in the trash of this vault, where it can be restored.') }}</p>
         </x-modal.warning>
       </x-slot:trigger>
     </x-delete-section>

@@ -111,7 +111,7 @@ class UndoContactMerge
             'membership_moved' => $this->giveTheMembershipBack($entry),
             'loan_moved' => $this->giveTheLoanBack($entry),
             'relationship_moved' => $this->giveTheRelationshipBack($entry),
-            'relationship_dropped' => Relationship::query()->onlyTrashed()->whereKey($entry['id'])->first()?->restore(),
+            'relationship_dropped' => Relationship::query()->onlyTrashed()->whereKey($entry['id'])->first()?->restoreFromTheTrash(),
             'participation_moved' => LifeEventParticipant::query()->whereKey($entry['id'])->update(['participant_id' => $this->absorbed->id]),
             'participation_dropped' => LifeEventParticipant::query()->create([...$entry['attributes'], 'participant_type' => $this->absorbed->getMorphClass(), 'participant_id' => $this->absorbed->id]),
             'membership_folded' => $this->unfoldTheMembership($entry),
@@ -274,7 +274,7 @@ class UndoContactMerge
     /** @param array<string, mixed> $entry */
     private function unfoldTheMembership(array $entry): void
     {
-        GroupMember::query()->onlyTrashed()->whereKey($entry['dropped'])->first()?->restore();
+        GroupMember::query()->onlyTrashed()->whereKey($entry['dropped'])->first()?->restoreFromTheTrash();
 
         $held = GroupMember::query()->find($entry['id']);
 
