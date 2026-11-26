@@ -10,9 +10,9 @@ class TextSanitizer
 {
     public static function plainText(string $value): string
     {
-        $stripped = Purify::config(['HTML.Allowed' => ''])->clean($value);
+        $stripped = Purify::config(['HTML.Allowed' => ''])->clean(str_replace('&', '&amp;', $value));
 
-        return mb_trim($stripped);
+        return mb_trim(html_entity_decode($stripped, ENT_QUOTES | ENT_HTML5, 'UTF-8'));
     }
 
     public static function nullablePlainText(?string $value): ?string
@@ -37,7 +37,9 @@ class TextSanitizer
             return null;
         }
 
-        $sanitized = mb_trim(strip_tags(self::html($value)));
+        $stripped = strip_tags(self::html($value));
+
+        $sanitized = mb_trim(html_entity_decode($stripped, ENT_QUOTES | ENT_HTML5, 'UTF-8'));
 
         return $sanitized === '' ? null : $sanitized;
     }

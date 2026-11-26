@@ -72,6 +72,23 @@ class SetFieldValueTest extends TestCase
     }
 
     #[Test]
+    public function it_stores_an_ampersand_in_a_text_value_as_typed(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $contact = $this->contactOf($user);
+        $field = $this->fieldOf($user, ['key' => 'city', 'label' => 'City']);
+
+        $value = new SetFieldValue(user: $user, valuable: $contact, field: $field, value: 'Dunder & Mifflin')->execute();
+
+        $this->assertDatabaseHas('field_values', [
+            'id' => $value->id,
+            'value_string' => 'Dunder & Mifflin',
+        ]);
+    }
+
+    #[Test]
     public function it_writes_nothing_in_the_journal_when_asked_not_to(): void
     {
         Queue::fake();
