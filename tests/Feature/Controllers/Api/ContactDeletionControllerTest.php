@@ -25,6 +25,7 @@ class ContactDeletionControllerTest extends TestCase
             'attributes' => [
                 'deleted',
                 'kept',
+                'missing',
             ],
         ],
     ];
@@ -85,20 +86,42 @@ class ContactDeletionControllerTest extends TestCase
     }
 
     #[Test]
-    public function it_refuses_a_person_of_another_vault(): void
+    public function it_deletes_the_others_and_reports_the_people_it_does_not_find_in_the_vault(): void
     {
+        Queue::fake();
+
         $user = User::factory()->create();
         $scranton = Vault::factory()->create(['account_id' => $user->account_id]);
         $stamford = Vault::factory()->create(['account_id' => $user->account_id]);
         $karen = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $stamford->id]);
+        $todd = Contact::factory()->create(['account_id' => $user->account_id, 'vault_id' => $scranton->id]);
+        $unknown = (string) Str::uuid();
 
         Sanctum::actingAs($user);
 
-        $this->json('DELETE', "/api/v1/vaults/{$scranton->uuid}/contacts", ['contacts' => [$karen->uuid]])
-            ->assertUnprocessable()
-            ->assertJsonValidationErrors('contacts.0');
+        $this->json('DELETE', "/api/v1/vaults/{$scranton->uuid}/contacts", ['contacts' => [$karen->uuid, $todd->uuid, $unknown, $karen->uuid]])
+            ->assertOk()
+            ->assertJsonStructure($this->jsonStructure)
+            ->assertJsonPath('data.attributes.deleted', [$todd->uuid])
+            ->assertJsonPath('data.attributes.missing', [$karen->uuid, $unknown]);
 
+        $this->assertSoftDeleted($todd);
         $this->assertNotSoftDeleted($karen);
+    }
+
+    #[Test]
+    public function it_answers_ok_with_nothing_deleted_when_every_person_is_unknown(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $unknown = (string) Str::uuid();
+
+        Sanctum::actingAs($user);
+
+        $this->json('DELETE', "/api/v1/vaults/{$vault->uuid}/contacts", ['contacts' => [$unknown]])
+            ->assertOk()
+            ->assertJsonPath('data.attributes.deleted', [])
+            ->assertJsonPath('data.attributes.missing', [$unknown]);
     }
 
     #[Test]

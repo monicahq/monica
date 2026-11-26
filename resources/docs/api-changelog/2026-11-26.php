@@ -6,6 +6,20 @@ return [
     'date' => '2026-11-26',
     'entries' => [
         [
+            'id' => 'contacts-deletion-reports-missing',
+            'kind' => 'Changed',
+            'group' => 'Contacts',
+            'title' => 'Deleting several contacts skips an id it does not find and lists it',
+            'summary' => 'DELETE /vaults/{vault}/contacts no longer answers 422 when an id matches no contact of the vault. That id is skipped, the others are deleted, and the answer lists it in data.attributes.missing, as given and without repeats. When every id is unknown the answer is 200 with nothing deleted.',
+            'why' => 'One wrong id used to refuse the whole batch, and the caller was not told which id it was.',
+            'breaking' => true,
+            'impact' => 'An integration that relied on the 422 for an unknown id now gets 200. Read data.attributes.missing to find what was not deleted.',
+            'changes' => [
+                ['field' => 'data.attributes.missing', 'change' => 'Added', 'endpoints' => ['DELETE /vaults/{vault}/contacts']],
+                ['field' => 'contacts', 'change' => 'Changed', 'endpoints' => ['DELETE /vaults/{vault}/contacts']],
+            ],
+        ],
+        [
             'id' => 'support-messages-markdown',
             'kind' => 'Changed',
             'group' => 'Support requests',

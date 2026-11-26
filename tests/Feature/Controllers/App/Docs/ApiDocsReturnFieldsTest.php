@@ -112,6 +112,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\Testing\TestResponse;
 use Laravel\Sanctum\Sanctum;
 use Laravel\Scout\EngineManager;
@@ -2202,7 +2203,7 @@ class ApiDocsReturnFieldsTest extends TestCase
                 $me = Contact::factory()->me()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
                 $todd = Contact::factory()->create(['vault_id' => $vault->id, 'account_id' => $user->account_id]);
 
-                return $this->json('DELETE', "/api/v1/vaults/{$vault->uuid}/contacts", ['contacts' => [$todd->uuid, $me->uuid]]);
+                return $this->json('DELETE', "/api/v1/vaults/{$vault->uuid}/contacts", ['contacts' => [$todd->uuid, $me->uuid, (string) Str::uuid()]]);
             }),
 
             'contact-list-columns-show' => $this->asSomebody(function (User $user): TestResponse {

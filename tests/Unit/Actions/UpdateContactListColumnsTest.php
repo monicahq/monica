@@ -6,9 +6,11 @@ namespace Tests\Unit\Actions;
 
 use App\Actions\UpdateContactListColumns;
 use App\Enums\ContactListColumnSourceEnum;
+use App\Enums\FieldTypeEnum;
 use App\Enums\UserActionEnum;
 use App\Jobs\LogUserAction;
 use App\Models\ContactListColumn;
+use App\Models\Field;
 use App\Models\Section;
 use App\Models\User;
 use App\Models\Vault;
@@ -96,6 +98,54 @@ class UpdateContactListColumnsTest extends TestCase
 
         new UpdateContactListColumns(user: $user, vault: $vault, columns: [
             ['source' => 'field', 'section' => $section->uuid, 'field_key' => 'sales_region', 'heading' => null, 'is_visible' => true],
+        ])->execute();
+    }
+
+    #[Test]
+    public function it_names_the_shared_column_when_the_field_is_an_email(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $section = $this->contactTemplateCarrying($user, 'Professional', ['Work' => ['work_email']])['Work'];
+        Field::query()->where('key', 'work_email')->update(['type' => FieldTypeEnum::Email]);
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('This field is shown by the Email column. Choose that column instead.');
+
+        new UpdateContactListColumns(user: $user, vault: $vault, columns: [
+            ['source' => 'field', 'section' => $section->uuid, 'field_key' => 'work_email', 'heading' => null, 'is_visible' => true],
+        ])->execute();
+    }
+
+    #[Test]
+    public function it_names_the_shared_column_when_the_field_is_a_phone_number(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $section = $this->contactTemplateCarrying($user, 'Professional', ['Work' => ['work_phone']])['Work'];
+        Field::query()->where('key', 'work_phone')->update(['type' => FieldTypeEnum::Phone]);
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('This field is shown by the Phone number column. Choose that column instead.');
+
+        new UpdateContactListColumns(user: $user, vault: $vault, columns: [
+            ['source' => 'field', 'section' => $section->uuid, 'field_key' => 'work_phone', 'heading' => null, 'is_visible' => true],
+        ])->execute();
+    }
+
+    #[Test]
+    public function it_refuses_a_sensitive_field_with_its_own_reason(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $section = $this->contactTemplateCarrying($user, 'Professional', ['Work' => ['salary']])['Work'];
+        Field::query()->where('key', 'salary')->update(['is_sensitive' => true]);
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('A sensitive field cannot be shown in the list of people.');
+
+        new UpdateContactListColumns(user: $user, vault: $vault, columns: [
+            ['source' => 'field', 'section' => $section->uuid, 'field_key' => 'salary', 'heading' => null, 'is_visible' => true],
         ])->execute();
     }
 
