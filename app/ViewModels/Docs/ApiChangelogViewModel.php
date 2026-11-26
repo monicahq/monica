@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\ViewModels\Docs;
 
 use Carbon\CarbonImmutable;
+use Illuminate\Support\Facades\File;
 
 class ApiChangelogViewModel
 {
@@ -38,7 +39,7 @@ class ApiChangelogViewModel
         $releases = [];
 
         foreach (array_reverse($this->files()) as $file) {
-            $release = require $file;
+            $release = File::getRequire($file);
             $date = CarbonImmutable::parse($release['date']);
             $groups = [];
 
@@ -141,7 +142,7 @@ class ApiChangelogViewModel
 
         foreach ($this->files() as $file) {
             $name = basename($file);
-            $release = require $file;
+            $release = File::getRequire($file);
 
             if (($release['date'] ?? null) !== basename($file, '.php')) {
                 $problems[] = "{$name}: the date must equal the file name.";
@@ -222,6 +223,6 @@ class ApiChangelogViewModel
     {
         $files = glob(resource_path('docs/api').'/*.php') ?: [];
 
-        return array_map(fn (string $file): string => (require $file)['name'], $files);
+        return array_map(fn (string $file): string => File::getRequire($file)['name'], $files);
     }
 }

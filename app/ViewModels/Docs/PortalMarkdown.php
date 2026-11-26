@@ -96,7 +96,7 @@ class PortalMarkdown
         $body = (string) preg_replace('/^\s*#\s+[^\n]*\n/', '', $this->resolveLinks($body), 1);
         $lead = null;
 
-        if (preg_match('/^\s*([^\n]+(?:\n[^\n]+)*)(?:\n\s*\n|\s*$)/', $body, $matches) && ! preg_match('/^[#>\-*|`:!\d]/', $matches[1])) {
+        if (preg_match('/^\s*([^\n]+(?:\n[^\n]+)*)(?:\n\s*\n|(?:\s*$))/', $body, $matches) && ! preg_match('/^[#>\-*|`:!\d]/', $matches[1])) {
             $lead = rtrim(Str::inlineMarkdown($matches[1], ['html_input' => 'escape']));
             $body = substr($body, strlen($matches[0]));
         }
