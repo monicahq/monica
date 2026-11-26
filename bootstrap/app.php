@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Http\Middleware\BindOAuthScopes;
+use App\Http\Middleware\EnsureApiTokenIsAccepted;
 use App\Http\Middleware\EnsureChangelogIsEnabled;
 use App\Http\Middleware\EnsureFlagIsOn;
 use App\Http\Middleware\EnsureKeyCanAdminister;
@@ -16,6 +18,7 @@ use App\Http\Middleware\MarkPageSearchable;
 use App\Http\Middleware\MergeQueryRequestBody;
 use App\Http\Middleware\SetApiLocale;
 use App\Http\Middleware\SetLocale;
+use App\Http\Middleware\TrackMobileSessions;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -58,8 +61,11 @@ return Application::configure(basePath: dirname(__DIR__))
             'active' => EnsureUserIsActive::class,
             'administration' => EnsureKeyCanAdminister::class,
             'administrator' => EnsureUserIsAdministrator::class,
+            'api.token' => EnsureApiTokenIsAccepted::class,
             'flag' => EnsureFlagIsOn::class,
             'magic.link' => EnsureMagicLinkIsEnabled::class,
+            'oauth.mobile.sessions' => TrackMobileSessions::class,
+            'oauth.scopes' => BindOAuthScopes::class,
             'portal.timing' => InsertServerGenerationTime::class,
             'query.body' => MergeQueryRequestBody::class,
             'registration' => EnsureRegistrationIsEnabled::class,

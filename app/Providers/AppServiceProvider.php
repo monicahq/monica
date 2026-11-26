@@ -15,6 +15,7 @@ use App\Http\Responses\PasskeyConfirmationResponse;
 use App\Http\Responses\PasskeyDeletedResponse;
 use App\Http\Responses\PasskeyLoginResponse;
 use App\Models\Account;
+use App\Models\MobileSession;
 use App\Models\Passkey;
 use App\Models\User;
 use App\ViewModels\Auth\OAuthAuthorizationViewModel;
@@ -261,17 +262,18 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * Passport exists only so an assistant can reach the MCP server through OAuth. An access token
-     * lives a day and is renewed through its refresh token, so a revoked assistant loses access
-     * within a day even when it holds on to what it was given.
+     * Passport lets an assistant reach the MCP server, and the mobile apps reach the API, through
+     * OAuth. An access token lives an hour and is renewed through its refresh token, so access
+     * that was taken back stops within the hour even for a client holding on to what it was given.
      */
     private function configurePassport(): void
     {
-        Passport::tokensExpireIn(CarbonInterval::day());
-        Passport::refreshTokensExpireIn(CarbonInterval::days(30));
+        Passport::tokensExpireIn(CarbonInterval::hour());
+        Passport::refreshTokensExpireIn(CarbonInterval::days(MobileSession::LIFETIME_IN_DAYS));
 
         Passport::authorizationView(function (array $parameters): Response {
-            abort_unless(FlagState::isOn('mcp-server', $parameters['user']->account), 404);
+            $isMobileApp = (string) $parameters['client']->getKey() === MobileSession::CLIENT_ID;
+            abort_unless($isMobileApp || FlagState::isOn('mcp-server', $parameters['user']->account), 404);
 
             return response()->view('app.auth.oauth-authorize', [
                 'viewModel' => new OAuthAuthorizationViewModel(
@@ -287,6 +289,7 @@ class AppServiceProvider extends ServiceProvider
         // the reader's language is known. The authorization screen translates it.
         Passport::tokensCan([
             Registrar::OAUTH_SCOPE => 'Use MCP server',
+            MobileSession::SCOPE => 'Use the API',
         ]);
     }
 
@@ -342,6 +345,7 @@ class AppServiceProvider extends ServiceProvider
             return Limit::perMinute($perMinute)
                 ->by($token instanceof PersonalAccessToken ? "key:{$token->getKey()}" : (string) $request->ip());
         });
+        RateLimiter::for('oauth', fn (Request $request): Limit => Limit::perMinute(30)->by((string) $request->ip()));
         RateLimiter::for('support', fn (Request $request): array => [
             Limit::perMinute(5)->by("support-minute:{$request->user()?->id}"),
             Limit::perDay(50)->by("support-day:{$request->user()?->id}"),

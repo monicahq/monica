@@ -173,4 +173,38 @@ class LoginControllerTest extends TestCase
 
         $response->assertRedirect(route('home.index'));
     }
+
+    #[Test]
+    public function it_sends_somebody_who_tapped_sign_up_in_the_app_to_the_registration_page(): void
+    {
+        config(['monica.registration_enabled' => true]);
+
+        $this->withSession(['url.intended' => $this->authorizationAsking('consent create')])
+            ->get(route('auth.login.new'))
+            ->assertRedirect(route('auth.register.new'));
+    }
+
+    #[Test]
+    public function it_says_so_when_the_instance_does_not_accept_new_accounts(): void
+    {
+        config(['monica.registration_enabled' => false]);
+
+        $this->withSession(['url.intended' => $this->authorizationAsking('consent create')])
+            ->get(route('auth.login.new'))
+            ->assertOk()
+            ->assertSee('This instance does not accept new accounts.');
+    }
+
+    #[Test]
+    public function it_shows_the_sign_in_page_to_somebody_who_tapped_log_in_in_the_app(): void
+    {
+        $this->withSession(['url.intended' => $this->authorizationAsking('consent')])
+            ->get(route('auth.login.new'))
+            ->assertOk();
+    }
+
+    private function authorizationAsking(string $prompt): string
+    {
+        return route('passport.authorizations.authorize').'?'.http_build_query(['client_id' => 'mobile', 'prompt' => $prompt]);
+    }
 }

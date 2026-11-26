@@ -12,6 +12,7 @@ use App\Models\Concerns\ResolvesModelInVault;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\MarketplaceListingVersion;
+use App\Models\MobileSession;
 use App\Models\Passkey;
 use App\Models\PreviewListEntry;
 use App\Models\SecurityKey;
@@ -71,6 +72,8 @@ class RouteProtectionTest extends TestCase
         'auth.sso.relay',
         'auth.screenshotLink.show',
         'api.v1.status',
+        'oauth.metadata.show',
+        'oauth.revocations.create',
         'api.v1.register',
         'api.v1.login',
         'telegram.webhook',
@@ -82,6 +85,7 @@ class RouteProtectionTest extends TestCase
         Account::class,
         Field::class,
         MarketplaceListingVersion::class,
+        MobileSession::class,
         Passkey::class,
         PackagePasskey::class,
         PreviewListEntry::class,
@@ -125,6 +129,7 @@ class RouteProtectionTest extends TestCase
             'settings.apiKeys.create' => ['settings.apiKeys.create'],
             'settings.apiKeys.destroy' => ['settings.apiKeys.destroy'],
             'settings.connectedAssistants.destroy' => ['settings.connectedAssistants.destroy'],
+            'settings.mobileSessions.destroy' => ['settings.mobileSessions.destroy'],
             'admin.configuration.update' => ['admin.configuration.update'],
             'admin.configuration.destroy' => ['admin.configuration.destroy'],
             'admin.configuration.orphans.destroy' => ['admin.configuration.orphans.destroy'],

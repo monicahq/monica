@@ -221,6 +221,16 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     }
 
     /**
+     * Get the phones the user signed in on through a mobile app.
+     *
+     * @return HasMany<MobileSession, $this>
+     */
+    public function mobileSessions(): HasMany
+    {
+        return $this->hasMany(MobileSession::class);
+    }
+
+    /**
      * Get the emails the application sent to the user.
      *
      * @return HasMany<EmailSent, $this>

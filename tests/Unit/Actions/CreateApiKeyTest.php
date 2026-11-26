@@ -15,6 +15,7 @@ use App\Models\Administrator;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
+use Laravel\Passport\AccessToken;
 use Laravel\Sanctum\NewAccessToken;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -204,5 +205,22 @@ class CreateApiKeyTest extends TestCase
         $key = new CreateApiKey(user: $user, name: 'Schrute Farms export', scopes: ['*', 'sensitive-fields'])->execute();
 
         $this->assertEquals(['*', 'sensitive-fields'], $key->accessToken->abilities);
+    }
+
+    #[Test]
+    public function it_refuses_the_sensitive_fields_scope_to_the_mobile_app(): void
+    {
+        $user = User::factory()->create();
+        $user->withAccessToken(new AccessToken(['oauth_access_token_id' => 'jim-phone', 'oauth_scopes' => ['api']]));
+
+        try {
+            new CreateApiKey(user: $user, name: 'Schrute Farms export', scopes: ['*', 'sensitive-fields'])->execute();
+
+            $this->fail('The mobile app gave the sensitive fields scope to a key.');
+        } catch (ScopeIsNotGrantable $e) {
+            $this->assertSame('sensitive-fields', $e->scope);
+        }
+
+        $this->assertSame(0, $user->tokens()->count());
     }
 }

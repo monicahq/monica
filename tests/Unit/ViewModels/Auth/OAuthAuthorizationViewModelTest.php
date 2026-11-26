@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Auth;
 
+use App\Models\MobileSession;
 use App\Models\User;
 use App\ViewModels\Auth\OAuthAuthorizationViewModel;
 use Laravel\Mcp\Server\Registrar;
@@ -28,5 +29,42 @@ class OAuthAuthorizationViewModelTest extends TestCase
         );
 
         $this->assertNotSame(['Use MCP server'], $viewModel->permissions());
+    }
+
+    #[Test]
+    public function it_speaks_about_the_app_when_the_mobile_app_asks(): void
+    {
+        config(['monica.instance' => 'monica.dundermifflin.com']);
+
+        $client = new Client(['name' => 'Monica for mobile']);
+        $client->id = MobileSession::CLIENT_ID;
+
+        $viewModel = new OAuthAuthorizationViewModel(
+            client: $client,
+            authToken: 'beet-harvest',
+            user: new User(['email' => 'pam@dundermifflin.com']),
+            redirectUri: MobileSession::REDIRECT_URI,
+            scopes: [new Scope(MobileSession::SCOPE, 'Use the API')],
+        );
+
+        $this->assertTrue($viewModel->isMobileApp());
+        $this->assertSame('Allow Monica for Android to reach your account?', $viewModel->title());
+        $this->assertStringContainsString('monica.dundermifflin.com', $viewModel->description());
+        $this->assertSame(['Use the API'], $viewModel->permissions());
+    }
+
+    #[Test]
+    public function it_speaks_about_the_assistant_when_an_assistant_asks(): void
+    {
+        $viewModel = new OAuthAuthorizationViewModel(
+            client: new Client(['name' => 'Schrute Farms Assistant']),
+            authToken: 'beet-harvest',
+            user: new User(['email' => 'dwight@dundermifflin.com']),
+            redirectUri: 'https://claude.ai/callback',
+            scopes: [new Scope(Registrar::OAUTH_SCOPE, 'Use MCP server')],
+        );
+
+        $this->assertFalse($viewModel->isMobileApp());
+        $this->assertSame('Connect Schrute Farms Assistant', $viewModel->title());
     }
 }

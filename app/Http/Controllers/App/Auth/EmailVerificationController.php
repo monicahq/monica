@@ -45,7 +45,7 @@ class EmailVerificationController extends Controller
 
         new ConfirmEmailAddress(user: $user)->execute();
 
-        return redirect()->route('home.index')->with('status', __('Your email address is confirmed.'));
+        return redirect()->intended(route('home.index'))->with('status', __('Your email address is confirmed.'));
     }
 
     public function create(Request $request): RedirectResponse

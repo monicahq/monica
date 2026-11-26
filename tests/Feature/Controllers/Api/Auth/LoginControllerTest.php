@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Api\Auth;
 
+use App\Models\MobileSession;
 use App\Models\SecurityKey;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -235,5 +236,15 @@ class LoginControllerTest extends TestCase
         $this->withHeader('Authorization', 'Bearer '.$kept->plainTextToken)
             ->json('GET', '/api/v1/me')
             ->assertOk();
+    }
+
+    #[Test]
+    public function it_signs_out_the_phone_it_was_called_from(): void
+    {
+        $tokens = $this->signInFromThePhone(User::factory()->create());
+
+        $this->withToken($tokens['access_token'])->deleteJson('/api/v1/logout')->assertNoContent();
+
+        $this->assertNotNull(MobileSession::query()->sole()->ended_at);
     }
 }

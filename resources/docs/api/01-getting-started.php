@@ -41,6 +41,7 @@ return [
             'body' => [
                 'A key acts as you, with exactly the access you have. Make one per integration, so you can revoke it alone.',
                 'Tokens do not expire. They are revoked rather than refreshed, either by logging out or from the security screen.',
+                'The Monica mobile apps sign in another way: through OAuth 2.0 with PKCE in the phone\'s browser, on the authorization server described at /.well-known/oauth-authorization-server. They receive an access token that lasts an hour and a refresh token that renews it, and they sign out at /oauth/revoke. Such a token carries the api scope, reaches this API like a key without extra scopes, and is listed under phone sessions.',
             ],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'response' => [
