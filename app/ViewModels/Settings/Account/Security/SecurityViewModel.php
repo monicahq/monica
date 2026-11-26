@@ -12,6 +12,7 @@ use App\Helpers\PasskeyAvailability;
 use App\Helpers\PasswordRequirements;
 use App\Helpers\SsoProviderAvailability;
 use App\Helpers\SupportAvailability;
+use App\Models\MobileSession;
 use App\Models\ProviderConnection;
 use App\Models\SecurityKey;
 use App\Models\User;
@@ -128,6 +129,7 @@ class SecurityViewModel
     {
         return $this->user->oauthAccessTokens()
             ->with('client')
+            ->where('client_id', '!=', MobileSession::CLIENT_ID)
             ->where('revoked', false)
             ->where(fn (Builder $query) => $query
                 ->where('expires_at', '>', now())
@@ -141,6 +143,23 @@ class SecurityViewModel
                 'clientId' => (string) $tokens->first()->client_id,
                 'name' => $tokens->first()->client->name,
                 'connectedAt' => $tokens->first()->created_at->diffForHumans(),
+            ])
+            ->values()
+            ->all();
+    }
+
+    /** @return list<array{id: int, name: string, signedInAt: string, lastUsedAt: string}> */
+    public function mobileSessions(): array
+    {
+        return $this->user->mobileSessions()
+            ->active()
+            ->latest()
+            ->get()
+            ->map(fn (MobileSession $session): array => [
+                'id' => $session->id,
+                'name' => $session->device_name ?? __('Unnamed phone'),
+                'signedInAt' => $session->created_at?->diffForHumans() ?? '',
+                'lastUsedAt' => $session->last_used_at->diffForHumans(),
             ])
             ->values()
             ->all();

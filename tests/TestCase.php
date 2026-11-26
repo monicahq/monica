@@ -18,6 +18,7 @@ use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\LifeEventCategory;
 use App\Models\LifeEventType;
+use App\Models\MobileSession;
 use App\Models\Reminder;
 use App\Models\Section;
 use App\Models\SectionVersion;
@@ -471,6 +472,68 @@ abstract class TestCase extends BaseTestCase
         $user->save();
 
         return $user;
+    }
+
+    /**
+     * Run the sign-in of the mobile app for a person, the way the phone does it: authorization with
+     * PKCE, approval, then the code exchanged for tokens. The guards and the session are reset
+     * afterwards, so the next request carries only what the phone holds.
+     *
+     * @return array{access_token: string, refresh_token: string, code: string}
+     */
+    protected function signInFromThePhone(User $user, ?string $deviceName = 'Pixel 9'): array
+    {
+        $verifier = Str::random(64);
+        $challenge = strtr(rtrim(base64_encode(hash('sha256', $verifier, true)), '='), '+/', '-_');
+
+        $this->actingAs($user)->get('/oauth/authorize?'.http_build_query([
+            'client_id' => MobileSession::CLIENT_ID,
+            'redirect_uri' => MobileSession::REDIRECT_URI,
+            'response_type' => 'code',
+            'scope' => MobileSession::SCOPE,
+            'state' => 'beet-harvest',
+            'code_challenge' => $challenge,
+            'code_challenge_method' => 'S256',
+        ]))->assertOk();
+
+        $approval = $this->post('/oauth/authorize', [
+            'state' => '',
+            'client_id' => MobileSession::CLIENT_ID,
+            'auth_token' => session('authToken'),
+        ]);
+
+        parse_str((string) parse_url((string) $approval->headers->get('Location'), PHP_URL_QUERY), $query);
+
+        $this->app['auth']->forgetGuards();
+        $this->flushSession();
+
+        $tokens = $this->postJson('/oauth/token', array_filter([
+            'grant_type' => 'authorization_code',
+            'client_id' => MobileSession::CLIENT_ID,
+            'redirect_uri' => MobileSession::REDIRECT_URI,
+            'code_verifier' => $verifier,
+            'code' => $query['code'],
+            'device_name' => $deviceName,
+        ]))->assertOk()->json();
+
+        $this->app['auth']->forgetGuards();
+
+        return [
+            'access_token' => $tokens['access_token'],
+            'refresh_token' => $tokens['refresh_token'],
+            'code' => $query['code'],
+        ];
+    }
+
+    /**
+     * Build an access token shaped like the ones Passport issues, carrying only the id Monica
+     * reads from it. Its signature is not a real one.
+     */
+    protected function accessTokenWithId(string $id): string
+    {
+        $encode = fn (array $part): string => rtrim(strtr(base64_encode((string) json_encode($part)), '+/', '-_'), '=');
+
+        return $encode(['alg' => 'RS256']).'.'.$encode(['jti' => $id]).'.signature';
     }
 
     protected function oauthTokenFor(User $user, ?Client $client = null, bool $revoked = false, ?CarbonImmutable $expiresAt = null, ?CarbonImmutable $refreshExpiresAt = null): Token

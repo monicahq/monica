@@ -10,6 +10,8 @@ use App\Enums\UserActionEnum;
 use App\Exceptions\ScopeIsNotGrantable;
 use App\Jobs\LogUserAction;
 use App\Models\User;
+use Illuminate\Auth\Access\AuthorizationException;
+use Laravel\Passport\AccessToken;
 use Laravel\Sanctum\NewAccessToken;
 use Laravel\Sanctum\PersonalAccessToken;
 
@@ -58,12 +60,19 @@ class CreateApiKey
 
         $presentedKey = $this->user->currentAccessToken();
 
+        // A key outlives the phone that minted it, so signing a lost phone out would not cut it off.
+        if ($presentedKey instanceof AccessToken) {
+            throw new AuthorizationException;
+        }
+
         if (! $presentedKey instanceof PersonalAccessToken) {
             return;
         }
 
+        $heldScopes = (array) $presentedKey->abilities;
+
         foreach ($this->scopes as $scope) {
-            if (! in_array($scope, (array) $presentedKey->abilities, true)) {
+            if (! in_array($scope, $heldScopes, true)) {
                 throw new ScopeIsNotGrantable(
                     message: __('Only a key holding the `:scope` scope can give it to another key. Create this key from the security settings instead.', ['scope' => $scope]),
                     scope: $scope,

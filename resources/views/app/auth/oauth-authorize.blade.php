@@ -1,13 +1,15 @@
-{{-- Where somebody decides whether an assistant may reach their account through the MCP server. --}}
+{{-- Where somebody decides whether an assistant, or the mobile app, may reach their account. --}}
 {{-- @var \App\ViewModels\Auth\OAuthAuthorizationViewModel $viewModel --}}
 <x-auth-page
-  :title="__('Connect :name', ['name' => $viewModel->clientName()])"
-  :description="__('This assistant is asking to read and change what your account holds, on your behalf.')"
+  :title="$viewModel->title()"
+  :description="$viewModel->description()"
 >
   <x-box class="space-y-4">
     <x-detail-list>
       <x-detail-list.row :label="__('Signed in as')">{{ $viewModel->email() }}</x-detail-list.row>
-      <x-detail-list.row :label="__('Sends you back to')">{{ $viewModel->redirectHost() }}</x-detail-list.row>
+      @unless($viewModel->isMobileApp())
+        <x-detail-list.row :label="__('Sends you back to')">{{ $viewModel->redirectHost() }}</x-detail-list.row>
+      @endunless
 
       @if(count($viewModel->permissions()) > 0)
         <x-detail-list.row :label="__('Permissions')">
@@ -24,7 +26,7 @@
     </x-detail-list>
 
     <p class="text-sm leading-relaxed text-body">
-      {{ __('The assistant names itself, so check the address it sends you back to. Only allow it if you started this connection yourself.') }}
+      {{ $viewModel->caution() }}
     </p>
 
     <div class="flex gap-3">
@@ -45,6 +47,6 @@
   </x-box>
 
   <x-notice>
-    {{ __('You can disconnect the assistant at any time from the security settings of your account.') }}
+    {{ $viewModel->notice() }}
   </x-notice>
 </x-auth-page>

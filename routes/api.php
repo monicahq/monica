@@ -97,6 +97,7 @@ use App\Http\Controllers\Api\MeFullAccessOfferController;
 use App\Http\Controllers\Api\MeTimezoneController;
 use App\Http\Controllers\Api\MeVaultListController;
 use App\Http\Controllers\Api\MeWelcomeController;
+use App\Http\Controllers\Api\MobileSessionController;
 use App\Http\Controllers\Api\NotificationChannelController as ApiNotificationChannelController;
 use App\Http\Controllers\Api\NotificationController as ApiNotificationController;
 use App\Http\Controllers\Api\NotificationPreferenceController as ApiNotificationPreferenceController;
@@ -172,7 +173,7 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
     Route::post('register', [RegistrationController::class, 'store'])->middleware(['registration', 'throttle:6,1'])->name('register');
     Route::post('login', [LoginController::class, 'store'])->middleware('throttle:6,1')->name('login');
 
-    Route::middleware(['auth:sanctum', 'query.body'])->group(function (): void {
+    Route::middleware(['auth:sanctum,api', 'api.token', 'query.body'])->group(function (): void {
         Route::delete('logout', [LoginController::class, 'destroy'])->name('logout');
 
         Route::match(['GET', 'QUERY'], 'me', [MeController::class, 'show'])->name('me');
@@ -232,6 +233,10 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
         Route::match(['GET', 'QUERY'], 'api-keys/{apiKey}', [ApiKeyController::class, 'show'])->where('apiKey', '[1-9][0-9]*')->name('apiKeys.show');
         Route::post('api-keys', [ApiKeyController::class, 'create'])->name('apiKeys.create');
         Route::delete('api-keys/{apiKey}', [ApiKeyController::class, 'destroy'])->where('apiKey', '[1-9][0-9]*')->name('apiKeys.destroy');
+
+        Route::match(['GET', 'QUERY'], 'mobile-sessions', [MobileSessionController::class, 'index'])->name('mobileSessions');
+        Route::match(['GET', 'QUERY'], 'mobile-sessions/{mobileSession}', [MobileSessionController::class, 'show'])->where('mobileSession', '[1-9][0-9]*')->name('mobileSessions.show');
+        Route::delete('mobile-sessions/{mobileSession}', [MobileSessionController::class, 'destroy'])->where('mobileSession', '[1-9][0-9]*')->name('mobileSessions.destroy');
 
         Route::match(['GET', 'QUERY'], 'notifications', [ApiNotificationController::class, 'index'])->name('notifications');
         Route::put('notifications/read', [ApiNotificationReadController::class, 'updateAll'])->name('notifications.readAll.update');

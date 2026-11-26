@@ -129,4 +129,19 @@ class EmailVerificationControllerTest extends TestCase
 
         Notification::assertNothingSent();
     }
+
+    #[Test]
+    public function it_takes_somebody_who_signed_up_from_the_app_back_to_the_app(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->unverified()->create();
+        $authorization = route('passport.authorizations.authorize').'?client_id=mobile&prompt=create';
+
+        $response = $this->actingAs($user)
+            ->withSession(['url.intended' => $authorization])
+            ->get($this->verificationUrl($user));
+
+        $response->assertRedirect($authorization);
+    }
 }

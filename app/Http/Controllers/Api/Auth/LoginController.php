@@ -7,6 +7,8 @@ namespace App\Http\Controllers\Api\Auth;
 use App\Actions\AttemptLogin;
 use App\Actions\CreateApiKey;
 use App\Actions\DestroyApiKey;
+use App\Actions\EndMobileSession;
+use App\Actions\RevokeMobileAccessToken;
 use App\Actions\VerifyTwoFactorCode;
 use App\Helpers\TextSanitizer;
 use App\Http\Controllers\Controller;
@@ -15,6 +17,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
+use Laravel\Passport\AccessToken;
 
 class LoginController extends Controller
 {
@@ -60,6 +63,23 @@ class LoginController extends Controller
 
     public function destroy(Request $request): Response
     {
+        $token = $request->user()->currentAccessToken();
+
+        if ($token instanceof AccessToken) {
+            $session = $request->user()->mobileSessions()
+                ->whereNull('ended_at')
+                ->where('access_token_id', (string) $token->oauth_access_token_id)
+                ->first();
+
+            if ($session === null) {
+                new RevokeMobileAccessToken(accessTokenId: (string) $token->oauth_access_token_id)->execute();
+            } else {
+                new EndMobileSession(user: $request->user(), session: $session)->execute();
+            }
+
+            return response()->noContent(204);
+        }
+
         new DestroyApiKey(
             user: $request->user(),
             apiKeyId: (int) $request->user()->currentAccessToken()->getKey(),
