@@ -327,7 +327,7 @@ class Entity extends Model
             get: fn (): string => collect(preg_split('/\s+/', mb_trim($this->name)) ?: [])
                 ->filter()
                 ->take(2)
-                ->map(fn (string $word): string => mb_strtoupper(mb_substr($word, 0, 1)))
+                ->map(fn (string $word): string => mb_strtoupper((string) grapheme_substr($word, 0, 1)))
                 ->implode(''),
         );
     }

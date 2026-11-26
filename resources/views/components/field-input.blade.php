@@ -176,12 +176,16 @@
     @break
 
   @case($type === FieldTypeEnum::Boolean)
-    <div class="flex flex-col gap-1.5">
+    @php
+      $answered = $field->is_required || $value?->value_boolean !== null;
+    @endphp
+
+    <div class="flex flex-col gap-1.5" x-data="{ answered: @js($answered) }">
       <span class="flex items-baseline gap-1.5 text-label text-ink">{{ $field->label }}</span>
 
-      <input type="hidden" name="{{ $name }}" value="0" />
+      <input type="hidden" name="{{ $name }}" value="0" @disabled(! $answered) x-bind:disabled="! answered" />
 
-      <x-option-row :id="$id" :name="$name" value="1" :checked="(bool) $value?->value_boolean">
+      <x-option-row :id="$id" :name="$name" value="1" :checked="(bool) $value?->value_boolean" x-on:change="answered = true">
         {{ $field->help_text ?? __('Yes') }}
       </x-option-row>
 

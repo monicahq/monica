@@ -152,6 +152,16 @@ class ContactTest extends TestCase
     }
 
     #[Test]
+    public function it_keeps_a_whole_emoji_in_the_initials(): void
+    {
+        $flag = Contact::factory()->make(['first_name' => '🇺🇸Michael', 'last_name' => 'Scott']);
+        $family = Contact::factory()->make(['first_name' => '👨‍👩‍👧Jim', 'last_name' => '👍🏽Halpert']);
+
+        $this->assertSame('🇺🇸S', $flag->initials);
+        $this->assertSame('👨‍👩‍👧👍🏽', $family->initials);
+    }
+
+    #[Test]
     public function it_lists_only_the_contacts_that_are_neither_archived_nor_partial(): void
     {
         $vault = Vault::factory()->create();

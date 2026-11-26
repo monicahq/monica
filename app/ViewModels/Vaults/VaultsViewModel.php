@@ -54,7 +54,7 @@ class VaultsViewModel
         return $vaults
             ->map(fn (Vault $vault): array => [
                 'name' => $vault->name,
-                'initial' => mb_strtoupper(mb_substr($vault->name, 0, 1)),
+                'initial' => mb_strtoupper((string) grapheme_substr($vault->name, 0, 1)),
                 'colour' => $vault->colour,
                 'tint' => "color-mix(in srgb, {$vault->colour} 12%, var(--canvas))",
                 'visitLine' => $this->visitLine($vault),

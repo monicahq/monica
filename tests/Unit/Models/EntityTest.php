@@ -64,6 +64,14 @@ class EntityTest extends TestCase
     }
 
     #[Test]
+    public function it_keeps_a_whole_emoji_in_the_initials_of_the_generated_avatar(): void
+    {
+        $entity = Entity::factory()->make(['name' => '🇺🇸 Dunder Mifflin']);
+
+        $this->assertSame('🇺🇸D', $entity->initials);
+    }
+
+    #[Test]
     public function it_lists_only_the_records_that_are_not_archived(): void
     {
         $vault = Vault::factory()->create();

@@ -7,7 +7,7 @@
 
 @php
   $tile = 'flex shrink-0 items-center justify-center rounded-xs font-semibold text-white';
-  $initial = mb_strtoupper(mb_substr($vault->name, 0, 1));
+  $initial = mb_strtoupper((string) grapheme_substr($vault->name, 0, 1));
   $hasChoice = $vaults->count() > 1;
   $panelId = 'vault-switcher-'.$vault->id;
 @endphp
@@ -63,7 +63,7 @@
                 @if ($option->is($vault)) aria-current="true" @endif
                 class="flex w-full items-center gap-2.5 rounded-sm px-2.5 py-2 no-underline transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring-inset aria-[current=true]:bg-hover"
               >
-                <span style="background: {{ $option->colour }}" class="{{ $tile }} size-6 text-2xs" aria-hidden="true">{{ mb_strtoupper(mb_substr($option->name, 0, 1)) }}</span>
+                <span style="background: {{ $option->colour }}" class="{{ $tile }} size-6 text-2xs" aria-hidden="true">{{ mb_strtoupper((string) grapheme_substr($option->name, 0, 1)) }}</span>
 
                 <span class="flex min-w-0 flex-1 flex-col">
                   <span class="truncate text-sm font-semibold text-ink">{{ $option->name }}</span>
