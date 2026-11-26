@@ -135,6 +135,7 @@ class VaultTrash
             })
             ->selectRaw('deleted_with_type, deleted_with_id, kind, count(*) as items')
             ->groupBy('deleted_with_type', 'deleted_with_id', 'kind')
+            ->orderBy('kind')
             ->get();
 
         $counts = [];
