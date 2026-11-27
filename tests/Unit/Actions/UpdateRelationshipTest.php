@@ -590,6 +590,36 @@ class UpdateRelationshipTest extends TestCase
     }
 
     #[Test]
+    public function it_corrects_the_dates_of_a_link_recorded_twice_before_duplicates_were_refused(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultOf($user);
+        $relationship = $this->relationshipOn($vault, $user);
+
+        Relationship::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $vault->id,
+            'relationship_type_id' => $relationship->relationship_type_id,
+            'contact_a_id' => $relationship->contact_a_id,
+            'contact_b_id' => $relationship->contact_b_id,
+        ]);
+
+        new UpdateRelationship(
+            user: $user,
+            vault: $vault,
+            contact: $relationship->contactA,
+            relationship: $relationship,
+            relationshipType: $relationship->relationshipType,
+            status: RelationshipStatusEnum::Current,
+            startedOn: CarbonImmutable::parse('2005-05-19'),
+        )->execute();
+
+        $this->assertSame('2005-05-19', $relationship->refresh()->started_on?->format('Y-m-d'));
+    }
+
+    #[Test]
     public function it_keeps_a_withdrawn_nature_when_the_link_already_carries_it(): void
     {
         Queue::fake();

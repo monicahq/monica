@@ -52,7 +52,12 @@ class UpdateRelationship
         DB::transaction(function (): void {
             [$sideA, $sideB] = $this->orderTheSides();
 
-            if ($this->status === RelationshipStatusEnum::Current) {
+            $changesWhatTheLinkIs = $this->relationship->relationship_type_id !== $this->relationshipType->id
+                || $this->relationship->contact_a_id !== $sideA->id
+                || $this->relationship->contact_b_id !== $sideB->id
+                || $this->relationship->status !== RelationshipStatusEnum::Current;
+
+            if ($this->status === RelationshipStatusEnum::Current && $changesWhatTheLinkIs) {
                 $this->refuseADuplicateRelationship(
                     relationshipType: $this->relationshipType,
                     sideA: $sideA,
