@@ -47,7 +47,7 @@ class PortalCatalogueTest extends TestCase
 
         $this->assertSame('start.introduction', $sections[0]['index']->id);
         $this->assertSame(
-            ['start.create-account', 'start.first-contact', 'concepts.model'],
+            ['start.create-account', 'start.first-contact', 'concepts.model', 'import.monica-classic'],
             array_map(fn ($page): string => $page->id, $sections[0]['pages']),
         );
     }
@@ -166,7 +166,7 @@ class PortalCatalogueTest extends TestCase
                         $broken[] = "{$locale}/{$page->relativePath} -> {$source} should start with ".($position + 1).'-';
                     }
 
-                    if (! $named || ! Route::has($matches[2])) {
+                    if (! $named || (! Route::has($matches[2]) && ! str_starts_with($matches[2], 'classic.'))) {
                         $broken[] = "{$locale}/{$page->relativePath} -> {$source} does not name a route";
                     }
 

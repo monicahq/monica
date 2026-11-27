@@ -246,6 +246,8 @@ A screenshot MUST be named with its position on the page, a hyphen, then the rou
 
 The position counts the page's screenshots from the top, starting at 1, whether they sit in a step or not. It tells you which picture on the page a file is, without opening it. When you add or remove a picture, you MUST renumber the ones after it so the sequence stays contiguous, the same way the files of a section are renumbered.
 
+A screen of Monica Classic, the earlier version of Monica, has no route here. Name it `classic.` followed by its address in Monica Classic, with dots for slashes: `1-classic.settings.export.webp`. An email Monica Classic sent is `classic.email`, with its state: `2-classic.email--export-ready.webp`.
+
 When one page shows the same screen more than once, in different states, you MUST add the state after two hyphens, in kebab-case words that say what differs:
 
 ```

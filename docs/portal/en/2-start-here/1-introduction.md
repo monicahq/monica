@@ -4,7 +4,7 @@ title: Start here
 description: Follow three pages in order to go from no account to a first contact with a yearly birthday reminder.
 slug: start-here
 section: start-here
-last_updated: 2026-09-29
+last_updated: 2026-11-27
 ---
 
 # Start here
@@ -18,3 +18,5 @@ Three pages take you from nothing to a Monica you can use every day. Read them i
 At the end you will have an account, a first person with a yearly birthday reminder, and a clear picture of how Monica is organised.
 
 If you already have an account, start with @doc(start.first-contact).
+
+If you used Monica Classic, the earlier version of Monica, @doc(import.monica-classic) brings the people you recorded there into this one.
