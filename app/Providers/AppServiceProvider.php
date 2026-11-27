@@ -15,7 +15,7 @@ use App\Http\Responses\PasskeyConfirmationResponse;
 use App\Http\Responses\PasskeyDeletedResponse;
 use App\Http\Responses\PasskeyLoginResponse;
 use App\Models\Account;
-use App\Models\MobileSession;
+use App\Models\OAuthConnection;
 use App\Models\Passkey;
 use App\Models\User;
 use App\ViewModels\Auth\OAuthAuthorizationViewModel;
@@ -63,6 +63,7 @@ use Laravel\Passkeys\Contracts\PasskeyLoginResponse as PasskeyLoginResponseContr
 use Laravel\Passkeys\Passkeys;
 use Laravel\Passport\AccessToken;
 use Laravel\Passport\Passport;
+use Laravel\Passport\Scope;
 use Laravel\Pennant\Feature;
 use Laravel\Sanctum\PersonalAccessToken;
 use Laravel\Sanctum\Sanctum;
@@ -269,11 +270,11 @@ class AppServiceProvider extends ServiceProvider
     private function configurePassport(): void
     {
         Passport::tokensExpireIn(CarbonInterval::hour());
-        Passport::refreshTokensExpireIn(CarbonInterval::days(MobileSession::LIFETIME_IN_DAYS));
+        Passport::refreshTokensExpireIn(CarbonInterval::days(OAuthConnection::LIFETIME_IN_DAYS));
 
         Passport::authorizationView(function (array $parameters): Response {
-            $isMobileApp = (string) $parameters['client']->getKey() === MobileSession::CLIENT_ID;
-            abort_unless($isMobileApp || FlagState::isOn('mcp-server', $parameters['user']->account), 404);
+            $asksForTheMcpServer = collect($parameters['scopes'])->contains(fn (Scope $scope): bool => $scope->id === Registrar::OAUTH_SCOPE);
+            abort_if($asksForTheMcpServer && ! FlagState::isOn('mcp-server', $parameters['user']->account), 404);
 
             return response()->view('app.auth.oauth-authorize', [
                 'viewModel' => new OAuthAuthorizationViewModel(
@@ -289,7 +290,7 @@ class AppServiceProvider extends ServiceProvider
         // the reader's language is known. The authorization screen translates it.
         Passport::tokensCan([
             Registrar::OAUTH_SCOPE => 'Use MCP server',
-            MobileSession::SCOPE => 'Use the API',
+            OAuthConnection::API_SCOPE => 'Use the API',
         ]);
     }
 

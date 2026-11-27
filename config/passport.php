@@ -11,6 +11,6 @@ return [
     'middleware' => [
         'throttle:oauth',
         'oauth.scopes',
-        'oauth.mobile.sessions',
+        'oauth.connections',
     ],
 ];

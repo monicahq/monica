@@ -26,7 +26,7 @@ class AuthorizationServerMetadataControllerTest extends TestCase
         $response->assertJsonPath('revocation_endpoint', route('oauth.revocations.create'));
         $response->assertJsonPath('revocation_endpoint_auth_methods_supported', ['none']);
         $response->assertJsonPath('scopes_supported', ['mcp:use']);
-        $response->assertJsonPath('prompt_values_supported', ['none', 'login', 'consent', 'create']);
+        $response->assertJsonPath('prompt_values_supported', ['login', 'consent', 'create']);
     }
 
     #[Test]

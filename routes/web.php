@@ -77,9 +77,8 @@ use App\Http\Controllers\App\Settings\Account\RelationshipTypes\RelationshipCate
 use App\Http\Controllers\App\Settings\Account\RelationshipTypes\RelationshipTypeController;
 use App\Http\Controllers\App\Settings\Account\RelationshipTypes\RelationshipTypePositionController;
 use App\Http\Controllers\App\Settings\Account\Security\ApiKeyController;
-use App\Http\Controllers\App\Settings\Account\Security\ConnectedAssistantController;
 use App\Http\Controllers\App\Settings\Account\Security\McpCallController;
-use App\Http\Controllers\App\Settings\Account\Security\MobileSessionController;
+use App\Http\Controllers\App\Settings\Account\Security\OAuthConnectionController;
 use App\Http\Controllers\App\Settings\Account\Security\OtherSessionController;
 use App\Http\Controllers\App\Settings\Account\Security\PasskeyController;
 use App\Http\Controllers\App\Settings\Account\Security\PasswordController;
@@ -967,8 +966,7 @@ Route::middleware(['auth', 'active', 'verified:auth.verification.notice'])->grou
 
         Route::delete('settings/account/security/sessions/{session}', [SessionController::class, 'destroy'])->whereAlphaNumeric('session')->name('settings.sessions.destroy');
 
-        Route::delete('settings/account/security/assistants/{client}', [ConnectedAssistantController::class, 'destroy'])->whereUuid('client')->name('settings.connectedAssistants.destroy');
-        Route::delete('settings/account/security/mobile-sessions/{mobileSession}', [MobileSessionController::class, 'destroy'])->whereNumber('mobileSession')->name('settings.mobileSessions.destroy');
+        Route::delete('settings/account/security/connections/{oauthConnection}', [OAuthConnectionController::class, 'destroy'])->whereNumber('oauthConnection')->name('settings.oauthConnections.destroy');
 
         Route::post('settings/account/security/recovery-codes', [RecoveryCodeController::class, 'create'])->name('settings.recoveryCodes.create');
         Route::get('settings/account/security/security-keys/options', [SecurityKeyOptionsController::class, 'show'])->name('settings.securityKeyOptions.show');

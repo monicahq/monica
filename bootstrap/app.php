@@ -18,7 +18,7 @@ use App\Http\Middleware\MarkPageSearchable;
 use App\Http\Middleware\MergeQueryRequestBody;
 use App\Http\Middleware\SetApiLocale;
 use App\Http\Middleware\SetLocale;
-use App\Http\Middleware\TrackMobileSessions;
+use App\Http\Middleware\TrackOAuthConnections;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -64,7 +64,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'api.token' => EnsureApiTokenIsAccepted::class,
             'flag' => EnsureFlagIsOn::class,
             'magic.link' => EnsureMagicLinkIsEnabled::class,
-            'oauth.mobile.sessions' => TrackMobileSessions::class,
+            'oauth.connections' => TrackOAuthConnections::class,
             'oauth.scopes' => BindOAuthScopes::class,
             'portal.timing' => InsertServerGenerationTime::class,
             'query.body' => MergeQueryRequestBody::class,

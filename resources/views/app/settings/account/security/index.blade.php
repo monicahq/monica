@@ -66,12 +66,6 @@
     </x-panel>
   </x-page-section>
 
-  <x-page-section :title="__('Mobile apps')" :description="__('Every phone signed in through the Monica app. Sign one out if you lose it.')">
-    <x-panel :flush="true">
-      @include('app.settings.account.security._mobile-apps', ['viewModel' => $viewModel])
-    </x-panel>
-  </x-page-section>
-
   <x-page-section :title="__('API keys')" :description="__('An API key lets a script or another system act as you, with exactly the access you have.')">
     <x-panel :flush="true">
       @include('app.settings.account.security._api-keys', ['viewModel' => $viewModel])
@@ -94,27 +88,25 @@
     </x-page-section>
   @endif
 
-  @if ($viewModel->mcpIsOn() || $viewModel->assistantsNotice() !== null)
-    <x-page-section :title="__('Connected assistants')" :description="__('An assistant you connected through OAuth acts as you on the MCP server, without a key of its own.')">
-      <x-slot:help>
-        <x-help
-          :label="__('Help about connected assistants')"
-          :title="__('What is a connected assistant?')"
-          guide="integrations.overview#an-ai-assistant-mcp"
-        >{{ __('An AI assistant, such as Claude or ChatGPT, that you allowed to look people up, add them and change your templates in a conversation. It does so in your name, with exactly your access, until you disconnect it here.') }}</x-help>
-      </x-slot:help>
+  <x-page-section :title="__('Connected apps')" :description="$viewModel->connectionsDescription()">
+    <x-slot:help>
+      <x-help
+        :label="__('Help about connected apps')"
+        :title="__('What is a connected app?')"
+        guide="security.assistants"
+      >{{ $viewModel->connectionsHelp() }}</x-help>
+    </x-slot:help>
 
-      @if ($viewModel->assistantsNotice() !== null)
-        <x-notice tone="quiet">{{ $viewModel->assistantsNotice() }}</x-notice>
-      @endif
+    @if ($viewModel->connectionsNotice() !== null)
+      <x-notice tone="quiet">{{ $viewModel->connectionsNotice() }}</x-notice>
+    @endif
 
-      <x-panel :flush="true">
-        @include('app.settings.account.security._connected-assistants', ['viewModel' => $viewModel])
-      </x-panel>
+    <x-panel :flush="true">
+      @include('app.settings.account.security._connected-apps', ['viewModel' => $viewModel])
+    </x-panel>
 
-      @if ($viewModel->mcpIsOn())
-        <x-link :href="route('settings.mcpCalls.index')">{{ __('See every call assistants made') }}</x-link>
-      @endif
-    </x-page-section>
-  @endif
+    @if ($viewModel->mcpIsOn())
+      <x-link :href="route('settings.mcpCalls.index')">{{ __('See every call assistants made') }}</x-link>
+    @endif
+  </x-page-section>
 </x-settings.page>

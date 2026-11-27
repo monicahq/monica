@@ -12,7 +12,7 @@ use App\Models\Concerns\ResolvesModelInVault;
 use App\Models\Contact;
 use App\Models\Field;
 use App\Models\MarketplaceListingVersion;
-use App\Models\MobileSession;
+use App\Models\OAuthConnection;
 use App\Models\Passkey;
 use App\Models\PreviewListEntry;
 use App\Models\SecurityKey;
@@ -85,7 +85,7 @@ class RouteProtectionTest extends TestCase
         Account::class,
         Field::class,
         MarketplaceListingVersion::class,
-        MobileSession::class,
+        OAuthConnection::class,
         Passkey::class,
         PackagePasskey::class,
         PreviewListEntry::class,
@@ -128,8 +128,7 @@ class RouteProtectionTest extends TestCase
             'settings.securityKeys.destroy' => ['settings.securityKeys.destroy'],
             'settings.apiKeys.create' => ['settings.apiKeys.create'],
             'settings.apiKeys.destroy' => ['settings.apiKeys.destroy'],
-            'settings.connectedAssistants.destroy' => ['settings.connectedAssistants.destroy'],
-            'settings.mobileSessions.destroy' => ['settings.mobileSessions.destroy'],
+            'settings.oauthConnections.destroy' => ['settings.oauthConnections.destroy'],
             'admin.configuration.update' => ['admin.configuration.update'],
             'admin.configuration.destroy' => ['admin.configuration.destroy'],
             'admin.configuration.orphans.destroy' => ['admin.configuration.orphans.destroy'],

@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Mcp;
 
+use App\Helpers\AccessTokenId;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
+use Laravel\Passport\Token;
 use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -66,6 +68,38 @@ class McpOAuthTest extends TestCase
         Feature::flushCache();
 
         $this->actingAs($pam)->get($this->authorizationUrl($clientId))->assertNotFound();
+    }
+
+    #[Test]
+    public function it_lets_a_request_with_no_scope_through_to_a_token_that_reaches_nothing(): void
+    {
+        $pam = User::factory()->create();
+        $clientId = $this->registerClient();
+        $pam->account->features()->deactivate('mcp-server');
+        Feature::flushCache();
+
+        $this->actingAs($pam)
+            ->get(str_replace('&scope=mcp%3Ause', '', $this->authorizationUrl($clientId)))
+            ->assertOk()
+            ->assertSee('Schrute Farms Assistant');
+
+        $approval = $this->post('/oauth/authorize', [
+            'state' => '',
+            'client_id' => $clientId,
+            'auth_token' => session('authToken'),
+        ]);
+
+        parse_str((string) parse_url((string) $approval->headers->get('Location'), PHP_URL_QUERY), $query);
+
+        $accessToken = $this->postJson('/oauth/token', [
+            'grant_type' => 'authorization_code',
+            'client_id' => $clientId,
+            'redirect_uri' => self::REDIRECT_URI,
+            'code_verifier' => $this->codeVerifier,
+            'code' => $query['code'],
+        ])->assertOk()->json('access_token');
+
+        $this->assertSame([], Token::query()->findOrFail((string) AccessTokenId::of($accessToken))->scopes);
     }
 
     #[Test]

@@ -83,41 +83,46 @@ $keyAttributes = [
     ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When the row last changed, as a count of seconds, or null. Using a key changes it, so in practice it tracks last_used_at.'],
 ];
 
-$mobileSession = [
-    'type' => 'mobile_session',
+$oauthConnection = [
+    'type' => 'oauth_connection',
     'id' => '12',
     'attributes' => [
-        'device_name' => 'Pixel 9',
+        'client_name' => 'Monica for mobile',
+        'label' => 'Pixel 9',
+        'scopes' => ['api'],
         'is_current' => true,
         'last_used_at' => 1756339200,
         'created_at' => 1756252800,
         'updated_at' => 1756339200,
     ],
     'links' => [
-        'self' => $base.'/mobile-sessions/12',
+        'self' => $base.'/oauth-connections/12',
     ],
 ];
 
-$sessionIdentifier = [
+$connectionIdentifier = [
     [
-        'name' => 'mobileSession',
+        'name' => 'oauthConnection',
         'type' => 'integer',
         'required' => true,
-        'description' => 'The id of the phone session.',
+        'description' => 'The id of the connection.',
     ],
 ];
 
-$sessionAttributes = [
-    ['name' => 'device_name', 'type' => 'string', 'description' => 'The name the phone gave itself when it signed in, or null when it gave none.'],
-    ['name' => 'is_current', 'type' => 'boolean', 'description' => 'Whether this is the phone making the request. Always false when you call with an API key.'],
-    ['name' => 'last_used_at', 'type' => 'timestamp', 'description' => 'When the phone signed in or last renewed its access, as a count of seconds. The app renews at least once an hour while it is used.'],
-    ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When the phone signed in, as a count of seconds since 1970.'],
+$connectionAttributes = [
+    ['name' => 'client_name', 'type' => 'string', 'description' => 'The name of the app, as it registered itself: Monica for mobile, or the name an assistant gave.'],
+    ['name' => 'label', 'type' => 'string', 'description' => 'The name the app gave itself when it signed in, such as the model of a phone, or null when it gave none.'],
+    ['name' => 'scopes', 'type' => 'array', 'description' => 'What the connection reaches: `api` for the whole API, `mcp:use` for the MCP server. An assistant connected before connections were recorded may list what its newest token carried.'],
+    ['name' => 'scopes[]', 'type' => 'string', 'description' => 'One scope.'],
+    ['name' => 'is_current', 'type' => 'boolean', 'description' => 'Whether this is the connection making the request. Always false when you call with an API key.'],
+    ['name' => 'last_used_at', 'type' => 'timestamp', 'description' => 'When the app connected or last renewed its access, as a count of seconds. An app renews at least once an hour while it is used.'],
+    ['name' => 'created_at', 'type' => 'timestamp', 'description' => 'When the app connected, as a count of seconds since 1970.'],
     ['name' => 'updated_at', 'type' => 'timestamp', 'description' => 'When the row last changed, as a count of seconds, or null.'],
 ];
 
 return [
     'name' => 'API keys',
-    'description' => 'The tokens that reach this API. Create one, look at what you hold, and revoke what you no longer use, including the phones signed in through the Monica app.',
+    'description' => 'The tokens that reach this API. Create one, look at what you hold, and revoke what you no longer use, including the apps connected through OAuth.',
     'sections' => [
         [
             'id' => 'api-keys-index',
@@ -244,21 +249,21 @@ return [
             'responseStatus' => 204,
         ],
         [
-            'id' => 'mobile-sessions-index',
-            'returnFields' => ApiDocsFields::page('mobile_session', 'phone session', 'phone sessions', $sessionAttributes),
-            'title' => 'List phone sessions',
-            'label' => 'List phone sessions',
+            'id' => 'oauth-connections-index',
+            'returnFields' => ApiDocsFields::page('oauth_connection', 'connection', 'connections', $connectionAttributes),
+            'title' => 'List connected apps',
+            'label' => 'List connected apps',
             'method' => 'GET',
-            'path' => '/mobile-sessions',
-            'description' => 'List the phones signed in to your account through the Monica app, newest first.',
+            'path' => '/oauth-connections',
+            'description' => 'List the apps connected to your account through OAuth, the Monica app on a phone and assistants alike, newest first.',
             'body' => [
-                'A phone signs in through OAuth in its browser, and each one is a session of its own. A phone signed out, or unused for 30 days, is no longer listed.',
+                'Every app signs in the same way, through OAuth in a browser, and each sign-in is a connection of its own. A connection ended, or unused for 30 days, is no longer listed.',
             ],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'queryParams' => $pageParams,
-            'returns' => 'A page of phone session objects, and how many there are in all.',
+            'returns' => 'A page of connection objects, and how many there are in all.',
             'response' => [
-                'data' => [$mobileSession],
+                'data' => [$oauthConnection],
                 'meta' => [
                     'page' => 1,
                     'per_page' => 25,
@@ -267,33 +272,33 @@ return [
             ],
         ],
         [
-            'id' => 'mobile-sessions-show',
-            'returnFields' => ApiDocsFields::one('mobile_session', 'phone session', $sessionAttributes),
-            'title' => 'Get a phone session',
-            'label' => 'Get a phone session',
+            'id' => 'oauth-connections-show',
+            'returnFields' => ApiDocsFields::one('oauth_connection', 'connection', $connectionAttributes),
+            'title' => 'Get a connected app',
+            'label' => 'Get a connected app',
             'method' => 'GET',
-            'path' => '/mobile-sessions/{mobileSession}',
-            'examplePath' => '/mobile-sessions/12',
-            'description' => 'Retrieve one phone signed in through the Monica app.',
+            'path' => '/oauth-connections/{oauthConnection}',
+            'examplePath' => '/oauth-connections/12',
+            'description' => 'Retrieve one app connected through OAuth.',
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
-            'pathParams' => $sessionIdentifier,
-            'returns' => 'A phone session object. A session of somebody else, or one already signed out, answers 404.',
-            'response' => ['data' => $mobileSession],
+            'pathParams' => $connectionIdentifier,
+            'returns' => 'A connection object. A connection of somebody else, or one already ended, answers 404.',
+            'response' => ['data' => $oauthConnection],
         ],
         [
-            'id' => 'mobile-sessions-destroy',
-            'title' => 'Sign a phone out',
-            'label' => 'Sign a phone out',
+            'id' => 'oauth-connections-destroy',
+            'title' => 'Disconnect an app',
+            'label' => 'Disconnect an app',
             'method' => 'DELETE',
-            'path' => '/mobile-sessions/{mobileSession}',
-            'examplePath' => '/mobile-sessions/12',
-            'description' => 'Sign one phone out, for example after losing it.',
+            'path' => '/oauth-connections/{oauthConnection}',
+            'examplePath' => '/oauth-connections/12',
+            'description' => 'Disconnect one app, for example a phone you lost or an assistant you no longer use.',
             'body' => [
-                'The phone stops reaching your account the moment this answers, and cannot renew its access. Your other phones, your assistants and your API keys are untouched.',
+                'The app stops reaching your account the moment this answers, and cannot renew its access. Your other connections and your API keys are untouched.',
             ],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
-            'pathParams' => $sessionIdentifier,
-            'returns' => 'Nothing at all. A session of somebody else, or one already signed out, answers 404.',
+            'pathParams' => $connectionIdentifier,
+            'returns' => 'Nothing at all. A connection of somebody else, or one already ended, answers 404.',
             'responseStatus' => 204,
         ],
     ],

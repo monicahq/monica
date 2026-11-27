@@ -7,8 +7,8 @@ namespace App\Http\Controllers\Api\Auth;
 use App\Actions\AttemptLogin;
 use App\Actions\CreateApiKey;
 use App\Actions\DestroyApiKey;
-use App\Actions\EndMobileSession;
-use App\Actions\RevokeMobileAccessToken;
+use App\Actions\EndOAuthConnection;
+use App\Actions\RevokeOAuthAccessToken;
 use App\Actions\VerifyTwoFactorCode;
 use App\Helpers\TextSanitizer;
 use App\Http\Controllers\Controller;
@@ -66,15 +66,15 @@ class LoginController extends Controller
         $token = $request->user()->currentAccessToken();
 
         if ($token instanceof AccessToken) {
-            $session = $request->user()->mobileSessions()
+            $connection = $request->user()->oauthConnections()
                 ->whereNull('ended_at')
                 ->where('access_token_id', (string) $token->oauth_access_token_id)
                 ->first();
 
-            if ($session === null) {
-                new RevokeMobileAccessToken(accessTokenId: (string) $token->oauth_access_token_id)->execute();
+            if ($connection === null) {
+                new RevokeOAuthAccessToken(accessTokenId: (string) $token->oauth_access_token_id)->execute();
             } else {
-                new EndMobileSession(user: $request->user(), session: $session)->execute();
+                new EndOAuthConnection(user: $request->user(), connection: $connection)->execute();
             }
 
             return response()->noContent(204);

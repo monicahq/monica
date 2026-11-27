@@ -6,7 +6,7 @@ namespace Tests\Unit\ViewModels\Settings\Account\Security;
 
 use App\Enums\SsoProviderEnum;
 use App\Models\Administrator;
-use App\Models\MobileSession;
+use App\Models\OAuthConnection;
 use App\Models\Passkey;
 use App\Models\ProviderConnection;
 use App\Models\SecurityKey;
@@ -110,64 +110,72 @@ class SecurityViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_gives_one_line_per_connected_assistant_however_often_it_renewed_its_token(): void
+    public function it_lists_phones_and_assistants_together_newest_first(): void
     {
         $user = User::factory()->create();
-        $first = $this->oauthTokenFor(user: $user);
-        $this->oauthTokenFor(user: $user, client: $first->client);
+        $assistant = Client::factory()->asPublic()->create(['name' => 'Schrute Farms Assistant']);
+        OAuthConnection::factory()->create(['user_id' => $user->id, 'label' => 'Pixel 9', 'created_at' => now()->subDays(2)]);
+        OAuthConnection::factory()->create(['user_id' => $user->id, 'client_id' => $assistant->id, 'label' => null, 'scopes' => ['mcp:use'], 'created_at' => now()->subDay()]);
+        OAuthConnection::factory()->ended()->create(['user_id' => $user->id, 'label' => 'Old phone']);
+        OAuthConnection::factory()->create(['user_id' => $user->id, 'label' => 'Idle phone', 'last_used_at' => now()->subDays(31)]);
+        OAuthConnection::factory()->create(['label' => 'Somebody else’s phone']);
 
-        $assistants = new SecurityViewModel(user: $user)->connectedAssistants();
+        $connections = new SecurityViewModel(user: $user)->connections();
 
-        $this->assertCount(1, $assistants);
-        $this->assertSame((string) $first->client_id, $assistants[0]['clientId']);
-        $this->assertSame('Schrute Farms Assistant', $assistants[0]['name']);
+        $this->assertSame(['Schrute Farms Assistant', 'Pixel 9'], array_column($connections, 'name'));
+        $this->assertSame(['Use MCP server'], $connections[0]['permissions']);
+        $this->assertSame('Monica for mobile', $connections[1]['client']);
+        $this->assertSame(['Use the API'], $connections[1]['permissions']);
+        $this->assertStringStartsWith('Use MCP server · connected', $connections[0]['description']);
+        $this->assertStringStartsWith('Monica for mobile · Use the API · connected', $connections[1]['description']);
     }
 
     #[Test]
-    public function it_leaves_out_the_assistants_that_can_no_longer_reach_the_account(): void
+    public function it_speaks_only_of_phones_while_the_mcp_server_is_off(): void
     {
-        $user = User::factory()->create();
-        $this->oauthTokenFor(user: $user, revoked: true);
-        $this->oauthTokenFor(user: $user, expiresAt: now()->subMinute()->toImmutable(), refreshExpiresAt: now()->subMinute()->toImmutable());
-        $this->oauthTokenFor(user: User::factory()->create());
+        $pam = User::factory()->create();
+        $on = new SecurityViewModel(user: $pam);
+        $description = $on->connectionsDescription();
+        $emptyState = $on->connectionsEmptyState();
 
-        $this->assertSame([], new SecurityViewModel(user: $user)->connectedAssistants());
+        $pam->account->features()->deactivate('mcp-server');
+        Feature::flushCache();
+        $off = new SecurityViewModel(user: $pam);
+
+        $this->assertNotSame($description, $off->connectionsDescription());
+        $this->assertNotSame($emptyState, $off->connectionsEmptyState());
+        $this->assertStringNotContainsString('assistant', $off->connectionsDescription().$off->connectionsHelp().$off->connectionsEmptyState());
     }
 
     #[Test]
-    public function it_keeps_an_idle_assistant_that_can_still_renew_its_access(): void
-    {
-        $user = User::factory()->create();
-        $token = $this->oauthTokenFor(user: $user, expiresAt: now()->subDays(2)->toImmutable());
-
-        $assistants = new SecurityViewModel(user: $user)->connectedAssistants();
-
-        $this->assertCount(1, $assistants);
-        $this->assertSame((string) $token->client_id, $assistants[0]['clientId']);
-    }
-
-    #[Test]
-    public function it_tells_only_an_account_with_an_assistant_that_the_mcp_server_is_unavailable(): void
+    public function it_tells_only_an_account_with_a_connection_to_the_mcp_server_that_it_is_unavailable(): void
     {
         $pam = User::factory()->create();
         $dwight = User::factory()->create();
-        $this->oauthTokenFor(user: $pam);
-        $pam->account->features()->deactivate('mcp-server');
-        $dwight->account->features()->deactivate('mcp-server');
+        $jim = User::factory()->create();
+        OAuthConnection::factory()->create(['user_id' => $pam->id, 'scopes' => ['mcp:use']]);
+        OAuthConnection::factory()->create(['user_id' => $jim->id, 'scopes' => [OAuthConnection::API_SCOPE]]);
+
+        foreach ([$pam, $dwight, $jim] as $user) {
+            $user->account->features()->deactivate('mcp-server');
+        }
+
         Feature::flushCache();
 
         $this->assertFalse(new SecurityViewModel(user: $pam)->mcpIsOn());
-        $this->assertNull(new SecurityViewModel(user: $dwight)->assistantsNotice());
+        $this->assertNotNull(new SecurityViewModel(user: $pam)->connectionsNotice());
+        $this->assertNull(new SecurityViewModel(user: $dwight)->connectionsNotice());
+        $this->assertNull(new SecurityViewModel(user: $jim)->connectionsNotice());
     }
 
     #[Test]
     public function it_says_nothing_about_the_mcp_server_while_it_is_on(): void
     {
         $pam = User::factory()->create();
-        $this->oauthTokenFor(user: $pam);
+        OAuthConnection::factory()->create(['user_id' => $pam->id, 'scopes' => ['mcp:use']]);
 
         $this->assertTrue(new SecurityViewModel(user: $pam)->mcpIsOn());
-        $this->assertNull(new SecurityViewModel(user: $pam)->assistantsNotice());
+        $this->assertNull(new SecurityViewModel(user: $pam)->connectionsNotice());
     }
 
     #[Test]
@@ -303,28 +311,5 @@ class SecurityViewModelTest extends TestCase
         Passkey::factory()->create(['user_id' => $user->id]);
 
         $this->assertTrue(new SecurityViewModel(user: $user)->canRemoveThePassword());
-    }
-
-    #[Test]
-    public function it_lists_the_phones_still_signed_in_newest_first(): void
-    {
-        $user = User::factory()->create();
-        MobileSession::factory()->create(['user_id' => $user->id, 'device_name' => 'Pixel 9', 'created_at' => now()->subDays(2)]);
-        MobileSession::factory()->create(['user_id' => $user->id, 'device_name' => null, 'created_at' => now()->subDay()]);
-        MobileSession::factory()->ended()->create(['user_id' => $user->id, 'device_name' => 'Old phone']);
-        MobileSession::factory()->create(['device_name' => 'Somebody else’s phone']);
-
-        $sessions = new SecurityViewModel(user: $user)->mobileSessions();
-
-        $this->assertSame(['Unnamed phone', 'Pixel 9'], array_column($sessions, 'name'));
-    }
-
-    #[Test]
-    public function it_leaves_the_mobile_app_out_of_the_connected_assistants(): void
-    {
-        $user = User::factory()->create();
-        $this->oauthTokenFor(user: $user, client: Client::query()->findOrFail(MobileSession::CLIENT_ID));
-
-        $this->assertSame([], new SecurityViewModel(user: $user)->connectedAssistants());
     }
 }

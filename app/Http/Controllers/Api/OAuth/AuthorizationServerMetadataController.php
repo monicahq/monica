@@ -11,8 +11,9 @@ use Laravel\Mcp\Server\Registrar;
 
 /**
  * The description of Monica's authorization server (RFC 8414). It keeps every member the MCP
- * server published for assistants, and adds what the mobile apps need: where to sign a phone out
- * and the prompt that opens the registration page. The API scope is left out of the scopes listed:
+ * server published, and adds where an app signs itself out and the prompt that opens the
+ * registration page. `none` is not offered, since every client is asked for consent every time.
+ * The API scope is left out of the scopes listed:
  * an assistant asking for every scope listed would be refused, and the app reads it from the status.
  */
 class AuthorizationServerMetadataController extends Controller
@@ -31,7 +32,7 @@ class AuthorizationServerMetadataController extends Controller
             'scopes_supported' => [Registrar::OAUTH_SCOPE],
             'grant_types_supported' => ['authorization_code', 'refresh_token'],
             'token_endpoint_auth_methods_supported' => ['none', 'client_secret_basic', 'client_secret_post'],
-            'prompt_values_supported' => ['none', 'login', 'consent', 'create'],
+            'prompt_values_supported' => ['login', 'consent', 'create'],
         ], fn (mixed $value): bool => $value !== null));
     }
 }
