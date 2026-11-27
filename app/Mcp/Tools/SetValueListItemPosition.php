@@ -34,7 +34,7 @@ class SetValueListItemPosition extends Tool
         $valueList = $this->valueList($request, (string) $validated['value_list']);
         $item = $this->valueListItem($valueList, (string) $validated['value_list_item']);
 
-        return $this->answerThroughApi($request, $valueList->id, $item->id);
+        return $this->answerThroughApi($request, (string) $valueList->id, (string) $item->id);
     }
 
     /** @return array<string, Type> */
