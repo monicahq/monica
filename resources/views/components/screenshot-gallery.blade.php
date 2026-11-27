@@ -35,9 +35,6 @@
       this.announcement = `${this.positions[this.index]}. ${this.descriptions[this.index]}`;
     },
   }"
-  @keydown.escape.window="open = false"
-  @keydown.left.window="open && move(-1)"
-  @keydown.right.window="open && move(1)"
   {{ $attributes }}
 >
   @if ($alone)
@@ -84,13 +81,16 @@
       x-transition:enter-start="opacity-0"
       x-transition:leave="transition-opacity duration-(--duration-standard)"
       x-transition:leave-end="opacity-0"
-      @click.self="open = false"
+      @click="if (! $event.target.closest('button, img')) open = false"
+      @keydown.escape.window="open = false"
+      @keydown.left.window="open && move(-1)"
+      @keydown.right.window="open && move(1)"
       role="dialog"
       aria-modal="true"
       aria-labelledby="{{ $prefix }}-title {{ $prefix }}-position"
       class="fixed inset-0 z-70 grid grid-rows-[auto_minmax(0,1fr)_auto] bg-scrim-strong print:hidden"
     >
-      <div @click.self="open = false" class="flex items-center justify-between gap-4 px-4 py-3">
+      <div class="flex items-center justify-between gap-4 px-4 py-3">
         <p class="text-sm font-medium text-on-scrim">
           <span id="{{ $prefix }}-title" class="sr-only">{{ $title }}</span>
           <span id="{{ $prefix }}-position" x-text="positions[index]">{{ $positions[0] }}</span>
@@ -102,7 +102,7 @@
         </x-button>
       </div>
 
-      <div @click.self="open = false" class="relative flex min-h-0 items-center justify-center px-4 sm:px-18">
+      <div class="relative flex min-h-0 items-center justify-center px-4 sm:px-18">
         @foreach ($screenshots as $index => $screenshot)
           <x-image
             x-show="index === {{ $index }}"
@@ -127,7 +127,7 @@
       </div>
 
       @foreach ($screenshots as $index => $screenshot)
-        <p x-show="index === {{ $index }}" @click="open = false" aria-hidden="true" class="cursor-default px-6 pt-4 pb-6 text-center text-base text-pretty text-on-scrim-muted">{{ $screenshot['description'] }}</p>
+        <p x-show="index === {{ $index }}" aria-hidden="true" class="cursor-default px-6 pt-4 pb-6 text-center text-base text-pretty text-on-scrim-muted">{{ $screenshot['description'] }}</p>
       @endforeach
 
       <p class="sr-only" aria-live="polite" x-text="announcement"></p>

@@ -32,7 +32,7 @@
       <p id="possession-type-label" class="text-label text-ink">{{ __('Type') }}</p>
 
       <x-searchable-list id="possession-type" label-id="possession-type-label" :search-label="__('Search the types')" width="trigger" :invalid="$typeError !== []" :described-by="$typeError ? 'type-error' : ''">
-        <x-slot:trigger class="focus-ring flex h-12 w-full items-center gap-2.5 rounded-md border border-hairline-strong bg-input pr-3 pl-2 text-left hover:border-muted-soft aria-[invalid=true]:border-error">
+        <x-slot:trigger class="focus-ring flex h-12 w-full items-center gap-2.5 rounded-md border border-hairline-strong bg-input pr-3 pl-2 text-left hover:border-muted-soft data-invalid:border-error">
           <template x-if="chosenType">
             <span class="flex min-w-0 flex-1 items-center gap-2.5">
               <span class="flex size-8 flex-none items-center justify-center rounded-md bg-hover" aria-hidden="true">

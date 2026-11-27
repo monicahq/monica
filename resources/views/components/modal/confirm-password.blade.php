@@ -21,11 +21,10 @@
     ],
   ]) }})"
   @confirm-password.window="start($event.detail.form)"
-  @keydown.escape.window="close()"
   class="contents"
 >
   <div x-cloak x-show="open" class="fixed print:hidden inset-0 z-70 flex items-end justify-center p-4 sm:items-center">
-    <div x-show="open" x-transition.opacity.duration.170ms @click="close()" class="absolute inset-0 bg-scrim" aria-hidden="true"></div>
+    <div x-show="open" x-transition.opacity.duration.170ms @click="close()" @keydown.escape.window="close()" class="absolute inset-0 bg-scrim" aria-hidden="true"></div>
 
     <div
       x-show="open"

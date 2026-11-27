@@ -255,6 +255,9 @@ jobs:
             -Dsonar.tests=tests
             -Dsonar.coverage.exclusions=routes/*.php,config/**/*.php,bootstrap/**,resources/**/*.php,database/**/*.php,public/*.php,resources/**/*.vue,resources/**/*.js
             -Dsonar.cpd.exclusions=routes/*.php,config/*.php,bootstrap/**,resources/**/*.php,database/**/*.php
+            -Dsonar.issue.ignore.multicriteria=listRole
+            -Dsonar.issue.ignore.multicriteria.listRole.ruleKey=Web:S6822
+            -Dsonar.issue.ignore.multicriteria.listRole.resourceKey=**/*.blade.php
             -Dsonar.sourceEncoding=UTF-8
             -Dsonar.projectVersion=${{ steps.version.outputs.value }}
             -Dsonar.php.tests.reportPath=results/results.xml

@@ -94,7 +94,7 @@ export default (config) => ({
         const fromKeyboard = event.detail === 0;
         const opensElsewhere = event.metaKey || event.ctrlKey || event.shiftKey;
 
-        if (this.count === 0 || fromKeyboard || opensElsewhere || !event.target.closest('a')) {
+        if (this.count === 0 || fromKeyboard || opensElsewhere) {
             return;
         }
 

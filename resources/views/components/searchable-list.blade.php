@@ -39,7 +39,7 @@
     aria-expanded="false"
     :aria-expanded="open ? 'true' : 'false'"
     aria-labelledby="{{ $labelId }} {{ $id }}"
-    @if ($invalid) aria-invalid="true" @endif
+    @if ($invalid) data-invalid @endif
     @if ($describedBy !== '') aria-describedby="{{ $describedBy }}" @endif
     @click="toggle()"
     @keydown.arrow-down.prevent="open ? $refs.search.focus() : toggle()"

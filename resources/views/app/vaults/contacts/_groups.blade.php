@@ -19,7 +19,6 @@
     <tr
       class="relative border-t border-hairline transition-colors duration-(--duration-fast) ease-out hover:bg-hover"
       :class="isSelected('{{ $person['uuid'] }}') && 'bg-hover'"
-      @click="rowClick($event, '{{ $person['uuid'] }}')"
     >
       <td class="w-11 py-2.75 pl-4">
         <x-selection-checkbox
@@ -34,7 +33,7 @@
         <span class="flex min-w-0 items-center gap-3">
           <x-contact-avatar :name="$person['name']" :url="$person['avatarUrl']" :size="32" />
 
-          <a href="{{ $person['url'] }}" data-turbo="true" class="truncate text-base font-semibold text-ink no-underline after:absolute after:inset-0 focus-ring-inset">{{ $person['name'] }}</a>
+          <a href="{{ $person['url'] }}" data-turbo="true" @click="rowClick($event, '{{ $person['uuid'] }}')" class="truncate text-base font-semibold text-ink no-underline after:absolute after:inset-0 focus-ring-inset">{{ $person['name'] }}</a>
 
           @if ($person['showsStar'])
             <span class="flex shrink-0 text-ink-soft">

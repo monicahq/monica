@@ -101,7 +101,7 @@
 
   <div x-cloak>
     <x-searchable-list :id="$id" :label-id="$id.'-label'" :search-label="__('Search the countries')" :invalid="$errorId !== null" :described-by="$describedBy">
-      <x-slot:trigger :x-autofocus="$autofocus" class="focus-ring-field relative flex h-9 w-full cursor-pointer items-center gap-2.5 rounded-md border border-hairline-strong bg-input pr-8.5 pl-3 text-left text-[16px] text-ink transition duration-(--duration-fast) ease-out hover:border-muted-soft aria-[invalid=true]:border-error aria-[invalid=true]:ring-[3px] aria-[invalid=true]:ring-error/20 sm:text-base">
+      <x-slot:trigger :x-autofocus="$autofocus" class="focus-ring-field relative flex h-9 w-full cursor-pointer items-center gap-2.5 rounded-md border border-hairline-strong bg-input pr-8.5 pl-3 text-left text-[16px] text-ink transition duration-(--duration-fast) ease-out hover:border-muted-soft data-invalid:border-error data-invalid:ring-[3px] data-invalid:ring-error/20 sm:text-base">
         <span class="truncate" :class="chosenLabel === '' && 'text-muted'" x-text="chosenLabel === '' ? @js($placeholder ?? '') : chosenLabel"></span>
 
         <x-icon
