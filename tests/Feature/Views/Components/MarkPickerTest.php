@@ -11,15 +11,13 @@ use Tests\TestCase;
 class MarkPickerTest extends TestCase
 {
     #[Test]
-    public function the_combined_picker_names_its_popover_and_gives_focus_back_on_escape(): void
+    public function the_combined_picker_discloses_its_panel_and_gives_focus_back_on_escape(): void
     {
         $rendered = $this->picker('combined');
 
-        $rendered->assertSee('aria-haspopup="dialog"', escape: false);
+        $rendered->assertSee(':aria-expanded="open ? \'true\' : \'false\'"', escape: false);
         $rendered->assertSee('aria-controls="dwight-mark-picker"', escape: false);
         $rendered->assertSee('id="dwight-mark-picker"', escape: false);
-        $rendered->assertSee('role="dialog"', escape: false);
-        $rendered->assertSee('aria-label="Mark"', escape: false);
         $rendered->assertSee('@keydown.escape.window="if (open) { open = false; $refs.trigger.focus() }"', escape: false);
     }
 

@@ -212,7 +212,6 @@
     x-ref="trigger"
     @click.stop="open = ! open"
     :aria-expanded="open ? 'true' : 'false'"
-    aria-haspopup="dialog"
     aria-controls="{{ $id }}-mark-picker"
     class="flex h-9.5 w-fit cursor-pointer items-center gap-2 rounded-md border border-hairline-strong bg-canvas py-1 pr-2.5 pl-1 transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring"
   >
@@ -264,8 +263,6 @@
   x-transition:leave="transition ease-out duration-(--duration-fast)"
   x-transition:leave-end="opacity-0"
   id="{{ $id }}-mark-picker"
-  role="dialog"
-  aria-label="{{ __('Mark') }}"
   class="z-40 flex w-72 max-w-[calc(100vw-2rem)] flex-col gap-3.5 rounded-lg border border-hairline bg-canvas p-3.5 shadow-pop"
 >
   <fieldset class="flex flex-col gap-2">
