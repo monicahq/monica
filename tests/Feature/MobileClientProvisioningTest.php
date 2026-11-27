@@ -69,14 +69,4 @@ class MobileClientProvisioningTest extends TestCase
 
         $this->assertNull(MobileSession::query()->sole()->ended_at);
     }
-
-    #[Test]
-    public function undoing_it_leaves_only_the_android_app(): void
-    {
-        $migration = require database_path('migrations/2026_11_27_000000_let_the_ios_app_sign_in.php');
-
-        $migration->down();
-
-        $this->assertSame(['com.monicahq.android:/oauth/callback'], Client::query()->findOrFail(MobileSession::CLIENT_ID)->redirect_uris);
-    }
 }

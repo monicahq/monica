@@ -21,14 +21,4 @@ return new class extends Migration
                 'updated_at' => now(),
             ]);
     }
-
-    public function down(): void
-    {
-        DB::table('oauth_clients')
-            ->where('id', '0198f6a4-7c2e-7d3b-9a61-5e0b4c8d2f17')
-            ->update([
-                'redirect_uris' => json_encode(['com.monicahq.android:/oauth/callback']),
-                'updated_at' => now(),
-            ]);
-    }
 };
