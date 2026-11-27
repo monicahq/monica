@@ -16,6 +16,7 @@
 <html lang="en">
   <head>
     @include('partials.meta', ['title' => "{$crumb} · MCP", 'description' => \App\ViewModels\Docs\McpDocsViewModel::LEAD])
+    <title>{{ \Laravel\Head\Facades\Head::toArray()['title'] }}</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
   </head>

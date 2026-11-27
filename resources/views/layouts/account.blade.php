@@ -8,6 +8,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
   <head>
     @include('partials.meta', ['title' => $title ?? null])
+    <title>{{ \Laravel\Head\Facades\Head::toArray()['title'] }}</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
   </head>

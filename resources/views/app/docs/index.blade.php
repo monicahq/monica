@@ -7,6 +7,7 @@
       'title' => __('Documentation'),
       'description' => __('Learn how Monica works, and connect it to your scripts, your assistant and your devices.'),
     ])
+    <title>{{ \Laravel\Head\Facades\Head::toArray()['title'] }}</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
   </head>
