@@ -50,12 +50,13 @@ class BindOAuthScopes
 
     private function refuse(Request $request, bool $isMobileApp): Response
     {
+        $redirectUri = $request->string('redirect_uri')->toString();
         $sendsBackToTheApp = $isMobileApp
             && $request->routeIs('passport.authorizations.authorize')
-            && $request->string('redirect_uri')->toString() === MobileSession::REDIRECT_URI;
+            && in_array($redirectUri, MobileSession::REDIRECT_URIS, true);
 
         if ($sendsBackToTheApp) {
-            return redirect()->away(MobileSession::REDIRECT_URI.'?'.http_build_query([
+            return redirect()->away($redirectUri.'?'.http_build_query([
                 'error' => 'invalid_scope',
                 'state' => $request->string('state')->toString(),
             ]));

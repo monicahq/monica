@@ -76,7 +76,7 @@ class MobileSessionLifecycleTest extends TestCase
         $this->postJson('/oauth/token', [
             'grant_type' => 'authorization_code',
             'client_id' => MobileSession::CLIENT_ID,
-            'redirect_uri' => MobileSession::REDIRECT_URI,
+            'redirect_uri' => MobileSession::ANDROID_REDIRECT_URI,
             'code_verifier' => str_repeat('a', 64),
             'code' => $tokens['code'],
         ])->assertStatus(400);

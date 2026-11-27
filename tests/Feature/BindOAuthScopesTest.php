@@ -31,11 +31,20 @@ class BindOAuthScopesTest extends TestCase
     public function it_refuses_the_mcp_scope_to_the_mobile_app(): void
     {
         $response = $this->actingAs(User::factory()->create())
-            ->get($this->authorizationUrl(clientId: MobileSession::CLIENT_ID, redirectUri: MobileSession::REDIRECT_URI, scope: Registrar::OAUTH_SCOPE));
+            ->get($this->authorizationUrl(clientId: MobileSession::CLIENT_ID, redirectUri: MobileSession::ANDROID_REDIRECT_URI, scope: Registrar::OAUTH_SCOPE));
 
-        $response->assertRedirectContains(MobileSession::REDIRECT_URI);
+        $response->assertRedirectContains(MobileSession::ANDROID_REDIRECT_URI);
         $response->assertRedirectContains('error=invalid_scope');
         $response->assertRedirectContains('state=beet-harvest');
+    }
+
+    #[Test]
+    public function it_sends_the_refusal_back_to_the_ios_app(): void
+    {
+        $response = $this->actingAs(User::factory()->create())
+            ->get($this->authorizationUrl(clientId: MobileSession::CLIENT_ID, redirectUri: MobileSession::IOS_REDIRECT_URI, scope: Registrar::OAUTH_SCOPE));
+
+        $response->assertRedirect(MobileSession::IOS_REDIRECT_URI.'?error=invalid_scope&state=beet-harvest');
     }
 
     #[Test]

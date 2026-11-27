@@ -43,7 +43,7 @@ class OAuthAuthorizationViewModelTest extends TestCase
             client: $client,
             authToken: 'beet-harvest',
             user: new User(['email' => 'pam@dundermifflin.com']),
-            redirectUri: MobileSession::REDIRECT_URI,
+            redirectUri: MobileSession::ANDROID_REDIRECT_URI,
             scopes: [new Scope(MobileSession::SCOPE, 'Use the API')],
         );
 
@@ -51,6 +51,24 @@ class OAuthAuthorizationViewModelTest extends TestCase
         $this->assertSame('Allow Monica for Android to reach your account?', $viewModel->title());
         $this->assertStringContainsString('monica.dundermifflin.com', $viewModel->description());
         $this->assertSame(['Use the API'], $viewModel->permissions());
+    }
+
+    #[Test]
+    public function it_names_the_ios_app_when_the_iphone_asks(): void
+    {
+        $client = new Client(['name' => 'Monica for mobile']);
+        $client->id = MobileSession::CLIENT_ID;
+
+        $viewModel = new OAuthAuthorizationViewModel(
+            client: $client,
+            authToken: 'beet-harvest',
+            user: new User(['email' => 'pam@dundermifflin.com']),
+            redirectUri: MobileSession::IOS_REDIRECT_URI,
+            scopes: [new Scope(MobileSession::SCOPE, 'Use the API')],
+        );
+
+        $this->assertTrue($viewModel->isMobileApp());
+        $this->assertSame('Allow Monica for iOS to reach your account?', $viewModel->title());
     }
 
     #[Test]
