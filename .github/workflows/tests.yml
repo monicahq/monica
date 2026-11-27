@@ -206,15 +206,21 @@ jobs:
     permissions:
       contents: read
       id-token: write
+    env:
+      # Pull requests from forks and from Dependabot get no OIDC token, so they cannot be analysed.
+      # Their steps are skipped, not the job, so the required check still reports and they stay
+      # mergeable. They are analysed once on main.
+      ANALYSE: ${{ github.event_name != 'pull_request' || (github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]') }}
+
     steps:
       - name: Checkout sources
-        if: needs.changes.outputs.code == 'true'
+        if: env.ANALYSE == 'true' && needs.changes.outputs.code == 'true'
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
 
       - name: Download results
-        if: needs.changes.outputs.code == 'true'
+        if: env.ANALYSE == 'true' && needs.changes.outputs.code == 'true'
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           pattern: ${{ format('results_{0}_{1}*', env.default-connection, env.default-php-version) }}
@@ -222,7 +228,7 @@ jobs:
           merge-multiple: true
 
       - name: Merge junit files
-        if: needs.changes.outputs.code == 'true'
+        if: env.ANALYSE == 'true' && needs.changes.outputs.code == 'true'
         run: |
           mkdir -p $RUNNER_TEMP/junit-merge
           cd $RUNNER_TEMP/junit-merge
@@ -230,7 +236,7 @@ jobs:
 
       - name: Set version parameter
         id: version
-        if: needs.changes.outputs.code == 'true'
+        if: env.ANALYSE == 'true' && needs.changes.outputs.code == 'true'
         run: |
           version=$(git tag --points-at HEAD)
           test -z "$version" && version="main"
@@ -238,13 +244,13 @@ jobs:
 
       - name: Set coverage list
         id: coverage
-        if: needs.changes.outputs.code == 'true'
+        if: env.ANALYSE == 'true' && needs.changes.outputs.code == 'true'
         run: |
           SONAR_COVERAGE=$(ls -m --format=comma results/coverage*.xml | sed -e ':a;N;$!ba;s/\n//g; s/ //g;')
           echo "list=$SONAR_COVERAGE" >> $GITHUB_OUTPUT
 
       - name: Cache SonarQube packages
-        if: needs.changes.outputs.code == 'true'
+        if: env.ANALYSE == 'true' && needs.changes.outputs.code == 'true'
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: ~/.sonar/cache
@@ -252,11 +258,11 @@ jobs:
           restore-keys: ${{ runner.os }}-sonar
 
       - uses: SonarSource/sonarqube-auth-action@b372e2c2930aadfcc4f4399446da1e12772709ad # v1.2
-        if: needs.changes.outputs.code == 'true'
+        if: env.ANALYSE == 'true' && needs.changes.outputs.code == 'true'
         id: auth
 
       - name: SonarCloud Scan
-        if: needs.changes.outputs.code == 'true'
+        if: env.ANALYSE == 'true' && needs.changes.outputs.code == 'true'
         uses: SonarSource/sonarqube-scan-action@70bad232163b09d998ea0707ee80c0ec80798c16 # v8.5.1
         with:
           args: >
