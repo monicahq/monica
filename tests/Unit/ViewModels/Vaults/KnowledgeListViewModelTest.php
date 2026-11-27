@@ -41,6 +41,19 @@ class KnowledgeListViewModelTest extends TestCase
     }
 
     #[Test]
+    public function it_leads_the_addresses_that_edit_and_save_an_item_to_its_first_field(): void
+    {
+        $user = User::factory()->create();
+        $list = $this->listFor($user);
+        $item = KnowledgeListItem::factory()->create(['knowledge_list_id' => $list->id]);
+
+        $row = new KnowledgeListViewModel(user: $user, list: $list->refresh())->items()[0];
+
+        $this->assertStringEndsWith("/edit#item-{$item->uuid}-edit", $row['editUrl']);
+        $this->assertStringEndsWith("#item-{$item->uuid}-edit", $row['updateUrl']);
+    }
+
+    #[Test]
     public function a_list_without_items_starts_with_the_row_to_add_one(): void
     {
         $user = User::factory()->create();

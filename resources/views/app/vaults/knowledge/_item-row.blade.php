@@ -15,7 +15,7 @@
               placeholder="{{ $cell['column'] }}"
               aria-label="{{ $cell['column'] }}"
               maxlength="5000"
-              @if ($index === 0) autofocus @endif
+              @if ($index === 0) id="item-{{ $item['id'] }}-edit" @endif
               @if ($errors->has("cells.{$cell['columnId']}")) aria-invalid="true" aria-describedby="knowledge-item-cells-error" @endif
               class="h-8 w-full rounded-md border border-hairline-strong bg-input px-2.5 text-[13px] text-ink focus-ring-field"
             />
