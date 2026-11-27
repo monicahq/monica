@@ -39,6 +39,10 @@
       <x-notice tone="danger" role="alert">{{ $message }}</x-notice>
     @enderror
 
+    @error('deletion')
+      <x-notice tone="danger" role="alert">{{ $message }}</x-notice>
+    @enderror
+
     @if ($viewModel->deletionNotice() !== null)
       <x-notice tone="warning">{{ $viewModel->deletionNotice() }}</x-notice>
     @endif
@@ -237,5 +241,7 @@
         </x-panel>
       @endif
     @endif
+
+    @include('app.admin.accounts._delete', ['viewModel' => $viewModel])
   </div>
 </x-admin-layout>

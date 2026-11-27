@@ -114,6 +114,93 @@ class AccountControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_keeps_the_deletion_of_your_own_account_on_screen_but_refused_with_its_reason(): void
+    {
+        $michael = $this->administrator();
+
+        $response = $this->actingAs($michael)->get(route('admin.accounts.show', ['account' => $michael->account_id]));
+
+        $response->assertSee('Delete this account');
+        $response->assertSeeInOrder([
+            'id="account-deletion-refusal"',
+            'aria-disabled="true"',
+            'aria-describedby="account-deletion-refusal"',
+        ], escape: false);
+        $response->assertDontSee('name="confirmation"', escape: false);
+    }
+
+    #[Test]
+    public function it_offers_to_delete_somebody_else_once_their_address_is_typed(): void
+    {
+        $dwight = User::factory()->create(['email' => 'dwight.schrute@dundermifflin.com']);
+
+        $response = $this->actingAs($this->administrator())->get(route('admin.accounts.show', ['account' => $dwight->account_id]));
+
+        $response->assertSee('Type dwight.schrute@dundermifflin.com to confirm.');
+        $response->assertSee('name="confirmation"', escape: false);
+    }
+
+    #[Test]
+    public function it_deletes_an_account_and_returns_to_the_list(): void
+    {
+        $dwight = User::factory()->create(['email' => 'dwight.schrute@dundermifflin.com']);
+        $account = $dwight->account;
+
+        $response = $this->actingAs($this->administrator())
+            ->delete(route('admin.accounts.destroy', ['account' => $account->id]), [
+                'confirmation' => ' Dwight.Schrute@DunderMifflin.com ',
+            ]);
+
+        $response->assertRedirect(route('admin.accounts.index'));
+        $response->assertSessionHas('status', 'The account is deleted.');
+        $this->assertModelMissing($account);
+    }
+
+    #[Test]
+    public function it_refuses_a_deletion_confirmed_with_another_address(): void
+    {
+        $dwight = User::factory()->create(['email' => 'dwight.schrute@dundermifflin.com']);
+
+        $response = $this->actingAs($this->administrator())
+            ->delete(route('admin.accounts.destroy', ['account' => $dwight->account_id]), [
+                'confirmation' => 'mose.schrute@dundermifflin.com',
+            ]);
+
+        $response->assertSessionHasErrors('confirmation');
+        $this->assertModelExists($dwight->account);
+    }
+
+    #[Test]
+    public function it_asks_for_the_account_number_when_nobody_is_on_the_account(): void
+    {
+        $account = Account::factory()->create();
+
+        $response = $this->actingAs($this->administrator())
+            ->delete(route('admin.accounts.destroy', ['account' => $account->id]), [
+                'confirmation' => (string) $account->id,
+            ]);
+
+        $response->assertRedirect(route('admin.accounts.index'));
+        $this->assertModelMissing($account);
+    }
+
+    #[Test]
+    public function it_tells_an_administrator_that_their_own_account_cannot_be_deleted_here(): void
+    {
+        $michael = $this->administrator();
+
+        $response = $this->actingAs($michael)
+            ->from(route('admin.accounts.show', ['account' => $michael->account_id]))
+            ->delete(route('admin.accounts.destroy', ['account' => $michael->account_id]), [
+                'confirmation' => $michael->email,
+            ]);
+
+        $response->assertRedirect(route('admin.accounts.show', ['account' => $michael->account_id]));
+        $response->assertSessionHasErrors(['deletion' => 'You cannot delete your own account from here. Delete it from your account settings instead.']);
+        $this->assertModelExists($michael->account);
+    }
+
+    #[Test]
     public function it_shows_the_accounts_in_numbered_pages(): void
     {
         $michael = $this->administrator();

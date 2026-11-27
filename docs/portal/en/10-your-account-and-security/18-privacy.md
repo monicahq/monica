@@ -4,7 +4,7 @@ title: What Monica keeps and who can see it
 description: See what Monica stores about you and your contacts, what administrators can and cannot see, and what leaves your account.
 slug: privacy
 section: your-account-and-security
-last_updated: 2026-11-18
+last_updated: 2026-11-27
 ---
 
 # What Monica keeps and who can see it
@@ -24,7 +24,7 @@ Every instance of Monica, monicahq.com included, has administrators who look aft
 
 An assistant connected to your account can also send the administrators a report about a tool that did not work. It is asked to leave the details of your vaults out, but what it writes is up to the assistant. See @doc(security.assistants).
 
-What an administrator does to an account, such as switching it off, is recorded against their name.
+What an administrator does to an account, such as switching it off, is recorded against their name. An administrator can also delete an account and everything in it, usually because its owner asked support to. The record of that keeps the account number and nothing else about you.
 
 ## What leaves your account, and only when you choose
 

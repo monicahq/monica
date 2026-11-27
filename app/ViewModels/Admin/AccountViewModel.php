@@ -174,6 +174,21 @@ class AccountViewModel
         return route('admin.accounts.activation.create', ['account' => $this->account->id]);
     }
 
+    public function destroyUrl(): string
+    {
+        return route('admin.accounts.destroy', ['account' => $this->account->id]);
+    }
+
+    public function deletionConfirmation(): string
+    {
+        return $this->user()->email ?? (string) $this->account->id;
+    }
+
+    public function deletionConfirmationLabel(): string
+    {
+        return $this->hasUser() ? __('Email address') : __('Account number');
+    }
+
     public function storageLimitUrl(): string
     {
         return route('admin.accounts.storageLimit.update', ['account' => $this->account->id]);

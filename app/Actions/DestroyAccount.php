@@ -8,36 +8,43 @@ use App\Exceptions\ProviderUnreachable;
 use App\Models\Account;
 use App\Models\AccountExport;
 use App\Models\AccountImport;
+use App\Models\File;
 use App\Models\SupportAttachment;
 use App\Models\User;
 use Exception;
 use Illuminate\Contracts\Filesystem\Filesystem;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Pennant\Feature;
+use Stripe\Subscription as StripeSubscription;
 
 /**
- * Delete an account and everything under it, the export and import files on disk included.
+ * Delete an account and everything under it, every file it wrote on any disk included. The person
+ * owning it, and an administrator, both delete through here, so neither leaves behind what the other
+ * removes.
  *
- * A subscription is stopped at Stripe first, and the deletion is refused outright when Stripe does
- * not answer: deleting anyway would leave somebody being charged with no account to show them what
+ * Every subscription Stripe still holds open is stopped there first, an unpaid or incomplete one
+ * included, and the deletion is refused outright when Stripe does not answer: deleting anyway would leave somebody being charged with no account to show them what
  * for. The period already paid for is not refunded, and the deletion warning says so.
  */
 class DestroyAccount
 {
+    private ?User $user;
+
     public function __construct(
-        private readonly User $user,
         private readonly Account $account,
     ) {}
 
     public function execute(): void
     {
-        $this->validate();
+        $this->user = $this->account->userIncludingDeleted;
+
         $this->stopTheSubscription();
         $this->destroyPhoto();
         $this->destroyApiKeys();
+        $this->destroySessions();
         $this->forgetFlags();
-        $this->destroyTransferFiles();
+        $this->destroyAccountFiles();
         $this->destroySupportFiles();
         $this->destroy();
     }
@@ -46,7 +53,15 @@ class DestroyAccount
     {
         $subscription = $this->account->subscription();
 
-        if ($subscription?->valid() !== true) {
+        if ($subscription === null) {
+            return;
+        }
+
+        if ($subscription->ended()) {
+            return;
+        }
+
+        if (in_array($subscription->stripe_status, [StripeSubscription::STATUS_CANCELED, StripeSubscription::STATUS_INCOMPLETE_EXPIRED], true)) {
             return;
         }
 
@@ -57,16 +72,9 @@ class DestroyAccount
         }
     }
 
-    private function validate(): void
-    {
-        if ($this->user->account_id !== $this->account->id) {
-            throw new ModelNotFoundException('Account not found');
-        }
-    }
-
     private function destroyPhoto(): void
     {
-        if (! $this->user->hasPhoto()) {
+        if ($this->user?->hasPhoto() !== true) {
             return;
         }
 
@@ -77,7 +85,16 @@ class DestroyAccount
 
     private function destroyApiKeys(): void
     {
-        $this->user->tokens()->delete();
+        $this->user?->tokens()->delete();
+    }
+
+    private function destroySessions(): void
+    {
+        if ($this->user === null || config('session.driver') !== 'database') {
+            return;
+        }
+
+        DB::table((string) config('session.table'))->where('user_id', $this->user->id)->delete();
     }
 
     private function forgetFlags(): void
@@ -85,16 +102,17 @@ class DestroyAccount
         Feature::for($this->account)->forget(Feature::stored());
     }
 
-    private function destroyTransferFiles(): void
+    private function destroyAccountFiles(): void
     {
-        $disks = AccountExport::query()
+        $disks = File::query()
             ->where('account_id', $this->account->id)
             ->pluck('disk')
+            ->merge(AccountExport::query()->where('account_id', $this->account->id)->pluck('disk'))
             ->merge(AccountImport::query()->where('account_id', $this->account->id)->pluck('disk'))
             ->unique();
 
         foreach ($disks as $disk) {
-            Storage::disk($disk)->deleteDirectory($this->account->transfersDirectory());
+            Storage::disk($disk)->deleteDirectory(File::directoryFor($this->account->id, null));
         }
     }
 

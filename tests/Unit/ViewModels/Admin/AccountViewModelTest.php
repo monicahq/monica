@@ -91,6 +91,21 @@ class AccountViewModelTest extends TestCase
     }
 
     #[Test]
+    public function it_asks_for_the_address_of_the_person_to_confirm_a_deletion(): void
+    {
+        $dwight = User::factory()->create(['email' => 'dwight.schrute@dundermifflin.com']);
+        $toby = User::factory()->create(['email' => 'toby.flenderson@dundermifflin.com']);
+        $toby->delete();
+        $empty = Account::factory()->create();
+
+        $this->assertSame('dwight.schrute@dundermifflin.com', new AccountViewModel(account: $dwight->account)->deletionConfirmation());
+        $this->assertSame('toby.flenderson@dundermifflin.com', new AccountViewModel(account: $toby->account)->deletionConfirmation());
+        $this->assertSame((string) $empty->id, new AccountViewModel(account: $empty)->deletionConfirmation());
+        $this->assertSame('Email address', new AccountViewModel(account: $toby->account)->deletionConfirmationLabel());
+        $this->assertSame('Account number', new AccountViewModel(account: $empty)->deletionConfirmationLabel());
+    }
+
+    #[Test]
     public function it_counts_what_the_account_holds_without_naming_any_of_it(): void
     {
         $account = Account::factory()->create();
