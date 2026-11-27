@@ -4,13 +4,13 @@ title: Delete your account
 description: Learn what deleting your account removes for good, what to keep first, and the steps to delete it.
 slug: delete-your-account
 section: your-account-and-security
-last_updated: 2026-11-20
+last_updated: 2026-11-27
 ---
 
 # Delete your account
 
 :::warning
-Deleting your account deletes everything in it: every vault, every person in them, every note and every photo, your logs and the copies of your emails. Nothing can be recovered afterwards.
+Deleting your account deletes everything in it: every vault, every person in them, every note, every photo and every file you uploaded, your logs and the copies of your emails. You are signed out of every device. Nothing can be recovered afterwards.
 :::
 
 ## Before you delete it

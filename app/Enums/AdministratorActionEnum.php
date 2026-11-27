@@ -13,6 +13,7 @@ enum AdministratorActionEnum: string implements Translatable
     case MarketplaceVersionRejected = 'marketplace_version_rejected';
     case UserDeactivated = 'user_deactivated';
     case UserReactivated = 'user_reactivated';
+    case AccountDestroyed = 'account_destroyed';
     case AccountStorageLimitUpdated = 'account_storage_limit_updated';
     case LifetimeAccessGranted = 'lifetime_access_granted';
     case LifetimeAccessWithdrawn = 'lifetime_access_withdrawn';
@@ -46,6 +47,7 @@ enum AdministratorActionEnum: string implements Translatable
             self::MarketplaceVersionRejected => 'Rejected version :version of :name',
             self::UserDeactivated => 'Deactivated :name',
             self::UserReactivated => 'Reactivated :name',
+            self::AccountDestroyed => 'Deleted account :account and everything in it',
             self::AccountStorageLimitUpdated => 'Changed the storage limit of the account of :name',
             self::LifetimeAccessGranted => 'Granted lifetime access to the account of :name',
             self::LifetimeAccessWithdrawn => 'Withdrew lifetime access from the account of :name',
@@ -79,6 +81,7 @@ enum AdministratorActionEnum: string implements Translatable
         return match ($this) {
             self::MarketplaceVersionApproved, self::MarketplaceVersionRejected => 'tasks',
             self::UserDeactivated, self::UserReactivated => 'profile',
+            self::AccountDestroyed => 'close',
             self::AccountStorageLimitUpdated => 'layers',
             self::LifetimeAccessGranted, self::LifetimeAccessWithdrawn => 'star',
             self::AdministratorAccessGranted, self::AdministratorAccessWithdrawn => 'key',
@@ -112,6 +115,7 @@ enum AdministratorActionEnum: string implements Translatable
             self::ChangelogCommentHidden,
             self::ChangelogCommentShown,
             self::ChangelogCommentReplied => true,
+            self::AccountDestroyed,
             self::MarketplaceVersionApproved,
             self::MarketplaceVersionRejected,
             self::InstanceSettingUpdated,

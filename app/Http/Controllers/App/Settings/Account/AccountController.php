@@ -27,7 +27,7 @@ class AccountController extends Controller
         ]);
 
         try {
-            new DestroyAccount(user: $user, account: $user->account)->execute();
+            new DestroyAccount(account: $user->account)->execute();
         } catch (ProviderUnreachable $e) {
             return back()->withErrors(['confirm_email' => $e->getMessage()]);
         }

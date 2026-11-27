@@ -24,7 +24,7 @@ class PasskeyAccountDeletionTest extends TestCase
         $user = User::factory()->create();
         $passkey = Passkey::factory()->create(['user_id' => $user->id]);
 
-        new DestroyAccount(user: $user, account: $user->account)->execute();
+        new DestroyAccount(account: $user->account)->execute();
 
         $this->assertModelMissing($passkey);
         $this->assertDatabaseCount('passkeys', 0);

@@ -10,6 +10,7 @@ use App\Models\Account;
 use App\Models\AccountExport;
 use App\Models\AccountImport;
 use App\Models\EmailSent;
+use App\Models\File;
 use App\Models\Log;
 use App\Models\MagicLink;
 use App\Models\Payment;
@@ -17,10 +18,13 @@ use App\Models\SupportAttachment;
 use App\Models\SupportMessage;
 use App\Models\SupportRequest;
 use App\Models\User;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Models\Vault;
+use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Pennant\Feature;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\Fixtures\Features\ExampleCapability;
 use Tests\TestCase;
@@ -39,10 +43,7 @@ class DestroyAccountTest extends TestCase
         $magicLink = MagicLink::factory()->create(['user_id' => $user->id]);
         $apiKey = $user->createToken('Dundie awards bot')->accessToken;
 
-        new DestroyAccount(
-            user: $user,
-            account: $account,
-        )->execute();
+        new DestroyAccount(account: $account)->execute();
 
         $this->assertModelMissing($account);
         $this->assertModelMissing($user);
@@ -63,10 +64,7 @@ class DestroyAccountTest extends TestCase
         $account->features()->activate(ExampleCapability::class);
         $neighbour->features()->activate(ExampleCapability::class);
 
-        new DestroyAccount(
-            user: $user,
-            account: $account,
-        )->execute();
+        new DestroyAccount(account: $account)->execute();
 
         $this->assertDatabaseMissing('features', ['scope' => Feature::serializeScope($account)]);
         $this->assertDatabaseHas('features', ['scope' => Feature::serializeScope($neighbour)]);
@@ -87,10 +85,7 @@ class DestroyAccountTest extends TestCase
             Storage::put($user->photoVariantPath($pixels), 'a beet farm');
         }
 
-        new DestroyAccount(
-            user: $user,
-            account: $account,
-        )->execute();
+        new DestroyAccount(account: $account)->execute();
 
         foreach (User::photoPixelSizes() as $pixels) {
             Storage::assertMissing($user->photoVariantPath($pixels));
@@ -112,10 +107,7 @@ class DestroyAccountTest extends TestCase
         Storage::disk('local')->put($import->path, '{}');
         Storage::disk('s3')->put($stamford->path, '{}');
 
-        new DestroyAccount(
-            user: $user,
-            account: $account,
-        )->execute();
+        new DestroyAccount(account: $account)->execute();
 
         Storage::disk('s3')->assertMissing($export->path);
         Storage::disk('local')->assertMissing($import->path);
@@ -137,10 +129,7 @@ class DestroyAccountTest extends TestCase
         Storage::disk('local')->put($screenshot->path, 'png');
         Storage::disk('local')->put($stamford->path, 'png');
 
-        new DestroyAccount(
-            user: $user,
-            account: $account,
-        )->execute();
+        new DestroyAccount(account: $account)->execute();
 
         Storage::disk('local')->assertMissing($screenshot->path);
         Storage::disk('local')->assertExists($stamford->path);
@@ -148,17 +137,77 @@ class DestroyAccountTest extends TestCase
     }
 
     #[Test]
-    public function it_throws_when_the_user_belongs_to_another_account(): void
+    public function it_deletes_the_files_uploaded_to_the_vaults_of_the_account_from_every_disk(): void
     {
-        $this->expectException(ModelNotFoundException::class);
+        Storage::fake('local');
+        Storage::fake('s3');
 
+        $dwight = User::factory()->create();
+        $jim = User::factory()->create();
+        $farm = Vault::factory()->create(['account_id' => $dwight->account_id]);
+        $harvest = File::factory()->create([
+            'account_id' => $dwight->account_id,
+            'vault_id' => $farm->id,
+            'disk' => 's3',
+            'path' => File::directoryFor($dwight->account_id, $farm->id).'/beet-harvest-1987.pdf',
+        ]);
+        $avatar = File::factory()->create(['account_id' => $dwight->account_id, 'disk' => 'local']);
+        $prank = File::factory()->create(['account_id' => $jim->account_id, 'disk' => 's3']);
+        Storage::disk('s3')->put($harvest->path, 'pdf');
+        Storage::disk('local')->put($avatar->path, 'webp');
+        Storage::disk('s3')->put($prank->path, 'pdf');
+
+        new DestroyAccount(account: $dwight->account)->execute();
+
+        Storage::disk('s3')->assertMissing($harvest->path);
+        Storage::disk('local')->assertMissing($avatar->path);
+        Storage::disk('s3')->assertExists($prank->path);
+        $this->assertModelMissing($harvest);
+    }
+
+    #[Test]
+    public function it_signs_the_person_out_of_every_device(): void
+    {
+        config(['session.driver' => 'database']);
+
+        $dwight = User::factory()->create();
+        $jim = User::factory()->create();
+
+        foreach (['dwight-desktop' => $dwight, 'dwight-phone' => $dwight, 'jim-desktop' => $jim] as $id => $user) {
+            DB::table('sessions')->insert([
+                'id' => $id,
+                'user_id' => $user->id,
+                'payload' => '',
+                'last_activity' => now()->timestamp,
+            ]);
+        }
+
+        new DestroyAccount(account: $dwight->account)->execute();
+
+        $this->assertDatabaseMissing('sessions', ['user_id' => $dwight->id]);
+        $this->assertDatabaseHas('sessions', ['id' => 'jim-desktop', 'user_id' => $jim->id]);
+    }
+
+    #[Test]
+    public function it_deletes_an_account_whose_person_was_already_deleted(): void
+    {
+        $toby = User::factory()->create();
+        $toby->delete();
+
+        new DestroyAccount(account: $toby->account)->execute();
+
+        $this->assertModelMissing($toby->account);
+        $this->assertDatabaseMissing('users', ['id' => $toby->id]);
+    }
+
+    #[Test]
+    public function it_deletes_an_account_that_holds_nobody(): void
+    {
         $account = Account::factory()->create();
-        $stranger = User::factory()->create();
 
-        new DestroyAccount(
-            user: $stranger,
-            account: $account,
-        )->execute();
+        new DestroyAccount(account: $account)->execute();
+
+        $this->assertModelMissing($account);
     }
 
     #[Test]
@@ -169,10 +218,60 @@ class DestroyAccountTest extends TestCase
         $michael = User::factory()->create();
         $subscription = $this->subscribeAccount($michael->account);
 
-        new DestroyAccount(user: $michael, account: $michael->account)->execute();
+        new DestroyAccount(account: $michael->account)->execute();
 
         $this->assertModelMissing($michael->account);
         $this->assertModelMissing($subscription);
+    }
+
+    #[Test]
+    #[DataProvider('subscriptionsStripeStillHoldsOpen')]
+    public function it_stops_a_subscription_stripe_still_holds_open_even_when_it_is_not_paid(string $status): void
+    {
+        $client = $this->fakeStripe();
+
+        $michael = User::factory()->create();
+        $this->subscribeAccount($michael->account, status: $status);
+
+        new DestroyAccount(account: $michael->account)->execute();
+
+        $this->assertTrue($client->sent('DELETE subscriptions/sub_dundermifflin'));
+        $this->assertModelMissing($michael->account);
+    }
+
+    /** @return array<string, array{string}> */
+    public static function subscriptionsStripeStillHoldsOpen(): array
+    {
+        return [
+            'unpaid' => ['unpaid'],
+            'incomplete' => ['incomplete'],
+            'past due' => ['past_due'],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('subscriptionsStripeAlreadyEnded')]
+    public function it_asks_stripe_nothing_about_a_subscription_that_is_already_over(string $status, ?string $endsAt): void
+    {
+        $client = $this->fakeStripe();
+
+        $michael = User::factory()->create();
+        $this->subscribeAccount($michael->account, status: $status, endsAt: $endsAt === null ? null : CarbonImmutable::parse($endsAt));
+
+        new DestroyAccount(account: $michael->account)->execute();
+
+        $this->assertFalse($client->sent('DELETE subscriptions/*'));
+        $this->assertModelMissing($michael->account);
+    }
+
+    /** @return array<string, array{string, string|null}> */
+    public static function subscriptionsStripeAlreadyEnded(): array
+    {
+        return [
+            'cancelled and past its end' => ['canceled', '2026-01-01'],
+            'cancelled by Stripe' => ['canceled', null],
+            'never paid and expired' => ['incomplete_expired', null],
+        ];
     }
 
     #[Test]
@@ -183,7 +282,7 @@ class DestroyAccountTest extends TestCase
         $michael = User::factory()->create();
         $payment = Payment::factory()->create(['account_id' => $michael->account_id]);
 
-        new DestroyAccount(user: $michael, account: $michael->account)->execute();
+        new DestroyAccount(account: $michael->account)->execute();
 
         $this->assertModelMissing($payment);
     }
@@ -200,7 +299,7 @@ class DestroyAccountTest extends TestCase
         $this->subscribeAccount($michael->account);
 
         try {
-            new DestroyAccount(user: $michael, account: $michael->account)->execute();
+            new DestroyAccount(account: $michael->account)->execute();
         } finally {
             $this->assertModelExists($michael->account);
             $this->assertModelExists($michael);
@@ -214,7 +313,7 @@ class DestroyAccountTest extends TestCase
 
         $michael = User::factory()->create();
 
-        new DestroyAccount(user: $michael, account: $michael->account)->execute();
+        new DestroyAccount(account: $michael->account)->execute();
 
         $this->assertModelMissing($michael->account);
         $this->assertSame([], $client->requests());

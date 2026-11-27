@@ -78,6 +78,7 @@ Route::middleware(['administrator', Sample::always()])->group(function (): void 
 
     Route::get('admin/accounts', [AccountController::class, 'index'])->name('admin.accounts.index');
     Route::get('admin/accounts/{account}', [AccountController::class, 'show'])->whereNumber('account')->name('admin.accounts.show');
+    Route::delete('admin/accounts/{account}', [AccountController::class, 'destroy'])->whereNumber('account')->name('admin.accounts.destroy');
 
     Route::put('admin/accounts/{account}/storage-limit', [AccountStorageLimitController::class, 'update'])->whereNumber('account')->name('admin.accounts.storageLimit.update');
     Route::post('admin/accounts/{account}/lifetime-access', [AccountLifetimeAccessController::class, 'create'])->whereNumber('account')->name('admin.accounts.lifetimeAccess.create');

@@ -3,6 +3,7 @@
   @var string|null $title
   @var string|null $description
   @var string|null $confirm
+  @var string $confirmVariant
   @var string|null $cancel
   @var string $method
   @var string $action
@@ -12,6 +13,7 @@
   'title' => null,
   'description' => null,
   'confirm' => null,
+  'confirmVariant' => 'primary',
   'cancel' => null,
   'method' => 'post',
   'action' => '',
@@ -57,7 +59,7 @@
           <div class="flex flex-col-reverse gap-3 border-t border-hairline bg-sunken px-5 py-3.5 sm:flex-row sm:justify-end">
             <x-button.secondary size="small" type="button" @click="open = false">{{ $cancel ?? __('Cancel') }}</x-button.secondary>
 
-            <x-button size="small">{{ $confirm ?? __('Save') }}</x-button>
+            <x-button size="small" :variant="$confirmVariant">{{ $confirm ?? __('Save') }}</x-button>
           </div>
         </x-form>
       </div>
