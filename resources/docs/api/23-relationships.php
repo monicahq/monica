@@ -170,7 +170,7 @@ return [
             'description' => 'Change the type of a relationship, whether it ended, its dates or which side holds which role.',
             'body' => [
                 'Every field is optional. A field you leave out keeps its value, and a date sent as null is cleared. Setting status back to current clears the end date.',
-                'A change that would leave the two people with two current relationships of the same type answers 422 on relationship_type.',
+                'Changing the type, the roles or the status so that the two people would hold two current relationships of the same type answers 422 on relationship_type. A change that touches none of those three, such as a date, is always accepted.',
                 'An end date before the start date answers 422 on ended_on. first_name, last_name and creates_record only apply to somebody without a record of their own, and answer 422 for anybody else, who is renamed on their own record.',
             ],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
