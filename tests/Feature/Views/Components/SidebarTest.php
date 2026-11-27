@@ -94,7 +94,7 @@ class SidebarTest extends TestCase
             ->withHeader('User-Agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Safari/605.1.15')
             ->get(route('vaults.show', $vault));
 
-        $response->assertSee(route('search.index', $vault), escape: false);
+        $response->assertSee('href="'.route('search.index', $vault).'#query"', escape: false);
         $response->assertSee('x-data="searchShortcut(', escape: false);
         $response->assertSee('aria-keyshortcuts="Meta+K"', escape: false);
         $response->assertSee('⌘K');

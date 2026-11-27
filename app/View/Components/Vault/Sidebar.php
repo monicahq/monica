@@ -51,7 +51,7 @@ class Sidebar extends Component
         $usesCommandKey = preg_match('/Macintosh|Mac OS X|iPhone|iPad/', (string) request()->userAgent()) === 1;
 
         return [
-            'url' => route('search.index', $this->vault),
+            'url' => route('search.index', $this->vault).'#query',
             'usesCommandKey' => $usesCommandKey,
             'keys' => $usesCommandKey ? 'Meta+K' : 'Control+K',
             'label' => $usesCommandKey ? '⌘K' : __('Ctrl K'),

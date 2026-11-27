@@ -74,8 +74,8 @@
               <h2 class="mt-10 mb-2 text-section-title text-ink">Why it changed</h2>
               <p class="leading-[1.65] text-pretty">{{ $entry->why }}</p>
 
-              <h2 class="mt-10 mb-3 text-section-title text-ink">Changes</h2>
-              <div tabindex="0" role="region" aria-label="Changes" class="overflow-x-auto rounded-lg border border-hairline bg-canvas shadow-panel focus-ring">
+              <h2 id="changes-title" class="mt-10 mb-3 text-section-title text-ink">Changes</h2>
+              <x-scroll-region labelledby="changes-title" class="rounded-lg border border-hairline bg-canvas shadow-panel">
                 <table class="w-full min-w-120 text-left">
                   <thead class="border-b border-hairline bg-card text-xs text-ink">
                     <tr>
@@ -110,7 +110,7 @@
                     @endforeach
                   </tbody>
                 </table>
-              </div>
+              </x-scroll-region>
 
               @if ($sameRelease !== [])
                 <h2 class="mt-10 mb-3 text-section-title text-ink">In the same release</h2>
@@ -129,7 +129,7 @@
                   class="overflow-hidden rounded-lg border border-hairline bg-sunken"
                 >
                   <div class="flex items-center gap-2 border-b border-hairline-soft bg-hover px-3 py-2">
-                    <span class="flex-1 font-mono text-xs font-medium text-ink">{{ $entry->example['label'] ?? 'Example' }}</span>
+                    <span id="example-label" class="flex-1 font-mono text-xs font-medium text-ink">{{ $entry->example['label'] ?? 'Example' }}</span>
 
                     @if ($entry->hasBefore())
                       <div role="group" aria-label="Shape shown" class="flex gap-0.5">
@@ -154,7 +154,9 @@
                     >Copy</button>
                   </div>
 
-                  <pre tabindex="0" role="region" aria-label="Example shape" class="overflow-x-auto px-4 py-3.5 focus-ring-inset font-mono text-xs leading-[1.75] text-ink-soft" x-text="shapes[side]">{{ $entry->example['after'] }}</pre>
+                  <x-scroll-region labelledby="example-label">
+                    <pre class="w-max min-w-full px-4 py-3.5 font-mono text-xs leading-[1.75] text-ink-soft" x-text="shapes[side]">{{ $entry->example['after'] }}</pre>
+                  </x-scroll-region>
                 </div>
 
                 @if ($entry->hasBefore())

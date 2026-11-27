@@ -28,12 +28,7 @@
   @else
     {{-- A tier gathers onto one line: a stub under each node and a bar that stops halfway under the
       outermost two, so any number of people needs no arithmetic. A tier of one drops the bar. --}}
-    <div
-      tabindex="0"
-      role="group"
-      aria-labelledby="family-tree"
-      class="h-72 overflow-auto bg-card px-4 py-5 focus-ring-inset"
-    >
+    <x-scroll-region labelledby="family-tree" role="group" class="h-72 overflow-y-auto bg-card px-4 py-5">
       <div class="mx-auto flex w-max min-w-full flex-col items-center">
         @if ($tree->parents() !== [])
           <h4 class="sr-only">{{ __('Parents') }}</h4>
@@ -87,7 +82,7 @@
           </ul>
         @endif
       </div>
-    </div>
+    </x-scroll-region>
   @endif
 </x-panel>
 

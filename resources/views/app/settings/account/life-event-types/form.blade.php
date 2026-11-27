@@ -44,6 +44,7 @@
             id="is_active"
             form="life-event-type-form"
             :checked="$viewModel->isActive()"
+            :aria-label="__('Offered when recording')"
             :title="$viewModel->availabilityHelp()"
             aria-describedby="life-event-type-availability"
             x-model="active"

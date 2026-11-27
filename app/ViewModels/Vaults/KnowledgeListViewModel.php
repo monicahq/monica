@@ -126,8 +126,8 @@ class KnowledgeListViewModel
                     })
                     ->values()
                     ->all(),
-                'editUrl' => route('knowledge.listItems.edit', [$this->vault(), $this->list, $item]),
-                'updateUrl' => route('knowledge.listItems.update', [$this->vault(), $this->list, $item]),
+                'editUrl' => route('knowledge.listItems.edit', [$this->vault(), $this->list, $item])."#item-{$item->uuid}-edit",
+                'updateUrl' => route('knowledge.listItems.update', [$this->vault(), $this->list, $item])."#item-{$item->uuid}-edit",
                 'destroyUrl' => route('knowledge.listItems.destroy', [$this->vault(), $this->list, $item]),
                 'cancelUrl' => "{$this->showUrl()}#item-{$item->uuid}",
                 'deleteTitle' => __('Delete this item of “:title”?', ['title' => $this->list->title]),

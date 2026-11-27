@@ -258,7 +258,10 @@
 
     <section x-cloak x-show="offersAList" class="flex flex-col gap-3">
       <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <h2 class="shrink-0 text-section-title text-ink" x-text="offersALabel ? @js(__('Where do the labels come from?')) : @js(__('Where do the choices come from?'))"></h2>
+        <h2 class="shrink-0 text-section-title text-ink">
+          <span x-cloak x-show="! offersALabel">{{ __('Where do the choices come from?') }}</span>
+          <span x-cloak x-show="offersALabel">{{ __('Where do the labels come from?') }}</span>
+        </h2>
 
         <p x-cloak x-show="! offersALabel" class="text-sm text-pretty text-muted">{{ __('A field that offers choices reads them from a value list. The same options can then be reused everywhere, instead of retyped into every field.') }}</p>
 
