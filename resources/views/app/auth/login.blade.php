@@ -17,7 +17,7 @@
         :error="$errors->get('email')"
         allowPasswordManager
         required
-        autofocus
+        :autofocus="session('status') === null"
       />
 
       <x-input

@@ -35,7 +35,7 @@ class EmailVerificationController extends Controller
             abort(403);
         }
 
-        if (! hash_equals(sha1($user->getEmailForVerification()), (string) $request->route()->parameter('hash'))) {
+        if (! hash_equals(hash('sha256', $user->getEmailForVerification()), (string) $request->route()->parameter('hash'))) {
             abort(403);
         }
 
@@ -45,7 +45,7 @@ class EmailVerificationController extends Controller
 
         new ConfirmEmailAddress(user: $user)->execute();
 
-        return redirect()->route('home.index')->with('status', __('Your email address is confirmed.'));
+        return redirect()->intended(route('home.index'))->with('status', __('Your email address is confirmed.'));
     }
 
     public function create(Request $request): RedirectResponse

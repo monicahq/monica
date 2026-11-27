@@ -6,12 +6,14 @@ namespace Tests\Unit\ViewModels\Settings\Account\Security;
 
 use App\Enums\SsoProviderEnum;
 use App\Models\Administrator;
+use App\Models\MobileSession;
 use App\Models\Passkey;
 use App\Models\ProviderConnection;
 use App\Models\SecurityKey;
 use App\Models\User;
 use App\ViewModels\Settings\Account\Security\SecurityViewModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Passport\Client;
 use Laravel\Pennant\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -301,5 +303,28 @@ class SecurityViewModelTest extends TestCase
         Passkey::factory()->create(['user_id' => $user->id]);
 
         $this->assertTrue(new SecurityViewModel(user: $user)->canRemoveThePassword());
+    }
+
+    #[Test]
+    public function it_lists_the_phones_still_signed_in_newest_first(): void
+    {
+        $user = User::factory()->create();
+        MobileSession::factory()->create(['user_id' => $user->id, 'device_name' => 'Pixel 9', 'created_at' => now()->subDays(2)]);
+        MobileSession::factory()->create(['user_id' => $user->id, 'device_name' => null, 'created_at' => now()->subDay()]);
+        MobileSession::factory()->ended()->create(['user_id' => $user->id, 'device_name' => 'Old phone']);
+        MobileSession::factory()->create(['device_name' => 'Somebody else’s phone']);
+
+        $sessions = new SecurityViewModel(user: $user)->mobileSessions();
+
+        $this->assertSame(['Unnamed phone', 'Pixel 9'], array_column($sessions, 'name'));
+    }
+
+    #[Test]
+    public function it_leaves_the_mobile_app_out_of_the_connected_assistants(): void
+    {
+        $user = User::factory()->create();
+        $this->oauthTokenFor(user: $user, client: Client::query()->findOrFail(MobileSession::CLIENT_ID));
+
+        $this->assertSame([], new SecurityViewModel(user: $user)->connectedAssistants());
     }
 }

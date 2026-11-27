@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Api\Auth;
 
+use App\Models\MobileSession;
 use App\Models\SecurityKey;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -235,5 +236,33 @@ class LoginControllerTest extends TestCase
         $this->withHeader('Authorization', 'Bearer '.$kept->plainTextToken)
             ->json('GET', '/api/v1/me')
             ->assertOk();
+    }
+
+    #[Test]
+    public function it_signs_out_the_phone_it_was_called_from(): void
+    {
+        $tokens = $this->signInFromThePhone(User::factory()->create());
+
+        $this->withToken($tokens['access_token'])->deleteJson('/api/v1/logout')->assertNoContent();
+
+        $this->assertNotNull(MobileSession::query()->sole()->ended_at);
+    }
+
+    #[Test]
+    public function it_signs_out_a_phone_whose_session_was_never_recorded(): void
+    {
+        $tokens = $this->signInFromThePhone(User::factory()->create());
+        MobileSession::query()->delete();
+
+        $this->withToken($tokens['access_token'])->deleteJson('/api/v1/logout')->assertNoContent();
+
+        $this->app['auth']->forgetGuards();
+        $this->withToken($tokens['access_token'])->getJson('/api/v1/me')->assertUnauthorized();
+        $this->postJson('/oauth/token', [
+            'grant_type' => 'refresh_token',
+            'client_id' => MobileSession::CLIENT_ID,
+            'refresh_token' => $tokens['refresh_token'],
+            'scope' => MobileSession::SCOPE,
+        ])->assertStatus(400);
     }
 }

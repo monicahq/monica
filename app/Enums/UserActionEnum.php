@@ -35,6 +35,8 @@ enum UserActionEnum: string implements Translatable
     case ApiKeyCreation = 'api_key_created';
     case ApiKeyDeletion = 'api_key_deleted';
     case AssistantDisconnection = 'assistant_disconnected';
+    case MobileSessionCreation = 'mobile_session_created';
+    case MobileSessionEnd = 'mobile_session_ended';
     case SessionRemoved = 'session_removed';
     case OtherSessionsRemoved = 'other_sessions_removed';
     case PasskeyAdded = 'passkey_added';
@@ -339,6 +341,8 @@ enum UserActionEnum: string implements Translatable
             self::ApiKeyCreation => 'Created the API key called :name',
             self::ApiKeyDeletion => 'Revoked the API key called :name',
             self::AssistantDisconnection => 'Disconnected the assistant called :name',
+            self::MobileSessionCreation => 'Signed in on the phone :name',
+            self::MobileSessionEnd => 'Signed out the phone :name',
             self::SessionRemoved => 'Removed the session on :device',
             self::OtherSessionsRemoved => 'Signed out every other device',
             self::PasskeyAdded => 'Added the passkey called :name',

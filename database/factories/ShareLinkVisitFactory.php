@@ -21,7 +21,7 @@ class ShareLinkVisitFactory extends Factory
         return [
             'share_link_id' => ShareLink::factory(),
             'account_id' => fn (array $attributes): int => ShareLink::query()->findOrFail($attributes['share_link_id'])->account_id,
-            'ip_address' => '192.168.1.1',
+            'ip_address' => fake()->ipv4(),
             'user_agent' => 'Mozilla/5.0',
             'country' => 'US',
             'password_was_required' => false,

@@ -26,7 +26,7 @@ class EmailVerificationControllerTest extends TestCase
             now()->addMinutes(60),
             [
                 'id' => $user->id,
-                'hash' => sha1((string) $user->email),
+                'hash' => hash('sha256', (string) $user->email),
             ],
         );
     }
@@ -81,7 +81,7 @@ class EmailVerificationControllerTest extends TestCase
             now()->addMinutes(60),
             [
                 'id' => $user->id,
-                'hash' => sha1('dwight.schrute@dundermifflin.com'),
+                'hash' => hash('sha256', 'dwight.schrute@dundermifflin.com'),
             ],
         );
 
@@ -128,5 +128,20 @@ class EmailVerificationControllerTest extends TestCase
         $response->assertRedirect(route('home.index'));
 
         Notification::assertNothingSent();
+    }
+
+    #[Test]
+    public function it_takes_somebody_who_signed_up_from_the_app_back_to_the_app(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->unverified()->create();
+        $authorization = route('passport.authorizations.authorize').'?client_id=mobile&prompt=create';
+
+        $response = $this->actingAs($user)
+            ->withSession(['url.intended' => $authorization])
+            ->get($this->verificationUrl($user));
+
+        $response->assertRedirect($authorization);
     }
 }

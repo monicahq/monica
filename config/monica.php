@@ -323,6 +323,21 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | The oldest mobile app this instance accepts
+    |--------------------------------------------------------------------------
+    |
+    | The status endpoint tells the Android app the oldest version of it that
+    | this instance still works with, so an older app asks to be updated rather
+    | than failing halfway. Leave it empty to accept every version.
+    |
+    */
+
+    'mobile' => [
+        'minimum_android_version' => env('MONICA_MINIMUM_ANDROID_VERSION'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | How many things one page of an API list holds
     |--------------------------------------------------------------------------
     |

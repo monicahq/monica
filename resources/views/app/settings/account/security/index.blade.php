@@ -66,6 +66,12 @@
     </x-panel>
   </x-page-section>
 
+  <x-page-section :title="__('Mobile apps')" :description="__('Every phone signed in through the Monica app. Sign one out if you lose it.')">
+    <x-panel :flush="true">
+      @include('app.settings.account.security._mobile-apps', ['viewModel' => $viewModel])
+    </x-panel>
+  </x-page-section>
+
   <x-page-section :title="__('API keys')" :description="__('An API key lets a script or another system act as you, with exactly the access you have.')">
     <x-panel :flush="true">
       @include('app.settings.account.security._api-keys', ['viewModel' => $viewModel])

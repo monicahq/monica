@@ -296,13 +296,13 @@ class CalendarBackend implements BackendInterface, SyncSupport
         ];
 
         if (! $withCalendar) {
-            $row['etag'] = '"'.md5((string) $entry['lastmodified'].$entry['uid'].app()->getLocale()).'"';
+            $row['etag'] = '"'.hash('sha256', (string) $entry['lastmodified'].$entry['uid'].app()->getLocale()).'"';
 
             return $row;
         }
 
         $row['calendardata'] = ($entry['calendar'])();
-        $row['etag'] = '"'.md5($row['calendardata']).'"';
+        $row['etag'] = '"'.hash('sha256', $row['calendardata']).'"';
         $row['size'] = strlen($row['calendardata']);
 
         return $row;

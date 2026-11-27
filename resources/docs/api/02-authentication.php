@@ -156,6 +156,7 @@ return [
             'description' => 'Revokes the token you are calling with. Anything still using it stops working, immediately.',
             'body' => [
                 'Your other tokens are untouched, which is the point of naming them: an integration you no longer trust can be cut off without signing everything else out.',
+                'Called with the token of the Monica mobile app, it signs that phone out: its refresh token stops working too, and your other phones stay signed in.',
             ],
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'returns' => 'Nothing at all.',

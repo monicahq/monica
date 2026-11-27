@@ -15,8 +15,21 @@ use Illuminate\View\View;
 
 class LoginController extends Controller
 {
-    public function new(): View
+    public function new(Request $request): View|RedirectResponse
     {
+        if ($this->asksToCreateAnAccount($request)) {
+            $intended = (string) $request->session()->get('url.intended');
+
+            // Sent to the registration page once per request of the app, so its "Sign in instead" leads here.
+            if (config('monica.registration_enabled') && $request->session()->get('auth.signUpOffered') !== $intended) {
+                $request->session()->put('auth.signUpOffered', $intended);
+
+                return redirect()->route('auth.register.new');
+            }
+
+            $request->session()->now('status', __('This instance does not accept new accounts. Log in, or ask the person who runs it for an account.'));
+        }
+
         return view('app.auth.login', [
             'viewModel' => new LoginViewModel,
         ]);
@@ -64,5 +77,23 @@ class LoginController extends Controller
         $request->session()->regenerateToken();
 
         return redirect()->route('home.index');
+    }
+
+    /**
+     * Whether the person was sent here by the mobile app tapping Sign up: an authorization request
+     * waiting for them to sign in, whose prompt asks for an account to be created.
+     */
+    private function asksToCreateAnAccount(Request $request): bool
+    {
+        $intended = (string) $request->session()->get('url.intended');
+
+        // Compared by path, as the address the request reached can differ from the configured one.
+        if (! str_ends_with((string) parse_url($intended, PHP_URL_PATH), route('passport.authorizations.authorize', absolute: false))) {
+            return false;
+        }
+
+        parse_str((string) parse_url($intended, PHP_URL_QUERY), $query);
+
+        return in_array('create', explode(' ', (string) ($query['prompt'] ?? '')), true);
     }
 }

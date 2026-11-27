@@ -51,5 +51,31 @@ return [
                 ['field' => 'relationship_type', 'change' => 'Changed', 'endpoints' => ['PUT /vaults/{vault}/contacts/{contact}/relationships/{relationship}']],
             ],
         ],
+        [
+            'id' => 'mobile-app-sign-in',
+            'kind' => 'Added',
+            'group' => 'API keys',
+            'title' => 'The Monica mobile apps sign in through OAuth and reach the API',
+            'summary' => 'The API accepts an OAuth access token carrying the new api scope, which only the mobile apps can obtain, next to API keys. GET /status describes how the apps sign in to the instance in a new mobile object. Three endpoints list a person\'s phones signed in through the app, show one, and sign one out. DELETE /logout called with the token of a phone signs that phone out.',
+            'why' => 'The Android app signs people in on any instance, official or self hosted, without asking them to make a key by hand.',
+            'breaking' => false,
+            'changes' => [
+                ['field' => 'mobile', 'change' => 'Added', 'endpoints' => ['GET /status']],
+                ['field' => 'mobile_session', 'change' => 'Added', 'endpoints' => ['GET /mobile-sessions', 'GET /mobile-sessions/{mobileSession}', 'DELETE /mobile-sessions/{mobileSession}']],
+                ['field' => 'Authorization', 'change' => 'Changed', 'endpoints' => []],
+            ],
+        ],
+        [
+            'id' => 'assistant-tokens-last-an-hour',
+            'kind' => 'Changed',
+            'group' => 'API keys',
+            'title' => 'OAuth access tokens last an hour',
+            'summary' => 'An OAuth access token, given to an assistant reaching the MCP server or to the mobile app, now lasts an hour instead of a day. Its refresh token still lasts 30 days and renews it. API keys are unchanged.',
+            'why' => 'Access taken back from an assistant or a phone stops within the hour.',
+            'breaking' => false,
+            'changes' => [
+                ['field' => 'expires_in', 'change' => 'Changed', 'endpoints' => []],
+            ],
+        ],
     ],
 ];
