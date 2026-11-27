@@ -203,6 +203,9 @@ jobs:
     needs:
       - changes
       - tests
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - name: Checkout sources
         if: needs.changes.outputs.code == 'true'
