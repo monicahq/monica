@@ -57,7 +57,7 @@
               </form>
 
               <a
-                href="{{ route('search.index', $searchVault) }}"
+                href="{{ route('search.index', $searchVault) }}#query"
                 data-turbo="true"
                 aria-label="{{ __('Search this vault') }}"
                 class="flex size-9 items-center justify-center rounded-md text-muted hover:bg-hover hover:text-ink focus-ring md:hidden"

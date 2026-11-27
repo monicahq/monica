@@ -32,7 +32,6 @@
             autocomplete="off"
             aria-describedby="query-help"
             data-1p-ignore
-            autofocus
             class="focus-ring-field h-9 w-full rounded-md border border-hairline-strong bg-input pr-3 pl-9 font-sans text-[16px] text-ink transition duration-(--duration-fast) ease-out placeholder:text-placeholder hover:border-muted-soft sm:text-sm"
           />
         </div>
