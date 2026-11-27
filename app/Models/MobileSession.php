@@ -60,7 +60,12 @@ class MobileSession extends Model
 
     public const string CLIENT_ID = '0198f6a4-7c2e-7d3b-9a61-5e0b4c8d2f17';
 
-    public const string REDIRECT_URI = 'com.monicahq.android:/oauth/callback';
+    public const string ANDROID_REDIRECT_URI = 'com.monicahq.android:/oauth/callback';
+
+    public const string IOS_REDIRECT_URI = 'com.monicahq.ios:/oauth/callback';
+
+    /** The return addresses of the mobile client, one per app. */
+    public const array REDIRECT_URIS = [self::ANDROID_REDIRECT_URI, self::IOS_REDIRECT_URI];
 
     public const string SCOPE = 'api';
 

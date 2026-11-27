@@ -30,6 +30,7 @@ class StatusController extends Controller
                 'scope' => MobileSession::SCOPE,
                 'registration_enabled' => (bool) config('monica.registration_enabled'),
                 'minimum_android_version' => config('monica.mobile.minimum_android_version') ?: null,
+                'minimum_ios_version' => config('monica.mobile.minimum_ios_version') ?: null,
             ],
         ], 200);
     }

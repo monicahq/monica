@@ -52,9 +52,13 @@ class OAuthAuthorizationViewModel extends GuestViewModel
 
     public function title(): string
     {
-        return $this->isMobileApp()
-            ? __('Allow Monica for Android to reach your account?')
-            : __('Connect :name', ['name' => $this->clientName()]);
+        if (! $this->isMobileApp()) {
+            return __('Connect :name', ['name' => $this->clientName()]);
+        }
+
+        return $this->redirectUri === MobileSession::IOS_REDIRECT_URI
+            ? __('Allow Monica for iOS to reach your account?')
+            : __('Allow Monica for Android to reach your account?');
     }
 
     public function description(): string

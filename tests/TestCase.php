@@ -481,14 +481,14 @@ abstract class TestCase extends BaseTestCase
      *
      * @return array{access_token: string, refresh_token: string, code: string}
      */
-    protected function signInFromThePhone(User $user, ?string $deviceName = 'Pixel 9'): array
+    protected function signInFromThePhone(User $user, ?string $deviceName = 'Pixel 9', string $redirectUri = MobileSession::ANDROID_REDIRECT_URI): array
     {
         $verifier = Str::random(64);
         $challenge = strtr(rtrim(base64_encode(hash('sha256', $verifier, true)), '='), '+/', '-_');
 
         $this->actingAs($user)->get('/oauth/authorize?'.http_build_query([
             'client_id' => MobileSession::CLIENT_ID,
-            'redirect_uri' => MobileSession::REDIRECT_URI,
+            'redirect_uri' => $redirectUri,
             'response_type' => 'code',
             'scope' => MobileSession::SCOPE,
             'state' => 'beet-harvest',
@@ -510,7 +510,7 @@ abstract class TestCase extends BaseTestCase
         $tokens = $this->postJson('/oauth/token', array_filter([
             'grant_type' => 'authorization_code',
             'client_id' => MobileSession::CLIENT_ID,
-            'redirect_uri' => MobileSession::REDIRECT_URI,
+            'redirect_uri' => $redirectUri,
             'code_verifier' => $verifier,
             'code' => $query['code'],
             'device_name' => $deviceName,

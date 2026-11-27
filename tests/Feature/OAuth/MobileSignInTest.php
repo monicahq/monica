@@ -36,6 +36,79 @@ class MobileSignInTest extends TestCase
     }
 
     #[Test]
+    public function the_iphone_reaches_the_api_once_the_person_allowed_it(): void
+    {
+        $pam = User::factory()->create(['email' => 'pam@dundermifflin.com']);
+
+        $tokens = $this->signInFromThePhone($pam, 'iPhone 17', MobileSession::IOS_REDIRECT_URI);
+
+        $this->withToken($tokens['access_token'])->getJson('/api/v1/me')
+            ->assertOk()
+            ->assertJsonPath('data.attributes.email', 'pam@dundermifflin.com');
+
+        $session = MobileSession::query()->sole();
+        $this->assertSame($pam->id, $session->user_id);
+        $this->assertSame('iPhone 17', $session->device_name);
+    }
+
+    #[Test]
+    public function it_names_the_ios_app_on_the_consent_page(): void
+    {
+        $pam = User::factory()->create();
+
+        $this->actingAs($pam)->get($this->authorizationUrl(redirectUri: MobileSession::IOS_REDIRECT_URI))
+            ->assertOk()
+            ->assertSee('Allow Monica for iOS to reach your account?');
+    }
+
+    #[Test]
+    public function it_names_the_ios_app_on_the_consent_page_in_french(): void
+    {
+        $pam = User::factory()->create(['locale' => 'fr_FR']);
+
+        $this->actingAs($pam)->get($this->authorizationUrl(redirectUri: MobileSession::IOS_REDIRECT_URI))
+            ->assertOk()
+            ->assertSee("Autoriser Monica pour iOS à accéder à votre compte\u{202F}?");
+    }
+
+    #[Test]
+    public function it_sends_the_code_back_to_the_ios_app(): void
+    {
+        $pam = User::factory()->create();
+        $this->actingAs($pam)->get($this->authorizationUrl(redirectUri: MobileSession::IOS_REDIRECT_URI));
+
+        $response = $this->post('/oauth/authorize', [
+            'state' => '',
+            'client_id' => MobileSession::CLIENT_ID,
+            'auth_token' => session('authToken'),
+        ]);
+
+        $location = (string) $response->headers->get('Location');
+        $this->assertStringStartsWith(MobileSession::IOS_REDIRECT_URI.'?', $location);
+        parse_str((string) parse_url($location, PHP_URL_QUERY), $query);
+        $this->assertNotEmpty($query['code']);
+        $this->assertSame('beet-harvest', $query['state']);
+    }
+
+    #[Test]
+    public function it_refuses_a_code_of_the_ios_app_exchanged_with_the_android_address(): void
+    {
+        $pam = User::factory()->create();
+        $verifier = Str::random(64);
+        $code = $this->approvedCode($pam, MobileSession::IOS_REDIRECT_URI, $verifier);
+
+        $this->postJson('/oauth/token', [
+            'grant_type' => 'authorization_code',
+            'client_id' => MobileSession::CLIENT_ID,
+            'redirect_uri' => MobileSession::ANDROID_REDIRECT_URI,
+            'code_verifier' => $verifier,
+            'code' => $code,
+        ])->assertStatus(400)->assertJsonPath('error', 'invalid_request');
+
+        $this->assertSame(0, MobileSession::query()->count());
+    }
+
+    #[Test]
     public function it_shows_the_consent_page_even_when_the_person_allowed_the_app_before(): void
     {
         $pam = User::factory()->create();
@@ -75,7 +148,7 @@ class MobileSignInTest extends TestCase
         $this->postJson('/oauth/token', [
             'grant_type' => 'authorization_code',
             'client_id' => MobileSession::CLIENT_ID,
-            'redirect_uri' => MobileSession::REDIRECT_URI,
+            'redirect_uri' => MobileSession::ANDROID_REDIRECT_URI,
             'code_verifier' => Str::random(64),
             'code' => $code,
         ])->assertStatus(400)->assertJsonPath('error', 'invalid_grant');
@@ -88,7 +161,7 @@ class MobileSignInTest extends TestCase
     {
         $pam = User::factory()->create();
 
-        $this->actingAs($pam)->get($this->authorizationUrl(redirectUri: MobileSession::REDIRECT_URI.'s'))
+        $this->actingAs($pam)->get($this->authorizationUrl(redirectUri: MobileSession::ANDROID_REDIRECT_URI.'s'))
             ->assertStatus(401);
     }
 
@@ -104,7 +177,7 @@ class MobileSignInTest extends TestCase
             'auth_token' => session('authToken'),
         ]);
 
-        $response->assertRedirectContains(MobileSession::REDIRECT_URI);
+        $response->assertRedirectContains(MobileSession::ANDROID_REDIRECT_URI);
         $response->assertRedirectContains('error=access_denied');
         $this->assertSame(0, MobileSession::query()->count());
     }
@@ -146,9 +219,9 @@ class MobileSignInTest extends TestCase
             ->assertForbidden();
     }
 
-    private function approvedCode(User $user): string
+    private function approvedCode(User $user, string $redirectUri = MobileSession::ANDROID_REDIRECT_URI, ?string $verifier = null): string
     {
-        $this->actingAs($user)->get($this->authorizationUrl());
+        $this->actingAs($user)->get($this->authorizationUrl($redirectUri, $verifier));
 
         $approval = $this->post('/oauth/authorize', [
             'state' => '',
@@ -164,7 +237,7 @@ class MobileSignInTest extends TestCase
         return $query['code'];
     }
 
-    private function authorizationUrl(string $redirectUri = MobileSession::REDIRECT_URI): string
+    private function authorizationUrl(string $redirectUri = MobileSession::ANDROID_REDIRECT_URI, ?string $verifier = null): string
     {
         return '/oauth/authorize?'.http_build_query([
             'client_id' => MobileSession::CLIENT_ID,
@@ -172,7 +245,7 @@ class MobileSignInTest extends TestCase
             'response_type' => 'code',
             'scope' => MobileSession::SCOPE,
             'state' => 'beet-harvest',
-            'code_challenge' => strtr(rtrim(base64_encode(hash('sha256', Str::random(64), true)), '='), '+/', '-_'),
+            'code_challenge' => strtr(rtrim(base64_encode(hash('sha256', $verifier ?? Str::random(64), true)), '='), '+/', '-_'),
             'code_challenge_method' => 'S256',
         ]);
     }

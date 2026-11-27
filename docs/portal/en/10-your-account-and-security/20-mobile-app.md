@@ -1,15 +1,15 @@
 ---
 id: security.mobile-app
 title: Use Monica on your phone
-description: Log in from the Monica app on Android, and sign a phone out if you lose it.
+description: Log in from the Monica app on Android or iOS, and sign a phone out if you lose it.
 slug: mobile-app
 section: your-account-and-security
-last_updated: 2026-11-26
+last_updated: 2026-11-27
 ---
 
 # Use Monica on your phone
 
-The Monica app for Android reaches the same account as this website. You never type your password into the app: it opens the sign-in page of Monica in your phone’s browser, and you sign in there the way you always do, with your password, a passkey, a link sent by email or an outside provider, plus your second factor if you use one.
+The Monica app for Android and iOS reaches the same account as this website. You never type your password into the app: it opens the sign-in page of Monica in your phone’s browser, and you sign in there the way you always do, with your password, a passkey, a link sent by email or an outside provider, plus your second factor if you use one.
 
 ## Log in from the app
 
@@ -23,7 +23,7 @@ Tap **Log in**. Your browser opens the sign-in page of your Monica. Sign in.
 :::
 
 :::step title="Allow the app"
-Monica asks **Allow Monica for Android to reach your account?** Choose **Allow** only if you just tapped **Log in** or **Sign up** in the app. Monica asks this every time a phone signs in.
+Monica asks **Allow Monica for Android to reach your account?**, or **Allow Monica for iOS to reach your account?** on an iPhone. Choose **Allow** only if you just tapped **Log in** or **Sign up** in the app. Monica asks this every time a phone signs in.
 :::
 ::::
 

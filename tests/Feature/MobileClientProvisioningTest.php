@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature;
 
 use App\Models\MobileSession;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Passport\Client;
 use PHPUnit\Framework\Attributes\Test;
@@ -20,7 +21,7 @@ class MobileClientProvisioningTest extends TestCase
         $client = Client::query()->findOrFail(MobileSession::CLIENT_ID);
 
         $this->assertFalse($client->confidential());
-        $this->assertSame([MobileSession::REDIRECT_URI], $client->redirect_uris);
+        $this->assertSame(MobileSession::REDIRECT_URIS, $client->redirect_uris);
         $this->assertSame(['authorization_code', 'refresh_token'], $client->grant_types);
         $this->assertFalse($client->revoked);
     }
@@ -34,5 +35,48 @@ class MobileClientProvisioningTest extends TestCase
         $migration->up();
 
         $this->assertSame(1, Client::query()->whereKey(MobileSession::CLIENT_ID)->count());
+    }
+
+    #[Test]
+    public function letting_the_ios_app_sign_in_again_changes_nothing(): void
+    {
+        $migration = require database_path('migrations/2026_11_27_000000_let_the_ios_app_sign_in.php');
+
+        $clients = Client::query()->count();
+
+        $migration->up();
+        $migration->up();
+
+        $this->assertSame($clients, Client::query()->count());
+        $client = Client::query()->findOrFail(MobileSession::CLIENT_ID);
+        $this->assertSame(['com.monicahq.android:/oauth/callback', 'com.monicahq.ios:/oauth/callback'], $client->redirect_uris);
+    }
+
+    #[Test]
+    public function letting_the_ios_app_sign_in_keeps_the_android_phones_signed_in(): void
+    {
+        $tokens = $this->signInFromThePhone(User::factory()->create());
+
+        $migration = require database_path('migrations/2026_11_27_000000_let_the_ios_app_sign_in.php');
+        $migration->up();
+
+        $this->withHeader('Authorization', 'Basic '.base64_encode(MobileSession::CLIENT_ID.':'))
+            ->postJson('/oauth/token', [
+                'grant_type' => 'refresh_token',
+                'refresh_token' => $tokens['refresh_token'],
+                'scope' => MobileSession::SCOPE,
+            ])->assertOk();
+
+        $this->assertNull(MobileSession::query()->sole()->ended_at);
+    }
+
+    #[Test]
+    public function undoing_it_leaves_only_the_android_app(): void
+    {
+        $migration = require database_path('migrations/2026_11_27_000000_let_the_ios_app_sign_in.php');
+
+        $migration->down();
+
+        $this->assertSame(['com.monicahq.android:/oauth/callback'], Client::query()->findOrFail(MobileSession::CLIENT_ID)->redirect_uris);
     }
 }

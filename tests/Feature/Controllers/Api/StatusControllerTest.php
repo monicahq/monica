@@ -29,7 +29,7 @@ class StatusControllerTest extends TestCase
     #[Test]
     public function it_tells_the_mobile_apps_how_to_sign_in(): void
     {
-        config(['monica.registration_enabled' => false, 'monica.mobile.minimum_android_version' => '1.2.0']);
+        config(['monica.registration_enabled' => false, 'monica.mobile.minimum_android_version' => '1.2.0', 'monica.mobile.minimum_ios_version' => '1.0.1']);
 
         $response = $this->json('GET', '/api/v1/status');
 
@@ -38,13 +38,28 @@ class StatusControllerTest extends TestCase
         $response->assertJsonPath('mobile.scope', 'api');
         $response->assertJsonPath('mobile.registration_enabled', false);
         $response->assertJsonPath('mobile.minimum_android_version', '1.2.0');
+        $response->assertJsonPath('mobile.minimum_ios_version', '1.0.1');
     }
 
     #[Test]
     public function it_accepts_every_app_when_no_minimum_is_set(): void
     {
-        config(['monica.mobile.minimum_android_version' => '']);
+        config(['monica.mobile.minimum_android_version' => '', 'monica.mobile.minimum_ios_version' => '']);
 
-        $this->json('GET', '/api/v1/status')->assertJsonPath('mobile.minimum_android_version', null);
+        $response = $this->json('GET', '/api/v1/status');
+
+        $response->assertJsonPath('mobile.minimum_android_version', null);
+        $response->assertJsonPath('mobile.minimum_ios_version', null);
+    }
+
+    #[Test]
+    public function it_accepts_every_ios_app_by_default(): void
+    {
+        config(['monica.mobile.minimum_ios_version' => null]);
+
+        $response = $this->json('GET', '/api/v1/status');
+
+        $this->assertArrayHasKey('minimum_ios_version', $response->json('mobile'));
+        $response->assertJsonPath('mobile.minimum_ios_version', null);
     }
 }

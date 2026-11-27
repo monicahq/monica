@@ -326,14 +326,16 @@ return [
     | The oldest mobile app this instance accepts
     |--------------------------------------------------------------------------
     |
-    | The status endpoint tells the Android app the oldest version of it that
-    | this instance still works with, so an older app asks to be updated rather
-    | than failing halfway. Leave it empty to accept every version.
+    | The status endpoint tells the Android and iOS apps the oldest version of
+    | each that this instance still works with, so an older app asks to be
+    | updated rather than failing halfway. Leave one empty to accept every
+    | version of that app.
     |
     */
 
     'mobile' => [
         'minimum_android_version' => env('MONICA_MINIMUM_ANDROID_VERSION'),
+        'minimum_ios_version' => env('MONICA_MINIMUM_IOS_VERSION'),
     ],
 
     /*
