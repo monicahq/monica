@@ -206,7 +206,7 @@ class ContactAvatarControllerTest extends TestCase
         $response = $this->get("/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/avatar");
 
         $response->assertOk();
-        $response->assertHeader('Content-Type', 'image/jpeg');
+        $response->assertHeader('Content-Type', 'image/webp');
         $this->assertSame('thumbnail of Pam', $response->streamedContent());
     }
 
@@ -271,6 +271,7 @@ class ContactAvatarControllerTest extends TestCase
         $file = File::factory()->image()->used()->create([
             'account_id' => $user->account_id,
             'vault_id' => $vault->id,
+            'mime_type' => 'image/webp',
             'variants' => [['suffix' => '-96', 'pixels' => Contact::AVATAR_THUMBNAIL_PIXELS]],
         ]);
         Storage::disk('local')->put($file->path, 'Pam at full size');

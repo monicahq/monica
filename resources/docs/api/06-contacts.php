@@ -684,7 +684,7 @@ return [
             'rateLimit' => 'Sixty requests per minute, per user, shared by every key and device.',
             'pathParams' => $identifier,
             'returns' => 'The picture. A contact with no picture, a picture no longer stored, a contact belonging to somebody else, or one reached through the wrong vault answers 404.',
-            'responseMediaType' => 'image/jpeg',
+            'responseMediaType' => 'image/webp',
             'responseIsFile' => true,
         ],
         [
