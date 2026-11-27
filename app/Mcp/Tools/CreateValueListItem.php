@@ -32,7 +32,7 @@ class CreateValueListItem extends Tool
 
         $valueList = $this->valueList($request, (string) $validated['value_list']);
 
-        return $this->answerThroughApi($request, $valueList->id);
+        return $this->answerThroughApi($request, (string) $valueList->id);
     }
 
     /** @return array<string, Type> */

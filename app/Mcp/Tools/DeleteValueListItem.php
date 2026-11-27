@@ -34,7 +34,7 @@ class DeleteValueListItem extends Tool
         $valueList = $this->valueList($request, (string) $validated['value_list']);
         $item = $this->valueListItem($valueList, (string) $validated['value_list_item']);
 
-        $answer = $this->answerThroughApi($request, $valueList->id, $item->id);
+        $answer = $this->answerThroughApi($request, (string) $valueList->id, (string) $item->id);
 
         if ($answer->isError()) {
             return $answer;
