@@ -15,7 +15,6 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
   <head>
     @include('partials.meta', ['title' => CarddavDocsViewModel::TITLE, 'description' => CarddavDocsViewModel::LEAD])
-    <title>{{ \Laravel\Head\Facades\Head::toArray()['title'] }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
   </head>
 

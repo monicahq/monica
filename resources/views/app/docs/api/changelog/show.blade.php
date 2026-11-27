@@ -10,7 +10,6 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
   <head>
     @include('partials.meta', ['title' => $entry->title.' · '.__('API reference'), 'description' => $entry->summary])
-    <title>{{ \Laravel\Head\Facades\Head::toArray()['title'] }}</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
   </head>

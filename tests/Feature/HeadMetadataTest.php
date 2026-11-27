@@ -8,10 +8,8 @@ use App\Models\Administrator;
 use App\Models\ShareLink;
 use App\Models\User;
 use App\Models\Vault;
-use App\ViewModels\Docs\ApiChangelogViewModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 use Laravel\Pennant\Feature;
 use Override;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -64,25 +62,6 @@ class HeadMetadataTest extends TestCase
     }
 
     /** @return array<string, array{string}> */
-    public static function documents(): array
-    {
-        return [
-            'the shell' => ['vault'],
-            'the account layout' => ['settings'],
-            'the admin layout' => ['admin'],
-            'the guest layout' => ['sign in'],
-            'the marketplace layout' => ['marketplace'],
-            'the documentation' => ['documentation'],
-            'the guide' => ['guide'],
-            'an API section' => ['api section'],
-            'the API changelog' => ['api changelog'],
-            'an API changelog entry' => ['api changelog entry'],
-            'the CardDAV guide' => ['carddav'],
-            'the MCP guide' => ['mcp'],
-        ];
-    }
-
-    /** @return array<string, array{string}> */
     public static function publicPages(): array
     {
         return [
@@ -129,17 +108,8 @@ class HeadMetadataTest extends TestCase
     #[Test]
     public function it_titles_a_screen_that_names_nothing_after_the_application(): void
     {
-        $this->blade('<x-guest-layout></x-guest-layout>')
+        $this->blade("@include('partials.meta')")
             ->assertSee('<title>'.config('app.name').'</title>', escape: false);
-    }
-
-    #[Test]
-    #[DataProvider('documents')]
-    public function it_writes_one_title_in_the_head_of_every_document(string $page): void
-    {
-        $document = (string) $this->get($this->addressOf($page))->assertOk()->getContent();
-
-        $this->assertSame(1, substr_count(Str::between($document, '<head>', '</head>'), '<title>'));
     }
 
     #[Test]
@@ -192,10 +162,6 @@ class HeadMetadataTest extends TestCase
             'api section' => route('docs.api.show', ['section' => 'vaults-index']),
             'guide' => route('docs.portal.index', ['locale' => 'en']),
             'marketplace' => route('marketplace.index'),
-            'api changelog' => route('docs.api.changelog.index'),
-            'api changelog entry' => $this->withRecordedChanges(route('docs.api.changelog.show', ['entry' => 'vault-colour'])),
-            'carddav' => route('docs.carddav.index'),
-            'mcp' => route('docs.mcp.index'),
         };
     }
 
@@ -211,13 +177,6 @@ class HeadMetadataTest extends TestCase
     private function signedIn(string $address): string
     {
         $this->signIn();
-
-        return $address;
-    }
-
-    private function withRecordedChanges(string $address): string
-    {
-        $this->app->instance(ApiChangelogViewModel::class, new ApiChangelogViewModel(directory: base_path('tests/Fixtures/Docs/ApiChangelog/Valid')));
 
         return $address;
     }

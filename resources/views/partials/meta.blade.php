@@ -1,4 +1,4 @@
-{{-- What every layout opens its <head> with, short of the <title>: charset, csrf token, robots, icons. --}}
+{{-- What every layout opens its <head> with: charset, csrf token, title, robots, previews and icons. --}}
 {{--
   @var string|null $title
   @var string|null $description
@@ -29,7 +29,7 @@
   }
 @endphp
 
-{!! implode(PHP_EOL, array_filter(\Laravel\Head\Facades\Head::toElements(), fn (string $element): bool => ! str_starts_with($element, '<title>'))) !!}
+@head
 
 <link rel="icon" type="image/png" href="{{ asset('images/favicon/favicon-96x96.png') }}" sizes="96x96" />
 <link rel="icon" type="image/svg+xml" href="{{ asset('images/favicon/favicon.svg') }}" />

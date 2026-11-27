@@ -22,7 +22,6 @@
       'title' => $page->title,
       'description' => $page->description,
     ])
-    <title>{{ \Laravel\Head\Facades\Head::toArray()['title'] }}</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
   </head>

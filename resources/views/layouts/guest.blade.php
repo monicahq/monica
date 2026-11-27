@@ -7,7 +7,6 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
   <head>
     @include('partials.meta', ['title' => $title ?? null, 'error' => $error ?? false])
-    <title>{{ \Laravel\Head\Facades\Head::toArray()['title'] }}</title>
 
     <meta name="turbo-prefetch" content="false" />
 
