@@ -16,12 +16,12 @@
   'confirmsPassword' => false,
 ])
 
-<div x-data="{ open: false }" @keydown.escape.window="open = false" class="contents">
+<div x-data="{ open: false }" class="contents">
   {{ $trigger }}
 
   <template x-teleport="body">
     <div x-cloak x-show="open" class="fixed print:hidden inset-0 z-70 flex items-end justify-center p-4 sm:items-center">
-      <div x-show="open" x-transition.opacity.duration.170ms @click="open = false" class="absolute inset-0 bg-scrim" aria-hidden="true"></div>
+      <div x-show="open" x-transition.opacity.duration.170ms @click="open = false" @keydown.escape.window="open = false" class="absolute inset-0 bg-scrim" aria-hidden="true"></div>
 
       <div
         x-show="open"

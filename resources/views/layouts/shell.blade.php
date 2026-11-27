@@ -21,7 +21,6 @@
   <body class="bg-page font-sans text-body antialiased">
     <div
       x-data="{ navOpen: false }"
-      @keydown.escape.window="navOpen = false"
       @class(['grid h-dvh grid-cols-1 grid-rows-1 overflow-hidden print:block print:h-auto print:overflow-visible', 'lg:grid-cols-[248px_minmax(0,1fr)]' => isset($sidebar)])
     >
       @isset($sidebar)

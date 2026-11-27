@@ -16,6 +16,7 @@ class ConfirmPasswordTest extends TestCase
             ->assertSee('role="dialog"', escape: false)
             ->assertSee('aria-modal="true"', escape: false)
             ->assertSee('x-trap.noscroll.inert="open"', escape: false)
+            ->assertSee('@keydown.escape.window="close()"', escape: false)
             ->assertSee('aria-live="polite"', escape: false);
     }
 

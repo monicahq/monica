@@ -52,6 +52,7 @@ class ScreenshotGalleryTest extends TestCase
         $rendered->assertSee('aria-labelledby="screenshots-01M7NBFWK5XNH908RFDGEAJXKN-title screenshots-01M7NBFWK5XNH908RFDGEAJXKN-position"', escape: false);
         $rendered->assertSee('Book the conference room from a contact');
         $rendered->assertSee('x-trap.noscroll.inert="open"', escape: false);
+        $rendered->assertSee('@keydown.escape.window="open = false"', escape: false);
     }
 
     private function gallery(int $count): TestView

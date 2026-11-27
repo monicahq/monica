@@ -58,7 +58,6 @@
           type="button"
           x-ref="iconTrigger"
           @click.stop="openIcon = ! openIcon; openColour = false"
-          @keydown.escape.window="openIcon = false"
           :aria-expanded="openIcon ? 'true' : 'false'"
           aria-haspopup="dialog"
           aria-controls="{{ $id }}-icon-picker"
@@ -91,6 +90,7 @@
           x-cloak
           x-show="openIcon"
           @click.outside="openIcon = false"
+          @keydown.escape.window="if (openIcon) { openIcon = false; $refs.iconTrigger.focus() }"
           x-transition:enter="transition ease-out duration-(--duration-standard)"
           x-transition:enter-start="opacity-0"
           x-transition:leave="transition ease-out duration-(--duration-fast)"
@@ -103,7 +103,7 @@
           <button
             type="button"
             :aria-pressed="! icon ? 'true' : 'false'"
-            @click="icon = ''; openIcon = false"
+            @click="icon = ''; openIcon = false; $refs.iconTrigger.focus()"
             :class="! icon ? 'border-ink bg-hover' : 'border-transparent bg-canvas'"
             class="{{ $swatch }} focus-ring-inset"
           >
@@ -116,7 +116,7 @@
             <button
               type="button"
               :aria-pressed="icon === @js($glyph) ? 'true' : 'false'"
-              @click="icon = @js($glyph); openIcon = false"
+              @click="icon = @js($glyph); openIcon = false; $refs.iconTrigger.focus()"
               :class="icon === @js($glyph) ? 'border-ink bg-hover' : 'border-transparent bg-canvas'"
               class="{{ $swatch }} focus-ring-inset"
             >
@@ -137,7 +137,6 @@
           type="button"
           x-ref="colourTrigger"
           @click.stop="openColour = ! openColour; openIcon = false"
-          @keydown.escape.window="openColour = false"
           :aria-expanded="openColour ? 'true' : 'false'"
           aria-haspopup="dialog"
           aria-controls="{{ $id }}-colour-picker"
@@ -168,6 +167,7 @@
           x-cloak
           x-show="openColour"
           @click.outside="openColour = false"
+          @keydown.escape.window="if (openColour) { openColour = false; $refs.colourTrigger.focus() }"
           x-transition:enter="transition ease-out duration-(--duration-standard)"
           x-transition:enter-start="opacity-0"
           x-transition:leave="transition ease-out duration-(--duration-fast)"
@@ -181,7 +181,7 @@
             <button
               type="button"
               :aria-pressed="colour === @js($option['value'] ?? '') ? 'true' : 'false'"
-              @click="colour = @js($option['value'] ?? ''); openColour = false"
+              @click="colour = @js($option['value'] ?? ''); openColour = false; $refs.colourTrigger.focus()"
               :class="colour === @js($option['value'] ?? '') && 'bg-hover'"
               class="flex w-full cursor-pointer items-center gap-2 rounded-xs px-2 py-1.5 text-left text-sm text-ink transition-colors hover:bg-hover focus-ring-inset"
             >
@@ -211,10 +211,10 @@
     type="button"
     x-ref="trigger"
     @click.stop="open = ! open"
-    @keydown.escape.window="open = false"
     :aria-expanded="open ? 'true' : 'false'"
+    aria-haspopup="dialog"
     aria-controls="{{ $id }}-mark-picker"
-    class="flex h-9.5 w-fit cursor-pointer items-center gap-2 rounded-md border border-hairline-strong bg-canvas py-1 pr-2.5 pl-1 transition-colors duration-(--duration-fast) ease-out hover:bg-hover"
+    class="flex h-9.5 w-fit cursor-pointer items-center gap-2 rounded-md border border-hairline-strong bg-canvas py-1 pr-2.5 pl-1 transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring"
   >
     <span
       x-data="{ tints: @js($tints) }"
@@ -257,12 +257,15 @@
   x-cloak
   x-show="open"
   @click.outside="open = false"
+  @keydown.escape.window="if (open) { open = false; $refs.trigger.focus() }"
   x-anchor.bottom-start.offset.6="$refs.trigger"
   x-transition:enter="transition ease-out duration-(--duration-standard)"
   x-transition:enter-start="opacity-0"
   x-transition:leave="transition ease-out duration-(--duration-fast)"
   x-transition:leave-end="opacity-0"
   id="{{ $id }}-mark-picker"
+  role="dialog"
+  aria-label="{{ __('Mark') }}"
   class="z-40 flex w-72 max-w-[calc(100vw-2rem)] flex-col gap-3.5 rounded-lg border border-hairline bg-canvas p-3.5 shadow-pop"
 >
   <fieldset class="flex flex-col gap-2">
@@ -274,7 +277,7 @@
         :aria-pressed="! icon ? 'true' : 'false'"
         @click="icon = ''"
         :class="! icon ? 'border-ink bg-hover' : 'border-hairline bg-canvas'"
-        class="{{ $swatch }}"
+        class="{{ $swatch }} focus-ring-inset"
       >
         <x-icon name="close" :size="15" :stroke-width="1.6" class="text-muted" />
 
@@ -287,7 +290,7 @@
           :aria-pressed="icon === @js($glyph) ? 'true' : 'false'"
           @click="icon = @js($glyph)"
           :class="icon === @js($glyph) ? 'border-ink bg-hover' : 'border-hairline bg-canvas'"
-          class="{{ $swatch }}"
+          class="{{ $swatch }} focus-ring-inset"
         >
           <x-icon :name="$glyph" :size="16" :stroke-width="1.5" />
 
@@ -307,7 +310,7 @@
           :aria-pressed="colour === @js($option['value'] ?? '') ? 'true' : 'false'"
           @click="colour = @js($option['value'] ?? '')"
           :class="colour === @js($option['value'] ?? '') ? 'border-ink' : 'border-hairline'"
-          class="{{ $swatch }} bg-canvas"
+          class="{{ $swatch }} bg-canvas focus-ring-inset"
         >
           @if ($option['swatch'] === null)
             <span class="size-4.5 rounded-xs border border-hairline-strong bg-card"></span>
@@ -324,7 +327,7 @@
   <div class="flex items-center justify-between gap-3 border-t border-hairline pt-3">
     <p class="text-xs text-pretty text-muted">{{ $reach }}</p>
 
-    <x-button.secondary size="small" type="button" @click="open = false">{{ __('Done') }}</x-button.secondary>
+    <x-button.secondary size="small" type="button" @click="open = false; $refs.trigger.focus()">{{ __('Done') }}</x-button.secondary>
   </div>
 </div>
 @endif

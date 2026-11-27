@@ -25,6 +25,22 @@ class SidebarTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
+    public function the_vault_column_is_a_drawer_that_holds_focus_while_open(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $rendered = $this->actingAs($user)->blade(
+            '<x-vault.sidebar :user="$user" :vault="$vault" current="dashboard" />',
+            ['user' => $user, 'vault' => $vault],
+        );
+
+        $rendered->assertSee('<aside', escape: false);
+        $rendered->assertSee('id="main-nav"', escape: false);
+        $rendered->assertSee('x-trap.noscroll.inert="navOpen"', escape: false);
+    }
+
+    #[Test]
     public function the_vault_column_leaves_out_the_groups_while_they_are_off_for_the_account(): void
     {
         $user = User::factory()->create();

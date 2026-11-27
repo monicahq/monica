@@ -69,10 +69,7 @@
   </head>
 
   <body class="bg-page font-sans text-body antialiased">
-    <div
-      x-data="{ navOpen: false }"
-      @keydown.escape.window="navOpen = false"
-    >
+    <div x-data="{ navOpen: false }">
       <header class="print:hidden bg-admin-bar text-on-admin-bar">
         <div aria-hidden="true" class="h-2 bg-[repeating-linear-gradient(-45deg,var(--admin-signal)_0_10px,var(--admin-bar)_10px_20px)]"></div>
 

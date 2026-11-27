@@ -4,6 +4,7 @@
   x-show="navOpen"
   x-transition.opacity.duration.150ms
   @click="navOpen = false"
+  @keydown.escape.window="navOpen = false"
   class="fixed print:hidden inset-0 z-30 bg-scrim lg:hidden"
   aria-hidden="true"
 ></div>

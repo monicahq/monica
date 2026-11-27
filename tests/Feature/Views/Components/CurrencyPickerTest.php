@@ -36,10 +36,11 @@ class CurrencyPickerTest extends TestCase
     }
 
     #[Test]
-    public function it_announces_an_error_on_the_control(): void
+    public function it_points_the_control_at_its_error_without_a_state_its_role_does_not_carry(): void
     {
         $this->blade('<x-currency-picker id="currency" label="Currency" error="Choose the currency of these amounts." />')
-            ->assertSee('aria-invalid="true"', escape: false)
-            ->assertSee('aria-describedby="currency-error"', escape: false);
+            ->assertSee('aria-describedby="currency-error"', escape: false)
+            ->assertSee('Choose the currency of these amounts.')
+            ->assertDontSee('aria-invalid', escape: false);
     }
 }

@@ -48,24 +48,7 @@
   ];
 @endphp
 
-<aside
-  id="main-nav"
-  :class="navOpen && 'max-lg:translate-x-0!'"
-  class="fixed print:hidden inset-y-0 left-0 z-40 flex w-62 flex-col border-r border-hairline bg-card transition-transform duration-(--duration-slow) ease-out max-lg:-translate-x-full lg:static lg:h-full lg:w-auto lg:translate-x-0"
->
-  <div class="flex items-center gap-2.5 px-4 pt-3.5 pb-2.5">
-    <x-product-link />
-
-    <button
-      type="button"
-      @click="navOpen = false"
-      aria-label="{{ __('Close the menu') }}"
-      class="-mr-1 ml-auto flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-ring lg:hidden"
-    >
-      <x-icon name="close" :size="15" :stroke-width="1.5" />
-    </button>
-  </div>
-
+<x-nav-drawer.container tag="aside">
   <div class="mx-2 mb-1.5">
     <a
       href="{{ $searchShortcut['url'] }}"
@@ -112,4 +95,4 @@
       </div>
     @endforeach
   </nav>
-</aside>
+</x-nav-drawer.container>

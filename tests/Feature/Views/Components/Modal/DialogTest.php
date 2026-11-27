@@ -19,6 +19,7 @@ class DialogTest extends TestCase
         $rendered->assertSee('role="dialog"', escape: false);
         $rendered->assertSee('aria-modal="true"', escape: false);
         $rendered->assertSee('x-trap.noscroll.inert="open"', escape: false);
+        $rendered->assertSee('@keydown.escape.window="open = false"', escape: false);
         $rendered->assertSee('aria-label="Fire Ryan?"', escape: false);
     }
 
