@@ -58,6 +58,21 @@ class MobileSession extends Model
 
     use MassPrunable;
 
+    /**
+     * The id of the OAuth client the Monica mobile apps sign in through: one public client, without
+     * a secret, which a migration creates in the database of every instance, so nobody running Monica
+     * has anything to set up.
+     *
+     * The value is an arbitrary UUID, chosen once and the same on every instance. It is not a secret
+     * and protects nothing: it travels in clear in every sign-in address and `/api/v1/status` hands it
+     * out. Sign-in is protected by PKCE, the exact return addresses below and the consent page. The
+     * apps never hard-code it, they read it from the status. Being fixed lets the code recognise the
+     * mobile client by comparing with this constant.
+     *
+     * It MUST never change. Tokens, authorization codes and mobile sessions point at this id, so a new
+     * value would sign every phone out and leave the migrations that wrote it out pointing at the old
+     * one.
+     */
     public const string CLIENT_ID = '0198f6a4-7c2e-7d3b-9a61-5e0b4c8d2f17';
 
     public const string ANDROID_REDIRECT_URI = 'com.monicahq.android:/oauth/callback';
