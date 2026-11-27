@@ -240,16 +240,25 @@ jobs:
           SONAR_COVERAGE=$(ls -m --format=comma results/coverage*.xml | sed -e ':a;N;$!ba;s/\n//g; s/ //g;')
           echo "list=$SONAR_COVERAGE" >> $GITHUB_OUTPUT
 
+      - name: Cache SonarQube packages
+        if: needs.changes.outputs.code == 'true'
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - uses: SonarSource/sonarqube-auth-action@b372e2c2930aadfcc4f4399446da1e12772709ad # v1.2
+        if: needs.changes.outputs.code == 'true'
+        id: auth
+
       - name: SonarCloud Scan
-        if: needs.changes.outputs.code == 'true' && env.SONAR_TOKEN != ''
+        if: needs.changes.outputs.code == 'true'
         uses: SonarSource/sonarqube-scan-action@70bad232163b09d998ea0707ee80c0ec80798c16 # v8.5.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.projectKey=monica
-            -Dsonar.organization=monicahq
+            -Dsonar.projectKey=${{ steps.auth.outputs.project-key }}
+            -Dsonar.organization=${{ steps.auth.outputs.organization }}
             -Dsonar.sources=app,bootstrap,config,database,public,resources,routes
             -Dsonar.exclusions=bootstrap/cache/*,public/vendor/**,lang/**,resources/lang/**
             -Dsonar.tests=tests
