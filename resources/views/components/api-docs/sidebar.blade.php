@@ -11,7 +11,7 @@
 
 <aside
   x-data="apiDocsSidebarScroll"
-  @click="remember()"
+  @click="remember()" @keydown.enter="remember()"
   class="hidden w-68 shrink-0 self-start border-r border-hairline px-4 py-6 lg:block"
 >
   <h2 class="mb-2 ml-2.5 text-2xs font-medium tracking-caption text-muted-soft uppercase">Getting started</h2>
