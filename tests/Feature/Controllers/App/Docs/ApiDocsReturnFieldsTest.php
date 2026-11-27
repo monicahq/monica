@@ -758,13 +758,14 @@ class ApiDocsReturnFieldsTest extends TestCase
             }),
 
             'vaults-index' => $this->asSomebody(function (User $user): TestResponse {
-                Vault::factory()->create(['account_id' => $user->account_id]);
+                $this->aFaceWithAPicture(Vault::factory()->create(['account_id' => $user->account_id]));
 
                 return $this->json('GET', '/api/v1/vaults');
             }),
 
             'vaults-show' => $this->asSomebody(function (User $user): TestResponse {
                 $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                $this->aFaceWithAPicture($vault);
 
                 return $this->json('GET', "/api/v1/vaults/{$vault->uuid}");
             }),
@@ -779,6 +780,7 @@ class ApiDocsReturnFieldsTest extends TestCase
 
             'vaults-update' => $this->asSomebody(function (User $user): TestResponse {
                 $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+                $this->aFaceWithAPicture($vault);
 
                 return $this->json('PUT', "/api/v1/vaults/{$vault->uuid}", [
                     'name' => 'Scranton',
@@ -3413,6 +3415,17 @@ class ApiDocsReturnFieldsTest extends TestCase
         $field->update(['value_list_id' => $list->id]);
 
         return [$version, $field->refresh()];
+    }
+
+    private function aFaceWithAPicture(Vault $vault): void
+    {
+        Contact::factory()->create([
+            'vault_id' => $vault->id,
+            'avatar_file_id' => File::factory()->image()->used()->create([
+                'account_id' => $vault->account_id,
+                'vault_id' => $vault->id,
+            ])->id,
+        ]);
     }
 
     private function asSomebody(callable $call): TestResponse

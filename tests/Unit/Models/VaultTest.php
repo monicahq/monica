@@ -14,11 +14,14 @@ use App\Models\Contact;
 use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\KnowledgeFolder;
+use App\Models\Reminder;
+use App\Models\ReminderOccurrence;
 use App\Models\ShareLink;
 use App\Models\User;
 use App\Models\ValueList;
 use App\Models\ValueListItem;
 use App\Models\Vault;
+use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -290,5 +293,84 @@ class VaultTest extends TestCase
             'value_string' => null,
             'value_list_item_ids' => $itemIds,
         ]);
+    }
+
+    #[Test]
+    public function it_draws_the_four_newest_listed_contacts_of_each_vault_as_its_faces(): void
+    {
+        $user = User::factory()->create();
+        $scranton = Vault::factory()->create(['account_id' => $user->account_id, 'position' => 1]);
+        $stamford = Vault::factory()->create(['account_id' => $user->account_id, 'position' => 2]);
+
+        $listed = collect(['Michael', 'Dwight', 'Jim', 'Pam', 'Angela'])
+            ->map(fn (string $name, int $index): Contact => Contact::factory()->create([
+                'vault_id' => $scranton->id,
+                'first_name' => $name,
+                'created_at' => CarbonImmutable::parse('2026-01-01')->addDays($index),
+            ]));
+        Contact::factory()->partial()->create(['vault_id' => $scranton->id, 'created_at' => '2026-02-01']);
+        Contact::factory()->archived()->create(['vault_id' => $scranton->id, 'created_at' => '2026-02-02']);
+        $karen = Contact::factory()->create(['vault_id' => $stamford->id]);
+
+        $vaults = Vault::query()->withCardValues($user)->orderBy('position')->get();
+
+        $this->assertSame(
+            [$listed[4]->id, $listed[3]->id, $listed[2]->id, $listed[1]->id],
+            $vaults[0]->faces->pluck('id')->all(),
+        );
+        $this->assertSame([$karen->id], $vaults[1]->faces->pluck('id')->all());
+    }
+
+    #[Test]
+    public function it_counts_the_reminders_awaiting_an_answer_until_the_end_of_the_month_of_the_reader(): void
+    {
+        $this->travelTo(CarbonImmutable::parse('2026-11-30 20:00:00', 'UTC'));
+
+        $michael = User::factory()->create(['timezone' => 'UTC']);
+        $vault = Vault::factory()->create(['account_id' => $michael->account_id]);
+        $contact = Contact::factory()->create(['vault_id' => $vault->id]);
+        $reminder = Reminder::factory()->create([
+            'account_id' => $michael->account_id,
+            'vault_id' => $vault->id,
+            'remindable_type' => $contact->getMorphClass(),
+            'remindable_id' => $contact->id,
+            'is_active' => true,
+        ]);
+
+        foreach (['2026-10-12', '2026-11-30', '2026-12-15'] as $day) {
+            ReminderOccurrence::factory()->for($reminder)->create([
+                'local_date' => $day,
+                'generation_key' => "1:{$day}",
+                'scheduled_for' => CarbonImmutable::parse($day),
+            ]);
+        }
+        ReminderOccurrence::factory()->for($reminder)->remembered()->create([
+            'local_date' => '2026-11-02',
+            'generation_key' => '1:2026-11-02',
+            'scheduled_for' => CarbonImmutable::parse('2026-11-02'),
+        ]);
+
+        $inScranton = Vault::query()->withCardValues($michael)->findOrFail($vault->id);
+
+        $michael->timezone = 'Pacific/Kiritimati';
+        $inKiritimati = Vault::query()->withCardValues($michael)->findOrFail($vault->id);
+
+        $this->assertSame(2, $inScranton->upcoming_reminder_count);
+        $this->assertSame(3, $inKiritimati->upcoming_reminder_count);
+    }
+
+    #[Test]
+    public function it_orders_vaults_by_their_latest_visit_then_the_ones_never_opened_by_position(): void
+    {
+        $user = User::factory()->create();
+        $neverOpenedFirst = Vault::factory()->create(['account_id' => $user->account_id, 'position' => 1, 'last_visited_at' => null]);
+        $openedLongAgo = Vault::factory()->create(['account_id' => $user->account_id, 'position' => 2, 'last_visited_at' => '2026-01-01 10:00:00']);
+        $neverOpenedSecond = Vault::factory()->create(['account_id' => $user->account_id, 'position' => 3, 'last_visited_at' => null]);
+        $openedYesterday = Vault::factory()->create(['account_id' => $user->account_id, 'position' => 4, 'last_visited_at' => now()->subDay()]);
+
+        $this->assertSame(
+            [$openedYesterday->id, $openedLongAgo->id, $neverOpenedFirst->id, $neverOpenedSecond->id],
+            Vault::query()->where('account_id', $user->account_id)->orderedByRecentVisit()->pluck('id')->all(),
+        );
     }
 }

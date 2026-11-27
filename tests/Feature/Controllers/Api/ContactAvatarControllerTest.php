@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\Api;
 
 use App\Models\Contact;
+use App\Models\File;
 use App\Models\User;
 use App\Models\Vault;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -189,5 +190,96 @@ class ContactAvatarControllerTest extends TestCase
             'avatar' => UploadedFile::fake()->image('pam.jpg', 400, 400),
         ])->assertNotFound();
         $this->assertNull($contact->refresh()->avatar_file_id);
+    }
+
+    #[Test]
+    public function it_serves_the_thumbnail_of_the_avatar_to_a_token(): void
+    {
+        Storage::fake('local');
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = $this->contactWithAvatar($user, $vault);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->get("/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/avatar");
+
+        $response->assertOk();
+        $response->assertHeader('Content-Type', 'image/jpeg');
+        $this->assertSame('thumbnail of Pam', $response->streamedContent());
+    }
+
+    #[Test]
+    public function it_answers_not_found_for_a_contact_without_an_avatar(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create(['vault_id' => $vault->id]);
+
+        Sanctum::actingAs($user);
+
+        $this->getJson("/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/avatar")->assertNotFound();
+    }
+
+    #[Test]
+    public function it_answers_not_found_when_the_avatar_is_missing_from_the_disk(): void
+    {
+        Storage::fake('local');
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = $this->contactWithAvatar($user, $vault);
+        Storage::disk('local')->delete($contact->avatar->variantPath(Contact::AVATAR_THUMBNAIL_PIXELS));
+
+        Sanctum::actingAs($user);
+
+        $this->getJson("/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/avatar")->assertNotFound();
+    }
+
+    #[Test]
+    public function it_answers_not_found_for_an_avatar_reached_through_another_vault(): void
+    {
+        Storage::fake('local');
+
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $elsewhere = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = $this->contactWithAvatar($user, $vault);
+
+        Sanctum::actingAs($user);
+
+        $this->getJson("/api/v1/vaults/{$elsewhere->uuid}/contacts/{$contact->uuid}/avatar")->assertNotFound();
+    }
+
+    #[Test]
+    public function it_answers_not_found_for_the_avatar_of_another_account(): void
+    {
+        Storage::fake('local');
+
+        $stranger = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $stranger->account_id]);
+        $contact = $this->contactWithAvatar($stranger, $vault);
+
+        Sanctum::actingAs(User::factory()->create());
+
+        $this->getJson("/api/v1/vaults/{$vault->uuid}/contacts/{$contact->uuid}/avatar")->assertNotFound();
+    }
+
+    private function contactWithAvatar(User $user, Vault $vault): Contact
+    {
+        $file = File::factory()->image()->used()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $vault->id,
+            'variants' => [['suffix' => '-96', 'pixels' => Contact::AVATAR_THUMBNAIL_PIXELS]],
+        ]);
+        Storage::disk('local')->put($file->path, 'Pam at full size');
+        Storage::disk('local')->put("{$file->path}-96", 'thumbnail of Pam');
+
+        return Contact::factory()->create([
+            'vault_id' => $vault->id,
+            'first_name' => 'Pam',
+            'avatar_file_id' => $file->id,
+        ]);
     }
 }

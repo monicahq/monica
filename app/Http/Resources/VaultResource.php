@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
+use App\Models\Contact;
 use App\Models\Vault;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -27,6 +28,18 @@ class VaultResource extends JsonResource
                 'position' => $this->position,
                 'is_default' => $this->is_default,
                 'contact_count' => $this->contact_count,
+                'last_visited_at' => $this->last_visited_at?->timestamp,
+                'faces' => $this->faces
+                    ->map(fn (Contact $contact): array => [
+                        'id' => $contact->uuid,
+                        'name' => $contact->name,
+                        'avatar_url' => $contact->avatar === null
+                            ? null
+                            : route('api.v1.contacts.avatar.show', ['vault' => $this->resource, 'contact' => $contact->uuid]),
+                    ])
+                    ->values()
+                    ->all(),
+                'upcoming_reminder_count' => (int) $this->upcoming_reminder_count,
                 'shows_people' => $this->shows_people,
                 'shows_things' => $this->shows_things,
                 'shows_knowledge' => $this->shows_knowledge,

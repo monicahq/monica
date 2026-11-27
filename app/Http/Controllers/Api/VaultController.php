@@ -18,6 +18,7 @@ use App\Models\StructureVersion;
 use App\Models\Vault;
 use App\Rules\PublishedContactStructureVersion;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -33,8 +34,17 @@ class VaultController extends Controller
             (int) config('monica.api_maximum_items_per_page'),
         ));
 
+        $validated = $request->validate([
+            'sort' => ['nullable', 'string', Rule::in(['recent'])],
+        ]);
+
         $vaults = $request->user()->account->vaults()
-            ->orderBy('position')
+            ->withCardValues($request->user())
+            ->when(
+                ($validated['sort'] ?? null) === 'recent',
+                fn (Builder $query): Builder => $query->orderedByRecentVisit(),
+                fn (Builder $query): Builder => $query->orderBy('position'),
+            )
             ->orderBy('id')
             ->paginate($perPage);
 
@@ -81,7 +91,7 @@ class VaultController extends Controller
             new SetDefaultVault(user: $request->user(), vault: $vault)->execute();
         }
 
-        return new VaultResource($vault->refresh())->response()->setStatusCode(201);
+        return new VaultResource($this->find($request, $vault->uuid))->response()->setStatusCode(201);
     }
 
     public function update(Request $request, string $vault): JsonResponse
@@ -117,7 +127,7 @@ class VaultController extends Controller
 
         $this->settleTheTwoDecisions($request, $vault);
 
-        return new VaultResource($vault->refresh())->response()->setStatusCode(200);
+        return new VaultResource($this->find($request, $vault->uuid))->response()->setStatusCode(200);
     }
 
     public function destroy(Request $request, string $vault): Response
@@ -166,6 +176,7 @@ class VaultController extends Controller
     {
         return $request->user()->account->vaults()
             ->addressedBy($address)
+            ->withCardValues($request->user())
             ->firstOrFail();
     }
 }
