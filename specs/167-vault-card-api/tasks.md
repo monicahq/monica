@@ -48,7 +48,7 @@
 - [X] T019 Run `vendor/bin/pint --dirty --format agent` and PHPStan on the changed files
 - [X] T020 Run `composer test:parallel`
 - [X] T021 Run the `definition-of-done` skill, reporting item 11 (product guide, help bubbles) as skipped because no screen changes
-- [ ] T022 Commit with a conventional scoped message, push to origin and open the pull request per the `pull-requests` skill
+- [X] T022 Commit with a conventional scoped message, push to origin and open the pull request per the `pull-requests` skill
 
 ## Dependencies
 
