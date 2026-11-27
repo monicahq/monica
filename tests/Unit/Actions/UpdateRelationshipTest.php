@@ -11,6 +11,7 @@ use App\Enums\StructureAppliesToEnum;
 use App\Enums\UserActionEnum;
 use App\Enums\VersionStatusEnum;
 use App\Exceptions\RelationshipDatesAreOutOfOrder;
+use App\Exceptions\RelationshipIsAlreadyRecorded;
 use App\Exceptions\RelationshipTypeIsNotAvailable;
 use App\Exceptions\RelationshipWouldLoopParentage;
 use App\Jobs\LogUserAction;
@@ -550,6 +551,42 @@ class UpdateRelationshipTest extends TestCase
             relationshipType: $parentage,
             status: RelationshipStatusEnum::Current,
         )->execute();
+    }
+
+    #[Test]
+    public function it_refuses_a_change_that_would_repeat_another_link_between_the_same_two_people(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultOf($user);
+        $relationship = $this->relationshipOn($vault, $user);
+        $sibling = $this->typeOf($user, RelationshipTypeEnum::Sibling);
+
+        Relationship::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $vault->id,
+            'relationship_type_id' => $sibling->id,
+            'contact_a_id' => $relationship->contact_b_id,
+            'contact_b_id' => $relationship->contact_a_id,
+        ]);
+
+        try {
+            new UpdateRelationship(
+                user: $user,
+                vault: $vault,
+                contact: $relationship->contactA,
+                relationship: $relationship,
+                relationshipType: $sibling,
+                status: RelationshipStatusEnum::Current,
+            )->execute();
+            $this->fail('The change was written.');
+        } catch (RelationshipIsAlreadyRecorded) {
+            $this->assertDatabaseHas('relationships', [
+                'id' => $relationship->id,
+                'relationship_type_id' => $relationship->relationship_type_id,
+            ]);
+        }
     }
 
     #[Test]

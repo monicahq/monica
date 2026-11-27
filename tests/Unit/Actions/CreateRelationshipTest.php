@@ -11,6 +11,7 @@ use App\Enums\StructureAppliesToEnum;
 use App\Enums\UserActionEnum;
 use App\Enums\VersionStatusEnum;
 use App\Exceptions\CannotLinkSomebodyToThemselves;
+use App\Exceptions\RelationshipIsAlreadyRecorded;
 use App\Exceptions\RelationshipTypeIsNotAvailable;
 use App\Exceptions\RelationshipWouldCrossVaults;
 use App\Exceptions\RelationshipWouldLoopParentage;
@@ -144,17 +145,110 @@ class CreateRelationshipTest extends TestCase
         $dwight = $this->contactOn($vault, 'Dwight', 'Schrute');
         $type = $this->typeOf($user, RelationshipTypeEnum::Sibling);
 
-        $fromMichael = new CreateRelationship(
-            user: $user, vault: $vault, contact: $michael, relationshipType: $type, otherContact: $dwight,
-        )->execute();
-
         $fromDwight = new CreateRelationship(
             user: $user, vault: $vault, contact: $dwight, relationshipType: $type, otherContact: $michael,
         )->execute();
 
-        $this->assertEquals($fromMichael->contact_a_id, $fromDwight->contact_a_id);
-        $this->assertEquals($fromMichael->contact_b_id, $fromDwight->contact_b_id);
-        $this->assertEquals(min($michael->id, $dwight->id), $fromMichael->contact_a_id);
+        $this->assertEquals(min($michael->id, $dwight->id), $fromDwight->contact_a_id);
+        $this->assertEquals(max($michael->id, $dwight->id), $fromDwight->contact_b_id);
+    }
+
+    #[Test]
+    public function it_refuses_a_symmetric_link_already_recorded_from_the_other_side(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultOf($user);
+        $jim = $this->contactOn($vault, 'Jim', 'Halpert');
+        $dwight = $this->contactOn($vault, 'Dwight', 'Schrute');
+        $type = $this->typeOf($user, RelationshipTypeEnum::Friend);
+
+        new CreateRelationship(user: $user, vault: $vault, contact: $jim, relationshipType: $type, otherContact: $dwight)->execute();
+
+        try {
+            new CreateRelationship(user: $user, vault: $vault, contact: $dwight, relationshipType: $type, otherContact: $jim)->execute();
+            $this->fail('The second link was written.');
+        } catch (RelationshipIsAlreadyRecorded $e) {
+            $this->assertSame('These two people are already linked this way.', $e->getMessage());
+        }
+
+        $this->assertEquals(1, Relationship::query()->count());
+    }
+
+    #[Test]
+    public function it_refuses_a_directed_link_already_recorded_the_same_way_round(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultOf($user);
+        $michael = $this->contactOn($vault, 'Michael', 'Scott');
+        $dwight = $this->contactOn($vault, 'Dwight', 'Schrute');
+        $type = $this->typeOf($user, RelationshipTypeEnum::ParentChild);
+
+        new CreateRelationship(user: $user, vault: $vault, contact: $michael, relationshipType: $type, otherContact: $dwight)->execute();
+
+        $this->expectException(RelationshipIsAlreadyRecorded::class);
+
+        new CreateRelationship(user: $user, vault: $vault, contact: $dwight, relationshipType: $type, otherContact: $michael, swapped: true)->execute();
+    }
+
+    #[Test]
+    public function it_links_two_people_again_once_their_link_ended(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultOf($user);
+        $jim = $this->contactOn($vault, 'Jim', 'Halpert');
+        $karen = $this->contactOn($vault, 'Karen', 'Filippelli');
+        $type = $this->typeOf($user, RelationshipTypeEnum::Partner);
+
+        new CreateRelationship(user: $user, vault: $vault, contact: $jim, relationshipType: $type, otherContact: $karen)->execute()
+            ->update(['status' => RelationshipStatusEnum::Ended]);
+
+        new CreateRelationship(user: $user, vault: $vault, contact: $karen, relationshipType: $type, otherContact: $jim)->execute();
+
+        $this->assertEquals(2, Relationship::query()->count());
+    }
+
+    #[Test]
+    public function it_records_an_ended_link_next_to_a_current_one(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultOf($user);
+        $jim = $this->contactOn($vault, 'Jim', 'Halpert');
+        $pam = $this->contactOn($vault, 'Pam', 'Beesly');
+        $type = $this->typeOf($user, RelationshipTypeEnum::Partner);
+
+        new CreateRelationship(user: $user, vault: $vault, contact: $jim, relationshipType: $type, otherContact: $pam)->execute();
+
+        $ended = new CreateRelationship(
+            user: $user, vault: $vault, contact: $pam, relationshipType: $type, otherContact: $jim, status: RelationshipStatusEnum::Ended,
+        )->execute();
+
+        $this->assertDatabaseHas('relationships', ['id' => $ended->id, 'status' => RelationshipStatusEnum::Ended->value]);
+    }
+
+    #[Test]
+    public function it_links_two_people_again_once_their_link_was_deleted(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $vault = $this->vaultOf($user);
+        $jim = $this->contactOn($vault, 'Jim', 'Halpert');
+        $pam = $this->contactOn($vault, 'Pam', 'Beesly');
+        $type = $this->typeOf($user, RelationshipTypeEnum::Friend);
+
+        new CreateRelationship(user: $user, vault: $vault, contact: $jim, relationshipType: $type, otherContact: $pam)->execute()->delete();
+
+        $relationship = new CreateRelationship(user: $user, vault: $vault, contact: $pam, relationshipType: $type, otherContact: $jim)->execute();
+
+        $this->assertModelExists($relationship);
     }
 
     #[Test]

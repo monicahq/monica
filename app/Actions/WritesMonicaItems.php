@@ -16,6 +16,7 @@ use App\Enums\VersionStatusEnum;
 use App\Exceptions\ContactIsAlreadyInTheGroup;
 use App\Exceptions\MembershipEndsBeforeItStarts;
 use App\Exceptions\NotEnoughStorageLeft;
+use App\Exceptions\RelationshipIsAlreadyRecorded;
 use App\Exceptions\RelationshipWouldLoopParentage;
 use App\Exceptions\ReminderIsNotValid;
 use App\Exceptions\ValueListItemIsStopped;
@@ -541,7 +542,12 @@ trait WritesMonicaItems
                 contact: $contact,
                 relationshipType: $this->relationshipTypeOf((string) $this->payload('type')),
                 otherContact: $otherContact,
+                status: RelationshipStatusEnum::tryFrom((string) $this->payload('status')) ?? RelationshipStatusEnum::Current,
             )->execute();
+        } catch (RelationshipIsAlreadyRecorded) {
+            $this->leaveOut(AccountImportReasonEnum::RelationshipAlreadyRecorded);
+
+            return;
         } catch (RelationshipWouldLoopParentage) {
             $this->leaveOut(AccountImportReasonEnum::ParentageLoop);
 
@@ -549,7 +555,6 @@ trait WritesMonicaItems
         }
 
         $relationship->forceFill([
-            'status' => RelationshipStatusEnum::tryFrom((string) $this->payload('status')) ?? RelationshipStatusEnum::Current,
             'started_on' => $this->payload('started_on'),
             'ended_on' => $this->payload('ended_on'),
             'notes' => $this->text($this->payload('notes')),

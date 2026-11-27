@@ -310,7 +310,9 @@ set-relationship-type-activation or set-relationship-category-activation.
 
 A relationship links a contact to somebody else of the same vault: a partner, a parent, a child, a
 colleague. Find the type with list-relationship-types and the contact with list-contacts or
-search-records, and call list-contact-relationships first to avoid recording the same link twice.
+search-records, and call list-contact-relationships first: the same two people cannot hold two
+current links of one type held the same way round, and a symmetric type has only one way round.
+A link that ended does not count.
 The other person can be an existing contact, or somebody named only in the call with first_name,
 or somebody whose name is unknown. Somebody named in the call gets no record of their own unless
 creates_record is true: they exist only through the relationship, which is how to add a wife, a

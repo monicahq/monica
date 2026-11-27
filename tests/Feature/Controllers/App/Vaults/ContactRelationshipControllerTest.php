@@ -157,6 +157,25 @@ class ContactRelationshipControllerTest extends TestCase
     }
 
     #[Test]
+    public function it_refuses_a_link_the_two_people_already_have(): void
+    {
+        Queue::fake();
+
+        $user = User::factory()->create();
+        $relationship = $this->relationshipOf($user);
+
+        $this->actingAs($user)
+            ->post(route('contacts.relationships.create', ['vault' => $relationship->vault, 'contact' => $relationship->contactA]), [
+                'relationship_type_id' => $relationship->relationship_type_id,
+                'mode' => 'existing',
+                'other_contact_id' => $relationship->contact_b_id,
+            ])
+            ->assertSessionHasErrors(['other_contact_id' => 'These two people are already linked this way.']);
+
+        $this->assertEquals(1, Relationship::query()->count());
+    }
+
+    #[Test]
     public function it_asks_for_a_type_and_a_way_of_naming_the_other_side(): void
     {
         $user = User::factory()->create();

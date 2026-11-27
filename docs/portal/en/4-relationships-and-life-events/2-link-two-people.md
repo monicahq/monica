@@ -4,7 +4,7 @@ title: Link two people
 description: Record how two people are connected so each page shows the other, even when you do not know the other person’s name yet.
 slug: link-two-people
 section: relationships-and-life-events
-last_updated: 2026-09-29
+last_updated: 2026-11-26
 ---
 
 # Link two people
@@ -65,6 +65,7 @@ Parents, children and partners also appear outside the **Relationships** tab. Th
 - **There is no relationship type to choose.** Your account has no relationship types. Add one in your account settings first.
 - **Both people have to be in the same vault.** A relationship links two people of one vault. Monica cannot link people across vaults.
 - **Somebody cannot be in a relationship with themselves.** You picked the person whose page you are on.
+- **These two people are already linked this way.** The two people already have a current relationship of this type, perhaps added from the other person’s page. Open it on the **Relationships** tab to change it. A relationship that ended does not count, so you can link two people again after a break.
 
 ## From the API or an assistant
 
