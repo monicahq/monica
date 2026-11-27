@@ -109,7 +109,7 @@
                 @endphp
                 <div class="overflow-hidden rounded-lg border border-hairline bg-sunken">
                   <div class="flex items-center gap-2 border-b border-hairline-soft bg-hover px-3 py-2">
-                    <span class="font-mono text-xs text-body">{{ $item['block']['label'] }}</span>
+                    <span id="block-{{ $key }}-label" class="font-mono text-xs text-body">{{ $item['block']['label'] }}</span>
                     <button
                       type="button"
                       @click="copy('{{ $key }}', {{ Js::from($item['block']['code']) }})"
@@ -120,11 +120,11 @@
                     </button>
                   </div>
                   <p role="status" aria-live="polite" class="px-4 pt-2 text-sm text-body empty:hidden" x-text="label('{{ $key }}', '')"></p>
-                  <div tabindex="0" role="region" aria-label="{{ $item['block']['label'] }}" class="overflow-x-auto px-4 py-3.5 focus-ring-inset">
+                  <x-scroll-region labelledby="block-{{ $key }}-label" class="px-4 py-3.5">
                     @foreach ($item['block']['lines'] as $line)
                       <div class="font-mono text-xs leading-[1.75] whitespace-pre">@foreach ($line['parts'] as $part)<span class="{{ $part['colour'] === 'brand' ? 'text-ink' : 'text-muted' }}" @if (str_contains($part['text'], $server)) x-text="swap({{ Js::from($part['text']) }})" @endif>{{ $part['text'] }}</span>@endforeach</div>
                     @endforeach
-                  </div>
+                  </x-scroll-region>
                 </div>
               @elseif ($item['type'] === 'notice')
                 <x-notice :tone="$item['tone']" :title="$item['title']" :class="$inlineCode">{!! $inline($item['text']) !!}</x-notice>

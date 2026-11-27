@@ -96,7 +96,9 @@
         <h2 id="fix-title" class="text-base font-semibold text-ink">{{ __('Proposed fix') }}</h2>
         <p class="max-w-[72ch] text-base text-pretty whitespace-pre-line text-body">{{ $report['proposedFix'] }}</p>
         @if ($report['proposedCode'] !== null)
-          <pre tabindex="0" role="region" aria-labelledby="fix-title" class="overflow-x-auto rounded-lg focus-ring-inset border border-hairline bg-card px-4 py-3.5 font-mono text-xs leading-relaxed text-ink-soft"><code>{{ $report['proposedCode'] }}</code></pre>
+          <x-scroll-region labelledby="fix-title" class="rounded-lg border border-hairline bg-card">
+            <pre class="w-max min-w-full px-4 py-3.5 font-mono text-xs leading-relaxed text-ink-soft"><code>{{ $report['proposedCode'] }}</code></pre>
+          </x-scroll-region>
         @endif
         <p class="text-xs text-muted">{{ __('Suggested by the agent. Nobody has checked it yet.') }}</p>
       </section>
