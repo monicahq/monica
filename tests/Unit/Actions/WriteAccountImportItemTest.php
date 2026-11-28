@@ -435,6 +435,37 @@ class WriteAccountImportItemTest extends TestCase
     }
 
     #[Test]
+    public function it_leaves_out_a_monica_4_item_whose_date_is_not_a_calendar_date(): void
+    {
+        Exceptions::fake();
+
+        $import = $this->started();
+        $dates = [
+            'life_event' => 'happened_at',
+            'call' => 'called_at',
+            'conversation' => 'happened_at',
+            'activity' => 'happened_at',
+            'journal_entry' => 'date',
+        ];
+
+        foreach ($dates as $kind => $key) {
+            $item = $import->items()->where('kind', $kind)->firstOrFail();
+            $item->update(['payload' => [...$item->payload, $key => '0000-00-00 00:00:00']]);
+        }
+
+        $this->writeEveryItem($import);
+
+        foreach ($dates as $kind => $key) {
+            $item = $import->items()->where('kind', $kind)->firstOrFail();
+
+            $this->assertSame(AccountImportOutcomeEnum::LeftOut, $item->outcome, $kind);
+            $this->assertSame(AccountImportReasonEnum::DateNotValid->value, $item->reason, $kind);
+        }
+
+        Exceptions::assertNothingReported();
+    }
+
+    #[Test]
     public function it_leaves_the_files_out_when_this_instance_keeps_none(): void
     {
         Feature::define('file-upload', false);

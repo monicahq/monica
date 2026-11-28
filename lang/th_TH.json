@@ -2620,6 +2620,7 @@
     "Italy": "อิตาลี",
     "Item": "สิ่งของ",
     "Items with their own columns, such as restaurants with a city, a cuisine and a note.": "รายการที่มีคอลัมน์ของตัวเอง เช่น ร้านอาหารที่มีเมือง ประเภทอาหาร และบันทึก",
+    "Its date is not a valid calendar date.": "วันที่ของรายการนี้ไม่ใช่วันที่ที่ถูกต้องในปฏิทิน",
     "Its field values, its transactions, its insurance records and its valuations go with it. This cannot be undone.": "รายการค่าฟิลด์ ธุรกรรม รายการประกัน และการประเมินมูลค่าของทรัพย์สินนี้จะถูกลบไปด้วย การทำแบบนี้ย้อนกลับไม่ได้",
     "Its fields are kept, and become standalone fields of the type.": "ฟิลด์ของกลุ่มจะยังอยู่ และกลายเป็นฟิลด์อิสระของประเภท",
     "Its groups and fields are deleted with it, and so is every possession of this type, with the details it held.": "กลุ่มและฟิลด์ของประเภทนี้จะถูกลบไปด้วย รวมถึงทรัพย์สินทุกรายการของประเภทนี้พร้อมรายละเอียดที่บันทึกไว้",

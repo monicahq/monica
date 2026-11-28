@@ -2620,6 +2620,7 @@
     "Italy": "Италия",
     "Item": "Предмет",
     "Items with their own columns, such as restaurants with a city, a cuisine and a note.": "Элементы со своими столбцами, например рестораны с городом, кухней и заметкой.",
+    "Its date is not a valid calendar date.": "Его дата не является допустимой календарной датой.",
     "Its field values, its transactions, its insurance records and its valuations go with it. This cannot be undone.": "Вместе с ним будут удалены значения полей, операции, записи страхования и оценки стоимости. Это действие нельзя отменить.",
     "Its fields are kept, and become standalone fields of the type.": "Его поля сохраняются и становятся отдельными полями типа.",
     "Its groups and fields are deleted with it, and so is every possession of this type, with the details it held.": "Его группы и поля удаляются вместе с ним, как и каждый предмет этого типа вместе со всеми его данными.",

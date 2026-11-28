@@ -2620,6 +2620,7 @@
     "Italy": "ইতালি",
     "Item": "জিনিস",
     "Items with their own columns, such as restaurants with a city, a cuisine and a note.": "নিজস্ব কলামসহ আইটেম, যেমন শহর, রান্নার ধরন ও নোটসহ রেস্তোরাঁ।",
+    "Its date is not a valid calendar date.": "এর তারিখটি ক্যালেন্ডারের একটি বৈধ তারিখ নয়।",
     "Its field values, its transactions, its insurance records and its valuations go with it. This cannot be undone.": "এর ক্ষেত্রের মান, লেনদেন, বিমার রেকর্ড ও মূল্যায়ন এর সঙ্গে চলে যায়। এটি ফেরানো যায় না।",
     "Its fields are kept, and become standalone fields of the type.": "গোষ্ঠীর ক্ষেত্রগুলো থেকে যায় এবং ধরনের স্বতন্ত্র ক্ষেত্র হয়ে যায়।",
     "Its groups and fields are deleted with it, and so is every possession of this type, with the details it held.": "এর গোষ্ঠী ও ক্ষেত্রগুলো এর সঙ্গে মোছা হয়, আর এই ধরনের প্রতিটি সম্পত্তিও, তাতে থাকা বিবরণসহ।",

@@ -2620,6 +2620,7 @@
     "Italy": "Włochy",
     "Item": "Przedmiot",
     "Items with their own columns, such as restaurants with a city, a cuisine and a note.": "Pozycje z własnymi kolumnami, na przykład restauracje z miastem, kuchnią i notatką.",
+    "Its date is not a valid calendar date.": "Jego data nie jest prawidłową datą kalendarzową.",
     "Its field values, its transactions, its insurance records and its valuations go with it. This cannot be undone.": "Razem z nim zostaną usunięte wartości pól, transakcje, wpisy ubezpieczenia i wyceny. Tego nie można cofnąć.",
     "Its fields are kept, and become standalone fields of the type.": "Jej pola są zachowane i stają się samodzielnymi polami typu.",
     "Its groups and fields are deleted with it, and so is every possession of this type, with the details it held.": "Jego grupy i pola zostają usunięte razem z nim, podobnie jak każdy składnik mienia tego typu wraz z danymi, które zawierał.",

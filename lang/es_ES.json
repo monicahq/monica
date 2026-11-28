@@ -2620,6 +2620,7 @@
     "Italy": "Italia",
     "Item": "Objeto",
     "Items with their own columns, such as restaurants with a city, a cuisine and a note.": "Elementos con sus propias columnas, como restaurantes con una ciudad, una cocina y un comentario.",
+    "Its date is not a valid calendar date.": "Su fecha no es una fecha de calendario válida.",
     "Its field values, its transactions, its insurance records and its valuations go with it. This cannot be undone.": "Sus valores de campo, sus transacciones, sus registros de seguro y sus valoraciones se eliminan con ella. Esto no se puede deshacer.",
     "Its fields are kept, and become standalone fields of the type.": "Sus campos se conservan y pasan a ser campos independientes del tipo.",
     "Its groups and fields are deleted with it, and so is every possession of this type, with the details it held.": "Sus grupos y campos se eliminan con él, al igual que cada pertenencia de este tipo, con los datos que contenía.",

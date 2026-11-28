@@ -2620,6 +2620,7 @@
     "Italy": "Olaszország",
     "Item": "Tárgy",
     "Items with their own columns, such as restaurants with a city, a cuisine and a note.": "Saját oszlopokkal rendelkező tételek, például éttermek várossal, konyhával és megjegyzéssel.",
+    "Its date is not a valid calendar date.": "A dátuma nem érvényes naptári dátum.",
     "Its field values, its transactions, its insurance records and its valuations go with it. This cannot be undone.": "A mezőértékei, a tranzakciói, a biztosítási bejegyzései és az értékbecslései is törlődnek vele együtt. Ez nem vonható vissza.",
     "Its fields are kept, and become standalone fields of the type.": "A mezői megmaradnak, és a típus önálló mezői lesznek.",
     "Its groups and fields are deleted with it, and so is every possession of this type, with the details it held.": "A csoportjai és mezői vele együtt törlődnek, és az ilyen típusú összes vagyontárgy is, a benne tárolt adatokkal együtt.",

@@ -2620,6 +2620,7 @@
     "Italy": "意大利",
     "Item": "物品",
     "Items with their own columns, such as restaurants with a city, a cuisine and a note.": "带有自定义列的条目，例如记录城市、菜系和备注的餐厅。",
+    "Its date is not a valid calendar date.": "它的日期不是有效的日历日期。",
     "Its field values, its transactions, its insurance records and its valuations go with it. This cannot be undone.": "它的字段值、交易、保险记录和估值也会一并删除。此操作无法撤销。",
     "Its fields are kept, and become standalone fields of the type.": "其字段会保留，并成为该类型的独立字段。",
     "Its groups and fields are deleted with it, and so is every possession of this type, with the details it held.": "其分组和字段会随之删除，此类型的每件物品及其包含的详细信息也会一并删除。",

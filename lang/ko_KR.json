@@ -2620,6 +2620,7 @@
     "Italy": "이탈리아",
     "Item": "물건",
     "Items with their own columns, such as restaurants with a city, a cuisine and a note.": "자체 열을 가진 항목입니다. 예를 들어 도시, 요리, 메모가 있는 식당 목록.",
+    "Its date is not a valid calendar date.": "날짜가 올바른 달력 날짜가 아닙니다.",
     "Its field values, its transactions, its insurance records and its valuations go with it. This cannot be undone.": "필드 값, 거래, 보험 기록, 평가도 함께 삭제됩니다. 되돌릴 수 없습니다.",
     "Its fields are kept, and become standalone fields of the type.": "그룹의 필드는 그대로 남고, 유형의 독립 필드가 됩니다.",
     "Its groups and fields are deleted with it, and so is every possession of this type, with the details it held.": "그룹과 필드도 함께 삭제되며, 이 유형의 모든 소유물도 담긴 정보와 함께 삭제됩니다.",

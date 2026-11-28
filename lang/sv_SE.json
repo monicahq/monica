@@ -2620,6 +2620,7 @@
     "Italy": "Italien",
     "Item": "Föremål",
     "Items with their own columns, such as restaurants with a city, a cuisine and a note.": "Rader med egna kolumner, till exempel restauranger med stad, kök och en anteckning.",
+    "Its date is not a valid calendar date.": "Dess datum är inte ett giltigt kalenderdatum.",
     "Its field values, its transactions, its insurance records and its valuations go with it. This cannot be undone.": "Dess fältvärden, transaktioner, försäkringsposter och värderingar följer med. Det här går inte att ångra.",
     "Its fields are kept, and become standalone fields of the type.": "Dess fält behålls och blir fristående fält i typen.",
     "Its groups and fields are deleted with it, and so is every possession of this type, with the details it held.": "Dess grupper och fält raderas med den, liksom varje ägodel av den här typen, med uppgifterna den innehöll.",

@@ -2620,6 +2620,7 @@
     "Italy": "Ý",
     "Item": "Vật phẩm",
     "Items with their own columns, such as restaurants with a city, a cuisine and a note.": "Các mục có cột riêng, như nhà hàng với thành phố, món ăn và ghi chú.",
+    "Its date is not a valid calendar date.": "Ngày của mục này không phải là ngày hợp lệ trong lịch.",
     "Its field values, its transactions, its insurance records and its valuations go with it. This cannot be undone.": "Giá trị trường, giao dịch, bản ghi bảo hiểm và định giá của nó cũng bị xóa theo. Việc này không hoàn lại được.",
     "Its fields are kept, and become standalone fields of the type.": "Các trường của nhóm được giữ lại và trở thành trường độc lập của loại.",
     "Its groups and fields are deleted with it, and so is every possession of this type, with the details it held.": "Các nhóm và trường của nó bị xóa cùng, và mọi tài sản thuộc loại này cũng vậy, cùng với các thông tin chúng chứa.",

@@ -2620,6 +2620,7 @@
     "Italy": "Italia",
     "Item": "Esine",
     "Items with their own columns, such as restaurants with a city, a cuisine and a note.": "Rivejä omilla sarakkeillaan, esimerkiksi ravintoloita, joilla on kaupunki, keittiö ja muistiinpano.",
+    "Its date is not a valid calendar date.": "Sen päivämäärä ei ole kelvollinen kalenteripäivä.",
     "Its field values, its transactions, its insurance records and its valuations go with it. This cannot be undone.": "Sen kenttäarvot, tapahtumat, vakuutusmerkinnät ja arvioinnit poistetaan sen mukana. Tätä ei voi peruuttaa.",
     "Its fields are kept, and become standalone fields of the type.": "Sen kentät säilyvät ja niistä tulee tyypin itsenäisiä kenttiä.",
     "Its groups and fields are deleted with it, and so is every possession of this type, with the details it held.": "Sen ryhmät ja kentät poistetaan sen mukana, samoin jokainen tämän tyypin omaisuuserä tietoineen.",

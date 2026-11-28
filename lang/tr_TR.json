@@ -2620,6 +2620,7 @@
     "Italy": "İtalya",
     "Item": "Eşya",
     "Items with their own columns, such as restaurants with a city, a cuisine and a note.": "Kendi sütunları olan öğeler; örneğin şehri, mutfağı ve notu olan restoranlar.",
+    "Its date is not a valid calendar date.": "Tarihi geçerli bir takvim tarihi değil.",
     "Its field values, its transactions, its insurance records and its valuations go with it. This cannot be undone.": "Alan değerleri, işlemleri, sigorta kayıtları ve değerlemeleri de onunla birlikte silinir. Bu geri alınamaz.",
     "Its fields are kept, and become standalone fields of the type.": "Alanları korunur ve türün bağımsız alanları olur.",
     "Its groups and fields are deleted with it, and so is every possession of this type, with the details it held.": "Grupları ve alanları onunla birlikte silinir; bu türdeki her eşya da içerdiği bilgilerle birlikte silinir.",

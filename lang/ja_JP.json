@@ -2620,6 +2620,7 @@
     "Italy": "イタリア",
     "Item": "品物",
     "Items with their own columns, such as restaurants with a city, a cuisine and a note.": "独自の列を持つ項目。たとえば都市、料理、メモを持つレストランなど。",
+    "Its date is not a valid calendar date.": "日付がカレンダー上の有効な日付ではありません。",
     "Its field values, its transactions, its insurance records and its valuations go with it. This cannot be undone.": "フィールドの値、取引、保険の記録、評価額も一緒に削除されます。この操作は取り消せません。",
     "Its fields are kept, and become standalone fields of the type.": "フィールドは残り、この種類の単独のフィールドになります。",
     "Its groups and fields are deleted with it, and so is every possession of this type, with the details it held.": "グループとフィールドも一緒に削除され、この種類のすべての所有物も、その内容とともに削除されます。",
