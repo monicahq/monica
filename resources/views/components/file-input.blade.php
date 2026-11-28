@@ -26,7 +26,7 @@
 
 @php
   $control = 'cursor-pointer text-xs text-muted '
-    .'file:mr-3 file:h-8 file:cursor-pointer file:rounded-md file:border file:border-hairline '
+    .'file:me-3 file:h-8 file:cursor-pointer file:rounded-md file:border file:border-hairline '
     .'file:bg-canvas file:px-3 file:font-sans file:text-sm file:font-medium file:text-ink '
     .'file:transition-colors file:duration-(--duration-fast) file:ease-out '
     .'hover:file:bg-hover';

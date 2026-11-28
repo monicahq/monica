@@ -8,7 +8,7 @@
   <ol class="flex list-none flex-col">
     @foreach ($viewModel->versionHistory() as $entry)
       <li class="grid grid-cols-[132px_32px_minmax(0,1fr)] gap-x-4 max-xs:grid-cols-[32px_minmax(0,1fr)]">
-        <div class="flex flex-col items-end gap-0.5 pt-3.5 text-right max-xs:hidden">
+        <div class="flex flex-col items-end gap-0.5 pt-3.5 text-end max-xs:hidden">
           <span class="text-sm font-medium text-ink">{{ $entry['date'] }}</span>
 
           <span class="text-xs text-muted">{{ $entry['ago'] }}</span>

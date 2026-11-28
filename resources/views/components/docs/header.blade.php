@@ -4,10 +4,10 @@
 
   $navLink = 'flex items-center gap-1 rounded-md px-2.5 py-2 text-base font-medium text-body no-underline transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink aria-[current]:font-semibold aria-[current]:text-ink focus-ring';
   $summary = "{$navLink} cursor-pointer list-none [&::-webkit-details-marker]:hidden";
-  $panel = 'flex max-h-[calc(100dvh-140px)] origin-top-left flex-wrap overflow-y-auto rounded-lg border border-hairline bg-canvas shadow-pop transition-[opacity,scale] duration-300 ease-pop starting:scale-90 starting:opacity-0 motion-reduce:transition-none';
+  $panel = 'flex max-h-[calc(100dvh-140px)] origin-top-left rtl:origin-top-right flex-wrap overflow-y-auto rounded-lg border border-hairline bg-canvas shadow-pop transition-[opacity,scale] duration-300 ease-pop starting:scale-90 starting:opacity-0 motion-reduce:transition-none';
   $groupLink = 'flex flex-col gap-2.5 rounded-lg p-3 text-ink no-underline hover:bg-hover focus-ring';
   $caption = 'text-2xs font-semibold tracking-[0.08em] text-muted uppercase';
-  $chip = 'flex items-center gap-1.5 rounded-md border border-hairline bg-canvas py-1.25 pr-2 pl-2.5 text-base font-medium text-ink no-underline shadow-panel hover:border-hairline-strong hover:bg-hover focus-ring';
+  $chip = 'flex items-center gap-1.5 rounded-md border border-hairline bg-canvas py-1.25 pe-2 ps-2.5 text-base font-medium text-ink no-underline shadow-panel hover:border-hairline-strong hover:bg-hover focus-ring';
   $card = 'rounded-lg border border-hairline bg-canvas p-5 text-ink no-underline shadow-panel hover:border-hairline-strong hover:bg-hover focus-ring';
   $repository = 'https://github.com/monicahq/monica';
   $starFigure = '25k+';
@@ -134,7 +134,7 @@
                           <x-icon :name="$group['icon']" :size="18" />
                         </span>
                         <span class="text-lede-sm font-semibold tracking-[-0.01em]">{{ $group['title'] }}</span>
-                        <span class="ml-auto text-muted">
+                        <span class="ms-auto text-muted">
                           <x-icon name="arrow-right" :size="16" />
                         </span>
                       </span>
@@ -157,12 +157,12 @@
               </div>
 
               <div class="mt-auto flex flex-wrap items-center gap-2 border-t border-hairline bg-card px-8 py-3.5">
-                <span class="mr-3 {{ $caption }}">{{ __('In every space') }}</span>
+                <span class="me-3 {{ $caption }}">{{ __('In every space') }}</span>
                 @foreach ($spaces as $space)
                   <a href="{{ $space['href'] }}" class="{{ $chip }}">
                     <x-icon :name="$space['icon']" :size="15" />
                     {{ $space['title'] }}
-                    <span class="ml-0.5 text-muted">
+                    <span class="ms-0.5 text-muted">
                       <x-icon name="chevron-right" :size="14" />
                     </span>
                   </a>
@@ -170,7 +170,7 @@
               </div>
             </div>
 
-            <aside class="flex min-w-0 flex-[1_1_300px] flex-col border-hairline bg-card p-6 max-lg:border-t lg:border-l">
+            <aside class="flex min-w-0 flex-[1_1_300px] flex-col border-hairline bg-card p-6 max-lg:border-t lg:border-s">
               <a href="{{ MarketingSite::url('mcpServer') }}" class="{{ $card }} flex flex-1 flex-wrap content-between gap-4">
                 <span class="flex min-w-0 flex-[1_1_240px] flex-col gap-1.5">
                   <span class="{{ $caption }}">{{ __('New') }}</span>
@@ -212,7 +212,7 @@
                           <x-icon :name="$group['icon']" :size="18" />
                         </span>
                         <span class="text-lede-sm font-semibold tracking-[-0.01em]">{{ $group['title'] }}</span>
-                        <span class="ml-auto text-muted">
+                        <span class="ms-auto text-muted">
                           <x-icon name="arrow-right" :size="16" />
                         </span>
                       </span>
@@ -233,12 +233,12 @@
               </div>
 
               <div class="mt-auto flex flex-wrap items-center gap-2 border-t border-hairline bg-card px-8 py-3.5">
-                <span class="mr-3 {{ $caption }}">{{ __('Quick links') }}</span>
+                <span class="me-3 {{ $caption }}">{{ __('Quick links') }}</span>
                 @foreach ($quickLinks as $quickLink)
                   <a href="{{ $quickLink['href'] }}" class="{{ $chip }}">
                     <x-icon :name="$quickLink['icon']" :size="15" />
                     {{ $quickLink['title'] }}
-                    <span class="ml-0.5 text-muted">
+                    <span class="ms-0.5 text-muted">
                       <x-icon name="chevron-right" :size="14" />
                     </span>
                   </a>
@@ -246,7 +246,7 @@
               </div>
             </div>
 
-            <aside class="flex min-w-0 flex-[1_1_300px] flex-col border-hairline bg-card p-6 max-lg:border-t lg:border-l">
+            <aside class="flex min-w-0 flex-[1_1_300px] flex-col border-hairline bg-card p-6 max-lg:border-t lg:border-s">
               <a href="{{ $repository }}" class="{{ $card }} flex flex-1 flex-col gap-1.5">
                 <span class="{{ $caption }}">{{ __('Start here') }}</span>
                 <span class="text-lede-sm leading-snug font-semibold tracking-[-0.015em] text-balance">{{ __('Install Monica on your own server') }}</span>
@@ -265,7 +265,7 @@
       <a href="{{ MarketingSite::url('sales') }}" class="{{ $navLink }}">{{ __('Contact sales') }}</a>
     </nav>
 
-    <div class="flex items-center gap-2 max-lg:ml-auto">
+    <div class="flex items-center gap-2 max-lg:ms-auto">
       <a
         href="{{ $repository }}"
         aria-label="{{ __(':figure stars, Monica on GitHub', ['figure' => $starFigure]) }}"

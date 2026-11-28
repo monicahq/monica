@@ -37,7 +37,7 @@
           <span class="text-xs font-medium text-[#7f571d] dark:text-[#d9a441]">{{ __('Parent') }}</span>
         </a>
 
-        <span class="col-start-2 row-start-2 h-full border-l-[1.5px] border-dashed border-[#9a6a24]/50" aria-hidden="true"></span>
+        <span class="col-start-2 row-start-2 h-full border-s-[1.5px] border-dashed border-[#9a6a24]/50" aria-hidden="true"></span>
 
         <a
           href="{{ $family->addPartnerUrl() }}"
@@ -63,7 +63,7 @@
           <span class="max-w-full truncate text-xs font-semibold text-ink">{{ $family->contactName() }}</span>
         </div>
 
-        <span class="col-start-2 row-start-4 h-full border-l-[1.5px] border-dashed border-[#2f7f86]/50" aria-hidden="true"></span>
+        <span class="col-start-2 row-start-4 h-full border-s-[1.5px] border-dashed border-[#2f7f86]/50" aria-hidden="true"></span>
 
         <a
           href="{{ $family->addChildUrl() }}"

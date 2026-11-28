@@ -151,7 +151,7 @@
                 role="menuitem"
                 x-show="! has(@js($item['column']['id']))"
                 @click="add(@js($item['column']))"
-                class="flex w-full cursor-pointer flex-wrap items-center justify-between gap-x-2 gap-y-1 rounded-xs px-2.5 py-2 text-left font-sans text-sm transition-colors hover:bg-hover focus-ring-inset"
+                class="flex w-full cursor-pointer flex-wrap items-center justify-between gap-x-2 gap-y-1 rounded-xs px-2.5 py-2 text-start font-sans text-sm transition-colors hover:bg-hover focus-ring-inset"
               >
                 <span class="font-medium text-ink">{{ $item['label'] }}</span>
 

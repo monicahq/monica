@@ -116,7 +116,7 @@
                 <div class="flex items-center gap-2">
                   <x-avatar-initials :name="$note['author']" :size="22" />
                   <span class="text-sm font-semibold text-ink">{{ $note['author'] }}</span>
-                  <span class="ml-auto text-xs text-muted">{{ $note['when'] }}</span>
+                  <span class="ms-auto text-xs text-muted">{{ $note['when'] }}</span>
                 </div>
                 <p class="text-base text-pretty whitespace-pre-line text-body">{{ $note['body'] }}</p>
               </li>
@@ -158,8 +158,8 @@
       <x-panel :title="__('Session')" :flush="true">
         <dl class="grid grid-cols-[auto_minmax(0,1fr)]">
           @foreach ($viewModel->session() as $fact)
-            <dt class="border-b border-hairline-soft py-2.25 pr-3 pl-4 text-xs text-muted last-of-type:border-b-0">{{ $fact['label'] }}</dt>
-            <dd class="border-b border-hairline-soft py-2.25 pr-4 text-right text-xs wrap-anywhere text-ink last-of-type:border-b-0">{{ $fact['value'] }}</dd>
+            <dt class="border-b border-hairline-soft py-2.25 pe-3 ps-4 text-xs text-muted last-of-type:border-b-0">{{ $fact['label'] }}</dt>
+            <dd class="border-b border-hairline-soft py-2.25 pe-4 text-end text-xs wrap-anywhere text-ink last-of-type:border-b-0">{{ $fact['value'] }}</dd>
           @endforeach
         </dl>
       </x-panel>

@@ -31,7 +31,7 @@
     @endunless
   </div>
 
-  <div class="ml-auto flex shrink-0 items-center gap-1.5">
+  <div class="ms-auto flex shrink-0 items-center gap-1.5">
     @unless ($showsEveryType)
       @unless ($type['isFirst'])
         <x-form method="put" :action="route('settings.lifeEventTypePosition.update', $type['id'])" x-target="life-event-types">

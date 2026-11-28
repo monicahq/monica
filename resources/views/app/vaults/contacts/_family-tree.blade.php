@@ -35,7 +35,7 @@
 
           <ul class="flex list-none justify-center">
             @foreach ($tree->parents() as $parent)
-              <li class="relative flex flex-col items-center px-1 pb-5 before:absolute before:bottom-0 before:left-1/2 before:h-5 before:w-px before:-translate-x-1/2 before:bg-hairline-strong after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-hairline-strong first:after:left-1/2 last:after:right-1/2 only:after:hidden">
+              <li class="relative flex flex-col items-center px-1 pb-5 before:absolute before:bottom-0 before:left-1/2 before:h-5 before:w-px before:-translate-x-1/2 before:bg-hairline-strong after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-hairline-strong first:after:start-1/2 last:after:end-1/2 only:after:hidden">
                 @include('app.vaults.contacts._family-tree-node', $node($parent))
               </li>
             @endforeach
@@ -52,14 +52,14 @@
           @if ($tree->currentPartners() === [])
             <span></span>
           @else
-            <div class="pl-6">
+            <div class="ps-6">
               <h4 class="sr-only">{{ __('Current partners') }}</h4>
 
               {{-- A partner line spans the 24px gap plus the empty margin of each node (22px beside a 36px
                 avatar, 18px beside the subject's ring), so it runs from avatar edge to avatar edge. --}}
               <ul class="flex list-none justify-start gap-6">
                 @foreach ($tree->currentPartners() as $partner)
-                  <li class="relative before:absolute before:top-4.5 before:-left-11.5 before:h-px before:w-17 before:bg-hairline-strong first:before:-left-10.5 first:before:w-16">
+                  <li class="relative before:absolute before:top-4.5 before:-start-11.5 before:h-px before:w-17 before:bg-hairline-strong first:before:-start-10.5 first:before:w-16">
                     @include('app.vaults.contacts._family-tree-node', $node($partner))
                   </li>
                 @endforeach
@@ -75,7 +75,7 @@
 
           <ul class="flex list-none justify-center">
             @foreach ($tree->children() as $child)
-              <li class="relative flex flex-col items-center px-1 pt-5 before:absolute before:top-0 before:left-1/2 before:h-5 before:w-px before:-translate-x-1/2 before:bg-hairline-strong after:absolute after:inset-x-0 after:top-0 after:h-px after:bg-hairline-strong first:after:left-1/2 last:after:right-1/2 only:after:hidden">
+              <li class="relative flex flex-col items-center px-1 pt-5 before:absolute before:top-0 before:left-1/2 before:h-5 before:w-px before:-translate-x-1/2 before:bg-hairline-strong after:absolute after:inset-x-0 after:top-0 after:h-px after:bg-hairline-strong first:after:start-1/2 last:after:end-1/2 only:after:hidden">
                 @include('app.vaults.contacts._family-tree-node', $node($child, 32))
               </li>
             @endforeach

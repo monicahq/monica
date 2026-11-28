@@ -45,7 +45,7 @@
         @endforeach
       </div>
 
-      <div class="ml-auto flex items-center gap-3">
+      <div class="ms-auto flex items-center gap-3">
         <x-button.secondary :href="$backHref" data-turbo="true">{{ __('Cancel') }}</x-button.secondary>
 
         <x-button form="add-field" ::disabled="!canAdd">{{ __('Add the field') }}</x-button>
@@ -122,7 +122,7 @@
 
           <span class="shrink-0 text-xs text-muted" x-text="countLine">{{ $catalogue->totalPhrase() }}</span>
 
-          <label class="relative ml-auto flex h-8 min-w-0 flex-1 items-center gap-2 rounded-md border border-hairline bg-card px-2.5 transition-colors duration-(--duration-fast) ease-out focus-within:border-hairline-strong focus-within:ring-[3px] focus-within:ring-focus-ring/45 sm:max-w-60 sm:flex-none">
+          <label class="relative ms-auto flex h-8 min-w-0 flex-1 items-center gap-2 rounded-md border border-hairline bg-card px-2.5 transition-colors duration-(--duration-fast) ease-out focus-within:border-hairline-strong focus-within:ring-[3px] focus-within:ring-focus-ring/45 sm:max-w-60 sm:flex-none">
             <span class="sr-only">{{ __('Filter the types') }}</span>
 
             <x-icon name="search" :size="14" class="shrink-0 text-muted" />
@@ -176,7 +176,7 @@
 
                       <span class="min-w-0 truncate text-sm text-ink peer-checked:font-semibold">{{ $type['label'] }}</span>
 
-                      <x-icon name="check" :size="14" :stroke-width="1.8" class="invisible ml-auto text-ink peer-checked:visible" />
+                      <x-icon name="check" :size="14" :stroke-width="1.8" class="invisible ms-auto text-ink peer-checked:visible" />
                     </label>
                   @else
                     <button
@@ -187,13 +187,13 @@
                       @mouseleave="peek = ''"
                       @focus="peek = '{{ $type['key'] }}'"
                       @blur="peek = ''"
-                      class="flex cursor-not-allowed items-center gap-2 rounded-md border border-hairline bg-card px-2.5 py-2 text-left focus-ring"
+                      class="flex cursor-not-allowed items-center gap-2 rounded-md border border-hairline bg-card px-2.5 py-2 text-start focus-ring"
                     >
                       <x-icon :name="$type['mark']" :size="16" class="text-muted-soft" />
 
                       <span class="min-w-0 truncate text-sm text-muted">{{ $type['label'] }}</span>
 
-                      <x-badge tone="info" class="ml-auto shrink-0">{{ __('Later') }}</x-badge>
+                      <x-badge tone="info" class="ms-auto shrink-0">{{ __('Later') }}</x-badge>
                     </button>
                   @endif
                 @endforeach
@@ -233,7 +233,7 @@
                 </span>
 
                 @unless ($type['isAvailable'])
-                  <x-badge tone="info" class="ml-auto shrink-0">{{ __('Later') }}</x-badge>
+                  <x-badge tone="info" class="ms-auto shrink-0">{{ __('Later') }}</x-badge>
                 @endunless
               </div>
 

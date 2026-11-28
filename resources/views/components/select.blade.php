@@ -27,7 +27,7 @@
   $errorId = $error ? $id.'-error' : null;
   $describedBy = trim(($helpId ?? '').' '.($errorId ?? ''));
 
-  $control = 'w-full appearance-none rounded-md border border-hairline-strong bg-input pl-3 pr-8.5 font-sans text-ink '
+  $control = 'w-full appearance-none rounded-md border border-hairline-strong bg-input ps-3 pe-8.5 font-sans text-ink '
     .'transition duration-(--duration-fast) ease-out '
     .'hover:border-muted-soft '
     .'focus-ring-field '
@@ -54,7 +54,7 @@
       name="chevron-down"
       :size="16"
       :stroke-width="1.5"
-      class="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-muted"
+      class="pointer-events-none absolute top-1/2 end-3 -translate-y-1/2 text-muted"
     />
   </div>
 

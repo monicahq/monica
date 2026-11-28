@@ -137,7 +137,7 @@
               </div>
 
               @if ($setting['warning'])
-                <p x-cloak x-show="confirming" role="alert" class="max-w-xs text-right text-xs text-error">
+                <p x-cloak x-show="confirming" role="alert" class="max-w-xs text-end text-xs text-error">
                   {{ $setting['warning'] }} {{ __('Save again to go ahead.') }}
                 </p>
               @endif

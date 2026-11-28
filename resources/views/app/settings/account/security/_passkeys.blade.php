@@ -18,12 +18,12 @@
         ],
       ]) }})"
     >
-      <div class="flex w-full flex-wrap items-center gap-3 border-b border-hairline px-4 py-3.5 text-left">
+      <div class="flex w-full flex-wrap items-center gap-3 border-b border-hairline px-4 py-3.5 text-start">
         <div class="min-w-0 flex-1">
           <p class="text-base font-semibold text-ink">{{ $passkeys->header() }}</p>
         </div>
 
-        <div class="ml-auto flex shrink-0 flex-wrap items-center gap-2.5">
+        <div class="ms-auto flex shrink-0 flex-wrap items-center gap-2.5">
           <form @submit.prevent="register()">
             <x-button
               size="small"

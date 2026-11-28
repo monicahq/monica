@@ -68,9 +68,11 @@ export default ({ instance, server, tabs, sections, endpoint = '/mcp' }) => ({
 
     move(event) {
         const index = tabs.indexOf(this.tab);
+        const forward = document.documentElement.dir === 'rtl' ? 'ArrowLeft' : 'ArrowRight';
+        const backward = forward === 'ArrowRight' ? 'ArrowLeft' : 'ArrowRight';
         const targets = {
-            ArrowRight: (index + 1) % tabs.length,
-            ArrowLeft: (index - 1 + tabs.length) % tabs.length,
+            [forward]: (index + 1) % tabs.length,
+            [backward]: (index - 1 + tabs.length) % tabs.length,
             Home: 0,
             End: tabs.length - 1,
         };

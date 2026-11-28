@@ -2,7 +2,7 @@
 {{-- @var array $row --}}
 <li>
   <div
-    class="flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-hairline py-2.5 pr-3 pl-[calc(12px_+_var(--location-depth)_*_14px)] sm:pl-[calc(12px_+_var(--location-depth)_*_28px)]"
+    class="flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-hairline py-2.5 pe-3 ps-[calc(12px_+_var(--location-depth)_*_14px)] sm:ps-[calc(12px_+_var(--location-depth)_*_28px)]"
     style="--location-depth: {{ $row['level'] - 1 }}"
   >
     <div class="flex min-w-44 flex-1 items-center gap-3">
@@ -20,7 +20,7 @@
       </span>
     </div>
 
-    <div class="ml-auto flex flex-none items-center gap-2">
+    <div class="ms-auto flex flex-none items-center gap-2">
       <x-button
         :href="$row['editUrl']"
         variant="secondary"

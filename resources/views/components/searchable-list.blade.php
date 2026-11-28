@@ -103,7 +103,7 @@
                 :aria-selected="active === optionId(group.key, option.value) ? 'true' : 'false'"
                 @click="pick(option.value)"
                 @mousemove="active = optionId(group.key, option.value)"
-                class="flex w-full cursor-pointer items-center gap-2.5 rounded-md px-2 py-1.5 text-left text-sm text-ink aria-selected:bg-hover"
+                class="flex w-full cursor-pointer items-center gap-2.5 rounded-md px-2 py-1.5 text-start text-sm text-ink aria-selected:bg-hover"
               >
                 {{ $option }}
               </li>

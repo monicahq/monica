@@ -33,9 +33,9 @@
   <div class="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-body">
     <span class="flex items-center gap-2.5">
       @if ($avatars !== [])
-        <span class="flex pl-1.5" aria-hidden="true">
+        <span class="flex ps-1.5" aria-hidden="true">
           @foreach ($avatars as $name)
-            <span class="-ml-1.5 flex rounded-full ring-2 ring-page"><x-contact-avatar :name="$name" :size="26" /></span>
+            <span class="-ms-1.5 flex rounded-full ring-2 ring-page"><x-contact-avatar :name="$name" :size="26" /></span>
           @endforeach
         </span>
       @endif

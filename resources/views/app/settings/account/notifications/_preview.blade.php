@@ -67,7 +67,7 @@
     @else
       @if ($on)
         <div class="flex flex-1 flex-col justify-end gap-2 p-2.5">
-          <div class="max-w-[86%] rounded-lg rounded-bl-xs border border-hairline bg-card p-2.5">
+          <div class="max-w-[86%] rounded-lg rounded-es-xs border border-hairline bg-card p-2.5">
             <p class="text-2xs font-semibold text-ink">{{ $title }}</p>
             <p class="mt-0.5 text-2xs text-muted">{{ $body }}</p>
           </div>

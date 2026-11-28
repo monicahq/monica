@@ -35,7 +35,7 @@
   <div class="flex w-full flex-col gap-3.5 rounded-lg border border-hairline bg-canvas px-4.5 py-4 lg:w-105 lg:shrink-0">
     <div class="flex items-baseline gap-2">
       <span class="text-sm font-semibold text-ink">{{ __('Installations per month') }}</span>
-      <span class="ml-auto text-xs text-muted">{{ __('Last twelve months') }}</span>
+      <span class="ms-auto text-xs text-muted">{{ __('Last twelve months') }}</span>
     </div>
 
     <div class="grid min-h-26 flex-1 grid-cols-12 items-end gap-1.5" aria-hidden="true">

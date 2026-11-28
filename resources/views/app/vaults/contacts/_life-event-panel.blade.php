@@ -3,7 +3,7 @@
 @php
   $oldType = $form->oldType();
   $chip = 'focus-ring inline-flex h-8 cursor-pointer items-center gap-1.5 rounded-full border border-hairline bg-canvas px-3 text-sm font-medium text-body hover:bg-hover';
-  $row = 'focus-ring-inset flex w-full items-center gap-3 border-b border-hairline px-5 py-2.5 text-left last:border-b-0 hover:bg-hover';
+  $row = 'focus-ring-inset flex w-full items-center gap-3 border-b border-hairline px-5 py-2.5 text-start last:border-b-0 hover:bg-hover';
 @endphp
 
 <div id="life-event-panel" x-show="open" x-cloak class="rounded-lg border border-hairline bg-canvas shadow-panel">
@@ -22,7 +22,7 @@
         <p class="text-xs text-muted" x-show="step === 'details'" x-cloak>{{ $form->captions()['details'] }}</p>
       </div>
 
-      <div class="ml-auto w-60 max-w-full" x-show="step === 'pick'">
+      <div class="ms-auto w-60 max-w-full" x-show="step === 'pick'">
         <x-input
           type="search"
           id="life-event-type-search"
@@ -35,7 +35,7 @@
         />
       </div>
 
-      <button type="button" x-on:click="cancel($el)" class="focus-ring ml-auto flex size-8 items-center justify-center rounded-md text-muted hover:bg-hover hover:text-ink" aria-label="{{ __('Close') }}">
+      <button type="button" x-on:click="cancel($el)" class="focus-ring ms-auto flex size-8 items-center justify-center rounded-md text-muted hover:bg-hover hover:text-ink" aria-label="{{ __('Close') }}">
         <x-icon name="close" :size="16" />
       </button>
     </div>
@@ -87,7 +87,7 @@
         </p>
       @else
         <div x-show="! searching" class="flex flex-wrap items-stretch">
-          <div class="flex flex-[1_1_11rem] flex-col gap-0.5 border-r border-hairline bg-card px-3 py-5">
+          <div class="flex flex-[1_1_11rem] flex-col gap-0.5 border-e border-hairline bg-card px-3 py-5">
             <x-caption class="px-2 pb-2">{{ __('Categories') }}</x-caption>
 
             @foreach ($form->categories() as $category)
@@ -95,7 +95,7 @@
                 type="button"
                 x-on:click="category = {{ $category['id'] }}"
                 x-bind:aria-current="category === {{ $category['id'] }} ? 'true' : null"
-                class="focus-ring flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm text-body hover:bg-hover aria-current:bg-hover aria-current:font-medium aria-current:text-ink"
+                class="focus-ring flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-start text-sm text-body hover:bg-hover aria-current:bg-hover aria-current:font-medium aria-current:text-ink"
               >
                 <span class="min-w-0 flex-1">{{ $category['name'] }}</span>
                 <span class="text-xs text-muted tabular-nums">{{ $category['typeCount'] }}</span>
@@ -207,14 +207,14 @@
               @if ($form->choosesSubject())
                 <span class="inline-flex h-8 items-center rounded-full border border-hairline bg-canvas px-3 text-sm font-medium text-body" x-text="subject.name">{{ $form->contactName() }}</span>
               @else
-                <span class="inline-flex h-8 items-center gap-1.5 rounded-full border border-hairline bg-canvas pr-3 pl-1 text-sm font-medium text-body">
+                <span class="inline-flex h-8 items-center gap-1.5 rounded-full border border-hairline bg-canvas pe-3 ps-1 text-sm font-medium text-body">
                   <x-contact-avatar :name="$form->contactName()" :size="24" />
                   {{ $form->contactName() }}
                 </span>
               @endif
 
               <template x-for="person in people" x-bind:key="person.id">
-                <span class="inline-flex h-8 items-center gap-1.5 rounded-full border border-hairline bg-canvas pr-1 pl-3 text-sm font-medium text-body">
+                <span class="inline-flex h-8 items-center gap-1.5 rounded-full border border-hairline bg-canvas pe-1 ps-3 text-sm font-medium text-body">
                   <input type="hidden" name="participants[]" x-bind:value="person.id" />
                   <span x-text="person.name"></span>
                   <button type="button" x-on:click="remove(person.id)" x-bind:aria-label="copy.remove.replace(':name', person.name)" class="focus-ring flex size-6 items-center justify-center rounded-full text-muted hover:bg-hover hover:text-ink">
@@ -283,7 +283,7 @@
                 />
               @endif
 
-              <button type="button" x-on:click="closePiece('{{ $piece }}')" aria-label="{{ __('Remove :name', ['name' => $label]) }}" class="focus-ring absolute top-0 right-0 rounded-sm text-xs font-medium text-muted hover:text-ink hover:underline">{{ __('Remove') }}</button>
+              <button type="button" x-on:click="closePiece('{{ $piece }}')" aria-label="{{ __('Remove :name', ['name' => $label]) }}" class="focus-ring absolute top-0 end-0 rounded-sm text-xs font-medium text-muted hover:text-ink hover:underline">{{ __('Remove') }}</button>
             </fieldset>
           @endforeach
 

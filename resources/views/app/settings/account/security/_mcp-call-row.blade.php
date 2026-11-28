@@ -34,7 +34,7 @@
     </span>
   </summary>
 
-  <div class="flex flex-col gap-4 px-4 pt-1 pb-5 sm:pl-24">
+  <div class="flex flex-col gap-4 px-4 pt-1 pb-5 sm:ps-24">
     @if ($row['reason'] !== null)
       <x-notice :tone="$row['tone'] === 'danger' ? 'danger' : 'warning'">{{ $row['reason'] }}</x-notice>
     @endif

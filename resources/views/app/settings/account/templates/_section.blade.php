@@ -45,7 +45,7 @@
           <x-badge>{{ __('Your section') }}</x-badge>
         @endif
 
-        <code class="ml-auto font-mono text-xs text-muted-soft">{{ $section['fieldLabel'] }}</code>
+        <code class="ms-auto font-mono text-xs text-muted-soft">{{ $section['fieldLabel'] }}</code>
 
         @if ($isShareable)
           <x-button.ghost

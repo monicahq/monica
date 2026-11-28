@@ -92,10 +92,10 @@
       <p class="max-w-[46ch] text-xs text-pretty text-muted" x-show="kind === 'note'" @if ($kind !== 'note') x-cloak @endif>{{ __('Saved on the group only. It does not appear on anybody’s own page.') }}</p>
 
       @if ($types === [])
-        <x-button size="small" class="ml-auto" x-show="kind === 'activity'" aria-disabled="true" aria-describedby="group-activity-no-type" x-on:click.prevent>{{ __('Save the activity') }}</x-button>
-        <x-button size="small" class="ml-auto" x-show="kind === 'note'" x-cloak>{{ __('Save the note') }}</x-button>
+        <x-button size="small" class="ms-auto" x-show="kind === 'activity'" aria-disabled="true" aria-describedby="group-activity-no-type" x-on:click.prevent>{{ __('Save the activity') }}</x-button>
+        <x-button size="small" class="ms-auto" x-show="kind === 'note'" x-cloak>{{ __('Save the note') }}</x-button>
       @else
-        <x-button size="small" class="ml-auto">
+        <x-button size="small" class="ms-auto">
           <span x-show="kind === 'activity'" @if ($kind !== 'activity') x-cloak @endif>{{ __('Save the activity') }}</span>
           <span x-show="kind === 'note'" @if ($kind !== 'note') x-cloak @endif>{{ __('Save the note') }}</span>
         </x-button>

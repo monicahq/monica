@@ -43,7 +43,7 @@
         >{{ $chip['label'] }}</x-chip>
       @endforeach
 
-      <span class="ml-auto text-xs text-pretty text-muted">{{ $viewModel->summary() }}</span>
+      <span class="ms-auto text-xs text-pretty text-muted">{{ $viewModel->summary() }}</span>
     </div>
 
     <x-page-section :title="__('Your templates')">

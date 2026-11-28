@@ -23,10 +23,10 @@
         $unavailableId = 'split-unavailable-'.md5($label.$unavailable);
       @endphp
 
-      <x-button type="button" :dim-when-disabled="false" aria-disabled="true" :aria-describedby="$unavailableId" class="flex-1 rounded-r-none">{{ $label }}</x-button>
+      <x-button type="button" :dim-when-disabled="false" aria-disabled="true" :aria-describedby="$unavailableId" class="flex-1 rounded-e-none">{{ $label }}</x-button>
       <span id="{{ $unavailableId }}" class="sr-only">{{ $unavailable }}</span>
     @else
-      <x-button :href="$href" :data-turbo="$turbo ? 'true' : null" class="flex-1 rounded-r-none">{{ $label }}</x-button>
+      <x-button :href="$href" :data-turbo="$turbo ? 'true' : null" class="flex-1 rounded-e-none">{{ $label }}</x-button>
     @endif
 
     <x-button
@@ -36,7 +36,7 @@
       @click.outside="open = false"
       ::aria-expanded="open ? 'true' : 'false'"
       aria-haspopup="menu"
-      class="rounded-l-none border-l border-l-white/30 px-2.75!"
+      class="rounded-s-none border-s border-s-white/30 px-2.75!"
     >
       <x-icon
         name="chevron-down"

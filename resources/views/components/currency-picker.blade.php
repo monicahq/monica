@@ -76,7 +76,7 @@
       aria-expanded="false"
       @if ($label) aria-labelledby="{{ $id }}-label {{ $id }}" @endif
       @if ($errorId) data-invalid aria-describedby="{{ $errorId }}" @endif
-      class="focus-ring-field flex h-9 w-full cursor-pointer items-center gap-2.5 rounded-md border border-hairline-strong bg-input pr-8.5 pl-3 text-left text-[16px] text-ink transition duration-(--duration-fast) ease-out hover:border-muted-soft data-invalid:border-error data-invalid:ring-[3px] data-invalid:ring-error/20 sm:text-base"
+      class="focus-ring-field flex h-9 w-full cursor-pointer items-center gap-2.5 rounded-md border border-hairline-strong bg-input pe-8.5 ps-3 text-start text-[16px] text-ink transition duration-(--duration-fast) ease-out hover:border-muted-soft data-invalid:border-error data-invalid:ring-[3px] data-invalid:ring-error/20 sm:text-base"
     >
       <template x-if="chosen">
         <span class="flex items-center gap-2.5">
@@ -91,7 +91,7 @@
         name="chevron-down"
         :size="16"
         :stroke-width="1.5"
-        class="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-muted"
+        class="pointer-events-none absolute top-1/2 end-3 -translate-y-1/2 text-muted"
       />
     </button>
 
@@ -114,7 +114,7 @@
       @keydown.space.prevent="choose(active)"
       @keydown.escape.prevent.stop="hide()"
       @keydown.tab="hide(false)"
-      class="absolute top-full left-0 z-20 mt-1.5 max-h-72 w-full min-w-44 overflow-y-auto overscroll-contain rounded-lg border border-hairline bg-canvas p-1 shadow-pop focus:outline-none"
+      class="absolute top-full start-0 z-20 mt-1.5 max-h-72 w-full min-w-44 overflow-y-auto overscroll-contain rounded-lg border border-hairline bg-canvas p-1 shadow-pop focus:outline-none"
     >
       @foreach ($currencies as $index => $currency)
         <li

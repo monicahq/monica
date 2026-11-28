@@ -6,7 +6,7 @@
 
     <div class="flex min-h-9 flex-wrap items-center gap-2 rounded-md border border-hairline-strong bg-input px-1.5 py-1 has-focus-visible:ring-[3px] has-focus-visible:ring-focus-ring/45">
       <template x-for="tag in tags" :key="tag">
-        <span class="flex h-6.5 items-center gap-1 rounded-full bg-hover pr-1 pl-2.5 text-sm text-ink">
+        <span class="flex h-6.5 items-center gap-1 rounded-full bg-hover pe-1 ps-2.5 text-sm text-ink">
           <input type="hidden" name="tags[]" :value="tag" />
           <span x-text="tag"></span>
           <button

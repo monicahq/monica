@@ -52,7 +52,7 @@
 
         <span class="text-body">{{ $viewModel->moderationSentence() }}</span>
 
-        <x-link :href="route('admin.moderation.index')" class="ml-auto">{{ __('Open moderation') }}</x-link>
+        <x-link :href="route('admin.moderation.index')" class="ms-auto">{{ __('Open moderation') }}</x-link>
       </div>
     </x-panel>
 

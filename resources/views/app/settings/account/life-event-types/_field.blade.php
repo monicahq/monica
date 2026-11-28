@@ -97,7 +97,7 @@
     </span>
   </div>
 
-  <div class="flex flex-col gap-2.5 pl-11">
+  <div class="flex flex-col gap-2.5 ps-11">
     {{-- Several kinds of field name the same setting, so only the settings of the kind that is picked are left switched on to be sent. --}}
     <div data-field-settings class="contents">
       @if (($settingsByType[$field['type']] ?? []) !== [])

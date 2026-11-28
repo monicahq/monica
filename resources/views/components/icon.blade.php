@@ -4,12 +4,14 @@
   @var int $size
   @var float $strokeWidth
   @var string|null $label
+  @var bool $mirror
 --}}
 @props([
   'name' => 'profile',
   'size' => 18,
   'strokeWidth' => 1.4,
   'label' => null,
+  'mirror' => true,
 ])
 
 @php
@@ -104,7 +106,8 @@
   $glyph = $paths[$name] ?? $paths['profile'];
 
   // A glyph that points along the line of reading points the other way when the page reads right to left.
-  $mirrored = in_array($name, ['chevron-left', 'chevron-right', 'arrow-right'], true);
+  // A caller that turns the glyph to point up or down passes :mirror="false", since up and down do not flip.
+  $mirrored = $mirror && in_array($name, ['chevron-left', 'chevron-right', 'arrow-right'], true);
 @endphp
 
 <svg

@@ -30,12 +30,12 @@
       <table class="w-full min-w-190 border-collapse text-base">
         <thead>
           <tr class="bg-card">
-            <th scope="col" class="border-b border-hairline px-4 py-2.5 text-left text-xs font-medium whitespace-nowrap text-muted">{{ __('Change') }}</th>
-            <th scope="col" class="border-b border-hairline px-3 py-2.5 text-left text-xs font-medium whitespace-nowrap text-muted">{{ __('Published') }}</th>
-            <th scope="col" class="border-b border-hairline px-3 py-2.5 text-right text-xs font-medium whitespace-nowrap text-muted">{{ __('Like it') }}</th>
-            <th scope="col" class="border-b border-hairline px-3 py-2.5 text-right text-xs font-medium whitespace-nowrap text-muted">{{ __('Dislike it') }}</th>
-            <th scope="col" class="border-b border-hairline px-3 py-2.5 text-left text-xs font-medium whitespace-nowrap text-muted">{{ __('Split') }}</th>
-            <th scope="col" class="border-b border-hairline px-4 py-2.5 text-right text-xs font-medium whitespace-nowrap text-muted">{{ __('Comments') }}</th>
+            <th scope="col" class="border-b border-hairline px-4 py-2.5 text-start text-xs font-medium whitespace-nowrap text-muted">{{ __('Change') }}</th>
+            <th scope="col" class="border-b border-hairline px-3 py-2.5 text-start text-xs font-medium whitespace-nowrap text-muted">{{ __('Published') }}</th>
+            <th scope="col" class="border-b border-hairline px-3 py-2.5 text-end text-xs font-medium whitespace-nowrap text-muted">{{ __('Like it') }}</th>
+            <th scope="col" class="border-b border-hairline px-3 py-2.5 text-end text-xs font-medium whitespace-nowrap text-muted">{{ __('Dislike it') }}</th>
+            <th scope="col" class="border-b border-hairline px-3 py-2.5 text-start text-xs font-medium whitespace-nowrap text-muted">{{ __('Split') }}</th>
+            <th scope="col" class="border-b border-hairline px-4 py-2.5 text-end text-xs font-medium whitespace-nowrap text-muted">{{ __('Comments') }}</th>
           </tr>
         </thead>
         <tbody>
@@ -51,8 +51,8 @@
                 </div>
               </td>
               <td class="border-b border-hairline px-3 py-3 whitespace-nowrap text-body">{{ $row['published'] }}</td>
-              <td class="border-b border-hairline px-3 py-3 text-right text-ink tabular-nums">{{ $row['up'] }}</td>
-              <td class="border-b border-hairline px-3 py-3 text-right text-ink tabular-nums">{{ $row['down'] }}</td>
+              <td class="border-b border-hairline px-3 py-3 text-end text-ink tabular-nums">{{ $row['up'] }}</td>
+              <td class="border-b border-hairline px-3 py-3 text-end text-ink tabular-nums">{{ $row['down'] }}</td>
               <td class="border-b border-hairline px-3 py-3">
                 <div class="flex items-center gap-2.5">
                   <div class="flex h-1.5 w-24 overflow-hidden rounded-full bg-hairline" aria-hidden="true">
@@ -64,7 +64,7 @@
                   <span class="text-xs whitespace-nowrap text-body">{{ $row['shareLabel'] }}</span>
                 </div>
               </td>
-              <td class="border-b border-hairline px-4 py-3 text-right">
+              <td class="border-b border-hairline px-4 py-3 text-end">
                 @if ($row['commentCount'] > 0)
                   <a href="{{ $row['commentsUrl'] }}" class="focus-ring rounded-sm text-sm whitespace-nowrap text-ink">{{ $row['commentLabel'] }}</a>
                 @else

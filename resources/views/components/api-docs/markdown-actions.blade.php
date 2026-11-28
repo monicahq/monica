@@ -5,7 +5,7 @@
 --}}
 @props(['markdown', 'url'])
 
-<div class="ml-auto flex flex-wrap gap-2">
+<div class="ms-auto flex flex-wrap gap-2">
   <button
     type="button"
     x-data="{ copied: false, markdown: {{ Js::from($markdown) }} }"

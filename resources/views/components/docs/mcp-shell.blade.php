@@ -59,7 +59,7 @@
         </label>
         <p role="status" class="sr-only" x-text="status"></p>
 
-        <div class="ml-auto flex gap-2">
+        <div class="ms-auto flex gap-2">
           <x-button variant="secondary" :href="route('docs.mcp.markdown.index')">View as Markdown</x-button>
           <x-button variant="secondary" :href="route('settings.security.index')">Get an API key</x-button>
         </div>
@@ -67,7 +67,7 @@
 
       <div class="grid flex-1 items-start gap-x-8 md:grid-cols-[272px_minmax(0,1fr)] xl:grid-cols-[272px_minmax(0,1fr)_248px]">
         <aside
-          class="hidden self-stretch border-hairline px-4 pt-7 pb-12 md:block md:border-r print:hidden"
+          class="hidden self-stretch border-hairline px-4 pt-7 pb-12 md:block md:border-e print:hidden"
           :class="searching && '!block'"
         >
           <nav aria-label="MCP documentation" class="flex flex-col gap-7">
@@ -109,7 +109,7 @@
                     </a>
 
                     @if ($current === $family['slug'])
-                      <div class="mt-1 mb-2 ml-4.5 flex flex-col gap-px border-l border-hairline pl-2">
+                      <div class="mt-1 mb-2 ms-4.5 flex flex-col gap-px border-s border-hairline ps-2">
                         @foreach ($family['tools'] as $tool)
                           <a href="#tool-{{ $tool['name'] }}" @click="$dispatch('mcp-reveal', '#tool-{{ $tool['name'] }}')" class="{{ $toolLink }}">{{ $tool['name'] }}</a>
                         @endforeach
@@ -141,7 +141,7 @@
           </div>
         </main>
 
-        <aside class="sticky top-0 hidden max-h-screen flex-col gap-6 self-start overflow-y-auto pt-10 pr-7 pb-12 pl-1 xl:flex print:hidden">
+        <aside class="sticky top-0 hidden max-h-screen flex-col gap-6 self-start overflow-y-auto pt-10 pe-7 pb-12 ps-1 xl:flex print:hidden">
           <x-docs.page-meta
             :updated="$viewModel->lastUpdated()"
             :edit-url="$viewModel->editUrl()"
@@ -150,9 +150,9 @@
 
           <div class="flex flex-col gap-2.5">
             <x-caption id="on-this-page" tone="muted">On this page</x-caption>
-            <nav aria-labelledby="on-this-page" class="flex flex-col gap-0.5 border-l border-hairline">
+            <nav aria-labelledby="on-this-page" class="flex flex-col gap-0.5 border-s border-hairline">
               @foreach ($onThisPage as $entry)
-                <a href="#{{ $entry['id'] }}" class="-ml-px border-l border-transparent py-1.25 pl-3 text-sm leading-[1.4] break-words text-muted no-underline transition-colors duration-(--duration-fast) ease-out hover:text-ink focus-ring">{{ $entry['label'] }}</a>
+                <a href="#{{ $entry['id'] }}" class="-ms-px border-s border-transparent py-1.25 ps-3 text-sm leading-[1.4] break-words text-muted no-underline transition-colors duration-(--duration-fast) ease-out hover:text-ink focus-ring">{{ $entry['label'] }}</a>
               @endforeach
             </nav>
           </div>

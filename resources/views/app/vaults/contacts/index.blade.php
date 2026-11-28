@@ -101,7 +101,7 @@
           @endforeach
         </div>
 
-        <div class="ml-auto flex min-w-0 items-center justify-end gap-2 max-sm:w-full">
+        <div class="ms-auto flex min-w-0 items-center justify-end gap-2 max-sm:w-full">
           <x-icon-button :href="$viewModel->customiseUrl()" icon="layers" :label="__('Customise view')" align="right" data-turbo="true" />
 
           <form method="get" action="{{ $viewModel->searchUrl() }}" x-target.push="contacts" role="search" class="min-w-0 flex-1 sm:w-72 sm:flex-none">
@@ -182,9 +182,9 @@
       x-show="count > 0"
       role="group"
       aria-label="{{ __('Actions for the selected people') }}"
-      class="sticky top-4 z-20 flex flex-wrap items-center gap-1.5 self-start rounded-lg border border-hairline bg-canvas py-1.25 pr-1.25 pl-3.5 shadow-pop motion-safe:animate-toolbar-in"
+      class="sticky top-4 z-20 flex flex-wrap items-center gap-1.5 self-start rounded-lg border border-hairline bg-canvas py-1.25 pe-1.25 ps-3.5 shadow-pop motion-safe:animate-toolbar-in"
     >
-      <span class="pr-2 text-sm font-semibold whitespace-nowrap text-ink tabular-nums" x-text="label"></span>
+      <span class="pe-2 text-sm font-semibold whitespace-nowrap text-ink tabular-nums" x-text="label"></span>
 
       <span class="h-5 w-px bg-hairline" aria-hidden="true"></span>
 
@@ -227,7 +227,7 @@
               <x-caption id="contact-category-move-to" class="block px-2.5 pt-2 pb-1.5">{{ __('Move to') }}</x-caption>
 
               @foreach ($menuCategories as $menuCategory)
-                <button type="button" role="menuitem" @click="menuOpen = false; changeCategory({{ $menuCategory['id'] }}, $el.form)" class="flex w-full cursor-pointer items-center gap-2.5 min-h-8 rounded-md px-2.5 text-left font-sans text-base text-ink transition-colors hover:bg-hover focus-ring-inset">
+                <button type="button" role="menuitem" @click="menuOpen = false; changeCategory({{ $menuCategory['id'] }}, $el.form)" class="flex w-full cursor-pointer items-center gap-2.5 min-h-8 rounded-md px-2.5 text-start font-sans text-base text-ink transition-colors hover:bg-hover focus-ring-inset">
                   {{ $menuCategory['label'] }}
                 </button>
               @endforeach
@@ -235,7 +235,7 @@
 
             <div class="my-1 h-px bg-hairline" role="separator"></div>
 
-            <button type="button" role="menuitem" @click="menuOpen = false; changeCategory(null, $el.form)" class="flex w-full cursor-pointer items-center gap-2.5 min-h-8 rounded-md px-2.5 text-left font-sans text-base text-muted transition-colors hover:bg-hover focus-ring-inset">
+            <button type="button" role="menuitem" @click="menuOpen = false; changeCategory(null, $el.form)" class="flex w-full cursor-pointer items-center gap-2.5 min-h-8 rounded-md px-2.5 text-start font-sans text-base text-muted transition-colors hover:bg-hover focus-ring-inset">
               {{ __('Remove category') }}
             </button>
           </x-actions-menu>
@@ -304,12 +304,12 @@
         </div>
       @else
         <div class="overflow-x-auto">
-          <table class="w-full min-w-190 border-collapse text-left">
+          <table class="w-full min-w-190 border-collapse text-left rtl:text-right">
             <caption class="sr-only">{{ __('People') }}</caption>
 
             <thead>
               <tr class="border-b border-hairline">
-                <th scope="col" class="w-11 py-3 pl-4">
+                <th scope="col" class="w-11 py-3 ps-4">
                   <x-selection-checkbox
                     :label="__('Select everybody on this page')"
                     data-select-all
@@ -320,7 +320,7 @@
                 </th>
 
                 @foreach ($viewModel->headings() as $heading)
-                  <th scope="col" @if ($heading['ariaSort'] !== null) aria-sort="{{ $heading['ariaSort'] }}" @endif class="px-4 py-3 text-xs font-medium whitespace-nowrap first:pl-4">
+                  <th scope="col" @if ($heading['ariaSort'] !== null) aria-sort="{{ $heading['ariaSort'] }}" @endif class="px-4 py-3 text-xs font-medium whitespace-nowrap first:ps-4">
                     @if ($heading['url'] !== null)
                       <a
                         href="{{ $heading['url'] }}"
@@ -361,7 +361,7 @@
             :aria-describedby="$ceiling !== null ? 'contact-ceiling' : null"
             data-turbo="true"
             size="small"
-            class="ml-auto"
+            class="ms-auto"
           >
             <x-slot:icon>
               <x-icon name="plus" :size="16" :stroke-width="1.6" />

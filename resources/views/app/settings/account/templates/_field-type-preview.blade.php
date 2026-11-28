@@ -9,7 +9,7 @@
   @if ($kind === 'input')
     <div class="{{ $box }} flex items-center overflow-hidden">
       @if (isset($preview['prefix']))
-        <span class="border-r border-hairline-soft bg-sunken px-2.5 py-1.5 font-mono text-xs text-muted">{{ $preview['prefix'] }}</span>
+        <span class="border-e border-hairline-soft bg-sunken px-2.5 py-1.5 font-mono text-xs text-muted">{{ $preview['prefix'] }}</span>
       @endif
 
       <span class="min-w-0 truncate px-2.5 py-1.5 text-sm text-ink {{ ($preview['mono'] ?? false) ? 'font-mono' : '' }}">{{ $value }}</span>
@@ -36,7 +36,7 @@
         <span class="shrink-0 font-mono text-xs text-muted-soft">{{ $preview['caption'] }}</span>
       @endif
 
-      <x-icon name="chevron-down" :size="14" class="ml-auto text-muted" />
+      <x-icon name="chevron-down" :size="14" class="ms-auto text-muted" />
     </div>
   @elseif ($kind === 'list')
     <div class="grid gap-2">
@@ -65,7 +65,7 @@
       <div class="{{ $box }} flex w-5/12 shrink-0 items-center gap-1.5 px-2.5 py-1.5">
         <span class="min-w-0 truncate text-sm text-ink">{{ $preview['label'] }}</span>
 
-        <x-icon name="chevron-down" :size="14" class="ml-auto shrink-0 text-muted" />
+        <x-icon name="chevron-down" :size="14" class="ms-auto shrink-0 text-muted" />
       </div>
 
       <div class="{{ $box }} flex min-w-0 grow items-center overflow-hidden">
@@ -78,7 +78,7 @@
         <div class="{{ $box }} flex w-5/12 items-center gap-1.5 px-2.5 py-1.5">
           <span class="min-w-0 truncate text-sm text-ink">{{ $preview['label'] }}</span>
 
-          <x-icon name="chevron-down" :size="14" class="ml-auto shrink-0 text-muted" />
+          <x-icon name="chevron-down" :size="14" class="ms-auto shrink-0 text-muted" />
         </div>
       @endif
 

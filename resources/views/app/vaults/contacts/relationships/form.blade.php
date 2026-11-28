@@ -158,7 +158,7 @@
       <div class="flex flex-wrap items-center gap-x-6 gap-y-3.5">
         <p class="max-w-105 text-xs leading-relaxed text-muted-soft" x-text="hint"></p>
 
-        <div class="flex flex-wrap items-center gap-3 max-sm:w-full sm:ml-auto">
+        <div class="flex flex-wrap items-center gap-3 max-sm:w-full sm:ms-auto">
           <x-button.secondary :href="$viewModel->contactUrl()" data-turbo="true">{{ __('Cancel') }}</x-button.secondary>
 
           <x-button form="relationship-form" ::disabled="! complete">{{ __('Add relationship') }}</x-button>

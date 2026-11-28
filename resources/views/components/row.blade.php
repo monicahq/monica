@@ -23,14 +23,14 @@
 @php
   $tag = $href ? 'a' : 'div';
   $arrangement = $stack ? 'flex-col items-start xs:flex-row xs:items-center' : 'items-center';
-  $endPlacement = $stack ? 'xs:ml-auto' : 'ml-auto';
+  $endPlacement = $stack ? 'xs:ms-auto' : 'ms-auto';
 @endphp
 
 <{{ $tag }}
   @if ($href) href="{{ $href }}" data-turbo="true" @endif
   {{
     $attributes->class([
-      'flex w-full gap-3 border-b border-hairline px-4 py-3.5 text-left font-sans no-underline',
+      'flex w-full gap-3 border-b border-hairline px-4 py-3.5 text-start font-sans no-underline',
       $arrangement,
       'transition-colors duration-(--duration-fast) ease-out last:border-b-0',
       'cursor-pointer hover:bg-hover focus-ring-inset' => (bool) $href,
@@ -66,7 +66,7 @@
   @if ($meta || $metaSub || $hasEnd)
     <div class="{{ $endPlacement }} flex shrink-0 items-center gap-2.5">
       @if ($meta || $metaSub)
-        <div class="text-right">
+        <div class="text-end">
           @if ($meta)
             <b class="block text-sm font-semibold whitespace-nowrap text-ink">{{ $meta }}</b>
           @endif

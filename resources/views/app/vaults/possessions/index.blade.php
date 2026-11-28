@@ -43,7 +43,7 @@
         </div>
       </div>
 
-      <div class="flex flex-col gap-3.5 border-hairline bg-card p-6 max-md:border-t sm:p-7 md:border-l">
+      <div class="flex flex-col gap-3.5 border-hairline bg-card p-6 max-md:border-t sm:p-7 md:border-s">
         <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
           <h3 class="text-label text-ink">{{ __('Or start from a type') }}</h3>
           <span class="text-xs text-muted">{{ __('Each one comes with its own fields.') }}</span>

@@ -48,7 +48,7 @@
     @class([
       'pointer-events-none absolute bottom-full z-20 mb-1.5 w-max max-w-3xs rounded-md bg-primary px-2.5 py-1.5 text-xs text-balance text-on-primary shadow-pop',
       'left-1/2 -translate-x-1/2' => $align !== 'right',
-      'right-0' => $align === 'right',
+      'end-0' => $align === 'right',
     ])
   >{{ $label }}</span>
 

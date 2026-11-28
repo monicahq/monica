@@ -30,7 +30,7 @@
   @endforeach
 
   @if (auth()->user()?->isAdministrator())
-    <x-button.secondary :href="route('admin.overview.index')" size="top-bar" :aria-label="__('Admin space')" class="ml-1.5">
+    <x-button.secondary :href="route('admin.overview.index')" size="top-bar" :aria-label="__('Admin space')" class="ms-1.5">
       <x-slot:icon>
         <x-icon name="shield" :size="16" :stroke-width="1.4" />
       </x-slot:icon>

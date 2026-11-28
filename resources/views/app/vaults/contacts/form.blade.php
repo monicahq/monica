@@ -83,7 +83,7 @@
               <span class="text-base font-semibold text-ink">{{ $flag['name'] }}</span>
             </label>
 
-            <p id="{{ $flag['id'] }}-help" class="pl-13.5 text-sm text-pretty text-muted">{{ $flag['help'] }}</p>
+            <p id="{{ $flag['id'] }}-help" class="ps-13.5 text-sm text-pretty text-muted">{{ $flag['help'] }}</p>
           </div>
         @endforeach
       </div>
@@ -98,7 +98,7 @@
         {{ __('Create another one after this') }}
       </x-checkbox>
 
-      <div class="flex flex-wrap items-center gap-3 max-sm:w-full sm:ml-auto" x-data="{ held: false }" @name-editor-busy.window="held = $event.detail">
+      <div class="flex flex-wrap items-center gap-3 max-sm:w-full sm:ms-auto" x-data="{ held: false }" @name-editor-busy.window="held = $event.detail">
         <p id="contact-form-held" x-show="held" x-cloak class="text-sm text-muted">{{ __('Finish the change to the name first, or cancel it.') }}</p>
 
         <x-button.secondary :href="$viewModel->contactsUrl()" data-turbo="true">{{ __('Cancel') }}</x-button.secondary>

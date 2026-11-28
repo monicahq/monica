@@ -11,7 +11,7 @@
       {{ __('Discover templates and sections built by the community. Everything you install becomes your own private, editable copy.') }}
     </p>
 
-    <p class="mt-1 flex w-fit items-center gap-2.5 rounded-md border border-hairline border-l-2 border-l-ink bg-canvas px-3.5 py-2.5 text-sm font-semibold text-ink">
+    <p class="mt-1 flex w-fit items-center gap-2.5 rounded-md border border-hairline border-s-2 border-s-ink bg-canvas px-3.5 py-2.5 text-sm font-semibold text-ink">
       <x-icon name="lock" :size="17" :stroke-width="1.5" class="shrink-0 text-body" />
 
       {{ __('Install a private copy. Change it however you want. Updates are always optional.') }}
@@ -101,7 +101,7 @@
           <p class="mt-0.5 text-xs text-muted">{{ $viewModel->resultsDescription() }}</p>
         </div>
 
-        <div class="ml-auto flex flex-wrap items-center gap-2.5">
+        <div class="ms-auto flex flex-wrap items-center gap-2.5">
           <x-select
             id="locale"
             name="locale"
@@ -186,7 +186,7 @@
       </p>
     </div>
 
-    <div class="shrink-0 sm:ml-auto">
+    <div class="shrink-0 sm:ms-auto">
       @auth
         <x-button.secondary :href="route('settings.templates.index')" data-turbo="true" size="small">
           {{ __('Your templates') }}

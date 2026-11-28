@@ -15,8 +15,8 @@
 
     <dl class="grid grid-cols-[auto_minmax(0,1fr)]">
       @foreach ($context->facts() as $fact)
-        <dt class="border-b border-hairline-soft py-2.25 pr-3 pl-4 text-xs text-muted">{{ $fact['label'] }}</dt>
-        <dd class="border-b border-hairline-soft py-2.25 pr-4 text-right text-xs wrap-anywhere text-ink">{{ $fact['value'] }}</dd>
+        <dt class="border-b border-hairline-soft py-2.25 pe-3 ps-4 text-xs text-muted">{{ $fact['label'] }}</dt>
+        <dd class="border-b border-hairline-soft py-2.25 pe-4 text-end text-xs wrap-anywhere text-ink">{{ $fact['value'] }}</dd>
       @endforeach
     </dl>
 

@@ -3,7 +3,7 @@
 @php
   $folders = $tree->folders();
   $target = $tree->targetFolder();
-  $item = 'flex w-full cursor-pointer items-center gap-2.5 min-h-8 rounded-md px-2.5 text-left font-sans text-base no-underline transition-colors hover:bg-hover focus-ring-inset';
+  $item = 'flex w-full cursor-pointer items-center gap-2.5 min-h-8 rounded-md px-2.5 text-start font-sans text-base no-underline transition-colors hover:bg-hover focus-ring-inset';
   $entry = 'focus-ring flex min-h-8 items-center gap-2 rounded-md px-2 py-1.5 text-nav no-underline transition duration-(--duration-fast) ease-out';
   $entryIdle = 'text-body hover:bg-hover hover:text-ink';
   $entryCurrent = 'bg-card font-medium text-ink shadow-nav-active';
@@ -115,7 +115,7 @@
             @click="unfolded = ! unfolded"
             @dblclick="renaming = true; $nextTick(() => $refs.name.select())"
             :aria-expanded="unfolded ? 'true' : 'false'"
-            class="focus-ring flex min-h-8 min-w-0 flex-1 cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 text-left text-[13.5px] font-semibold text-ink hover:bg-hover"
+            class="focus-ring flex min-h-8 min-w-0 flex-1 cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 text-start text-[13.5px] font-semibold text-ink hover:bg-hover"
           >
             <span class="flex text-muted transition-transform duration-(--duration-fast)" :class="unfolded || 'rotate-[-90deg]'" aria-hidden="true"><x-icon name="chevron-down" :size="13" /></span>
             <span class="flex shrink-0 text-ink-soft" aria-hidden="true"><x-icon name="folder" :size="16" /></span>

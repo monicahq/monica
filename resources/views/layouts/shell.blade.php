@@ -42,7 +42,7 @@
             </div>
           @endisset
 
-          <div class="ml-auto flex shrink-0 items-center gap-1 sm:gap-2.5">
+          <div class="ms-auto flex shrink-0 items-center gap-1 sm:gap-2.5">
             @if ($searchVault !== null)
               <form method="get" action="{{ route('search.index', $searchVault) }}" role="search" class="hidden md:block">
                 <label for="shell-search" class="sr-only">{{ __('Search this vault') }}</label>

@@ -163,7 +163,7 @@
             <h2 id="sync-heading" class="{{ $heading }}">What syncs</h2>
             <p class="{{ $prose }}">{{ CarddavDocsViewModel::CONTACTS }}</p>
             <div class="overflow-x-auto rounded-lg border border-hairline">
-              <table class="w-full text-left text-sm">
+              <table class="w-full text-left rtl:text-right text-sm">
                 <caption class="sr-only">Information synced to your address book</caption>
                 <thead class="bg-card text-ink"><tr><th scope="col" class="px-4 py-3 font-semibold">Information</th><th scope="col" class="px-4 py-3 font-semibold">What reaches your address book</th></tr></thead>
                 <tbody>
@@ -210,10 +210,10 @@
         <aside aria-labelledby="on-this-page" class="sticky top-8 hidden w-50 flex-none flex-col gap-2.5 lg:flex print:hidden">
           <x-docs.page-meta class="mb-4" :updated="$viewModel->lastUpdated()" :edit-url="$viewModel->editUrl()" :issue-url="$viewModel->issueUrl()" />
           <x-caption id="on-this-page" tone="muted">On this page</x-caption>
-          <nav aria-labelledby="on-this-page" class="flex flex-col gap-0.5 border-l border-hairline">
+          <nav aria-labelledby="on-this-page" class="flex flex-col gap-0.5 border-s border-hairline">
             @foreach (CarddavDocsViewModel::SECTIONS as $section)
               <a href="#{{ $section['id'] }}" :aria-current="current === '{{ $section['id'] }}' ? 'location' : null"
-                class="-ml-px border-l border-transparent py-1.25 pl-3 text-sm leading-[1.4] text-muted transition-colors hover:text-ink focus-ring aria-[current]:border-ink aria-[current]:font-semibold aria-[current]:text-ink"
+                class="-ms-px border-s border-transparent py-1.25 ps-3 text-sm leading-[1.4] text-muted transition-colors hover:text-ink focus-ring aria-[current]:border-ink aria-[current]:font-semibold aria-[current]:text-ink"
               >{{ $section['label'] }}</a>
             @endforeach
           </nav>

@@ -6,7 +6,7 @@
 @foreach ($viewModel->groups() as $group)
   @if ($group['label'] !== null)
     <tr>
-      <th scope="colgroup" colspan="{{ $width }}" class="px-4 pt-4 pb-1.5 text-left font-normal">
+      <th scope="colgroup" colspan="{{ $width }}" class="px-4 pt-4 pb-1.5 text-start font-normal">
         <span class="flex items-center gap-2">
           <x-caption>{{ $group['label'] }}</x-caption>
           <span class="text-xs text-muted">{{ $group['count'] }}</span>
@@ -20,7 +20,7 @@
       class="relative border-t border-hairline transition-colors duration-(--duration-fast) ease-out hover:bg-hover"
       :class="isSelected('{{ $person['uuid'] }}') && 'bg-hover'"
     >
-      <td class="w-11 py-2.75 pl-4">
+      <td class="w-11 py-2.75 ps-4">
         <x-selection-checkbox
           :label="__('Select :name', ['name' => $person['name']])"
           data-contact-uuid="{{ $person['uuid'] }}"
@@ -33,7 +33,7 @@
         <span class="flex min-w-0 items-center gap-3">
           <x-contact-avatar :name="$person['name']" :url="$person['avatarUrl']" :size="32" />
 
-          <a href="{{ $person['url'] }}" data-turbo="true" @click="rowClick($event, '{{ $person['uuid'] }}')" class="truncate text-base font-semibold text-ink no-underline after:absolute after:inset-0 focus-ring-inset">{{ $person['name'] }}</a>
+          <a href="{{ $person['url'] }}" data-turbo="true" @click="rowClick($event, '{{ $person['uuid'] }}')" class="truncate text-base font-semibold text-ink no-underline after:absolute after:inset-0 focus-ring-inset" dir="auto">{{ $person['name'] }}</a>
 
           @if ($person['showsStar'])
             <span class="flex shrink-0 text-ink-soft">
@@ -54,7 +54,7 @@
           @else
             <div x-data="{ open: false }" class="flex min-w-0 flex-col gap-1">
               <span class="flex min-w-0 items-center gap-1.5">
-                <span class="truncate text-body">{{ $cell['values'][0] }}</span>
+                <span class="truncate text-body" dir="{{ preg_match('/^[+\d(]/', $cell['values'][0]) === 1 ? 'ltr' : 'auto' }}">{{ $cell['values'][0] }}</span>
 
                 @if ($cell['moreLabel'] !== null)
                   <button
@@ -71,7 +71,7 @@
               @if ($cell['moreLabel'] !== null)
                 <span x-show="open" x-cloak class="flex flex-col gap-1">
                   @foreach (array_slice($cell['values'], 1) as $value)
-                    <span class="truncate text-body">{{ $value }}</span>
+                    <span class="truncate text-body" dir="{{ preg_match('/^[+\d(]/', $value) === 1 ? 'ltr' : 'auto' }}">{{ $value }}</span>
                   @endforeach
                 </span>
               @endif

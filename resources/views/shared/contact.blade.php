@@ -11,7 +11,7 @@
 
       <span class="min-w-0 truncate text-sm text-page/70">{{ $viewModel->sharedBy() }}</span>
 
-      <span class="ml-auto flex shrink-0 items-center gap-2 rounded-sm bg-page/12 px-2.5 py-1 text-xs text-page">
+      <span class="ms-auto flex shrink-0 items-center gap-2 rounded-sm bg-page/12 px-2.5 py-1 text-xs text-page">
         <x-icon name="lock" :size="14" :stroke-width="1.7" />
         {{ $viewModel->terms() }}
       </span>

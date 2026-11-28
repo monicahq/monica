@@ -57,7 +57,7 @@
     </x-form>
 
     <div class="flex flex-wrap items-center gap-3.5">
-      <div class="flex flex-wrap items-center gap-3 max-sm:w-full sm:ml-auto">
+      <div class="flex flex-wrap items-center gap-3 max-sm:w-full sm:ms-auto">
         <x-button.secondary :href="$viewModel->cancelUrl()" data-turbo="true">{{ __('Cancel') }}</x-button.secondary>
 
         <x-button form="template-copy-form" ::disabled="! named">{{ __('Make the copy') }}</x-button>

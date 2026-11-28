@@ -27,7 +27,7 @@
             <button
               type="submit"
               @class([
-                'flex w-full cursor-pointer flex-col items-start gap-0.5 px-3 py-2.5 text-left transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring-inset',
+                'flex w-full cursor-pointer flex-col items-start gap-0.5 px-3 py-2.5 text-start transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring-inset',
                 'bg-card' => ! $notification['is_read'],
               ])
             >

@@ -412,7 +412,7 @@
  * punctuation where it belongs, and the interface around it stays right to left.
  */
 @layer base {
-    [dir='rtl'] :where(p, li, dd, dt, blockquote, h1, h2, h3, h4, td, th, figcaption, .text-pretty, .whitespace-pre-line) {
+    [dir='rtl'] :where(p, li, dd, dt, blockquote, h1, h2, h3, h4, figcaption, .text-pretty, .whitespace-pre-line) {
         unicode-bidi: plaintext;
     }
 }

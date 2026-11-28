@@ -73,7 +73,7 @@
       <x-error :id="'category-name-'.$category['id'].'-error'" :messages="$renameErrors->get('name')" />
     </x-form>
 
-    <div class="ml-auto flex shrink-0 items-center gap-1.5">
+    <div class="ms-auto flex shrink-0 items-center gap-1.5">
       @unless ($category['isFirst'])
         <x-form
           method="put"

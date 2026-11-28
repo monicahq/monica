@@ -59,7 +59,7 @@
                   name="currency"
                   value="{{ $currency }}"
                   aria-pressed="{{ $currency === $viewModel->currency() ? 'true' : 'false' }}"
-                  class="focus-ring inline-flex h-9 cursor-pointer items-center gap-2 rounded-full border border-hairline bg-card pr-3.5 pl-2.5 text-base font-medium text-ink transition duration-(--duration-fast) ease-out hover:bg-hover aria-pressed:border-ink aria-pressed:bg-canvas aria-pressed:shadow-[0_0_0_1px_var(--ink)]"
+                  class="focus-ring inline-flex h-9 cursor-pointer items-center gap-2 rounded-full border border-hairline bg-card pe-3.5 ps-2.5 text-base font-medium text-ink transition duration-(--duration-fast) ease-out hover:bg-hover aria-pressed:border-ink aria-pressed:bg-canvas aria-pressed:shadow-[0_0_0_1px_var(--ink)]"
                 >
                   @include('app.settings.account.billing._flag', ['currency' => $currency])
 

@@ -77,7 +77,7 @@
                 @endforeach
               </div>
 
-              <div class="flex items-center gap-3 border-hairline-soft sm:ml-auto sm:border-l sm:pl-5">
+              <div class="flex items-center gap-3 border-hairline-soft sm:ms-auto sm:border-s sm:ps-5">
                 <span
                   :style="`background: ${colour}`"
                   class="flex size-8.5 items-center justify-center rounded-md text-sm font-semibold text-white"
@@ -171,7 +171,7 @@
                 <span
                   aria-hidden="true"
                   x-text="shown ? @js(__('Shown')) : @js(__('Hidden'))"
-                  class="min-w-11 text-right text-xs font-medium text-muted"
+                  class="min-w-11 text-end text-xs font-medium text-muted"
                 >{{ $section['shown'] ? __('Shown') : __('Hidden') }}</span>
 
                 <label for="{{ $section['field'] }}" class="flex cursor-pointer items-center">

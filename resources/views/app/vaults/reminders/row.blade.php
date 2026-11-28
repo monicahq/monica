@@ -5,7 +5,7 @@
 --}}
 @php
   $isLink = ($linkToReminder ?? true) && $row->reminderUrl() !== null;
-  $item = 'flex w-full cursor-pointer items-center gap-2.5 rounded-xs px-2.5 py-2 text-left font-sans text-sm text-ink transition-colors hover:bg-hover focus-ring-inset';
+  $item = 'flex w-full cursor-pointer items-center gap-2.5 rounded-xs px-2.5 py-2 text-start font-sans text-sm text-ink transition-colors hover:bg-hover focus-ring-inset';
 @endphp
 <div class="relative flex flex-wrap items-center gap-x-5 gap-y-3 rounded-lg border border-hairline bg-canvas px-5 pt-7 pb-4.5 shadow-panel transition-colors duration-(--duration-fast) ease-out hover:border-hairline-strong">
   <span aria-hidden="true" class="pointer-events-none absolute inset-x-0 top-0 h-5.5 rounded-t-lg bg-card [clip-path:polygon(0_0,100%_0,50%_100%)]"></span>
@@ -70,7 +70,7 @@
     </span>
   </{{ $isLink ? 'a' : 'div' }}>
 
-  <div class="relative flex flex-none items-center gap-2 max-sm:ml-auto">
+  <div class="relative flex flex-none items-center gap-2 max-sm:ms-auto">
     @include('app.vaults.reminders._answers', ['row' => $row])
 
     <x-actions-menu variant="ghost" :text="__('More')" :label="__('More actions for :name', ['name' => $row->text()])">

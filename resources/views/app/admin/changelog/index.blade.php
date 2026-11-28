@@ -71,7 +71,7 @@
                 <span class="flex items-center gap-3 text-xs text-body">
                   <span>{{ trans_choice(':count like|:count likes', $row['up']) }}</span>
                   <span>{{ trans_choice(':count dislike|:count dislikes', $row['down']) }}</span>
-                  <span class="ml-auto">{{ $row['matchLabel'] }}</span>
+                  <span class="ms-auto">{{ $row['matchLabel'] }}</span>
                 </span>
               </a>
             </li>

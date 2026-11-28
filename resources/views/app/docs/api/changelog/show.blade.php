@@ -76,7 +76,7 @@
 
               <h2 id="changes-title" class="mt-10 mb-3 text-section-title text-ink">Changes</h2>
               <x-scroll-region labelledby="changes-title" class="rounded-lg border border-hairline bg-canvas shadow-panel">
-                <table class="w-full min-w-120 text-left">
+                <table class="w-full min-w-120 text-left rtl:text-right">
                   <thead class="border-b border-hairline bg-card text-xs text-ink">
                     <tr>
                       <th scope="col" class="px-4 py-2.5 font-semibold">Field</th>

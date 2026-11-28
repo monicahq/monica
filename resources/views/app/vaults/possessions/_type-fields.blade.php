@@ -3,7 +3,7 @@
 <div id="possession-type-fields" x-merge="replace" aria-live="polite" class="dim-when-busy">
   @if ($fieldsBlock === null)
     <div class="flex items-center gap-2.5 px-4 py-5">
-      <x-icon name="arrow-right" :size="15" class="-rotate-90 text-muted" />
+      <x-icon name="arrow-right" :size="15" :mirror="false" class="-rotate-90 text-muted" />
       <p class="text-sm text-muted">{{ __('Choose a type above and its fields appear here.') }}</p>
     </div>
   @elseif ($fieldsBlock->isEmpty())

@@ -12,9 +12,9 @@
 <aside
   x-data="apiDocsSidebarScroll"
   @click="remember()" @keydown.enter="remember()"
-  class="hidden w-68 shrink-0 self-start border-r border-hairline px-4 py-6 lg:block"
+  class="hidden w-68 shrink-0 self-start border-e border-hairline px-4 py-6 lg:block"
 >
-  <h2 class="mb-2 ml-2.5 text-2xs font-medium tracking-caption text-muted-soft uppercase">Getting started</h2>
+  <h2 class="mb-2 ms-2.5 text-2xs font-medium tracking-caption text-muted-soft uppercase">Getting started</h2>
 
   <nav class="mb-6.5 flex flex-col gap-px" aria-label="Getting started">
     @foreach ($navigation['guides'] as $guide)
@@ -28,16 +28,16 @@
     @endforeach
   </nav>
 
-  <h2 class="mb-2 ml-2.5 text-2xs font-medium tracking-caption text-muted-soft uppercase">Resources</h2>
+  <h2 class="mb-2 ms-2.5 text-2xs font-medium tracking-caption text-muted-soft uppercase">Resources</h2>
 
   @foreach ($navigation['resources'] as $group)
     <div
       class="mb-4.5"
       x-show="{{ collect($group['items'])->map(fn (array $item): string => '!query || '.Js::from(mb_strtolower($item['label'].' '.implode(' ', $item['methods']))).'.includes(query.toLowerCase())')->implode(' || ') }}"
     >
-      <h3 class="mb-1 ml-2.5 text-card-title text-ink">{{ $group['name'] }}</h3>
+      <h3 class="mb-1 ms-2.5 text-card-title text-ink">{{ $group['name'] }}</h3>
 
-      <nav class="ml-2.5 flex flex-col gap-px border-l border-hairline-soft" aria-label="{{ $group['name'] }}">
+      <nav class="ms-2.5 flex flex-col gap-px border-s border-hairline-soft" aria-label="{{ $group['name'] }}">
         @foreach ($group['items'] as $item)
           <a
             href="{{ route('docs.api.show', ['section' => $item['id']]) }}"

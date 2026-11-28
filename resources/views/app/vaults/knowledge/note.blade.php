@@ -93,12 +93,12 @@
                     <x-icon name="chevron-down" :size="14" class="text-muted" />
                   </x-slot:text>
 
-                  <button type="button" role="menuitem" @click="menuOpen = false; $refs.menuTrigger.focus(); copy()" class="flex w-full cursor-pointer items-center gap-2.5 min-h-8 rounded-md px-2.5 text-left font-sans text-base text-ink transition-colors hover:bg-hover focus-ring-inset">
+                  <button type="button" role="menuitem" @click="menuOpen = false; $refs.menuTrigger.focus(); copy()" class="flex w-full cursor-pointer items-center gap-2.5 min-h-8 rounded-md px-2.5 text-start font-sans text-base text-ink transition-colors hover:bg-hover focus-ring-inset">
                     <x-icon name="copy" :size="16" />
                     {{ __('Copy') }}
                   </button>
 
-                  <button type="button" role="menuitem" @click="menuOpen = false; $refs.menuTrigger.focus(); source = ! source" class="flex w-full cursor-pointer items-center gap-2.5 min-h-8 rounded-md px-2.5 text-left font-sans text-base text-ink transition-colors hover:bg-hover focus-ring-inset">
+                  <button type="button" role="menuitem" @click="menuOpen = false; $refs.menuTrigger.focus(); source = ! source" class="flex w-full cursor-pointer items-center gap-2.5 min-h-8 rounded-md px-2.5 text-start font-sans text-base text-ink transition-colors hover:bg-hover focus-ring-inset">
                     <x-icon name="code" :size="16" />
                     <span x-text="source ? @js(__('View formatted')) : @js(__('View as MD'))">{{ __('View as MD') }}</span>
                   </button>

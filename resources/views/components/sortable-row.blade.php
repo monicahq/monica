@@ -10,7 +10,7 @@
   'rowId',
   'action',
   'target',
-  'padding' => 'py-3.5 pr-4 pl-2',
+  'padding' => 'py-3.5 pe-4 ps-2',
   'dragstart' => null,
 ])
 
@@ -29,7 +29,7 @@
     @drop.prevent="drop($event, {{ $rowId }})"
     @dragend="stop()"
     :class="draggingId === {{ $rowId }} && 'opacity-40'"
-    class="flex w-full items-center gap-3 {{ $padding }} text-left transition-colors duration-(--duration-fast) ease-out hover:bg-hover"
+    class="flex w-full items-center gap-3 {{ $padding }} text-start transition-colors duration-(--duration-fast) ease-out hover:bg-hover"
   >
     <span title="{{ __('Drag to reorder') }}" class="flex shrink-0 cursor-grab p-1 text-placeholder active:cursor-grabbing" aria-hidden="true">
       <x-icon name="grip" :size="15" :stroke-width="1.5" />

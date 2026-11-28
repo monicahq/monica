@@ -7,7 +7,7 @@
   style="--accent: oklch(0.58 0.16 255)"
   {{ $attributes->class('flex overflow-hidden rounded-lg border border-[color-mix(in_oklch,var(--accent)_28%,var(--canvas))] bg-canvas') }}
 >
-  <span aria-hidden="true" class="flex w-13 shrink-0 items-center justify-center border-r border-[color-mix(in_oklch,var(--accent)_28%,var(--canvas))] bg-[color-mix(in_oklch,var(--accent)_10%,var(--canvas))] text-(--accent)">
+  <span aria-hidden="true" class="flex w-13 shrink-0 items-center justify-center border-e border-[color-mix(in_oklch,var(--accent)_28%,var(--canvas))] bg-[color-mix(in_oklch,var(--accent)_10%,var(--canvas))] text-(--accent)">
     <x-icon name="info" :size="20" />
   </span>
 

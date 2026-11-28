@@ -54,7 +54,7 @@
       <div class="flex flex-wrap items-center gap-3 border-t border-hairline pt-3.5">
         <p class="max-w-reading-narrow text-xs text-pretty text-muted">{{ $section['saveLine'] }}</p>
 
-        <div class="ml-auto flex items-center gap-2">
+        <div class="ms-auto flex items-center gap-2">
           <x-button.secondary
             size="small"
             :href="$viewModel->pageUrl()"

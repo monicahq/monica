@@ -69,7 +69,7 @@
     @if ($isEditable && $selected !== null)
       <div x-data="{ renaming: false, reordering: false }" class="flex flex-col gap-3 pt-2.5">
         <div class="flex flex-wrap items-center gap-x-1 gap-y-1">
-          <span class="mr-1 text-xs text-pretty text-muted">{{ __('This page') }}</span>
+          <span class="me-1 text-xs text-pretty text-muted">{{ __('This page') }}</span>
 
           <x-button.ghost size="small" type="button" @click="renaming = ! renaming; reordering = false">{{ __('Rename') }}</x-button.ghost>
 
@@ -123,7 +123,7 @@
 
         <div x-cloak x-show="reordering" class="flex flex-wrap items-center gap-2 rounded-md border border-dashed border-hairline-strong bg-sunken px-3 py-2.5">
           @foreach ($pages as $index => $page)
-            <span class="flex items-center gap-1 rounded-sm border border-hairline bg-canvas py-1 pr-1 pl-2.5 text-sm text-body">
+            <span class="flex items-center gap-1 rounded-sm border border-hairline bg-canvas py-1 pe-1 ps-2.5 text-sm text-body">
               {{ $page['label'] }}
 
               @foreach ([['position' => $index, 'label' => __('Move :name left', ['name' => $page['label']]), 'flip' => true, 'shown' => $index > 0], ['position' => $index + 2, 'label' => __('Move :name right', ['name' => $page['label']]), 'flip' => false, 'shown' => $index < count($pages) - 1]] as $move)

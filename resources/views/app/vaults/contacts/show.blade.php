@@ -44,7 +44,7 @@
       @include('app.vaults.contacts._facts', ['viewModel' => $viewModel])
     </div>
 
-    <div class="ml-auto flex flex-wrap items-center gap-2.5">
+    <div class="ms-auto flex flex-wrap items-center gap-2.5">
       <x-button :href="$viewModel->editUrl()" :variant="$viewModel->isPartial() ? 'secondary' : 'primary'" data-turbo="true" size="small">
         <x-slot:icon>
           <x-icon name="profile" :size="15" :stroke-width="1.6" />
@@ -68,7 +68,7 @@
             {{ __('Export as Markdown') }}
           </x-actions-menu.item>
 
-          <button type="button" role="menuitem" @click="menuOpen = false; $refs.menuTrigger.focus(); copyMarkdown()" class="flex w-full cursor-pointer items-center gap-2.5 min-h-8 rounded-md px-2.5 text-left font-sans text-base text-ink transition-colors hover:bg-hover focus-ring-inset">
+          <button type="button" role="menuitem" @click="menuOpen = false; $refs.menuTrigger.focus(); copyMarkdown()" class="flex w-full cursor-pointer items-center gap-2.5 min-h-8 rounded-md px-2.5 text-start font-sans text-base text-ink transition-colors hover:bg-hover focus-ring-inset">
             {{ __('Copy as Markdown') }}
           </button>
 

@@ -29,7 +29,7 @@
         :vault="$vault"
       />
 
-      <button type="button" x-on:click="closePiece('field-{{ $field['id'] }}')" aria-label="{{ __('Remove :name', ['name' => $field['label']]) }}" class="focus-ring absolute top-0 right-0 rounded-sm text-xs font-medium text-muted hover:text-ink hover:underline">{{ __('Remove') }}</button>
+      <button type="button" x-on:click="closePiece('field-{{ $field['id'] }}')" aria-label="{{ __('Remove :name', ['name' => $field['label']]) }}" class="focus-ring absolute top-0 end-0 rounded-sm text-xs font-medium text-muted hover:text-ink hover:underline">{{ __('Remove') }}</button>
     </fieldset>
   @endforeach
 

@@ -54,7 +54,7 @@
               </div>
             </div>
 
-            <div class="relative z-1 -mt-9 ml-auto w-full max-w-105 overflow-hidden rounded-lg border border-hairline bg-canvas px-6 pt-14 pb-5 shadow-panel 2xl:max-w-115">
+            <div class="relative z-1 -mt-9 ms-auto w-full max-w-105 overflow-hidden rounded-lg border border-hairline bg-canvas px-6 pt-14 pb-5 shadow-panel 2xl:max-w-115">
               <span class="flex items-center gap-2">
                 <span class="size-2 rounded-full bg-[oklch(0.6_0.13_190)]"></span>
                 <x-caption tone="muted">{{ __('Your addresses') }}</x-caption>

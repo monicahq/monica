@@ -101,14 +101,14 @@
 
   <div x-cloak>
     <x-searchable-list :id="$id" :label-id="$id.'-label'" :search-label="__('Search the countries')" :invalid="$errorId !== null" :described-by="$describedBy">
-      <x-slot:trigger :x-autofocus="$autofocus" class="focus-ring-field relative flex h-9 w-full cursor-pointer items-center gap-2.5 rounded-md border border-hairline-strong bg-input pr-8.5 pl-3 text-left text-[16px] text-ink transition duration-(--duration-fast) ease-out hover:border-muted-soft data-invalid:border-error data-invalid:ring-[3px] data-invalid:ring-error/20 sm:text-base">
+      <x-slot:trigger :x-autofocus="$autofocus" class="focus-ring-field relative flex h-9 w-full cursor-pointer items-center gap-2.5 rounded-md border border-hairline-strong bg-input pe-8.5 ps-3 text-start text-[16px] text-ink transition duration-(--duration-fast) ease-out hover:border-muted-soft data-invalid:border-error data-invalid:ring-[3px] data-invalid:ring-error/20 sm:text-base">
         <span class="truncate" :class="chosenLabel === '' && 'text-muted'" x-text="chosenLabel === '' ? @js($placeholder ?? '') : chosenLabel"></span>
 
         <x-icon
           name="chevron-down"
           :size="16"
           :stroke-width="1.5"
-          class="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-muted"
+          class="pointer-events-none absolute top-1/2 end-3 -translate-y-1/2 text-muted"
         />
       </x-slot:trigger>
 

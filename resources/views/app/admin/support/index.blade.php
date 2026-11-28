@@ -90,7 +90,7 @@
               <x-badge :tone="$current['statusTone']" :icon="$current['statusIcon']">{{ $current['statusLabel'] }}</x-badge>
               <p class="text-sm text-body"><span class="font-mono text-ink">{{ $current['reference'] }}</span> · {{ $current['categoryLabel'] }} · {{ __('Opened :when', ['when' => $current['opened']]) }}</p>
 
-              <x-form method="put" :action="route('admin.support.status.update', ['supportRequest' => $current['uuid']])" class="ml-auto flex items-end gap-2">
+              <x-form method="put" :action="route('admin.support.status.update', ['supportRequest' => $current['uuid']])" class="ms-auto flex items-end gap-2">
                 <x-select id="status" name="status" size="small" :label="__('Move to')" :inline="true">
                   @foreach ($viewModel->statusOptions() as $option)
                     <option value="{{ $option['value'] }}" @selected($current['status'] === $option['value'])>{{ $option['label'] }}</option>

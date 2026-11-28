@@ -66,7 +66,7 @@
                 <span class="text-xs text-muted">{{ $export['size'] }}</span>
               @endif
 
-              <span class="ml-auto flex flex-wrap items-center gap-3">
+              <span class="ms-auto flex flex-wrap items-center gap-3">
                 @if ($export['download_url'] !== null)
                   <x-timestamp :at="$export['expires_at']" class="text-xs text-muted">{{ __('Available until :date', ['date' => $export['expires_at']->isoFormat('LL')]) }}</x-timestamp>
 
@@ -127,7 +127,7 @@
 
             <x-badge :tone="$import['tone']">{{ $import['status'] }}</x-badge>
 
-            <x-timestamp :at="$import['created_at']" class="ml-auto text-xs text-muted">{{ $import['created_at']->diffForHumans() }}</x-timestamp>
+            <x-timestamp :at="$import['created_at']" class="ms-auto text-xs text-muted">{{ $import['created_at']->diffForHumans() }}</x-timestamp>
           </a>
         @endforeach
       </x-list-panel>

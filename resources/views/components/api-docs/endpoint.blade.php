@@ -23,7 +23,7 @@
       @endif
       <span class="break-all text-ink">/api/v1{{ $section->path }}</span>
       @unless ($section->auth)
-        <span class="ml-auto shrink-0 text-2xs text-muted">no token</span>
+        <span class="ms-auto shrink-0 text-2xs text-muted">no token</span>
       @endunless
     </div>
 

@@ -10,9 +10,9 @@
     :aria-expanded="expanded.toString()"
     aria-expanded="false"
     aria-controls="reminder-delivery"
-    class="-ml-0.5 flex w-fit cursor-pointer items-center gap-1.5 rounded-md py-1 pr-1.5 pl-0.5 text-sm font-medium text-body transition-colors hover:bg-hover hover:text-ink focus-ring"
+    class="-ms-0.5 flex w-fit cursor-pointer items-center gap-1.5 rounded-md py-1 pe-1.5 ps-0.5 text-sm font-medium text-body transition-colors hover:bg-hover hover:text-ink focus-ring"
   >
-    <x-icon name="chevron-right" :size="15" class="transition-transform duration-(--duration-standard) motion-reduce:transition-none" ::class="expanded && 'rotate-90'" />
+    <x-icon name="chevron-right" :size="15" class="transition-transform duration-(--duration-standard) motion-reduce:transition-none" ::class="expanded && 'rotate-90 rtl:-rotate-90'" />
 
     {{ __('Delivery details') }}
   </button>

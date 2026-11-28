@@ -50,7 +50,7 @@
         <span data-count>{{ count($block['fields']) }}</span>
       </span>
 
-      <span class="ml-auto flex shrink-0 items-center gap-1">
+      <span class="ms-auto flex shrink-0 items-center gap-1">
         <x-icon-button type="button" icon="chevron-up" :label="__('Move this block up')" @click="moveBlock($el, -1)" />
         <x-icon-button type="button" icon="chevron-down" :label="__('Move this block down')" @click="moveBlock($el, 1)" />
         <x-icon-button type="button" icon="close" :label="__('Remove this block')" @click="removeBlock($el)" />

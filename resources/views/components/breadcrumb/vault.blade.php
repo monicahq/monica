@@ -24,7 +24,7 @@
         :aria-expanded="open ? 'true' : 'false'"
         aria-controls="{{ $panelId }}"
         @if ($items === []) aria-current="page" @endif
-        class="flex min-w-0 cursor-pointer items-center gap-2 rounded-md border border-transparent px-1.5 py-1 text-left text-sm text-ink transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring"
+        class="flex min-w-0 cursor-pointer items-center gap-2 rounded-md border border-transparent px-1.5 py-1 text-start text-sm text-ink transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring"
       >
         <span style="background: {{ $vault->colour }}" class="{{ $tile }} size-5.5 text-2xs" aria-hidden="true">{{ $initial }}</span>
 

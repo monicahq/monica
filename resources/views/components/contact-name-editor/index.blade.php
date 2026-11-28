@@ -101,7 +101,7 @@
             </span>
           </div>
 
-          <div x-show="confirming === index" x-cloak data-name-removal class="flex flex-col gap-3 border-t border-hairline bg-card px-4 py-3.5 sm:pl-11.5" role="group" :aria-labelledby="`name-removal-${index}`">
+          <div x-show="confirming === index" x-cloak data-name-removal class="flex flex-col gap-3 border-t border-hairline bg-card px-4 py-3.5 sm:ps-11.5" role="group" :aria-labelledby="`name-removal-${index}`">
             <p :id="`name-removal-${index}`" class="text-sm text-ink" x-text="removalPrompt(row)"></p>
 
             <div x-show="replacement !== null" class="max-w-80">

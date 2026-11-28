@@ -18,7 +18,7 @@
           type="button"
           x-on:click="choose(@js($candidate['uuid']), @js($candidate['name'])); $nextTick(() => $refs.change?.focus())"
           :aria-pressed="chosen === @js($candidate['uuid']) ? 'true' : 'false'"
-          class="focus-ring-inset flex w-full items-center gap-2.5 border-b border-hairline-soft px-3 py-2.25 text-left last:border-b-0 hover:bg-hover"
+          class="focus-ring-inset flex w-full items-center gap-2.5 border-b border-hairline-soft px-3 py-2.25 text-start last:border-b-0 hover:bg-hover"
         >
           <x-contact-avatar :name="$candidate['name']" :size="26" />
 

@@ -38,7 +38,7 @@
                 class="cursor-pointer text-xs text-link underline hover:text-link-hover"
               >{{ __('Paste an example instead') }}</button>
 
-              <span class="ml-auto flex items-center gap-2.5">
+              <span class="ms-auto flex items-center gap-2.5">
                 <x-button.ghost type="button" size="small" @click="file = ''">{{ __('Clear') }}</x-button.ghost>
 
                 <x-button size="small" ::disabled="file.trim() === ''">
@@ -79,7 +79,7 @@
                   <div class="flex items-baseline gap-4 border-b border-hairline px-3.5 py-2.5 last:border-b-0">
                     <dt class="shrink-0 text-sm text-muted">{{ $row['label'] }}</dt>
 
-                    <dd class="ml-auto min-w-0 text-right text-sm font-semibold text-pretty text-ink">{{ $row['value'] }}</dd>
+                    <dd class="ms-auto min-w-0 text-end text-sm font-semibold text-pretty text-ink">{{ $row['value'] }}</dd>
                   </div>
                 @endforeach
               </dl>

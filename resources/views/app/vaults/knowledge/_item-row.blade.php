@@ -46,7 +46,7 @@
 
         <x-modal.warning :title="$item['deleteTitle']" :confirm="__('Delete the item')" :action="$item['destroyUrl']">
           <x-slot:trigger>
-            <button type="button" role="menuitem" @click="open = true; menuOpen = false" class="flex w-full cursor-pointer items-center gap-2.5 min-h-8 rounded-md px-2.5 text-left font-sans text-base text-error transition-colors hover:bg-hover focus-ring-inset">{{ __('Delete') }}</button>
+            <button type="button" role="menuitem" @click="open = true; menuOpen = false" class="flex w-full cursor-pointer items-center gap-2.5 min-h-8 rounded-md px-2.5 text-start font-sans text-base text-error transition-colors hover:bg-hover focus-ring-inset">{{ __('Delete') }}</button>
           </x-slot:trigger>
 
           <p>{{ __('The item and everything written in it are deleted. This cannot be undone.') }}</p>

@@ -24,13 +24,13 @@
   $panel = match ($width) {
     'wide' => 'w-64',
     'columns' => 'max-h-105 w-90 max-w-[calc(100vw-48px)] overflow-y-auto',
-    'full' => 'left-0 max-h-95 overflow-y-auto',
+    'full' => 'start-0 max-h-95 overflow-y-auto',
     default => 'w-50',
   };
 
   $side = match ($align) {
-    'left' => 'left-0',
-    default => 'right-0',
+    'left' => 'start-0',
+    default => 'end-0',
   };
 @endphp
 
@@ -47,11 +47,11 @@
       @if ($triggerId !== null) id="{{ $triggerId }}" @endif
       @if ($labelledby !== null) aria-labelledby="{{ $labelledby }}" @else aria-label="{{ $label }}" @endif
       @if ($describedby !== null) aria-describedby="{{ $describedby }}" @endif
-      class="flex min-h-9 w-full cursor-pointer items-center gap-2.5 rounded-md border border-hairline-strong bg-input px-3 py-1.5 text-left font-sans text-[16px] text-ink transition duration-(--duration-fast) ease-out hover:border-muted-soft focus-ring sm:text-base"
+      class="flex min-h-9 w-full cursor-pointer items-center gap-2.5 rounded-md border border-hairline-strong bg-input px-3 py-1.5 text-start font-sans text-[16px] text-ink transition duration-(--duration-fast) ease-out hover:border-muted-soft focus-ring sm:text-base"
     >
       {{ $text }}
 
-      <x-icon name="chevron-down" :size="14" class="ml-auto shrink-0 text-muted motion-safe:transition-transform" ::class="menuOpen && 'rotate-180'" />
+      <x-icon name="chevron-down" :size="14" class="ms-auto shrink-0 text-muted motion-safe:transition-transform" ::class="menuOpen && 'rotate-180'" />
     </button>
   @else
     <x-button

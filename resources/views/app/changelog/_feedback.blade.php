@@ -9,7 +9,7 @@
       </a>
     @endif
 
-    <div class="ml-auto flex items-center gap-1.5">
+    <div class="ms-auto flex items-center gap-1.5">
       <x-icon-button
         icon="comment"
         :label="$entry['commentLabel']"

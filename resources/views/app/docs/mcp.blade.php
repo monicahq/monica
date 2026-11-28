@@ -38,7 +38,7 @@
           <button
             type="button"
             @click="copy('server', {{ Js::from($server) }})"
-            class="flex flex-none cursor-pointer items-center gap-1.5 border-l border-hairline bg-canvas px-3 text-sm font-medium text-ink transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring-inset"
+            class="flex flex-none cursor-pointer items-center gap-1.5 border-s border-hairline bg-canvas px-3 text-sm font-medium text-ink transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring-inset"
           >
             <x-icon name="file" :size="15" />
             <span>Copy</span>
@@ -113,7 +113,7 @@
                     <button
                       type="button"
                       @click="copy('{{ $key }}', {{ Js::from($item['block']['code']) }})"
-                      class="ml-auto cursor-pointer rounded-xs px-2 py-1 text-xs text-body transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-ring"
+                      class="ms-auto cursor-pointer rounded-xs px-2 py-1 text-xs text-body transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-ring"
                     >
                       <span>Copy</span>
                       <span class="sr-only">{{ $item['block']['label'] }}</span>
@@ -173,7 +173,7 @@
 
       <p class="{{ $prose }}">{{ McpDocsViewModel::TEMPLATE_EXAMPLE }}</p>
 
-      <ol class="list-decimal space-y-1.5 pl-5 {{ $prose }}">
+      <ol class="list-decimal space-y-1.5 ps-5 {{ $prose }}">
         @foreach (McpDocsViewModel::TEMPLATE_STEPS as $step)
           <li>{!! $inline($step) !!}</li>
         @endforeach

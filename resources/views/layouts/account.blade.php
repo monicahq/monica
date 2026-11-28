@@ -16,7 +16,7 @@
     <header class="sticky print:hidden top-0 z-5 flex h-14 items-center gap-2.5 border-b border-topbar-hairline bg-topbar/85 px-4 backdrop-blur-sm sm:px-6">
 <x-product-link :size="28" />
 
-      <div class="ml-auto">
+      <div class="ms-auto">
         <x-bar-links :settings="false" />
       </div>
     </header>

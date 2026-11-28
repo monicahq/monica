@@ -35,7 +35,7 @@
       {{-- Outside the form, so it names the form it belongs to, the way the footer's submit button does. --}}
       <div
         x-data="{ active: @js($viewModel->isActive()) }"
-        class="flex shrink-0 items-center gap-2.5 sm:ml-auto"
+        class="flex shrink-0 items-center gap-2.5 sm:ms-auto"
       >
         <input type="hidden" name="is_active" value="0" form="life-event-type-form" />
 
@@ -143,7 +143,7 @@
           <span class="text-base font-semibold text-ink">{{ __('Updates “Last in touch”') }}</span>
         </label>
 
-        <p id="updates-last-in-touch-help" class="pl-13.5 text-sm text-pretty text-muted">{{ __('When you record this life event with somebody, its date becomes the one their page shows under Last in touch.') }}</p>
+        <p id="updates-last-in-touch-help" class="ps-13.5 text-sm text-pretty text-muted">{{ __('When you record this life event with somebody, its date becomes the one their page shows under Last in touch.') }}</p>
       </div>
     </x-page-section>
 

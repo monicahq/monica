@@ -2,9 +2,9 @@
 {{-- @var array{id: string, author: string, isSupportTeam: bool, when: string, body: string, files: list<array{name: string, size: string, url: string}>} $message --}}
 <article
   @class([
-    'flex gap-3 border-b border-hairline-soft py-4 pr-5 last:border-b-0',
-    'border-l-[3px] border-l-ink bg-hover pl-9 sm:pl-16' => $message['isSupportTeam'],
-    'pl-5' => ! $message['isSupportTeam'],
+    'flex gap-3 border-b border-hairline-soft py-4 pe-5 last:border-b-0',
+    'border-s-[3px] border-s-ink bg-hover ps-9 sm:ps-16' => $message['isSupportTeam'],
+    'ps-5' => ! $message['isSupportTeam'],
   ])
   aria-labelledby="message-{{ $message['id'] }}"
 >

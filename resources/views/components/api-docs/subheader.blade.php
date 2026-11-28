@@ -22,7 +22,7 @@
       <kbd class="rounded-xs border border-hairline px-1.25 py-px font-mono text-2xs text-muted-soft">⌘K</kbd>
     </label>
 
-    <div class="ml-auto flex shrink-0 items-center gap-2.5">
+    <div class="ms-auto flex shrink-0 items-center gap-2.5">
       <a
         href="{{ route('docs.api.openapi') }}"
         class="rounded-md border border-hairline px-3.5 py-2 text-sm font-medium text-ink transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring"

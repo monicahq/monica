@@ -64,7 +64,7 @@
           </svg>
         </button>
 
-        <span x-show="! leaving" class="animate-toast-timer absolute inset-x-0 bottom-0 h-0.5 origin-left {{ $toast['bar'] }}" aria-hidden="true"></span>
+        <span x-show="! leaving" class="animate-toast-timer absolute inset-x-0 bottom-0 h-0.5 origin-left rtl:origin-right {{ $toast['bar'] }}" aria-hidden="true"></span>
       </div>
     @endforeach
   </div>

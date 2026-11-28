@@ -99,7 +99,7 @@
                     <a href="{{ $document['url'] }}" class="focus-ring-inset flex items-center gap-3 px-4 py-3 text-ink no-underline hover:bg-hover">
                       <span class="flex text-muted" aria-hidden="true"><x-icon :name="$document['icon']" :size="16" /></span>
                       <span class="min-w-0 flex-1 text-base font-semibold">{{ $document['title'] }}</span>
-                      <span class="text-right text-xs text-muted">{{ $document['kind'] }} · <x-timestamp :at="$document['editedAt']">{{ $document['edited'] }}</x-timestamp></span>
+                      <span class="text-end text-xs text-muted">{{ $document['kind'] }} · <x-timestamp :at="$document['editedAt']">{{ $document['edited'] }}</x-timestamp></span>
                     </a>
 
                     @if ($document['headings'] !== [])

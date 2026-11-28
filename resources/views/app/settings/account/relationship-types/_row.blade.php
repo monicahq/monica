@@ -11,7 +11,7 @@
 
     <span class="flex min-w-0 items-baseline gap-1.5 text-xs text-muted">
       <span class="truncate">{{ $type['roleA'] }}</span>
-      <span aria-hidden="true">{{ $type['isSymmetric'] ? '↔' : '→' }}</span>
+      <span aria-hidden="true" class="inline-block rtl:-scale-x-100">{{ $type['isSymmetric'] ? '↔' : '→' }}</span>
       <span class="truncate">{{ $type['roleB'] }}</span>
       <span class="sr-only">{{ $type['directionLabel'] }}</span>
     </span>
@@ -29,7 +29,7 @@
     @endunless
   </div>
 
-  <div class="ml-auto flex shrink-0 items-center">
+  <div class="ms-auto flex shrink-0 items-center">
     <x-button.secondary
       size="small"
       :href="route('settings.relationshipTypes.edit', $type['id'])"
