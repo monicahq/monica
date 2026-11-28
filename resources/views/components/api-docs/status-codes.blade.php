@@ -7,7 +7,7 @@
   <p class="mb-4 text-sm text-muted">Every code the API answers with, and what the body holds when it does.</p>
 
   <div class="overflow-x-auto rounded-lg border border-hairline shadow-panel">
-    <table class="w-full min-w-120 border-collapse text-left">
+    <table class="w-full min-w-120 border-collapse text-left rtl:text-right">
       <thead class="bg-sunken">
         <tr>
           <th scope="col" class="px-4 py-2.5 text-xs font-medium text-muted">Code</th>

@@ -1,6 +1,6 @@
 {{-- One template on the list. --}}
 {{-- @var array $template --}}
-<div class="flex w-full items-start gap-3 border-b border-hairline px-4 py-3.5 text-left transition-colors duration-(--duration-fast) ease-out last:border-b-0">
+<div class="flex w-full items-start gap-3 border-b border-hairline px-4 py-3.5 text-start transition-colors duration-(--duration-fast) ease-out last:border-b-0">
   <span class="flex size-8 shrink-0 items-center justify-center rounded-sm bg-card text-body">
     <x-icon name="file" :size="18" :stroke-width="1.5" />
   </span>
@@ -51,8 +51,8 @@
     </p>
   </div>
 
-  <div class="ml-auto flex shrink-0 items-center gap-2.5">
-    <span class="text-right">
+  <div class="ms-auto flex shrink-0 items-center gap-2.5">
+    <span class="text-end">
       <b class="block font-mono text-sm font-semibold whitespace-nowrap text-ink">{{ $template['versionLabel'] }}</b>
       <span class="block text-xs whitespace-nowrap text-muted">{{ $template['versionSubLabel'] }}</span>
     </span>

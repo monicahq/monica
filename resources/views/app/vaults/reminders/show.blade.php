@@ -95,7 +95,7 @@
                 type="button"
                 role="menuitem"
                 @click="menuOpen = false; $refs.menuTrigger.focus(); open = true"
-                class="flex w-full cursor-pointer items-center gap-2.5 rounded-xs px-2.5 py-2 text-left font-sans text-sm text-error transition-colors hover:bg-hover focus-ring-inset"
+                class="flex w-full cursor-pointer items-center gap-2.5 rounded-xs px-2.5 py-2 text-start font-sans text-sm text-error transition-colors hover:bg-hover focus-ring-inset"
               >{{ __('Delete reminder') }}</button>
             </x-slot:trigger>
 

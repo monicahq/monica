@@ -28,7 +28,7 @@
       type="button"
       @click="open = ! open"
       :aria-expanded="open ? 'true' : 'false'"
-      class="block w-full cursor-pointer rounded-md text-left focus-ring"
+      class="block w-full cursor-pointer rounded-md text-start focus-ring"
     >
       <span class="flex flex-wrap items-center gap-x-2.5 gap-y-1.5">
         <code class="font-mono text-base font-semibold text-ink">{{ $entry->label() }}</code>
@@ -37,7 +37,7 @@
 
         <span class="text-sm font-semibold text-ink">{{ $entry->dateLine() }}</span>
 
-        <code class="ml-auto font-mono text-xs text-muted">{{ $entry->basedOn() }}</code>
+        <code class="ms-auto font-mono text-xs text-muted">{{ $entry->basedOn() }}</code>
       </span>
 
       <span class="mt-2 block max-w-prose text-sm text-pretty text-body">{{ $entry->changeNote() }}</span>
@@ -65,7 +65,7 @@
 
             <span class="text-sm font-semibold text-ink">{{ $page['label'] }}</span>
 
-            <code class="ml-auto font-mono text-xs text-muted">{{ $page['meta'] }}</code>
+            <code class="ms-auto font-mono text-xs text-muted">{{ $page['meta'] }}</code>
           </div>
 
           @forelse ($page['sections'] as $section)
@@ -88,7 +88,7 @@
                   <x-badge tone="info">{{ __('New in this version') }}</x-badge>
                 @endif
 
-                <span class="ml-auto text-sm text-muted">{{ $section['fieldLabel'] }}</span>
+                <span class="ms-auto text-sm text-muted">{{ $section['fieldLabel'] }}</span>
 
                 <button
                   type="button"
@@ -99,7 +99,7 @@
                 >{{ __('View more') }}</button>
               </div>
 
-              <div x-cloak x-show="shown" x-transition class="mx-4 mb-3.5 ml-15 rounded-md border border-hairline bg-card">
+              <div x-cloak x-show="shown" x-transition class="mx-4 mb-3.5 ms-15 rounded-md border border-hairline bg-card">
                 @forelse ($section['fields'] as $field)
                   @include('app.settings.account.templates._version-field', ['field' => $field, 'nested' => false])
                 @empty

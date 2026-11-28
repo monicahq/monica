@@ -54,7 +54,7 @@
         [$figures['improvements'], __('Improvements')],
         [$figures['fixes'], __('Bugs fixed')],
       ] as [$figure, $label])
-        <div @class(['flex flex-col-reverse gap-1 px-4 py-3.5', 'border-l border-hairline' => ! $loop->first, 'max-sm:border-l-0 max-sm:border-t' => $loop->index === 2, 'max-sm:border-t' => $loop->index === 3])>
+        <div @class(['flex flex-col-reverse gap-1 px-4 py-3.5', 'border-s border-hairline' => ! $loop->first, 'max-sm:border-s-0 max-sm:border-t' => $loop->index === 2, 'max-sm:border-t' => $loop->index === 3])>
           <dt class="text-sm text-muted">{{ $label }}</dt>
           <dd class="text-xl font-semibold tracking-tight text-ink">{{ $figure }}</dd>
         </div>

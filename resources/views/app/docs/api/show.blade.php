@@ -8,7 +8,7 @@
   @var string|null $supportUrl
 --}}
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ \App\Helpers\AvailableLocales::direction(app()->getLocale()) }}">
   <head>
     @include('partials.meta', ['title' => $section->title.' · '.__('API reference'), 'description' => $section->description])
 

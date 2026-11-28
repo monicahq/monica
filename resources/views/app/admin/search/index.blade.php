@@ -53,12 +53,12 @@
         <table class="w-full text-sm">
           <caption class="sr-only">{{ __('What each index holds, beside what the instance holds') }}</caption>
           <thead>
-            <tr class="border-b border-hairline text-left text-xs text-muted">
+            <tr class="border-b border-hairline text-left rtl:text-right text-xs text-muted">
               <th scope="col" class="px-4 py-2.5 font-medium">{{ __('Index') }}</th>
-              <th scope="col" class="px-4 py-2.5 text-right font-medium">{{ __('Documents indexed') }}</th>
-              <th scope="col" class="px-4 py-2.5 text-right font-medium">{{ __('Records') }}</th>
+              <th scope="col" class="px-4 py-2.5 text-end font-medium">{{ __('Documents indexed') }}</th>
+              <th scope="col" class="px-4 py-2.5 text-end font-medium">{{ __('Records') }}</th>
               <th scope="col" class="px-4 py-2.5 font-medium">{{ __('Difference') }}</th>
-              <th scope="col" class="px-4 py-2.5 text-right font-medium">{{ __('Size') }}</th>
+              <th scope="col" class="px-4 py-2.5 text-end font-medium">{{ __('Size') }}</th>
               @if ($viewModel->canRebuild())
                 <th scope="col" class="px-4 py-2.5 font-medium"><span class="sr-only">{{ __('Rebuild') }}</span></th>
               @endif
@@ -67,16 +67,16 @@
           <tbody>
             @foreach ($viewModel->indexes() as $index)
               <tr class="border-b border-hairline last:border-b-0">
-                <th scope="row" class="px-4 py-2.5 text-left font-normal text-ink">
+                <th scope="row" class="px-4 py-2.5 text-start font-normal text-ink">
                   {{ $index['label'] }}
                   <span class="block font-mono text-xs break-all text-muted">{{ $index['name'] }}</span>
                 </th>
-                <td class="px-4 py-2.5 text-right text-ink">{{ $index['documents'] }}</td>
-                <td class="px-4 py-2.5 text-right text-ink">{{ $index['records'] }}</td>
+                <td class="px-4 py-2.5 text-end text-ink">{{ $index['documents'] }}</td>
+                <td class="px-4 py-2.5 text-end text-ink">{{ $index['records'] }}</td>
                 <td class="px-4 py-2.5 text-ink">{{ $index['difference'] }}</td>
-                <td class="px-4 py-2.5 text-right text-ink">{{ $index['size'] }}</td>
+                <td class="px-4 py-2.5 text-end text-ink">{{ $index['size'] }}</td>
                 @if ($viewModel->canRebuild())
-                  <td class="px-4 py-2.5 text-right">
+                  <td class="px-4 py-2.5 text-end">
                     <x-modal.warning :title="__('Rebuild the index of :kind?', ['kind' => $index['label']])" :confirm="__('Rebuild it')" method="post" :action="$index['rebuildUrl']" confirms-password>
                       <x-slot:trigger>
                         <x-button.secondary type="button" size="small" @click="open = true">{{ __('Rebuild this index') }}<span class="sr-only"> {{ $index['label'] }}</span></x-button.secondary>

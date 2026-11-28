@@ -110,7 +110,7 @@
       <x-page-section :title="__('Appearance')" :description="__('The icon and colour mark this type in the vault navigation and beside every record of it.')">
         <x-panel>
           <div class="flex flex-col gap-5">
-            <div class="flex w-full items-center gap-3 rounded-md border border-hairline bg-sunken px-3 py-2.5 text-left">
+            <div class="flex w-full items-center gap-3 rounded-md border border-hairline bg-sunken px-3 py-2.5 text-start">
               <span
                 class="flex size-8 shrink-0 items-center justify-center rounded-sm"
                 :style="`color: ${colour}; background: ${tint}`"
@@ -201,7 +201,7 @@
     </x-form>
 
     <div class="flex flex-wrap items-center gap-3.5">
-      <div class="flex flex-wrap items-center gap-3 max-sm:w-full sm:ml-auto">
+      <div class="flex flex-wrap items-center gap-3 max-sm:w-full sm:ms-auto">
         <span x-cloak x-show="! named" class="text-xs text-pretty text-muted">{{ __('Both names are enough.') }}</span>
 
         <x-button.secondary :href="route('settings.entityTypes.index')" data-turbo="true">{{ __('Cancel') }}</x-button.secondary>

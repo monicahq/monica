@@ -31,7 +31,7 @@
       name="chevron-down"
       :size="14"
       :stroke-width="1.7"
-      class="ml-auto text-muted transition-transform duration-(--duration-standard)"
+      class="ms-auto text-muted transition-transform duration-(--duration-standard)"
       ::class="open && 'rotate-180'"
     />
   </x-button.secondary>
@@ -58,11 +58,11 @@
         name="{{ $name }}"
         value="{{ $option['value'] }}"
         aria-checked="{{ $option['selected'] ? 'true' : 'false' }}"
-        class="flex w-full cursor-pointer items-center gap-2.5 rounded-sm px-2.5 py-2.25 text-left text-base text-ink transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring-inset aria-checked:bg-hover aria-checked:font-medium"
+        class="flex w-full cursor-pointer items-center gap-2.5 rounded-sm px-2.5 py-2.25 text-start text-base text-ink transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring-inset aria-checked:bg-hover aria-checked:font-medium"
       >
         <span class="min-w-0 flex-1 truncate">{{ $option['label'] }}</span>
 
-        <span class="ml-auto text-xs text-muted {{ $monospacedHints ? 'font-mono' : '' }}">{{ $option['hint'] }}</span>
+        <span class="ms-auto text-xs text-muted {{ $monospacedHints ? 'font-mono' : '' }}">{{ $option['hint'] }}</span>
 
         <span class="flex w-4 shrink-0 items-center justify-center {{ $option['selected'] ? '' : 'opacity-0' }}">
           <x-icon name="check" :size="15" :stroke-width="2" />

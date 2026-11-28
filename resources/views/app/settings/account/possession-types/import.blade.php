@@ -34,7 +34,7 @@
         <x-notice tone="danger" :title="__('This file cannot be imported')">{{ __('Nothing was imported. Fix the file and check it again.') }}</x-notice>
 
         <x-panel>
-          <ul class="list-disc pl-5 text-sm text-body" aria-label="{{ __('What is wrong with the file') }}">
+          <ul class="list-disc ps-5 text-sm text-body" aria-label="{{ __('What is wrong with the file') }}">
             @foreach ($viewModel->problems() as $problem)
               <li>{{ $problem }}</li>
             @endforeach

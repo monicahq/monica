@@ -69,9 +69,9 @@
     role="group"
     :id="$id('help')"
     :aria-labelledby="$id('help-title')"
-    class="z-70 text-left leading-normal max-sm:fixed max-sm:inset-x-3 max-sm:top-auto max-sm:bottom-3 max-sm:w-auto max-sm:max-w-none sm:absolute sm:top-full sm:w-85 sm:max-w-[calc(100vw-2rem)] sm:pt-2.5 {{ $align === 'right' ? 'sm:-right-4' : 'sm:-left-4' }}"
+    class="z-70 text-start leading-normal max-sm:fixed max-sm:inset-x-3 max-sm:top-auto max-sm:bottom-3 max-sm:w-auto max-sm:max-w-none sm:absolute sm:top-full sm:w-85 sm:max-w-[calc(100vw-2rem)] sm:pt-2.5 {{ $align === 'right' ? 'sm:-end-4' : 'sm:-start-4' }}"
   >
-    <div class="absolute top-1.5 z-10 size-2.5 rotate-45 border-t border-l border-hairline bg-canvas max-sm:hidden {{ $align === 'right' ? 'right-5' : 'left-5' }}" aria-hidden="true"></div>
+    <div class="absolute top-1.5 z-10 size-2.5 rotate-45 border-t border-s border-hairline bg-canvas max-sm:hidden {{ $align === 'right' ? 'end-5' : 'start-5' }}" aria-hidden="true"></div>
 
     <div class="relative overflow-hidden rounded-lg border border-hairline bg-canvas shadow-pop">
       <div class="flex items-start gap-3 px-4 pt-3.5 pb-3.5">
@@ -86,7 +86,7 @@
           x-show="pinned"
           @click="dismiss()"
           aria-label="{{ __('Close') }}"
-          class="-mt-1 -mr-2 flex size-6 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted transition-colors hover:text-ink focus-ring"
+          class="-mt-1 -me-2 flex size-6 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted transition-colors hover:text-ink focus-ring"
         >
           <x-icon name="close" :size="13" :stroke-width="1.5" />
         </button>

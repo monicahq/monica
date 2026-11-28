@@ -3,7 +3,7 @@
 @props(['section'])
 
 @php
-  $indents = ['ml-0', 'ml-4', 'ml-8', 'ml-12'];
+  $indents = ['ms-0', 'ms-4', 'ms-8', 'ms-12'];
 @endphp
 
 @if ($section->returns || $section->hasReturnFields())

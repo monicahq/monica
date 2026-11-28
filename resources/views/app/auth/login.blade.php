@@ -41,7 +41,7 @@
           {{ __('Forgot your password?') }}
         </x-link>
 
-        <x-button class="ml-auto">{{ __('Continue') }}</x-button>
+        <x-button class="ms-auto">{{ __('Continue') }}</x-button>
       </div>
     </x-form>
   </x-box>

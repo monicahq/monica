@@ -85,7 +85,7 @@
         @endif
 
         @if ($panel->secretReplacementWarning())
-          <p x-cloak x-show="confirming" role="alert" class="max-w-xs text-right text-xs text-error">
+          <p x-cloak x-show="confirming" role="alert" class="max-w-xs text-end text-xs text-error">
             {{ $panel->secretReplacementWarning() }} {{ __('Generate again to go ahead.') }}
           </p>
         @endif

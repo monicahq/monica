@@ -76,7 +76,7 @@
 
         <span class="truncate text-base font-semibold text-ink">{{ $entity['name'] }}</span>
 
-        <span class="ml-auto max-w-[40%] min-w-0 truncate text-sm text-muted">{{ $entity['template'] }}</span>
+        <span class="ms-auto max-w-[40%] min-w-0 truncate text-sm text-muted">{{ $entity['template'] }}</span>
 
         @if ($entity['isArchived'])
           <x-badge>{{ __('Archived') }}</x-badge>

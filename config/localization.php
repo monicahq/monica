@@ -19,7 +19,11 @@ return [
     | its own words. The flag is a css value for the background property, drawn
     | rather than shipped as an image. The date format is the order that language
     | reads dates in, and the number format the separators it writes numbers
-    | with, both used for whoever has not picked one of their own.
+    | with, both used for whoever has not picked one of their own. The
+    | direction is rtl for a language written right to left, and ltr, the
+    | default, for every other one; it sets the dir attribute of each page.
+    | The numbers name the digits money is written with, for a language whose
+    | own default differs from the Western digits used everywhere else.
     |
     | The typography is how that language punctuates, read by monica:localize to
     | refuse a translation written any other way. It is optional: a locale that
@@ -56,6 +60,15 @@ return [
                     'close' => '”',
                 ],
             ],
+        ],
+        'ar_SA' => [
+            'label' => 'العربية',
+            'region' => 'السعودية',
+            'date_format' => 'd/m/Y',
+            'number_format' => 'comma_dot',
+            'direction' => 'rtl',
+            'numbers' => 'latn',
+            'flag' => 'linear-gradient(to bottom, transparent 66%, #fff 66% 71%, transparent 71%) 50% 0 / 60% 100% no-repeat, #006c35',
         ],
         'bn_BD' => [
             'label' => 'বাংলা',
@@ -411,6 +424,7 @@ return [
      */
 
     'aliases' => [
+        'ar' => 'ar_SA',
         'bn' => 'bn_BD',
         'fr' => 'fr_FR',
         'ca' => 'ca_ES',

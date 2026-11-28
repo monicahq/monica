@@ -33,7 +33,7 @@
         <div class="flex items-center gap-3 border-b border-hairline px-4 py-2.5 last:border-b-0">
           <span class="min-w-0 truncate text-sm text-ink">{{ $field['label'] }}</span>
 
-          <span class="ml-auto shrink-0 text-xs text-muted">{{ $field['type'] }}</span>
+          <span class="ms-auto shrink-0 text-xs text-muted">{{ $field['type'] }}</span>
         </div>
       @endforeach
     </x-panel>
@@ -51,7 +51,7 @@
 
           <code class="min-w-0 truncate font-mono text-xs text-ink">{{ $viewModel->fileName() }}</code>
 
-          <span class="ml-auto shrink-0 text-xs text-muted">{{ $viewModel->sizeLabel() }}</span>
+          <span class="ms-auto shrink-0 text-xs text-muted">{{ $viewModel->sizeLabel() }}</span>
         </div>
 
         <div class="flex flex-wrap items-center gap-2.5">

@@ -61,7 +61,7 @@
     :description="$viewModel->hasTypes() ? __('Drag a row to change the order in the vault navigation.') : null"
   >
     <x-panel :flush="true">
-      <div @class(['flex items-center gap-3 py-3.5 pr-4 pl-11', 'border-b border-hairline' => $viewModel->hasTypes()])>
+      <div @class(['flex items-center gap-3 py-3.5 pe-4 ps-11', 'border-b border-hairline' => $viewModel->hasTypes()])>
         <span class="flex size-8 shrink-0 items-center justify-center rounded-sm bg-hover text-body" aria-hidden="true">
           <x-icon name="profile" :size="16" />
         </span>

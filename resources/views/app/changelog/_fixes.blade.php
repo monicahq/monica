@@ -12,7 +12,7 @@
       <li x-data="{ expanded: false }" @class(['flex flex-col', 'border-t border-hairline' => ! $loop->first])>
         <button
           type="button"
-          class="focus-ring-inset flex w-full cursor-pointer items-start gap-2.5 px-3.5 py-2.5 text-left"
+          class="focus-ring-inset flex w-full cursor-pointer items-start gap-2.5 px-3.5 py-2.5 text-start"
           aria-expanded="false"
           x-bind:aria-expanded="expanded.toString()"
           aria-controls="changelog-fix-{{ $fix['id'] }}"
@@ -22,7 +22,7 @@
           <span class="min-w-0 flex-1 text-base text-body text-pretty">
             {{ $fix['title'] }}
             @if ($fix['isNew'])
-              <x-badge tone="accent" class="ml-1.5">{{ __('New') }}</x-badge>
+              <x-badge tone="accent" class="ms-1.5">{{ __('New') }}</x-badge>
             @endif
           </span>
           @if ($fix['area'] !== null)
@@ -30,7 +30,7 @@
           @endif
         </button>
 
-        <div id="changelog-fix-{{ $fix['id'] }}" x-show="expanded" x-cloak class="flex flex-col gap-2.5 px-3.5 pb-3.5 pl-10">
+        <div id="changelog-fix-{{ $fix['id'] }}" x-show="expanded" x-cloak class="flex flex-col gap-2.5 px-3.5 pb-3.5 ps-10">
           <div class="text-base text-body text-pretty [&_a]:underline [&_p+p]:mt-2">{!! $fix['bodyHtml'] !!}</div>
 
           @if ($fix['screenshots'] !== [])

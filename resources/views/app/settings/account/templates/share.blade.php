@@ -54,7 +54,7 @@
 
           <code class="min-w-0 truncate font-mono text-xs text-ink">{{ $viewModel->fileName() }}</code>
 
-          <span class="ml-auto shrink-0 text-xs text-muted">{{ $viewModel->sizeLabel() }}</span>
+          <span class="ms-auto shrink-0 text-xs text-muted">{{ $viewModel->sizeLabel() }}</span>
         </div>
 
         <div class="flex flex-wrap items-center gap-2.5">

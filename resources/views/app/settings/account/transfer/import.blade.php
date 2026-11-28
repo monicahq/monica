@@ -105,18 +105,18 @@
           <table class="w-full text-sm">
             <caption class="sr-only">{{ __('What came over, kind by kind') }}</caption>
             <thead>
-              <tr class="border-b border-hairline text-left text-xs text-muted">
+              <tr class="border-b border-hairline text-left rtl:text-right text-xs text-muted">
                 <th scope="col" class="px-4 py-2.5 font-medium">{{ __('Kind') }}</th>
-                <th scope="col" class="px-4 py-2.5 text-right font-medium">{{ __('Came over') }}</th>
-                <th scope="col" class="px-4 py-2.5 text-right font-medium">{{ __('Left out') }}</th>
+                <th scope="col" class="px-4 py-2.5 text-end font-medium">{{ __('Came over') }}</th>
+                <th scope="col" class="px-4 py-2.5 text-end font-medium">{{ __('Left out') }}</th>
               </tr>
             </thead>
             <tbody>
               @foreach ($viewModel->report() as $row)
                 <tr class="border-b border-hairline last:border-b-0">
-                  <th scope="row" class="px-4 py-2.5 text-left font-normal text-ink">{{ $row['label'] }}</th>
-                  <td class="px-4 py-2.5 text-right text-ink">{{ $row['imported'] }}</td>
-                  <td class="px-4 py-2.5 text-right text-ink">{{ $row['left_out'] }}</td>
+                  <th scope="row" class="px-4 py-2.5 text-start font-normal text-ink">{{ $row['label'] }}</th>
+                  <td class="px-4 py-2.5 text-end text-ink">{{ $row['imported'] }}</td>
+                  <td class="px-4 py-2.5 text-end text-ink">{{ $row['left_out'] }}</td>
                 </tr>
               @endforeach
             </tbody>

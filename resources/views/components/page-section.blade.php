@@ -25,7 +25,7 @@
       </h2>
 
       @isset($help)
-        <span class="-ml-1.5 flex shrink-0 self-center">{{ $help }}</span>
+        <span class="-ms-1.5 flex shrink-0 self-center">{{ $help }}</span>
       @endisset
 
       @isset($description)
@@ -33,11 +33,11 @@
       @endisset
 
       @isset($aside)
-        <span class="ml-auto text-xs text-pretty text-muted">{{ $aside }}</span>
+        <span class="ms-auto text-xs text-pretty text-muted">{{ $aside }}</span>
       @endisset
 
       @isset($actions)
-        <span class="ml-auto flex shrink-0 items-center gap-2 self-center">{{ $actions }}</span>
+        <span class="ms-auto flex shrink-0 items-center gap-2 self-center">{{ $actions }}</span>
       @endisset
     </div>
   @endif

@@ -46,9 +46,14 @@ export default (options) => ({
         }
 
         const width = Math.min(320, window.innerWidth - 32);
-        const left = this.$refs.add.getBoundingClientRect().left;
+        const box = this.$refs.add.getBoundingClientRect();
 
-        this.offset = left + width > window.innerWidth - 16 ? `${window.innerWidth - 16 - width - left}px` : '0px';
+        // The popover opens from the button's inline start, which is its right edge on a right-to-left page.
+        if (document.documentElement.dir === 'rtl') {
+            this.offset = box.right - width < 16 ? `${box.right - width - 16}px` : '0px';
+        } else {
+            this.offset = box.left + width > window.innerWidth - 16 ? `${window.innerWidth - 16 - width - box.left}px` : '0px';
+        }
         this.open = true;
         this.query = '';
         this.active = this.visibleRows()[0]?.id ?? '';

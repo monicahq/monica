@@ -21,7 +21,7 @@
 @php
   $shell = $chip
       ? 'inline-flex h-8 items-center gap-2 rounded-md border px-3 py-0'
-      : 'flex min-h-9.5 w-full items-center gap-2.75 rounded-md border px-3 py-2.5 text-left';
+      : 'flex min-h-9.5 w-full items-center gap-2.75 rounded-md border px-3 py-2.5 text-start';
 @endphp
 
 <label

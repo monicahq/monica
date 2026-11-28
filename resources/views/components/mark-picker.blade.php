@@ -42,7 +42,7 @@
 
   $trigger = 'flex h-9 cursor-pointer items-center gap-1.5 rounded-md border bg-canvas px-2 shadow-control transition-colors duration-(--duration-fast) ease-out hover:bg-hover';
 
-  $popover = 'absolute top-[calc(100%+0.375rem)] left-0 z-40 flex rounded-lg border border-hairline bg-canvas p-2 shadow-pop';
+  $popover = 'absolute top-[calc(100%+0.375rem)] start-0 z-40 flex rounded-lg border border-hairline bg-canvas p-2 shadow-pop';
 @endphp
 
 <input type="hidden" name="icon" value="{{ $icon }}" :value="icon" />
@@ -183,7 +183,7 @@
               :aria-pressed="colour === @js($option['value'] ?? '') ? 'true' : 'false'"
               @click="colour = @js($option['value'] ?? ''); openColour = false; $refs.colourTrigger.focus()"
               :class="colour === @js($option['value'] ?? '') && 'bg-hover'"
-              class="flex w-full cursor-pointer items-center gap-2 rounded-xs px-2 py-1.5 text-left text-sm text-ink transition-colors hover:bg-hover focus-ring-inset"
+              class="flex w-full cursor-pointer items-center gap-2 rounded-xs px-2 py-1.5 text-start text-sm text-ink transition-colors hover:bg-hover focus-ring-inset"
             >
               @if ($option['swatch'] === null)
                 <span class="size-4 shrink-0 rounded-full border border-hairline-strong bg-card" aria-hidden="true"></span>
@@ -213,7 +213,7 @@
     @click.stop="open = ! open"
     :aria-expanded="open ? 'true' : 'false'"
     aria-controls="{{ $id }}-mark-picker"
-    class="flex h-9.5 w-fit cursor-pointer items-center gap-2 rounded-md border border-hairline-strong bg-canvas py-1 pr-2.5 pl-1 transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring"
+    class="flex h-9.5 w-fit cursor-pointer items-center gap-2 rounded-md border border-hairline-strong bg-canvas py-1 pe-2.5 ps-1 transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring"
   >
     <span
       x-data="{ tints: @js($tints) }"

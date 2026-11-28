@@ -13,6 +13,7 @@ class CountedPhraseTest extends TestCase
 {
     /** @var array<string, int> */
     private const array WORDINGS_PER_LOCALE = [
+        'ar_SA' => 6,
         'bn_BD' => 2,
         'ca_ES' => 2,
         'da_DK' => 2,

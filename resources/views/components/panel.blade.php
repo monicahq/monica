@@ -53,7 +53,7 @@
       </div>
 
       @isset($action)
-        <div class="ml-auto flex items-center gap-2">{{ $action }}</div>
+        <div class="ms-auto flex items-center gap-2">{{ $action }}</div>
       @endisset
     </header>
   @endif

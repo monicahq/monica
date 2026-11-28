@@ -57,7 +57,7 @@
       @keydown.window="open($event)"
       aria-keyshortcuts="{{ $searchShortcut['keys'] }}"
       @if ($current === 'search') aria-current="page" @endif
-      class="flex h-8.5 items-center gap-2 rounded-md border border-hairline-strong bg-canvas pr-2 pl-2.5 text-sm text-muted no-underline shadow-panel transition-colors duration-(--duration-fast) ease-out hover:text-ink focus-ring aria-[current=page]:text-ink"
+      class="flex h-8.5 items-center gap-2 rounded-md border border-hairline-strong bg-canvas pe-2 ps-2.5 text-sm text-muted no-underline shadow-panel transition-colors duration-(--duration-fast) ease-out hover:text-ink focus-ring aria-[current=page]:text-ink"
     >
       <x-icon name="search" :size="15" :stroke-width="1.5" />
       <span class="flex-1">{{ __('Search') }}</span>
@@ -88,7 +88,7 @@
             <span class="min-w-0 truncate leading-normal">{{ $link['label'] }}</span>
 
             @if ($link['badge'])
-              <span class="ml-auto text-xs text-muted">{{ $link['badge'] }}</span>
+              <span class="ms-auto text-xs text-muted">{{ $link['badge'] }}</span>
             @endif
           </a>
         @endforeach

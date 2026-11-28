@@ -30,7 +30,7 @@
         <x-badge>{{ __('Hidden') }}</x-badge>
       @endif
 
-      <x-timestamp :at="$comment['createdAt']" class="ml-auto text-xs text-muted">{{ $comment['createdAt']->diffForHumans() }}</x-timestamp>
+      <x-timestamp :at="$comment['createdAt']" class="ms-auto text-xs text-muted">{{ $comment['createdAt']->diffForHumans() }}</x-timestamp>
     </div>
 
     <p class="text-xs text-muted">{{ $comment['who'] }}</p>
@@ -70,19 +70,19 @@
   </article>
 
   @foreach ($comment['replies'] as $reply)
-    <article class="ml-12 flex flex-col gap-2 rounded-lg border border-hairline-strong border-l-3 border-l-ink bg-hover p-4">
+    <article class="ms-12 flex flex-col gap-2 rounded-lg border border-hairline-strong border-s-3 border-s-ink bg-hover p-4">
       <div class="flex flex-wrap items-center gap-x-2.5 gap-y-1.5">
         <x-avatar-initials :name="$reply['author']" :size="24" />
         <h3 class="text-base font-semibold text-ink">{{ $reply['author'] }}</h3>
         <x-badge tone="accent">{{ __('Administrator') }}</x-badge>
         <span class="text-xs text-body">{{ $reply['kind'] }}</span>
-        <x-timestamp :at="$reply['createdAt']" class="ml-auto text-xs text-body">{{ $reply['createdAt']->diffForHumans() }}</x-timestamp>
+        <x-timestamp :at="$reply['createdAt']" class="ms-auto text-xs text-body">{{ $reply['createdAt']->diffForHumans() }}</x-timestamp>
       </div>
       <p class="max-w-[72ch] text-base text-pretty whitespace-pre-line text-body">{{ $reply['body'] }}</p>
     </article>
   @endforeach
 
-  <form id="reply-form-{{ $comment['id'] }}" x-show="replying" x-cloak method="post" action="{{ $comment['replyUrl'] }}" class="ml-12 flex flex-col gap-2.5 rounded-lg border border-hairline bg-canvas p-4 shadow-panel">
+  <form id="reply-form-{{ $comment['id'] }}" x-show="replying" x-cloak method="post" action="{{ $comment['replyUrl'] }}" class="ms-12 flex flex-col gap-2.5 rounded-lg border border-hairline bg-canvas p-4 shadow-panel">
     @csrf
     <x-textarea :id="'reply-'.$comment['id']" name="body" :label="$comment['replyLabel']" :rows="3" :placeholder="__('Write your reply…')" :help="$comment['replyHelp']" required />
     <div class="flex gap-2">

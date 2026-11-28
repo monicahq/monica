@@ -11,7 +11,7 @@
     method="put"
     :action="$viewModel->favouriteUrl()"
     x-target="contact-favourite"
-    class="absolute -right-0.5 -bottom-0.5"
+    class="absolute -end-0.5 -bottom-0.5"
   >
     <input type="hidden" name="favourite" value="{{ $viewModel->isFavourite() ? 0 : 1 }}" />
 

@@ -61,7 +61,7 @@
   }
 @endphp
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ \App\Helpers\AvailableLocales::direction(app()->getLocale()) }}">
   <head>
     @include('partials.meta', ['title' => $title ?? null])
 
@@ -87,7 +87,7 @@
             <x-badge tone="signal" class="shrink-0 tracking-caption uppercase max-sm:hidden">{{ __('Instance') }}</x-badge>
           </div>
 
-          <div class="ml-auto flex items-center gap-2">
+          <div class="ms-auto flex items-center gap-2">
             <a
               href="{{ route('home.index') }}"
               data-turbo="true"

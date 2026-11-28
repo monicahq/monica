@@ -13,7 +13,7 @@
   :row-id="$value['id']"
   :action="route('settings.valueListItemPosition.update', $value['id'])"
   :target="$target"
-  padding="py-2 pr-4 pl-2"
+  padding="py-2 pe-4 ps-2"
   :dragstart="$isEditing ? '$event.preventDefault()' : null"
   :id="$rowId"
   x-merge="replace"
@@ -64,7 +64,7 @@
         <x-badge>{{ __('no longer offered') }}</x-badge>
       @endunless
 
-      <span class="ml-auto text-xs text-pretty text-muted">{{ $value['usageLabel'] }}</span>
+      <span class="ms-auto text-xs text-pretty text-muted">{{ $value['usageLabel'] }}</span>
 
       @if ($valueErrors->has('active'))
         <p id="{{ $rowId }}-active-error" role="alert" class="basis-full text-sm text-pretty text-error">{{ $valueErrors->first('active') }}</p>

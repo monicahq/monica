@@ -2,7 +2,7 @@
 {{-- @var \App\ViewModels\Vaults\PossessionViewModel $page --}}
 @php
   $header = $page->header();
-  $item = 'flex w-full cursor-pointer items-center gap-2.5 min-h-8 rounded-md px-2.5 text-left font-sans text-base transition-colors hover:bg-hover focus-ring-inset';
+  $item = 'flex w-full cursor-pointer items-center gap-2.5 min-h-8 rounded-md px-2.5 text-start font-sans text-base transition-colors hover:bg-hover focus-ring-inset';
 @endphp
 
 <header class="flex flex-wrap items-start gap-5">

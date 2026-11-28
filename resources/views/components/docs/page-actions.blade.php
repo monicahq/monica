@@ -18,7 +18,7 @@
 
 <div
   x-data="docsPageActions({{ Js::from(['markdown' => $markdown]) }})"
-  {{ $attributes->class('-ml-2 flex flex-wrap items-center gap-1 border-b border-hairline pb-2 print:hidden') }}
+  {{ $attributes->class('-ms-2 flex flex-wrap items-center gap-1 border-b border-hairline pb-2 print:hidden') }}
 >
   <button
     type="button"

@@ -112,7 +112,7 @@
       <x-page-section :title="__('Fields')">
         <x-panel flush>
           <div class="grid md:grid-cols-2">
-            <div class="flex flex-col gap-4 border-b border-hairline bg-card p-6 md:border-r md:border-b-0 md:p-8" aria-hidden="true">
+            <div class="flex flex-col gap-4 border-b border-hairline bg-card p-6 md:border-e md:border-b-0 md:p-8" aria-hidden="true">
               <div class="flex flex-col gap-3 rounded-lg border border-dashed border-hairline-strong p-5">
                 <p class="flex items-baseline gap-3">
                   <x-caption tone="muted">{{ __('Group') }}</x-caption>

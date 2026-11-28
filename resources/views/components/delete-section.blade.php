@@ -15,6 +15,6 @@
       <div class="flex min-w-60 flex-1 flex-col gap-2 text-sm text-pretty text-body">{{ $slot }}</div>
     @endif
 
-    <div class="ml-auto shrink-0">{{ $trigger }}</div>
+    <div class="ms-auto shrink-0">{{ $trigger }}</div>
   </div>
 </x-panel>

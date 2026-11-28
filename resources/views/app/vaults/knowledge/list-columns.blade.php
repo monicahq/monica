@@ -2,7 +2,7 @@
 {{-- @var \App\ViewModels\Vaults\KnowledgeListColumnsViewModel $viewModel --}}
 @php
   $vault = $viewModel->vault();
-  $item = 'flex w-full cursor-pointer items-center gap-2.5 min-h-8 rounded-md px-2.5 text-left font-sans text-base no-underline transition-colors hover:bg-hover focus-ring-inset';
+  $item = 'flex w-full cursor-pointer items-center gap-2.5 min-h-8 rounded-md px-2.5 text-start font-sans text-base no-underline transition-colors hover:bg-hover focus-ring-inset';
 @endphp
 
 <x-shell :title="__('Columns of :title', ['title' => $viewModel->title()])" wide>

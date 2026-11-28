@@ -1,6 +1,6 @@
 {{-- One thing that happened on the account, as a row in a list. --}}
 {{-- @var \App\Models\Log $log --}}
-<div class="flex w-full items-start gap-3 border-b border-hairline px-4 py-3.5 text-left transition-colors duration-(--duration-fast) ease-out last:border-b-0">
+<div class="flex w-full items-start gap-3 border-b border-hairline px-4 py-3.5 text-start transition-colors duration-(--duration-fast) ease-out last:border-b-0">
   <span class="flex size-8 shrink-0 items-center justify-center rounded-sm bg-forest-tint text-forest">
     <x-icon name="timeline" :size="18" :stroke-width="1.5" />
   </span>

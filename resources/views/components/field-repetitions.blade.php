@@ -63,7 +63,7 @@
 
             @if ($mayRemove)
               <div class="flex">
-                <x-button.ghost type="button" size="small" class="ml-auto" @click="removed = true">
+                <x-button.ghost type="button" size="small" class="ms-auto" @click="removed = true">
                   <x-icon name="close" :size="14" :stroke-width="1.8" />
                   {{ __('Remove') }}
                 </x-button.ghost>

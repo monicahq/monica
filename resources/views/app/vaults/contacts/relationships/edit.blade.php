@@ -43,7 +43,7 @@
 
         @if ($otherState === \App\ViewModels\Vaults\RelationshipEditViewModel::OTHER_IS_NAMELESS)
           <fieldset class="border-t border-hairline p-4">
-            <legend class="float-left mb-2 w-full px-0"><x-caption x-text="role">{{ $viewModel->otherRole() }}</x-caption></legend>
+            <legend class="float-start mb-2 w-full px-0"><x-caption x-text="role">{{ $viewModel->otherRole() }}</x-caption></legend>
 
             <div class="clear-left flex flex-col gap-1.5">
               <x-option-row id="mode_unknown" name="mode" type="radio" value="unknown" :checked="$values['mode'] === 'unknown'" x-model="mode">{{ __('I do not know their name') }}</x-option-row>

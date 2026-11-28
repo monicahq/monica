@@ -61,7 +61,7 @@
   <div class="flex flex-col gap-3.5">
     <x-button.ghost type="button" size="small" class="self-start" @click="showParts = ! showParts" ::aria-expanded="showParts" aria-controls="name-draft-parts">
       {{ __('Name parts') }}
-      <x-slot:icon><span class="flex transition-transform motion-reduce:transition-none" :class="showParts && 'rotate-90'"><x-icon name="chevron-right" :size="16" /></span></x-slot:icon>
+      <x-slot:icon><span class="flex transition-transform motion-reduce:transition-none" :class="showParts && 'rotate-90 rtl:-rotate-90'"><x-icon name="chevron-right" :size="16" /></span></x-slot:icon>
     </x-button.ghost>
 
     <div id="name-draft-parts" x-show="showParts" class="grid gap-4 sm:grid-cols-2">

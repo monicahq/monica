@@ -47,7 +47,7 @@
 
   <dl class="grid border-t border-hairline sm:grid-cols-3">
     @foreach ($viewModel->usage() as $item)
-      <div @class(['flex flex-col gap-1.5 px-7 py-5', 'border-t border-hairline sm:border-t-0 sm:border-l' => ! $loop->first])>
+      <div @class(['flex flex-col gap-1.5 px-7 py-5', 'border-t border-hairline sm:border-t-0 sm:border-s' => ! $loop->first])>
         <dt><x-caption tone="muted">{{ $item['label'] }}</x-caption></dt>
 
         <dd class="text-[20px] font-semibold tracking-[-0.02em] text-ink">{{ $item['value'] }}</dd>

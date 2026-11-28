@@ -62,7 +62,7 @@
           <div class="flex items-center gap-2.5 border-t border-hairline px-4 py-3 text-sm text-muted" aria-hidden="true">
             <span>{{ __('Preview') }}</span>
 
-            <span class="inline-flex h-7 items-center gap-2 rounded-full py-0.5 pr-3 pl-0.5 text-sm text-body" :style="`background: ${tints[colour] ?? ''}`">
+            <span class="inline-flex h-7 items-center gap-2 rounded-full py-0.5 pe-3 ps-0.5 text-sm text-body" :style="`background: ${tints[colour] ?? ''}`">
               <span class="flex size-6 items-center justify-center rounded-full bg-canvas" :style="`color: ${colour}`">
                 @foreach ($viewModel->glyphs() as $glyph)
                   <span x-show="icon === @js($glyph)" style="display: none" class="flex">

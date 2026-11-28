@@ -11,13 +11,13 @@
     <span class="truncate text-xs text-muted">· {{ $listing['categoryName'] }}</span>
 
     @if ($listing['hasUpdate'])
-      <span class="ml-auto flex shrink-0 items-center gap-1 rounded-sm bg-marigold-tint px-1.75 py-0.5 text-xs text-marigold-deep">
+      <span class="ms-auto flex shrink-0 items-center gap-1 rounded-sm bg-marigold-tint px-1.75 py-0.5 text-xs text-marigold-deep">
         <x-icon name="arrow-right" :size="13" :stroke-width="1.8" />
 
         {{ __('Update available') }}
       </span>
     @elseif ($listing['isInstalled'])
-      <span class="ml-auto flex shrink-0 items-center gap-1 rounded-sm bg-forest-tint px-1.75 py-0.5 text-xs text-forest-deep">
+      <span class="ms-auto flex shrink-0 items-center gap-1 rounded-sm bg-forest-tint px-1.75 py-0.5 text-xs text-forest-deep">
         <x-icon name="check" :size="13" :stroke-width="1.8" />
 
         {{ __('Installed') }}
@@ -40,6 +40,6 @@
 
     <span>{{ $listing['language'] }}</span>
 
-    <span class="ml-auto shrink-0">{{ $listing['installLabel'] }}</span>
+    <span class="ms-auto shrink-0">{{ $listing['installLabel'] }}</span>
   </p>
 </article>

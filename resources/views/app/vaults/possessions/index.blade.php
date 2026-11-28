@@ -43,7 +43,7 @@
         </div>
       </div>
 
-      <div class="flex flex-col gap-3.5 border-hairline bg-card p-6 max-md:border-t sm:p-7 md:border-l">
+      <div class="flex flex-col gap-3.5 border-hairline bg-card p-6 max-md:border-t sm:p-7 md:border-s">
         <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
           <h3 class="text-label text-ink">{{ __('Or start from a type') }}</h3>
           <span class="text-xs text-muted">{{ __('Each one comes with its own fields.') }}</span>
@@ -173,7 +173,7 @@
                     <a href="{{ $possession['url'] }}" class="focus-ring rounded-sm text-sm font-semibold text-ink no-underline after:absolute after:inset-0 after:rounded-lg">{{ $possession['name'] }}</a>
                     <span class="text-sm text-muted">{{ $possession['place'] }} · {{ $possession['value'] }}</span>
                     @if ($possession['description'])
-                      <span class="mt-1.5 text-sm text-body">{{ $possession['description'] }}</span>
+                      <span class="mt-1.5 text-sm text-body" dir="auto">{{ $possession['description'] }}</span>
                     @endif
                   </span>
                   <span class="flex text-[#9a6a24] dark:text-[#d9a441]">

@@ -8,7 +8,7 @@
   $inlineCode = '[&_strong]:font-semibold [&_strong]:text-ink [&_code]:rounded-xs [&_code]:border [&_code]:border-hairline [&_code]:bg-card [&_code]:px-1.25 [&_code]:py-px [&_code]:font-mono [&_code]:text-xs [&_code]:text-ink';
   $linkStyle = '[&_a]:rounded-xs [&_a]:text-ink [&_a]:underline [&_a]:decoration-hairline-strong [&_a]:underline-offset-3 [&_a:hover]:decoration-ink';
   $prose = "text-[14.5px] leading-[1.7] text-pretty text-body {$inlineCode} {$linkStyle}";
-  $blockProse = "{$prose} [&>*+*]:mt-4 [&_h2]:mt-10 [&_h2]:scroll-mt-6 [&_h2]:text-[22px] [&_h2]:leading-[1.3] [&_h2]:font-semibold [&_h2]:tracking-[-0.02em] [&_h2]:text-ink [&_[data-heading-anchor]]:ml-2 [&_[data-heading-anchor]]:px-0.5 [&_[data-heading-anchor]]:font-normal [&_[data-heading-anchor]]:text-muted [&_[data-heading-anchor]]:no-underline [&_[data-heading-anchor]]:opacity-0 [&_[data-heading-anchor]]:transition-opacity [&_[data-heading-anchor]]:duration-(--duration-fast) [&_h2:hover_[data-heading-anchor]]:opacity-100 [&_[data-heading-anchor]:focus-visible]:opacity-100 [&_[data-heading-anchor]:hover]:text-ink [&_h3]:mt-8 [&_h3]:scroll-mt-6 [&_h3]:text-[17px] [&_h3]:font-semibold [&_h3]:text-ink [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_li+li]:mt-1.5 [&_table]:w-full [&_table]:text-[14px] [&_th]:border-b [&_th]:border-hairline [&_th]:py-2 [&_th]:pr-4 [&_th]:text-left [&_th]:font-semibold [&_th]:text-ink [&_td]:border-b [&_td]:border-hairline [&_td]:py-2 [&_td]:pr-4 [&_td]:align-top [&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:border [&_pre]:border-hairline [&_pre]:bg-sunken [&_pre]:px-4 [&_pre]:py-3.5 [&_pre_code]:border-0 [&_pre_code]:bg-transparent [&_pre_code]:p-0";
+  $blockProse = "{$prose} [&>*+*]:mt-4 [&_h2]:mt-10 [&_h2]:scroll-mt-6 [&_h2]:text-[22px] [&_h2]:leading-[1.3] [&_h2]:font-semibold [&_h2]:tracking-[-0.02em] [&_h2]:text-ink [&_[data-heading-anchor]]:ms-2 [&_[data-heading-anchor]]:px-0.5 [&_[data-heading-anchor]]:font-normal [&_[data-heading-anchor]]:text-muted [&_[data-heading-anchor]]:no-underline [&_[data-heading-anchor]]:opacity-0 [&_[data-heading-anchor]]:transition-opacity [&_[data-heading-anchor]]:duration-(--duration-fast) [&_h2:hover_[data-heading-anchor]]:opacity-100 [&_[data-heading-anchor]:focus-visible]:opacity-100 [&_[data-heading-anchor]:hover]:text-ink [&_h3]:mt-8 [&_h3]:scroll-mt-6 [&_h3]:text-[17px] [&_h3]:font-semibold [&_h3]:text-ink [&_ul]:list-disc [&_ul]:ps-5 [&_ol]:list-decimal [&_ol]:ps-5 [&_li+li]:mt-1.5 [&_table]:w-full [&_table]:text-[14px] [&_th]:border-b [&_th]:border-hairline [&_th]:py-2 [&_th]:pe-4 [&_th]:text-start [&_th]:font-semibold [&_th]:text-ink [&_td]:border-b [&_td]:border-hairline [&_td]:py-2 [&_td]:pe-4 [&_td]:align-top [&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:border [&_pre]:border-hairline [&_pre]:bg-sunken [&_pre]:px-4 [&_pre]:py-3.5 [&_pre_code]:border-0 [&_pre_code]:bg-transparent [&_pre_code]:p-0";
   $image = 'h-auto max-h-130 w-auto max-w-full self-start rounded-lg border border-hairline bg-canvas shadow-panel';
   $placeholder = 'grid aspect-video place-items-center rounded-lg border border-hairline bg-card px-6 text-center text-sm text-muted shadow-panel';
   $entry = 'flex min-h-8 items-center rounded-md px-3 py-1.5 text-[13.5px] leading-snug transition-colors duration-(--duration-fast) ease-out focus-ring';
@@ -16,7 +16,7 @@
   $entryCurrent = 'bg-canvas font-semibold text-ink shadow-nav-active';
 @endphp
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', $viewModel->locale()) }}">
+<html lang="{{ str_replace('_', '-', $viewModel->locale()) }}" dir="{{ \App\Helpers\AvailableLocales::direction($viewModel->locale()) }}">
   <head>
     @include('partials.meta', [
       'title' => $page->title,
@@ -38,7 +38,7 @@
           id="portal-pages"
           aria-label="Documentation"
           :data-open="open ? '' : null"
-          class="hidden w-full shrink-0 border-b border-hairline bg-card px-4 pt-5 pb-8 data-open:block lg:block lg:w-65 lg:border-r lg:border-b-0 print:hidden"
+          class="hidden w-full shrink-0 border-b border-hairline bg-card px-4 pt-5 pb-8 data-open:block lg:block lg:w-65 lg:border-e lg:border-b-0 print:hidden"
         >
           <label class="flex h-9 items-center gap-2 rounded-md border border-hairline-strong bg-canvas px-3 text-muted focus-within:ring-[3px] focus-within:ring-focus-ring/45">
             <x-icon name="search" :size="15" />
@@ -76,12 +76,12 @@
                   @click="expanded = ! expanded"
                   :aria-expanded="expanded || query.trim() !== '' ? 'true' : 'false'"
                   aria-controls="{{ $listId }}"
-                  class="flex min-h-8 w-full cursor-pointer items-center justify-between gap-2 rounded-md px-3 py-1.5 text-left text-[13.5px] font-semibold text-ink transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring"
+                  class="flex min-h-8 w-full cursor-pointer items-center justify-between gap-2 rounded-md px-3 py-1.5 text-start text-[13.5px] font-semibold text-ink transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring"
                 >
                   <span>{{ $section['index']->title }}</span>
                   <span
                     class="flex text-muted transition-transform duration-(--duration-slow) ease-(--ease-out)"
-                    :class="expanded || query.trim() !== '' ? 'rotate-0' : '-rotate-90'"
+                    :class="expanded || query.trim() !== '' ? 'rotate-0' : '-rotate-90 rtl:rotate-90'"
                   >
                     <x-icon name="chevron-down" :size="14" />
                   </span>
@@ -93,7 +93,7 @@
                   :class="expanded || query.trim() !== '' ? 'visible grid-rows-[1fr]' : 'invisible grid-rows-[0fr]'"
                 >
                   <div class="min-h-0 overflow-hidden">
-                    <ul role="list" class="mt-1 ml-3 flex flex-col gap-px border-l border-hairline-strong pl-2">
+                    <ul role="list" class="mt-1 ms-3 flex flex-col gap-px border-s border-hairline-strong ps-2">
                       @foreach ([$section['index'], ...$section['pages']] as $item)
                         <li x-show="matches({{ Js::from(mb_strtolower($item->title)) }})">
                           <a
@@ -190,7 +190,7 @@
                   @endif
 
                   @if ($next !== null)
-                    <a href="{{ $next->url() }}" rel="next" class="block rounded-lg border border-hairline p-4 text-right text-ink transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring sm:col-start-2">
+                    <a href="{{ $next->url() }}" rel="next" class="block rounded-lg border border-hairline p-4 text-end text-ink transition-colors duration-(--duration-fast) ease-out hover:bg-hover focus-ring sm:col-start-2">
                       <span class="block text-[12.5px] text-muted">Next</span>
                       <span class="mt-1 block font-semibold">{{ $next->title }} →</span>
                     </a>
@@ -225,12 +225,12 @@
               @if ($viewModel->contents() !== [])
                 <x-caption id="on-this-page" tone="muted">On this page</x-caption>
 
-                <nav aria-labelledby="on-this-page" class="flex flex-col gap-0.5 border-l border-hairline">
+                <nav aria-labelledby="on-this-page" class="flex flex-col gap-0.5 border-s border-hairline">
                   @foreach ($viewModel->contents() as $heading)
                     <a
                       href="#{{ $heading['id'] }}"
                       :aria-current="current === '{{ $heading['id'] }}' ? 'location' : null"
-                      class="-ml-px border-l border-transparent py-1.25 pl-3 text-sm leading-[1.4] text-muted transition-colors duration-(--duration-fast) ease-out hover:text-ink focus-ring aria-[current]:border-ink aria-[current]:font-semibold aria-[current]:text-ink"
+                      class="-ms-px border-s border-transparent py-1.25 ps-3 text-sm leading-[1.4] text-muted transition-colors duration-(--duration-fast) ease-out hover:text-ink focus-ring aria-[current]:border-ink aria-[current]:font-semibold aria-[current]:text-ink"
                     >{{ $heading['label'] }}</a>
                   @endforeach
                 </nav>

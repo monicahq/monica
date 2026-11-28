@@ -73,7 +73,7 @@
           <div class="flex flex-col gap-2 rounded-md border border-hairline bg-card p-3">
             <x-caption>{{ __('Before you can switch this on') }}</x-caption>
 
-            <ol class="flex list-decimal flex-col gap-1 pl-4 text-xs text-body">
+            <ol class="flex list-decimal flex-col gap-1 ps-4 text-xs text-body">
               @foreach ($channel['steps'] as $step)
                 <li>{{ $step }}</li>
               @endforeach

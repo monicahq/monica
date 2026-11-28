@@ -24,7 +24,7 @@
       <path d="m9.6 3.9 2.5 2.5"></path>
     </svg>
     <span>Edit page</span>
-    <x-icon name="arrow-right" :size="16" class="ml-auto text-muted group-hover:text-ink" />
+    <x-icon name="arrow-right" :size="16" class="ms-auto text-muted group-hover:text-ink" />
   </a>
 
   <a href="{{ $issueUrl }}" target="_blank" rel="noopener" class="{{ $row }}">
@@ -33,6 +33,6 @@
       <path d="M3.6 3h8.2l-1.6 2.9 1.6 2.9H3.6"></path>
     </svg>
     <span>Report issue</span>
-    <x-icon name="arrow-right" :size="16" class="ml-auto text-muted group-hover:text-ink" />
+    <x-icon name="arrow-right" :size="16" class="ms-auto text-muted group-hover:text-ink" />
   </a>
 </div>

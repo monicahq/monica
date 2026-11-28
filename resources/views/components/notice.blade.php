@@ -54,6 +54,6 @@
   </div>
 
   @isset($action)
-    <div class="ml-auto shrink-0">{{ $action }}</div>
+    <div class="ms-auto shrink-0">{{ $action }}</div>
   @endisset
 </div>

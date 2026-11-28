@@ -2,7 +2,7 @@
 {{-- @var array $category --}}
 @php
   $renameErrors = $errors->getBag('category'.$category['id']);
-  $item = 'block w-full cursor-pointer rounded-xs px-2.5 py-2 text-left font-sans text-sm transition-colors hover:bg-hover focus-ring-inset';
+  $item = 'block w-full cursor-pointer rounded-xs px-2.5 py-2 text-start font-sans text-sm transition-colors hover:bg-hover focus-ring-inset';
 @endphp
 <div x-data="{ renaming: @js($renameErrors->has('name')) }" class="flex shrink-0 items-center gap-2">
   <x-form

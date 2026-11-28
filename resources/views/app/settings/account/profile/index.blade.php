@@ -110,7 +110,7 @@
               @endif
             </span>
 
-            <x-button size="small" class="ml-auto">{{ __('Save changes') }}</x-button>
+            <x-button size="small" class="ms-auto">{{ __('Save changes') }}</x-button>
           </div>
         </x-slot:footer>
       </x-panel>
@@ -170,7 +170,7 @@
           size="small"
           x-show="! confirming"
           @click="confirming = true"
-          class="ml-auto max-sm:w-full"
+          class="ms-auto max-sm:w-full"
         >
           {{ __('Delete your account') }}
         </x-button.secondary>

@@ -19,9 +19,9 @@
 ])
 
 @php
-  $chip = 'inline-flex h-8 items-center gap-1 rounded-md border border-hairline-strong bg-hover pr-1 pl-3 text-base text-ink';
+  $chip = 'inline-flex h-8 items-center gap-1 rounded-md border border-hairline-strong bg-hover pe-1 ps-3 text-base text-ink';
   $chipButton = 'focus-ring flex size-6 items-center justify-center rounded-sm text-muted hover:text-ink';
-  $row = 'flex w-full cursor-pointer items-center gap-2.5 rounded-sm px-2.5 py-2 text-left text-base text-ink hover:bg-hover has-focus-visible:bg-hover';
+  $row = 'flex w-full cursor-pointer items-center gap-2.5 rounded-sm px-2.5 py-2 text-start text-base text-ink hover:bg-hover has-focus-visible:bg-hover';
 @endphp
 
 <div
@@ -90,7 +90,7 @@
         name="chevron-down"
         :size="14"
         :stroke-width="1.7"
-        class="ml-auto text-muted transition-transform duration-(--duration-standard)"
+        class="ms-auto text-muted transition-transform duration-(--duration-standard)"
         ::class="open && 'rotate-180'"
       />
     </x-button.secondary>
@@ -101,7 +101,7 @@
       id="{{ $id }}-list"
       role="group"
       aria-label="{{ $label }}"
-      class="absolute top-[calc(100%+6px)] left-0 z-40 flex max-h-80 w-64 max-w-[calc(100vw-2rem)] flex-col overflow-y-auto rounded-lg border border-hairline bg-canvas p-1.5 shadow-pop"
+      class="absolute top-[calc(100%+6px)] start-0 z-40 flex max-h-80 w-64 max-w-[calc(100vw-2rem)] flex-col overflow-y-auto rounded-lg border border-hairline bg-canvas p-1.5 shadow-pop"
     >
       @foreach ($items as $item)
         <label class="{{ $row }}">

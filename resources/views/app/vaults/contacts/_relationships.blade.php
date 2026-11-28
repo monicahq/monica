@@ -57,7 +57,7 @@
               <span class="font-mono text-sm text-muted">{{ $group['count'] }}</span>
 
               <x-chip
-                class="ml-auto"
+                class="ms-auto"
                 x-bind:aria-pressed="manage ? 'true' : 'false'"
                 @click="manage = !manage"
               >{{ __('Manage') }}</x-chip>

@@ -23,7 +23,7 @@
     </p>
   </div>
 
-  <div class="ml-auto flex shrink-0 items-center gap-2.5">
+  <div class="ms-auto flex shrink-0 items-center gap-2.5">
     <span class="text-xs text-pretty text-muted">{{ $type['countLabel'] }}</span>
 
     <x-button.ghost

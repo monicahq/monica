@@ -4,7 +4,7 @@
   @var string|null $description
 --}}
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ \App\Helpers\AvailableLocales::direction(app()->getLocale()) }}">
   <head>
     @include('partials.meta', ['title' => $title ?? null, 'description' => $description ?? null])
 
@@ -23,7 +23,7 @@
 
       <span class="text-sm font-semibold text-ink">{{ __('Marketplace') }}</span>
 
-      <div class="ml-auto flex items-center gap-2.5">
+      <div class="ms-auto flex items-center gap-2.5">
         <x-theme-toggle />
 
         @auth

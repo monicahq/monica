@@ -43,7 +43,7 @@
     x-cloak
     x-show="open"
     x-transition.opacity.duration.120ms
-    class="absolute bottom-full mb-1.5 right-0 z-10 w-64 max-w-[calc(100vw-3rem)] overflow-hidden rounded-lg border border-hairline bg-canvas shadow-pop"
+    class="absolute bottom-full mb-1.5 end-0 z-10 w-64 max-w-[calc(100vw-3rem)] overflow-hidden rounded-lg border border-hairline bg-canvas shadow-pop"
   >
     <div class="px-3 pt-2.5 pb-1.5 uppercase text-xs tracking-widest text-muted-soft">
       {{ __('Interface language') }}
@@ -57,7 +57,7 @@
             name="locale"
             value="{{ $locale['code'] }}"
             @if ($locale['code'] === $current) aria-current="true" @endif
-            class="focus-ring-inset flex w-full cursor-pointer items-center gap-2.5 px-3 py-2 text-left transition-colors hover:bg-hover {{ $locale['code'] === $current ? 'bg-card' : '' }}"
+            class="focus-ring-inset flex w-full cursor-pointer items-center gap-2.5 px-3 py-2 text-start transition-colors hover:bg-hover {{ $locale['code'] === $current ? 'bg-card' : '' }}"
           >
             <span class="{{ $flag }}" style="background: {{ $locale['flag'] }};" aria-hidden="true"></span>
             <span class="flex-1 text-sm text-ink {{ $locale['code'] === $current ? 'font-medium' : '' }}">{{ $locale['label'] }}</span>

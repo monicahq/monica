@@ -35,7 +35,7 @@
       :class="draggingId === {{ $field['id'] }} && 'opacity-40'"
     @endif
     @class([
-      'grid w-full items-center gap-2.5 rounded-md border px-2.5 py-2.5 text-left transition-colors duration-(--duration-fast) hover:bg-hover',
+      'grid w-full items-center gap-2.5 rounded-md border px-2.5 py-2.5 text-start transition-colors duration-(--duration-fast) hover:bg-hover',
       'grid-cols-[auto_minmax(90px,1fr)_minmax(0,auto)]' => $mayReorder,
       'grid-cols-[minmax(90px,1fr)_minmax(0,auto)]' => ! $mayReorder,
       'border-hairline-strong bg-sunken' => $field['isSelected'],
@@ -76,7 +76,7 @@
   @endif
 
   @if ($field['children'] !== [])
-    <div @if ($mayReorder) x-data="sortableRows" data-sortable @endif class="ml-3.5 flex flex-col gap-0.5 border-l border-hairline pl-2.5">
+    <div @if ($mayReorder) x-data="sortableRows" data-sortable @endif class="ms-3.5 flex flex-col gap-0.5 border-s border-hairline ps-2.5">
       @foreach ($field['children'] as $child)
         @include('app.settings.account.templates._field', [
           'field' => $child,

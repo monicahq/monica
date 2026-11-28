@@ -22,7 +22,7 @@
     @endif
 
     @if ($next)
-      <a href="{{ $next['url'] }}" data-turbo="true" class="{{ $card }} col-start-2 items-end text-right">
+      <a href="{{ $next['url'] }}" data-turbo="true" class="{{ $card }} col-start-2 items-end text-end">
         <span class="flex items-center gap-1.5 text-xs font-medium text-muted">
           Next
           <x-icon name="arrow-right" :size="14" />

@@ -173,7 +173,7 @@
       <p class="max-w-prose text-sm text-pretty text-muted">{{ $viewModel->publishingNote() }}</p>
 
       @if ($viewModel->isEditable() && $version?->previous_version_id !== null)
-        <div class="ml-auto">
+        <div class="ms-auto">
           <x-modal.warning
             :title="__('Delete this draft?')"
             :confirm="__('Delete it')"

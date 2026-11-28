@@ -13,7 +13,7 @@
   <div class="flex items-center gap-1.5 border-b border-hairline-soft bg-hover px-2.5 py-2">
     <x-api-docs.method-badge :method="$section->method" tinted />
 
-    <div class="ml-1 flex gap-0.5" role="group" aria-label="Sample language">
+    <div class="ms-1 flex gap-0.5" role="group" aria-label="Sample language">
       @foreach ($samples as $key => $sample)
         <button
           type="button"
@@ -28,7 +28,7 @@
     <button
       type="button"
       @click="window.copyText(samples[lang]).then((ok) => { copied = ok; setTimeout(() => (copied = false), 1600) })"
-      class="ml-auto cursor-pointer rounded-xs px-2 py-1 text-xs text-body transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-ring"
+      class="ms-auto cursor-pointer rounded-xs px-2 py-1 text-xs text-body transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-ring"
       aria-live="polite"
       x-text="copied ? 'Copied' : 'Copy'"
     >Copy</button>

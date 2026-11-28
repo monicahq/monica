@@ -28,7 +28,7 @@
   <div class="flex max-w-reading flex-col gap-6">
     @if ($blocked !== [])
       <x-notice tone="warning" :title="$viewModel->blockedReason()">
-        <ul class="list-disc pl-5">
+        <ul class="list-disc ps-5">
           @foreach ($blocked as $name)
             <li>{{ $name }}</li>
           @endforeach
@@ -41,7 +41,7 @@
     <x-detail-list label-width="minmax(0,1fr)">
       @foreach ($viewModel->effects() as $effect)
         <x-detail-list.row :label="$effect['label']">
-          <span class="block text-right font-semibold tabular-nums">{{ $effect['value'] }}</span>
+          <span class="block text-end font-semibold tabular-nums">{{ $effect['value'] }}</span>
         </x-detail-list.row>
       @endforeach
     </x-detail-list>
@@ -59,7 +59,7 @@
           @click="open = ! open"
           :aria-expanded="open ? 'true' : 'false'"
           aria-controls="template-change-details"
-          class="flex w-full cursor-pointer items-center justify-between gap-3 px-4 py-3 text-left text-sm font-medium text-ink focus-ring-inset"
+          class="flex w-full cursor-pointer items-center justify-between gap-3 px-4 py-3 text-start text-sm font-medium text-ink focus-ring-inset"
         >
           {{ __('Details by field') }}
           <x-icon name="chevron-down" :size="14" aria-hidden="true" class="text-muted" ::class="open && 'rotate-180'" />

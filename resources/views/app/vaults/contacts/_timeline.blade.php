@@ -16,13 +16,13 @@
   @foreach ($timeline->years() as $year)
     <div class="flex flex-col gap-2">
       @if ($year['showsHeading'])
-        <h3 class="flex items-baseline gap-2.5 pl-10">
+        <h3 class="flex items-baseline gap-2.5 ps-10">
           <span class="text-card-title text-ink">{{ $year['year'] }}</span>
           <span class="text-xs text-muted">{{ $year['countLabel'] }}</span>
         </h3>
       @endif
 
-      <ol class="relative flex list-none flex-col before:absolute before:top-5 before:bottom-5 before:left-3.75 before:w-px before:bg-hairline">
+      <ol class="relative flex list-none flex-col before:absolute before:top-5 before:bottom-5 before:start-3.75 before:w-px before:bg-hairline">
         @foreach ($year['entries'] as $entry)
           <li class="relative grid grid-cols-[2rem_minmax(0,1fr)] gap-x-4 py-2">
             <span class="relative flex size-8 rounded-full bg-card" aria-hidden="true">
@@ -32,7 +32,7 @@
             </span>
 
             @if ($entry['kind'] === 'membership')
-              <div class="group -ml-2.5 flex min-w-0 items-start gap-2 rounded-lg border border-transparent px-2.5 pt-1.5 pb-2 transition-colors motion-reduce:transition-none focus-within:border-hairline focus-within:bg-card hover:border-hairline hover:bg-card">
+              <div class="group -ms-2.5 flex min-w-0 items-start gap-2 rounded-lg border border-transparent px-2.5 pt-1.5 pb-2 transition-colors motion-reduce:transition-none focus-within:border-hairline focus-within:bg-card hover:border-hairline hover:bg-card">
                 <div class="flex min-w-0 flex-1 flex-col gap-0.5">
                   <p class="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-base">
                     <span class="font-medium text-ink">{{ $entry['title'] }}</span>
@@ -53,7 +53,7 @@
                 @include('app.vaults.contacts._life-event-panel', ['form' => $form])
               </div>
             @else
-              <div @if ($entry['isJustAdded'] || $entry['isEdited']) tabindex="-1" x-autofocus @endif class="group -ml-2.5 flex min-w-0 flex-col rounded-lg border px-2.5 pt-1.5 pb-2 transition-colors motion-reduce:transition-none border-transparent focus-within:border-hairline focus-within:bg-card hover:border-hairline hover:bg-card">
+              <div @if ($entry['isJustAdded'] || $entry['isEdited']) tabindex="-1" x-autofocus @endif class="group -ms-2.5 flex min-w-0 flex-col rounded-lg border px-2.5 pt-1.5 pb-2 transition-colors motion-reduce:transition-none border-transparent focus-within:border-hairline focus-within:bg-card hover:border-hairline hover:bg-card">
                 <div class="flex items-start gap-2">
                   <div class="flex min-w-0 flex-1 flex-col gap-0.5">
                     <p class="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-base">

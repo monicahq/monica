@@ -68,7 +68,7 @@
                   @keydown.arrow-down.prevent="step($event.target, 1)"
                   @keydown.arrow-up.prevent="step($event.target, -1)"
                   @keydown.escape.prevent="clear()"
-                  class="flex w-full items-center gap-3 px-3 py-2 text-left transition-colors hover:bg-hover focus-visible:bg-hover focus-ring"
+                  class="flex w-full items-center gap-3 px-3 py-2 text-start transition-colors hover:bg-hover focus-visible:bg-hover focus-ring"
                 >
                   <span class="min-w-0 flex-1">
                     <span class="block truncate text-sm text-ink" :class="zone.timezone === current && 'font-semibold'" x-text="zone.name"></span>
@@ -78,7 +78,7 @@
 
                   <span class="shrink-0 font-mono text-xs text-muted-soft" x-text="zone.offset"></span>
 
-                  <span class="w-12 shrink-0 text-right font-mono text-xs text-body" x-text="zone.clock"></span>
+                  <span class="w-12 shrink-0 text-end font-mono text-xs text-body" x-text="zone.clock"></span>
 
                   <span class="flex size-3.5 shrink-0 text-ink" aria-hidden="true">
                     <x-icon x-show="zone.timezone === current" name="check" :size="14" :stroke-width="1.8" />
@@ -91,7 +91,7 @@
           </div>
         </div>
 
-        <div class="ml-auto flex flex-col items-end gap-0.5 text-right">
+        <div class="ms-auto flex flex-col items-end gap-0.5 text-end">
           <x-caption>{{ __('Your time zone') }}</x-caption>
 
           <span x-ref="current" class="font-mono text-sm text-ink">{{ $timezone->timezone() }}</span>
@@ -142,7 +142,7 @@
           name="timezone"
           value=""
           @click.prevent="device($event)"
-          class="ml-auto shrink-0"
+          class="ms-auto shrink-0"
         >
           <x-slot:icon>
             <x-icon name="place" :size="14" :stroke-width="1.6" class="text-muted" />

@@ -107,7 +107,7 @@
                 <x-caption>{{ __('Open tasks') }}</x-caption>
               </span>
 
-              <span class="border-l border-hairline px-4 py-2.5">
+              <span class="border-s border-hairline px-4 py-2.5">
                 <span class="block text-base font-semibold text-ink">{{ $vault['dateCount'] }}</span>
 
                 <x-caption>{{ __('Dates this month') }}</x-caption>

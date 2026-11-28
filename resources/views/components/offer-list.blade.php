@@ -27,8 +27,8 @@
           @foreach ($renewing as $offer)
             <li @class([
               '@container flex flex-col gap-1.5 p-6',
-              'border-t border-hairline bg-card sm:border-t-0 sm:border-l' => ! $loop->first,
-              'sm:rounded-br-lg' => $loop->last && ! $loop->first,
+              'border-t border-hairline bg-card sm:border-t-0 sm:border-s' => ! $loop->first,
+              'sm:rounded-ee-lg' => $loop->last && ! $loop->first,
             ])>
               <h4 class="flex flex-wrap items-center gap-2">
                 <x-caption tone="muted">{{ $offer['kind'] === \App\Enums\OfferKindEnum::Monthly ? __('Monthly') : __('Yearly') }}</x-caption>

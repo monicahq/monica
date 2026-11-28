@@ -46,7 +46,7 @@
         class="focus-ring relative block w-fit max-w-full cursor-zoom-in overflow-hidden rounded-lg border border-hairline bg-card shadow-panel"
       >
         <x-image :src="$screenshots[0]['url']" :srcset="$screenshots[0]['url'].' 2x'" :alt="$screenshots[0]['description']" :width="intdiv($screenshots[0]['width'], 2)" :height="intdiv($screenshots[0]['height'], 2)" class="block h-auto max-w-full" />
-        <span id="{{ $prefix }}-label" class="absolute right-2.5 bottom-2.5 inline-flex h-7 items-center rounded-md border border-hairline bg-canvas px-2.5 text-label text-ink">{{ __('View full screen') }}</span>
+        <span id="{{ $prefix }}-label" class="absolute end-2.5 bottom-2.5 inline-flex h-7 items-center rounded-md border border-hairline bg-canvas px-2.5 text-label text-ink">{{ __('View full screen') }}</span>
       </button>
 
       <figcaption id="{{ $prefix }}-caption-0" aria-hidden="true" class="text-xs text-pretty text-muted">{{ $screenshots[0]['description'] }}</figcaption>
@@ -83,8 +83,8 @@
       x-transition:leave-end="opacity-0"
       @click="if (! $event.target.closest('button, img')) open = false"
       @keydown.escape.window="open = false"
-      @keydown.left.window="open && move(-1)"
-      @keydown.right.window="open && move(1)"
+      @keydown.left.window="open && move(document.documentElement.dir === 'rtl' ? 1 : -1)"
+      @keydown.right.window="open && move(document.documentElement.dir === 'rtl' ? -1 : 1)"
       role="dialog"
       aria-modal="true"
       aria-labelledby="{{ $prefix }}-title {{ $prefix }}-position"
@@ -116,11 +116,11 @@
         @endforeach
 
         @if ($count > 1)
-          <button type="button" @click="move(-1)" aria-label="{{ __('Previous screenshot') }}" class="focus-ring-on-scrim absolute top-1/2 left-4 flex size-9 -translate-y-1/2 cursor-pointer items-center justify-center rounded-md text-on-scrim transition-colors duration-(--duration-fast) hover:bg-on-scrim/10">
+          <button type="button" @click="move(-1)" aria-label="{{ __('Previous screenshot') }}" class="focus-ring-on-scrim absolute top-1/2 start-4 flex size-9 -translate-y-1/2 cursor-pointer items-center justify-center rounded-md text-on-scrim transition-colors duration-(--duration-fast) hover:bg-on-scrim/10">
             <x-icon name="chevron-left" :size="18" />
           </button>
 
-          <button type="button" @click="move(1)" aria-label="{{ __('Next screenshot') }}" class="focus-ring-on-scrim absolute top-1/2 right-4 flex size-9 -translate-y-1/2 cursor-pointer items-center justify-center rounded-md text-on-scrim transition-colors duration-(--duration-fast) hover:bg-on-scrim/10">
+          <button type="button" @click="move(1)" aria-label="{{ __('Next screenshot') }}" class="focus-ring-on-scrim absolute top-1/2 end-4 flex size-9 -translate-y-1/2 cursor-pointer items-center justify-center rounded-md text-on-scrim transition-colors duration-(--duration-fast) hover:bg-on-scrim/10">
             <x-icon name="chevron-right" :size="18" />
           </button>
         @endif

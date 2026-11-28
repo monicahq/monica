@@ -15,11 +15,11 @@
       </x-slot:icon>
     </x-empty-state>
   @else
-    <ol class="relative list-none pl-8.5 before:absolute before:top-2 before:bottom-2 before:left-3 before:w-0.5 before:rounded-xs before:bg-hairline">
+    <ol class="relative list-none ps-8.5 before:absolute before:top-2 before:bottom-2 before:start-3 before:w-0.5 before:rounded-xs before:bg-hairline">
 
       @foreach ($history->entries() as $entry)
         <li class="relative flex flex-col gap-1 pb-6.5" @if ($entry['kind'] === 'activity' && $entry['isJustAdded']) id="group-history-just-added" @endif>
-          <span aria-hidden="true" class="absolute top-0 -left-8.5 flex size-6.5 items-center justify-center rounded-full border border-hairline bg-card text-ink-soft ring-4 ring-page">
+          <span aria-hidden="true" class="absolute top-0 -start-8.5 flex size-6.5 items-center justify-center rounded-full border border-hairline bg-card text-ink-soft ring-4 ring-page">
             <x-icon :name="$entry['icon']" :size="14" />
           </span>
 
@@ -45,9 +45,9 @@
 
             @if ($entry['kind'] === 'activity' && $entry['participantLine'] !== null)
               <div class="mt-1.5 flex flex-wrap items-center gap-x-2.5 gap-y-2">
-                <span class="flex pl-1.25" aria-hidden="true">
+                <span class="flex ps-1.25" aria-hidden="true">
                   @foreach ($entry['participants'] as $name)
-                    <span class="-ml-1.25 flex rounded-full ring-2 ring-page"><x-contact-avatar :name="$name" :size="22" /></span>
+                    <span class="-ms-1.25 flex rounded-full ring-2 ring-page"><x-contact-avatar :name="$name" :size="22" /></span>
                   @endforeach
                 </span>
 

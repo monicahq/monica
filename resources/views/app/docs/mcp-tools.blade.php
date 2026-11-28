@@ -40,7 +40,7 @@
               :aria-expanded="isOpen({{ Js::from($tool['name']) }}) ? 'true' : 'false'"
               aria-controls="tool-{{ $tool['name'] }}-details"
               @click="toggle({{ Js::from($tool['name']) }})"
-              class="grid w-full cursor-pointer grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-3.5 py-2.25 text-left hover:bg-hover focus-ring-inset md:grid-cols-[minmax(0,230px)_minmax(0,1fr)_auto]"
+              class="grid w-full cursor-pointer grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-3.5 py-2.25 text-start hover:bg-hover focus-ring-inset md:grid-cols-[minmax(0,230px)_minmax(0,1fr)_auto]"
             >
               <span class="flex min-w-0 items-center gap-2">
                 <code id="tool-{{ $tool['name'] }}-name" class="truncate font-mono text-[12.5px] font-semibold text-ink">{{ $tool['name'] }}</code>
@@ -105,7 +105,7 @@
             <button
               type="button"
               @click="copyTool({{ Js::from($tool['name']) }}, {{ Js::from($viewModel->toolMarkdown($tool)) }})"
-              class="-ml-2 flex h-7.5 self-start flex-none cursor-pointer items-center gap-1.5 rounded-md px-2 text-[12.5px] font-medium text-body transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-ring"
+              class="-ms-2 flex h-7.5 self-start flex-none cursor-pointer items-center gap-1.5 rounded-md px-2 text-[12.5px] font-medium text-body transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-ring"
             >
               <x-icon name="file" :size="14" />
               <span aria-live="polite" x-text="copyLabel({{ Js::from($tool['name']) }})">Copy as Markdown</span>

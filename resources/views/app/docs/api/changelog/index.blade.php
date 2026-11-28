@@ -6,7 +6,7 @@
   @var string $markdown
 --}}
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ \App\Helpers\AvailableLocales::direction(app()->getLocale()) }}">
   <head>
     @include('partials.meta', ['title' => 'Changelog · '.__('API reference'), 'description' => \App\ViewModels\Docs\ApiChangelogMarkdown::INTRODUCTION])
 

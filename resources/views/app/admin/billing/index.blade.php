@@ -26,7 +26,7 @@
               <table class="w-full text-sm">
                 <caption class="sr-only">{{ __('Each offer on sale and what it costs in each currency') }}</caption>
                 <thead>
-                  <tr class="border-b border-hairline text-left text-xs text-muted">
+                  <tr class="border-b border-hairline text-left rtl:text-right text-xs text-muted">
                     <th scope="col" class="px-4 py-2.5 font-medium">{{ __('Offer') }}</th>
                     <th scope="col" class="px-4 py-2.5 font-medium">{{ __('Amounts') }}</th>
                   </tr>
@@ -34,7 +34,7 @@
                 <tbody>
                   @foreach ($viewModel->offers() as $offer)
                     <tr class="border-b border-hairline last:border-b-0">
-                      <th scope="row" class="px-4 py-2.5 text-left font-normal text-ink">{{ $offer['kind'] }}</th>
+                      <th scope="row" class="px-4 py-2.5 text-start font-normal text-ink">{{ $offer['kind'] }}</th>
                       <td class="px-4 py-2.5 text-ink">{{ implode(', ', $offer['amounts']) }}</td>
                     </tr>
                   @endforeach
@@ -115,18 +115,18 @@
             <table class="w-full text-sm">
               <caption class="sr-only">{{ __('How many confirmations of each kind arrived') }}</caption>
               <thead>
-                <tr class="border-t border-b border-hairline text-left text-xs text-muted">
+                <tr class="border-t border-b border-hairline text-left rtl:text-right text-xs text-muted">
                   <th scope="col" class="px-4 py-2.5 font-medium">{{ __('Confirmation') }}</th>
-                  <th scope="col" class="px-4 py-2.5 text-right font-medium">{{ __('Last 7 days') }}</th>
-                  <th scope="col" class="px-4 py-2.5 text-right font-medium">{{ __('Last 30 days') }}</th>
+                  <th scope="col" class="px-4 py-2.5 text-end font-medium">{{ __('Last 7 days') }}</th>
+                  <th scope="col" class="px-4 py-2.5 text-end font-medium">{{ __('Last 30 days') }}</th>
                 </tr>
               </thead>
               <tbody>
                 @foreach ($events->countsByKind() as $row)
                   <tr class="border-b border-hairline last:border-b-0">
-                    <th scope="row" class="px-4 py-2.5 text-left font-mono font-normal text-ink">{{ $row['kind'] }}</th>
-                    <td class="px-4 py-2.5 text-right text-ink">{{ $row['lastSevenDays'] }}</td>
-                    <td class="px-4 py-2.5 text-right text-ink">{{ $row['lastThirtyDays'] }}</td>
+                    <th scope="row" class="px-4 py-2.5 text-start font-mono font-normal text-ink">{{ $row['kind'] }}</th>
+                    <td class="px-4 py-2.5 text-end text-ink">{{ $row['lastSevenDays'] }}</td>
+                    <td class="px-4 py-2.5 text-end text-ink">{{ $row['lastThirtyDays'] }}</td>
                   </tr>
                 @endforeach
               </tbody>
@@ -187,22 +187,22 @@
                   <table class="mt-2 w-full text-sm">
                     <caption class="sr-only">{{ __('Payments in :month', ['month' => $viewModel->monthLabel($month['month'])]) }}</caption>
                     <thead>
-                      <tr class="border-b border-hairline text-left text-xs text-muted">
+                      <tr class="border-b border-hairline text-left rtl:text-right text-xs text-muted">
                         <th scope="col" class="px-4 py-2.5 font-medium">{{ __('Offer') }}</th>
                         <th scope="col" class="px-4 py-2.5 font-medium">{{ __('Currency') }}</th>
-                        <th scope="col" class="px-4 py-2.5 text-right font-medium">{{ __('Payments') }}</th>
-                        <th scope="col" class="px-4 py-2.5 text-right font-medium">{{ __('Amount paid') }}</th>
-                        <th scope="col" class="px-4 py-2.5 text-right font-medium">{{ __('Tax within it') }}</th>
+                        <th scope="col" class="px-4 py-2.5 text-end font-medium">{{ __('Payments') }}</th>
+                        <th scope="col" class="px-4 py-2.5 text-end font-medium">{{ __('Amount paid') }}</th>
+                        <th scope="col" class="px-4 py-2.5 text-end font-medium">{{ __('Tax within it') }}</th>
                       </tr>
                     </thead>
                     <tbody>
                       @foreach ($month['rows'] as $row)
                         <tr class="border-b border-hairline last:border-b-0">
-                          <th scope="row" class="px-4 py-2.5 text-left font-normal text-ink">{{ $viewModel->offerLabel($row['kind']) }}</th>
+                          <th scope="row" class="px-4 py-2.5 text-start font-normal text-ink">{{ $viewModel->offerLabel($row['kind']) }}</th>
                           <td class="px-4 py-2.5 text-ink">{{ strtoupper($row['currency']) }}</td>
-                          <td class="px-4 py-2.5 text-right text-ink">{{ $row['count'] }}</td>
-                          <td class="px-4 py-2.5 text-right text-ink">{{ $viewModel->amount($row['total'], $row['currency']) }}</td>
-                          <td class="px-4 py-2.5 text-right text-ink">{{ $viewModel->amount($row['tax'], $row['currency']) }}</td>
+                          <td class="px-4 py-2.5 text-end text-ink">{{ $row['count'] }}</td>
+                          <td class="px-4 py-2.5 text-end text-ink">{{ $viewModel->amount($row['total'], $row['currency']) }}</td>
+                          <td class="px-4 py-2.5 text-end text-ink">{{ $viewModel->amount($row['tax'], $row['currency']) }}</td>
                         </tr>
                       @endforeach
                     </tbody>

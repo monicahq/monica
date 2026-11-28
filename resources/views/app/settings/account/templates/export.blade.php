@@ -24,7 +24,7 @@
 
           <code class="min-w-0 truncate font-mono text-xs text-ink">{{ $viewModel->fileName() }}</code>
 
-          <span class="ml-auto shrink-0 text-xs text-muted">{{ $viewModel->lineLabel() }}</span>
+          <span class="ms-auto shrink-0 text-xs text-muted">{{ $viewModel->lineLabel() }}</span>
         </div>
 
         <pre
@@ -43,7 +43,7 @@
           :failure="__('We could not copy it. Select the text and copy it by hand.')"
         />
 
-        <x-link :href="$viewModel->shareUrl()" turbo class="ml-auto text-sm">{{ __('Back to the two ways to share') }}</x-link>
+        <x-link :href="$viewModel->shareUrl()" turbo class="ms-auto text-sm">{{ __('Back to the two ways to share') }}</x-link>
       </div>
     </div>
 

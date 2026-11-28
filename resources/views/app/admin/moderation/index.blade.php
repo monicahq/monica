@@ -44,7 +44,7 @@
           </p>
         </div>
 
-        <div class="shrink-0 text-sm text-muted sm:text-right">
+        <div class="shrink-0 text-sm text-muted sm:text-end">
           <p>{{ $submission->created_at->isoFormat('LL') }}</p>
           <p class="text-xs">{{ __('waiting :duration', ['duration' => $submission->created_at->diffForHumans(syntax: true)]) }}</p>
         </div>

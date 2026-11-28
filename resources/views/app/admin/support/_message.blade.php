@@ -4,8 +4,8 @@
   aria-labelledby="message-{{ $message['id'] }} message-{{ $message['id'] }}-kind"
   @class([
     'space-y-2 rounded-lg border p-4',
-    'border-dashed border-warning-edge bg-warning-tint sm:ml-6' => $message['kind'] === 'note',
-    'ml-4 border-hairline-strong border-l-[3px] border-l-ink bg-hover sm:ml-12' => $message['kind'] === 'reply',
+    'border-dashed border-warning-edge bg-warning-tint sm:ms-6' => $message['kind'] === 'note',
+    'ms-4 border-hairline-strong border-s-[3px] border-s-ink bg-hover sm:ms-12' => $message['kind'] === 'reply',
     'border-hairline bg-canvas shadow-panel' => $message['kind'] === 'message',
   ])
 >
@@ -35,7 +35,7 @@
       @endif
     </span>
 
-    <span class="ml-auto text-xs text-muted">{{ $message['when'] }}</span>
+    <span class="ms-auto text-xs text-muted">{{ $message['when'] }}</span>
   </div>
 
   <x-support.message-body :markdown="$message['body']" class="max-w-[72ch]" />

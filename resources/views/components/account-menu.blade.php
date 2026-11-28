@@ -12,7 +12,7 @@
   <x-slot:glyph>
     <x-avatar id="shell-avatar" :user="$user" :size="28" />
 
-    <x-icon name="chevron-down" :size="14" :stroke-width="1.4" class="-ml-1 text-muted max-sm:hidden" />
+    <x-icon name="chevron-down" :size="14" :stroke-width="1.4" class="-ms-1 text-muted max-sm:hidden" />
   </x-slot:glyph>
 
   <x-actions-menu.item :href="route('settings.index')" data-turbo="true">
@@ -39,7 +39,7 @@
     <button
       type="submit"
       role="menuitem"
-      class="flex w-full cursor-pointer items-center gap-2.5 min-h-8 rounded-md px-2.5 text-left font-sans text-base text-ink transition-colors hover:bg-hover focus-ring-inset"
+      class="flex w-full cursor-pointer items-center gap-2.5 min-h-8 rounded-md px-2.5 text-start font-sans text-base text-ink transition-colors hover:bg-hover focus-ring-inset"
     >
       <x-icon name="key" :size="16" :stroke-width="1.5" class="shrink-0" />
 

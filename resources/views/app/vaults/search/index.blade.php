@@ -21,7 +21,7 @@
 
       <div class="flex flex-wrap gap-2.5">
         <div class="relative flex min-w-65 flex-1 items-center">
-          <x-icon name="search" :size="16" class="pointer-events-none absolute left-3 text-muted" />
+          <x-icon name="search" :size="16" class="pointer-events-none absolute start-3 text-muted" />
 
           <input
             id="query"
@@ -32,7 +32,7 @@
             autocomplete="off"
             aria-describedby="query-help"
             data-1p-ignore
-            class="focus-ring-field h-9 w-full rounded-md border border-hairline-strong bg-input pr-3 pl-9 font-sans text-[16px] text-ink transition duration-(--duration-fast) ease-out placeholder:text-placeholder hover:border-muted-soft sm:text-sm"
+            class="focus-ring-field h-9 w-full rounded-md border border-hairline-strong bg-input pe-3 ps-9 font-sans text-[16px] text-ink transition duration-(--duration-fast) ease-out placeholder:text-placeholder hover:border-muted-soft sm:text-sm"
           />
         </div>
 

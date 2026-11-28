@@ -68,7 +68,7 @@
             @endforeach
           </div>
 
-          <div class="flex items-center gap-3 border-hairline-soft sm:ml-auto sm:border-l sm:pl-5">
+          <div class="flex items-center gap-3 border-hairline-soft sm:ms-auto sm:border-s sm:ps-5">
             <span
               :style="`background: ${colour}`"
               class="flex size-8.5 items-center justify-center rounded-md text-sm font-semibold text-white"
@@ -114,10 +114,10 @@
           </x-checkbox>
 
           @if ($viewModel->isFirstVault())
-            <p class="pl-6.5 text-xs leading-relaxed text-muted">{{ $viewModel->defaultHintWhenTicked() }}</p>
+            <p class="ps-6.5 text-xs leading-relaxed text-muted">{{ $viewModel->defaultHintWhenTicked() }}</p>
           @else
             <p
-              class="pl-6.5 text-xs leading-relaxed text-muted"
+              class="ps-6.5 text-xs leading-relaxed text-muted"
               x-text="isDefault ? @js($viewModel->defaultHintWhenTicked()) : @js($viewModel->defaultHintWhenLeft())"
             >{{ $values['isDefault'] ? $viewModel->defaultHintWhenTicked() : $viewModel->defaultHintWhenLeft() }}</p>
           @endif
@@ -128,7 +128,7 @@
     <div class="flex flex-wrap items-center gap-4 border-t border-hairline pt-5">
       <p class="max-w-105 text-xs leading-relaxed text-muted-soft">{{ __('You can rename a vault, recolour it and change its description later. Deleting one cannot be undone, and it asks first.') }}</p>
 
-      <div class="flex flex-wrap items-center gap-2.5 max-sm:w-full sm:ml-auto">
+      <div class="flex flex-wrap items-center gap-2.5 max-sm:w-full sm:ms-auto">
         <x-button.secondary :href="$viewModel->backUrl()" data-turbo="true">{{ __('Cancel') }}</x-button.secondary>
 
         @if ($ceiling !== null)

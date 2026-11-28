@@ -42,7 +42,7 @@
             <p class="text-base text-body text-pretty whitespace-pre-line">{{ $comment['body'] }}</p>
 
             @foreach ($comment['replies'] as $reply)
-              <div class="mt-2 flex flex-col gap-1 border-l-2 border-ink pl-3">
+              <div class="mt-2 flex flex-col gap-1 border-s-2 border-ink ps-3">
                 <div class="flex flex-wrap items-center gap-2">
                   <span class="text-base font-semibold text-ink">{{ $reply['authorName'] }}</span>
                   <x-badge tone="accent">{{ __('Administrator') }}</x-badge>
@@ -94,8 +94,8 @@
         </label>
       </fieldset>
 
-      <fieldset x-show="visibility === 'public'" x-bind:disabled="visibility !== 'public'" class="flex flex-wrap items-center gap-4 border-l border-hairline-strong pl-4">
-        <legend class="float-left mr-4 text-sm text-muted">{{ __('Post as') }}</legend>
+      <fieldset x-show="visibility === 'public'" x-bind:disabled="visibility !== 'public'" class="flex flex-wrap items-center gap-4 border-s border-hairline-strong ps-4">
+        <legend class="float-start me-4 text-sm text-muted">{{ __('Post as') }}</legend>
         <label class="inline-flex cursor-pointer items-center gap-1.5 text-base text-ink">
           <input type="radio" name="identity" value="self" checked class="accent-primary" />
           {{ $viewModel->userName() }}
@@ -106,7 +106,7 @@
         </label>
       </fieldset>
 
-      <x-button size="small" class="ml-auto" x-bind:disabled="body.trim() === ''">{{ __('Post comment') }}</x-button>
+      <x-button size="small" class="ms-auto" x-bind:disabled="body.trim() === ''">{{ __('Post comment') }}</x-button>
     </div>
   </form>
 </div>

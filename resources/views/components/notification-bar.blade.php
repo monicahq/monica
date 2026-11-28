@@ -19,7 +19,7 @@
     <x-icon name="bell" :size="16" :stroke-width="1.4" />
 
     @if ($unread > 0)
-      <span aria-hidden="true" class="absolute top-0.75 right-0.5 flex h-3.5 min-w-3.5 items-center justify-center rounded-full bg-primary px-0.75 text-[10px] leading-none font-semibold text-on-primary ring-2 ring-page">
+      <span aria-hidden="true" class="absolute top-0.75 end-0.5 flex h-3.5 min-w-3.5 items-center justify-center rounded-full bg-primary px-0.75 text-[10px] leading-none font-semibold text-on-primary ring-2 ring-page">
         {{ $unread > 9 ? '9+' : $unread }}
       </span>
     @endif
@@ -35,13 +35,13 @@
     role="dialog"
     aria-modal="false"
     aria-labelledby="notification-bar-heading"
-    class="absolute right-0 z-20 mt-1 w-88 max-w-[calc(100vw-2rem)] overflow-hidden max-sm:fixed max-sm:inset-x-4 max-sm:top-14 max-sm:w-auto max-sm:max-w-none rounded-lg border border-hairline bg-canvas shadow-pop"
+    class="absolute end-0 z-20 mt-1 w-88 max-w-[calc(100vw-2rem)] overflow-hidden max-sm:fixed max-sm:inset-x-4 max-sm:top-14 max-sm:w-auto max-sm:max-w-none rounded-lg border border-hairline bg-canvas shadow-pop"
   >
     <div class="flex items-center gap-2.5 border-b border-hairline px-3 py-2.5">
       <h2 id="notification-bar-heading" class="text-sm font-semibold text-ink">{{ __('Notifications') }}</h2>
 
       @if ($unread > 0)
-        <form action="{{ route('notifications.readAll.update') }}" method="post" class="ml-auto" x-show="confirming" x-cloak>
+        <form action="{{ route('notifications.readAll.update') }}" method="post" class="ms-auto" x-show="confirming" x-cloak>
           @csrf
           @method('PUT')
 
@@ -57,7 +57,7 @@
           type="button"
           @click="confirming = true"
           x-show="! confirming"
-          class="ml-auto cursor-pointer rounded-md px-1.5 py-1 text-xs text-muted transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-ring"
+          class="ms-auto cursor-pointer rounded-md px-1.5 py-1 text-xs text-muted transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-ring"
         >
           {{ __('Mark every one as read') }}
         </button>
