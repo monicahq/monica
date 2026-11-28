@@ -102,6 +102,9 @@
   ];
 
   $glyph = $paths[$name] ?? $paths['profile'];
+
+  // A glyph that points along the line of reading points the other way when the page reads right to left.
+  $mirrored = in_array($name, ['chevron-left', 'chevron-right', 'arrow-right'], true);
 @endphp
 
 <svg
@@ -119,5 +122,5 @@
   @else
     aria-hidden="true"
   @endif
-  {{ $attributes->class(['block shrink-0']) }}
+  {{ $attributes->class(['block shrink-0', 'rtl:-scale-x-100' => $mirrored]) }}
 >@if ($label)<title>{{ $label }}</title>@endif{!! $glyph !!}</svg>

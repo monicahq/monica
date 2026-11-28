@@ -406,6 +406,17 @@
     }
 }
 
+/*
+ * On a page written right to left, what people wrote keeps its own direction:
+ * a note, a description or a name in English reads left to right, with its
+ * punctuation where it belongs, and the interface around it stays right to left.
+ */
+@layer base {
+    [dir='rtl'] :where(p, li, dd, dt, blockquote, h1, h2, h3, h4, td, th, figcaption, .text-pretty, .whitespace-pre-line) {
+        unicode-bidi: plaintext;
+    }
+}
+
 @utility focus-ring {
     @apply focus-visible:ring-[3px] focus-visible:ring-focus-ring/45 focus-visible:outline-none;
 }

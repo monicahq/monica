@@ -72,7 +72,12 @@ class PossessionValueFormatter
             ?? NumberFormatEnum::tryFrom((string) AvailableLocales::details(app()->getLocale())['number_format'])
             ?? NumberFormatEnum::CommaAndDot;
 
-        $formatter = new NumberFormatter(app()->getLocale(), NumberFormatter::CURRENCY);
+        // A locale whose digits differ from the ones written everywhere else in
+        // Monica names the numbering system to use, such as `latn` for Arabic.
+        $numbers = AvailableLocales::details(app()->getLocale())['numbers'] ?? null;
+        $locale = app()->getLocale().(is_string($numbers) ? '@numbers='.$numbers : '');
+
+        $formatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);
         $formatter->setAttribute(NumberFormatter::MIN_FRACTION_DIGITS, $digits);
         $formatter->setAttribute(NumberFormatter::MAX_FRACTION_DIGITS, $digits);
         $formatter->setSymbol(NumberFormatter::MONETARY_GROUPING_SEPARATOR_SYMBOL, $numberFormat->thousandsSeparator());

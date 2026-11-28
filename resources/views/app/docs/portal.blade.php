@@ -16,7 +16,7 @@
   $entryCurrent = 'bg-canvas font-semibold text-ink shadow-nav-active';
 @endphp
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', $viewModel->locale()) }}">
+<html lang="{{ str_replace('_', '-', $viewModel->locale()) }}" dir="{{ \App\Helpers\AvailableLocales::direction($viewModel->locale()) }}">
   <head>
     @include('partials.meta', [
       'title' => $page->title,

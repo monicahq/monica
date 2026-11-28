@@ -1,7 +1,7 @@
 {{-- The way into the documentation, at /docs, open to anybody. --}}
 {{-- @var \App\ViewModels\Docs\DocsViewModel $viewModel --}}
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ \App\Helpers\AvailableLocales::direction(app()->getLocale()) }}">
   <head>
     @include('partials.meta', [
       'title' => __('Documentation'),

@@ -12,7 +12,7 @@
   $action = 'flex h-7.5 items-center gap-1.5 rounded-md px-2 text-sm font-medium text-body transition-colors duration-(--duration-fast) ease-out hover:bg-hover hover:text-ink focus-ring';
 @endphp
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ \App\Helpers\AvailableLocales::direction(app()->getLocale()) }}">
   <head>
     @include('partials.meta', ['title' => CarddavDocsViewModel::TITLE, 'description' => CarddavDocsViewModel::LEAD])
     @vite(['resources/css/app.css', 'resources/js/app.js'])

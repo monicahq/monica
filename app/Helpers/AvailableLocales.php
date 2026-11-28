@@ -68,8 +68,18 @@ class AvailableLocales
             'flag' => '',
             'date_format' => DateFormatEnum::DayFirst->value,
             'number_format' => NumberFormatEnum::CommaAndDot->value,
+            'direction' => 'ltr',
         ];
 
         return array_merge($defaults, (array) config("localization.locales.{$locale}", []));
+    }
+
+    /**
+     * The direction the language is written in, `rtl` for Arabic and `ltr`
+     * for every other shipped language, for the `dir` attribute of a page.
+     */
+    public static function direction(string $locale): string
+    {
+        return self::details($locale)['direction'] === 'rtl' ? 'rtl' : 'ltr';
     }
 }

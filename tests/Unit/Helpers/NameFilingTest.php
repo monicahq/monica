@@ -18,6 +18,7 @@ class NameFilingTest extends TestCase
     {
         return [
             'en' => ['en', [['Schrute', 'Dwight', null], ['Halpert', 'Jim', null], ['Beesly', 'Pam', null], ['Scott', 'Michael', null], ['Martin', 'Angela', null]], ['Pam', 'Jim', 'Angela', 'Dwight', 'Michael']],
+            'ar_SA' => ['ar_SA', [['حداد', 'ليلى', null], ['خوري', 'عمر', null], ['سعيد', 'سلمى', null], ['عباس', 'كريم', null], ['نصار', 'هدى', null]], ['ليلى', 'عمر', 'سلمى', 'كريم', 'هدى']],
             'bn_BD' => ['bn_BD', [['চৌধুরী', 'তানিয়া', null], ['দাস', 'অমিত', null], ['বসু', 'রিনা', null], ['রায়', 'কবির', null], ['সেন', 'নীলা', null]], ['তানিয়া', 'অমিত', 'রিনা', 'কবির', 'নীলা']],
             'ca_ES' => ['ca_ES', [['Ferrer', 'Xavier', null], ['Garcia', 'Roser', null], ['Puig', 'Montse', null], ['Serra', 'Jordi', null], ['Vidal', 'Anna', null]], ['Xavier', 'Roser', 'Montse', 'Jordi', 'Anna']],
             'da_DK' => ['da_DK', [['Andersen', 'Søren', null], ['Christensen', 'Mette', null], ['Hansen', 'Lars', null], ['Jensen', 'Freja', null], ['Nielsen', 'Anders', null]], ['Søren', 'Mette', 'Lars', 'Freja', 'Anders']],

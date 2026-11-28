@@ -121,7 +121,7 @@
                   >
                     <span class="flex text-muted" aria-hidden="true">
                       <x-icon name="chevron-down" :size="14" x-show="open" />
-                      <x-icon name="chevron-right" :size="14" x-show="! open" x-cloak class="rtl:-scale-x-100" />
+                      <x-icon name="chevron-right" :size="14" x-show="! open" x-cloak />
                     </span>
                     <x-caption tone="muted">{{ $month['label'] }}</x-caption>
                     <span class="text-xs text-muted tabular-nums" aria-hidden="true">({{ count($month['entries']) }})</span>

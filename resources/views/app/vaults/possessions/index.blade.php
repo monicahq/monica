@@ -173,7 +173,7 @@
                     <a href="{{ $possession['url'] }}" class="focus-ring rounded-sm text-sm font-semibold text-ink no-underline after:absolute after:inset-0 after:rounded-lg">{{ $possession['name'] }}</a>
                     <span class="text-sm text-muted">{{ $possession['place'] }} · {{ $possession['value'] }}</span>
                     @if ($possession['description'])
-                      <span class="mt-1.5 text-sm text-body">{{ $possession['description'] }}</span>
+                      <span class="mt-1.5 text-sm text-body" dir="auto">{{ $possession['description'] }}</span>
                     @endif
                   </span>
                   <span class="flex text-[#9a6a24] dark:text-[#d9a441]">
