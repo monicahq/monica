@@ -18,6 +18,7 @@ enum AccountImportReasonEnum: string implements Translatable
     case RelationshipAlreadyRecorded = 'relationship_already_recorded';
     case OneTimeReminderInThePast = 'one_time_reminder_in_the_past';
     case BirthdayAlreadyHasAReminder = 'birthday_already_has_a_reminder';
+    case DateNotValid = 'date_not_valid';
     case FilesNotOffered = 'files_not_offered';
     case PartlyWritten = 'partly_written';
     case RefusedWhileWriting = 'refused_while_writing';
@@ -34,6 +35,7 @@ enum AccountImportReasonEnum: string implements Translatable
             self::RelationshipAlreadyRecorded => 'The vault already links these two people this way.',
             self::OneTimeReminderInThePast => 'A reminder for a single date that has already passed.',
             self::BirthdayAlreadyHasAReminder => 'Another reminder in the file already covers this birthday.',
+            self::DateNotValid => 'Its date is not a valid calendar date.',
             self::FilesNotOffered => 'This instance does not keep files yet.',
             self::PartlyWritten => 'It came over, but part of it could not be written.',
             self::RefusedWhileWriting => 'It could not be written into the vault.',

@@ -31,6 +31,7 @@ use App\Models\RelationshipType;
 use App\Models\Reminder;
 use App\Models\ValueListItem;
 use Carbon\CarbonImmutable;
+use Carbon\Exceptions\InvalidFormatException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -178,8 +179,9 @@ trait WritesMonicaFourItems
 
         $birthdate = $properties['birthdate'] ?? null;
 
-        if (is_array($birthdate) && is_string($birthdate['date'] ?? null)) {
-            $date = CarbonImmutable::parse($birthdate['date']);
+        $date = is_array($birthdate) && is_string($birthdate['date'] ?? null) ? $this->dateOf($birthdate['date']) : null;
+
+        if ($date instanceof CarbonImmutable) {
             $isAgeBased = (bool) ($birthdate['is_age_based'] ?? false);
             $yearIsUnknown = (bool) ($birthdate['is_year_unknown'] ?? false);
 
@@ -470,13 +472,20 @@ trait WritesMonicaFourItems
         $shipped = MonicaFourVocabulary::nature($key);
         $nature = $shipped === null ? $this->ownNatureCalled(MonicaFourVocabulary::natureName($key)) : $this->natureKeyed($shipped->value);
         $participant = $this->contactOf($this->payload('participant'));
+        $happenedOn = $this->dateOf($this->payload('happened_at'));
+
+        if (! $happenedOn instanceof CarbonImmutable) {
+            $this->leaveOut(AccountImportReasonEnum::DateNotValid);
+
+            return;
+        }
 
         $lifeEvent = new CreateLifeEvent(
             user: $this->user,
             vault: $this->vault(),
             contact: $contact,
             lifeEventType: $nature,
-            happenedOn: CarbonImmutable::parse((string) $this->payload('happened_at')),
+            happenedOn: $happenedOn,
             title: $this->shortText($this->payload('name')),
             narrative: $this->text($this->payload('note')),
             participants: $participant instanceof Contact && $participant->isNot($contact) ? [$participant] : [],
@@ -524,12 +533,20 @@ trait WritesMonicaFourItems
             return;
         }
 
+        $happenedOn = $this->dateOf($this->payload('happened_at'));
+
+        if (! $happenedOn instanceof CarbonImmutable) {
+            $this->leaveOut(AccountImportReasonEnum::DateNotValid);
+
+            return;
+        }
+
         $this->record = new CreateLifeEvent(
             user: $this->user,
             vault: $this->vault(),
             contact: $participants->first(),
             lifeEventType: $this->natureKeyed('time_together'),
-            happenedOn: CarbonImmutable::parse((string) $this->payload('happened_at')),
+            happenedOn: $happenedOn,
             title: $this->shortText($this->payload('summary')),
             narrative: $this->text($this->payload('description')),
             participants: $participants->slice(1)->values()->all(),
@@ -547,12 +564,20 @@ trait WritesMonicaFourItems
             return;
         }
 
+        $happenedOn = $this->dateOf($happenedAt);
+
+        if (! $happenedOn instanceof CarbonImmutable) {
+            $this->leaveOut(AccountImportReasonEnum::DateNotValid);
+
+            return;
+        }
+
         $this->record = new CreateLifeEvent(
             user: $this->user,
             vault: $this->vault(),
             contact: $contact,
             lifeEventType: $this->natureKeyed($nature),
-            happenedOn: CarbonImmutable::parse((string) $happenedAt),
+            happenedOn: $happenedOn,
             title: $title,
             narrative: $narrative,
             createdFrom: LifeEventSourceEnum::Import,
@@ -641,7 +666,13 @@ trait WritesMonicaFourItems
             ->where('is_me', true)
             ->firstOrFail();
 
-        $date = CarbonImmutable::parse((string) $this->payload('date'));
+        $date = $this->dateOf($this->payload('date'));
+
+        if (! $date instanceof CarbonImmutable) {
+            $this->leaveOut(AccountImportReasonEnum::DateNotValid);
+
+            return;
+        }
 
         if ($this->payload('type') === 'day') {
             $rating = __('The day of :date was rated :rate out of 3.', ['date' => $date->format('Y-m-d'), 'rate' => (int) $this->payload('rate')]);
@@ -854,6 +885,21 @@ trait WritesMonicaFourItems
             ->whereNull('key')
             ->where('name', $name)
             ->firstOrFail();
+    }
+
+    private function dateOf(mixed $value): ?CarbonImmutable
+    {
+        try {
+            $date = CarbonImmutable::parse((string) $value);
+        } catch (InvalidFormatException) {
+            return null;
+        }
+
+        if ($date->year < 1 || $date->year > 9999) {
+            return null;
+        }
+
+        return $date;
     }
 
     /** @param list<mixed> $parts */

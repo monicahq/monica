@@ -435,6 +435,56 @@ class WriteAccountImportItemTest extends TestCase
     }
 
     #[Test]
+    public function it_leaves_out_a_monica_4_item_whose_date_is_not_a_calendar_date(): void
+    {
+        Exceptions::fake();
+
+        $import = $this->started();
+        $dates = [
+            'life_event' => 'happened_at',
+            'call' => 'called_at',
+            'conversation' => 'happened_at',
+            'activity' => 'happened_at',
+            'journal_entry' => 'date',
+        ];
+
+        foreach ($dates as $kind => $key) {
+            $item = $import->items()->where('kind', $kind)->firstOrFail();
+            $item->update(['payload' => [...$item->payload, $key => '0000-00-00 00:00:00']]);
+        }
+
+        $this->writeEveryItem($import);
+
+        foreach ($dates as $kind => $key) {
+            $item = $import->items()->where('kind', $kind)->firstOrFail();
+
+            $this->assertSame(AccountImportOutcomeEnum::LeftOut, $item->outcome, $kind);
+            $this->assertSame(AccountImportReasonEnum::DateNotValid->value, $item->reason, $kind);
+        }
+
+        Exceptions::assertNothingReported();
+    }
+
+    #[Test]
+    public function it_writes_a_monica_4_contact_without_a_birthdate_that_is_not_a_calendar_date(): void
+    {
+        $import = $this->started();
+        $dwight = $this->itemOfDwight($import);
+        $dwight->update(['payload' => [...$dwight->payload, 'properties' => [
+            ...$dwight->payload['properties'],
+            'birthdate' => ['is_age_based' => false, 'is_year_unknown' => false, 'date' => '0000-00-00 00:00:00'],
+        ]]]);
+
+        $this->writeEveryItem($import);
+
+        $contact = $this->contactCalled($import, 'Dwight');
+
+        $this->assertSame(AccountImportOutcomeEnum::Imported, $dwight->refresh()->outcome);
+        $this->assertDatabaseMissing('field_values', ['valuable_id' => $contact->id, 'field_key' => 'birthday']);
+        $this->assertStringNotContainsString('-0001', implode("\n", $this->notesOf($contact)));
+    }
+
+    #[Test]
     public function it_leaves_the_files_out_when_this_instance_keeps_none(): void
     {
         Feature::define('file-upload', false);
