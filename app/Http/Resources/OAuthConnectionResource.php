@@ -1,0 +1,39 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Http\Resources;
+
+use App\Models\OAuthConnection;
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Laravel\Passport\AccessToken;
+use Override;
+
+/** @mixin OAuthConnection */
+class OAuthConnectionResource extends JsonResource
+{
+    /** @return array<string, mixed> */
+    #[Override]
+    public function toArray(Request $request): array
+    {
+        $token = $request->user()?->currentAccessToken();
+
+        return [
+            'type' => 'oauth_connection',
+            'id' => (string) $this->id,
+            'attributes' => [
+                'client_name' => $this->client->name,
+                'label' => $this->label,
+                'scopes' => $this->scopes ?? [],
+                'is_current' => $token instanceof AccessToken && (string) $token->oauth_access_token_id === $this->access_token_id,
+                'last_used_at' => $this->last_used_at->timestamp,
+                'created_at' => $this->created_at?->timestamp,
+                'updated_at' => $this->updated_at?->timestamp,
+            ],
+            'links' => [
+                'self' => route('api.v1.oauthConnections.show', $this->id),
+            ],
+        ];
+    }
+}

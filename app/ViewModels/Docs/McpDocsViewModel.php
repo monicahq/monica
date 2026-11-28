@@ -45,7 +45,7 @@ class McpDocsViewModel
     /** @var list<string> */
     public const array ACCESS = [
         'Your assistant acts as you, through its API key or its OAuth connection. Changes made through MCP are recorded in **Settings → Logs**, under the assistant’s name.',
-        'To disconnect an assistant connected through OAuth, choose **Disconnect** beside it in **Settings → Security and access → Connected assistants**. To disconnect one using a key, revoke its key in **Settings → Security and access → API keys**. Either takes effect at once.',
+        'To disconnect an assistant connected through OAuth, choose **Disconnect** beside it in **Settings → Security and access → Connected apps**. To disconnect one using a key, revoke its key in **Settings → Security and access → API keys**. Either takes effect at once.',
     ];
 
     /** @var list<string> */

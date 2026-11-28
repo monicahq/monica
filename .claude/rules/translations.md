@@ -148,7 +148,7 @@ Quotation is `“…”`.
 
 A product noun is translated once per language and then never again. The same English word must reach
 the reader as the same word on every screen, which is what ASD-STE100 calls one word for one meaning,
-and what a reader notices immediately when it is broken. Twenty-seven nouns carry the product.
+and what a reader notices immediately when it is broken. Twenty-eight nouns carry the product.
 
 Fill a column when you translate a language. A blank cell is a language nobody has fixed the words
 for yet, and the first person to translate it decides.
@@ -182,6 +182,7 @@ for yet, and the first person to translate it decides.
 | folder | 27 | папка | கோப்புறை | ফোল্ডার | ෆෝල්ඩරය | jild | फ़ोल्डर | folder | fillteán | thư mục | โฟลเดอร์ | φάκελος | carpeta | aplankas | kansio | mappa | mappa | mappe | mappe | mapp | 폴더 | folder | 文件夹 | フォルダ | dossier | Ordner | carpeta | cartella | map | pasta | pasta | klasör |
 | list | 109 | список | பட்டியல் | তালিকা | ලැයිස්තුව | roʻyxat | सूची | listahan | liosta | danh sách | ลิสต์ | λίστα | llista | sąrašas | lista | listi | lista | liste | liste | lista | 리스트 | lista | 列表 | リスト | liste | Liste | lista | lista | lijst | lista | lista | liste |
 | valuation | 28 | оценка стоимости | மதிப்பீடு | মূল্যায়ন | තක්සේරුව | baholash | मूल्यांकन | pagtatasa | luacháil | định giá | การประเมินมูลค่า | εκτίμηση | valoració | vertinimas | arviointi | verðmat | értékbecslés | verdivurdering | vurdering | värdering | 평가 | wycena | 估值 | 評価額 | estimation | Bewertung | valoración | valutazione | waardering | avaliação | avaliação | değerleme |
+| connection | 16 | подключение | இணைப்பு | সংযোগ | සම්බන්ධ කිරීම | ulanish | कनेक्शन | koneksyon | nasc | kết nối | การเชื่อมต่อ | σύνδεση | connexió | jungtis | yhteys | tenging | kapcsolat | tilkobling | forbindelse | anslutning | 연결 | połączenie | 连接 | 接続 | connexion | Verbindung | conexión | collegamento | verbinding | ligação | conexão | bağlantı |
 
 Add a column for a language rather than a row for a word. A word that is not a product noun does not
 belong here: this table exists to stop one concept acquiring two names, not to hold a dictionary.

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\ViewModels\Auth;
 
-use App\Models\MobileSession;
+use App\Models\OAuthConnection;
 use App\Models\User;
 use Laravel\Mcp\Server\Registrar;
 use Laravel\Passport\Client;
@@ -40,46 +40,36 @@ class OAuthAuthorizationViewModel extends GuestViewModel
         return $this->user->email;
     }
 
-    public function redirectHost(): string
+    /**
+     * Where the app sends the person back once they answer: the host of a web address, or the whole
+     * address when it has none, as the private scheme of a phone app does.
+     */
+    public function redirectAddress(): string
     {
-        return (string) parse_url($this->redirectUri, PHP_URL_HOST);
-    }
-
-    public function isMobileApp(): bool
-    {
-        return $this->clientId() === MobileSession::CLIENT_ID;
+        return (string) (parse_url($this->redirectUri, PHP_URL_HOST) ?: $this->redirectUri);
     }
 
     public function title(): string
     {
-        if (! $this->isMobileApp()) {
-            return __('Connect :name', ['name' => $this->clientName()]);
-        }
-
-        return $this->redirectUri === MobileSession::IOS_REDIRECT_URI
-            ? __('Allow Monica for iOS to reach your account?')
-            : __('Allow Monica for Android to reach your account?');
+        return __('Connect :name', ['name' => $this->clientName()]);
     }
 
     public function description(): string
     {
-        return $this->isMobileApp()
-            ? __('The app on your phone is asking to read and change everything in your account on :instance, like the web app.', ['instance' => (string) config('monica.instance')])
-            : __('This assistant is asking to read and change what your account holds, on your behalf.');
+        return __(':name is asking to read and change what your account on :instance holds, on your behalf.', [
+            'name' => $this->clientName(),
+            'instance' => (string) config('monica.instance'),
+        ]);
     }
 
     public function caution(): string
     {
-        return $this->isMobileApp()
-            ? __('Only allow it if you just tapped Log in or Sign up in the Monica app.')
-            : __('The assistant names itself, so check the address it sends you back to. Only allow it if you started this connection yourself.');
+        return __('An app names itself, so check the address it sends you back to. Only allow it if you started this connection yourself.');
     }
 
     public function notice(): string
     {
-        return $this->isMobileApp()
-            ? __('You can sign the phone out at any time from the security settings of your account.')
-            : __('You can disconnect the assistant at any time from the security settings of your account.');
+        return __('You can disconnect it at any time from the security settings of your account.');
     }
 
     /** @return list<string> */
@@ -88,7 +78,7 @@ class OAuthAuthorizationViewModel extends GuestViewModel
         return array_map(
             fn (Scope $scope): string => match ($scope->id) {
                 'mcp', Registrar::OAUTH_SCOPE => __('Use MCP server'),
-                MobileSession::SCOPE => __('Use the API'),
+                OAuthConnection::API_SCOPE => __('Use the API'),
                 default => $scope->description,
             },
             array_values($this->scopes),

@@ -12,13 +12,12 @@ use App\Helpers\PasskeyAvailability;
 use App\Helpers\PasswordRequirements;
 use App\Helpers\SsoProviderAvailability;
 use App\Helpers\SupportAvailability;
-use App\Models\MobileSession;
+use App\Models\OAuthConnection;
 use App\Models\ProviderConnection;
 use App\Models\SecurityKey;
 use App\Models\User;
 use App\ViewModels\Auth\ConfirmPasswordViewModel;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
+use Laravel\Mcp\Server\Registrar;
 use Laravel\Sanctum\PersonalAccessToken;
 
 class SecurityViewModel
@@ -124,43 +123,38 @@ class SecurityViewModel
             ->all();
     }
 
-    /** @return list<array{clientId: string, name: string, connectedAt: string}> */
-    public function connectedAssistants(): array
+    /** @return list<array{id: int, name: string, client: string, permissions: list<string>, description: string}> */
+    public function connections(): array
     {
-        return $this->user->oauthAccessTokens()
+        return $this->user->oauthConnections()
             ->with('client')
-            ->where('client_id', '!=', MobileSession::CLIENT_ID)
-            ->where('revoked', false)
-            ->where(fn (Builder $query) => $query
-                ->where('expires_at', '>', now())
-                ->orWhereHas('refreshToken', fn (Builder $refresh) => $refresh
-                    ->where('revoked', false)
-                    ->where('expires_at', '>', now())))
-            ->oldest()
-            ->get()
-            ->groupBy('client_id')
-            ->map(fn (Collection $tokens): array => [
-                'clientId' => (string) $tokens->first()->client_id,
-                'name' => $tokens->first()->client->name,
-                'connectedAt' => $tokens->first()->created_at->diffForHumans(),
-            ])
-            ->values()
-            ->all();
-    }
-
-    /** @return list<array{id: int, name: string, signedInAt: string, lastUsedAt: string}> */
-    public function mobileSessions(): array
-    {
-        return $this->user->mobileSessions()
             ->active()
             ->latest()
             ->get()
-            ->map(fn (MobileSession $session): array => [
-                'id' => $session->id,
-                'name' => $session->device_name ?? __('Unnamed phone'),
-                'signedInAt' => $session->created_at?->diffForHumans() ?? '',
-                'lastUsedAt' => $session->last_used_at->diffForHumans(),
-            ])
+            ->map(function (OAuthConnection $connection): array {
+                $permissions = array_map(fn (string $scope): string => match ($scope) {
+                    Registrar::OAUTH_SCOPE => __('Use MCP server'),
+                    OAuthConnection::API_SCOPE => __('Use the API'),
+                    default => $scope,
+                }, $connection->scopes ?? []);
+
+                $description = collect([
+                    $connection->client->name === $connection->name ? null : $connection->client->name,
+                    implode(', ', $permissions) ?: null,
+                    __('connected :connected, last used :lastUsed', [
+                        'connected' => $connection->created_at?->diffForHumans() ?? '',
+                        'lastUsed' => $connection->last_used_at->diffForHumans(),
+                    ]),
+                ])->filter()->implode(' · ');
+
+                return [
+                    'id' => $connection->id,
+                    'name' => $connection->name,
+                    'client' => $connection->client->name,
+                    'permissions' => $permissions,
+                    'description' => $description,
+                ];
+            })
             ->values()
             ->all();
     }
@@ -170,9 +164,39 @@ class SecurityViewModel
         return FlagState::isOn('mcp-server', $this->user->account);
     }
 
-    public function assistantsNotice(): ?string
+    public function connectionsDescription(): string
     {
-        if ($this->mcpIsOn() || $this->connectedAssistants() === []) {
+        return $this->mcpIsOn()
+            ? __('Every app you allowed through OAuth, the Monica app on a phone or an assistant, acts as you with the permissions it asked for.')
+            : __('Every phone you signed in through the Monica app acts as you until it signs out or you disconnect it.');
+    }
+
+    public function connectionsHelp(): string
+    {
+        return $this->mcpIsOn()
+            ? __('An app you allowed to reach your account, such as the Monica app on your phone or an AI assistant like Claude. It does so in your name, until it signs out or you disconnect it here.')
+            : __('The Monica app on your phone, once you allowed it to reach your account. It does so in your name, until it signs out or you disconnect it here.');
+    }
+
+    public function connectionsEmptyState(): string
+    {
+        return $this->mcpIsOn()
+            ? __('Log in from the Monica app on your phone, or point an assistant at the MCP server of this instance, and it appears here so you can disconnect it.')
+            : __('Log in from the Monica app on your phone and it appears here, so you can disconnect it if you lose it.');
+    }
+
+    public function connectionsNotice(): ?string
+    {
+        if ($this->mcpIsOn()) {
+            return null;
+        }
+
+        $reachesTheMcpServer = $this->user->oauthConnections()
+            ->active()
+            ->get()
+            ->contains(fn (OAuthConnection $connection): bool => in_array(Registrar::OAUTH_SCOPE, $connection->scopes ?? [], true));
+
+        if (! $reachesTheMcpServer) {
             return null;
         }
 

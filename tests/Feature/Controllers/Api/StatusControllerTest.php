@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Api;
 
-use App\Models\MobileSession;
+use App\Models\OAuthConnection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -34,7 +34,7 @@ class StatusControllerTest extends TestCase
         $response = $this->json('GET', '/api/v1/status');
 
         $response->assertJsonPath('mobile.api_version', 1);
-        $response->assertJsonPath('mobile.client_id', MobileSession::CLIENT_ID);
+        $response->assertJsonPath('mobile.client_id', OAuthConnection::MOBILE_CLIENT_ID);
         $response->assertJsonPath('mobile.scope', 'api');
         $response->assertJsonPath('mobile.registration_enabled', false);
         $response->assertJsonPath('mobile.minimum_android_version', '1.2.0');

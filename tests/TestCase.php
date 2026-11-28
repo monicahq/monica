@@ -18,7 +18,7 @@ use App\Models\Field;
 use App\Models\FieldValue;
 use App\Models\LifeEventCategory;
 use App\Models\LifeEventType;
-use App\Models\MobileSession;
+use App\Models\OAuthConnection;
 use App\Models\Reminder;
 use App\Models\Section;
 use App\Models\SectionVersion;
@@ -475,22 +475,28 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
-     * Run the sign-in of the mobile app for a person, the way the phone does it: authorization with
-     * PKCE, approval, then the code exchanged for tokens. The guards and the session are reset
-     * afterwards, so the next request carries only what the phone holds.
+     * Run an OAuth sign-in for a person, the way an app does it: authorization with PKCE, approval,
+     * then the code exchanged for tokens. It signs in as the mobile app unless another client is
+     * given. The guards and the session are reset afterwards, so the next request carries only what
+     * the app holds.
      *
      * @return array{access_token: string, refresh_token: string, code: string}
      */
-    protected function signInFromThePhone(User $user, ?string $deviceName = 'Pixel 9', string $redirectUri = MobileSession::ANDROID_REDIRECT_URI): array
-    {
+    protected function signInThroughOAuth(
+        User $user,
+        ?string $deviceName = 'Pixel 9',
+        string $clientId = OAuthConnection::MOBILE_CLIENT_ID,
+        string $redirectUri = OAuthConnection::ANDROID_REDIRECT_URI,
+        string $scope = OAuthConnection::API_SCOPE,
+    ): array {
         $verifier = Str::random(64);
         $challenge = strtr(rtrim(base64_encode(hash('sha256', $verifier, true)), '='), '+/', '-_');
 
         $this->actingAs($user)->get('/oauth/authorize?'.http_build_query([
-            'client_id' => MobileSession::CLIENT_ID,
+            'client_id' => $clientId,
             'redirect_uri' => $redirectUri,
             'response_type' => 'code',
-            'scope' => MobileSession::SCOPE,
+            'scope' => $scope,
             'state' => 'beet-harvest',
             'code_challenge' => $challenge,
             'code_challenge_method' => 'S256',
@@ -498,7 +504,7 @@ abstract class TestCase extends BaseTestCase
 
         $approval = $this->post('/oauth/authorize', [
             'state' => '',
-            'client_id' => MobileSession::CLIENT_ID,
+            'client_id' => $clientId,
             'auth_token' => session('authToken'),
         ]);
 
@@ -509,7 +515,7 @@ abstract class TestCase extends BaseTestCase
 
         $tokens = $this->postJson('/oauth/token', array_filter([
             'grant_type' => 'authorization_code',
-            'client_id' => MobileSession::CLIENT_ID,
+            'client_id' => $clientId,
             'redirect_uri' => $redirectUri,
             'code_verifier' => $verifier,
             'code' => $query['code'],

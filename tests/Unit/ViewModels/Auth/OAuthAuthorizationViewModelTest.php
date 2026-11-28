@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\ViewModels\Auth;
 
-use App\Models\MobileSession;
+use App\Models\OAuthConnection;
 use App\Models\User;
 use App\ViewModels\Auth\OAuthAuthorizationViewModel;
 use Laravel\Mcp\Server\Registrar;
@@ -32,57 +32,41 @@ class OAuthAuthorizationViewModelTest extends TestCase
     }
 
     #[Test]
-    public function it_speaks_about_the_app_when_the_mobile_app_asks(): void
+    public function it_speaks_the_same_way_whichever_client_asks(): void
     {
         config(['monica.instance' => 'monica.dundermifflin.com']);
 
-        $client = new Client(['name' => 'Monica for mobile']);
-        $client->id = MobileSession::CLIENT_ID;
+        $mobile = new Client(['name' => 'Monica for mobile']);
+        $mobile->id = OAuthConnection::MOBILE_CLIENT_ID;
 
-        $viewModel = new OAuthAuthorizationViewModel(
-            client: $client,
-            authToken: 'beet-harvest',
-            user: new User(['email' => 'pam@dundermifflin.com']),
-            redirectUri: MobileSession::ANDROID_REDIRECT_URI,
-            scopes: [new Scope(MobileSession::SCOPE, 'Use the API')],
-        );
+        $phone = $this->viewModel(client: $mobile, redirectUri: OAuthConnection::ANDROID_REDIRECT_URI);
+        $assistant = $this->viewModel(client: new Client(['name' => 'Schrute Farms Assistant']), redirectUri: 'https://claude.ai/callback');
 
-        $this->assertTrue($viewModel->isMobileApp());
-        $this->assertSame('Allow Monica for Android to reach your account?', $viewModel->title());
-        $this->assertStringContainsString('monica.dundermifflin.com', $viewModel->description());
-        $this->assertSame(['Use the API'], $viewModel->permissions());
+        $this->assertSame('Connect Monica for mobile', $phone->title());
+        $this->assertSame('Connect Schrute Farms Assistant', $assistant->title());
+        $this->assertStringContainsString('monica.dundermifflin.com', $assistant->description());
+        $this->assertSame($phone->caution(), $assistant->caution());
+        $this->assertSame($phone->notice(), $assistant->notice());
     }
 
     #[Test]
-    public function it_names_the_ios_app_when_the_iphone_asks(): void
+    public function it_names_the_return_address_by_its_host_or_else_whole(): void
     {
-        $client = new Client(['name' => 'Monica for mobile']);
-        $client->id = MobileSession::CLIENT_ID;
+        $assistant = $this->viewModel(client: new Client(['name' => 'Schrute Farms Assistant']), redirectUri: 'https://claude.ai/callback');
+        $phone = $this->viewModel(client: new Client(['name' => 'Monica for mobile']), redirectUri: OAuthConnection::ANDROID_REDIRECT_URI);
 
-        $viewModel = new OAuthAuthorizationViewModel(
+        $this->assertSame('claude.ai', $assistant->redirectAddress());
+        $this->assertSame(OAuthConnection::ANDROID_REDIRECT_URI, $phone->redirectAddress());
+    }
+
+    private function viewModel(Client $client, string $redirectUri): OAuthAuthorizationViewModel
+    {
+        return new OAuthAuthorizationViewModel(
             client: $client,
             authToken: 'beet-harvest',
             user: new User(['email' => 'pam@dundermifflin.com']),
-            redirectUri: MobileSession::IOS_REDIRECT_URI,
-            scopes: [new Scope(MobileSession::SCOPE, 'Use the API')],
-        );
-
-        $this->assertTrue($viewModel->isMobileApp());
-        $this->assertSame('Allow Monica for iOS to reach your account?', $viewModel->title());
-    }
-
-    #[Test]
-    public function it_speaks_about_the_assistant_when_an_assistant_asks(): void
-    {
-        $viewModel = new OAuthAuthorizationViewModel(
-            client: new Client(['name' => 'Schrute Farms Assistant']),
-            authToken: 'beet-harvest',
-            user: new User(['email' => 'dwight@dundermifflin.com']),
-            redirectUri: 'https://claude.ai/callback',
+            redirectUri: $redirectUri,
             scopes: [new Scope(Registrar::OAUTH_SCOPE, 'Use MCP server')],
         );
-
-        $this->assertFalse($viewModel->isMobileApp());
-        $this->assertSame('Connect Schrute Farms Assistant', $viewModel->title());
     }
 }

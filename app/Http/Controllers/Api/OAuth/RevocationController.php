@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\OAuth;
 
-use App\Actions\RevokeMobileSession;
+use App\Actions\RevokeOAuthConnection;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -12,7 +12,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 
 /**
- * Where a phone signs itself out with its refresh token (RFC 7009). It answers the same way
+ * Where an app signs itself out with its refresh token (RFC 7009). It answers the same way
  * whether or not the token was known, so nobody learns anything by trying tokens. A malformed
  * request answers in the OAuth error shape rather than Laravel's, as the RFC asks.
  */
@@ -35,7 +35,7 @@ class RevocationController extends Controller
 
         $validated = $validator->validated();
 
-        new RevokeMobileSession(
+        new RevokeOAuthConnection(
             clientId: $validated['client_id'],
             refreshToken: $validated['token'],
         )->execute();

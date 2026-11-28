@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Models\MobileSession;
+use App\Models\OAuthConnection;
 
 return [
     'name' => 'Health',
@@ -36,7 +36,7 @@ return [
                 'instance' => 'app.monicahq.com',
                 'mobile' => [
                     'api_version' => 1,
-                    'client_id' => MobileSession::CLIENT_ID,
+                    'client_id' => OAuthConnection::MOBILE_CLIENT_ID,
                     'scope' => 'api',
                     'registration_enabled' => true,
                     'minimum_android_version' => null,

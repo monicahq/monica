@@ -62,10 +62,10 @@ use App\Models\LifeEventType;
 use App\Models\Location;
 use App\Models\Log;
 use App\Models\McpCall;
-use App\Models\MobileSession;
 use App\Models\Notification;
 use App\Models\NotificationChannel;
 use App\Models\NotificationPreference;
+use App\Models\OAuthConnection;
 use App\Models\Payment;
 use App\Models\Possession;
 use App\Models\PossessionCondition;
@@ -623,22 +623,22 @@ class ApiDocsReturnFieldsTest extends TestCase
                 return $this->json('DELETE', "/api/v1/api-keys/{$key->accessToken->id}");
             }),
 
-            'mobile-sessions-index' => $this->asSomebody(function (User $user): TestResponse {
-                MobileSession::factory()->create(['user_id' => $user->id]);
+            'oauth-connections-index' => $this->asSomebody(function (User $user): TestResponse {
+                OAuthConnection::factory()->create(['user_id' => $user->id]);
 
-                return $this->json('GET', '/api/v1/mobile-sessions');
+                return $this->json('GET', '/api/v1/oauth-connections');
             }),
 
-            'mobile-sessions-show' => $this->asSomebody(function (User $user): TestResponse {
-                $session = MobileSession::factory()->create(['user_id' => $user->id]);
+            'oauth-connections-show' => $this->asSomebody(function (User $user): TestResponse {
+                $connection = OAuthConnection::factory()->create(['user_id' => $user->id]);
 
-                return $this->json('GET', "/api/v1/mobile-sessions/{$session->id}");
+                return $this->json('GET', "/api/v1/oauth-connections/{$connection->id}");
             }),
 
-            'mobile-sessions-destroy' => $this->asSomebody(function (User $user): TestResponse {
-                $session = MobileSession::factory()->create(['user_id' => $user->id]);
+            'oauth-connections-destroy' => $this->asSomebody(function (User $user): TestResponse {
+                $connection = OAuthConnection::factory()->create(['user_id' => $user->id]);
 
-                return $this->json('DELETE', "/api/v1/mobile-sessions/{$session->id}");
+                return $this->json('DELETE', "/api/v1/oauth-connections/{$connection->id}");
             }),
 
             'logs-index' => $this->asSomebody(function (User $user): TestResponse {

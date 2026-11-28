@@ -1,4 +1,4 @@
-{{-- Where somebody decides whether an assistant, or the mobile app, may reach their account. --}}
+{{-- Where somebody decides whether an app may reach their account through OAuth. --}}
 {{-- @var \App\ViewModels\Auth\OAuthAuthorizationViewModel $viewModel --}}
 <x-auth-page
   :title="$viewModel->title()"
@@ -7,9 +7,7 @@
   <x-box class="space-y-4">
     <x-detail-list>
       <x-detail-list.row :label="__('Signed in as')">{{ $viewModel->email() }}</x-detail-list.row>
-      @unless($viewModel->isMobileApp())
-        <x-detail-list.row :label="__('Sends you back to')">{{ $viewModel->redirectHost() }}</x-detail-list.row>
-      @endunless
+      <x-detail-list.row :label="__('Sends you back to')" value-class="text-base text-pretty text-ink wrap-anywhere">{{ $viewModel->redirectAddress() }}</x-detail-list.row>
 
       @if(count($viewModel->permissions()) > 0)
         <x-detail-list.row :label="__('Permissions')">

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\MobileSession;
+use App\Models\OAuthConnection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Throwable;
@@ -26,8 +26,8 @@ class StatusController extends Controller
             'instance' => config('monica.instance'),
             'mobile' => [
                 'api_version' => 1,
-                'client_id' => MobileSession::CLIENT_ID,
-                'scope' => MobileSession::SCOPE,
+                'client_id' => OAuthConnection::MOBILE_CLIENT_ID,
+                'scope' => OAuthConnection::API_SCOPE,
                 'registration_enabled' => (bool) config('monica.registration_enabled'),
                 'minimum_android_version' => config('monica.mobile.minimum_android_version') ?: null,
                 'minimum_ios_version' => config('monica.mobile.minimum_ios_version') ?: null,

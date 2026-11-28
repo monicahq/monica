@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
-use App\Models\MobileSession;
+use App\Models\OAuthConnection;
 use Closure;
 use Illuminate\Http\Request;
 use Laravel\Passport\AccessToken;
@@ -21,7 +21,7 @@ class EnsureApiTokenIsAccepted
     {
         $token = $request->user()?->currentAccessToken();
 
-        abort_if($token instanceof AccessToken && $token->cant(MobileSession::SCOPE), 403);
+        abort_if($token instanceof AccessToken && $token->cant(OAuthConnection::API_SCOPE), 403);
 
         return $next($request);
     }
