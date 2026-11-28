@@ -38,6 +38,7 @@ class ListVaults extends Tool
         return [
             'page' => $schema->integer()->description('The page to read, starting at 1.'),
             'per_page' => $schema->integer()->description("How many vaults a page holds: {$default} unless asked, {$maximum} at most."),
+            'sort' => $schema->string()->enum(['recent'])->description('Left out, the vaults come in the order the account arranged them. recent puts the vault opened most recently first and the ones never opened last.'),
         ];
     }
 }

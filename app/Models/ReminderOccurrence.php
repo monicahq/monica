@@ -223,13 +223,28 @@ class ReminderOccurrence extends Model
         $query
             ->where('vault_id', $vault->id)
             ->where('account_id', $vault->account_id)
+            ->awaitingAnswerUntil($untilDay)
+            ->orderBy('local_date')
+            ->orderBy('scheduled_for');
+    }
+
+    /**
+     * Scope the query to what is still waiting on an answer up to a day, overdue
+     * included, in no particular order.
+     *
+     * It carries no ordering so a vault can count it in a subquery, which
+     * PostgreSQL refuses when the subquery is ordered.
+     *
+     * @param  Builder<$this>  $query
+     */
+    public function scopeAwaitingAnswerUntil(Builder $query, CarbonImmutable $untilDay): void
+    {
+        $query
             ->active()
             ->where('local_date', '<', $untilDay->addDay()->toDateString())
             ->whereHas('reminder', function (Builder $rule): void {
                 $rule->where('is_active', true);
-            })
-            ->orderBy('local_date')
-            ->orderBy('scheduled_for');
+            });
     }
 
     /**

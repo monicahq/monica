@@ -13,9 +13,29 @@ use App\Models\Contact;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ContactAvatarController extends Controller
 {
+    public function show(Request $request, string $vault, string $contact): StreamedResponse
+    {
+        $vault = $request->user()->account->vaults()->addressedBy($vault)->firstOrFail();
+        $contact = Contact::query()->where('vault_id', $vault->id)->addressedBy($contact)->with('avatar')->firstOrFail();
+
+        abort_if($contact->avatar === null, 404);
+
+        $disk = $contact->avatar->disk();
+        $path = $contact->avatar->variantPath(Contact::AVATAR_THUMBNAIL_PIXELS) ?? $contact->avatar->path;
+
+        abort_unless($disk->exists($path), 404);
+
+        return $disk->response($path, name: $contact->avatar->original_name, headers: [
+            'Content-Type' => $contact->avatar->mime_type,
+            'Cache-Control' => 'private, max-age=3600',
+            'X-Content-Type-Options' => 'nosniff',
+        ], disposition: $contact->avatar->contentDisposition());
+    }
+
     public function update(Request $request, string $vault, string $contact): JsonResponse
     {
         $vault = $request->user()->account->vaults()->addressedBy($vault)->firstOrFail();

@@ -62,6 +62,7 @@ use Override;
  * @property CarbonImmutable|null $updated_at
  * @property CarbonImmutable|null $deleted_at
  * @property-read Account $account
+ * @property-read int|null $upcoming_reminder_count Present only when the query asked for it with `withCardValues()`.
  */
 #[RouteKey('slug')]
 #[Fillable([
@@ -99,6 +100,11 @@ class Vault extends Model
     public const int SLUG_LENGTH = 128;
 
     public const string SLUG_WHEN_EMPTY = 'vault';
+
+    /**
+     * How many contacts a vault card draws as faces.
+     */
+    public const int FACES_SHOWN = 4;
 
     /**
      * Every section is shown until somebody hides it, so a vault built in memory says so before it is
@@ -217,6 +223,43 @@ class Vault extends Model
     }
 
     /**
+     * Scope the query to load what a vault card shows besides the vault itself: its faces with
+     * their avatars, and how many reminders still wait on an answer before the month is out,
+     * overdue ones included. The month is the one the given person is living in.
+     *
+     * The web card and the API both read the card through here, so the two cannot disagree.
+     *
+     * @param  Builder<$this>  $query
+     */
+    public function scopeWithCardValues(Builder $query, User $user): void
+    {
+        $endOfMonth = CarbonImmutable::now($user->timezone)->endOfMonth();
+
+        $query
+            ->with('faces.avatar')
+            ->addSelect([
+                'upcoming_reminder_count' => ReminderOccurrence::query()
+                    ->selectRaw('count(*)')
+                    ->whereColumn('reminder_occurrences.vault_id', 'vaults.id')
+                    ->awaitingAnswerUntil($endOfMonth),
+            ]);
+    }
+
+    /**
+     * Scope the query to the order of the vaults page: the vault opened most recently first, the
+     * ones never opened last, then by position.
+     *
+     * @param  Builder<$this>  $query
+     */
+    public function scopeOrderedByRecentVisit(Builder $query): void
+    {
+        $query
+            ->orderByRaw('last_visited_at is null')
+            ->orderByDesc('last_visited_at')
+            ->orderBy('position');
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
@@ -254,6 +297,21 @@ class Vault extends Model
     public function contacts(): HasMany
     {
         return $this->hasMany(Contact::class);
+    }
+
+    /**
+     * Get the contacts a vault card shows as faces: the four listed most recently, the newest first.
+     * Eager loaded for many vaults, the limit applies to each vault rather than to all of them.
+     *
+     * @return HasMany<Contact, $this>
+     */
+    public function faces(): HasMany
+    {
+        return $this->contacts()
+            ->listed()
+            ->orderByDesc('created_at')
+            ->orderByDesc('id')
+            ->limit(self::FACES_SHOWN);
     }
 
     /**

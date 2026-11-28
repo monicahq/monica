@@ -5,15 +5,11 @@ declare(strict_types=1);
 namespace App\ViewModels\Vaults;
 
 use App\Models\Contact;
-use App\Models\ReminderOccurrence;
 use App\Models\User;
 use App\Models\Vault;
-use Carbon\CarbonImmutable;
 
 class VaultsViewModel
 {
-    private const int FACES_SHOWN = 4;
-
     public function __construct(
         private readonly User $user,
     ) {}
@@ -46,9 +42,8 @@ class VaultsViewModel
     {
         $vaults = Vault::query()
             ->where('account_id', $this->user->account_id)
-            ->orderByRaw('last_visited_at is null')
-            ->orderByDesc('last_visited_at')
-            ->orderBy('position')
+            ->withCardValues($this->user)
+            ->orderedByRecentVisit()
             ->get();
 
         return $vaults
@@ -82,13 +77,7 @@ class VaultsViewModel
     /** @return array<int, array{name: string, avatarUrl: string|null}> */
     private function faces(Vault $vault): array
     {
-        return $vault
-            ->contacts()
-            ->listed()
-            ->with('avatar')
-            ->orderByDesc('created_at')
-            ->limit(self::FACES_SHOWN)
-            ->get()
+        return $vault->faces
             ->map(fn (Contact $contact): array => [
                 'name' => $contact->name,
                 'avatarUrl' => $contact->avatar === null
@@ -100,7 +89,7 @@ class VaultsViewModel
 
     private function moreFaces(Vault $vault): ?string
     {
-        $remaining = $vault->contact_count - self::FACES_SHOWN;
+        $remaining = $vault->contact_count - Vault::FACES_SHOWN;
 
         if ($remaining <= 0) {
             return null;
@@ -124,12 +113,7 @@ class VaultsViewModel
      */
     private function dateCount(Vault $vault): int
     {
-        return ReminderOccurrence::query()
-            ->awaitingAnswerInVault(
-                vault: $vault,
-                untilDay: CarbonImmutable::now($this->user->timezone)->endOfMonth(),
-            )
-            ->count();
+        return (int) $vault->upcoming_reminder_count;
     }
 
     public function user(): User

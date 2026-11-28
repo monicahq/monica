@@ -6,11 +6,17 @@ namespace Tests\Feature\Controllers\Api;
 
 use App\Enums\StructureAppliesToEnum;
 use App\Jobs\CreateDefaultTemplate;
+use App\Models\Contact;
+use App\Models\File;
+use App\Models\Reminder;
+use App\Models\ReminderOccurrence;
 use App\Models\StructureVersion;
 use App\Models\Template;
 use App\Models\User;
 use App\Models\Vault;
+use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Queue;
 use Laravel\Sanctum\Sanctum;
 use PHPUnit\Framework\Attributes\Test;
@@ -32,6 +38,9 @@ class VaultControllerTest extends TestCase
                 'position',
                 'is_default',
                 'contact_count',
+                'last_visited_at',
+                'faces',
+                'upcoming_reminder_count',
                 'shows_people',
                 'shows_things',
                 'shows_knowledge',
@@ -670,5 +679,168 @@ class VaultControllerTest extends TestCase
         $response->assertUnprocessable();
         $response->assertJsonValidationErrors('vault');
         $this->assertNotSoftDeleted('vaults', ['id' => $vault->id]);
+    }
+
+    #[Test]
+    public function it_says_when_each_vault_was_last_opened_and_null_when_it_never_was(): void
+    {
+        $user = User::factory()->create();
+        Vault::factory()->create(['account_id' => $user->account_id, 'position' => 1, 'last_visited_at' => '2026-11-20 10:00:00']);
+        $neverOpened = Vault::factory()->create(['account_id' => $user->account_id, 'position' => 2, 'last_visited_at' => null]);
+
+        Sanctum::actingAs($user);
+
+        $list = $this->json('GET', '/api/v1/vaults');
+
+        $list->assertJsonPath('data.0.attributes.last_visited_at', CarbonImmutable::parse('2026-11-20 10:00:00')->timestamp);
+        $list->assertJsonPath('data.1.attributes.last_visited_at', null);
+        $this->json('GET', "/api/v1/vaults/{$neverOpened->uuid}")->assertJsonPath('data.attributes.last_visited_at', null);
+    }
+
+    #[Test]
+    public function it_shows_the_four_newest_listed_contacts_as_faces_and_leaves_out_a_partial_one(): void
+    {
+        $user = User::factory()->create();
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+
+        $contacts = collect(['Michael', 'Dwight', 'Jim', 'Pam', 'Angela'])
+            ->map(fn (string $name, int $index): Contact => Contact::factory()->create([
+                'vault_id' => $vault->id,
+                'first_name' => $name,
+                'last_name' => null,
+                'created_at' => CarbonImmutable::parse('2026-01-01')->addDays($index),
+            ]));
+        Contact::factory()->partial()->create(['vault_id' => $vault->id, 'created_at' => '2026-02-01']);
+
+        $angela = $contacts[4];
+        $angela->avatar_file_id = File::factory()->image()->used()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $vault->id,
+        ])->id;
+        $angela->save();
+
+        Sanctum::actingAs($user);
+
+        $expected = [
+            [
+                'id' => $angela->uuid,
+                'name' => $angela->name,
+                'avatar_url' => route('api.v1.contacts.avatar.show', ['vault' => $vault, 'contact' => $angela->uuid]),
+            ],
+            ['id' => $contacts[3]->uuid, 'name' => $contacts[3]->name, 'avatar_url' => null],
+            ['id' => $contacts[2]->uuid, 'name' => $contacts[2]->name, 'avatar_url' => null],
+            ['id' => $contacts[1]->uuid, 'name' => $contacts[1]->name, 'avatar_url' => null],
+        ];
+
+        $this->json('GET', '/api/v1/vaults')->assertJsonPath('data.0.attributes.faces', $expected);
+        $this->json('GET', "/api/v1/vaults/{$vault->uuid}")->assertJsonPath('data.attributes.faces', $expected);
+    }
+
+    #[Test]
+    public function it_counts_the_reminders_awaiting_an_answer_before_the_month_is_out_overdue_included(): void
+    {
+        $this->travelTo(CarbonImmutable::parse('2026-11-15 12:00:00', 'UTC'));
+
+        $user = User::factory()->create(['timezone' => 'UTC']);
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contact = Contact::factory()->create(['vault_id' => $vault->id]);
+        $reminder = Reminder::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $vault->id,
+            'remindable_type' => $contact->getMorphClass(),
+            'remindable_id' => $contact->id,
+            'is_active' => true,
+        ]);
+
+        foreach (['2026-11-01', '2026-11-20', '2026-12-10'] as $day) {
+            ReminderOccurrence::factory()->for($reminder)->create([
+                'local_date' => $day,
+                'generation_key' => "1:{$day}",
+                'scheduled_for' => CarbonImmutable::parse($day),
+            ]);
+        }
+
+        Sanctum::actingAs($user);
+
+        $this->json('GET', '/api/v1/vaults')->assertJsonPath('data.0.attributes.upcoming_reminder_count', 2);
+        $this->json('GET', "/api/v1/vaults/{$vault->uuid}")->assertJsonPath('data.attributes.upcoming_reminder_count', 2);
+    }
+
+    #[Test]
+    public function it_lists_the_vault_opened_most_recently_first_when_asked(): void
+    {
+        $user = User::factory()->create();
+        Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Dunder Mifflin', 'position' => 1, 'last_visited_at' => null]);
+        Vault::factory()->create(['account_id' => $user->account_id, 'name' => 'Schrute Farms', 'position' => 2, 'last_visited_at' => now()->subDay()]);
+
+        Sanctum::actingAs($user);
+
+        $response = $this->json('GET', '/api/v1/vaults?sort=recent');
+
+        $response->assertOk();
+        $response->assertJsonPath('data.0.attributes.name', 'Schrute Farms');
+        $response->assertJsonPath('data.1.attributes.name', 'Dunder Mifflin');
+    }
+
+    #[Test]
+    public function it_refuses_an_order_it_does_not_know(): void
+    {
+        Sanctum::actingAs(User::factory()->create());
+
+        $response = $this->json('GET', '/api/v1/vaults?sort=name');
+
+        $response->assertUnprocessable();
+        $response->assertJsonValidationErrors(['sort']);
+    }
+
+    #[Test]
+    public function it_reads_a_page_of_vaults_in_as_many_queries_whatever_its_size(): void
+    {
+        $user = User::factory()->create();
+        $this->vaultWithCardValues($user);
+        $this->vaultWithCardValues($user);
+
+        Sanctum::actingAs($user);
+        $this->json('GET', '/api/v1/vaults')->assertOk();
+
+        $forTwo = $this->queriesOf(fn () => $this->json('GET', '/api/v1/vaults')->assertJsonCount(2, 'data'));
+
+        $this->vaultWithCardValues($user);
+        $this->vaultWithCardValues($user);
+        $this->vaultWithCardValues($user);
+
+        $forFive = $this->queriesOf(fn () => $this->json('GET', '/api/v1/vaults')->assertJsonCount(5, 'data'));
+
+        $this->assertSame($forTwo, $forFive);
+    }
+
+    private function vaultWithCardValues(User $user): void
+    {
+        $vault = Vault::factory()->create(['account_id' => $user->account_id]);
+        $contacts = Contact::factory()->count(2)->create(['vault_id' => $vault->id]);
+
+        $contacts[0]->avatar_file_id = File::factory()->image()->used()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $vault->id,
+        ])->id;
+        $contacts[0]->save();
+
+        ReminderOccurrence::factory()->for(Reminder::factory()->create([
+            'account_id' => $user->account_id,
+            'vault_id' => $vault->id,
+            'remindable_type' => $contacts[0]->getMorphClass(),
+            'remindable_id' => $contacts[0]->id,
+            'is_active' => true,
+        ]))->create(['local_date' => now()->toDateString()]);
+    }
+
+    private function queriesOf(callable $request): int
+    {
+        DB::flushQueryLog();
+        DB::enableQueryLog();
+
+        $request();
+
+        return count(DB::getQueryLog());
     }
 }
