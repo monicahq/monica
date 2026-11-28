@@ -179,8 +179,9 @@ trait WritesMonicaFourItems
 
         $birthdate = $properties['birthdate'] ?? null;
 
-        if (is_array($birthdate) && is_string($birthdate['date'] ?? null)) {
-            $date = CarbonImmutable::parse($birthdate['date']);
+        $date = is_array($birthdate) && is_string($birthdate['date'] ?? null) ? $this->dateOf($birthdate['date']) : null;
+
+        if ($date instanceof CarbonImmutable) {
             $isAgeBased = (bool) ($birthdate['is_age_based'] ?? false);
             $yearIsUnknown = (bool) ($birthdate['is_year_unknown'] ?? false);
 
